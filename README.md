@@ -1,6 +1,6 @@
 <div align="center">
   
-[![volverjs](src/assets/volverjs.svg)](https://github.com/volverjs)
+[![volverjs](https://raw.githubusercontent.com/volverjs/style/develop/src/assets/volverjs.svg)](https://github.com/volverjs)
 
 ## @volverjs/ui-vue
 
@@ -13,7 +13,7 @@
 
 <br>
 
-[![24/Consulting](src/assets/24consulting.svg)](https://24consulting.it)
+[![24/Consulting](https://raw.githubusercontent.com/volverjs/style/develop/src/assets/24consulting.svg)](https://24consulting.it)
 
 <br>
 
