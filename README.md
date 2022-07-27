@@ -1,41 +1,32 @@
-# functional-components
+<div align="center">
+  
+[![volverjs](src/assets/volverjs.svg)](https://github.com/volverjs)
 
-This template should help get you started developing with Vue 3 in Vite.
+## @volverjs/ui-vue
 
-## Recommended IDE Setup
+`vue` `components` `ui` `design-system` `typography`  
+`input` `button` `text`
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<br>
 
-## Customize configuration
+#### proudly powered by
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+<br>
 
-## Project Setup
+[![24/Consulting](src/assets/24consulting.svg)](https://24consulting.it)
 
-```sh
-npm install
+<br>
+
+</div>
+
+## Install
+
+```
+$ npm i @volverjs/ui-vue
 ```
 
-### Compile and Hot-Reload for Development
+## Basic usage
 
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+```html
+<vv-text weight="thin">Size thin</vv-text>
 ```

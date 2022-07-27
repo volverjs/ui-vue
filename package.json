@@ -1,5 +1,5 @@
 {
-	"name": "@volverjs/design-system",
+	"name": "@volverjs/ui-vue",
 	"version": "0.0.0",
 	"scripts": {
 		"storybook": "start-storybook -p 6006",
