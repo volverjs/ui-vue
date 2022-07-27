@@ -1,0 +1,60 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvButton from '../../components/Button/VvButton.vue'
+import { within, userEvent } from '@storybook/testing-library'
+
+<Meta title="Components/Button/size" />
+
+# VvButton sizes
+
+Stories of `VvButton` `size`.
+
+## default (default)
+
+Let's define a story for our `default` button:
+
+<Canvas>
+	<Story name="default">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="default" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## small
+
+Let's define a story for our `small` button:
+
+<Canvas>
+	<Story name="small">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="small" size="small" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## large
+
+Let's define a story for our `large` button:
+
+<Canvas>
+	<Story name="large">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="large" size="large" />`
+			}
+		}}
+	</Story>
+</Canvas>

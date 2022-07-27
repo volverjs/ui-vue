@@ -1,0 +1,82 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvText from '../../components/Text/VvText.vue'
+import {
+	VvTextWeight,
+	VvTextTag,
+	TEXT_SIZE_DYNAMIC,
+	TEXT_SIZE_STATIC
+} from '../../types/VvText'
+
+<Meta
+	title="Components/Text/binded"
+	component={VvText}
+	argTypes={{
+		static: {
+			control: {
+				type: 'boolean'
+			}
+		},
+		sizeDynamic: {
+			options: TEXT_SIZE_DYNAMIC,
+			control: { type: 'select' }
+		},
+		sizeStatic: {
+			options: TEXT_SIZE_STATIC,
+			control: { type: 'select' }
+		},
+		tag: {
+			options: Object.values(VvTextTag),
+			control: { type: 'select' }
+		},
+		weight: {
+			options: Object.values(VvTextWeight),
+			control: { type: 'select' }
+		},
+		modifiers: {
+			control: { type: 'array' }
+		},
+		text: { control: { type: 'text' } },
+		color: {
+			control: { type: 'select' },
+			options: [
+				'black',
+				'white',
+				'brand',
+				'accent',
+				'positive',
+				'negative',
+				'info',
+				'warning',
+				'gray'
+			]
+		}
+	}}
+/>
+
+export const Template = (args) => ({
+	components: { VvText },
+	data() {
+		return {
+			text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+		}
+	},
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`<vv-text v-bind="{...args, size: args.static ? args.sizeStatic : args.sizeDynamic}">{{ args.text && args.text.trim() || text }}</vv-text>`
+})
+
+# VvText binded
+
+Stories of `vv-text`.
+Let's define a story for our binded `text`:
+
+<Story
+	name="binded"
+	args={{
+		tag: VvTextTag.div
+	}}>
+	{Template.bind({})}
+</Story>

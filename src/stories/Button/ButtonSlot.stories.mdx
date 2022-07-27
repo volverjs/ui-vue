@@ -1,0 +1,93 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvButton from '../../components/Button/VvButton.vue'
+import { within, userEvent } from '@storybook/testing-library'
+
+<Meta title="Components/Button/slot" />
+
+# VvButton slots
+
+Stories of `VvButton` `slot`.
+
+## Default slot
+
+Let's define a story for our button with a `default` slot:
+
+<Canvas>
+	<Story name="default">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button>Button</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## Left slot
+
+Let's define a story for our button with a `left` slot:
+
+<Canvas>
+	<Story name="left">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Button" variant="secondary">
+						<template #left>
+							<img src="https://cdn.worldvectorlogo.com/logos/vue-js-1.svg" width="20" style="margin-right: 5px;" alt />
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## Right slot
+
+Let's define a story for our button with a `right` slot:
+
+<Canvas>
+	<Story name="right">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Button" variant="secondary">
+						<template #right>
+							<img src="https://cdn.worldvectorlogo.com/logos/vue-js-1.svg" width="20" style="margin-left: 5px;" alt />
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## All slot
+
+Let's define a story for our button with a `default` `left` and `right` slot:
+
+<Canvas>
+	<Story name="all">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Button" variant="secondary">
+						Button 🎉
+						<template #left>
+							<img src="https://cdn.worldvectorlogo.com/logos/vue-js-1.svg" width="20" style="margin-right: 20px;" alt />
+						</template>
+						<template #right>
+							<img src="https://cdn.worldvectorlogo.com/logos/vue-js-1.svg" width="20" style="margin-left: 20px;" alt />
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>

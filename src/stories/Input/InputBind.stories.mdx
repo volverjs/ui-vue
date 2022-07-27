@@ -1,0 +1,41 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInput from '../../components/Input/VvInput.vue'
+import { within, userEvent } from '@storybook/testing-library'
+import { axe, toHaveNoViolations } from 'jest-axe'
+
+<Meta title="Components/Input/binded" />
+
+# VvInput
+
+Stories of `VvInput`.
+
+## VvInput
+
+Let's define a story for our input (default) `VvInput`:
+
+<Canvas>
+	<Story
+		name="binded"
+		play={async ({ args, canvasElement }) => {
+			const canvas = within(canvasElement)
+			await userEvent.click(canvas.getByRole('textbox'))
+			await userEvent.type(
+				canvas.getByRole('textbox'),
+				'Hello from VvInput'
+			)
+		}}>
+		{() => {
+			return {
+				components: { VvInput },
+				template:
+					/*html*/
+					`<vv-input v-model="value" />`,
+				data() {
+					return {
+						value: ''
+					}
+				}
+			}
+		}}
+	</Story>
+</Canvas>
