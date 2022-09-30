@@ -1,0 +1,46 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import { within, userEvent } from '@storybook/testing-library'
+import { axe, toHaveNoViolations } from 'jest-axe'
+import { expect } from '@storybook/jest'
+
+<Meta
+	title="Components/Button"
+	component={VvButton}
+	argTypes={{
+		onClick: { action: 'clicked' },
+		label: {
+			defaultValue: 'Test',
+			control: { type: 'text' }
+		}
+	}}
+/>
+
+export const Template = (args) => ({
+	components: { VvButton },
+	setup() {
+		function onClick() {
+			console.log('onClick')
+		}
+		return { args, onClick }
+	},
+	template:
+		/*html*/
+		`<vv-button v-bind="args" @click="onClick" />`
+})
+
+# VvButton binded
+
+Stories of `VvButton`.
+Let's define a story for our binded `button`:
+
+<Story
+	name="binded"
+	args={{}}
+	play={async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement)
+		await userEvent.click(canvas.getByRole('button'))
+		await expect.extend(toHaveNoViolations)
+	}}>
+	{Template.bind({})}
+</Story>
