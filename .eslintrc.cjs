@@ -10,5 +10,8 @@ module.exports = {
 		'@vue/eslint-config-prettier',
 		'prettier',
 		'plugin:storybook/recommended'
-	]
+	],
+	rules: {
+		'vue/require-default-prop': 'off'
+	}
 }
