@@ -1,5 +1,4 @@
-// import '../src/stories/stories.scss'
-// import '@volverjs/style/scss'
+import '../src/stories/stories.scss'
 
 export const parameters = {
 	actions: { argTypesRegex: '^on[A-Z].*' },
