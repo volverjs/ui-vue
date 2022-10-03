@@ -12,6 +12,9 @@ import { expect } from '@storybook/jest'
 		label: {
 			defaultValue: 'Test',
 			control: { type: 'text' }
+		},
+		loading: {
+			control: { type: 'boolean' }
 		}
 	}}
 />
@@ -26,7 +29,7 @@ export const Template = (args) => ({
 	},
 	template:
 		/*html*/
-		`<vv-button v-bind="args" @click="onClick" />`
+		`<vv-button v-bind="args" @click="onClick" icon="akar-icons:heart" />`
 })
 
 # VvButton binded
