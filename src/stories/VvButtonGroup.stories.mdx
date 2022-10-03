@@ -1,0 +1,32 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+
+import VvButtonGroup from '../components/VvButtonGroup/VvButtonGroup.vue'
+
+<Meta title="Components/VvButtonGroup" component={VvButtonGroup} />
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvButtonGroup },
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`
+        <vv-button-group v-bind="args">
+            <button class="vv-button">Button 1</button>
+            <button class="vv-button">Button 2</button>
+            <button class="vv-button">Button 3</button>
+        </vv-button-group>
+        `
+})
+
+# VvButtonGroup
+
+VvButtonGroup crea un gruppo di pulsanti.
+
+<Canvas>
+	<Story name="ButtonGroup" args={{ vertical: false, compact: true }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
