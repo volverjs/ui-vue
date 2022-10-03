@@ -9,11 +9,29 @@ import { expect } from '@storybook/jest'
 	component={VvButton}
 	argTypes={{
 		onClick: { action: 'clicked' },
+		variant: {
+			control: {
+				type: 'select',
+				options: [
+					null,
+					'primary',
+					'secondary',
+					'danger',
+					'ghost',
+					'text',
+					'static-light',
+					'static-dark'
+				]
+			}
+		},
 		label: {
 			defaultValue: 'Test',
 			control: { type: 'text' }
 		},
 		loading: {
+			control: { type: 'boolean' }
+		},
+		disabled: {
 			control: { type: 'boolean' }
 		}
 	}}

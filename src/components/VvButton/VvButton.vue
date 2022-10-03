@@ -3,11 +3,13 @@
 		v-bind="{
 			...$attrs,
 			href:
-				isComponent === buttonTags.a && disabled ? 'javascript:;' : href
+				isComponent === buttonTags.a && $attrs.disabled
+					? 'javascript:;'
+					: $attrs.href
 		}"
 		:is="isComponent"
 		:class="hasClass"
-		:aria-disabled="disabled"
+		:aria-disabled="$attrs.disabled"
 		role="button">
 		<slot>
 			<div v-if="loading" class="vv-button__icon-loader">
@@ -22,13 +24,18 @@
 				</template>
 			</div>
 			<template v-else>
-				{{ label }}
+				<template v-if="iconPosition === buttonIconPositions.right">
+					{{ label }}
+				</template>
 				<span v-if="icon || $slots.icon" class="vv-button__icon">
 					<!-- @slot Use this slot for button icon -->
 					<slot name="icon">
 						<span class="iconify" :data-icon="icon"></span>
 					</slot>
 				</span>
+				<template v-if="iconPosition === buttonIconPositions.left">
+					{{ label }}
+				</template>
 				<span v-if="badge || $slots.badge" class="vv-button__badge">
 					<!-- @slot Use this slot for button badge -->
 					<slot name="badge">
@@ -44,19 +51,40 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
-import { ButtonIconPosition, ButtonTarget, ButtonTag } from './VvButton'
+import { ButtonIconPosition, ButtonTag } from './VvButton'
 
 export default defineComponent({
 	props: {
+		/**
+		 * Button icon
+		 */
 		icon: String,
+		/**
+		 * Button icon position
+		 */
 		iconPosition: {
 			type: String as PropType<ButtonIconPosition>,
 			default: ButtonIconPosition.left
 		},
+		/**
+		 * Button label
+		 */
 		label: String,
+		/**
+		 * Badge
+		 */
 		badge: [String, Number],
+		/**
+		 * Loading status
+		 */
 		loading: Boolean,
+		/**
+		 * Loading icon
+		 */
 		loadingIcon: String,
+		/**
+		 * Loading label
+		 */
 		loadingLabel: {
 			type: String,
 			default: 'Loading...'
@@ -81,25 +109,7 @@ export default defineComponent({
 			type: [String, Object]
 		},
 		/**
-		 * If exist the button is rendered as an anchor.
-		 */
-		href: String,
-		/**
-		 * The anchor target, can be: _blank, _self, _parent, _top.
-		 * @values _blank, _self, _parent, _top
-		 * @defaultvalue _self
-		 */
-		target: {
-			type: String as PropType<ButtonTarget>,
-			default: ButtonTarget.self,
-			validator: (value: ButtonTarget) => value in ButtonTarget
-		},
-		/**
-		 * Button disabled state.
-		 */
-		disabled: Boolean,
-		/**
-		 * Create block level buttonthose that span the full width of a parent.
+		 * Create block level button that span the full width of a parent.
 		 */
 		block: Boolean,
 		/**
@@ -113,7 +123,8 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			buttonTags: ButtonTag
+			buttonTags: ButtonTag,
+			buttonIconPositions: ButtonIconPosition
 		}
 	},
 	computed: {
@@ -127,7 +138,7 @@ export default defineComponent({
 					return '$nuxt' in this
 						? ButtonTag.nuxtLink
 						: ButtonTag.routerLink
-				case this.href !== undefined:
+				case this.$attrs.href !== undefined:
 					return ButtonTag.a
 				default:
 					return ButtonTag.button
@@ -143,8 +154,7 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--state-disabled': this.disabled,
-					'vv-button--state-active': this.active && !this.disabled,
+					'vv-button--state-active': this.active,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded
 				}
