@@ -24,18 +24,13 @@
 				</template>
 			</div>
 			<template v-else>
-				<template v-if="iconPosition === buttonIconPositions.right">
-					{{ label }}
-				</template>
+				{{ label }}
 				<span v-if="icon || $slots.icon" class="vv-button__icon">
 					<!-- @slot Use this slot for button icon -->
 					<slot name="icon">
 						<span class="iconify" :data-icon="icon"></span>
 					</slot>
 				</span>
-				<template v-if="iconPosition === buttonIconPositions.left">
-					{{ label }}
-				</template>
 				<span v-if="badge || $slots.badge" class="vv-button__badge">
 					<!-- @slot Use this slot for button badge -->
 					<slot name="badge">
@@ -124,7 +119,7 @@ export default defineComponent({
 	data() {
 		return {
 			buttonTags: ButtonTag,
-			buttonIconPositions: ButtonIconPosition
+			iconPositions: ButtonIconPosition
 		}
 	},
 	computed: {
@@ -151,6 +146,13 @@ export default defineComponent({
 		hasClass(): Array<string | object> {
 			return [
 				'vv-button',
+				{
+					'flex-row-reverse':
+						this.iconPosition === this.iconPositions.left,
+					'flex-col': this.iconPosition === this.iconPositions.bottom,
+					'flex-col-reverse':
+						this.iconPosition === this.iconPositions.top
+				},
 				this.hasVariant,
 				this.hasIconPosition,
 				{
