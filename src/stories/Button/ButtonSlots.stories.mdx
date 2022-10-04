@@ -20,7 +20,11 @@ Let's define a story for our button with `default` slot.
 				template:
 					/*html*/
 					`<vv-button>
-						<span class="color-red">Test</span>
+						Override all button content with
+						<span class="font-bold">Slot default</span>
+						<span
+							class="iconify"
+							data-icon="ant-design:search-outlined"></span>
 					</vv-button>`
 			}
 		}}
@@ -29,5 +33,99 @@ Let's define a story for our button with `default` slot.
 
 <Source
 	language="jsx"
-	code={'<vv-button label="Icon left" icon="akar-icons:heart" />'}
+	code={`<vv-button>
+	Override all button content with
+	<span class="font-bold">Slot default</span>
+	<span class="iconify" data-icon="ant-design:search-outlined"></span>
+</vv-button>`}
+/>
+
+## Slot before
+
+Let's define a story for our button with `before` slot.
+
+<Canvas>
+	<Story name="slot-before">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Slot before">
+						<template #before>
+							Add before content with
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Slot before">
+	<template #before>
+		Add before content with
+	</template>
+</vv-button>`}
+/>
+
+## Slot after
+
+Let's define a story for our button with `after` slot.
+
+<Canvas>
+	<Story name="slot-after">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Slot after">
+						<template #after>
+							Add after content
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Slot after">
+	<template #after>
+		Add after content
+	</template>
+</vv-button>`}
+/>
+
+## Slot label
+
+Let's define a story for our button with `label` slot.
+
+<Canvas>
+	<Story name="slot-label">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Slot label">
+						<template #label>
+							<span class="font-bold">Label slot!</span>
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Slot label">
+	<template #label>
+		<span class="font-bold">Label slot!</span>
+	</template>
+</vv-button>`}
 />
