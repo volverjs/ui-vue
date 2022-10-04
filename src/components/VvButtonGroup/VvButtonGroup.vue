@@ -5,16 +5,31 @@
 </template>
 
 <script lang="ts">
-// import type { PropType } from 'vue'
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs } from 'vue'
+import { useElementGroup } from '../../composables/useElementsGroup'
+import { VV_BUTTON_GROUP_MANAGER } from '../../composables/keys'
 
 /**
  * VvButtonGroups
  */
 export default defineComponent({
-	data: () => ({
-		observer: null //MutationObserver
-	}),
+	setup(props) {
+		let group = null
+		//eventuale pulsante gia selezionato
+		const { value: selectedButton } = toRefs(props)
+		let isVModelBind = selectedButton.value !== undefined
+
+		if (isVModelBind) {
+			//v-model binding -> attiva la modalità toggle creando un gruppo nel quale registrare i pulsanti figli.
+			group = useElementGroup(VV_BUTTON_GROUP_MANAGER, {
+				defaultSelected: selectedButton
+			}).group
+		}
+
+		return {
+			group
+		}
+	},
 	props: {
 		/**
 		 * True = show buttons vertically
@@ -25,9 +40,9 @@ export default defineComponent({
 		 */
 		compact: { type: Boolean, default: false },
 		/**
-		 * Active index button
+		 * Active button (name)
 		 */
-		value: { type: Number, default: undefined }
+		value: { type: String, default: undefined }
 	},
 	computed: {
 		btnGroupActiveItem() {
@@ -40,19 +55,6 @@ export default defineComponent({
 				'vv-button-group--compact': this.compact
 			}
 		}
-	},
-	methods: {
-		traceVvButtons() {
-			debugger
-		}
-	},
-	mounted() {
-		const observer = new MutationObserver(this.traceVvButtons)
-		observer.observe(this.$el, {
-			childList: true,
-			subtree: true
-		})
-		this.observer = observer as MutationObserver
 	}
 })
 </script>

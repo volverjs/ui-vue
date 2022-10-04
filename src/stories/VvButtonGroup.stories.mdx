@@ -1,12 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 
+import VvButton from '../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../components/VvButtonGroup/VvButtonGroup.vue'
 
 <Meta title="Components/VvButtonGroup" component={VvButtonGroup} />
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
-	components: { VvButtonGroup },
+	components: { VvButton, VvButtonGroup },
 	setup() {
 		return { args }
 	},
@@ -14,9 +15,9 @@ export const Template = (args, { argTypes }) => ({
 		/*html*/
 		`
         <vv-button-group v-bind="args">
-            <button class="vv-button">Button 1</button>
-            <button class="vv-button">Button 2</button>
-            <button class="vv-button">Button 3</button>
+            <vv-button name="1a">Button 1</vv-button>
+            <vv-button name="2b">Button 2</vv-button>
+            <vv-button name="3c">Button 3</vv-button>
         </vv-button-group>
         `
 })
@@ -26,7 +27,53 @@ export const Template = (args, { argTypes }) => ({
 VvButtonGroup crea un gruppo di pulsanti.
 
 <Canvas>
-	<Story name="ButtonGroup" args={{ vertical: false, compact: true }}>
+	<Story name="VvButtonGroup" args={{ vertical: false, compact: true }}>
 		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Variant horizontal
+
+VvButtonGroup bottoni orrizzontali
+
+<Canvas>
+	<Story name="variant-horizontal">
+		{() => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				template:
+					/*html*/
+					`
+                        <vv-button-group>
+                            <vv-button key="1a">Button 1</vv-button>
+                            <vv-button key="2b">Button 2</vv-button>
+                            <vv-button key="3c">Button 3</vv-button>
+                        </vv-button-group>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Variant vertical
+
+VvButtonGroup bottoni verticale
+
+<Canvas>
+	<Story name="variant-vertical">
+		{() => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				template:
+					/*html*/
+					`
+                        <vv-button-group variant="vertical">
+                            <vv-button key="1a">Button 1</vv-button>
+                            <vv-button key="2b">Button 2</vv-button>
+                            <vv-button key="3c">Button 3</vv-button>
+                        </vv-button-group>
+                    `
+			}
+		}}
 	</Story>
 </Canvas>
