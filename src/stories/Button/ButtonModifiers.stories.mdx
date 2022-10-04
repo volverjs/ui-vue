@@ -2,11 +2,11 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { within, userEvent } from '@storybook/testing-library'
 
-<Meta title="Components/Button/styles" />
+<Meta title="Components/Button/modifiers" />
 
-# VvButton styles
+# VvButton modifiers
 
-Stories of `VvButton` `styles`.
+Stories of `VvButton` default `modifiers`.
 
 ## Block
 
@@ -46,3 +46,41 @@ Let's define a story for our `rounded` button:
 </Canvas>
 
 <Source language="jsx" code={'<vv-button label="Rounded" rounded />'} />
+
+## Disabled
+
+Let's define a story for our `disabled` button.
+
+<Canvas>
+	<Story name="disabled">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Disabled" disabled />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Disabled" disabled />'} />
+
+## Active
+
+Let's define a story for our `active` button.
+
+<Canvas>
+	<Story name="active">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Active" active />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Active" active />'} />

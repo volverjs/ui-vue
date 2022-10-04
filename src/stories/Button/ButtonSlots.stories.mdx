@@ -1,0 +1,33 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import { within, userEvent } from '@storybook/testing-library'
+
+<Meta title="Components/Button/slots" />
+
+# VvButton slots
+
+Stories of `VvButton` with `slot`.
+
+## Slot default
+
+Let's define a story for our button with `default` slot.
+
+<Canvas>
+	<Story name="slot-default">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button>
+						<span class="color-red">Test</span>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={'<vv-button label="Icon left" icon="akar-icons:heart" />'}
+/>

@@ -1,46 +1,59 @@
 <template>
+	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
 	<component
 		v-bind="{
 			...$attrs,
+			role: 'button',
+			'aria-label': label || $attrs['aria-label'],
+			'aria-disabled': $attrs.disabled,
+			class: hasClass,
 			href:
 				isComponent === buttonTags.a && $attrs.disabled
 					? 'javascript:;'
 					: $attrs.href
 		}"
-		:is="isComponent"
-		:class="hasClass"
-		:aria-disabled="$attrs.disabled"
-		role="button">
+		:is="isComponent">
+		<!-- @slot default to replace all button content -->
 		<slot>
-			<div v-if="loading" class="vv-button__icon-loader">
-				<template v-if="$slots.loading">
-					<slot name="loading" />
-				</template>
-				<template v-else>
-					<template v-if="loadingLabel">{{ loadingLabel }}</template>
+			<!-- #region loading -->
+			<template v-if="loading">
+				<slot name="loading">
 					<span
-						class="iconify"
-						data-icon="eos-icons:bubble-loading"></span>
-				</template>
-			</div>
-			<template v-else>
-				{{ label }}
-				<span v-if="icon || $slots.icon" class="vv-button__icon">
-					<!-- @slot Use this slot for button icon -->
-					<slot name="icon">
-						<span class="iconify" :data-icon="icon"></span>
-					</slot>
-				</span>
-				<span v-if="badge || $slots.badge" class="vv-button__badge">
-					<!-- @slot Use this slot for button badge -->
-					<slot name="badge">
-						{{ badge }}
-						<!-- <ds-badge :value="badge" :size="size" /> -->
-					</slot>
-				</span>
+						v-if="loadingIcon"
+						class="iconify vv-button__icon"
+						:data-icon="loadingIcon"></span>
+					<span v-if="loadingLabel" class="vv-button__label">
+						{{ loadingLabel }}
+					</span>
+				</slot>
 			</template>
+			<!-- #endregion loading -->
+			<!-- #region button -->
+			<template v-else>
+				<!-- @slot before -->
+				<slot name="before" />
+				<!-- #region icon -->
+				<template v-if="icon">
+					<span
+						class="iconify vv-button__icon"
+						:data-icon="icon"></span>
+				</template>
+				<!-- #endregion icon -->
+				<!-- #region label  -->
+				<span v-if="label" class="vv-button__label">
+					<!-- @slot Use this slot for button label -->
+					<slot name="label">
+						{{ label }}
+					</slot>
+				</span>
+				<!-- #endregion label  -->
+				<!-- @slot after -->
+				<slot name="after" />
+			</template>
+			<!-- #endregion button -->
 		</slot>
 	</component>
+	<!-- #endregion component: button | a | router-link | nuxt-link -->
 </template>
 
 <script lang="ts">
@@ -66,17 +79,13 @@ export default defineComponent({
 		 */
 		label: String,
 		/**
-		 * Badge
-		 */
-		badge: [String, Number],
-		/**
 		 * Loading status
 		 */
 		loading: Boolean,
 		/**
 		 * Loading icon
 		 */
-		loadingIcon: String,
+		loadingIcon: { type: String, default: 'eos-icons:bubble-loading' },
 		/**
 		 * Loading label
 		 */
@@ -90,11 +99,7 @@ export default defineComponent({
 		 * @defaultvalue default
 		 */
 		variant: {
-			type: String,
-			validator: () => {
-				//TODO: to validate based on css button variant
-				return true
-			}
+			type: String
 		},
 		/**
 		 * The router-link/nuxt-link property, if it is defined the button is rendered as a ruouter-link or nuxt-link.
@@ -140,23 +145,16 @@ export default defineComponent({
 			}
 		},
 		/**
-		 * @description Define scss classes.
+		 * @description Define css classes.
 		 * @returns {string} The classes
 		 */
 		hasClass(): Array<string | object> {
 			return [
 				'vv-button',
-				{
-					'flex-row-reverse':
-						this.iconPosition === this.iconPositions.left,
-					'flex-col': this.iconPosition === this.iconPositions.bottom,
-					'flex-col-reverse':
-						this.iconPosition === this.iconPositions.top
-				},
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--state-active': this.active,
+					'vv-button--active': this.active,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded
 				}
@@ -168,8 +166,13 @@ export default defineComponent({
 		 */
 		hasIconPosition() {
 			return {
-				[`vv-button--icon-${this.iconPosition || 'only'}`]:
-					this.icon || this.$slots.icon
+				'vv-button--reverse':
+					this.iconPosition === this.iconPositions.right,
+				'vv-button--column vv-button--reverse':
+					this.iconPosition === this.iconPositions.bottom,
+				'vv-button--column':
+					this.iconPosition === this.iconPositions.top,
+				'vv-button--icon-only': this.icon && !this.label
 			}
 		},
 		/**
@@ -177,7 +180,7 @@ export default defineComponent({
 		 * @returns {string} The class
 		 */
 		hasVariant() {
-			return `vv-button--${this.variant}`
+			return this.variant ? `vv-button--${this.variant}` : ''
 		}
 	}
 })
