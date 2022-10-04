@@ -1,0 +1,36 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import VvBadge from '../../components/VvBadge/VvBadge.vue'
+import { within, userEvent } from '@storybook/testing-library'
+
+<Meta title="Components/Button/badge" />
+
+# VvButton badge
+
+Stories of `VvButton` with `badge`.
+
+<Canvas>
+	<Story name="badge">
+		{() => {
+			return {
+				components: { VvButton, VvBadge },
+				template:
+					/*html*/
+					`<vv-button label="Badge">
+						<template #after>
+							<vv-badge value="12" color="danger" />
+						</template>
+					</vv-button>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Badge">
+	<template #after>
+		<vv-badge value="12" color="danger" />
+	</template>
+</vv-button>`}
+/>
