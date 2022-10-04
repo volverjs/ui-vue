@@ -1,0 +1,122 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import { within, userEvent } from '@storybook/testing-library'
+
+<Meta title="Components/Button/icon" />
+
+# VvButton icon
+
+Stories of `VvButton` with `icon`.
+
+## Icon left (default)
+
+Let's define a story for our left `icon` button.
+
+<Canvas>
+	<Story name="icon-left">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Icon left" icon="akar-icons:heart" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={'<vv-button label="Icon left" icon="akar-icons:heart" />'}
+/>
+
+## Icon right
+
+Let's define a story for our right `icon` button.
+
+<Canvas>
+	<Story name="icon-right">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Icon right" icon="akar-icons:heart" icon-position="right" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={
+		'<vv-button label="Icon right" icon="akar-icons:heart" icon-position="right" />'
+	}
+/>
+
+## Icon top
+
+Let's define a story for our top `icon` button.
+
+<Canvas>
+	<Story name="icon-top">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Icon top" icon="akar-icons:heart" icon-position="top" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={
+		'<vv-button label="Icon top" icon="akar-icons:heart" icon-position="top" />'
+	}
+/>
+
+## Icon bottom
+
+Let's define a story for our bottom `icon` button.
+
+<Canvas>
+	<Story name="icon-bottom">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Icon bottom" icon="akar-icons:heart" icon-position="bottom" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={
+		'<vv-button label="Icon top" icon="akar-icons:heart" icon-position="bottom" />'
+	}
+/>
+
+## Icon only
+
+Let's define a story for our `icon` only button.
+
+<Canvas>
+	<Story name="icon-only">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button icon="akar-icons:heart" rounded />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button icon="akar-icons:heart" rounded />'} />
