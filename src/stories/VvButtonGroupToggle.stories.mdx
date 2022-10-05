@@ -20,7 +20,7 @@ VvButtonGroup che si comporta come un toggle buttons. Mantengo attivo l'ultimo p
 						args
 					}
 				},
-				data: () => ({ selected: null }),
+				data: () => ({ selected: null, selected2: null }),
 				template:
 					/*html*/
 					`
@@ -30,6 +30,12 @@ VvButtonGroup che si comporta come un toggle buttons. Mantengo attivo l'ultimo p
                             <vv-button name="3c">Button 3</vv-button>
                         </vv-button-group>
 						<strong>Bttone selez: {{selected}}</strong>
+						 <vv-button-group toggle compact v-bind="args" @update:modelValue="selected2 = $event">
+                            <vv-button name="1a">Button 1</vv-button>
+                            <vv-button name="2b">Button 2</vv-button>
+                            <vv-button name="3c">Button 3</vv-button>
+                        </vv-button-group>
+						<strong>Bttone selez: {{selected2}}</strong>
                     `
 			}
 		}}

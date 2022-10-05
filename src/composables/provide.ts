@@ -19,7 +19,7 @@ export class ElementsGroup implements IElementsGroup {
 
 		this.key = key
 		this.items = []
-		this.itemActive = unref(options?.defaultSelected || null)
+		this.itemActive = unref(options?.defaultSelected)
 	}
 
 	contain(elementKey: String): Boolean {

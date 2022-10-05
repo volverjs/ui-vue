@@ -48,7 +48,7 @@ export interface IElementsGroupOptions {
 	/**
 	 * Chiave dell'elemento selezionato
 	 */
-	defaultSelected: Nullable<String> | Ref<Nullable<String>>
+	defaultSelected?: String
 }
 
 /**
@@ -62,7 +62,7 @@ export interface IUseCurrentElementGroup {
 	/**
 	 * Gruppo
 	 */
-	group: Ref<IElementsGroup | null>
+	group: Ref<IElementsGroup> | null
 	/**
 	 * Id elemento nel gruppo
 	 */

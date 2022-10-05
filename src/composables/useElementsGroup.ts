@@ -57,7 +57,7 @@ export function useCurrentElementGroup(
 	elementKey?: String
 ): IUseCurrentElementGroup {
 	let groupId: Symbol = groupKey
-	let group: Ref<IElementsGroup | null> = ref(inject(groupKey, null) || null)
+	let group: Ref<IElementsGroup> | null = inject(groupKey, null) || null
 	let groupElementId: Ref<Nullable<String>> = ref(null)
 
 	// #region computed
@@ -74,7 +74,7 @@ export function useCurrentElementGroup(
 
 	onMounted(() => {
 		//Registra elemento nel gruppo.
-		groupElementId.value = unref(group)?.add(elementKey) || null
+		groupElementId.value = unref(group)?.add(elementKey)
 	})
 
 	return {
