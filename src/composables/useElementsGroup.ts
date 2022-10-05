@@ -60,14 +60,17 @@ export function useCurrentElementGroup(
 	let group: Ref<IElementsGroup | null> = ref(inject(groupKey, null) || null)
 	let groupElementId: Ref<Nullable<String>> = ref(null)
 
-	//Computed di supporto
+	// #region computed
+	//True se l'elemento è nel grouppo
 	const isInGroup = computed(() =>
 		unref(group)?.contain(groupElementId.value)
 	)
-	const isElementActive = computed(
+	//True se l'elemento è selezionato
+	const isElementInGroupActive = computed(
 		() =>
 			isInGroup.value && unref(group)?.itemActive === groupElementId.value
 	)
+	// #endregion computed
 
 	onMounted(() => {
 		//Registra elemento nel gruppo.
@@ -79,6 +82,6 @@ export function useCurrentElementGroup(
 		group,
 		groupElementId,
 		isInGroup,
-		isElementActive
+		isElementInGroupActive
 	}
 }

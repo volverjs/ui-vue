@@ -1,15 +1,13 @@
 <template>
-	<div :class="btnGroupClass">
+	<div :class="btnGroupClass" role="group">
 		<slot />
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, defineEmits } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import { useElementGroup } from '../../composables/useElementsGroup'
 import { VV_BUTTON_GROUP_MANAGER } from '../../composables/keys'
-
-const emit = defineEmits(['update:modelValue'])
 
 /**
  * VvButtonGroups
@@ -45,6 +43,10 @@ export default defineComponent({
 		 */
 		toggle: { type: Boolean, default: false },
 		/**
+		 * True = display as block
+		 */
+		block: { type: Boolean, default: false },
+		/**
 		 * Active button (name)
 		 */
 		modelValue: { type: String, default: undefined }
@@ -57,7 +59,8 @@ export default defineComponent({
 			return {
 				'vv-button-group': true,
 				'vv-button-group--vertical': this.vertical,
-				'vv-button-group--compact': this.compact
+				'vv-button-group--compact': this.compact,
+				'vv-button-group--block': this.block
 			}
 		}
 	}

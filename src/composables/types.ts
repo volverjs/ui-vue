@@ -74,5 +74,5 @@ export interface IUseCurrentElementGroup {
 	/**
 	 * True = elemento selezionato nel gruppo.
 	 */
-	isElementActive: ComputedRef<Boolean | undefined>
+	isElementInGroupActive: ComputedRef<Boolean | undefined>
 }
