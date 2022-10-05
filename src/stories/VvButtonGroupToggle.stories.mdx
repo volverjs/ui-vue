@@ -1,0 +1,37 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+
+import VvButton from '../components/VvButton/VvButton.vue'
+import VvButtonGroup from '../components/VvButtonGroup/VvButtonGroup.vue'
+
+<Meta title="Components/VvButtonGroup/Toggle" component={VvButtonGroup} />
+
+# Toggle
+
+VvButtonGroup che si comporta come un toggle buttons. Mantengo attivo l'ultimo pulsante cliccato.
+
+<Canvas>
+	<Story name="toggle" args={{ modelValue: null }}>
+		{(args, { argTypes }) => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				props: Object.keys(argTypes),
+				setup() {
+					return {
+						args
+					}
+				},
+				data: () => ({ selected: null }),
+				template:
+					/*html*/
+					`
+                        <vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+                            <vv-button name="1a">Button 1</vv-button>
+                            <vv-button name="2b">Button 2</vv-button>
+                            <vv-button name="3c">Button 3</vv-button>
+                        </vv-button-group>
+						<strong>Bttone selez: {{selected}}</strong>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

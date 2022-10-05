@@ -1,71 +1,84 @@
-import { ref, provide, inject, isRef, onMounted, type Ref } from 'vue'
-import type { IElementsGroup, IElementsGroupOptions } from './types'
-import { v4 as uuidv4 } from 'uuid'
-
-class ElementsGroup implements IElementsGroup {
-	key: Symbol
-	items: Ref<Array<String>>
-	itemActive: Ref<String | null>
-
-	constructor(key: Symbol, options: IElementsGroupOptions) {
-		if (!key) throw new Error('Key param is missing.')
-
-		this.key = key
-		this.items = ref([])
-		this.itemActive = isRef(options.defaultSelected)
-			? options.defaultSelected
-			: ref(options.defaultSelected || null)
-	}
-
-	add(key?: String | null) {
-		//C'è già
-		if (key && this.items.value.indexOf(key) > -1) return key
-
-		//Registra
-		const _id: String = key || uuidv4()
-		this.items.value.push(_id)
-		return _id
-	}
-
-	setActive(key: String | null) {
-		if (!key) return
-		if (this.items.value.indexOf(key) == -1) return
-
-		this.itemActive.value = key
-	}
-}
+import {
+	ref,
+	unref,
+	provide,
+	inject,
+	watch,
+	onMounted,
+	getCurrentInstance,
+	computed,
+	type Ref
+} from 'vue'
+import type {
+	IElementsGroup,
+	IElementsGroupOptions,
+	IUseCurrentElementGroup
+} from './types'
+import type { Nullable } from '@/types/generic'
+import { ElementsGroup } from './provide'
 
 /**
- * Composable per la gestione di un gruppo di elementi.
+ * Inizializza un gruppo di elementi.
+ * @description
+ * Inizializza un'istanza di un gruppo di elementi (reattiva)
+ * Esegue la Dependency Injection per tutti i figli dell'istanza
+ * Aggiorna il modelValue (data binding)
  */
-export function useElementGroup(key: Symbol, options: IElementsGroupOptions) {
-	const group = new ElementsGroup(key, options)
+export function useElementGroup(
+	key: Symbol,
+	options: IElementsGroupOptions
+): Ref<IElementsGroup> {
+	const { emit } = getCurrentInstance() as any
+	const group = ref(new ElementsGroup(key, options))
 
 	//Provide group ai discendenti
-	provide(group.key, group)
+	provide(group.value.key, group)
 
-	return {
-		group
-	}
+	//Binding modelValue
+	watch(
+		() => group.value.itemActive,
+		(newValue) => {
+			emit('update:modelValue', newValue)
+		},
+		{
+			immediate: true
+		}
+	)
+
+	return group
 }
 
 /**
- * Composable per la gestione del componente come elemento di un gruppo.
+ * Recupera il gruppo al quale appartiene l'istanza corrente.
  * @return {IElementsGroup|Null} gruppo di appartenenza dell'elemento
  */
-export function useElementGroupItem(key: Symbol): IElementsGroup | null {
-	let groupElementId: Ref<String | null> = ref(null)
-	const group: IElementsGroup | null = inject(key, null)
+export function useCurrentElementGroup(
+	groupKey: Symbol,
+	elementKey?: String
+): IUseCurrentElementGroup {
+	let groupId: Symbol = groupKey
+	let group: Ref<IElementsGroup | null> = ref(inject(groupKey, null) || null)
+	let groupElementId: Ref<Nullable<String>> = ref(null)
 
-	if (group) {
+	//Computed di supporto
+	const isInGroup = computed(() =>
+		unref(group)?.contain(groupElementId.value)
+	)
+	const isElementActive = computed(
+		() =>
+			isInGroup.value && unref(group)?.itemActive === groupElementId.value
+	)
+
+	onMounted(() => {
 		//Registra elemento nel gruppo.
-		onMounted(() => {
-			groupElementId.value = (group as IElementsGroup).add()
-		})
-	}
+		groupElementId.value = unref(group)?.add(elementKey) || null
+	})
 
 	return {
+		groupId,
+		group,
 		groupElementId,
-		group
+		isInGroup,
+		isElementActive
 	}
 }

@@ -5,9 +5,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue'
+import { defineComponent, toRefs, defineEmits } from 'vue'
 import { useElementGroup } from '../../composables/useElementsGroup'
 import { VV_BUTTON_GROUP_MANAGER } from '../../composables/keys'
+
+const emit = defineEmits(['update:modelValue'])
 
 /**
  * VvButtonGroups
@@ -16,14 +18,13 @@ export default defineComponent({
 	setup(props) {
 		let group = null
 		//eventuale pulsante gia selezionato
-		const { value: selectedButton } = toRefs(props)
-		let isVModelBind = selectedButton.value !== undefined
+		const { modelValue, toggle } = toRefs(props)
 
-		if (isVModelBind) {
-			//v-model binding -> attiva la modalità toggle creando un gruppo nel quale registrare i pulsanti figli.
+		if (toggle.value) {
+			//Attiva la modalità toggle creando un gruppo nel quale registrare i pulsanti figli.
 			group = useElementGroup(VV_BUTTON_GROUP_MANAGER, {
-				defaultSelected: selectedButton
-			}).group
+				defaultSelected: modelValue.value
+			})
 		}
 
 		return {
@@ -40,13 +41,17 @@ export default defineComponent({
 		 */
 		compact: { type: Boolean, default: false },
 		/**
+		 * True = il button group si comporterà come un toggle, materrà attivo l'ultimo pulsante cliccato.
+		 */
+		toggle: { type: Boolean, default: false },
+		/**
 		 * Active button (name)
 		 */
-		value: { type: String, default: undefined }
+		modelValue: { type: String, default: undefined }
 	},
 	computed: {
 		btnGroupActiveItem() {
-			return this.value
+			return this.modelValue
 		},
 		btnGroupClass() {
 			return {

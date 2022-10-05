@@ -1,0 +1,29 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+
+import VvButton from '../components/VvButton/VvButton.vue'
+import VvButtonGroup from '../components/VvButtonGroup/VvButtonGroup.vue'
+
+<Meta title="Components/VvButtonGroup/Compact" component={VvButtonGroup} />
+
+# Variant compact
+
+VvButtonGroup bottoni non compatti
+
+<Canvas>
+	<Story name="variant-compact">
+		{() => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				template:
+					/*html*/
+					`
+                        <vv-button-group compact>
+                            <vv-button name="1a">Button 1</vv-button>
+                            <vv-button name="2b">Button 2</vv-button>
+                            <vv-button name="3c">Button 3</vv-button>
+                        </vv-button-group>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

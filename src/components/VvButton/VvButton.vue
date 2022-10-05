@@ -1,46 +1,38 @@
 <template>
 	<button
 		class="vv-button"
-		:class="[isActiveInGroup && 'active']"
+		:class="[isElementActive && 'active']"
 		@click="onClick">
 		<slot>{{ label }}</slot>
 	</button>
 </template>
 
 <script lang="ts">
-import { useElementGroupItem } from '../../composables/useElementsGroup'
+import { useCurrentElementGroup } from '../../composables/useElementsGroup'
 import { VV_BUTTON_GROUP_MANAGER } from '../../composables/keys'
-import { computed } from '@vue/runtime-core'
-import type { IElementsGroup } from '@/composables/types'
+import { computed, toRefs, defineComponent, unref } from 'vue'
 
-export default {
+export default defineComponent({
 	props: {
 		label: String
 	},
-	setup(props: Object, context: Object) {
-		//Check group e registra in automatico????
-		const { group, groupElementId } = useElementGroupItem(
-			VV_BUTTON_GROUP_MANAGER
-		)
-
-		const isActiveInGroup = computed(
-			() =>
-				group &&
-				groupElementId.value ===
-					(group as IElementsGroup)?.itemActive.value
-		)
+	setup(props: Object, { attrs }) {
+		const name: String = (attrs?.name || null) as String
+		const { group, groupElementId, isInGroup, isElementActive } =
+			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
 
 		return {
 			group,
 			groupElementId,
-			isActiveInGroup,
+			isInGroup,
+			isElementActive,
 			onClick() {
-				if (group)
-					(group as IElementsGroup).setActive(groupElementId.value)
+				if (isInGroup.value)
+					unref(group)?.setActive(groupElementId.value)
 			}
 		}
 	}
-}
+})
 </script>
 
 <style></style>
