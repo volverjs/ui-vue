@@ -125,7 +125,7 @@ export default defineComponent({
 		rounded: Boolean
 	},
 	setup(props, { attrs }) {
-		const name = (attrs?.name || null) as string
+		const name = String(attrs?.name) || ''
 		const { group, groupElementId, isInGroup, isElementInGroupActive } =
 			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
 
