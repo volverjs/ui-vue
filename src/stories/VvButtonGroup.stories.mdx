@@ -1,4 +1,4 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvButton from '../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../components/VvButtonGroup/VvButtonGroup.vue'
@@ -24,10 +24,12 @@ export const Template = (args, { argTypes }) => ({
 
 # VvButtonGroup
 
-VvButtonGroup crea un gruppo di pulsanti.
+Wrapper component for <strong>.vv-button</strong> elements or VvButton components.
+
+<Source language="jsx" code={'<vv-button></vv-button>'} />
 
 <Canvas>
-	<Story name="VvButtonGroup" args={{ vertical: false, compact: true }}>
+	<Story name="vv-button-group" args={{ vertical: false, compact: true }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
