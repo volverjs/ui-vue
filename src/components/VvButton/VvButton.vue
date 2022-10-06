@@ -12,7 +12,7 @@
 					: $attrs.href
 		}"
 		:is="isComponent"
-		@click="onClick">
+		@click.passive="onClick">
 		<!-- @slot default to replace all button content -->
 		<slot>
 			<!-- #region loading -->
@@ -61,8 +61,8 @@ import { computed, toRefs, defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag } from './VvButton'
 
-import { useCurrentElementGroup } from '../../composables/useElementsGroup'
-import { VV_BUTTON_GROUP_MANAGER } from '../../composables/keys'
+import { useCurrentElementGroup } from '../../composables/group/useElementsGroup'
+import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
 
 export default defineComponent({
 	props: {
@@ -137,8 +137,6 @@ export default defineComponent({
 			onClick(e: Event) {
 				if (isInGroup.value)
 					unref(group)?.setActive(groupElementId.value)
-
-				emit('click', e)
 			}
 		}
 	},

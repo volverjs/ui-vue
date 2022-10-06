@@ -1,9 +1,9 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
-import VvButton from '../components/VvButton/VvButton.vue'
-import VvButtonGroup from '../components/VvButtonGroup/VvButtonGroup.vue'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
 
-<Meta title="Components/VvButtonGroup/Compact" component={VvButtonGroup} />
+<Meta title="Components/ButtonGroup/Compact" component={VvButtonGroup} />
 
 # Compact
 
@@ -12,7 +12,7 @@ A VvButtonGroup with the <strong>compact</strong> prop will be render with <stro
 <Source language="jsx" code={'<vv-button compact></vv-button>'} />
 
 <Canvas>
-	<Story name="prop-compact">
+	<Story name="compact">
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
@@ -20,9 +20,9 @@ A VvButtonGroup with the <strong>compact</strong> prop will be render with <stro
 					/*html*/
 					`
                         <vv-button-group compact>
-                            <vv-button name="1a">Button 1</vv-button>
-                            <vv-button name="2b">Button 2</vv-button>
-                            <vv-button name="3c">Button 3</vv-button>
+                            <vv-button>Button 1</vv-button>
+                            <vv-button>Button 2</vv-button>
+                            <vv-button>Button 3</vv-button>
                         </vv-button-group>
                     `
 			}

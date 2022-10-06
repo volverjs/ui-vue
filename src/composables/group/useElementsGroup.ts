@@ -7,7 +7,8 @@ import {
 	onMounted,
 	getCurrentInstance,
 	computed,
-	type Ref
+	type Ref,
+	onUnmounted
 } from 'vue'
 import type {
 	IElementsGroup,
@@ -15,7 +16,7 @@ import type {
 	IUseCurrentElementGroup
 } from './types'
 import type { Nullable } from '@/types/generic'
-import { ElementsGroup } from './provide'
+import { ElementsGroup } from './providers'
 
 /**
  * Inizializza un gruppo di elementi.
@@ -75,6 +76,10 @@ export function useCurrentElementGroup(
 	onMounted(() => {
 		//Registra elemento nel gruppo.
 		groupElementId.value = unref(group)?.add(elementKey)
+	})
+
+	onUnmounted(() => {
+		if (groupElementId.value) unref(group)?.remove(groupElementId.value)
 	})
 
 	return {

@@ -30,6 +30,11 @@ export interface IElementsGroup {
 	add(elementKey?: Nullable<String>): Nullable<String>
 
 	/**
+	 * Rimuovi elemento da gruppo
+	 */
+	remove(elementKey: String): void
+
+	/**
 	 * Imposta l'elemento come attivo
 	 * @param {String} elementKey - chiave dell'elemento da impostare
 	 */
@@ -39,6 +44,11 @@ export interface IElementsGroup {
 	 * Controlla se la chiave è presente nel gruppo
 	 */
 	contain(elementKey?: Nullable<String>): Boolean
+
+	/**
+	 * Controlla se la chiave corrisponde a quella dell'elemento attivo
+	 */
+	isActive(elementKey: Nullable<String>): Boolean
 }
 
 /**

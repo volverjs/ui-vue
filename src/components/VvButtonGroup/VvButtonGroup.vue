@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { defineComponent, toRefs } from 'vue'
-import { useElementGroup } from '../../composables/useElementsGroup'
-import { VV_BUTTON_GROUP_MANAGER } from '../../composables/keys'
+import { useElementGroup } from '../../composables/group/useElementsGroup'
+import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
 
 /**
  * VvButtonGroups
@@ -47,6 +47,10 @@ export default defineComponent({
 		 */
 		block: { type: Boolean, default: false },
 		/**
+		 * True = display btn-broup as rounded (first and last child .vv-button)
+		 */
+		rounded: { type: Boolean, default: false },
+		/**
 		 * Active button (name)
 		 */
 		modelValue: { type: String, default: undefined }
@@ -60,11 +64,14 @@ export default defineComponent({
 				'vv-button-group': true,
 				'vv-button-group--vertical': this.vertical,
 				'vv-button-group--compact': this.compact,
-				'vv-button-group--block': this.block
+				'vv-button-group--block': this.block,
+				'vv-button-group--rounded': this.rounded
 			}
 		}
 	}
 })
 </script>
 
-<style lang="scss" src="./VvButtonGroup.scss" />
+<style lang="scss">
+@import '@volverjs/style/components/vv-button-group';
+</style>

@@ -36,10 +36,25 @@ export class ElementsGroup implements IElementsGroup {
 		return _id
 	}
 
+	remove(key: String) {
+		if (this.contain(key)) {
+			let indexElToRemove = this.items?.indexOf(key)
+			this.items.slice(indexElToRemove, 1)
+
+			if (this.itemActive === key) {
+				this.itemActive = null
+			}
+		}
+	}
+
 	setActive(key: Nullable<String>) {
 		if (!key) return
 		if (this.items.indexOf(key) == -1) return
 
 		this.itemActive = key
+	}
+
+	isActive(key: String) {
+		return this.itemActive === key
 	}
 }
