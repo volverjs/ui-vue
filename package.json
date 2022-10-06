@@ -12,6 +12,7 @@
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
 	},
 	"dependencies": {
+		"@types/uuid": "^8.3.4",
 		"@volverjs/style": "file:../style",
 		"vue": "^3.2.37"
 	},

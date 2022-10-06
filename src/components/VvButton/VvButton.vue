@@ -1,6 +1,6 @@
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component v-bind="properties" :is="isComponent">
+	<component v-bind="properties" :is="isComponent" @click.passive="onClick">
 		<!-- @slot default to replace all button content -->
 		<slot>
 			<!-- #region loading -->
@@ -45,9 +45,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, toRefs, defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
+
+import { useCurrentElementGroup } from '../../composables/group/useElementsGroup'
+import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
 
 export default defineComponent({
 	props: {
@@ -121,6 +124,22 @@ export default defineComponent({
 		 */
 		rounded: Boolean
 	},
+	setup(props, { attrs }) {
+		const name = (attrs?.name || null) as string
+		const { group, groupElementId, isInGroup, isElementInGroupActive } =
+			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
+
+		return {
+			group,
+			groupElementId,
+			isInGroup,
+			isElementInGroupActive,
+			onClick() {
+				if (isInGroup.value)
+					unref(group)?.setActive(groupElementId.value)
+			}
+		}
+	},
 	data() {
 		return {
 			buttonTags: ButtonTag,
@@ -193,7 +212,8 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active': this.active,
+					'vv-button--active':
+						this.active || this.isElementInGroupActive,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded
 				}
