@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { computed, toRefs, defineComponent, unref } from 'vue'
+import { defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 
@@ -122,10 +122,16 @@ export default defineComponent({
 		/**
 		 * Button rounded.
 		 */
-		rounded: Boolean
+		rounded: Boolean,
+		/**
+		 * Button full-bleed.
+		 */
+		fullBleed: Boolean
 	},
 	setup(props, { attrs }) {
+		// #region button-group logic
 		const name = String(attrs?.name) || ''
+		// Use element group composable, retrieve all grouping data to manage active state and set it in the group context
 		const { group, groupElementId, isInGroup, isElementInGroupActive } =
 			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
 
@@ -139,6 +145,7 @@ export default defineComponent({
 					unref(group)?.setActive(groupElementId.value)
 			}
 		}
+		// #endregion button-group logic
 	},
 	data() {
 		return {
@@ -215,7 +222,8 @@ export default defineComponent({
 					'vv-button--active':
 						this.active || this.isElementInGroupActive,
 					'vv-button--block': this.block,
-					'vv-button--rounded': this.rounded
+					'vv-button--rounded': this.rounded,
+					'vv-button--full-bleed': this.fullBleed
 				}
 			]
 		},
