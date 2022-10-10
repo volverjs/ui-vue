@@ -1,0 +1,125 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvButton from '../../components/VvButton/VvButton.vue'
+import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+
+<Meta title="Components/ButtonGroup/Toggle" component={VvButtonGroup} />
+
+# Toggle
+
+Force VvButtonGroup to work as toggle button. Keep last clicked button as active/selected.
+
+<Source
+	language="jsx"
+	code={
+		'<vv-button-group v-bind="props" model-value="selected" @update:modelValue="selected = $event"></vv-button-group>'
+	}
+/>
+
+<Canvas>
+	<Story name="toggle" args={{ modelValue: null }}>
+		{(args, { argTypes }) => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				props: Object.keys(argTypes),
+				setup() {
+					return {
+						args
+					}
+				},
+				data: () => ({ selected: null }),
+				template:
+					/*html*/
+					`
+					<div class="flex flex-row justify-between">
+                        <vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+                            <vv-button name="1a">Button 1</vv-button>
+                            <vv-button name="2b">Button 2</vv-button>
+                            <vv-button name="3c">Button 3</vv-button>
+                        </vv-button-group>
+						<strong v-if="selected">Bottone selez: {{selected}}</strong> 
+					</div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+Warning!<br/>
+Toggle mode work only if VvButtonGroup childs are VvButton components.
+If VvButton child element has't a name attribute, when VvButton is registered into VvButtonGroup a custom key will be generated.
+
+# Toggle multipli
+
+<Canvas>
+	<Story name="toggle istanze multiple" args={{ modelValue: null }}>
+		{(args, { argTypes }) => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				props: Object.keys(argTypes),
+				setup() {
+					return {
+						args
+					}
+				},
+				data: () => ({ selected: null, selected2: null }),
+				template:
+					/*html*/
+					`
+                        <div class="flex flex-row justify-between">
+							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+								<vv-button name="1a">Button 1</vv-button>
+								<vv-button name="2b">Button 2</vv-button>
+								<vv-button name="3c">Button 3</vv-button>
+							</vv-button-group>
+							<strong v-if="selected">Bottone selez: {{selected}}</strong> 
+						</div>
+						<div class="flex flex-row justify-between mt-22">
+							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected2 = $event">
+								<vv-button name="1a">Button 1</vv-button>
+								<vv-button name="2b">Button 2</vv-button>
+								<vv-button name="3c">Button 3</vv-button>
+							</vv-button-group>
+							<strong v-if="selected2">Bottone selez: {{selected2}}</strong> 
+						</div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Toggle v-if on button
+
+<Canvas>
+	<Story name="v-if on button" args={{ modelValue: null }}>
+		{(args, { argTypes }) => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				props: Object.keys(argTypes),
+				setup() {
+					return {
+						args
+					}
+				},
+				data: () => ({ hide2b: false, selected: null }),
+				template:
+					/*html*/
+					`
+					<div class="flex flex-col">
+						<div class="flex flex-row justify-between">
+							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+								<vv-button name="1">Button 1</vv-button>
+								<vv-button name="2" v-if="hide2b">Button 2</vv-button>
+								<vv-button name="3">Button 3</vv-button>
+							</vv-button-group>
+							<strong v-if="selected">Bottone selez: {{selected}}</strong> 
+						</div>
+						<button class="vv-button vv-button--secondary mt-22" @click="hide2b = !hide2b"> 
+							<label> {{hide2b?'Nascondi 2':'Mostra 2'}}</label>
+						</button>
+					</div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

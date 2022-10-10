@@ -1,18 +1,6 @@
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component
-		v-bind="{
-			...$attrs,
-			role: 'button',
-			'aria-label': label || $attrs['aria-label'],
-			'aria-disabled': $attrs.disabled,
-			class: hasClass,
-			href:
-				isComponent === buttonTags.a && $attrs.disabled
-					? 'javascript:;'
-					: $attrs.href
-		}"
-		:is="isComponent">
+	<component v-bind="properties" :is="isComponent" @click.passive="onClick">
 		<!-- @slot default to replace all button content -->
 		<slot>
 			<!-- #region loading -->
@@ -57,9 +45,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
-import { ButtonIconPosition, ButtonTag } from './VvButton'
+import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
+
+import { useCurrentElementGroup } from '../../composables/group/useElementsGroup'
+import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
 
 export default defineComponent({
 	props: {
@@ -72,7 +63,8 @@ export default defineComponent({
 		 */
 		iconPosition: {
 			type: String as PropType<ButtonIconPosition>,
-			default: ButtonIconPosition.left
+			default: ButtonIconPosition.left,
+			validator: (value: string) => value in ButtonIconPosition
 		},
 		/**
 		 * Button label
@@ -109,6 +101,17 @@ export default defineComponent({
 			type: [String, Object]
 		},
 		/**
+		 * Link href
+		 */
+		href: String,
+		/**
+		 * Link target
+		 */
+		target: {
+			type: String as PropType<ButtonTarget>,
+			validator: (value: string) => value in ButtonTarget
+		},
+		/**
 		 * Create block level button that span the full width of a parent.
 		 */
 		block: Boolean,
@@ -119,7 +122,30 @@ export default defineComponent({
 		/**
 		 * Button rounded.
 		 */
-		rounded: Boolean
+		rounded: Boolean,
+		/**
+		 * Button full-bleed.
+		 */
+		fullBleed: Boolean
+	},
+	setup(props, { attrs }) {
+		// #region button-group logic
+		const name = String(attrs?.name) || ''
+		// Use element group composable, retrieve all grouping data to manage active state and set it in the group context
+		const { group, groupElementId, isInGroup, isElementInGroupActive } =
+			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
+
+		return {
+			group,
+			groupElementId,
+			isInGroup,
+			isElementInGroupActive,
+			onClick() {
+				if (isInGroup.value)
+					unref(group)?.setActive(groupElementId.value)
+			}
+		}
+		// #endregion button-group logic
 	},
 	data() {
 		return {
@@ -129,16 +155,55 @@ export default defineComponent({
 	},
 	computed: {
 		/**
+		 * Compute component properties
+		 */
+		properties() {
+			return {
+				...this.linkProps,
+				'aria-label': this.label || this.$attrs['aria-label'],
+				'aria-disabled': this.isDisabled,
+				role: 'button',
+				class: this.hasClass,
+				to: this.to
+			}
+		},
+		/**
+		 * Compute link props (target, href)
+		 */
+		linkProps() {
+			const isLink = this.isComponent === this.buttonTags.a
+			let toReturn = {}
+			if (isLink) {
+				toReturn = this.isDisabled
+					? {
+							href: 'javascript:;'
+					  }
+					: {
+							target: this.target,
+							href: this.href
+					  }
+			}
+			return toReturn
+		},
+		/**
+		 * Check disabled state based on attributes
+		 */
+		isDisabled() {
+			return 'disabled' in this.$attrs
+		},
+		/**
 		 * @description Select the tag type in based on the props before.
 		 * @returns {string} The type of component
 		 */
 		isComponent() {
 			switch (true) {
+				case this.isDisabled:
+					return ButtonTag.button
 				case this.to !== undefined:
 					return '$nuxt' in this
 						? ButtonTag.nuxtLink
 						: ButtonTag.routerLink
-				case this.$attrs.href !== undefined:
+				case this.href !== undefined:
 					return ButtonTag.a
 				default:
 					return ButtonTag.button
@@ -154,9 +219,11 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active': this.active,
+					'vv-button--active':
+						this.active || this.isElementInGroupActive,
 					'vv-button--block': this.block,
-					'vv-button--rounded': this.rounded
+					'vv-button--rounded': this.rounded,
+					'vv-button--full-bleed': this.fullBleed
 				}
 			]
 		},

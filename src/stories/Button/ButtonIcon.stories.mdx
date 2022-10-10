@@ -1,6 +1,13 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { within, userEvent } from '@storybook/testing-library'
+import {
+	testButtonIconLeft,
+	testButtonIconRight,
+	testButtonIconTop,
+	testButtonIconBottom,
+	testButtonIconOnly
+} from './buttonTest'
 
 <Meta title="Components/Button/icon" />
 
@@ -13,7 +20,7 @@ Stories of `VvButton` with `icon`.
 Let's define a story for our left `icon` button.
 
 <Canvas>
-	<Story name="icon-left">
+	<Story name="icon-left" play={testButtonIconLeft}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -35,7 +42,7 @@ Let's define a story for our left `icon` button.
 Let's define a story for our right `icon` button.
 
 <Canvas>
-	<Story name="icon-right">
+	<Story name="icon-right" play={testButtonIconRight}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -59,7 +66,7 @@ Let's define a story for our right `icon` button.
 Let's define a story for our top `icon` button.
 
 <Canvas>
-	<Story name="icon-top">
+	<Story name="icon-top" play={testButtonIconTop}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -83,7 +90,7 @@ Let's define a story for our top `icon` button.
 Let's define a story for our bottom `icon` button.
 
 <Canvas>
-	<Story name="icon-bottom">
+	<Story name="icon-bottom" play={testButtonIconBottom}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -107,7 +114,7 @@ Let's define a story for our bottom `icon` button.
 Let's define a story for our `icon` only button.
 
 <Canvas>
-	<Story name="icon-only">
+	<Story name="icon-only" play={testButtonIconOnly}>
 		{() => {
 			return {
 				components: { VvButton },
