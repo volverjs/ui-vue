@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import vueRouter from 'storybook-vue3-router'
+import { buttonTest, disableTest, cssTest, propertyTest, classTest } from './test.js'
 
 <Meta title="Components/Button/link" />
 
@@ -11,7 +12,16 @@ Stories of `VvButton` with `link`.
 ## Button link text
 
 <Canvas>
-	<Story name="link-text">
+	<Story
+		name="link-text"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [propertyTest, classTest],
+				properties: ['target', 'href'],
+				className: 'text'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -31,7 +41,16 @@ Stories of `VvButton` with `link`.
 ## Button link text disabled
 
 <Canvas>
-	<Story name="link-text-disabled">
+	<Story
+		name="link-text-disabled"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [disableTest, cssTest, classTest],
+				cssString: 'cursor: not-allowed',
+				className: 'text'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -51,7 +70,15 @@ Stories of `VvButton` with `link`.
 ## Button link
 
 <Canvas>
-	<Story name="button-link">
+	<Story
+		name="button-link"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [propertyTest],
+				properties: ['target', 'href']
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -77,7 +104,15 @@ Stories of `VvButton` with `link`.
 ## Button link disabled
 
 <Canvas>
-	<Story name="button-link-disabled">
+	<Story
+		name="button-link-disabled"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [disableTest, cssTest],
+				cssString: 'cursor: not-allowed'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -120,7 +155,15 @@ RouterLinkStory.decorators = [
 ]
 
 <Canvas>
-	<Story name="router-link" args={{}}>
+	<Story name="router-link" args={{}}
+	play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [propertyTest, classTest],
+				properties: ['href'],
+				className: 'text'
+			})
+		}>
 		{RouterLinkStory}
 	</Story>
 </Canvas>

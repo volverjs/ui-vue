@@ -4,7 +4,6 @@ import { toHaveNoViolations, axe } from 'jest-axe'
 
 async function buttonTest({ canvasElement, functions, ...args }) {
 	const button = await within(canvasElement).findByRole('button')
-
 	await userEvent.click(button)
 
 	if (functions) {
@@ -33,4 +32,10 @@ async function disableTest({ button }) {
 	expect(button).toBeDisabled()
 }
 
-export { buttonTest, classTest, cssTest, disableTest }
+async function propertyTest({ button, properties = [] }) {
+	properties.forEach((property) => {
+		expect(button).toHaveProperty(property)
+	})
+}
+
+export { buttonTest, classTest, cssTest, disableTest, propertyTest }
