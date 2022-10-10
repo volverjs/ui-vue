@@ -1,15 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
-import {
-	testDefaultButton,
-	testButtonPrimary,
-	testButtonSecondary,
-	testButtonDanger,
-	testButtonGhost,
-	testButtonText,
-	testButtonStaticLight,
-	testButtonStaticDark
-} from './buttonTest.js'
+import { buttonTest, classTest } from './test.js'
 
 <Meta title="Components/Button/variant" />
 
@@ -22,7 +13,7 @@ Stories of `VvButton` `variant`.
 Let's define a story for our `default` button:
 
 <Canvas>
-	<Story name="default" play={testDefaultButton}>
+	<Story name="default" play={buttonTest}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -41,8 +32,15 @@ Let's define a story for our `default` button:
 Let's define a story for our `primary` button:
 
 <Canvas>
-	<Story name="primary" play={testButtonPrimary}>
-		>
+	<Story
+		name="primary"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'primary'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -59,7 +57,15 @@ Let's define a story for our `primary` button:
 Let's define a story for our `secondary` button:
 
 <Canvas>
-	<Story name="secondary" play={testButtonSecondary}>
+	<Story
+		name="secondary"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'secondary'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -76,7 +82,15 @@ Let's define a story for our `secondary` button:
 Let's define a story for our `danger` button:
 
 <Canvas>
-	<Story name="danger" play={testButtonDanger}>
+	<Story
+		name="danger"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'danger'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -93,7 +107,15 @@ Let's define a story for our `danger` button:
 Let's define a story for our `ghost` button:
 
 <Canvas>
-	<Story name="ghost" play={testButtonGhost}>
+	<Story
+		name="ghost"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'ghost'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -110,7 +132,15 @@ Let's define a story for our `ghost` button:
 Let's define a story for our `text` button:
 
 <Canvas>
-	<Story name="text" play={testButtonText}>
+	<Story
+		name="text"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'text'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -127,7 +157,15 @@ Let's define a story for our `text` button:
 Let's define a story for our `static-light` button:
 
 <Canvas>
-	<Story name="static-light" play={testButtonStaticLight}>
+	<Story
+		name="static-light"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'static-light'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -151,7 +189,15 @@ Let's define a story for our `static-light` button:
 Let's define a story for our `static-dark` button:
 
 <Canvas>
-	<Story name="static-dark" play={testButtonStaticDark}>
+	<Story
+		name="static-dark"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'static-dark'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },

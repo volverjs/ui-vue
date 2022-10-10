@@ -1,13 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { within, userEvent } from '@storybook/testing-library'
-import {
-	testButtonIconLeft,
-	testButtonIconRight,
-	testButtonIconTop,
-	testButtonIconBottom,
-	testButtonIconOnly
-} from './buttonTest'
+import { buttonTest, classTest } from './test.js'
 
 <Meta title="Components/Button/icon" />
 
@@ -20,7 +14,7 @@ Stories of `VvButton` with `icon`.
 Let's define a story for our left `icon` button.
 
 <Canvas>
-	<Story name="icon-left" play={testButtonIconLeft}>
+	<Story name="icon-left" play={buttonTest}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -42,7 +36,15 @@ Let's define a story for our left `icon` button.
 Let's define a story for our right `icon` button.
 
 <Canvas>
-	<Story name="icon-right" play={testButtonIconRight}>
+	<Story
+		name="icon-right"
+		play={(ctx) =>
+			 buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'reverse'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -66,7 +68,7 @@ Let's define a story for our right `icon` button.
 Let's define a story for our top `icon` button.
 
 <Canvas>
-	<Story name="icon-top" play={testButtonIconTop}>
+	<Story name="icon-top" play={buttonTest}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -90,7 +92,15 @@ Let's define a story for our top `icon` button.
 Let's define a story for our bottom `icon` button.
 
 <Canvas>
-	<Story name="icon-bottom" play={testButtonIconBottom}>
+	<Story
+		name="icon-bottom"
+		play={(ctx) =>
+			 buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'reverse'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -114,7 +124,15 @@ Let's define a story for our bottom `icon` button.
 Let's define a story for our `icon` only button.
 
 <Canvas>
-	<Story name="icon-only" play={testButtonIconOnly}>
+	<Story
+		name="icon-only"
+		play={(ctx) =>
+			 buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'icon-only'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
