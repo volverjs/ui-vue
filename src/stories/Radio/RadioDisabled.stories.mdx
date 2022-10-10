@@ -1,0 +1,40 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvRadio from '../../components/VvRadio/VvRadio.vue'
+
+<Meta title="Components/RadioButton/Disabled" component={VvRadio} />
+
+# Disabled
+
+<Canvas>
+	<Story name="disabled">
+		{() => {
+			return {
+				components: { VvRadio },
+				template:
+					/*html*/
+					`
+                        <vv-radio name="r1" value="1" label="Valore 1" disabled/> 
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Selected Disabled
+
+<Canvas>
+	<Story name="checked disabled">
+		{() => {
+			return {
+				components: { VvRadio },
+				data: () => ({ selected: '1' }),
+				template:
+					/*html*/
+					`
+                        <vv-radio :model-value="selected" name="r1" value="1" label="Valore 1" disabled/> 
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

@@ -1,0 +1,65 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvRadio from '../../components/VvRadio/VvRadio.vue'
+
+<Meta
+	title="Components/RadioButton"
+	argTypes={{
+		onClick: { action: 'click', table: { disable: true } },
+		onChange: { action: 'change', table: { disable: true } },
+		onFocus: { action: 'focus', table: { disable: true } },
+		onBlur: { action: 'blur', table: { disable: true } }
+	}}
+	component={VvRadio}
+/>
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvRadio },
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`
+        <vv-radio v-bind="args" styles="{color: red}"/>
+        `
+})
+
+# VvRadio
+
+A radio allows the user to select one option.
+
+<Source language="jsx" code={'<vv-radio/>'} />
+
+<Canvas>
+	<Story
+		name="vv-radio"
+		args={{
+			id: 1,
+			label: 'opzione 1',
+			name: 'o1',
+			disabled: false,
+			modelValue: null,
+			value: { a: 1 }
+		}}
+		argTypes={{
+			id: {
+				description: 'Id input element.',
+				table: { category: 'Attributes' }
+			},
+			name: {
+				description: 'Nome input element',
+				table: { category: 'Attributes' }
+			},
+			value: {
+				description: 'Valore input element',
+				table: { category: 'Attributes' }
+			}
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<ArgsTable story="vv-radio" />
