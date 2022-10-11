@@ -1,11 +1,11 @@
 <template>
-	<label :class="radioClass" v-bind="radioAttrs" @click="onClick">
+	<label :class="checkClass" v-bind="checkAttrs" @click.prevent="onClick">
 		<input
 			ref="input"
-			:class="radioInputClass"
-			v-bind="radioInputAttrs"
-			v-on="radioInputListeners"
-			v-model="currentModelValue" />
+			:class="checkInputClass"
+			v-bind="checkInputAttrs"
+			v-model="currentModelValue"
+			v-on="checkInputListeners" />
 		<slot>
 			{{ label }}
 		</slot>
@@ -19,7 +19,7 @@ import { defineComponent, ref } from 'vue'
 import { useFocus } from '@vueuse/core'
 import {
 	useCurrentGroup,
-	VV_RADIO_GROUP
+	VV_CHECK_GROUP
 } from '../../composables/group/useGroup'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
@@ -47,27 +47,26 @@ export default defineComponent({
 	setup() {
 		const input = ref()
 		const { focused } = useFocus(input)
-		const { isInGroup, group } = useCurrentGroup(VV_RADIO_GROUP)
+		const group = useCurrentGroup(VV_CHECK_GROUP)
 
 		return {
 			group,
 			input,
-			focused,
-			isInGroup
+			focused
 		}
 	},
 	computed: {
 		currentModelValue() {
 			return this.isInGroup ? this.group?.modelValue : this.modelValue
 		},
-		radioClass() {
+		checkClass() {
 			const { class: cssClass } = this.$attrs
 			return {
-				'vv-input-radio': true,
+				'vv-input-check': true,
 				class: cssClass
 			}
 		},
-		radioAttrs() {
+		checkAttrs() {
 			const { id, name, styles } = this.$attrs
 			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
 				k.startsWith('data-')
@@ -78,25 +77,24 @@ export default defineComponent({
 				...dataAttrs
 			}
 		},
-		radioInputClass() {
+		checkInputClass() {
 			return {
 				'focus-visible': this.focused
-				// 'vv-input-radio__input--checked': this.isChecked
 			}
 		},
-		radioInputAttrs() {
+		checkInputAttrs() {
 			const {
 				id = '',
 				name = '',
 				value = ''
 			} = this.$attrs as InputHTMLAttributes
 			return {
-				type: 'radio',
+				type: 'checkbox',
 				id: id || name,
 				name,
 				value,
 				disabled: this.isDisabled,
-				// checked: this.isChecked,
+				checked: this.isChecked,
 				...this.radioInputAriaAttrs
 			}
 		},
@@ -111,17 +109,10 @@ export default defineComponent({
 				...dataAttrs
 			}
 		},
-		radioInputListeners() {
+		checkInputListeners() {
 			return {
 				focus: (event: Event) => this.$emit('focus', event),
 				blur: (event: Event) => this.$emit('blur', event)
-				// change: () => {
-				// 	if (!this.disabled) {
-				// 		this.$emit('update:modelValue', this.$attrs.value)
-				// 		if (this.group) this.group.add(this.$attrs.value)
-				// 		this.focused = true
-				// 	}
-				// }
 			}
 		},
 		isChecked() {
@@ -135,11 +126,9 @@ export default defineComponent({
 		},
 		isDisabled() {
 			return this.disabled || (this.group && this.group.disabled)
-		}
-	},
-	watch: {
-		isChecked(bCk) {
-			console.log(this.$attrs.id, this.isChecked)
+		},
+		isInGroup() {
+			return !ObjectUtilities.isNotEmpty(this.group)
 		}
 	},
 	methods: {
@@ -150,8 +139,9 @@ export default defineComponent({
 				if (!this.isChecked) {
 					this.$emit('change', this.$attrs.value)
 				}
-				if (this.group) this.group.add(this.$attrs.value)
 				this.focused = true
+
+				if (this.group) this.group.add(this.$attrs.value)
 			}
 		}
 	}

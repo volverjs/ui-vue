@@ -12,7 +12,7 @@ A group of radios.
 <Source language="jsx" code={'<vv-radio-group>...</vv-radio-group>'} />
 
 <Canvas>
-	<Story name="vv-radio-group" args={{ vartical: false, disabled: false }}>
+	<Story name="vv-radio-group" args={{ vertical: false, disabled: false }}>
 		{(args) => {
 			return {
 				components: { VvRadioGroup, VvRadio },
@@ -24,10 +24,10 @@ A group of radios.
 					/*html*/
 					`
                     <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" :model-value="selected" @update:modelValue="selected = $event" :disabled="d1">
-                            <vv-radio name="opts" value="1">Opt 1</vv-radio>
-                            <vv-radio name="opts" value="2">Opt 2</vv-radio>
-                            <vv-radio name="opts" value="3">Opt 3</vv-radio>
+                        <vv-radio-group v-bind="args" :model-value="selected" @update:modelValue="selected = $event">
+                            <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
+                            <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
+                            <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
                         </vv-radio-group>
                         <strong v-if="selected">Bottone selez: {{selected}} </strong> 
                     </div>

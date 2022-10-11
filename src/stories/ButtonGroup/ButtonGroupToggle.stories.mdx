@@ -32,7 +32,7 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
 					/*html*/
 					`
 					<div class="flex flex-row justify-between">
-                        <vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+                        <vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">
                             <vv-button name="1a">Button 1</vv-button>
                             <vv-button name="2b">Button 2</vv-button>
                             <vv-button name="3c">Button 3</vv-button>
@@ -67,7 +67,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 					/*html*/
 					`
                         <div class="flex flex-row justify-between">
-							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">
 								<vv-button name="1a">Button 1</vv-button>
 								<vv-button name="2b">Button 2</vv-button>
 								<vv-button name="3c">Button 3</vv-button>
@@ -75,7 +75,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 							<strong v-if="selected">Bottone selez: {{selected}}</strong> 
 						</div>
 						<div class="flex flex-row justify-between mt-22">
-							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected2 = $event">
+							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected2 = $event" :model-value="selected2">
 								<vv-button name="1a">Button 1</vv-button>
 								<vv-button name="2b">Button 2</vv-button>
 								<vv-button name="3c">Button 3</vv-button>
@@ -107,7 +107,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 					`
 					<div class="flex flex-col">
 						<div class="flex flex-row justify-between">
-							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event">
+							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">
 								<vv-button name="1">Button 1</vv-button>
 								<vv-button name="2" v-if="hide2b">Button 2</vv-button>
 								<vv-button name="3">Button 3</vv-button>

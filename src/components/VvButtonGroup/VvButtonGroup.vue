@@ -6,8 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs } from 'vue'
-import { useElementGroup } from '../../composables/group/useElementsGroup'
-import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
+import { useGroup, VV_BUTTON_GROUP } from '../../composables/group/useGroup'
 
 /**
  * VvButtonGroups
@@ -16,13 +15,11 @@ export default defineComponent({
 	setup(props) {
 		let group = null
 		//eventuale pulsante gia selezionato
-		const { modelValue, toggle } = toRefs(props)
+		const { toggle } = toRefs(props)
 
 		if (toggle.value) {
 			//Attiva la modalità toggle creando un gruppo nel quale registrare i pulsanti figli.
-			group = useElementGroup(VV_BUTTON_GROUP_MANAGER, {
-				defaultSelected: modelValue.value
-			})
+			group = useGroup(VV_BUTTON_GROUP)
 		}
 
 		return {

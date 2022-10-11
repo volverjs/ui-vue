@@ -57,12 +57,15 @@
 </template>
 
 <script lang="ts">
+import { v4 as uuidv4 } from 'uuid'
 import { computed, toRefs, defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag } from './VvButton'
 
-import { useCurrentElementGroup } from '../../composables/group/useElementsGroup'
-import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
+import {
+	useCurrentGroup,
+	VV_BUTTON_GROUP
+} from '../../composables/group/useGroup'
 
 export default defineComponent({
 	props: {
@@ -125,18 +128,15 @@ export default defineComponent({
 		rounded: Boolean
 	},
 	setup(props: Object, { attrs, emit }) {
-		const name: String = (attrs?.name || null) as String
-		const { group, groupElementId, isInGroup, isElementInGroupActive } =
-			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
+		const name: String = (attrs?.name || uuidv4()) as String
+		const { isInGroup, group } = useCurrentGroup(VV_BUTTON_GROUP)
 
 		return {
 			group,
-			groupElementId,
 			isInGroup,
-			isElementInGroupActive,
+			isActive: computed(() => unref(group)?.contains(name)),
 			onClick(e: Event) {
-				if (isInGroup.value)
-					unref(group)?.setActive(groupElementId.value)
+				if (isInGroup.value) unref(group)?.add(name)
 			}
 		}
 	},
@@ -173,8 +173,7 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active':
-						this.active || this.isElementInGroupActive,
+					'vv-button--active': this.active || this.isActive,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded
 				}
