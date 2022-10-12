@@ -3,7 +3,7 @@
 		<legend v-if="label" v-text="label" />
 		<!-- #region options set up -->
 		<template v-if="options.length > 0">
-			<vv-radio
+			<vv-check
 				v-for="(o, oIndex) in options"
 				:key="oIndex"
 				v-bind="getOptionProps(o, oIndex)" />
@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useGroup, VV_RADIO_GROUP } from '../../composables/group/useGroup'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import { useGroup, VV_CHECK_GROUP } from '../../composables/group/useGroup'
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 /**
@@ -26,7 +26,7 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
  */
 export default defineComponent({
 	components: {
-		VvRadio
+		VvCheck
 	},
 	props: {
 		/**
@@ -63,15 +63,15 @@ export default defineComponent({
 		optionValue: { type: [String, Function], default: () => 'value' }
 	},
 	setup() {
-		const group = useGroup(VV_RADIO_GROUP)
+		const group = useGroup(VV_CHECK_GROUP)
 
 		return group
 	},
 	computed: {
 		groupClass() {
 			return {
-				'vv-input-radio-group': true,
-				'vv-input-radio-group--horizontal': !this.vertical
+				'vv-input-check-group': true,
+				'vv-input-check-group--horizontal': !this.vertical
 			}
 		}
 	},
@@ -93,5 +93,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '@volverjs/style/components/vv-input-radio-group';
+@import '@volverjs/style/components/vv-input-checkbox-group';
 </style>

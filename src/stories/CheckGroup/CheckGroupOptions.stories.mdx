@@ -1,0 +1,42 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+<Meta title="Components/CheckGroup/Options" component={VvCheckGroup} />
+
+# VvCheckGroup
+
+<Canvas>
+	<Story
+		name="Options"
+		args={{
+			name: 'story4',
+			vertical: false,
+			disabled: false,
+			optionValue: (o) => 'QTA_' + o.qta,
+			options: [
+				{ qta: 1, label: 'Mela' },
+				{ qta: 2, label: 'Pera' },
+				{ qta: 3, label: 'Banana' }
+			]
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckGroup, VvCheck },
+				data: () => ({ selected: [], d1: false }),
+				setup() {
+					return { args }
+				},
+				template:
+					/*html*/
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-check-group v-bind="args" :model-value="selected" @update:modelValue="selected = $event"/>
+                        <strong v-if="selected">Bottone selez: {{selected}} </strong> 
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

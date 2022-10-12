@@ -4,8 +4,7 @@
 			ref="input"
 			:class="radioInputClass"
 			v-bind="radioInputAttrs"
-			v-on="radioInputListeners"
-			v-model="currentModelValue" />
+			v-model="inputValue" />
 		<slot>
 			{{ label }}
 		</slot>
@@ -15,10 +14,10 @@
 <script lang="ts">
 import type { InputHTMLAttributes } from 'vue'
 
-import { defineComponent, ref } from 'vue'
-import { useFocus } from '@vueuse/core'
+import { defineComponent } from 'vue'
+import { useInputFocus } from '../../composables/focus/useInputFocus'
 import {
-	useCurrentGroup,
+	useWrapInGroup,
 	VV_RADIO_GROUP
 } from '../../composables/group/useGroup'
 
@@ -34,7 +33,7 @@ export default defineComponent({
 		/**
 		 * VModel
 		 */
-		modelValue: null,
+		modelValue: { type: [Object, Number, Boolean, String] },
 		/**
 		 * Label radio button
 		 */
@@ -44,21 +43,36 @@ export default defineComponent({
 		 */
 		disabled: { type: Boolean, default: false }
 	},
-	setup() {
-		const input = ref()
-		const { focused } = useFocus(input)
-		const { isInGroup, group } = useCurrentGroup(VV_RADIO_GROUP)
+	setup(props, context) {
+		const { input, focused } = useInputFocus(context)
+		const {
+			wrappedModelValue,
+			group,
+			isInGroup,
+			isDisabled,
+			isReadonly,
+			checkIsSelected
+		} = useWrapInGroup(VV_RADIO_GROUP, { props, context })
 
 		return {
-			group,
 			input,
 			focused,
-			isInGroup
+			group,
+			wrappedModelValue,
+			isInGroup,
+			isDisabled,
+			isReadonly,
+			checkIsSelected
 		}
 	},
 	computed: {
-		currentModelValue() {
-			return this.isInGroup ? this.group?.modelValue : this.modelValue
+		inputValue: {
+			get: function () {
+				return this.wrappedModelValue === this.$attrs.value
+			},
+			set() {
+				this.wrappedModelValue = this.$attrs.value
+			}
 		},
 		radioClass() {
 			const { class: cssClass } = this.$attrs
@@ -80,8 +94,10 @@ export default defineComponent({
 		},
 		radioInputClass() {
 			return {
-				'focus-visible': this.focused
-				// 'vv-input-radio__input--checked': this.isChecked
+				'focus-visible': this.focused,
+				'vv-input-radio__input--checked': this.isChecked,
+				'vv-input-radio__input--disabled': this.isDisabled,
+				'vv-input-radio__input--readonly': this.isReadonly
 			}
 		},
 		radioInputAttrs() {
@@ -96,7 +112,7 @@ export default defineComponent({
 				name,
 				value,
 				disabled: this.isDisabled,
-				// checked: this.isChecked,
+				readonly: this.isReadonly,
 				...this.radioInputAriaAttrs
 			}
 		},
@@ -111,46 +127,19 @@ export default defineComponent({
 				...dataAttrs
 			}
 		},
-		radioInputListeners() {
-			return {
-				focus: (event: Event) => this.$emit('focus', event),
-				blur: (event: Event) => this.$emit('blur', event)
-				// change: () => {
-				// 	if (!this.disabled) {
-				// 		this.$emit('update:modelValue', this.$attrs.value)
-				// 		if (this.group) this.group.add(this.$attrs.value)
-				// 		this.focused = true
-				// 	}
-				// }
-			}
-		},
 		isChecked() {
-			return (
-				ObjectUtilities.isNotEmpty(this.currentModelValue) &&
-				ObjectUtilities.equals(
-					this.currentModelValue,
-					this.$attrs.value
-				)
-			)
-		},
-		isDisabled() {
-			return this.disabled || (this.group && this.group.disabled)
-		}
-	},
-	watch: {
-		isChecked(bCk) {
-			console.log(this.$attrs.id, this.isChecked)
+			return this.checkIsSelected(this.$attrs.value)
 		}
 	},
 	methods: {
 		onClick(event: Event) {
 			if (!this.disabled) {
 				this.$emit('click', event)
-				this.$emit('update:modelValue', this.$attrs.value)
+				// this.$emit('update:modelValue', this.$attrs.value)
 				if (!this.isChecked) {
 					this.$emit('change', this.$attrs.value)
 				}
-				if (this.group) this.group.add(this.$attrs.value)
+				// if (this.group) this.group.add(this.$attrs.value)
 				this.focused = true
 			}
 		}

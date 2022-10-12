@@ -1,0 +1,117 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
+
+<Meta title="Components/RadioButtonGroup/Options" component={VvRadioGroup} />
+
+# VvRadioGroup
+
+A group of radios with options.
+
+<Source
+	language="jsx"
+	code={
+		'<vv-radio-group :options="[...]" option-label="..." option-value="...">...</vv-radio-group>'
+	}
+/>
+
+<Canvas>
+	<Story
+		name="Object array options"
+		args={{
+			name: 'story2',
+			vertical: false,
+			disabled: false,
+			options: [
+				{ value: 1, label: 'Mela' },
+				{ value: 2, label: 'Pera' },
+				{ value: 3, label: 'Banana' }
+			]
+		}}>
+		{(args) => {
+			return {
+				components: { VvRadioGroup },
+				data: () => ({ selected: null }),
+				setup() {
+					return { args }
+				},
+				template:
+					/*html*/
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-radio-group v-bind="args" :model-value="selected" @update:modelValue="selected = $event"/>
+                        <strong v-if="selected">Bottone selez: {{selected}} </strong> 
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option label function"
+		args={{
+			name: 'story3',
+			vertical: false,
+			disabled: false,
+			optionLabel: (o) => o.name,
+			options: [
+				{ value: 1, name: 'Mela' },
+				{ value: 2, name: 'Pera' },
+				{ value: 3, name: 'Banana' }
+			]
+		}}>
+		{(args) => {
+			return {
+				components: { VvRadioGroup },
+				data: () => ({ selected: null }),
+				setup() {
+					return { args }
+				},
+				template:
+					/*html*/
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-radio-group v-bind="args" :model-value="selected" @update:modelValue="selected = $event"/>
+                        <strong v-if="selected">Bottone selez: {{selected}} </strong> 
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option value function"
+		args={{
+			name: 'story4',
+			vertical: false,
+			disabled: false,
+			optionValue: (o) => 'QTA_' + o.qta,
+			options: [
+				{ qta: 1, label: 'Mela' },
+				{ qta: 2, label: 'Pera' },
+				{ qta: 3, label: 'Banana' }
+			]
+		}}>
+		{(args) => {
+			return {
+				components: { VvRadioGroup },
+				data: () => ({ selected: null }),
+				setup() {
+					return { args }
+				},
+				template:
+					/*html*/
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-radio-group v-bind="args" :model-value="selected" @update:modelValue="selected = $event"/>
+                        <strong v-if="selected">Bottone selez: {{selected}} </strong> 
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

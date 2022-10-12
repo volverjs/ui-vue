@@ -1,3 +1,4 @@
+import { toRaw } from 'vue'
 export default {
 	equals(obj1, obj2, field) {
 		if (field)
@@ -137,7 +138,7 @@ export default {
 
 		if (list) {
 			for (let i = 0; i < list.length; i++) {
-				if (list[i] === value) {
+				if (toRaw(list[i]) === toRaw(value)) {
 					index = i
 					break
 				}
@@ -285,5 +286,15 @@ export default {
 		return Object.fromEntries(
 			Object.entries(value).filter(([key]) => predicate(key))
 		)
+	},
+
+	removeFromList(value, list) {
+		//check off
+		let indexElToRemove = this.findIndexInList(value, list)
+		if (indexElToRemove > -1) {
+			return list.filter((el, elIndex) => elIndex !== indexElToRemove)
+		} else {
+			return list
+		}
 	}
 }

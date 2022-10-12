@@ -1,11 +1,10 @@
 <template>
-	<label :class="checkClass" v-bind="checkAttrs" @click.prevent="onClick">
+	<label :class="checkClass" v-bind="checkAttrs" @click="onClick">
 		<input
 			ref="input"
 			:class="checkInputClass"
 			v-bind="checkInputAttrs"
-			v-model="currentModelValue"
-			v-on="checkInputListeners" />
+			v-model="inputValue" />
 		<slot>
 			{{ label }}
 		</slot>
@@ -16,16 +15,16 @@
 import type { InputHTMLAttributes } from 'vue'
 
 import { defineComponent, ref } from 'vue'
-import { useFocus } from '@vueuse/core'
+import { useInputFocus } from '../../composables/focus/useInputFocus'
 import {
-	useCurrentGroup,
+	useWrapInGroup,
 	VV_CHECK_GROUP
 } from '../../composables/group/useGroup'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 /**
- * Radio Button
+ * Check
  */
 export default defineComponent({
 	inheritAttrs: false,
@@ -34,7 +33,15 @@ export default defineComponent({
 		/**
 		 * VModel
 		 */
-		modelValue: null,
+		modelValue: { type: [Array, Boolean] },
+		/**
+		 * True - ritorna un valore del checkbox True/False invece di un valori multipli
+		 */
+		binary: { type: Boolean, default: false },
+		/**
+		 * True - visualizza il checkbox come un toggle
+		 */
+		switch: { type: Boolean, default: false },
 		/**
 		 * Label radio button
 		 */
@@ -44,25 +51,70 @@ export default defineComponent({
 		 */
 		disabled: { type: Boolean, default: false }
 	},
-	setup() {
-		const input = ref()
-		const { focused } = useFocus(input)
-		const group = useCurrentGroup(VV_CHECK_GROUP)
+	setup(props, context) {
+		const { input, focused } = useInputFocus(context)
+		const {
+			wrappedModelValue,
+			group,
+			isInGroup,
+			isDisabled,
+			isReadonly,
+			checkIsSelected
+		} = useWrapInGroup(VV_CHECK_GROUP, { props, context })
 
 		return {
-			group,
 			input,
-			focused
+			focused,
+			group,
+			wrappedModelValue,
+			isInGroup,
+			isDisabled,
+			isReadonly,
+			checkIsSelected
 		}
 	},
 	computed: {
-		currentModelValue() {
-			return this.isInGroup ? this.group?.modelValue : this.modelValue
+		inputValue: {
+			get: function () {
+				let _value = this.$attrs.value
+				if (!this.binary) {
+					return ObjectUtilities.contains(
+						_value,
+						this.wrappedModelValue
+					)
+				} else {
+					return ObjectUtilities.equals(
+						this.wrappedModelValue,
+						_value
+					)
+				}
+			},
+			set(value: Boolean) {
+				if (!this.binary) {
+					let _value = this.$attrs.value
+					if (value) {
+						//check on
+						this.wrappedModelValue = [
+							...this.wrappedModelValue,
+							_value
+						]
+					} else {
+						//check off
+						this.wrappedModelValue = ObjectUtilities.removeFromList(
+							_value,
+							this.wrappedModelValue
+						)
+					}
+				} else {
+					this.wrappedModelValue = value
+				}
+			}
 		},
 		checkClass() {
 			const { class: cssClass } = this.$attrs
 			return {
-				'vv-input-check': true,
+				'vv-input-checkbox': true,
+				'vv-input-checkbox--switch': this.switch,
 				class: cssClass
 			}
 		},
@@ -79,7 +131,10 @@ export default defineComponent({
 		},
 		checkInputClass() {
 			return {
-				'focus-visible': this.focused
+				'focus-visible': this.focused,
+				'vv-input-check__input--checked': this.isChecked,
+				'vv-input-check__input--disabled': this.isDisabled,
+				'vv-input-check__input--readonly': this.isReadonly
 			}
 		},
 		checkInputAttrs() {
@@ -94,11 +149,11 @@ export default defineComponent({
 				name,
 				value,
 				disabled: this.isDisabled,
-				checked: this.isChecked,
-				...this.radioInputAriaAttrs
+				readonly: this.isReadonly,
+				...this.checkInputAriaAttrs
 			}
 		},
-		radioInputAriaAttrs() {
+		checkInputAriaAttrs() {
 			const { name } = this.$attrs
 			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
 				k.startsWith('aria-')
@@ -109,39 +164,18 @@ export default defineComponent({
 				...dataAttrs
 			}
 		},
-		checkInputListeners() {
-			return {
-				focus: (event: Event) => this.$emit('focus', event),
-				blur: (event: Event) => this.$emit('blur', event)
-			}
-		},
 		isChecked() {
-			return (
-				ObjectUtilities.isNotEmpty(this.currentModelValue) &&
-				ObjectUtilities.equals(
-					this.currentModelValue,
-					this.$attrs.value
-				)
-			)
-		},
-		isDisabled() {
-			return this.disabled || (this.group && this.group.disabled)
-		},
-		isInGroup() {
-			return !ObjectUtilities.isNotEmpty(this.group)
+			return this.binary
+				? this.wrappedModelValue
+				: this.checkIsSelected(this.$attrs.value)
 		}
 	},
 	methods: {
 		onClick(event: Event) {
 			if (!this.disabled) {
 				this.$emit('click', event)
-				this.$emit('update:modelValue', this.$attrs.value)
-				if (!this.isChecked) {
-					this.$emit('change', this.$attrs.value)
-				}
+				this.$emit('change', this.isChecked ? this.$attrs.value : null)
 				this.focused = true
-
-				if (this.group) this.group.add(this.$attrs.value)
 			}
 		}
 	}
@@ -149,5 +183,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '@volverjs/style/components/vv-input-radio';
+@import '@volverjs/style/components/vv-input-checkbox';
 </style>
