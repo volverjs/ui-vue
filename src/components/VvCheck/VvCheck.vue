@@ -4,7 +4,7 @@
 			ref="input"
 			:class="checkInputClass"
 			v-bind="checkInputAttrs"
-			v-model="inputValue" />
+			@input="onChange" />
 		<slot>
 			{{ label }}
 		</slot>
@@ -38,6 +38,14 @@ export default defineComponent({
 		 * True - ritorna un valore del checkbox True/False invece di un valori multipli
 		 */
 		binary: { type: Boolean, default: false },
+		/**
+		 * Valore associato a true
+		 */
+		trueValue: { type: null, default: true },
+		/**
+		 * Valore associato a false
+		 */
+		falseValue: { type: null, default: false },
 		/**
 		 * True - visualizza il checkbox come un toggle
 		 */
@@ -74,42 +82,6 @@ export default defineComponent({
 		}
 	},
 	computed: {
-		inputValue: {
-			get: function () {
-				let _value = this.$attrs.value
-				if (!this.binary) {
-					return ObjectUtilities.contains(
-						_value,
-						this.wrappedModelValue
-					)
-				} else {
-					return ObjectUtilities.equals(
-						this.wrappedModelValue,
-						_value
-					)
-				}
-			},
-			set(value: Boolean) {
-				if (!this.binary) {
-					let _value = this.$attrs.value
-					if (value) {
-						//check on
-						this.wrappedModelValue = [
-							...this.wrappedModelValue,
-							_value
-						]
-					} else {
-						//check off
-						this.wrappedModelValue = ObjectUtilities.removeFromList(
-							_value,
-							this.wrappedModelValue
-						)
-					}
-				} else {
-					this.wrappedModelValue = value
-				}
-			}
-		},
 		checkClass() {
 			const { class: cssClass } = this.$attrs
 			return {
@@ -150,6 +122,7 @@ export default defineComponent({
 				value,
 				disabled: this.isDisabled,
 				readonly: this.isReadonly,
+				checked: this.isChecked,
 				...this.checkInputAriaAttrs
 			}
 		},
@@ -171,6 +144,19 @@ export default defineComponent({
 		}
 	},
 	methods: {
+		onChange() {
+			let _value = this.$attrs.value
+			if (this.binary) {
+				this.wrappedModelValue = this.isChecked
+					? this.falseValue
+					: this.trueValue
+				return
+			}
+
+			this.wrappedModelValue = !this.isChecked
+				? [...this.wrappedModelValue, _value]
+				: ObjectUtilities.removeFromList(_value, this.wrappedModelValue)
+		},
 		onClick(event: Event) {
 			if (!this.disabled) {
 				this.$emit('click', event)

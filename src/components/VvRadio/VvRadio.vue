@@ -4,7 +4,7 @@
 			ref="input"
 			:class="radioInputClass"
 			v-bind="radioInputAttrs"
-			v-model="inputValue" />
+			@input="onChange" />
 		<slot>
 			{{ label }}
 		</slot>
@@ -66,14 +66,6 @@ export default defineComponent({
 		}
 	},
 	computed: {
-		inputValue: {
-			get: function () {
-				return this.wrappedModelValue === this.$attrs.value
-			},
-			set() {
-				this.wrappedModelValue = this.$attrs.value
-			}
-		},
 		radioClass() {
 			const { class: cssClass } = this.$attrs
 			return {
@@ -113,6 +105,7 @@ export default defineComponent({
 				value,
 				disabled: this.isDisabled,
 				readonly: this.isReadonly,
+				checked: this.isChecked,
 				...this.radioInputAriaAttrs
 			}
 		},
@@ -132,13 +125,14 @@ export default defineComponent({
 		}
 	},
 	methods: {
+		onChange() {
+			if (!this.isChecked) this.$emit('change', this.$attrs.value)
+			this.wrappedModelValue = this.$attrs.value
+		},
 		onClick(event: Event) {
 			if (!this.disabled) {
 				this.$emit('click', event)
 				// this.$emit('update:modelValue', this.$attrs.value)
-				if (!this.isChecked) {
-					this.$emit('change', this.$attrs.value)
-				}
 				// if (this.group) this.group.add(this.$attrs.value)
 				this.focused = true
 			}

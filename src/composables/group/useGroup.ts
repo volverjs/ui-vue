@@ -9,7 +9,8 @@ import {
 	ref,
 	watch,
 	computed,
-	unref
+	unref,
+	toRaw
 } from 'vue'
 import type { InjectionKey } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
@@ -172,10 +173,13 @@ export function useWrapInGroup<TModelValue>(groupKey, { props, context }) {
 	})
 
 	const checkIsSelected = (value) => {
-		return (
-			ObjectUtilities.isNotEmpty(wrappedModelValue.value) &&
-			ObjectUtilities.equals(wrappedModelValue.value, value)
-		)
+		if (Array.isArray(wrappedModelValue.value))
+			return ObjectUtilities.contains(value, wrappedModelValue.value)
+		else
+			return (
+				ObjectUtilities.isNotEmpty(wrappedModelValue.value) &&
+				ObjectUtilities.equals(wrappedModelValue.value, value)
+			)
 	}
 
 	return {
