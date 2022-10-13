@@ -1,7 +1,3 @@
-const path = require('path')
-const { mergeConfig } = require('vite')
-// const vuePlugin = require('@vitejs/plugin-vue')
-
 module.exports = {
 	stories: [
 		'../src/**/*.stories.mdx',
@@ -22,15 +18,13 @@ module.exports = {
 		storyStoreV7: true
 	},
 	async viteFinal(config) {
-		// return the customized config
-		return mergeConfig(config, {
-			// plugins: [vuePlugin()],
-			// customize the Vite config here
-			resolve: {
-				alias: {
-					'@': path.resolve(__dirname, './src')
-				}
-			}
-		})
+		config.base = '/storybook/'
+
+		config.resolve.alias = {
+			...config.resolve.alias,
+			'@': '../src'
+		}
+
+		return config
 	}
 }
