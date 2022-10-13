@@ -1,0 +1,69 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvIcon from '../../components/VvIcon/VvIcon.vue'
+
+<Meta title="Components/Icon/prefix" />
+
+# VvIcon prefix
+
+Stories of `VvIcon` `prefix`.
+By default prefix generated are: `simple`, `normal`, `detailed`
+
+## Prefix normal (default)
+
+Let's define a story for our `normal` `prefix` icon.
+
+<Canvas>
+	<Story name="normal">
+		{() => {
+			return {
+				components: { VvIcon },
+				template:
+					/*html*/
+					`<vv-icon name="add" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={`<vv-icon name="add" />`} />
+
+## Prefix simple
+
+Let's define a story for our `simple` `prefix` icon.
+
+<Canvas>
+	<Story name="simple">
+		{() => {
+			return {
+				components: { VvIcon },
+				template:
+					/*html*/
+					`<vv-icon name="file-required" prefix="simple" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-icon name="file-required" prefix="simple" />`}
+/>
+
+## Prefix detailed
+
+Let's define a story for our `detailed` `prefix` icon.
+
+<Canvas>
+	<Story name="detailed">
+		{() => {
+			return {
+				components: { VvIcon },
+				template:
+					/*html*/
+					`<vv-icon name="calendar" prefix="detailed" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={`<vv-icon name="calendar" prefix="detailed" />`} />

@@ -1,6 +1,7 @@
 <template>
 	<Icon
 		v-if="show"
+		:class="hasClass"
 		v-bind="{
 			...$props,
 			icon
@@ -8,30 +9,11 @@
 </template>
 
 <script lang="ts">
-import { Icon, addIcon } from '@iconify/vue'
+import { defineComponent, type ComputedRef, type PropType } from 'vue'
 import type { IconifyRenderMode } from '@iconify/vue'
-import { defineComponent, type PropType } from 'vue'
-
-// addAPIProvider('test', { resources: ['https://test.it'] })
-
-// addCollection({
-// 	prefix: 'mdi',
-// 	provider: 'test',
-// 	icons: {
-// 		account: {
-// 			body: '<path d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4z" fill="currentColor"/>'
-// 		},
-// 		pippo: {
-// 			body: '<path d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8h5z" fill="currentColor"/>'
-// 		}
-// 	},
-// 	width: 24,
-// 	height: 24
-// })
-
-// addIcon('account-cash', {
-// 	body: '<path d="M11 8c0 2.21-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4s4 1.79 4 4m0 6.72V20H0v-2c0-2.21 3.13-4 7-4c1.5 0 2.87.27 4 .72M24 20H13V3h11v17m-8-8.5a2.5 2.5 0 0 1 5 0a2.5 2.5 0 0 1-5 0M22 7a2 2 0 0 1-2-2h-3c0 1.11-.89 2-2 2v9a2 2 0 0 1 2 2h3c0-1.1.9-2 2-2V7z" fill="currentColor"/>'
-// })
+import { Icon, addIcon, getIcon } from '@iconify/vue'
+import { PREFIX } from './VvIcon'
+import { useModifiers } from '../../composables/useModifiers'
 
 export default defineComponent({
 	components: { Icon },
@@ -53,24 +35,13 @@ export default defineComponent({
 		 * Icon prefix
 		 */
 		prefix: {
-			type: String,
-			default: 'md'
+			type: String as PropType<PREFIX>,
+			default: PREFIX.normal
 		},
 		/**
 		 * Url remote SVG icon
 		 */
 		src: String,
-		/**
-		 * Optional fetch options for remote call
-		 * {RequestInit} https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.requestinit.html
-		 */
-		fetchOptions: {
-			type: Object,
-			default: () => ({
-				cache: 'force-cache',
-				credentials: 'omit'
-			})
-		},
 		/**
 		 * String changes icon color.
 		 */
@@ -99,15 +70,13 @@ export default defineComponent({
 		 * Icon width
 		 */
 		width: {
-			type: [String, Number],
-			default: 24
+			type: [String, Number]
 		},
 		/**
 		 * Icon height
 		 */
 		height: {
-			type: [String, Number],
-			default: 24
+			type: [String, Number]
 		},
 		/**
 		 * Toggles inline or block mode
@@ -124,7 +93,25 @@ export default defineComponent({
 		/**
 		 * SVG string
 		 */
-		svg: String
+		svg: String,
+		/**
+		 * Icon modifiers
+		 * @values string | Array<string>
+		 */
+		modifiers: {
+			type: [String, Array] as PropType<string | string[]>
+		}
+	},
+	setup(props) {
+		// Get computed string with all css classes (modifiers) with 'vv-icon' prefix
+		const hasModifiers: ComputedRef<string> = useModifiers(
+			'vv-icon',
+			props.modifiers
+		)
+
+		return {
+			hasModifiers
+		}
 	},
 	data() {
 		return {
@@ -133,21 +120,31 @@ export default defineComponent({
 	},
 	computed: {
 		icon() {
-			const provider = this.provider || this.$ds.defaultProvider
-			return `@${provider}:${this.prefix}:${this.name}`
+			const iconName = `@${this.currentProvider}:${this.prefix}:${this.name}`
+			const icon = getIcon(iconName)
+			return icon ? iconName : this.name
+		},
+		hasClass() {
+			return ['vv-icon', this.hasModifiers]
+		},
+		currentProvider() {
+			return this.provider || this.$ds.defaultProvider
 		}
 	},
 	created() {
 		if (this.src) {
 			this.show = false
-			this.fetchIcon(this.src)
-				.then((svg) => {
+			this.$ds
+				.fetchIcon(this.src)
+				.then((svg?: string) => {
 					if (svg) {
 						this.addIcon(svg)
 						this.show = true
 					}
 				})
-				.catch((e) => e)
+				.catch((e) => {
+					throw new Error(`During fetch icon: ${e?.message}`)
+				})
 		} else if (this.svg) {
 			this.addIcon(this.svg)
 		}
@@ -159,10 +156,14 @@ export default defineComponent({
 		 * @return {SVGSVGElement | null} https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement
 		 */
 		getSvgContent(svg: string): SVGSVGElement | null {
-			//TODO: const jsdom = require("jsdom");
-			// const dom = new jsdom.JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
-			// dom.window.document.querySelector("p").textContent; // 'Hello world'
-			const domParser = new DOMParser()
+			let dom = null
+			if (typeof window === 'undefined') {
+				// SSR
+				// eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
+				const { JSDOM } = require('jsdom')
+				dom = new JSDOM().window
+			}
+			const domParser = dom ? new dom.DOMParser() : new window.DOMParser()
 			const svgDomString = domParser.parseFromString(svg, 'text/html')
 			const svgEl = svgDomString.querySelector('svg')
 			return svgEl
@@ -175,20 +176,16 @@ export default defineComponent({
 			const svgContentEl: SVGSVGElement | null = this.getSvgContent(svg)
 			const svgContent = svgContentEl?.innerHTML.trim() || ''
 			if (svgContentEl && svgContent) {
-				addIcon(this.name, {
-					body: svgContent,
-					height: svgContentEl.viewBox.baseVal.height,
-					width: svgContentEl.viewBox.baseVal.width
-				})
+				addIcon(
+					`@${this.currentProvider}:${this.prefix}:${this.name}`,
+					{
+						body: svgContent,
+						// Set height and width from svg content
+						height: svgContentEl.viewBox.baseVal.height,
+						width: svgContentEl.viewBox.baseVal.width
+					}
+				)
 			}
-		},
-		fetchIcon(src: string): Promise<string | undefined> {
-			return new Promise((resolve, reject) => {
-				fetch(src, this.fetchOptions)
-					.catch((e) => reject(e))
-					.then((response) => response?.text())
-					.then((svg?: string) => resolve(svg))
-			})
 		}
 	}
 })
