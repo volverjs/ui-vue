@@ -5,21 +5,29 @@
 </template>
 
 <script lang="ts">
+import type { UseGroupComponentProps } from '../../composables/group/types'
+
 import { defineComponent, toRefs } from 'vue'
-import { useGroup, VV_BUTTON_GROUP } from '../../composables/group/useGroup'
+import { useGroup } from '../../composables/group/useGroup'
+import { VV_BUTTON_GROUP } from '../../constants'
 
 /**
  * VvButtonGroups
  */
 export default defineComponent({
-	setup(props) {
+	setup(props, { emit }) {
 		let group = null
 		//eventuale pulsante gia selezionato
-		const { toggle } = toRefs(props)
+		const { toggle, disabled, modelValue } = toRefs(props)
 
 		if (toggle.value) {
 			//Attiva la modalità toggle creando un gruppo nel quale registrare i pulsanti figli.
-			group = useGroup(VV_BUTTON_GROUP)
+			const sharedProps: UseGroupComponentProps = { disabled, modelValue }
+			const useGroupApi = useGroup(VV_BUTTON_GROUP, {
+				props: sharedProps,
+				emit
+			})
+			group = useGroupApi.group
 		}
 
 		return {
@@ -27,6 +35,10 @@ export default defineComponent({
 		}
 	},
 	props: {
+		/**
+		 * True = show buttons as disabled
+		 */
+		disabled: { type: Boolean, default: false },
 		/**
 		 * True = show buttons vertically
 		 */

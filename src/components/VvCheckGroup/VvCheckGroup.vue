@@ -16,10 +16,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useGroup, VV_CHECK_GROUP } from '../../composables/group/useGroup'
+import type { UseGroupComponentProps } from '@/composables/group/types'
+import { defineComponent, toRefs } from 'vue'
+import { useGroup } from '../../composables/group/useGroup'
+import { VV_CHECK_GROUP } from '../../constants'
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
 
 /**
  * VvInputRadioGroup
@@ -46,6 +47,10 @@ export default defineComponent({
 		 */
 		disabled: { type: Boolean, default: false },
 		/**
+		 * True se readonly
+		 */
+		readonly: { type: Boolean, default: false },
+		/**
 		 * True = show buttons vertically
 		 */
 		vertical: { type: Boolean, default: false },
@@ -62,10 +67,19 @@ export default defineComponent({
 		 */
 		optionValue: { type: [String, Function], default: () => 'value' }
 	},
-	setup() {
-		const group = useGroup(VV_CHECK_GROUP)
+	setup(props, { emit }) {
+		const { disabled, readonly, modelValue } = toRefs(props)
 
-		return group
+		const sharedProps: UseGroupComponentProps = {
+			disabled,
+			readonly,
+			modelValue
+		}
+		const { group } = useGroup(VV_CHECK_GROUP, { props: sharedProps, emit })
+
+		return {
+			group
+		}
 	},
 	computed: {
 		groupClass() {
@@ -80,12 +94,14 @@ export default defineComponent({
 			return {
 				id: `${this.name}_opt${oIndex}`,
 				name: this.name,
-				label: ObjectUtilities.isFunction(this.optionLabel)
-					? this.optionLabel(option)
-					: option[this.optionLabel],
-				value: ObjectUtilities.isFunction(this.optionValue)
-					? this.optionValue(option)
-					: option[this.optionValue]
+				label:
+					typeof this.optionLabel === 'function'
+						? this.optionLabel(option)
+						: option[this.optionLabel],
+				value:
+					typeof this.optionValue === 'function'
+						? this.optionValue(option)
+						: option[this.optionValue]
 			}
 		}
 	}

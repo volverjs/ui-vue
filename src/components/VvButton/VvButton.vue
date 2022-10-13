@@ -57,15 +57,14 @@
 </template>
 
 <script lang="ts">
-import { v4 as uuidv4 } from 'uuid'
-import { computed, toRefs, defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
-import { ButtonIconPosition, ButtonTag } from './VvButton'
+import type { UseGroupComponentProps } from '../../composables/group/types'
 
-import {
-	useCurrentGroup,
-	VV_BUTTON_GROUP
-} from '../../composables/group/useGroup'
+import { v4 as uuidv4 } from 'uuid'
+import { computed, defineComponent, unref, toRefs, ref } from 'vue'
+import { ButtonIconPosition, ButtonTag } from './VvButton'
+import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
+import { VV_BUTTON_GROUP } from '../../constants'
 
 export default defineComponent({
 	props: {
@@ -125,18 +124,27 @@ export default defineComponent({
 		/**
 		 * Button rounded.
 		 */
-		rounded: Boolean
+		rounded: Boolean,
+		/**
+		 * Button disabled
+		 */
+		disabled: Boolean
 	},
-	setup(props: Object, { attrs, emit }) {
-		const name: String = (attrs?.name || uuidv4()) as String
-		const { isInGroup, group } = useCurrentGroup(VV_BUTTON_GROUP)
+	setup(props, { attrs, emit }) {
+		const modelValue = ref(attrs?.name || uuidv4())
+		const { disabled } = toRefs(props)
+		const sharedProps: UseGroupComponentProps = { disabled, modelValue }
+		const { isInGroup, group, checkIsSelected } = useSharedGroupState(
+			VV_BUTTON_GROUP,
+			{ props: sharedProps, emit }
+		)
 
 		return {
 			group,
 			isInGroup,
-			isActive: computed(() => unref(group)?.contains(name)),
+			isActive: computed(() => checkIsSelected(modelValue.value)),
 			onClick(e: Event) {
-				if (isInGroup.value) unref(group)?.add(name)
+				if (isInGroup.value) unref(group)?.add(modelValue.value)
 			}
 		}
 	},

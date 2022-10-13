@@ -1,4 +1,3 @@
-import { toRaw } from 'vue'
 export default {
 	equals(obj1, obj2, field) {
 		if (field)
@@ -138,7 +137,7 @@ export default {
 
 		if (list) {
 			for (let i = 0; i < list.length; i++) {
-				if (toRaw(list[i]) === toRaw(value)) {
+				if (this.equals(list[i], value)) {
 					index = i
 					break
 				}

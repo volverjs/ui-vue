@@ -27,12 +27,12 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
 						args
 					}
 				},
-				data: () => ({ selected: null }),
+				data: () => ({ selected: args.modelValue || null }),
 				template:
 					/*html*/
 					`
 					<div class="flex flex-row justify-between">
-                        <vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">
+                        <vv-button-group toggle compact v-bind="args" :model-value="selected">
                             <vv-button name="1a">Button 1</vv-button>
                             <vv-button name="2b">Button 2</vv-button>
                             <vv-button name="3c">Button 3</vv-button>

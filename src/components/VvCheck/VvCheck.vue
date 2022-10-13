@@ -12,14 +12,13 @@
 </template>
 
 <script lang="ts">
+import type { UseGroupComponentProps } from '@/composables/group/types'
 import type { InputHTMLAttributes } from 'vue'
 
-import { defineComponent, ref } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
-import {
-	useWrapInGroup,
-	VV_CHECK_GROUP
-} from '../../composables/group/useGroup'
+import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
+import { VV_CHECK_GROUP } from '../../constants'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -30,6 +29,7 @@ export default defineComponent({
 	inheritAttrs: false,
 	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
 	props: {
+		value: null,
 		/**
 		 * VModel
 		 */
@@ -59,8 +59,12 @@ export default defineComponent({
 		 */
 		disabled: { type: Boolean, default: false }
 	},
-	setup(props, context) {
-		const { input, focused } = useInputFocus(context)
+	setup(props, { emit }) {
+		const { disabled, modelValue } = toRefs(props)
+
+		const { input, focused } = useInputFocus({ emit })
+
+		const sharedProps: UseGroupComponentProps = { disabled, modelValue }
 		const {
 			wrappedModelValue,
 			group,
@@ -68,7 +72,10 @@ export default defineComponent({
 			isDisabled,
 			isReadonly,
 			checkIsSelected
-		} = useWrapInGroup(VV_CHECK_GROUP, { props, context })
+		} = useSharedGroupState<any>(VV_CHECK_GROUP, {
+			props: sharedProps,
+			emit
+		})
 
 		return {
 			input,
@@ -140,12 +147,12 @@ export default defineComponent({
 		isChecked() {
 			return this.binary
 				? this.wrappedModelValue
-				: this.checkIsSelected(this.$attrs.value)
+				: this.checkIsSelected(this.value)
 		}
 	},
 	methods: {
 		onChange() {
-			let _value = this.$attrs.value
+			// let _value = this.value
 			if (this.binary) {
 				this.wrappedModelValue = this.isChecked
 					? this.falseValue
@@ -154,13 +161,16 @@ export default defineComponent({
 			}
 
 			this.wrappedModelValue = !this.isChecked
-				? [...this.wrappedModelValue, _value]
-				: ObjectUtilities.removeFromList(_value, this.wrappedModelValue)
+				? [...this.wrappedModelValue, this.value]
+				: ObjectUtilities.removeFromList(
+						this.value,
+						this.wrappedModelValue
+				  )
 		},
 		onClick(event: Event) {
 			if (!this.disabled) {
 				this.$emit('click', event)
-				this.$emit('change', this.isChecked ? this.$attrs.value : null)
+				this.$emit('change', this.isChecked ? this.value : null)
 				this.focused = true
 			}
 		}

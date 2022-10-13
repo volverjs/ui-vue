@@ -12,14 +12,13 @@
 </template>
 
 <script lang="ts">
+import type { UseGroupComponentProps } from '@/composables/group/types'
 import type { InputHTMLAttributes } from 'vue'
 
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
-import {
-	useWrapInGroup,
-	VV_RADIO_GROUP
-} from '../../composables/group/useGroup'
+import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
+import { VV_RADIO_GROUP } from '../../constants'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -43,8 +42,12 @@ export default defineComponent({
 		 */
 		disabled: { type: Boolean, default: false }
 	},
-	setup(props, context) {
-		const { input, focused } = useInputFocus(context)
+	setup(props, { emit }) {
+		const { disabled, modelValue } = toRefs(props)
+
+		const { input, focused } = useInputFocus({ emit })
+
+		const sharedProps: UseGroupComponentProps = { disabled, modelValue }
 		const {
 			wrappedModelValue,
 			group,
@@ -52,7 +55,7 @@ export default defineComponent({
 			isDisabled,
 			isReadonly,
 			checkIsSelected
-		} = useWrapInGroup(VV_RADIO_GROUP, { props, context })
+		} = useSharedGroupState(VV_RADIO_GROUP, { props: sharedProps, emit })
 
 		return {
 			input,

@@ -1,11 +1,15 @@
 import { ref, watch } from 'vue'
 import { useFocus } from '@vueuse/core'
 
+interface IFocusOptions {
+	emit: Function
+}
+
 /**
  *
  */
-export function useInputFocus(context) {
-	const { props, emit } = context
+export function useInputFocus(options: IFocusOptions) {
+	const { emit } = options
 	const input = ref()
 	const { focused } = useFocus(input)
 
