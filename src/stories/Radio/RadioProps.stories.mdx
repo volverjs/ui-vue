@@ -1,0 +1,51 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvRadio from '../../components/VvRadio/VvRadio.vue'
+
+<Meta
+	title="Components/RadioButton/Props"
+	argTypes={{
+		onClick: { action: 'click', table: { disable: true } },
+		onChange: { action: 'change', table: { disable: true } },
+		onFocus: { action: 'focus', table: { disable: true } },
+		onBlur: { action: 'blur', table: { disable: true } }
+	}}
+	args={{
+		modelValue: null
+	}}
+	component={VvRadio}
+/>
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvRadio },
+	setup() {
+		return { args }
+	},
+	data: () => ({ ckValue: args.modelValue }),
+	template:
+		/*html*/
+		`
+		<div class="flex flex-row justify-between">
+			<vv-radio v-bind="args" v-model:modelValue="ckValue"/>
+			<strong v-if="ckValue">Valore selez: {{ckValue}} </strong> 
+		</div>
+        `
+})
+
+# Disabled
+
+<Canvas>
+	<Story
+		name="Disabled"
+		args={{
+			id: 1,
+			label: 'opzione 1',
+			name: 'ck1',
+			disabled: true,
+			value: 1
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

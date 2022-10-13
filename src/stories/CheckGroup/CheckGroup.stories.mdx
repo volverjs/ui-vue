@@ -7,7 +7,7 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
 
 # VvCheckGroup
 
-A group of radios.
+A group of checks.
 
 <Source language="jsx" code={'<vv-radio-group>...</vv-radio-group>'} />
 
@@ -16,13 +16,19 @@ A group of radios.
 		name="vv-check-group"
 		args={{
 			name: 'story1',
+			label: 'Prova',
 			vertical: false,
-			disabled: false
+			disabled: false,
+			readonly: false,
+			options: [],
+			optionLabel: 'label',
+			optionValue: 'value',
+			hint: 'Ciccio'
 		}}>
 		{(args) => {
 			return {
 				components: { VvCheckGroup, VvCheck },
-				data: () => ({ selected: args.modelValue || [], d1: false }),
+				data: () => ({ selected: args.modelValue || [] }),
 				setup() {
 					return { args }
 				},
@@ -35,7 +41,7 @@ A group of radios.
                             <vv-check id="o2" name="opts" value="2">Opt 2</vv-check>
                             <vv-check id="o3" name="opts" value="3">Opt 3</vv-check>
                         </vv-check-group>
-                        <strong v-if="selected">Bottone selez: {{selected}} </strong> 
+                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong> 
                     </div>
                     `
 			}

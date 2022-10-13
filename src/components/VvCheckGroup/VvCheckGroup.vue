@@ -1,17 +1,22 @@
 <template>
 	<fieldset :class="groupClass">
 		<legend v-if="label" v-text="label" />
-		<!-- #region options set up -->
-		<template v-if="options.length > 0">
-			<vv-check
-				v-for="(o, oIndex) in options"
-				:key="oIndex"
-				v-bind="getOptionProps(o, oIndex)" />
-		</template>
-		<!-- #endregion options set up -->
-		<!-- #region default -->
-		<slot v-else />
-		<!-- #endregion default -->
+		<div class="vv-input-checkbox-group__wrapper">
+			<!-- #region options set up -->
+			<template v-if="options.length > 0">
+				<vv-check
+					v-for="(o, oIndex) in options"
+					:key="oIndex"
+					v-bind="getOptionProps(o, oIndex)" />
+			</template>
+			<!-- #endregion options set up -->
+			<!-- #region default -->
+			<slot v-else />
+			<!-- #endregion default -->
+		</div>
+		<small class="vv-input-checkbox-group__hint">
+			<slot name="hint"> {{}} </slot>
+		</small>
 	</fieldset>
 </template>
 
@@ -22,6 +27,10 @@ import { useGroup } from '../../composables/group/useGroup'
 import { VV_CHECK_GROUP } from '../../constants'
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
 
+const commonProp = {
+	hint22: { type: String, default: '' }
+}
+
 /**
  * VvInputRadioGroup
  */
@@ -30,10 +39,12 @@ export default defineComponent({
 		VvCheck
 	},
 	props: {
+		...commonProp,
+		hint1: { type: String, default: '' },
 		/**
 		 * VModel
 		 */
-		modelValue: null,
+		modelValue: { type: [Array] },
 		/**
 		 * Radio group label
 		 */
@@ -84,8 +95,8 @@ export default defineComponent({
 	computed: {
 		groupClass() {
 			return {
-				'vv-input-check-group': true,
-				'vv-input-check-group--horizontal': !this.vertical
+				'vv-input-checkbox-group': true,
+				'vv-input-checkbox-group--horizontal': !this.vertical
 			}
 		}
 	},

@@ -5,6 +5,7 @@
 			:class="checkInputClass"
 			v-bind="checkInputAttrs"
 			@input="onChange" />
+		<!-- @slot Use this slot for check label -->
 		<slot>
 			{{ label }}
 		</slot>
@@ -33,25 +34,25 @@ export default defineComponent({
 		/**
 		 * VModel
 		 */
-		modelValue: { type: [Array, Boolean] },
+		modelValue: { type: [Array, Boolean, String, Number] },
 		/**
-		 * True - ritorna un valore del checkbox True/False invece di un valori multipli
+		 * True - ritorna un valore del checkbox binario (es True/False) invece di un valori multipli
 		 */
 		binary: { type: Boolean, default: false },
 		/**
-		 * Valore associato a true
+		 * Se binary=true, valore associato allo stato checked (ritornato al posto di TRUE)
 		 */
 		trueValue: { type: null, default: true },
 		/**
-		 * Valore associato a false
+		 * Se binary=true, valore associato allo stato unchecked (ritornato al posto di FALSE)
 		 */
 		falseValue: { type: null, default: false },
 		/**
-		 * True - visualizza il checkbox come un toggle
+		 * True - visualizza il VvCheck come un pulsante Switch/Toggle
 		 */
 		switch: { type: Boolean, default: false },
 		/**
-		 * Label radio button
+		 * Label componente
 		 */
 		label: { type: String, default: '' },
 		/**
@@ -146,13 +147,12 @@ export default defineComponent({
 		},
 		isChecked() {
 			return this.binary
-				? this.wrappedModelValue
+				? ObjectUtilities.equals(this.wrappedModelValue, this.trueValue)
 				: this.checkIsSelected(this.value)
 		}
 	},
 	methods: {
 		onChange() {
-			// let _value = this.value
 			if (this.binary) {
 				this.wrappedModelValue = this.isChecked
 					? this.falseValue

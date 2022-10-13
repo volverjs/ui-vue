@@ -1,0 +1,31 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+<Meta title="Components/Check/Slots" component={VvCheck} />
+
+# Slot default
+
+Slot default define the content of Check
+
+<Source
+	language="jsx"
+	code={'<vv-check name="r1" value="1">My content</vv-check>'}
+/>
+
+<Canvas>
+	<Story name="default">
+		{() => {
+			return {
+				components: { VvCheck },
+				template:
+					/*html*/
+					`
+					<vv-check name="r1" value="1">
+						My content
+					</vv-check>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

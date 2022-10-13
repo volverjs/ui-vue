@@ -47,13 +47,12 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import type { UseGroupComponentProps } from '../../composables/group/types'
-import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 
 import { v4 as uuidv4 } from 'uuid'
 import { computed, defineComponent, unref, toRefs, ref } from 'vue'
-import { ButtonIconPosition, ButtonTag } from './VvButton'
 import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
 import { VV_BUTTON_GROUP } from '../../constants'
+import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 
 export default defineComponent({
 	props: {
