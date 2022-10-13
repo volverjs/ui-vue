@@ -1,18 +1,6 @@
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component
-		v-bind="{
-			...$attrs,
-			'aria-label': label || $attrs['aria-label'],
-			'aria-disabled': $attrs.disabled,
-			class: hasClass,
-			href:
-				isComponent === buttonTags.a && $attrs.disabled
-					? 'javascript:;'
-					: $attrs.href
-		}"
-		:is="isComponent"
-		@click.passive="onClick">
+	<component v-bind="properties" :is="isComponent" @click.passive="onClick">
 		<!-- @slot default to replace all button content -->
 		<slot>
 			<!-- #region loading -->
@@ -59,6 +47,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import type { UseGroupComponentProps } from '../../composables/group/types'
+import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 
 import { v4 as uuidv4 } from 'uuid'
 import { computed, defineComponent, unref, toRefs, ref } from 'vue'
@@ -77,7 +66,8 @@ export default defineComponent({
 		 */
 		iconPosition: {
 			type: String as PropType<ButtonIconPosition>,
-			default: ButtonIconPosition.left
+			default: ButtonIconPosition.left,
+			validator: (value: string) => value in ButtonIconPosition
 		},
 		/**
 		 * Button label
@@ -114,6 +104,17 @@ export default defineComponent({
 			type: [String, Object]
 		},
 		/**
+		 * Link href
+		 */
+		href: String,
+		/**
+		 * Link target
+		 */
+		target: {
+			type: String as PropType<ButtonTarget>,
+			validator: (value: string) => value in ButtonTarget
+		},
+		/**
 		 * Create block level button that span the full width of a parent.
 		 */
 		block: Boolean,
@@ -147,6 +148,7 @@ export default defineComponent({
 				if (isInGroup.value) unref(group)?.add(modelValue.value)
 			}
 		}
+		// #endregion button-group logic
 	},
 	data() {
 		return {
@@ -156,16 +158,55 @@ export default defineComponent({
 	},
 	computed: {
 		/**
+		 * Compute component properties
+		 */
+		properties() {
+			return {
+				...this.linkProps,
+				'aria-label': this.label || this.$attrs['aria-label'],
+				'aria-disabled': this.isDisabled,
+				role: 'button',
+				class: this.hasClass,
+				to: this.to
+			}
+		},
+		/**
+		 * Compute link props (target, href)
+		 */
+		linkProps() {
+			const isLink = this.isComponent === this.buttonTags.a
+			let toReturn = {}
+			if (isLink) {
+				toReturn = this.isDisabled
+					? {
+							href: 'javascript:;'
+					  }
+					: {
+							target: this.target,
+							href: this.href
+					  }
+			}
+			return toReturn
+		},
+		/**
+		 * Check disabled state based on attributes
+		 */
+		isDisabled() {
+			return 'disabled' in this.$attrs
+		},
+		/**
 		 * @description Select the tag type in based on the props before.
 		 * @returns {string} The type of component
 		 */
 		isComponent() {
 			switch (true) {
+				case this.isDisabled:
+					return ButtonTag.button
 				case this.to !== undefined:
 					return '$nuxt' in this
 						? ButtonTag.nuxtLink
 						: ButtonTag.routerLink
-				case this.$attrs.href !== undefined:
+				case this.href !== undefined:
 					return ButtonTag.a
 				default:
 					return ButtonTag.button
@@ -183,7 +224,8 @@ export default defineComponent({
 				{
 					'vv-button--active': this.active || this.isActive,
 					'vv-button--block': this.block,
-					'vv-button--rounded': this.rounded
+					'vv-button--rounded': this.rounded,
+					'vv-button--full-bleed': this.fullBleed
 				}
 			]
 		},

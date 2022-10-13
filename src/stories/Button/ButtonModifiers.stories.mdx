@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { within, userEvent } from '@storybook/testing-library'
+import { testBlockButton, testDisabledButton } from './buttonModifiersTest.js'
 
 <Meta title="Components/Button/modifiers" />
 
@@ -14,7 +15,7 @@ Let's define a story for our `block` button.
 Create block level button that span the full width of a parent.
 
 <Canvas>
-	<Story name="block">
+	<Story name="block" play={testBlockButton}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -33,7 +34,7 @@ Create block level button that span the full width of a parent.
 Let's define a story for our `rounded` button:
 
 <Canvas>
-	<Story name="rounded">
+	<Story name="rounded" play={testBlockButton}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -47,12 +48,38 @@ Let's define a story for our `rounded` button:
 
 <Source language="jsx" code={'<vv-button label="Rounded" rounded />'} />
 
+## Full-bleed
+
+Let's define a story for our `full-bleed` button:
+
+<Canvas>
+	<Story name="full-bleed">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<div class="flex gap-4">
+						<vv-button label="Full bleed" full-bleed />
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<div class="flex gap-4">
+	<vv-button label="Full bleed" full-bleed />
+</div>`}
+/>
+
 ## Disabled
 
 Let's define a story for our `disabled` button.
 
 <Canvas>
-	<Story name="disabled">
+	<Story name="disabled" play={testDisabledButton}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -71,7 +98,7 @@ Let's define a story for our `disabled` button.
 Let's define a story for our `active` button.
 
 <Canvas>
-	<Story name="active">
+	<Story name="active" play={testBlockButton}>
 		{() => {
 			return {
 				components: { VvButton },

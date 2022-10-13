@@ -1,0 +1,131 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import vueRouter from 'storybook-vue3-router'
+
+<Meta title="Components/Button/link" />
+
+# VvButton link
+
+Stories of `VvButton` with `link`.
+
+## Button link text
+
+<Canvas>
+	<Story name="link-text">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Link text" href="https://google.it" target="_blank" variant="text" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Link text" href="https://google.it" target="_blank" variant="text" />`}
+/>
+
+## Button link text disabled
+
+<Canvas>
+	<Story name="link-text-disabled">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`}
+/>
+
+## Button link
+
+<Canvas>
+	<Story name="button-link">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button
+	label="Button link"
+	href="https://google.it"
+	target="_blank"
+	icon="charm:link-external"
+	icon-position="right"
+/>`}
+/>
+
+## Button link disabled
+
+<Canvas>
+	<Story name="button-link-disabled">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`}
+/>
+
+## Router-link
+
+export const Template = () => ({
+	components: { VvButton },
+	template:
+		/*html*/
+		`<vv-button label="Router link" to="/test" variant="text" />`
+})
+
+export const RouterLinkStory = Template.bind({})
+RouterLinkStory.decorators = [
+	vueRouter([
+		{
+			path: '/',
+			name: 'home',
+			component: VvButton
+		},
+		{
+			path: '/test',
+			name: 'test',
+			component: VvButton
+		}
+	])
+]
+
+<Canvas>
+	<Story name="router-link" args={{}}>
+		{RouterLinkStory}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-button label="Router link" to="/" variant="text" />`}
+/>

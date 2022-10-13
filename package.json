@@ -47,6 +47,7 @@
 		"sass": "^1.53.0",
 		"sass-loader": "^13.0.2",
 		"storybook-addon-markdown-docs": "^1.0.4",
+		"storybook-vue3-router": "^2.3.1",
 		"typescript": "~4.7.4",
 		"vite": "^2.9.14",
 		"vite-plugin-eslint": "^1.6.1",
