@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest, mixClassTest } from './ButtonGroupTest.js'
 
 <Meta title="Components/ButtonGroup/Rounded" component={VvButtonGroup} />
 
@@ -12,7 +13,15 @@ A VvButtonGroup with the <strong>rounded</strong> prop will be render with <stro
 <Source language="jsx" code={'<vv-button rounded></vv-button>'} />
 
 <Canvas>
-	<Story name="rounded">
+	<Story
+		name="rounded"
+		play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest],
+				className: 'rounded',
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
@@ -21,7 +30,7 @@ A VvButtonGroup with the <strong>rounded</strong> prop will be render with <stro
 					`
                         <vv-button-group rounded>
                             <vv-button>Button 1</vv-button>
-                            <vv-button>Button 2</vv-button>
+                            <vv-button id="btn2">Button 2</vv-button>
                             <vv-button>Button 3</vv-button>
                         </vv-button-group>
                     `
@@ -35,7 +44,16 @@ A VvButtonGroup with the <strong>rounded</strong> prop will be render with <stro
 You can manage the rounded stile of single buttons into group. Set rounded=false and add <strong>.vv-button--rounded</strong> to single buttons.
 
 <Canvas>
-	<Story name="mix">
+	<Story name="mix"
+	play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [mixClassTest],
+				numberOfElements: 2,
+				classToTest: 'rounded',
+			})
+		}
+	>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
@@ -43,16 +61,18 @@ You can manage the rounded stile of single buttons into group. Set rounded=false
 					/*html*/
 					`
 					<div class="flex flex-col">
-                        <vv-button-group>
+                        <vv-button-group data-testid="mix1">
                             <vv-button class="vv-button vv-button--rounded">Button 1</vv-button>
-                            <vv-button>Button 2</vv-button>
+                            <vv-button id="btn2">Button 2</vv-button>
                             <vv-button class="vv-button vv-button--rounded">Button 3</vv-button>
                         </vv-button-group>
-						 <vv-button-group class="mt-22">
+						<!--
+						 <vv-button-group data-testid="mix2" class="mt-22">
                             <vv-button>Button 1</vv-button>
                             <vv-button>Button 2</vv-button>
                             <vv-button class="vv-button vv-button--rounded">Button 3</vv-button>
                         </vv-button-group>
+						-->
 					</div>
                     `
 			}

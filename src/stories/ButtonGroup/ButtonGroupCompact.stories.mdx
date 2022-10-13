@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
 
 <Meta title="Components/ButtonGroup/Compact" component={VvButtonGroup} />
 
@@ -12,7 +13,14 @@ A VvButtonGroup with the <strong>compact</strong> prop will be render with <stro
 <Source language="jsx" code={'<vv-button compact></vv-button>'} />
 
 <Canvas>
-	<Story name="compact">
+	<Story name="compact"
+	play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest],
+				className: 'compact',
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
@@ -20,9 +28,9 @@ A VvButtonGroup with the <strong>compact</strong> prop will be render with <stro
 					/*html*/
 					`
                         <vv-button-group compact>
-                            <vv-button>Button 1</vv-button>
-                            <vv-button>Button 2</vv-button>
-                            <vv-button>Button 3</vv-button>
+                            <vv-button id="btn1">Button 1</vv-button>
+                            <vv-button id="btn2">Button 2</vv-button>
+                            <vv-button id="btn3">Button 3</vv-button>
                         </vv-button-group>
                     `
 			}

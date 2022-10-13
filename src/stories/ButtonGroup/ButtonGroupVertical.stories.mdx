@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
 
 <Meta title="Components/ButtonGroup/Vertical" component={VvButtonGroup} />
 
@@ -12,7 +13,15 @@ A VvButtonGroup with the <strong>vertical</strong> prop will be render with <str
 <Source language="jsx" code={'<vv-button vertical></vv-button>'} />
 
 <Canvas>
-	<Story name="vertical">
+	<Story
+		name="vertical"
+		play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest],
+				className: 'vertical'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
@@ -21,7 +30,7 @@ A VvButtonGroup with the <strong>vertical</strong> prop will be render with <str
 					`
                         <vv-button-group vertical>
                             <vv-button>Button 1</vv-button>
-                            <vv-button>Button 2</vv-button>
+                            <vv-button id="btn2">Button 2</vv-button>
                             <vv-button>Button 3</vv-button>
                         </vv-button-group>
                     `
