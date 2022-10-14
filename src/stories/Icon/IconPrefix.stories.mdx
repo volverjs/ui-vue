@@ -1,5 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
+import { iconTest, classTest } from './IconTest.js'
 
 <Meta title="Components/Icon/prefix" />
 
@@ -13,13 +14,21 @@ By default prefix generated are: `simple`, `normal`, `detailed`
 Let's define a story for our `normal` `prefix` icon.
 
 <Canvas>
-	<Story name="normal">
+	<Story
+		name="normal"
+		play={(ctx) =>
+			iconTest({
+				...ctx,
+				functions: [classTest],
+				classNames: ['vv-icon', 'iconify', 'iconify--normal']
+			})
+		}>
 		{() => {
 			return {
 				components: { VvIcon },
 				template:
 					/*html*/
-					`<vv-icon name="add" />`
+					`<vv-icon data-testid="img" name="add" />`
 			}
 		}}
 	</Story>
@@ -32,13 +41,21 @@ Let's define a story for our `normal` `prefix` icon.
 Let's define a story for our `simple` `prefix` icon.
 
 <Canvas>
-	<Story name="simple">
+	<Story
+		name="simple"
+		play={(ctx) =>
+			iconTest({
+				...ctx,
+				functions: [classTest],
+				classNames: ['vv-icon', 'iconify', 'iconify--simple']
+			})
+		}>
 		{() => {
 			return {
 				components: { VvIcon },
 				template:
 					/*html*/
-					`<vv-icon name="file-required" prefix="simple" />`
+					`<vv-icon name="file-required" data-testid="img" prefix="simple" />`
 			}
 		}}
 	</Story>
@@ -54,13 +71,21 @@ Let's define a story for our `simple` `prefix` icon.
 Let's define a story for our `detailed` `prefix` icon.
 
 <Canvas>
-	<Story name="detailed">
+	<Story
+		name="detailed"
+		play={(ctx) =>
+			iconTest({
+				...ctx,
+				functions: [classTest],
+				classNames: ['vv-icon', 'iconify', 'iconify--detailed']
+			})
+		}>
 		{() => {
 			return {
 				components: { VvIcon },
 				template:
 					/*html*/
-					`<vv-icon name="calendar" prefix="detailed" />`
+					`<vv-icon name="calendar" data-testid="img" prefix="detailed" />`
 			}
 		}}
 	</Story>
