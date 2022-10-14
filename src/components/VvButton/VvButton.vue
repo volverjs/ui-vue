@@ -6,10 +6,10 @@
 			<!-- #region loading -->
 			<template v-if="loading">
 				<slot name="loading">
-					<span
+					<vv-icon
 						v-if="loadingIcon"
-						class="iconify vv-button__icon"
-						:data-icon="loadingIcon"></span>
+						class="vv-button__loading-icon"
+						:name="loadingIcon" />
 					<span v-if="loadingLabel" class="vv-button__label">
 						{{ loadingLabel }}
 					</span>
@@ -22,9 +22,7 @@
 				<slot name="before" />
 				<!-- #region icon -->
 				<template v-if="icon">
-					<span
-						class="iconify vv-button__icon"
-						:data-icon="icon"></span>
+					<vv-icon class="vv-button__icon" :name="icon" />
 				</template>
 				<!-- #endregion icon -->
 				<!-- #region label  -->
@@ -48,11 +46,13 @@
 import { defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 import { useCurrentElementGroup } from '../../composables/group/useElementsGroup'
 import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
 
 export default defineComponent({
+	components: { VvIcon },
 	props: {
 		/**
 		 * Button icon
