@@ -1,0 +1,32 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvIcon from '../../components/VvIcon/VvIcon.vue'
+
+<Meta
+	title="Components/Icon"
+	component={VvIcon}
+	argTypes={{
+		name: {
+			defaultValue: 'mdi-light:home',
+			control: { type: 'text' }
+		}
+	}}
+/>
+
+export const Template = (args) => ({
+	components: { VvIcon },
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`<vv-icon v-bind="args" />`
+})
+
+# VvIcon
+
+Stories of `VvIcon`.
+Let's define a story for our playground `icon`:
+
+<Story name="vv-icon" args={{}}>
+	{Template.bind({})}
+</Story>

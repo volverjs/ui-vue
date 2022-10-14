@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
 
 <Meta title="Components/ButtonGroup/Block" component={VvButtonGroup} />
 
@@ -12,7 +13,15 @@ A VvButtonGroup with the <strong>block</strong> prop will be render with <strong
 <Source language="jsx" code={'<vv-button block></vv-button>'} />
 
 <Canvas>
-	<Story name="block">
+	<Story
+		name="block"
+		play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest],
+				className: 'block',
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
@@ -20,14 +29,9 @@ A VvButtonGroup with the <strong>block</strong> prop will be render with <strong
 					/*html*/
 					`
 					<div class="flex flex-col">
-                        <vv-button-group>
-                            <vv-button>Button 1</vv-button>
-                            <vv-button>Button 2</vv-button>
-                            <vv-button>Button 3</vv-button>
-                        </vv-button-group>
 						<vv-button-group block class="mt-22">
                             <vv-button>Button 1</vv-button>
-                            <vv-button>Button 2</vv-button>
+                            <vv-button id="btn2">Button 2</vv-button>
                             <vv-button>Button 3</vv-button>
                         </vv-button-group> 
 					</div>

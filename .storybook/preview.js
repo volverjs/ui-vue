@@ -1,5 +1,9 @@
 import '../src/stories/stories.scss'
 import addons from '@storybook/addons'
+import { app } from '@storybook/vue3'
+import DesignSystem from '../src/DesignSystem'
+
+app.use(new DesignSystem())
 
 // get an instance to the communication channel for the manager and preview
 const channel = addons.getChannel()

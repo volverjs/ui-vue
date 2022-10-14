@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { within, userEvent } from '@storybook/testing-library'
-import { testBlockButton, testDisabledButton } from './buttonModifiersTest.js'
+import { buttonTest, classTest, cssTest, disableTest } from './test.js'
 
 <Meta title="Components/Button/modifiers" />
 
@@ -15,7 +15,16 @@ Let's define a story for our `block` button.
 Create block level button that span the full width of a parent.
 
 <Canvas>
-	<Story name="block" play={testBlockButton}>
+	<Story
+		name="block"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest, cssTest],
+				className: 'block',
+				cssString: 'display: block'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -34,7 +43,16 @@ Create block level button that span the full width of a parent.
 Let's define a story for our `rounded` button:
 
 <Canvas>
-	<Story name="rounded" play={testBlockButton}>
+	<Story
+		name="rounded"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest, cssTest],
+				className: 'rounded',
+				cssString: 'border-radius: 9999px'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -53,7 +71,15 @@ Let's define a story for our `rounded` button:
 Let's define a story for our `full-bleed` button:
 
 <Canvas>
-	<Story name="full-bleed">
+	<Story
+		name="full-bleed"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'full-bleed'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -79,7 +105,15 @@ Let's define a story for our `full-bleed` button:
 Let's define a story for our `disabled` button.
 
 <Canvas>
-	<Story name="disabled" play={testDisabledButton}>
+	<Story
+		name="disabled"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [cssTest, disableTest],
+				cssString: 'cursor: not-allowed'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -98,7 +132,15 @@ Let's define a story for our `disabled` button.
 Let's define a story for our `active` button.
 
 <Canvas>
-	<Story name="active" play={testBlockButton}>
+	<Story
+		name="active"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'active'
+			})
+		}>
 		{() => {
 			return {
 				components: { VvButton },

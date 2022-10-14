@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import {buttonGroupTest, mixClassTest, classTest } from './ButtonGroupTest.js'
 
 <Meta title="Components/ButtonGroup/Toggle" component={VvButtonGroup} />
 
@@ -17,7 +18,18 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
 />
 
 <Canvas>
-	<Story name="toggle" args={{ modelValue: null }}>
+	<Story
+		name="toggle"
+		args={{ modelValue: null }}
+		play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest, mixClassTest],
+				className: 'compact',
+				classToTest: 'active',
+				numberOfElements: 1
+			})
+		}>
 		{(args, { argTypes }) => {
 			return {
 				components: { VvButton, VvButtonGroup },
