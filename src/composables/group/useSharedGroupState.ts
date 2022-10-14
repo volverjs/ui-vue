@@ -15,14 +15,15 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
  * Altrimenti utilizza lo stato del componenete.
  */
 export function useSharedGroupState<TModelValue>(
-	groupKey: Symbol,
-	options: UseGroupOptions
+	props: any,
+	context: any,
+	options: any
 ): UseSharedGroupStateReturn<TModelValue> {
-	const { props, emit } = options
+	const { emit } = context
 	//Recupera lo stato del componente
-	const { modelValue, disabled, readonly } = props
+	const { modelValue, disabled, readonly } = toRefs(props)
 	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
-	let group: Ref<IGroupState<TModelValue>> | null = inject(groupKey, null)
+	let group: Ref<IGroupState<TModelValue>> | null = inject(options.key, null)
 
 	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
 	const wrappedModelValue = computed({

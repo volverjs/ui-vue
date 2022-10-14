@@ -60,12 +60,9 @@ export default defineComponent({
 		 */
 		disabled: { type: Boolean, default: false }
 	},
-	setup(props, { emit }) {
-		const { disabled, modelValue } = toRefs(props)
+	setup(props, context) {
+		const { input, focused } = useInputFocus(context)
 
-		const { input, focused } = useInputFocus({ emit })
-
-		const sharedProps: UseGroupComponentProps = { disabled, modelValue }
 		const {
 			wrappedModelValue,
 			group,
@@ -73,10 +70,7 @@ export default defineComponent({
 			isDisabled,
 			isReadonly,
 			checkIsSelected
-		} = useSharedGroupState<any>(VV_CHECK_GROUP, {
-			props: sharedProps,
-			emit
-		})
+		} = useSharedGroupState<any>(props, context, { key: VV_CHECK_GROUP })
 
 		return {
 			input,

@@ -8,8 +8,8 @@ interface IFocusOptions {
 /**
  *
  */
-export function useInputFocus(options: IFocusOptions) {
-	const { emit } = options
+export function useInputFocus(context: any) {
+	const { emit } = context
 	const input = ref()
 	const { focused } = useFocus(input)
 

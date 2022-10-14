@@ -130,13 +130,20 @@ export default defineComponent({
 		 */
 		disabled: Boolean
 	},
-	setup(props, { attrs, emit }) {
+	setup(props, context) {
+		const { attrs } = context
+
 		const modelValue = ref(attrs?.name || uuidv4())
-		const { disabled } = toRefs(props)
-		const sharedProps: UseGroupComponentProps = { disabled, modelValue }
+		const sharedProps: UseGroupComponentProps = {
+			...toRefs(props),
+			modelValue
+		}
 		const { isInGroup, group, checkIsSelected } = useSharedGroupState(
-			VV_BUTTON_GROUP,
-			{ props: sharedProps, emit }
+			sharedProps,
+			context,
+			{
+				key: VV_BUTTON_GROUP
+			}
 		)
 
 		return {

@@ -15,17 +15,15 @@ import { VV_BUTTON_GROUP } from '../../constants'
  * VvButtonGroups
  */
 export default defineComponent({
-	setup(props, { emit }) {
+	setup(props, context) {
 		let group = null
 		//eventuale pulsante gia selezionato
-		const { toggle, disabled, modelValue } = toRefs(props)
+		const { toggle } = toRefs(props)
 
 		if (toggle.value) {
 			//Attiva la modalità toggle creando un gruppo nel quale registrare i pulsanti figli.
-			const sharedProps: UseGroupComponentProps = { disabled, modelValue }
-			const useGroupApi = useGroup(VV_BUTTON_GROUP, {
-				props: sharedProps,
-				emit
+			const useGroupApi = useGroup(props, context, {
+				key: VV_BUTTON_GROUP
 			})
 			group = useGroupApi.group
 		}

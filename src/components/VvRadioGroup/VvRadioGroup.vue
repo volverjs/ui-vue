@@ -1,17 +1,22 @@
 <template>
 	<fieldset :class="groupClass">
 		<legend v-if="label" v-text="label" />
-		<!-- #region options set up -->
-		<template v-if="options.length > 0">
-			<vv-radio
-				v-for="(o, oIndex) in options"
-				:key="oIndex"
-				v-bind="getOptionProps(o, oIndex)" />
-		</template>
-		<!-- #endregion options set up -->
-		<!-- #region default -->
-		<slot v-else />
-		<!-- #endregion default -->
+		<div class="vv-input-radio-group__wrapper">
+			<!-- #region options set up -->
+			<template v-if="options.length > 0">
+				<vv-radio
+					v-for="(o, oIndex) in options"
+					:key="oIndex"
+					v-bind="getOptionProps(o, oIndex)" />
+			</template>
+			<!-- #endregion options set up -->
+			<!-- #region default -->
+			<slot v-else />
+			<!-- #endregion default -->
+		</div>
+		<small class="vv-input-radio-group__hint" v-if="hasHintLabel">
+			<slot name="hint"> {{ hintLabel }} </slot>
+		</small>
 	</fieldset>
 </template>
 
@@ -20,6 +25,8 @@ import type { UseGroupComponentProps } from '@/composables/group/types'
 
 import { defineComponent, toRefs } from 'vue'
 import { useGroup } from '../../composables/group/useGroup'
+import { useHint } from '../../composables/hint/useHint'
+import { useOptions } from '../../composables/options/useOptions'
 import { VV_RADIO_GROUP } from '../../constants'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
@@ -66,9 +73,13 @@ export default defineComponent({
 		/**
 		 * Se options è un array di oggetti, optionValue = nome del campo da utilizzare come value oppure una funzione per ricavare il value
 		 */
-		optionValue: { type: [String, Function], default: () => 'value' }
+		optionValue: { type: [String, Function], default: () => 'value' },
+		/**
+		 * Testo help
+		 */
+		hintLabel: { type: String, default: '' }
 	},
-	setup(props, { emit }) {
+	setup(props, context) {
 		const { disabled, readonly, modelValue } = toRefs(props)
 
 		const sharedProps: UseGroupComponentProps = {
@@ -76,10 +87,17 @@ export default defineComponent({
 			readonly,
 			modelValue
 		}
-		const { group } = useGroup(VV_RADIO_GROUP, { props: sharedProps, emit })
+		const { group } = useGroup(props, context, { key: VV_RADIO_GROUP })
+
+		const { hasHintLabel } = useHint(props, context)
+
+		const { getOptionLabel, getOptionValue } = useOptions(props, context)
 
 		return {
-			group
+			group,
+			hasHintLabel,
+			getOptionLabel,
+			getOptionValue
 		}
 	},
 	computed: {
@@ -95,14 +113,8 @@ export default defineComponent({
 			return {
 				id: `${this.name}_opt${oIndex}`,
 				name: this.name,
-				label:
-					typeof this.optionLabel === 'function'
-						? this.optionLabel(option)
-						: option[this.optionLabel],
-				value:
-					typeof this.optionValue === 'function'
-						? this.optionValue(option)
-						: option[this.optionValue]
+				label: this.getOptionLabel(option),
+				value: this.getOptionValue(option)
 			}
 		}
 	}

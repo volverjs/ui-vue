@@ -1,6 +1,6 @@
 import type { UseGroupOptions, UseGroupReturn } from './types'
 
-import { provide, watch, computed } from 'vue'
+import { provide, watch, computed, toRefs } from 'vue'
 import { GroupStateManager } from './group'
 
 /**
@@ -8,11 +8,13 @@ import { GroupStateManager } from './group'
  * Stato condiviso: ModelValue, Disabled, Readonly
  */
 export function useGroup<TModelValue>(
-	key: Symbol,
-	options: UseGroupOptions
+	props: any,
+	context: any,
+	options: any
 ): UseGroupReturn<TModelValue> {
-	const { emit, props } = options
-	const { modelValue, disabled, readonly } = props
+	const { key } = options
+	const { emit } = context
+	const { modelValue, disabled, readonly } = toRefs(props)
 	const group = new GroupStateManager<TModelValue>({
 		modelValue,
 		disabled,
