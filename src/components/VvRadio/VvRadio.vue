@@ -5,20 +5,27 @@
 			:class="radioInputClass"
 			v-bind="radioInputAttrs"
 			@input="onChange" />
-		<slot>
+		<slot :value="modelValue">
 			{{ label }}
+		</slot>
+		<slot name="hint" :value="modelValue">
+			<small
+				class="vv-input-radio__hint"
+				style="white-space: pre"
+				v-if="hasHintLabel">
+				{{ currentHintLabel }}
+			</small>
 		</slot>
 	</label>
 </template>
 
 <script lang="ts">
-import type { UseGroupComponentProps } from '@/composables/group/types'
 import type { InputHTMLAttributes } from 'vue'
-
-import { defineComponent, toRefs } from 'vue'
+import { defineComponent } from 'vue'
+import { VV_RADIO_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
-import { VV_RADIO_GROUP } from '../../constants'
+import { useHint } from '../../composables/hint/useHint'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -30,6 +37,10 @@ export default defineComponent({
 	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
 	props: {
 		/**
+		 * Valore del radio
+		 */
+		value: null,
+		/**
 		 * VModel
 		 */
 		modelValue: { type: [Object, Number, Boolean, String] },
@@ -40,7 +51,23 @@ export default defineComponent({
 		/**
 		 * True se disabilitato
 		 */
-		disabled: { type: Boolean, default: false }
+		disabled: Boolean,
+		/**
+		 * True se readonly
+		 */
+		readonly: Boolean,
+		/**
+		 * Testo help
+		 */
+		hintLabel: { type: String, default: '' },
+		/**
+		 * True - invalid state
+		 */
+		error: Boolean,
+		/**
+		 * Messaggi di errore.
+		 */
+		errors: [String, Array]
 	},
 	setup(props, context) {
 		const { input, focused } = useInputFocus(context)
@@ -54,6 +81,8 @@ export default defineComponent({
 			checkIsSelected
 		} = useSharedGroupState(props, context, { key: VV_RADIO_GROUP })
 
+		const { hasHintLabel, currentHintLabel } = useHint(props, context)
+
 		return {
 			input,
 			focused,
@@ -62,7 +91,9 @@ export default defineComponent({
 			isInGroup,
 			isDisabled,
 			isReadonly,
-			checkIsSelected
+			checkIsSelected,
+			hasHintLabel,
+			currentHintLabel
 		}
 	},
 	computed: {
@@ -70,17 +101,19 @@ export default defineComponent({
 			const { class: cssClass } = this.$attrs
 			return {
 				'vv-input-radio': true,
+				'vv-input-radio--valid': this.error === false,
+				'vv-input-radio--invalid': this.error === true,
 				class: cssClass
 			}
 		},
 		radioAttrs() {
-			const { id, name, styles } = this.$attrs
+			const { id, name, style } = this.$attrs
 			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
 				k.startsWith('data-')
 			)
 			return {
 				for: (id || name) as string,
-				styles,
+				style,
 				...dataAttrs
 			}
 		},

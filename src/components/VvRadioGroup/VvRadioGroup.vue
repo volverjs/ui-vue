@@ -14,20 +14,23 @@
 			<slot v-else />
 			<!-- #endregion default -->
 		</div>
-		<small class="vv-input-radio-group__hint" v-if="hasHintLabel">
-			<slot name="hint"> {{ hintLabel }} </slot>
-		</small>
+		<slot name="hint" :value="modelValue">
+			<small
+				class="vv-input-radio-group__hint"
+				style="white-space: pre"
+				v-if="hasHintLabel">
+				{{ currentHintLabel }}
+			</small>
+		</slot>
 	</fieldset>
 </template>
 
 <script lang="ts">
-import type { UseGroupComponentProps } from '@/composables/group/types'
-
-import { defineComponent, toRefs } from 'vue'
+import { defineComponent } from 'vue'
+import { VV_RADIO_GROUP } from '../../constants'
 import { useGroup } from '../../composables/group/useGroup'
 import { useHint } from '../../composables/hint/useHint'
 import { useOptions } from '../../composables/options/useOptions'
-import { VV_RADIO_GROUP } from '../../constants'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
 /**
@@ -77,25 +80,27 @@ export default defineComponent({
 		/**
 		 * Testo help
 		 */
-		hintLabel: { type: String, default: '' }
+		hintLabel: { type: String, default: '' },
+		/**
+		 * True - invalid state
+		 */
+		error: Boolean,
+		/**
+		 * Messaggi di errore.
+		 */
+		errors: [String, Array]
 	},
 	setup(props, context) {
-		const { disabled, readonly, modelValue } = toRefs(props)
-
-		const sharedProps: UseGroupComponentProps = {
-			disabled,
-			readonly,
-			modelValue
-		}
 		const { group } = useGroup(props, context, { key: VV_RADIO_GROUP })
 
-		const { hasHintLabel } = useHint(props, context)
+		const { hasHintLabel, currentHintLabel } = useHint(props, context)
 
 		const { getOptionLabel, getOptionValue } = useOptions(props, context)
 
 		return {
 			group,
 			hasHintLabel,
+			currentHintLabel,
 			getOptionLabel,
 			getOptionValue
 		}
@@ -104,7 +109,9 @@ export default defineComponent({
 		groupClass() {
 			return {
 				'vv-input-radio-group': true,
-				'vv-input-radio-group--horizontal': !this.vertical
+				'vv-input-radio-group--horizontal': !this.vertical,
+				'vv-input-radio-group--valid': this.error === false,
+				'vv-input-radio-group--invalid': this.error === true
 			}
 		}
 	},

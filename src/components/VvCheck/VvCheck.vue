@@ -6,20 +6,27 @@
 			v-bind="checkInputAttrs"
 			@input="onChange" />
 		<!-- @slot Use this slot for check label -->
-		<slot>
+		<slot :value="modelValue">
 			{{ label }}
+		</slot>
+		<slot name="hint" :value="modelValue">
+			<small
+				class="vv-input-checkbox__hint"
+				style="white-space: pre"
+				v-if="hasHintLabel">
+				{{ currentHintLabel }}
+			</small>
 		</slot>
 	</label>
 </template>
 
 <script lang="ts">
-import type { UseGroupComponentProps } from '@/composables/group/types'
 import type { InputHTMLAttributes } from 'vue'
-
-import { defineComponent, toRefs } from 'vue'
+import { defineComponent } from 'vue'
+import { VV_CHECK_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
-import { VV_CHECK_GROUP } from '../../constants'
+import { useHint } from '../../composables/hint/useHint'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -30,15 +37,21 @@ export default defineComponent({
 	inheritAttrs: false,
 	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
 	props: {
+		/**
+		 * Valore della check
+		 */
 		value: null,
 		/**
 		 * VModel
+		 * @description
+		 * Se Binary = true, modelValue puo essere Object,Boolean,Number
+		 * Altrimenti modelValue sarà un Array
 		 */
-		modelValue: { type: [Array, Boolean, String, Number] },
+		modelValue: [Array, Boolean, Number, String],
 		/**
 		 * True - ritorna un valore del checkbox binario (es True/False) invece di un valori multipli
 		 */
-		binary: { type: Boolean, default: false },
+		binary: Boolean,
 		/**
 		 * Se binary=true, valore associato allo stato checked (ritornato al posto di TRUE)
 		 */
@@ -50,15 +63,31 @@ export default defineComponent({
 		/**
 		 * True - visualizza il VvCheck come un pulsante Switch/Toggle
 		 */
-		switch: { type: Boolean, default: false },
+		switch: Boolean,
 		/**
 		 * Label componente
 		 */
-		label: { type: String, default: '' },
+		label: String,
 		/**
 		 * True se disabilitato
 		 */
-		disabled: { type: Boolean, default: false }
+		disabled: Boolean,
+		/**
+		 * True se readonly
+		 */
+		readonly: Boolean,
+		/**
+		 * Testo help
+		 */
+		hintLabel: { type: String, default: '' },
+		/**
+		 * True - invalid state
+		 */
+		error: Boolean,
+		/**
+		 * Messaggi di errore.
+		 */
+		errors: [String, Array]
 	},
 	setup(props, context) {
 		const { input, focused } = useInputFocus(context)
@@ -72,6 +101,8 @@ export default defineComponent({
 			checkIsSelected
 		} = useSharedGroupState<any>(props, context, { key: VV_CHECK_GROUP })
 
+		const { hasHintLabel, currentHintLabel } = useHint(props, context)
+
 		return {
 			input,
 			focused,
@@ -80,7 +111,9 @@ export default defineComponent({
 			isInGroup,
 			isDisabled,
 			isReadonly,
-			checkIsSelected
+			checkIsSelected,
+			hasHintLabel,
+			currentHintLabel
 		}
 	},
 	computed: {
@@ -89,17 +122,19 @@ export default defineComponent({
 			return {
 				'vv-input-checkbox': true,
 				'vv-input-checkbox--switch': this.switch,
+				'vv-input-checkbox--valid': this.error === false,
+				'vv-input-checkbox--invalid': this.error === true,
 				class: cssClass
 			}
 		},
 		checkAttrs() {
-			const { id, name, styles } = this.$attrs
+			const { id, name, style } = this.$attrs
 			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
 				k.startsWith('data-')
 			)
 			return {
 				for: (id || name) as string,
-				styles,
+				style,
 				...dataAttrs
 			}
 		},
@@ -154,14 +189,21 @@ export default defineComponent({
 				return
 			}
 
-			this.wrappedModelValue = !this.isChecked
-				? [...this.wrappedModelValue, this.value]
-				: ObjectUtilities.removeFromList(
-						this.value,
-						this.wrappedModelValue
-				  )
+			if (Array.isArray(this.wrappedModelValue)) {
+				this.wrappedModelValue = !this.isChecked
+					? [...this.wrappedModelValue, this.value]
+					: ObjectUtilities.removeFromList(
+							this.value,
+							this.wrappedModelValue
+					  )
+				return
+			}
+
+			console.warn(
+				'Cannot change value - VvCheck modelValue is not an array'
+			)
 		},
-		onClick(event: Event) {
+		onClick(event: MouseEvent | undefined) {
 			if (!this.disabled) {
 				this.$emit('click', event)
 				this.$emit('change', this.isChecked ? this.value : null)

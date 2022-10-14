@@ -295,5 +295,9 @@ export default {
 		} else {
 			return list
 		}
+	},
+
+	isString(value) {
+		return typeof value === 'string' || value instanceof String
 	}
 }

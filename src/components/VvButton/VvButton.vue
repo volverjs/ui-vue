@@ -128,7 +128,11 @@ export default defineComponent({
 		/**
 		 * Button disabled
 		 */
-		disabled: Boolean
+		disabled: Boolean,
+		/**
+		 *
+		 */
+		fullBleed: Boolean
 	},
 	setup(props, context) {
 		const { attrs } = context
