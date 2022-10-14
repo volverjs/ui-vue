@@ -4,10 +4,15 @@ import VvIcon from '../../components/VvIcon/VvIcon.vue'
 <Meta
 	title="Components/Icon"
 	component={VvIcon}
+	args={{
+		name: 'menu'
+	}}
 	argTypes={{
-		name: {
-			defaultValue: 'mdi-light:home',
-			control: { type: 'text' }
+		mode: {
+			control: {
+				type: 'select',
+				options: ['style', 'bg', 'mask', 'svg']
+			}
 		}
 	}}
 />
