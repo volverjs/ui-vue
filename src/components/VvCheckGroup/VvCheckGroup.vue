@@ -14,14 +14,7 @@
 			<slot v-else />
 			<!-- #endregion default -->
 		</div>
-		<slot name="hint" :value="modelValue">
-			<small
-				class="vv-input-checkbox-group__hint"
-				style="white-space: pre"
-				v-if="hasHintLabel">
-				{{ currentHintLabel }}
-			</small>
-		</slot>
+		<HintSlot v-if="hasHint" class="vv-input-checkbox-group__hint" />
 	</fieldset>
 </template>
 
@@ -29,23 +22,24 @@
 import { defineComponent } from 'vue'
 import { VV_CHECK_GROUP } from '../../constants'
 import { useGroup } from '../../composables/group/useGroup'
-import { useHint } from '../../composables/hint/useHint'
+import { useHintSlot } from '../../composables/hint/useHint'
 import { useOptions } from '../../composables/options/useOptions'
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
-
+import { HintSlot } from '../../components/common/HintSlot.js'
 /**
  * VvInputRadioGroup
  */
 export default defineComponent({
-	emits: ['update:ModelValue'],
+	emits: ['update:modelValue'],
 	components: {
-		VvCheck
+		VvCheck,
+		HintSlot
 	},
 	props: {
 		/**
 		 * VModel
 		 */
-		modelValue: { type: [Array] },
+		modelValue: { type: Array },
 		/**
 		 * Radio group label
 		 */
@@ -83,7 +77,17 @@ export default defineComponent({
 		 */
 		hintLabel: { type: String, default: '' },
 		/**
-		 * True - invalid state
+		 * True - valid state
+		 */
+		valid: Boolean,
+		/**
+		 * Messaggio custom per un valore valido
+		 */
+		validLabel: [String, Array],
+		/**
+		 * True - invalid state.
+		 * @default
+		 * True (invalid)| False (valid), Null/Undefined (indefinito - non impostato)
 		 */
 		error: Boolean,
 		/**
@@ -94,16 +98,17 @@ export default defineComponent({
 	setup(props, context) {
 		const { group } = useGroup(props, context, { key: VV_CHECK_GROUP })
 
-		const { hasHintLabel, currentHintLabel } = useHint(props, context)
+		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
 
 		const { getOptionLabel, getOptionValue } = useOptions(props, context)
 
 		return {
 			group,
-			hasHintLabel,
-			currentHintLabel,
+			hasHint,
 			getOptionLabel,
-			getOptionValue
+			getOptionValue,
+			isInvalid,
+			isValid
 		}
 	},
 	computed: {
@@ -111,8 +116,8 @@ export default defineComponent({
 			return {
 				'vv-input-checkbox-group': true,
 				'vv-input-checkbox-group--horizontal': !this.vertical,
-				'vv-input-checkbox-group--valid': this.error === false,
-				'vv-input-checkbox-group--invalid': this.error === true
+				'vv-input-checkbox-group--valid': this.isValid,
+				'vv-input-checkbox-group--invalid': this.isInvalid
 			}
 		}
 	},

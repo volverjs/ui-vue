@@ -8,14 +8,7 @@
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<slot name="hint" :value="modelValue">
-			<small
-				class="vv-input-radio__hint"
-				style="white-space: pre"
-				v-if="hasHintLabel">
-				{{ currentHintLabel }}
-			</small>
-		</slot>
+		<HintSlot v-if="hasHint" class="vv-input-radio__hint" />
 	</label>
 </template>
 
@@ -25,7 +18,8 @@ import { defineComponent } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
-import { useHint } from '../../composables/hint/useHint'
+import { useHintSlot } from '../../composables/hint/useHint'
+import { HintSlot } from '../../components/common/HintSlot.js'
 
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -35,6 +29,9 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
 export default defineComponent({
 	inheritAttrs: false,
 	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
+	components: {
+		HintSlot
+	},
 	props: {
 		/**
 		 * Valore del radio
@@ -61,6 +58,14 @@ export default defineComponent({
 		 */
 		hintLabel: { type: String, default: '' },
 		/**
+		 * True - valid state
+		 */
+		valid: Boolean,
+		/**
+		 * Messaggio custom per un valore valido
+		 */
+		validLabel: [String, Array],
+		/**
 		 * True - invalid state
 		 */
 		error: Boolean,
@@ -81,7 +86,7 @@ export default defineComponent({
 			checkIsSelected
 		} = useSharedGroupState(props, context, { key: VV_RADIO_GROUP })
 
-		const { hasHintLabel, currentHintLabel } = useHint(props, context)
+		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
 
 		return {
 			input,
@@ -92,8 +97,9 @@ export default defineComponent({
 			isDisabled,
 			isReadonly,
 			checkIsSelected,
-			hasHintLabel,
-			currentHintLabel
+			hasHint,
+			isInvalid,
+			isValid
 		}
 	},
 	computed: {
@@ -101,8 +107,8 @@ export default defineComponent({
 			const { class: cssClass } = this.$attrs
 			return {
 				'vv-input-radio': true,
-				'vv-input-radio--valid': this.error === false,
-				'vv-input-radio--invalid': this.error === true,
+				'vv-input-radio--valid': this.isValid,
+				'vv-input-radio--invalid': this.isInvalid,
 				class: cssClass
 			}
 		},

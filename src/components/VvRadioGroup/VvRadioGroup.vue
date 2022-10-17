@@ -14,14 +14,7 @@
 			<slot v-else />
 			<!-- #endregion default -->
 		</div>
-		<slot name="hint" :value="modelValue">
-			<small
-				class="vv-input-radio-group__hint"
-				style="white-space: pre"
-				v-if="hasHintLabel">
-				{{ currentHintLabel }}
-			</small>
-		</slot>
+		<HintSlot v-if="hasHint" class="vv-input-radio-group__hint" />
 	</fieldset>
 </template>
 
@@ -29,8 +22,9 @@
 import { defineComponent } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
 import { useGroup } from '../../composables/group/useGroup'
-import { useHint } from '../../composables/hint/useHint'
 import { useOptions } from '../../composables/options/useOptions'
+import { useHintSlot } from '../../composables/hint/useHint'
+import { HintSlot } from '../../components/common/HintSlot.js'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
 /**
@@ -38,7 +32,8 @@ import VvRadio from '../../components/VvRadio/VvRadio.vue'
  */
 export default defineComponent({
 	components: {
-		VvRadio
+		VvRadio,
+		HintSlot
 	},
 	props: {
 		/**
@@ -82,6 +77,14 @@ export default defineComponent({
 		 */
 		hintLabel: { type: String, default: '' },
 		/**
+		 * True - valid state
+		 */
+		valid: Boolean,
+		/**
+		 * Messaggio custom per un valore valido
+		 */
+		validLabel: [String, Array],
+		/**
 		 * True - invalid state
 		 */
 		error: Boolean,
@@ -93,16 +96,17 @@ export default defineComponent({
 	setup(props, context) {
 		const { group } = useGroup(props, context, { key: VV_RADIO_GROUP })
 
-		const { hasHintLabel, currentHintLabel } = useHint(props, context)
+		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
 
 		const { getOptionLabel, getOptionValue } = useOptions(props, context)
 
 		return {
 			group,
-			hasHintLabel,
-			currentHintLabel,
 			getOptionLabel,
-			getOptionValue
+			getOptionValue,
+			hasHint,
+			isInvalid,
+			isValid
 		}
 	},
 	computed: {
@@ -110,8 +114,8 @@ export default defineComponent({
 			return {
 				'vv-input-radio-group': true,
 				'vv-input-radio-group--horizontal': !this.vertical,
-				'vv-input-radio-group--valid': this.error === false,
-				'vv-input-radio-group--invalid': this.error === true
+				'vv-input-radio-group--valid': this.isValid,
+				'vv-input-radio-group--invalid': this.isInvalid
 			}
 		}
 	},

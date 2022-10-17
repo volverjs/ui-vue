@@ -1,26 +1,26 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
 
-<Meta title="Components/RadioGroup/Options" component={VvRadioGroup} />
+<Meta title="Components/CheckGroup/Props" component={VvCheckGroup} />
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
-	components: { VvRadioGroup, VvRadio },
+	components: { VvCheckGroup, VvCheck },
 	setup() {
 		return { args }
 	},
-	data: () => ({ selected: args.modelValue || null }),
+	data: () => ({ selected: args.modelValue || [] }),
 	template:
 		/*html*/
 		`
 		<div class="flex flex-row justify-between">
-            <vv-radio-group v-bind="args" v-model:modelValue="selected">
+            <vv-check-group v-bind="args" v-model:modelValue="selected">
                 <template v-slot:hint>
                     <p>Ciao sono un hint di default. Piacere.</p>
                 </template> 
-            </vv-radio-group>
+            </vv-check-group>
             <strong v-if="selected">Selezione: {{selected}} </strong> 
         </div>
         `

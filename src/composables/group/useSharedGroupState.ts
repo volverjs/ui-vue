@@ -1,9 +1,5 @@
 import type { Ref } from 'vue'
-import type {
-	IGroupState,
-	UseGroupOptions,
-	UseSharedGroupStateReturn
-} from './types'
+import type { IGroupState, UseSharedGroupStateReturn } from './types'
 
 import { toRefs, inject, computed, unref } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'

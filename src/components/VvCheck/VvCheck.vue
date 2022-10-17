@@ -9,14 +9,7 @@
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<slot name="hint" :value="modelValue">
-			<small
-				class="vv-input-checkbox__hint"
-				style="white-space: pre"
-				v-if="hasHintLabel">
-				{{ currentHintLabel }}
-			</small>
-		</slot>
+		<HintSlot v-if="hasHint" class="vv-input-checkbox__hint" />
 	</label>
 </template>
 
@@ -26,8 +19,8 @@ import { defineComponent } from 'vue'
 import { VV_CHECK_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
-import { useHint } from '../../composables/hint/useHint'
-
+import { useHintSlot } from '../../composables/hint/useHint'
+import { HintSlot } from '../../components/common/HintSlot.js'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 /**
@@ -36,6 +29,9 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
 export default defineComponent({
 	inheritAttrs: false,
 	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
+	components: {
+		HintSlot
+	},
 	props: {
 		/**
 		 * Valore della check
@@ -81,6 +77,14 @@ export default defineComponent({
 		 */
 		hintLabel: { type: String, default: '' },
 		/**
+		 * True - valid state
+		 */
+		valid: Boolean,
+		/**
+		 * Messaggio custom per un valore valido
+		 */
+		validLabel: [String, Array],
+		/**
 		 * True - invalid state
 		 */
 		error: Boolean,
@@ -101,7 +105,7 @@ export default defineComponent({
 			checkIsSelected
 		} = useSharedGroupState<any>(props, context, { key: VV_CHECK_GROUP })
 
-		const { hasHintLabel, currentHintLabel } = useHint(props, context)
+		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
 
 		return {
 			input,
@@ -112,8 +116,9 @@ export default defineComponent({
 			isDisabled,
 			isReadonly,
 			checkIsSelected,
-			hasHintLabel,
-			currentHintLabel
+			hasHint,
+			isInvalid,
+			isValid
 		}
 	},
 	computed: {
@@ -122,8 +127,8 @@ export default defineComponent({
 			return {
 				'vv-input-checkbox': true,
 				'vv-input-checkbox--switch': this.switch,
-				'vv-input-checkbox--valid': this.error === false,
-				'vv-input-checkbox--invalid': this.error === true,
+				'vv-input-checkbox--valid': this.isValid,
+				'vv-input-checkbox--invalid': this.isInvalid,
 				class: cssClass
 			}
 		},
