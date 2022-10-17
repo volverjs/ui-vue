@@ -29,8 +29,37 @@ export const Template = (args) => ({
 
 # VvIcon
 
-Stories of `VvIcon`.
-Let's define a story for our playground `icon`:
+#### VvIcon use <a href="https://iconify.design/" target="_blank">Iconify</a> library and <a href="https://docs.iconify.design/icon-components/vue/" target="_blank">Iconify Vue component</a> under the hood.
+
+The UI Vue component library export a function (`createIconifyJsonFiles`) to create the <a href="https://docs.iconify.design/types/iconify-json.html" target="_blank">IconifyJSON</a> objects.
+This function for input params has the source path to the icons folder and the destination path for output json files.
+
+The source path can have subfolders and then SVG icons. In this case the last parent folder name will be the iconify <a href="https://docs.iconify.design/icon-components/vue/#icon" target="_blank">prefix</a> and all the children SVG icons will be the icons `name`.
+The `provider` is `vv` by default. (You can change it during the DesygnSystem instance.)
+
+<div class="flex justify-center py-lg">
+	<img src="iconify-name-structure.png" alt="iconify-name-structure" />
+</div>
+
+Ex: If my SVG icons folder root is structured like:
+
+    assets/icons/
+    			/simple/---.svg
+    			/normal/---.svg
+    			/detailed/---.svg
+
+The `createIconifyJsonFiles('assets/icons', 'assets/icons')` function will generate icons like `@vv:simple:{fileName}` or `@vv:detailed:{fileName}`
+
+In `VvIcon` component props: `name` `provider` and `prefix`, only `name` is required because the provider is `vv` by default and `prefix` is `normal` by default.
+
+So, if there is one or more custom folders with additional icons (ex: `assets/icons/custom/---.svg`) you can use it creating the IconifyJSON file with `createIconifyJsonFiles` function
+and passing it throught the DesignSystem instance like this:
+
+`new Design System({ iconifyCollections: [ myCustomIconifyJSON ] })` and use it with `vv-icon` component like this:
+
+`<vv-icon name="iconName" prefix="custom" />` or `<vv-icon name="custom:{iconName}" />`
+
+To use our playground `vv-icon` use the `Canvas` section
 
 <Story name="vv-icon" args={{}}>
 	{Template.bind({})}

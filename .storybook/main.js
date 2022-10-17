@@ -10,6 +10,7 @@ module.exports = {
 		'@storybook/addon-interactions',
 		'@storybook/addon-docs'
 	],
+	staticDirs: ['./static'],
 	framework: '@storybook/vue3',
 	core: {
 		builder: '@storybook/builder-vite'
