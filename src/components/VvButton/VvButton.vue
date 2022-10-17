@@ -52,7 +52,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { computed, defineComponent, unref, toRefs, ref } from 'vue'
 import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
 import { VV_BUTTON_GROUP } from '../../constants'
-import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 
 export default defineComponent({
 	components: { VvIcon },
