@@ -43,13 +43,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, unref } from 'vue'
 import type { PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 import VvIcon from '../VvIcon/VvIcon.vue'
+import type { UseGroupComponentProps } from '../../composables/group/types'
 
-import { useCurrentElementGroup } from '../../composables/group/useElementsGroup'
-import { VV_BUTTON_GROUP_MANAGER } from '../../composables/group/keys'
+import { v4 as uuidv4 } from 'uuid'
+import { computed, defineComponent, unref, toRefs, ref } from 'vue'
+import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
+import { VV_BUTTON_GROUP } from '../../constants'
 
 export default defineComponent({
 	components: { VvIcon },
@@ -124,25 +126,36 @@ export default defineComponent({
 		 */
 		rounded: Boolean,
 		/**
-		 * Button full-bleed.
+		 * Button disabled
+		 */
+		disabled: Boolean,
+		/**
+		 *
 		 */
 		fullBleed: Boolean
 	},
-	setup(props, { attrs }) {
-		// #region button-group logic
-		const name = String(attrs?.name) || ''
-		// Use element group composable, retrieve all grouping data to manage active state and set it in the group context
-		const { group, groupElementId, isInGroup, isElementInGroupActive } =
-			useCurrentElementGroup(VV_BUTTON_GROUP_MANAGER, name)
+	setup(props, context) {
+		const { attrs } = context
+
+		const modelValue = ref(attrs?.name || uuidv4())
+		const sharedProps: UseGroupComponentProps = {
+			...toRefs(props),
+			modelValue
+		}
+		const { isInGroup, group, checkIsSelected } = useSharedGroupState(
+			sharedProps,
+			context,
+			{
+				key: VV_BUTTON_GROUP
+			}
+		)
 
 		return {
 			group,
-			groupElementId,
 			isInGroup,
-			isElementInGroupActive,
-			onClick() {
-				if (isInGroup.value)
-					unref(group)?.setActive(groupElementId.value)
+			isActive: computed(() => checkIsSelected(modelValue.value)),
+			onClick(e: Event) {
+				if (isInGroup.value) unref(group)?.add(modelValue.value)
 			}
 		}
 		// #endregion button-group logic
@@ -219,8 +232,7 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active':
-						this.active || this.isElementInGroupActive,
+					'vv-button--active': this.active || this.isActive,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded,
 					'vv-button--full-bleed': this.fullBleed
