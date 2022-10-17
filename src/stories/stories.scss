@@ -1,4 +1,6 @@
-@import '@volverjs/style/reset';
-@import '@volverjs/style/props';
-@import '@volverjs/style/utilities';
-@import '@volverjs/style/themes/dark';
+$zero-specificity-for-utilities: false;
+
+@import '@volverjs/style/scss/reset';
+@import '@volverjs/style/scss/props';
+@import '@volverjs/style/scss/themes/dark';
+@import '@volverjs/style/scss/utilities';
