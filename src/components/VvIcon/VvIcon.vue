@@ -4,6 +4,7 @@
 		:class="hasClass"
 		v-bind="{
 			...$props,
+			provider: currentProvider,
 			icon
 		}" />
 </template>
