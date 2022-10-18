@@ -2,6 +2,7 @@ import { addCollection, type IconifyJSON } from '@iconify/vue'
 import iconsSimple from './assets/icons/simple.json'
 import iconsNormal from './assets/icons/normal.json'
 import iconsDetailed from './assets/icons/detailed.json'
+import type { App } from 'vue'
 
 // https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties
 declare module 'vue' {
@@ -62,12 +63,13 @@ export default class DesignSystem implements IDesignSystem {
 	 * @param {Object} Vue
 	 * @param {Object} options
 	 */
-	install(app: any) {
+	install(app: App) {
 		// Add default icons collection (simple, normal, detailed)
 		// and others custom collections
 		this.iconifyCollections.forEach((iconifyCollection) => {
 			this.addCollection(iconifyCollection)
 		})
+
 		// register global methods
 		app.config.globalProperties.$ds = this
 	}
