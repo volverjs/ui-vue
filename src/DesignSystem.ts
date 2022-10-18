@@ -1,7 +1,5 @@
 import { addCollection, type IconifyJSON } from '@iconify/vue'
-import iconsSimple from './assets/icons/simple.json'
-import iconsNormal from './assets/icons/normal.json'
-import iconsDetailed from './assets/icons/detailed.json'
+import type { App } from 'vue'
 
 // https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties
 declare module 'vue' {
@@ -49,12 +47,7 @@ export default class DesignSystem implements IDesignSystem {
 		this.fetchWithCredentials = fetchWithCredentials
 		this.fetchOptions = fetchOptions
 		this.defaultProvider = defaultProvider
-		this.iconifyCollections = [
-			iconsSimple,
-			iconsNormal,
-			iconsDetailed,
-			...iconifyCollections
-		]
+		this.iconifyCollections = iconifyCollections
 	}
 
 	/**
@@ -62,21 +55,18 @@ export default class DesignSystem implements IDesignSystem {
 	 * @param {Object} Vue
 	 * @param {Object} options
 	 */
-	install(app: any) {
+	install(app: App) {
 		// Add default icons collection (simple, normal, detailed)
 		// and others custom collections
 		this.iconifyCollections.forEach((iconifyCollection) => {
-			this.addCollection(iconifyCollection)
+			this.addCollection(iconifyCollection, this.defaultProvider)
 		})
 		// register global methods
 		app.config.globalProperties.$ds = this
 	}
 
-	addCollection(
-		collection: IconifyJSON,
-		providerName = VV_PROVIDER
-	): boolean {
-		return addCollection(collection, providerName)
+	addCollection(collection: IconifyJSON, providerName?: string): boolean {
+		return addCollection(collection, providerName || this.defaultProvider)
 	}
 
 	fetchIcon(src: string, options?: any): Promise<string | undefined> {

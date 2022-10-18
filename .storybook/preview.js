@@ -2,8 +2,15 @@ import '../src/stories/stories.scss'
 import addons from '@storybook/addons'
 import { app } from '@storybook/vue3'
 import DesignSystem from '../src/DesignSystem'
+import iconsSimple from '../src/assets/icons/simple.json'
+import iconsNormal from '../src/assets/icons/normal.json'
+import iconsDetailed from '../src/assets/icons/detailed.json'
 
-app.use(new DesignSystem())
+app.use(
+	new DesignSystem({
+		iconifyCollections: [iconsSimple, iconsNormal, iconsDetailed]
+	})
+)
 
 // get an instance to the communication channel for the manager and preview
 const channel = addons.getChannel()
