@@ -1,88 +1,77 @@
-import type { Nullable } from '@/types/generic'
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref, WritableComputedRef, ComputedRef } from 'vue'
 
 /**
- * Gruppo di elementi
- * @description
- * Oggetti  IElementsGroup rappresnetano un insieme di elementi relazionati tra loro.
+ * Stato condiviso da un nodo PADRE ad un gruppo di elementi figli.
  */
-export interface IElementsGroup {
+export interface IGroupState<T> {
 	/**
-	 * Chiave del gruppo
+	 * Shared ModelValue
 	 */
-	key: Symbol
-
+	modelValue: T | null
 	/**
-	 * Elementi del gruppo
+	 * Shared Disabled state
 	 */
-	items: Array<String>
-
+	disabled: Boolean | null
 	/**
-	 * Elemento selezionato/attivo
+	 * Shared Readonly state
 	 */
-	itemActive: Nullable<String>
-
+	readonly: Boolean | null
 	/**
-	 * Aggiungi al gruppo.
-	 * @param {String} elementKey - chiave dell'elemento da inserire
-	 * @return {String} Se gia presente, la stessa chiave. Se manca la nuova chiave per l'elemento.
+	 * Aggiungi un valore al modelValue
 	 */
-	add(elementKey?: Nullable<String>): Nullable<String>
-
+	add(value: T): void
 	/**
-	 * Rimuovi elemento da gruppo
+	 * Rimuovo un valore dal modelValue
 	 */
-	remove(elementKey: String): void
-
+	remove(value: T): void
 	/**
-	 * Imposta l'elemento come attivo
-	 * @param {String} elementKey - chiave dell'elemento da impostare
+	 * Controlla se un valore è contenuto nel modelValue
 	 */
-	setActive(elementKey: Nullable<String>): void
-
+	contains(value: T): void
 	/**
-	 * Controlla se la chiave è presente nel gruppo
+	 * Re-imposta interamente il modelValue
 	 */
-	contain(elementKey?: Nullable<String>): Boolean
-
-	/**
-	 * Controlla se la chiave corrisponde a quella dell'elemento attivo
-	 */
-	isActive(elementKey: Nullable<String>): Boolean
+	setModelValue(value: T | null): void
 }
 
 /**
- * Opzioni per inizializzare un raggruppamento
+ * Options per creare un gruppo
  */
-export interface IElementsGroupOptions {
+export interface IGroupStateOptions<T> {
 	/**
-	 * Chiave dell'elemento selezionato
+	 * ModelValue iniziale
 	 */
-	defaultSelected?: String
+	modelValue: Ref<T> | null
+	/**
+	 * Disabled state iniziale
+	 */
+	disabled: Ref<Boolean>
+	/**
+	 * Readonly state iniziale
+	 */
+	readonly?: Ref<Boolean>
 }
 
-/**
- * Api gruppo corrente al quale appartiene l'elemento
- */
-export interface IUseCurrentElementGroup {
-	/**
-	 * Id del gruppo di appartenenza
-	 */
-	groupId: Symbol
-	/**
-	 * Gruppo
-	 */
-	group: Ref<IElementsGroup> | null
-	/**
-	 * Id elemento nel gruppo
-	 */
-	groupElementId: Ref<Nullable<String>>
-	/**
-	 * True = presente nel gruppo
-	 */
-	isInGroup: ComputedRef<Boolean | undefined>
-	/**
-	 * True = elemento selezionato nel gruppo.
-	 */
-	isElementInGroupActive: ComputedRef<Boolean | undefined>
+export interface UseGroupComponentProps {
+	disabled: Ref<Boolean>
+	readonly?: Ref<Boolean>
+	modelValue: any
+}
+
+export interface UseGroupOptions {
+	props: UseGroupComponentProps
+	emit: Function
+}
+
+export interface UseGroupReturn<T> {
+	group: IGroupState<T>
+}
+
+export interface UseSharedGroupStateReturn<T> {
+	group: Ref<IGroupState<T>> | null
+	wrappedModelValue: WritableComputedRef<T | null>
+	isInGroup: ComputedRef<Boolean>
+	isDisabled: ComputedRef<Boolean>
+	isReadonly: ComputedRef<Boolean>
+	checkIsSelected: Function
 }

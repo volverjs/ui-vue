@@ -30,5 +30,5 @@ watch(search, (newValue) => {
 </script>
 
 <style lang="scss">
-@import '@volverjs/style/components/vv-input-text';
+@import '@volverjs/style/scss/components/vv-input-text';
 </style>

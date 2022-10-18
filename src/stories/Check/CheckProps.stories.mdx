@@ -1,0 +1,183 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+<Meta
+	title="Components/Check/Props"
+	argTypes={{
+		onClick: { action: 'click', table: { disable: true } },
+		onChange: { action: 'change', table: { disable: true } },
+		onFocus: { action: 'focus', table: { disable: true } },
+		onBlur: { action: 'blur', table: { disable: true } }
+	}}
+	args={{
+		modelValue: []
+	}}
+	component={VvCheck}
+/>
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvCheck },
+	setup() {
+		return { args }
+	},
+	data: () => ({ ckValue: args.modelValue }),
+	template:
+		/*html*/
+		`
+		<div class="flex flex-row justify-between">
+			<vv-check v-bind="args" v-model:modelValue="ckValue"/>
+			<strong v-if="ckValue">Valore selez: {{ckValue}} </strong> 
+		</div>
+        `
+})
+
+# Disabled
+
+<Canvas>
+	<Story
+		name="Disabled"
+		args={{
+			id: 1,
+			label: 'opzione 1',
+			name: 'ck1',
+			disabled: true,
+			value: 1
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Readonly
+
+<Canvas>
+	<Story
+		name="Readonly"
+		args={{
+			id: 2,
+			label: 'opzione 1',
+			name: 'ck2',
+			readonly: true,
+			value: 'Pera'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Switch
+
+<Canvas>
+	<Story
+		name="Switch"
+		args={{
+			id: 3,
+			label: 'opzione 1',
+			name: 'ck3',
+			switch: true,
+			value: { a: 'Banana' }
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Binario True/false (sperimentale)
+
+<Canvas>
+	<Story
+		name="True/false"
+		args={{
+			id: 4,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck4',
+			binary: true,
+			modelValue: false
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# TrueValue=Si/No (sperimentale)
+
+<Canvas>
+	<Story
+		name="Binario Si/No (sperimentale)"
+		args={{
+			id: 5,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck5',
+			binary: true,
+			trueValue: 'Si',
+			falseValue: 'No',
+			modelValue: 'No'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Error
+
+<Canvas>
+	<Story
+		name="Invalid"
+		args={{
+			id: 6,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck6',
+			modelValue: false,
+			error: true
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Error with message
+
+<Canvas>
+	<Story
+		name="Error with message"
+		args={{
+			id: 7,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck7',
+			modelValue: false,
+			error: true,
+			errors: 'Sbagliato!'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Error with messages
+
+<Canvas>
+	<Story
+		name="Error with messages"
+		args={{
+			id: 8,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck8',
+			modelValue: false,
+			error: true,
+			errors: ['Sbagliato!', 'Mona!']
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Hint label
+
+<Canvas>
+	<Story
+		name="Hint label"
+		args={{
+			id: 9,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck9',
+			modelValue: false,
+			hintLabel: 'Aiuto! Son qui!'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
