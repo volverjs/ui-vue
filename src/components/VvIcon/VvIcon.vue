@@ -13,7 +13,7 @@
 import { defineComponent, type ComputedRef, type PropType } from 'vue'
 import type { IconifyRenderMode } from '@iconify/vue'
 import { Icon, addIcon, getIcon } from '@iconify/vue'
-import { PREFIX } from './VvIcon'
+import type { PREFIX } from './VvIcon'
 import { useModifiers } from '../../composables/useModifiers'
 
 export default defineComponent({
@@ -33,11 +33,11 @@ export default defineComponent({
 			type: String
 		},
 		/**
-		 * Icon prefix
+		 * Icon default options prefix: simple | normal | detailed
 		 */
 		prefix: {
 			type: String as PropType<PREFIX>,
-			default: PREFIX.normal
+			default: 'normal'
 		},
 		/**
 		 * Url remote SVG icon
@@ -62,9 +62,10 @@ export default defineComponent({
 		/**
 		 * Icon render mode
 		 * 'style' = 'bg' or 'mask', depending on icon content
-		 * 'bg' = <span> with style using `background`
-		 * 'mask' = <span> with style using `mask`
-		 * 'svg' = <svg>
+		 * 'bg' = span with style using `background`
+		 * 'mask' = span with style using `mask`
+		 * 'svg' = svg
+		 * Iconify doc: https://docs.iconify.design/iconify-icon/modes.html
 		 */
 		mode: String as PropType<IconifyRenderMode>,
 		/**
@@ -96,7 +97,7 @@ export default defineComponent({
 		 */
 		svg: String,
 		/**
-		 * Icon modifiers
+		 * Icon modifiers: vv-icon css helper classes, value/s are concatened with prefix 'vv-icon--'
 		 * @values string | Array<string>
 		 */
 		modifiers: {
