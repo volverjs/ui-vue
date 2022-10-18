@@ -1,7 +1,4 @@
 import { addCollection, type IconifyJSON } from '@iconify/vue'
-import iconsSimple from './assets/icons/simple.json'
-import iconsNormal from './assets/icons/normal.json'
-import iconsDetailed from './assets/icons/detailed.json'
 import type { App } from 'vue'
 
 // https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties
