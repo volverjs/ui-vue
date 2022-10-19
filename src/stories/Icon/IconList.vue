@@ -5,7 +5,7 @@
 			<input id="search" v-model="search" type="text" />
 		</div>
 	</div>
-	<div class="vv-icon-list flex gap-16 flex-wrap mt-lg">
+	<div class="flex justify-center gap-16 flex-wrap mt-lg">
 		<div
 			v-for="iconName in icons"
 			:key="iconName"
