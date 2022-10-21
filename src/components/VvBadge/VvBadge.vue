@@ -6,8 +6,8 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
-	value: string | number
-	color: string
+	value?: string | number
+	color?: string
 }>()
 
 const hasClass = computed(() => (props.color ? `vv-badge--${props.color}` : ''))
