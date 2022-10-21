@@ -5,6 +5,27 @@ import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
 <Meta title="Components/RadioGroup" component={VvRadioGroup} />
 
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvRadioGroup, VvRadio },
+	setup() {
+		return { args }
+	},
+	data: () => ({ selected: args.modelValue || null }),
+	template:
+		/*html*/
+		`
+		<div class="flex flex-row justify-between">
+            <vv-radio-group v-bind="args" v-model:modelValue="selected">
+                <template v-slot:hint>
+                    <p>Ciao sono un hint di default. Piacere.</p>
+                </template> 
+            </vv-radio-group>
+            <strong v-if="selected">Selezione: {{selected}} </strong> 
+        </div>
+        `
+})
+
 # VvRadioGroup
 
 A group of radios.

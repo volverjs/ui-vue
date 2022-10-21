@@ -1,0 +1,64 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+import { Template } from './Check.stories.mdx'
+
+<Meta
+	title="Components/Check/Error"
+	args={{
+		modelValue: []
+	}}
+	component={VvCheck}
+/>
+
+# Error
+
+<Canvas>
+	<Story
+		name="Invalid"
+		args={{
+			id: 6,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck6',
+			modelValue: false,
+			error: true
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Error with message
+
+<Canvas>
+	<Story
+		name="Error with message"
+		args={{
+			id: 7,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck7',
+			modelValue: false,
+			error: true,
+			errors: 'Sbagliato!'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Error with messages
+
+<Canvas>
+	<Story
+		name="Error with messages"
+		args={{
+			id: 8,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck8',
+			modelValue: false,
+			error: true,
+			errors: ['Sbagliato!', 'Mona!']
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

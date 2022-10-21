@@ -1,0 +1,48 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+import { Template } from './Check.stories.mdx'
+
+<Meta
+	title="Components/Check/Binary"
+	args={{
+		modelValue: []
+	}}
+	component={VvCheck}
+/>
+
+# Binary True/false (sperimentale)
+
+<Canvas>
+	<Story
+		name="True/false"
+		args={{
+			id: 4,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck4',
+			binary: true,
+			modelValue: false
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Binary "Si"/"No" (sperimentale)
+
+<Canvas>
+	<Story
+		name="Binario Si/No (sperimentale)"
+		args={{
+			id: 5,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck5',
+			binary: true,
+			trueValue: 'Si',
+			falseValue: 'No',
+			modelValue: 'No'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
