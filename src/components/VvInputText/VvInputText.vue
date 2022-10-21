@@ -1,15 +1,30 @@
 <template>
 	<div v-bind="inputTextAttrs" :class="inputTextClass">
-		<label :for="inputAttrs.id" v-if="label">{{ label }}</label>
+		<label v-if="label" :for="inputAttrs.id">{{ label }}</label>
 		<div class="vv-input-text__wrapper">
 			<!-- @slot icon-left to replace icon left -->
-			<slot name="icon-left" v-if="hasIconLeft" v-bind="iconSlotProps">
+			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
 				<vv-icon class="vv-input-text__icon-left" :name="icon" />
 			</slot>
 			<input v-bind="inputAttrs" v-model="inputTextData" />
 			<!-- @slot icon-right to replace icon left -->
-			<slot name="icon-right" v-if="hasIconRight" v-bind="iconSlotProps">
+			<slot
+				v-if="hasIconRight && !isPassword"
+				name="icon-right"
+				v-bind="iconSlotProps">
 				<vv-icon class="vv-input-text__icon-right" :name="icon" />
+			</slot>
+			<!-- @slot icon-password-on-off to replace icon show hide password -->
+			<slot
+				v-else-if="isPassword"
+				name="icon-password-on-off"
+				v-bind="iconSlotProps">
+				<button
+					class="vv-input-text__actions"
+					:icon="currentPasswordIcon"
+					@click.prevent="toggleShowHidePassword">
+					<vv-icon :name="currentPasswordIcon" />
+				</button>
 			</slot>
 		</div>
 		<HintSlot
@@ -20,7 +35,7 @@
 
 <script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots } from 'vue'
+import { computed, useAttrs, useSlots, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { useValidationState } from '../../composables/validation/useValidationState'
 import { useIcons } from '../../composables/icons/useIcons'
@@ -73,6 +88,7 @@ const { isInvalid, isValid } = useValidationState(props, { emit })
 
 //Computed
 const isDirty = computed(() => ObjectUtilities.isNotEmpty(inputTextData?.value))
+const isPassword = computed(() => props.type === 'password')
 const inputTextClass = computed(() => {
 	const { class: cssClass } = attrs
 	return {
@@ -107,10 +123,10 @@ const inputAttrs = computed(() => {
 		autocomplete
 	} = attrs as InputHTMLAttributes
 
-	const { disabled, readonly, type } = props
+	const { disabled, readonly } = props
 
 	return {
-		type,
+		type: inputType.value,
 		id: id || name,
 		name,
 		placeholder,
@@ -140,6 +156,21 @@ const iconSlotProps = computed(() => {
 		modelValue
 	}
 })
+const inputType = computed(() => {
+	if (props.type === 'password')
+		return bHidePassword.value ? 'password' : 'text'
+
+	return props.type
+})
+
+//Gestione password field
+const bHidePassword = ref(true)
+const currentPasswordIcon = computed(() =>
+	bHidePassword.value ? 'eye-on' : 'eye-off'
+)
+const toggleShowHidePassword = () => {
+	bHidePassword.value = !bHidePassword.value
+}
 
 const HintSlot = HintSlotFactory(props, slots)
 </script>

@@ -16,10 +16,10 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
 export interface UseGroupOrLocalStateReturn {
 	group: Ref<IGroupState> | null
 	modelValue: Ref<any>
-	isInGroup: ComputedRef<Boolean>
-	isDisabled: ComputedRef<Boolean>
-	isReadonly: ComputedRef<Boolean>
-	isToggleEnabled: ComputedRef<Boolean>
+	isInGroup: ComputedRef<boolean>
+	isDisabled: ComputedRef<boolean>
+	isReadonly: ComputedRef<boolean>
+	isToggleEnabled: ComputedRef<boolean>
 	checkIsSelected: (value: any) => boolean
 }
 
@@ -27,7 +27,7 @@ export interface UseGroupOrLocalStateReturn {
  * Utilizza lo stato locale o quello del gruppo di appartenenza.
  */
 export function useGroupOrLocalState(
-	groupKey: Symbol,
+	groupKey: symbol,
 	localState: GroupParentState
 ): UseGroupOrLocalStateReturn {
 	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
