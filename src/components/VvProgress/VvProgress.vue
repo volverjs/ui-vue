@@ -1,5 +1,5 @@
 <template>
-	<progress v-bind="properties" />
+	<progress ref="progress" aria-label="progressbar" v-bind="properties" />
 </template>
 
 <script lang="ts">
@@ -20,13 +20,6 @@ export default defineComponent({
 			type: Number
 		},
 		/**
-		 * Progress label
-		 */
-		ariaLabel: {
-			type: String,
-			default: 'progress-bar'
-		},
-		/**
 		 * Indeterminate attribute
 		 */
 		indeterminate: Boolean
@@ -37,7 +30,6 @@ export default defineComponent({
 		 */
 		properties() {
 			return {
-				'aria-label': this.ariaLabel,
 				role: 'progressbar',
 				class: this.hasClass,
 				value: this.value,
@@ -55,6 +47,17 @@ export default defineComponent({
 					'vv-progress--indeterminate': this.indeterminate
 				}
 			]
+		}
+	},
+	watch: {
+		indeterminate(newValue: boolean) {
+			this.$refs.progress.indeterminate = newValue
+		}
+	},
+	mounted() {
+		if (this.indeterminate) {
+			this.$refs.progress.indeterminate = true
+			this.$refs.progress.removeAttribute('value')
 		}
 	}
 })
