@@ -3,75 +3,47 @@ import type { Ref, WritableComputedRef, ComputedRef } from 'vue'
 /**
  * Stato condiviso da un nodo PADRE ad un gruppo di elementi figli.
  */
-export interface IGroupState<T> {
+export interface IGroupState {
+	/**
+	 * Chiave usata per il provide del gruppo
+	 */
+	key: Symbol
 	/**
 	 * Shared ModelValue
 	 */
-	modelValue: T | null
+	modelValue: Ref<any>
 	/**
-	 * Shared Disabled state
+	 * True = gruppo di elementi è disabilitato
 	 */
-	disabled: Boolean | null
-	/**
-	 * Shared Readonly state
-	 */
-	readonly: Boolean | null
-	/**
-	 * Aggiungi un valore al modelValue
-	 */
-	add(value: T): void
-	/**
-	 * Rimuovo un valore dal modelValue
-	 */
-	remove(value: T): void
-	/**
-	 * Controlla se un valore è contenuto nel modelValue
-	 */
-	contains(value: T): void
-	/**
-	 * Re-imposta interamente il modelValue
-	 */
-	setModelValue(value: T | null): void
+	disabled: Ref<Boolean>
 }
 
 /**
- * Options per creare un gruppo
+ * Stato condiviso per in un gruppo di pulsanti
  */
-export interface IGroupStateOptions<T> {
+export interface IButtonGroupState extends IGroupState {
+	type: 'ButtonGroup'
 	/**
-	 * ModelValue iniziale
+	 * True = gruppo di pulsanti è in modalità TOGGLE (come i radio buttons)
 	 */
-	modelValue: Ref<T> | null
+	toggle: Ref<Boolean>
+}
+
+/**
+ * Stato condiviso per in un gruppo di inputs
+ */
+export interface IInputGroupState extends IGroupState {
+	type: 'InputGroup'
 	/**
-	 * Disabled state iniziale
+	 * True = gruppo di elementi di input è in readonly
 	 */
-	disabled: Ref<Boolean>
-	/**
-	 * Readonly state iniziale
-	 */
-	readonly?: Ref<Boolean>
+	readonly: Ref<Boolean>
 }
 
-export interface UseGroupComponentProps {
-	disabled: Ref<Boolean>
-	readonly?: Ref<Boolean>
-	modelValue: any
+export function isIButtonGroupState(obj: any): Boolean {
+	return 'type' in obj && obj.type === 'ButtonGroup'
 }
 
-export interface UseGroupOptions {
-	props: UseGroupComponentProps
-	emit: Function
-}
-
-export interface UseGroupReturn<T> {
-	group: IGroupState<T>
-}
-
-export interface UseSharedGroupStateReturn<T> {
-	group: Ref<IGroupState<T>> | null
-	wrappedModelValue: WritableComputedRef<T | null>
-	isInGroup: ComputedRef<Boolean>
-	isDisabled: ComputedRef<Boolean>
-	isReadonly: ComputedRef<Boolean>
-	checkIsSelected: Function
+export function isIInputGroupState(obj: any): Boolean {
+	return 'type' in obj && obj.type === 'InputGroup'
 }

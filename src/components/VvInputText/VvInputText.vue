@@ -13,195 +13,141 @@
 			</slot>
 		</div>
 		<HintSlot
-			v-if="hasHint"
 			:id="inputAriaAttrs['aria-describedby']"
 			class="vv-input-text__hint" />
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { defineComponent } from 'vue'
+import { computed, useAttrs, useSlots } from 'vue'
 import { useVModel } from '@vueuse/core'
-import { useHintSlot } from '../../composables/hint/useHint'
+import { useValidationState } from '../../composables/validation/useValidationState'
 import { useIcons } from '../../composables/icons/useIcons'
-import { HintSlot } from '../../components/common/HintSlot.js'
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import { computed } from '@vue/reactivity'
 
-export default defineComponent({
-	inheritAttrs: false,
-	emits: ['update:modelValue'],
-	components: {
-		HintSlot,
-		VvIcon
+import VvIcon from '../../components/VvIcon/VvIcon.vue'
+import { HintSlotFactory } from '../common/HintSlot'
+
+const slots = useSlots()
+const attrs = useAttrs()
+const props = defineProps({
+	modelValue: null,
+	type: {
+		type: String,
+		default: 'text',
+		validator: (value: string) => ['text', 'password'].indexOf(value) > -1
 	},
-	props: {
-		/**
-		 * VBind
-		 */
-		modelValue: null,
-		/**
-		 * Input type
-		 */
-		type: {
-			type: String,
-			default: 'text',
-			validator: (value: string) =>
-				['text', 'password'].indexOf(value) > -1
-		},
-		/**
-		 * Label componente
-		 */
-		label: String,
-		/**
-		 * True se disabilitato
-		 */
-		disabled: Boolean,
-		/**
-		 * True se readonly
-		 */
-		readonly: Boolean,
-		/**
-		 * Testo help
-		 */
-		hintLabel: { type: String, default: '' },
-		/**
-		 * True - valid state
-		 */
-		valid: Boolean,
-		/**
-		 * Messaggio custom per un valore valido
-		 */
-		validLabel: [String, Array],
-		/**
-		 * True - invalid state
-		 */
-		error: Boolean,
-		/**
-		 * Messaggi di errore.
-		 */
-		errors: [String, Array],
-		/**
-		 * True - input loading
-		 */
-		loading: Boolean,
-		/**
-		 * Hint text da visualizzare quando il componente è in loading.
-		 */
-		loadingLabel: String,
-		/**
-		 * Nome dell'icona
-		 * @see DsIcon
-		 */
-		icon: { type: String, default: '' },
-		/**
-		 * Posizione dell'icona
-		 */
-		iconPosition: {
-			type: String,
-			validation: (value: string) => ['left', 'right'].indexOf(value) > -1
-		},
-		/**
-		 * True = label flottante
-		 */
-		floating: Boolean
+	label: String,
+	disabled: Boolean,
+	readonly: Boolean,
+	hintLabel: { type: String, default: '' },
+	valid: Boolean,
+	validLabel: [String, Array],
+	error: Boolean,
+	errors: [String, Array],
+	loading: Boolean,
+	loadingLabel: String,
+	/**
+	 * Nome dell'icona
+	 * @see DsIcon
+	 */
+	icon: { type: String, default: '' },
+	/**
+	 * Posizione dell'icona
+	 */
+	iconPosition: {
+		type: String,
+		validation: (value: string) => ['left', 'right'].indexOf(value) > -1
 	},
-	setup(props, context) {
-		const inputTextData = useVModel(props, 'modelValue', context.emit)
-		const isDirty = computed(() =>
-			ObjectUtilities.isNotEmpty(inputTextData?.value)
-		)
+	/**
+	 * True = label flottante
+	 */
+	floating: Boolean
+})
+const emit = defineEmits(['update:modelValue'])
 
-		const { hasHint, isInvalid, isValid, isLoading } = useHintSlot(
-			props,
-			context
-		)
+const inputTextData = useVModel(props, 'modelValue', emit)
+const { hasIconLeft, hasIconRight } = useIcons(props, { slots })
+const { isInvalid, isValid } = useValidationState(props, { emit })
 
-		const { hasIconLeft, hasIconRight } = useIcons(props, context)
-
-		return {
-			inputTextData,
-			hasHint,
-			isInvalid,
-			isValid,
-			isDirty,
-			isLoading,
-			hasIconLeft,
-			hasIconRight
-		}
-	},
-	computed: {
-		inputTextClass() {
-			const { class: cssClass } = this.$attrs
-			return {
-				'vv-input-text': true,
-				'vv-input-text--readonly': this.readonly,
-				'vv-input-text--valid': this.isValid,
-				'vv-input-text--invalid': this.isInvalid,
-				'vv-input-text--loading': this.isLoading,
-				'vv-input-text--icon-left': this.hasIconLeft,
-				'vv-input-text--icon-right': this.hasIconRight,
-				'vv-input-text--floating':
-					this.floating && ObjectUtilities.isNotEmpty(this.label),
-				'vv-input-text--dirty': this.isDirty,
-				class: cssClass
-			}
-		},
-		inputTextAttrs() {
-			const { style } = this.$attrs
-			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
-				k.startsWith('data-')
-			)
-			return {
-				style,
-				...dataAttrs
-			}
-		},
-		inputAttrs() {
-			const {
-				id = '',
-				name = '',
-				placeholder = '',
-				autocomplete
-			} = this.$attrs as InputHTMLAttributes
-
-			const { disabled, readonly } = this.$props
-
-			return {
-				type: this.type,
-				id: id || name,
-				name,
-				placeholder,
-				autocomplete,
-				disabled,
-				readonly,
-				...this.inputAriaAttrs
-			}
-		},
-		inputAriaAttrs() {
-			const { name } = this.$attrs
-			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
-				k.startsWith('aria-')
-			)
-			return {
-				'aria-label': name,
-				'aria-describedby': `${name}-hint`,
-				'aria-invalid': this.isInvalid,
-				...dataAttrs
-			}
-		},
-		iconSlotProps() {
-			const { isValid, isInvalid, modelValue } = this
-			return {
-				isValid,
-				isInvalid,
-				modelValue
-			}
-		}
+//Computed
+const isDirty = computed(() => ObjectUtilities.isNotEmpty(inputTextData?.value))
+const inputTextClass = computed(() => {
+	const { class: cssClass } = attrs
+	return {
+		'vv-input-text': true,
+		'vv-input-text--readonly': props.readonly,
+		'vv-input-text--valid': isValid.value,
+		'vv-input-text--invalid': isInvalid.value,
+		'vv-input-text--loading': props.loading,
+		'vv-input-text--icon-left': hasIconLeft.value,
+		'vv-input-text--icon-right': hasIconRight.value,
+		'vv-input-text--floating':
+			props.floating && ObjectUtilities.isNotEmpty(props.label),
+		'vv-input-text--dirty': isDirty.value,
+		class: cssClass
 	}
 })
+const inputTextAttrs = computed(() => {
+	const { style } = attrs
+	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
+		k.startsWith('data-')
+	)
+	return {
+		style,
+		...dataAttrs
+	}
+})
+const inputAttrs = computed(() => {
+	const {
+		id = '',
+		name = '',
+		placeholder = '',
+		autocomplete
+	} = attrs as InputHTMLAttributes
+
+	const { disabled, readonly, type } = props
+
+	return {
+		type,
+		id: id || name,
+		name,
+		placeholder,
+		autocomplete,
+		disabled,
+		readonly,
+		...inputAriaAttrs.value
+	}
+})
+const inputAriaAttrs = computed(() => {
+	const { name } = attrs
+	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
+		k.startsWith('aria-')
+	)
+	return {
+		'aria-label': name,
+		'aria-describedby': `${name}-hint`,
+		'aria-invalid': isInvalid.value,
+		...dataAttrs
+	}
+})
+const iconSlotProps = computed(() => {
+	const { modelValue } = props
+	return {
+		isValid,
+		isInvalid,
+		modelValue
+	}
+})
+
+const HintSlot = HintSlotFactory(props, slots)
+</script>
+
+<script lang="ts">
+export default {
+	inheritAttrs: false
+}
 </script>
 
 <style lang="scss">

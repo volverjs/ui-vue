@@ -1,74 +1,69 @@
 import type { Ref } from 'vue'
-import type { IGroupState, IGroupStateOptions } from './types'
+import type { IButtonGroupState, IInputGroupState } from './types'
 
-import { ref } from 'vue'
+import { ref, isRef, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 /**
- * Group state manager
- * @template T
+ * Subset di prop che posso condividere
  */
-export class GroupStateManager<T> implements IGroupState<T> {
-	#modelValue: Ref<T | null>
-	#disabled: Ref<Boolean>
-	#readonly: Ref<Boolean>
+export interface GroupParentState {
+	modelValue: Ref<any>
+	disabled: Ref<Boolean>
+	toggle?: Ref<Boolean>
+	readonly?: Ref<Boolean>
+}
 
-	constructor(options: IGroupStateOptions<T>) {
-		this.#modelValue = ref(
-			options.modelValue?.value || null
-		) as Ref<T | null>
-		this.#disabled = options.disabled || ref(false)
-		this.#readonly = options.readonly || ref(false)
+export class ButtonGroupState implements IButtonGroupState {
+	type: 'ButtonGroup'
+
+	key: Symbol
+	modelValue: Ref<any>
+	disabled: Ref<Boolean>
+	toggle: Ref<Boolean>
+
+	constructor(key: Symbol, state: GroupParentState) {
+		this.type = 'ButtonGroup'
+
+		if (!isRef(state.modelValue)) throw Error('ModelValue is not a Ref')
+		if (!isRef(state.disabled)) throw Error('Disabled is not a Ref')
+		if (!isRef(state.toggle)) throw Error('Toggle is not a Ref')
+
+		this.key = key
+		this.modelValue = ref(state.modelValue?.value || null)
+		this.disabled = state.disabled
+		this.toggle = state.toggle
 	}
 
-	get disabled(): Boolean {
-		return this.#disabled?.value || false
+	static create(key: Symbol, parentProps: any): ButtonGroupState {
+		const { modelValue, disabled, toggle } = toRefs(parentProps)
+		return new ButtonGroupState(key, { modelValue, disabled, toggle })
+	}
+}
+
+export class InputGroupState implements IInputGroupState {
+	type: 'InputGroup'
+
+	key: Symbol
+	modelValue: Ref<any>
+	disabled: Ref<Boolean>
+	readonly: Ref<Boolean>
+
+	constructor(key: Symbol, state: GroupParentState) {
+		this.type = 'InputGroup'
+
+		if (!isRef(state.modelValue)) throw Error('ModelValue is not a Ref')
+		if (!isRef(state.disabled)) throw Error('Disabled is not a Ref')
+		if (!isRef(state.readonly)) throw Error('readonly is not a Ref')
+
+		this.key = key
+		this.modelValue = ref(state.modelValue?.value || null)
+		this.disabled = state.disabled
+		this.readonly = state.readonly
 	}
 
-	get modelValue(): T | null {
-		return this.#modelValue?.value || null
-	}
-
-	get readonly(): Boolean {
-		return this.#readonly?.value || null
-	}
-
-	add(value: T | null) {
-		if (Array.isArray(this.#modelValue.value)) {
-			if (!ObjectUtilities.contains(value, this.#modelValue.value)) {
-				this.#modelValue.value.push(value)
-			}
-		} else {
-			this.#modelValue.value = value
-		}
-	}
-
-	remove(value: T | null) {
-		if (Array.isArray(this.#modelValue.value)) {
-			if (ObjectUtilities.contains(value, this.#modelValue.value)) {
-				let indexElToRemove = ObjectUtilities.findIndexInList(
-					value,
-					this.#modelValue.value
-				)
-				if (indexElToRemove > -1) {
-					this.#modelValue.value = this.#modelValue.value.filter(
-						(el, elIndex) => elIndex !== indexElToRemove
-					) as T
-				}
-			}
-		} else {
-			if (ObjectUtilities.equals(value, this.#modelValue.value))
-				this.#modelValue.value = null
-		}
-	}
-
-	contains(value: T) {
-		if (Array.isArray(this.#modelValue.value))
-			return ObjectUtilities.contains(value, this.#modelValue.value)
-		else return ObjectUtilities.equals(value, this.#modelValue.value)
-	}
-
-	setModelValue(value: T) {
-		this.#modelValue.value = value
+	static create(key: Symbol, parentProps: any): InputGroupState {
+		const { modelValue, disabled, readonly } = toRefs(parentProps)
+		return new InputGroupState(key, { modelValue, disabled, readonly })
 	}
 }
