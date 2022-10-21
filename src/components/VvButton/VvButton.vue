@@ -179,8 +179,7 @@ export default defineComponent({
 				'aria-disabled': this.isDisabled,
 				role: 'button',
 				class: this.hasClass,
-				to: this.to,
-				disabled: this.isDisabled
+				to: this.to
 			}
 		},
 		/**
@@ -201,12 +200,6 @@ export default defineComponent({
 			}
 			return toReturn
 		},
-		/**
-		 * Check disabled state based on attributes
-		 */
-		// isDisabled() {
-		// 	return 'disabled' in this.$attrs
-		// },
 		/**
 		 * @description Select the tag type in based on the props before.
 		 * @returns {string} The type of component
@@ -238,7 +231,8 @@ export default defineComponent({
 					'vv-button--active': this.active || this.isSelected,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded,
-					'vv-button--full-bleed': this.fullBleed
+					'vv-button--full-bleed': this.fullBleed,
+					'vv-button--disabled': this.isDisabled
 				}
 			]
 		},
