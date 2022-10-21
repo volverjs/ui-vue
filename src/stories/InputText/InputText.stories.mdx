@@ -1,0 +1,74 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvInputText from '../../components/VvInputText/VvInputText.vue'
+
+<Meta title="Components/InputText" component={VvInputText} />
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvInputText },
+	setup() {
+		return { args }
+	},
+	data: () => ({ value: args.modelValue || '' }),
+	template:
+		/*html*/
+		`
+		<div class="flex flex-col justify-between">
+			<vv-input-text v-bind="args" v-model:modelValue="value"/>
+			<strong v-if="value">Valore: {{value}} </strong> 
+		</div>
+        `
+})
+
+<Canvas>
+	<Story
+		name="vv-input-text"
+		args={{
+			text: 'text',
+			id: 'vv-input-text',
+			name: 'vv-input-text',
+			placeholder: 'Prova input',
+			label: 'Campo di prova',
+			hintLabel: 'Hint label text',
+			autocomplete: 'off',
+			disabled: false,
+			readonly: false,
+			valid: false,
+			error: false,
+			loading: false,
+			loadingLabel: 'Ciao sono il loading',
+			icon: '',
+			iconPosition: null,
+			floating: false
+		}}
+		argTypes={{
+			id: {
+				description: 'Id input element.',
+				table: { category: 'Attributes' }
+			},
+			name: {
+				description: 'Nome input element',
+				table: { category: 'Attributes' }
+			},
+			placeholder: {
+				description: 'Placeholder input',
+				table: { category: 'Attributes' }
+			},
+			iconPosition: {
+				control: {
+					type: 'select',
+					options: [null, 'left', 'right']
+				}
+			},
+			type: {
+				control: {
+					type: 'select',
+					options: ['text', 'password']
+				}
+			}
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+import { Template } from './Check.stories.mdx'
+
+<Meta
+	title="Components/Check/Disabled"
+	args={{
+		modelValue: []
+	}}
+	component={VvCheck}
+/>
+
+# Disabled
+
+<Canvas>
+	<Story
+		name="Disabled"
+		args={{
+			id: 1,
+			label: 'opzione 1',
+			name: 'ck1',
+			disabled: true,
+			value: 1
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

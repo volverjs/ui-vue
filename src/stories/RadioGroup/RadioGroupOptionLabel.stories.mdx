@@ -1,0 +1,48 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+
+import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '../../components/VvRadio/VvRadio.vue'
+
+import { Template } from './RadioGroup.stories.mdx'
+
+<Meta title="Components/RadioGroup/OptionLabel" component={VvRadioGroup} />
+
+# OptionLabel
+
+Change object prop for label
+
+<Canvas>
+	<Story
+		name="OptionsLabel - string"
+		args={{
+			name: 'vv-group-options-label-string',
+			options: [
+				{ value: 1, name: 'Mela' },
+				{ value: 2, name: 'Pera' },
+				{ value: 3, name: 'Banana' }
+			],
+			optionLabel: 'name'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# OptionLabel Function
+
+Use function to define option label
+
+<Canvas>
+	<Story
+		name="OptionsLabel - function"
+		args={{
+			name: 'vv-group-options-label-function',
+			options: [
+				{ value: 1, name: 'Mela' },
+				{ value: 2, name: 'Pera' },
+				{ value: 3, name: 'Banana' }
+			],
+			optionLabel: (o) => `Frutto: ${o.name}`
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

@@ -5,35 +5,21 @@ import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
 import { Template } from './RadioGroup.stories.mdx'
 
-<Meta title="Components/RadioGroup/Options" component={VvRadioGroup} />
+<Meta title="Components/RadioGroup/Disabled" component={VvRadioGroup} />
 
-# Options
-
-Check group based on list of object list
+# Disabled
 
 <Canvas>
 	<Story
-		name="Options"
+		name="Disabled"
 		args={{
-			name: 'story-options',
+			name: 'story-disabled',
 			options: [
 				{ value: 1, label: 'Mela' },
 				{ value: 2, label: 'Pera' },
 				{ value: 3, label: 'Banana' }
-			]
-		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-# Options as Array
-
-<Canvas>
-	<Story
-		name="Options as Array"
-		args={{
-			name: 'story-options-strings',
-			options: ['Primo', 'Secondo', 'Terzo']
+			],
+			disabled: true
 		}}>
 		{Template.bind({})}
 	</Story>

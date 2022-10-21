@@ -43,14 +43,13 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
+import { reactive, type PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 import VvIcon from '../VvIcon/VvIcon.vue'
-import type { UseGroupComponentProps } from '../../composables/group/types'
 
 import { v4 as uuidv4 } from 'uuid'
 import { computed, defineComponent, unref, toRefs, ref } from 'vue'
-import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
+import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { VV_BUTTON_GROUP } from '../../constants'
 
 export default defineComponent({
@@ -137,25 +136,30 @@ export default defineComponent({
 	setup(props, context) {
 		const { attrs } = context
 
-		const modelValue = ref(attrs?.name || uuidv4())
-		const sharedProps: UseGroupComponentProps = {
-			...toRefs(props),
-			modelValue
-		}
-		const { isInGroup, group, checkIsSelected } = useSharedGroupState(
-			sharedProps,
-			context,
-			{
-				key: VV_BUTTON_GROUP
-			}
-		)
+		let btnName = attrs?.name || uuidv4()
+		let btnSharedProps = reactive({
+			modelValue: btnName,
+			disabled: props.disabled
+		})
+		const {
+			group,
+			modelValue,
+			isInGroup,
+			isDisabled,
+			isToggleEnabled,
+			checkIsSelected
+		} = useGroupOrLocalState(VV_BUTTON_GROUP, toRefs(btnSharedProps))
 
 		return {
 			group,
 			isInGroup,
-			isActive: computed(() => checkIsSelected(modelValue.value)),
+			isActive: computed(
+				() => isToggleEnabled.value && checkIsSelected(btnName)
+			),
+			isDisabled,
 			onClick(e: Event) {
-				if (isInGroup.value) unref(group)?.add(modelValue.value)
+				modelValue.value = btnName
+				context.emit('update:modelValue', modelValue.value)
 			}
 		}
 		// #endregion button-group logic
@@ -177,7 +181,8 @@ export default defineComponent({
 				'aria-disabled': this.isDisabled,
 				role: 'button',
 				class: this.hasClass,
-				to: this.to
+				to: this.to,
+				disabled: this.isDisabled
 			}
 		},
 		/**
@@ -201,9 +206,9 @@ export default defineComponent({
 		/**
 		 * Check disabled state based on attributes
 		 */
-		isDisabled() {
-			return 'disabled' in this.$attrs
-		},
+		// isDisabled() {
+		// 	return 'disabled' in this.$attrs
+		// },
 		/**
 		 * @description Select the tag type in based on the props before.
 		 * @returns {string} The type of component

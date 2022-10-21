@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+import { Template } from './Check.stories.mdx'
+
+<Meta
+	title="Components/Check/HintLabel"
+	args={{
+		modelValue: []
+	}}
+	component={VvCheck}
+/>
+
+# Hint label
+
+<Canvas>
+	<Story
+		name="Hint label"
+		args={{
+			id: 9,
+			label: 'Voglio acquistare questa enciclopedia!',
+			name: 'ck9',
+			modelValue: false,
+			hintLabel: 'Aiuto! Son qui!'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
