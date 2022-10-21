@@ -1,15 +1,12 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
 
 <Meta
 	title="Components/Check"
-	argTypes={{
-		onClick: { action: 'click', table: { disable: true } },
-		onChange: { action: 'change', table: { disable: true } },
-		onFocus: { action: 'focus', table: { disable: true } },
-		onBlur: { action: 'blur', table: { disable: true } }
+	args={{
+		modelValue: []
 	}}
 	component={VvCheck}
 />
@@ -20,18 +17,16 @@ export const Template = (args, { argTypes }) => ({
 	setup() {
 		return { args }
 	},
-	data: () => ({ rdValue: args.modelValue || [] }),
+	data: () => ({ ckValue: [] }),
 	template:
 		/*html*/
 		`
 		<div class="flex flex-row justify-between">
-			<vv-check v-bind="args" v-model:modelValue="rdValue"/>
-			<strong v-if="rdValue">Valore selez: {{rdValue}} </strong> 
+			<vv-check v-bind="args" v-model:modelValue="ckValue"/>
+			<strong v-if="ckValue">Valore selez: {{ckValue}} </strong> 
 		</div>
         `
 })
-
-# VvCheck
 
 <Source language="jsx" code={'<vv-check/>'} />
 

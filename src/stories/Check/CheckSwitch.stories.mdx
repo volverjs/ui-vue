@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+import { Template } from './Check.stories.mdx'
+
+<Meta
+	title="Components/Check/Switch"
+	args={{
+		modelValue: []
+	}}
+	component={VvCheck}
+/>
+
+# Switch
+
+<Canvas>
+	<Story
+		name="Switch"
+		args={{
+			id: 3,
+			label: 'opzione 1',
+			name: 'ck3',
+			switch: true,
+			value: { a: 'Banana' }
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

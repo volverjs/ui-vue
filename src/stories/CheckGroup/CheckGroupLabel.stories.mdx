@@ -1,0 +1,26 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+
+import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+
+import { Template } from './CheckGroup.stories.mdx'
+
+<Meta title="Components/CheckGroup/Label" component={VvCheckGroup} />
+
+# Label
+
+<Canvas>
+	<Story
+		name="Label"
+		args={{
+			name: 'story-label',
+			options: [
+				{ value: 1, label: 'Mela' },
+				{ value: 2, label: 'Pera' },
+				{ value: 3, label: 'Banana' }
+			],
+			label: 'Custom label'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

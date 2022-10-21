@@ -5,6 +5,27 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
 
 <Meta title="Components/CheckGroup" component={VvCheckGroup} />
 
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvCheckGroup, VvCheck },
+	setup() {
+		return { args }
+	},
+	data: () => ({ selected: args.modelValue || [] }),
+	template:
+		/*html*/
+		`
+		<div class="flex flex-row justify-between">
+            <vv-check-group v-bind="args" v-model:modelValue="selected">
+                <template v-slot:hint>
+                    <p>Ciao sono un hint di default. Piacere.</p>
+                </template> 
+            </vv-check-group>
+            <strong v-if="selected">Selezione: {{selected}} </strong> 
+        </div>
+        `
+})
+
 # VvCheckGroup
 
 A group of checks.
