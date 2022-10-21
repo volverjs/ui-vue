@@ -63,7 +63,8 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
                                 <vv-check id="o3" name="opts" value="3">Opt 3</vv-check>
                             </template>
                             <template v-slot:hint="slotProps">
-                                <p>Ciao sono lo slot HINT! {{slotProps}}</p> 
+                                <p>Ciao sono lo slot HINT!</p>
+								<p>{{slotProps}}</p> 
                             </template>
                         </vv-check-group>
                         <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
