@@ -20,7 +20,7 @@ import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalSta
 import { useValidationState } from '../../composables/validation/useValidationState'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import type { GroupParentState } from '@/composables/group/group'
+import type { GroupParentState } from '../../composables/group/group'
 
 const attrs = useAttrs()
 const slots = useSlots()
