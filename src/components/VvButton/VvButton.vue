@@ -43,12 +43,11 @@
 </template>
 
 <script lang="ts">
-import { reactive, type PropType } from 'vue'
+import { reactive, computed, defineComponent, toRefs, type PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 import { v4 as uuidv4 } from 'uuid'
-import { computed, defineComponent, unref, toRefs, ref } from 'vue'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { VV_BUTTON_GROUP } from '../../constants'
 
@@ -133,11 +132,10 @@ export default defineComponent({
 		 */
 		fullBleed: Boolean
 	},
-	setup(props, context) {
-		const { attrs } = context
-
-		let btnName = attrs?.name || uuidv4()
-		let btnSharedProps = reactive({
+	emits: ['update:modelValue'],
+	setup(props, { attrs, emit }) {
+		const btnName = attrs?.name || uuidv4()
+		const btnSharedProps = reactive({
 			modelValue: btnName,
 			disabled: props.disabled
 		})
@@ -153,13 +151,13 @@ export default defineComponent({
 		return {
 			group,
 			isInGroup,
-			isActive: computed(
+			isSelected: computed(
 				() => isToggleEnabled.value && checkIsSelected(btnName)
 			),
 			isDisabled,
-			onClick(e: Event) {
+			onClick() {
 				modelValue.value = btnName
-				context.emit('update:modelValue', modelValue.value)
+				emit('update:modelValue', modelValue.value)
 			}
 		}
 		// #endregion button-group logic
@@ -237,7 +235,7 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active': this.active || this.isActive,
+					'vv-button--active': this.active || this.isSelected,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded,
 					'vv-button--full-bleed': this.fullBleed
