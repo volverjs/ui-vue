@@ -5,13 +5,19 @@ import VvIcon from '../../components/VvIcon/VvIcon.vue'
 	title="Components/Icon"
 	component={VvIcon}
 	args={{
-		name: 'menu'
+		name: 'add-circle'
 	}}
 	argTypes={{
 		mode: {
 			control: {
 				type: 'select',
 				options: ['style', 'bg', 'mask', 'svg']
+			}
+		},
+		prefix: {
+			control: {
+				type: 'select',
+				options: ['simple', 'normal', 'detailed']
 			}
 		}
 	}}

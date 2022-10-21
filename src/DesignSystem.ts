@@ -1,65 +1,85 @@
-import { addCollection, type IconifyJSON } from '@iconify/vue'
+import {
+	addCollection,
+	addIcon,
+	type IconifyIcon,
+	type IconifyJSON
+} from '@iconify/vue'
 import type { App } from 'vue'
 
 // https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties
+// Add custom property and extend vue type definition
 declare module 'vue' {
 	interface ComponentCustomProperties {
 		$ds: typeof DesignSystem.prototype
 	}
 }
 
-interface IDesignSystem {
-	defaultProvider: string
+interface IDesignSystemParams {
 	/**
-	 * @param {String} src Icon source path (url)
-	 * @param {RequestInit} options https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.requestinit.html
+	 * If true set "fetchOptions" with credentials: 'include'
 	 */
-	fetchIcon(src: string, options?: any): Promise<string | undefined>
-	addCollection(collection: IconifyJSON, providerName?: string): boolean
-	fetchWithCredentials: boolean
-	iconifyCollections: IconifyJSON[]
+	fetchWithCredentials?: boolean
+	/**
+	 * Optional fetch params
+	 */
+	fetchOptions?: RequestInit
+	/**
+	 * Array of https://docs.iconify.design/types/iconify-json.html
+	 * This collections will be added during plugin install
+	 */
+	iconsCollections?: IconifyJSON[]
 }
 
-const VV_PROVIDER = 'vv'
+interface IDesignSystem extends IDesignSystemParams {
+	/**
+	 * @param {String} src Icon source path (url)
+	 * @param {RequestInit} options
+	 * @returns {Promise<string | undefined>} String SVG if exist
+	 */
+	fetchIcon(src: string, options?: RequestInit): Promise<string | undefined>
+	/**
+	 * Add iconify collection to library https://docs.iconify.design/icon-components/vue/add-collection.html
+	 * @param {IconifyJSON} collection
+	 * @param {String} providerName Optional provider name
+	 */
+	addCollection(collection: IconifyJSON, providerName?: string): boolean
+	/**
+	 * Add icon to collection https://docs.iconify.design/icon-components/vue/add-icon.html
+	 * @param {String} name
+	 * @param {IconifyIcon} data
+	 * @returns {Boolean} true on success, false if something is wrong with data
+	 */
+	addIcon(name: string, data: IconifyIcon): boolean
+}
 
 export default class DesignSystem implements IDesignSystem {
-	defaultProvider: string
-	fetchOptions: any
-	fetchWithCredentials: boolean
-	iconifyCollections: IconifyJSON[]
+	fetchOptions: RequestInit
+	iconsCollections: IconifyJSON[]
+	#provider: string
 
-	/**
-	 * Optional fetch options for remote call
-	 * @param {RequestInit} fetchOptions https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.requestinit.html
-	 */
 	constructor({
 		fetchWithCredentials = false,
-		fetchOptions = {
-			cache: 'force-cache',
-			credentials: 'omit'
-		},
-		iconifyCollections = [],
-		defaultProvider = VV_PROVIDER
-	} = {}) {
+		fetchOptions = {},
+		iconsCollections = []
+	}: IDesignSystemParams = {}) {
 		if (fetchWithCredentials) {
 			fetchOptions = { ...fetchOptions, credentials: 'include' }
 		}
-		this.fetchWithCredentials = fetchWithCredentials
+		this.#provider = 'vv'
 		this.fetchOptions = fetchOptions
-		this.defaultProvider = defaultProvider
-		this.iconifyCollections = iconifyCollections
+		this.iconsCollections = iconsCollections
 	}
 
 	/**
 	 * Vue.use() hook
-	 * @param {Object} Vue
+	 * @param {App} Vue
 	 * @param {Object} options
 	 */
 	install(app: App) {
 		// Add default icons collection (simple, normal, detailed)
 		// and others custom collections
-		this.iconifyCollections.forEach((iconifyCollection) => {
-			this.addCollection(iconifyCollection, this.defaultProvider)
+		this.iconsCollections.forEach((iconsCollection) => {
+			this.addCollection(iconsCollection, this.#provider)
 		})
 
 		// register global methods
@@ -67,10 +87,14 @@ export default class DesignSystem implements IDesignSystem {
 	}
 
 	addCollection(collection: IconifyJSON, providerName?: string): boolean {
-		return addCollection(collection, providerName || this.defaultProvider)
+		return addCollection(collection, providerName)
 	}
 
-	fetchIcon(src: string, options?: any): Promise<string | undefined> {
+	addIcon(name: string, data: IconifyIcon): boolean {
+		return addIcon(name, data)
+	}
+
+	fetchIcon(src: string, options?: RequestInit): Promise<string | undefined> {
 		return new Promise((resolve, reject) => {
 			fetch(src, { ...this.fetchOptions, ...options })
 				.catch((e) => reject(e))

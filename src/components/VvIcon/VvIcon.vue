@@ -12,27 +12,39 @@
 <script lang="ts">
 import { defineComponent, type ComputedRef, type PropType } from 'vue'
 import type { IconifyRenderMode } from '@iconify/vue'
-import { Icon, addIcon, getIcon } from '@iconify/vue'
+import { Icon, addIcon, iconExists } from '@iconify/vue'
 import type { PREFIX } from './VvIcon'
 import { useModifiers } from '../../composables/useModifiers'
 
 export default defineComponent({
 	components: { Icon },
 	props: {
+		color: String,
+		width: {
+			type: [String, Number]
+		},
+		height: {
+			type: [String, Number]
+		},
 		/**
 		 * Icon name
+		 * Can be the full composition of iconify name "@{provider}:{prefix}:{name}" or "{prefix}:{name}" or "{name}"
+		 * https://docs.iconify.design/api/providers.html#provider-in-icon-name
 		 */
 		name: {
 			type: String,
 			required: true
 		},
 		/**
-		 * Icon provider
+		 * By default 'vv'
+		 * If custom collection is not added with "addCollection" DS class method, this prop could not be used
+		 * Icon provider: https://docs.iconify.design/api/providers.html#provider-in-icon-name
 		 */
 		provider: {
 			type: String
 		},
 		/**
+		 * The name of icon set.
 		 * Icon default options prefix: simple | normal | detailed
 		 */
 		prefix: {
@@ -44,10 +56,6 @@ export default defineComponent({
 		 */
 		src: String,
 		/**
-		 * String changes icon color.
-		 */
-		color: String,
-		/**
 		 * Horizontal flip
 		 */
 		horizontalFlip: Boolean,
@@ -57,6 +65,7 @@ export default defineComponent({
 		verticalFlip: Boolean,
 		/**
 		 * String alternative to "horizontalFlip" and "verticalFlip".
+		 * Example: https://docs.iconify.design/icon-components/vue/transform.html
 		 */
 		flip: String,
 		/**
@@ -69,23 +78,13 @@ export default defineComponent({
 		 */
 		mode: String as PropType<IconifyRenderMode>,
 		/**
-		 * Icon width
-		 */
-		width: {
-			type: [String, Number]
-		},
-		/**
-		 * Icon height
-		 */
-		height: {
-			type: [String, Number]
-		},
-		/**
 		 * Toggles inline or block mode
+		 * Example https://docs.iconify.design/icon-components/vue/inline.html
 		 */
 		inline: Boolean,
 		/**
 		 * rotates icon
+		 * Example https://docs.iconify.design/icon-components/vue/transform.html
 		 */
 		rotate: [Number, String],
 		/**
@@ -93,7 +92,7 @@ export default defineComponent({
 		 */
 		onLoad: Function,
 		/**
-		 * SVG string
+		 * SVG icon string
 		 */
 		svg: String,
 		/**
@@ -117,20 +116,41 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			show: true
+			show: true,
+			iconName: ''
 		}
 	},
 	computed: {
+		/**
+		 * Icon name
+		 */
 		icon() {
+			// compose Iconify icon name format
 			const iconName = `@${this.currentProvider}:${this.prefix}:${this.name}`
-			const icon = getIcon(iconName)
-			return icon ? iconName : this.name
+
+			// Check first if icon with "name" exist
+			if (iconExists(this.name)) {
+				return this.name
+			} else if (iconExists(iconName)) {
+				// Check and return composed icon name if exist
+				return iconName
+			} else {
+				// Check into all collections and set "iconName" data
+				this.$ds.iconsCollections.some((iconsCollection) => {
+					const icon = `@${this.currentProvider}:${iconsCollection.prefix}:${this.name}`
+					if (iconExists(icon)) {
+						this.iconName = icon
+						return true
+					}
+				})
+			}
+			return this.iconName
 		},
 		hasClass() {
 			return ['vv-icon', this.hasModifiers]
 		},
 		currentProvider() {
-			return this.provider || this.$ds.defaultProvider
+			return this.provider || this.$ds.provider
 		}
 	},
 	created() {
@@ -140,7 +160,7 @@ export default defineComponent({
 				.fetchIcon(this.src)
 				.then((svg?: string) => {
 					if (svg) {
-						this.addIcon(svg)
+						this.addIconFromSvg(svg)
 						this.show = true
 					}
 				})
@@ -148,7 +168,7 @@ export default defineComponent({
 					throw new Error(`During fetch icon: ${e?.message}`)
 				})
 		} else if (this.svg) {
-			this.addIcon(this.svg)
+			this.addIconFromSvg(this.svg)
 		}
 	},
 	methods: {
@@ -174,7 +194,7 @@ export default defineComponent({
 		 * Add icon to current Iconify provider
 		 * @param {string} svg
 		 */
-		addIcon(svg: string) {
+		addIconFromSvg(svg: string) {
 			const svgContentEl: SVGSVGElement | null = this.getSvgContent(svg)
 			const svgContent = svgContentEl?.innerHTML.trim() || ''
 			if (svgContentEl && svgContent) {

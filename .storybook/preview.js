@@ -6,11 +6,10 @@ import iconsSimple from '../src/assets/icons/simple.json'
 import iconsNormal from '../src/assets/icons/normal.json'
 import iconsDetailed from '../src/assets/icons/detailed.json'
 
-app.use(
-	new DesignSystem({
-		iconifyCollections: [iconsSimple, iconsNormal, iconsDetailed]
-	})
-)
+const volver = new DesignSystem({
+	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
+})
+app.use(volver)
 
 // get an instance to the communication channel for the manager and preview
 const channel = addons.getChannel()
