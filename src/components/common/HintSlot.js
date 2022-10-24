@@ -1,5 +1,5 @@
-import { h, inject } from 'vue'
-import { computed, provide, ref, toRefs } from 'vue'
+import { h } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useValidationState } from '../../composables/validation/useValidationState'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -27,6 +27,7 @@ export const HintSlotFactory = (pProps, pSlots) => {
 					(hintLabel && hintLabel.value) ||
 					hintSlot ||
 					validSlot ||
+					(validLabel && validLabel.value) ||
 					hasErrors.value ||
 					(loading?.value && loadingSlot) ||
 					(loading?.value && loadingLabel.value)
@@ -36,7 +37,7 @@ export const HintSlotFactory = (pProps, pSlots) => {
 			const isLoading = computed(() => loading?.value)
 
 			const hintContent = computed(() => {
-				let slotProps = { modelValue, isValid, isInvalid }
+				const slotProps = { modelValue, isValid, isInvalid }
 
 				if (isInvalid.value) {
 					return (

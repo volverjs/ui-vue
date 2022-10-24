@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSlots, computed } from 'vue'
+import { useSlots, computed, shallowRef } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
 import { useValidationState } from '../../composables/validation/useValidationState'
@@ -115,7 +115,7 @@ const groupClass = computed(() => {
 })
 
 //Methods
-const getOptionProps = (option: any, oIndex: Number) => {
+const getOptionProps = (option: any, oIndex: number) => {
 	return {
 		id: `${props.name}_opt${oIndex}`,
 		name: props.name,
@@ -124,7 +124,7 @@ const getOptionProps = (option: any, oIndex: Number) => {
 	}
 }
 
-const HintSlot = HintSlotFactory(props, slots)
+const HintSlot = shallowRef(HintSlotFactory(props, slots))
 </script>
 
 <style lang="scss">

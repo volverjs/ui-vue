@@ -76,9 +76,9 @@ const emit = defineEmits([
 ])
 
 //data
-let { modelValue, isDisabled, isReadonly, checkIsSelected } =
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
 	useGroupOrLocalState(VV_CHECK_GROUP, toRefs(props) as GroupParentState)
-let { input, focused } = useInputFocus({ emit })
+const { input, focused } = useInputFocus({ emit })
 const { isValid, isInvalid } = useValidationState(props, { slots })
 
 //Computed
@@ -162,7 +162,7 @@ function onChange() {
 function onClick(event: MouseEvent | undefined) {
 	if (!isDisabled) {
 		emit('click', event)
-		emit('change', isChecked ? props.value : null)
+		emit('change', isChecked.value ? props.value : null)
 		focused.value = true
 	}
 }

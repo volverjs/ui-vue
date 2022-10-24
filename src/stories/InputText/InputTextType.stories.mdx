@@ -1,0 +1,39 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+
+<Meta title="Components/InputText/Type" component={VvInputText} />
+
+<Canvas>
+	<Story name="Text" args={{ name: 'input-text', type: 'text' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story name="Password" args={{ name: 'input-password', type: 'password' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story name="Date" args={{ name: 'input-date', type: 'date' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="DateTime"
+		args={{ name: 'input-datetime', type: 'datetime-local' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story name="Number" args={{ name: 'input-number', type: 'number' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

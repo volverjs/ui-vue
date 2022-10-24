@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+
+<Meta title="Components/InputText/Placeholder" component={VvInputText} />
+
+<Canvas>
+	<Story
+		name="Placeholder"
+		args={{ name: 'input-text-placeholder', placeholder: 'Prova' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
