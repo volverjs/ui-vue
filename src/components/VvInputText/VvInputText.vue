@@ -213,7 +213,7 @@ const bHidePassword = ref(true)
 const currentPasswordIcon = computed(() =>
 	bHidePassword.value ? 'eye-on' : 'eye-off'
 )
-const toggleShowHidePassword = () => {
+function toggleShowHidePassword() {
 	bHidePassword.value = !bHidePassword.value
 }
 
