@@ -24,7 +24,10 @@ import { useSlots, computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
 import { useValidationState } from '../../composables/validation/useValidationState'
-import { InputGroupState } from '../../composables/group/group'
+import {
+	InputGroupState,
+	type IInputGroupOptions
+} from '../../composables/group/group'
 import { VV_RADIO_GROUP } from '../../constants'
 
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
@@ -67,8 +70,19 @@ const props = defineProps({
 	errors: [String, Array]
 })
 
-const groupState = InputGroupState.create(VV_RADIO_GROUP, props)
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
+// Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
+// #endregion group
+
 const { isInvalid, isValid } = useValidationState(props, { emit })
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
@@ -83,7 +97,7 @@ const groupClass = computed(() => {
 })
 
 //Methods
-function getOptionProps(option: any, oIndex: Number) {
+function getOptionProps(option: any, oIndex: number) {
 	return {
 		id: `${props.name}_opt${oIndex}`,
 		name: props.name,

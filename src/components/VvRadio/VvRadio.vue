@@ -12,14 +12,17 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, type InputHTMLAttributes } from 'vue'
+import type { InputHTMLAttributes } from 'vue'
 import { computed, useAttrs, useSlots, defineProps, defineEmits } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useValidationState } from '../../composables/validation/useValidationState'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import type { GroupParentState } from '@/composables/group/group'
+import {
+	InputGroupState,
+	type IInputGroupOptions
+} from '../../composables/group/group'
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -45,9 +48,21 @@ const props = defineProps({
 	errors: [String, Array]
 })
 
-let { modelValue, isDisabled, isReadonly, checkIsSelected } =
-	useGroupOrLocalState(VV_RADIO_GROUP, toRefs(props) as GroupParentState)
-let { input, focused } = useInputFocus({ emit })
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
+// Use group composable to inject the provided group
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
+	useGroupOrLocalState(VV_RADIO_GROUP, groupState)
+// #endregion group
+
+const { input, focused } = useInputFocus({ emit })
 const { isValid, isInvalid } = useValidationState(props, { slots })
 
 //Computed

@@ -43,13 +43,17 @@
 </template>
 
 <script lang="ts">
-import { reactive, computed, defineComponent, toRefs, type PropType } from 'vue'
+import { computed, defineComponent, type PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 import { v4 as uuidv4 } from 'uuid'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { VV_BUTTON_GROUP } from '../../constants'
+import {
+	ButtonGroupState,
+	type IButtonGroupOptions
+} from '@/composables/group/group'
 
 export default defineComponent({
 	components: { VvIcon },
@@ -135,10 +139,18 @@ export default defineComponent({
 	emits: ['update:modelValue'],
 	setup(props, { attrs, emit }) {
 		const btnName = attrs?.name || uuidv4()
-		const btnSharedProps = reactive({
+		// #region group
+		// Define reactive props
+		const buttonGroupOptions: IButtonGroupOptions = {
 			modelValue: btnName,
 			disabled: props.disabled
-		})
+		}
+		// Create groupState instance
+		const groupState = new ButtonGroupState(
+			VV_BUTTON_GROUP,
+			buttonGroupOptions
+		)
+		// Use group composable to inject the provided group
 		const {
 			group,
 			modelValue,
@@ -146,7 +158,7 @@ export default defineComponent({
 			isDisabled,
 			isToggleEnabled,
 			checkIsSelected
-		} = useGroupOrLocalState(VV_BUTTON_GROUP, toRefs(btnSharedProps))
+		} = useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
 
 		return {
 			group,

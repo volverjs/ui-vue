@@ -24,7 +24,10 @@ import { useSlots, computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
 import { useValidationState } from '../../composables/validation/useValidationState'
-import { InputGroupState } from '../../composables/group/group'
+import {
+	InputGroupState,
+	type IInputGroupOptions
+} from '../../composables/group/group'
 import { VV_CHECK_GROUP } from '../../constants'
 
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
@@ -98,10 +101,23 @@ const emit = defineEmits(['update:modelValue', 'change'])
 //Slots
 const slots = useSlots()
 
-//Deps...
-const groupState = InputGroupState.create(VV_CHECK_GROUP, props)
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
+// Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
+// #endregion group
+
+// use validation state composable
 const { isInvalid, isValid } = useValidationState(props, { emit })
+
+// use options composable to retrieve correct label and value
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
 //Computed
@@ -115,7 +131,7 @@ const groupClass = computed(() => {
 })
 
 //Methods
-const getOptionProps = (option: any, oIndex: Number) => {
+const getOptionProps = (option: any, oIndex: number) => {
 	return {
 		id: `${props.name}_opt${oIndex}`,
 		name: props.name,

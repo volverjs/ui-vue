@@ -13,14 +13,17 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, type InputHTMLAttributes } from 'vue'
+import type { InputHTMLAttributes } from 'vue'
 import { computed, useAttrs, useSlots, defineProps, defineEmits } from 'vue'
 import { VV_CHECK_GROUP } from '../../constants'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useValidationState } from '../../composables/validation/useValidationState'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import type { GroupParentState } from '../../composables/group/group'
+import {
+	InputGroupState,
+	type IInputGroupOptions
+} from '../../composables/group/group'
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -75,10 +78,21 @@ const emit = defineEmits([
 	'blur'
 ])
 
-//data
-let { modelValue, isDisabled, isReadonly, checkIsSelected } =
-	useGroupOrLocalState(VV_CHECK_GROUP, toRefs(props) as GroupParentState)
-let { input, focused } = useInputFocus({ emit })
+// #region group
+// Define input options
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
+// Use group composable to inject the provided group
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
+	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
+// #endregion group
+
+const { input, focused } = useInputFocus({ emit })
 const { isValid, isInvalid } = useValidationState(props, { slots })
 
 //Computed
@@ -162,7 +176,7 @@ function onChange() {
 function onClick(event: MouseEvent | undefined) {
 	if (!isDisabled) {
 		emit('click', event)
-		emit('change', isChecked ? props.value : null)
+		emit('change', isChecked.value ? props.value : null)
 		focused.value = true
 	}
 }

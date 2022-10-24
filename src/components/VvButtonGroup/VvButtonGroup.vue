@@ -7,7 +7,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
-import { ButtonGroupState } from '../../composables/group/group'
+import {
+	ButtonGroupState,
+	type IButtonGroupOptions
+} from '../../composables/group/group'
 import { VV_BUTTON_GROUP } from '../../constants'
 
 const emit = defineEmits(['update:modelValue'])
@@ -50,16 +53,18 @@ const btnGroupClass = computed(() => {
 	}
 })
 
-//Dependecy injection
-// const {modelValue, disabled, toggle} = toRefs(props)
-// const sharedButtonGroupState = new ButtonGroupState({
-// 	key: VV_BUTTON_GROUP,
-// 	modelValue,
-// 	disabled,
-// 	toggle
-// })
-const groupState = ButtonGroupState.create(VV_BUTTON_GROUP, props)
+// #region group
+// Define reactive props
+const buttonGroupOptions: IButtonGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	toggle: props.toggle
+}
+// Create groupState instance
+const groupState = new ButtonGroupState(VV_BUTTON_GROUP, buttonGroupOptions)
+// Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
+// #endregion group
 </script>
 
 <style lang="scss">
