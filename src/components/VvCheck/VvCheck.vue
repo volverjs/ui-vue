@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots, defineEmits } from 'vue'
+import { computed, useAttrs, useSlots } from 'vue'
 import { VV_CHECK_GROUP } from '../../constants'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useValidationState } from '../../composables/validation/useValidationState'

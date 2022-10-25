@@ -29,15 +29,15 @@ interface VvAccordionProps {
 	/**
 	 * Accordion header title
 	 */
-	title: string
+	title?: string
 	/**
 	 * Accordion content description
 	 */
-	content: string
+	content?: string
 	/**
-	 * Defines if item is open
+	 * (Optional) Defines if item is open. Event "update:open" is emitted on accordion header click
 	 */
-	open: boolean
+	open?: boolean
 	/**
 	 * Change icon position to right side
 	 */
