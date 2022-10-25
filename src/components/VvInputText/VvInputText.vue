@@ -17,7 +17,7 @@
 					<div class="vv-input-text__actions-group">
 						<button
 							class="vv-input-text__action"
-							:disabled="isDisabled || isReadonly"
+							:disabled="isActionsDisabled"
 							@click.prevent="toggleShowHidePassword">
 							<vv-icon :name="inputRightIcon" />
 						</button>
@@ -29,12 +29,12 @@
 						<button
 							type="button"
 							class="vv-input-text__action-chevron vv-input-text__action-chevron-up"
-							:disabled="isDisabled || isReadonly"
+							:disabled="isActionsDisabled"
 							@click.prevent="stepUp()"></button>
 						<button
 							type="button"
 							class="vv-input-text__action-chevron"
-							:disabled="isDisabled || isReadonly"
+							:disabled="isActionsDisabled"
 							@click.prevent="stepDown()"></button>
 					</div>
 				</template>
@@ -51,15 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-	computed,
-	useAttrs,
-	useSlots,
-	ref,
-	shallowRef,
-	toRefs,
-	toRef
-} from 'vue'
+import { computed, useAttrs, useSlots, ref, shallowRef, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 //Componenti
@@ -131,6 +123,9 @@ const input = ref()
 //Data
 const inputTextData = useVModel(props, 'modelValue', emit)
 const { disabled, readonly, type } = toRefs(props)
+
+//Generic computed
+const isActionsDisabled = computed(() => disabled.value || readonly.value)
 
 //Gestione ICONE
 const { hasIconLeft, hasIconRight } = useComponentIcons(props, {
