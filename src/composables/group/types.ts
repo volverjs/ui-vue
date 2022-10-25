@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 
 /**
- * Stato condiviso da un nodo PADRE ad un gruppo di elementi figli.
+ * Stato condiviso per un gruppo di elementi
  */
 export interface IGroupState {
 	/**
@@ -19,7 +19,7 @@ export interface IGroupState {
 }
 
 /**
- * Stato condiviso per in un gruppo di pulsanti
+ * Stato condiviso per un gruppo di pulsanti
  */
 export interface IButtonGroupState extends IGroupState {
 	type: ButtonGroup
@@ -40,10 +40,10 @@ export interface IInputGroupState extends IGroupState {
 	readonly: Ref<boolean>
 }
 
-// Available Group States Types
-export type GroupStateTypes = IInputGroupState | IButtonGroupState
+// All available Group States Types
+export type GroupStateTypes = IInputGroupState | IButtonGroupState | IGroupState
 
-// #region group input options
+// #region group options
 export interface IGroupOptions {
 	modelValue: any
 	disabled: boolean

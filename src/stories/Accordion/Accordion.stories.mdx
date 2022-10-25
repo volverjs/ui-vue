@@ -13,13 +13,18 @@ import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 
 export const Template = (args) => ({
 	components: { VvAccordion },
+	data() {
+		return {
+			open: false
+		}
+	},
 	setup() {
 		return { args }
 	},
 	template:
 		/*html*/
 		`<div class="w-1/2">
-            <vv-accordion v-bind="args" />
+            <vv-accordion v-bind="args" v-model:open="open" />
         </div>
         `
 })

@@ -5,7 +5,7 @@ import {
 	type GroupStateTypes,
 	type IGroupState
 } from './types'
-import type { ButtonGroupState, InputGroupState } from './group'
+import type { ButtonGroupState, InputGroupState } from './models'
 
 import { inject, computed, unref, watch, ref } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
@@ -30,13 +30,13 @@ export function useGroupOrLocalState(
 	localState: GroupStateTypes
 ): UseGroupOrLocalStateReturn {
 	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
-	const group = inject<Ref<GroupStateTypes> | undefined>(groupKey)
+	const group = inject<Ref<GroupStateTypes> | undefined>(groupKey, undefined)
 
 	//Check if component is in group
 	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
 
 	//#region Sync model value
-	const modelValue = ref(localState.modelValue.value)
+	const modelValue = ref(isInGroup.value ? localState.modelValue.value : null)
 	if (group) {
 		//Set default child modelValue to group modelValue
 		modelValue.value = unref(group).modelValue.value
@@ -60,14 +60,22 @@ export function useGroupOrLocalState(
 		return !!(unref(group)?.disabled.value || localState?.disabled?.value)
 	})
 	const isToggleEnabled = computed(() => {
-		if (group && isButtonGroupType(group.value.type)) {
+		if (
+			group &&
+			'type' in group.value &&
+			isButtonGroupType(group.value.type)
+		) {
 			const btnGroupState = unref(group) as ButtonGroupState
 			return btnGroupState.toggle.value
 		}
 		return false
 	})
 	const isReadonly = computed(() => {
-		if (group && isInputGroupType(group.value.type)) {
+		if (
+			group &&
+			'type' in group.value &&
+			isInputGroupType(group.value.type)
+		) {
 			const inputGroupState = unref(group) as InputGroupState
 			const childState = localState as InputGroupState
 			return inputGroupState.readonly.value || childState?.readonly?.value
@@ -77,13 +85,16 @@ export function useGroupOrLocalState(
 	//#endregion Computed prop per le shared props
 
 	const checkIsSelected = (value: any) => {
-		if (Array.isArray(modelValue.value))
-			return ObjectUtilities.contains(value, modelValue.value)
-		else
-			return (
+		let isSelected = false
+		if (Array.isArray(modelValue.value) && isInGroup.value) {
+			isSelected = ObjectUtilities.contains(value, modelValue.value)
+		} else {
+			isSelected =
+				isInGroup.value &&
 				ObjectUtilities.isNotEmpty(modelValue.value) &&
 				ObjectUtilities.equals(modelValue.value, value)
-			)
+		}
+		return isSelected
 	}
 
 	return {

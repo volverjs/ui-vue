@@ -24,14 +24,12 @@ import { useSlots, computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
 import { useValidationState } from '../../composables/validation/useValidationState'
-import {
-	InputGroupState,
-	type IInputGroupOptions
-} from '../../composables/group/group'
+import { InputGroupState } from '../../composables/group/models'
 import { VV_CHECK_GROUP } from '../../constants'
 
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
 import { HintSlotFactory } from '../common/HintSlot'
+import type { IInputGroupOptions } from '@/composables/group/types'
 
 //Props
 const props = defineProps({

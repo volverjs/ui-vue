@@ -7,11 +7,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
-import {
-	ButtonGroupState,
-	type IButtonGroupOptions
-} from '../../composables/group/group'
+import { ButtonGroupState } from '../../composables/group/models'
 import { VV_BUTTON_GROUP } from '../../constants'
+import type { IButtonGroupOptions } from '../../composables/group/types'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({

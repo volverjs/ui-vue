@@ -50,10 +50,8 @@ import VvIcon from '../VvIcon/VvIcon.vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { VV_BUTTON_GROUP } from '../../constants'
-import {
-	ButtonGroupState,
-	type IButtonGroupOptions
-} from '@/composables/group/group'
+import { ButtonGroupState } from '../../composables/group/models'
+import type { IButtonGroupOptions } from '../../composables/group/types'
 
 export default defineComponent({
 	components: { VvIcon },

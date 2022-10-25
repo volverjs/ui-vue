@@ -13,16 +13,14 @@
 
 <script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots, defineProps, defineEmits } from 'vue'
+import { computed, useAttrs, useSlots, defineEmits } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useValidationState } from '../../composables/validation/useValidationState'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import {
-	InputGroupState,
-	type IInputGroupOptions
-} from '../../composables/group/group'
+import { InputGroupState } from '../../composables/group/models'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
 const attrs = useAttrs()
 const slots = useSlots()

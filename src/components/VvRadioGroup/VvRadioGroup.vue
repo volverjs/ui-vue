@@ -24,14 +24,12 @@ import { useSlots, computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
 import { useValidationState } from '../../composables/validation/useValidationState'
-import {
-	InputGroupState,
-	type IInputGroupOptions
-} from '../../composables/group/group'
+import { InputGroupState } from '../../composables/group/models'
 import { VV_RADIO_GROUP } from '../../constants'
 
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 import { HintSlotFactory } from '../common/HintSlot'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
 const slots = useSlots()
 const emit = defineEmits(['update:modelValue'])

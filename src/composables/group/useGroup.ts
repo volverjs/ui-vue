@@ -8,7 +8,7 @@ import { provide, watch, computed } from 'vue'
  */
 export function useProvideGroupState(
 	groupState: IGroupState,
-	emit: (event: string, data: any) => void
+	emit: (event: 'update:modelValue', args: any) => void
 ) {
 	provide(
 		groupState.key,
