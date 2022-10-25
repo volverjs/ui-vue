@@ -1,5 +1,4 @@
 import { toRefs } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
 
 export function useOptions(props: any, context: any) {
 	const { options, optionLabel, optionValue } = toRefs(props)

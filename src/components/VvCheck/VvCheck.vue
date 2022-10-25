@@ -9,214 +9,181 @@
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<HintSlot v-if="hasHint" class="vv-input-checkbox__hint" />
 	</label>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { defineComponent } from 'vue'
+import { computed, useAttrs, useSlots, defineEmits } from 'vue'
 import { VV_CHECK_GROUP } from '../../constants'
+import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { useValidationState } from '../../composables/validation/useValidationState'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
-import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
-import { useHintSlot } from '../../composables/hint/useHint'
-import { HintSlot } from '../../components/common/HintSlot.js'
 import ObjectUtilities from '../../utils/ObjectUtilities'
+import { InputGroupState } from '../../composables/group/models'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
-/**
- * Check
- */
-export default defineComponent({
-	inheritAttrs: false,
-	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
-	components: {
-		HintSlot
-	},
-	props: {
-		/**
-		 * Valore della check
-		 */
-		value: null,
-		/**
-		 * VModel
-		 * @description
-		 * Se Binary = true, modelValue puo essere Object,Boolean,Number
-		 * Altrimenti modelValue sarà un Array
-		 */
-		modelValue: [Array, Boolean, Number, String],
-		/**
-		 * True - ritorna un valore del checkbox binario (es True/False) invece di un valori multipli
-		 */
-		binary: Boolean,
-		/**
-		 * Se binary=true, valore associato allo stato checked (ritornato al posto di TRUE)
-		 */
-		trueValue: { type: null, default: true },
-		/**
-		 * Se binary=true, valore associato allo stato unchecked (ritornato al posto di FALSE)
-		 */
-		falseValue: { type: null, default: false },
-		/**
-		 * True - visualizza il VvCheck come un pulsante Switch/Toggle
-		 */
-		switch: Boolean,
-		/**
-		 * Label componente
-		 */
-		label: String,
-		/**
-		 * True se disabilitato
-		 */
-		disabled: Boolean,
-		/**
-		 * True se readonly
-		 */
-		readonly: Boolean,
-		/**
-		 * Testo help
-		 */
-		hintLabel: { type: String, default: '' },
-		/**
-		 * True - valid state
-		 */
-		valid: Boolean,
-		/**
-		 * Messaggio custom per un valore valido
-		 */
-		validLabel: [String, Array],
-		/**
-		 * True - invalid state
-		 */
-		error: Boolean,
-		/**
-		 * Messaggi di errore.
-		 */
-		errors: [String, Array]
-	},
-	setup(props, context) {
-		const { input, focused } = useInputFocus(context)
+const attrs = useAttrs()
+const slots = useSlots()
 
-		const {
-			wrappedModelValue,
-			group,
-			isInGroup,
-			isDisabled,
-			isReadonly,
-			checkIsSelected
-		} = useSharedGroupState<any>(props, context, { key: VV_CHECK_GROUP })
+//Props
+const props = defineProps({
+	/**
+	 * Valore della check
+	 */
+	value: null,
+	/**
+	 * VModel
+	 * @description
+	 * Se Binary = true, modelValue puo essere Object,Boolean,Number
+	 * Altrimenti modelValue sarà un Array
+	 */
+	modelValue: null,
+	/**
+	 * True - ritorna un valore del checkbox binario (es True/False) invece di un valori multipli
+	 */
+	binary: Boolean,
+	/**
+	 * Se binary=true, valore associato allo stato checked (ritornato al posto di TRUE)
+	 */
+	trueValue: { type: null, default: true },
+	/**
+	 * Se binary=true, valore associato allo stato unchecked (ritornato al posto di FALSE)
+	 */
+	falseValue: { type: null, default: false },
+	/**
+	 * True - visualizza il VvCheck come un pulsante Switch/Toggle
+	 */
+	switch: Boolean,
+	valid: Boolean,
+	validLabel: [String, Array],
+	error: Boolean,
+	/**
+	 * Messaggi di errore.
+	 */
+	errors: [String, Array],
+	label: String,
+	disabled: Boolean,
+	readonly: Boolean
+})
 
-		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
+//Emits
+const emit = defineEmits([
+	'click',
+	'update:modelValue',
+	'change',
+	'focus',
+	'blur'
+])
 
-		return {
-			input,
-			focused,
-			group,
-			wrappedModelValue,
-			isInGroup,
-			isDisabled,
-			isReadonly,
-			checkIsSelected,
-			hasHint,
-			isInvalid,
-			isValid
-		}
-	},
-	computed: {
-		checkClass() {
-			const { class: cssClass } = this.$attrs
-			return {
-				'vv-input-checkbox': true,
-				'vv-input-checkbox--switch': this.switch,
-				'vv-input-checkbox--valid': this.isValid,
-				'vv-input-checkbox--invalid': this.isInvalid,
-				class: cssClass
-			}
-		},
-		checkAttrs() {
-			const { id, name, style } = this.$attrs
-			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
-				k.startsWith('data-')
-			)
-			return {
-				for: (id || name) as string,
-				style,
-				...dataAttrs
-			}
-		},
-		checkInputClass() {
-			return {
-				'focus-visible': this.focused,
-				'vv-input-check__input--checked': this.isChecked,
-				'vv-input-check__input--disabled': this.isDisabled,
-				'vv-input-check__input--readonly': this.isReadonly
-			}
-		},
-		checkInputAttrs() {
-			const {
-				id = '',
-				name = '',
-				value = ''
-			} = this.$attrs as InputHTMLAttributes
-			return {
-				type: 'checkbox',
-				id: id || name,
-				name,
-				value,
-				disabled: this.isDisabled,
-				readonly: this.isReadonly,
-				checked: this.isChecked,
-				...this.checkInputAriaAttrs
-			}
-		},
-		checkInputAriaAttrs() {
-			const { name } = this.$attrs
-			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
-				k.startsWith('aria-')
-			)
-			return {
-				'aria-label': name,
-				'aria-checked': this.isChecked,
-				...dataAttrs
-			}
-		},
-		isChecked() {
-			return this.binary
-				? ObjectUtilities.equals(this.wrappedModelValue, this.trueValue)
-				: this.checkIsSelected(this.value)
-		}
-	},
-	methods: {
-		onChange() {
-			if (this.binary) {
-				this.wrappedModelValue = this.isChecked
-					? this.falseValue
-					: this.trueValue
-				return
-			}
+// #region group
+// Define input options
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
+// Use group composable to inject the provided group
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
+	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
+// #endregion group
 
-			if (Array.isArray(this.wrappedModelValue)) {
-				this.wrappedModelValue = !this.isChecked
-					? [...this.wrappedModelValue, this.value]
-					: ObjectUtilities.removeFromList(
-							this.value,
-							this.wrappedModelValue
-					  )
-				return
-			}
+const { input, focused } = useInputFocus({ emit })
+const { isValid, isInvalid } = useValidationState(props, { slots })
 
-			console.warn(
-				'Cannot change value - VvCheck modelValue is not an array'
-			)
-		},
-		onClick(event: MouseEvent | undefined) {
-			if (!this.disabled) {
-				this.$emit('click', event)
-				this.$emit('change', this.isChecked ? this.value : null)
-				this.focused = true
-			}
-		}
+//Computed
+const isChecked = computed(() => {
+	return props.binary
+		? ObjectUtilities.equals(modelValue.value, props.trueValue)
+		: checkIsSelected(props.value)
+})
+const checkClass = computed(() => {
+	const { class: cssClass } = attrs
+	return {
+		'vv-input-checkbox': true,
+		'vv-input-checkbox--switch': props.switch,
+		'vv-input-checkbox--valid': isValid.value,
+		'vv-input-checkbox--invalid': isInvalid.value,
+		class: cssClass
 	}
 })
+const checkAttrs = computed(() => {
+	const { id, name, style } = attrs
+	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
+		k.startsWith('data-')
+	)
+	return {
+		for: (id || name) as string,
+		style,
+		...dataAttrs
+	}
+})
+const checkInputClass = computed(() => {
+	return {
+		'focus-visible': focused.value,
+		'vv-input-check__input--checked': isChecked.value,
+		'vv-input-check__input--disabled': isDisabled.value,
+		'vv-input-check__input--readonly': isReadonly.value
+	}
+})
+const checkInputAttrs = computed(() => {
+	const { id = '', name = '' } = attrs as InputHTMLAttributes
+	return {
+		type: 'checkbox',
+		id: id || name,
+		name,
+		value: props.value,
+		disabled: isDisabled.value,
+		readonly: isReadonly.value,
+		checked: isChecked.value,
+		...checkInputAriaAttrs.value
+	}
+})
+const checkInputAriaAttrs = computed(() => {
+	const { name } = attrs
+	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
+		k.startsWith('aria-')
+	)
+	return {
+		'aria-label': name,
+		'aria-checked': isChecked.value,
+		...dataAttrs
+	}
+})
+
+//Methods
+function onChange() {
+	if (props.binary) {
+		modelValue.value = isChecked.value ? props.falseValue : props.trueValue
+		emit('update:modelValue', modelValue.value)
+		return
+	}
+
+	if (Array.isArray(modelValue.value)) {
+		modelValue.value = !isChecked.value
+			? [...modelValue.value, props.value]
+			: ObjectUtilities.removeFromList(props.value, modelValue.value)
+		emit('update:modelValue', modelValue.value)
+		return
+	}
+
+	console.warn('Cannot change value - VvCheck modelValue is not an array')
+}
+function onClick(event: MouseEvent | undefined) {
+	if (!isDisabled) {
+		emit('click', event)
+		emit('change', isChecked.value ? props.value : null)
+		focused.value = true
+	}
+}
+</script>
+
+<script lang="ts">
+export default {
+	inheritAttrs: false
+}
 </script>
 
 <style lang="scss">

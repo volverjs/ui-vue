@@ -8,176 +8,136 @@
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<HintSlot v-if="hasHint" class="vv-input-radio__hint" />
 	</label>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { defineComponent } from 'vue'
+import { computed, useAttrs, useSlots, defineEmits } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
 import { useInputFocus } from '../../composables/focus/useInputFocus'
-import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
-import { useHintSlot } from '../../composables/hint/useHint'
-import { HintSlot } from '../../components/common/HintSlot.js'
-
+import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { useValidationState } from '../../composables/validation/useValidationState'
 import ObjectUtilities from '../../utils/ObjectUtilities'
+import { InputGroupState } from '../../composables/group/models'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
-/**
- * Radio Button
- */
-export default defineComponent({
-	inheritAttrs: false,
-	emits: ['click', 'update:modelValue', 'change', 'focus', 'blur'],
-	components: {
-		HintSlot
-	},
-	props: {
-		/**
-		 * Valore del radio
-		 */
-		value: null,
-		/**
-		 * VModel
-		 */
-		modelValue: { type: [Object, Number, Boolean, String] },
-		/**
-		 * Label radio button
-		 */
-		label: { type: String, default: '' },
-		/**
-		 * True se disabilitato
-		 */
-		disabled: Boolean,
-		/**
-		 * True se readonly
-		 */
-		readonly: Boolean,
-		/**
-		 * Testo help
-		 */
-		hintLabel: { type: String, default: '' },
-		/**
-		 * True - valid state
-		 */
-		valid: Boolean,
-		/**
-		 * Messaggio custom per un valore valido
-		 */
-		validLabel: [String, Array],
-		/**
-		 * True - invalid state
-		 */
-		error: Boolean,
-		/**
-		 * Messaggi di errore.
-		 */
-		errors: [String, Array]
-	},
-	setup(props, context) {
-		const { input, focused } = useInputFocus(context)
+const attrs = useAttrs()
+const slots = useSlots()
+const emit = defineEmits([
+	'click',
+	'update:modelValue',
+	'change',
+	'focus',
+	'blur'
+])
+const props = defineProps({
+	/**
+	 * Valore del radio
+	 */
+	value: null,
+	modelValue: { type: [Object, Number, Boolean, String] },
+	label: { type: String, default: '' },
+	disabled: Boolean,
+	readonly: Boolean,
+	valid: Boolean,
+	validLabel: [String, Array],
+	error: Boolean,
+	errors: [String, Array]
+})
 
-		const {
-			wrappedModelValue,
-			group,
-			isInGroup,
-			isDisabled,
-			isReadonly,
-			checkIsSelected
-		} = useSharedGroupState(props, context, { key: VV_RADIO_GROUP })
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
+// Use group composable to inject the provided group
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
+	useGroupOrLocalState(VV_RADIO_GROUP, groupState)
+// #endregion group
 
-		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
+const { input, focused } = useInputFocus({ emit })
+const { isValid, isInvalid } = useValidationState(props, { slots })
 
-		return {
-			input,
-			focused,
-			group,
-			wrappedModelValue,
-			isInGroup,
-			isDisabled,
-			isReadonly,
-			checkIsSelected,
-			hasHint,
-			isInvalid,
-			isValid
-		}
-	},
-	computed: {
-		radioClass() {
-			const { class: cssClass } = this.$attrs
-			return {
-				'vv-input-radio': true,
-				'vv-input-radio--valid': this.isValid,
-				'vv-input-radio--invalid': this.isInvalid,
-				class: cssClass
-			}
-		},
-		radioAttrs() {
-			const { id, name, style } = this.$attrs
-			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
-				k.startsWith('data-')
-			)
-			return {
-				for: (id || name) as string,
-				style,
-				...dataAttrs
-			}
-		},
-		radioInputClass() {
-			return {
-				'focus-visible': this.focused,
-				'vv-input-radio__input--checked': this.isChecked,
-				'vv-input-radio__input--disabled': this.isDisabled,
-				'vv-input-radio__input--readonly': this.isReadonly
-			}
-		},
-		radioInputAttrs() {
-			const {
-				id = '',
-				name = '',
-				value = ''
-			} = this.$attrs as InputHTMLAttributes
-			return {
-				type: 'radio',
-				id: id || name,
-				name,
-				value,
-				disabled: this.isDisabled,
-				readonly: this.isReadonly,
-				checked: this.isChecked,
-				...this.radioInputAriaAttrs
-			}
-		},
-		radioInputAriaAttrs() {
-			const { name } = this.$attrs
-			const dataAttrs = ObjectUtilities.pickBy(this.$attrs, (k: string) =>
-				k.startsWith('aria-')
-			)
-			return {
-				'aria-label': name,
-				'aria-checked': this.isChecked,
-				...dataAttrs
-			}
-		},
-		isChecked() {
-			return this.checkIsSelected(this.$attrs.value)
-		}
-	},
-	methods: {
-		onChange() {
-			if (!this.isChecked) this.$emit('change', this.$attrs.value)
-			this.wrappedModelValue = this.$attrs.value
-		},
-		onClick(event: Event) {
-			if (!this.disabled) {
-				this.$emit('click', event)
-				// this.$emit('update:modelValue', this.$attrs.value)
-				// if (this.group) this.group.add(this.$attrs.value)
-				this.focused = true
-			}
-		}
+//Computed
+const isChecked = computed(() => {
+	return checkIsSelected(props.value)
+})
+const radioClass = computed(() => {
+	const { class: cssClass } = attrs
+	return {
+		'vv-input-radio': true,
+		'vv-input-radio--valid': isValid.value,
+		'vv-input-radio--invalid': isInvalid.value,
+		class: cssClass
 	}
 })
+const radioAttrs = computed(() => {
+	const { id, name, style } = attrs
+	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
+		k.startsWith('data-')
+	)
+	return {
+		for: (id || name) as string,
+		style,
+		...dataAttrs
+	}
+})
+const radioInputClass = computed(() => {
+	return {
+		'focus-visible': focused.value,
+		'vv-input-radio__input--checked': isChecked.value,
+		'vv-input-radio__input--disabled': isDisabled.value,
+		'vv-input-radio__input--readonly': isReadonly.value
+	}
+})
+const radioInputAttrs = computed(() => {
+	const { id = '', name = '' } = attrs as InputHTMLAttributes
+	return {
+		type: 'radio',
+		id: id || name,
+		name,
+		value: props.value,
+		disabled: isDisabled.value,
+		readonly: isReadonly.value,
+		checked: isChecked.value,
+		...radioInputAriaAttrs.value
+	}
+})
+const radioInputAriaAttrs = computed(() => {
+	const { name } = attrs
+	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
+		k.startsWith('aria-')
+	)
+	return {
+		'aria-label': name,
+		'aria-checked': isChecked.value,
+		...dataAttrs
+	}
+})
+
+//Methods
+function onChange() {
+	if (!isChecked.value) emit('change', props.value)
+	modelValue.value = props.value
+	emit('update:modelValue', modelValue.value)
+}
+function onClick(event: Event) {
+	if (!isDisabled.value) {
+		emit('click', event)
+		focused.value = true
+	}
+}
+</script>
+
+<script lang="ts">
+export default {
+	inheritAttrs: false
+}
 </script>
 
 <style lang="scss">

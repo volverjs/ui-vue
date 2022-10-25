@@ -43,15 +43,15 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
+import { computed, defineComponent, type PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 import VvIcon from '../VvIcon/VvIcon.vue'
-import type { UseGroupComponentProps } from '../../composables/group/types'
 
 import { v4 as uuidv4 } from 'uuid'
-import { computed, defineComponent, unref, toRefs, ref } from 'vue'
-import { useSharedGroupState } from '../../composables/group/useSharedGroupState'
+import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { VV_BUTTON_GROUP } from '../../constants'
+import { ButtonGroupState } from '../../composables/group/models'
+import type { IButtonGroupOptions } from '../../composables/group/types'
 
 export default defineComponent({
 	components: { VvIcon },
@@ -134,28 +134,40 @@ export default defineComponent({
 		 */
 		fullBleed: Boolean
 	},
-	setup(props, context) {
-		const { attrs } = context
-
-		const modelValue = ref(attrs?.name || uuidv4())
-		const sharedProps: UseGroupComponentProps = {
-			...toRefs(props),
-			modelValue
+	emits: ['update:modelValue'],
+	setup(props, { attrs, emit }) {
+		const btnName = attrs?.name || uuidv4()
+		// #region group
+		// Define reactive props
+		const buttonGroupOptions: IButtonGroupOptions = {
+			modelValue: btnName,
+			disabled: props.disabled
 		}
-		const { isInGroup, group, checkIsSelected } = useSharedGroupState(
-			sharedProps,
-			context,
-			{
-				key: VV_BUTTON_GROUP
-			}
+		// Create groupState instance
+		const groupState = new ButtonGroupState(
+			VV_BUTTON_GROUP,
+			buttonGroupOptions
 		)
+		// Use group composable to inject the provided group
+		const {
+			group,
+			modelValue,
+			isInGroup,
+			isDisabled,
+			isToggleEnabled,
+			checkIsSelected
+		} = useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
 
 		return {
 			group,
 			isInGroup,
-			isActive: computed(() => checkIsSelected(modelValue.value)),
-			onClick(e: Event) {
-				if (isInGroup.value) unref(group)?.add(modelValue.value)
+			isSelected: computed(
+				() => isToggleEnabled.value && checkIsSelected(btnName)
+			),
+			isDisabled,
+			onClick() {
+				modelValue.value = btnName
+				emit('update:modelValue', modelValue.value)
 			}
 		}
 		// #endregion button-group logic
@@ -199,12 +211,6 @@ export default defineComponent({
 			return toReturn
 		},
 		/**
-		 * Check disabled state based on attributes
-		 */
-		isDisabled() {
-			return 'disabled' in this.$attrs
-		},
-		/**
 		 * @description Select the tag type in based on the props before.
 		 * @returns {string} The type of component
 		 */
@@ -232,10 +238,11 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active': this.active || this.isActive,
+					'vv-button--active': this.active || this.isSelected,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded,
-					'vv-button--full-bleed': this.fullBleed
+					'vv-button--full-bleed': this.fullBleed,
+					'vv-button--disabled': this.isDisabled
 				}
 			]
 		},

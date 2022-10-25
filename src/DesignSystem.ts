@@ -50,12 +50,13 @@ interface IDesignSystem extends IDesignSystemParams {
 	 * @returns {Boolean} true on success, false if something is wrong with data
 	 */
 	addIcon(name: string, data: IconifyIcon): boolean
+	provider: string
 }
 
 export default class DesignSystem implements IDesignSystem {
 	fetchOptions: RequestInit
 	iconsCollections: IconifyJSON[]
-	#provider: string
+	provider: string
 
 	constructor({
 		fetchWithCredentials = false,
@@ -65,7 +66,7 @@ export default class DesignSystem implements IDesignSystem {
 		if (fetchWithCredentials) {
 			fetchOptions = { ...fetchOptions, credentials: 'include' }
 		}
-		this.#provider = 'vv'
+		this.provider = 'vv'
 		this.fetchOptions = fetchOptions
 		this.iconsCollections = iconsCollections
 	}
@@ -79,7 +80,7 @@ export default class DesignSystem implements IDesignSystem {
 		// Add default icons collection (simple, normal, detailed)
 		// and others custom collections
 		this.iconsCollections.forEach((iconsCollection) => {
-			this.addCollection(iconsCollection, this.#provider)
+			this.addCollection(iconsCollection, this.provider)
 		})
 
 		// register global methods

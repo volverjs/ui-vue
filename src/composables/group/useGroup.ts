@@ -1,33 +1,22 @@
-import type { UseGroupOptions, UseGroupReturn } from './types'
-
-import { provide, watch, computed, toRefs } from 'vue'
-import { GroupStateManager } from './group'
+import type { IGroupState } from './types'
+import { provide, watch, computed } from 'vue'
 
 /**
  * Condividi parte dello stato del componente con tutti i suoi figli.
- * Stato condiviso: ModelValue, Disabled, Readonly
+ * @param {IGroupState} groupState the group state with all group options
+ * @param {Function} emit the vue component emit function to bind parent data
  */
-export function useGroup<TModelValue>(
-	props: any,
-	context: any,
-	options: any
-): UseGroupReturn<TModelValue> {
-	const { key } = options
-	const { emit } = context
-	const { modelValue, disabled, readonly } = toRefs(props)
-	const group = new GroupStateManager<TModelValue>({
-		modelValue,
-		disabled,
-		readonly
-	})
-
+export function useProvideGroupState(
+	groupState: IGroupState,
+	emit: (event: 'update:modelValue', args: any) => void
+) {
 	provide(
-		key,
-		computed(() => group)
+		groupState.key,
+		computed(() => groupState)
 	)
 
 	watch(
-		() => group.modelValue,
+		groupState.modelValue,
 		(newVal) => {
 			emit('update:modelValue', newVal)
 		},
@@ -35,8 +24,4 @@ export function useGroup<TModelValue>(
 			immediate: true
 		}
 	)
-
-	return {
-		group
-	}
 }

@@ -14,122 +14,97 @@
 			<slot v-else />
 			<!-- #endregion default -->
 		</div>
-		<HintSlot v-if="hasHint" class="vv-input-radio-group__hint" />
+		<!-- @slot error,valid,hint,loading vanno vanno qua -->
+		<HintSlot class="vv-input-radio-group__hint" />
 	</fieldset>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { VV_RADIO_GROUP } from '../../constants'
-import { useGroup } from '../../composables/group/useGroup'
+<script setup lang="ts">
+import { useSlots, computed } from 'vue'
+import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
-import { useHintSlot } from '../../composables/hint/useHint'
-import { HintSlot } from '../../components/common/HintSlot.js'
+import { useValidationState } from '../../composables/validation/useValidationState'
+import { InputGroupState } from '../../composables/group/models'
+import { VV_RADIO_GROUP } from '../../constants'
+
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import { HintSlotFactory } from '../common/HintSlot'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
-/**
- * VvInputRadioGroup
- */
-export default defineComponent({
-	components: {
-		VvRadio,
-		HintSlot
-	},
-	props: {
-		/**
-		 * VModel
-		 */
-		modelValue: null,
-		/**
-		 * Radio group label
-		 */
-		label: { type: String, default: '' },
-		/**
-		 * Nome da utilizzare per il radio group
-		 */
-		name: { type: String, default: '', required: true },
-		/**
-		 * True se disabilitato
-		 */
-		disabled: { type: Boolean, default: false },
-		/**
-		 * True se readonly
-		 */
-		readonly: { type: Boolean, default: false },
-		/**
-		 * True = show buttons vertically
-		 */
-		vertical: { type: Boolean, default: false },
-		/**
-		 * Lista delle radio options
-		 */
-		options: { type: Array, default: () => [] },
-		/**
-		 * Se options è un array di oggetti, optionLabel = nome del campo da utilizzare come label oppure una funzione per ricavare la label
-		 */
-		optionLabel: { type: [String, Function], default: () => 'label' },
-		/**
-		 * Se options è un array di oggetti, optionValue = nome del campo da utilizzare come value oppure una funzione per ricavare il value
-		 */
-		optionValue: { type: [String, Function], default: () => 'value' },
-		/**
-		 * Testo help
-		 */
-		hintLabel: { type: String, default: '' },
-		/**
-		 * True - valid state
-		 */
-		valid: Boolean,
-		/**
-		 * Messaggio custom per un valore valido
-		 */
-		validLabel: [String, Array],
-		/**
-		 * True - invalid state
-		 */
-		error: Boolean,
-		/**
-		 * Messaggi di errore.
-		 */
-		errors: [String, Array]
-	},
-	setup(props, context) {
-		const { group } = useGroup(props, context, { key: VV_RADIO_GROUP })
+const slots = useSlots()
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+	/**
+	 * VModel
+	 */
+	modelValue: null,
+	label: { type: String, default: '' },
+	/**
+	 * Nome da utilizzare per il radio group
+	 */
+	name: { type: String, default: '', required: true },
+	disabled: { type: Boolean, default: false },
+	readonly: { type: Boolean, default: false },
+	/**
+	 * True = show buttons vertically
+	 */
+	vertical: { type: Boolean, default: false },
+	/**
+	 * Lista delle radio options
+	 */
+	options: { type: Array, default: () => [] },
+	/**
+	 * Se options è un array di oggetti, optionLabel = nome del campo da utilizzare come label oppure una funzione per ricavare la label
+	 */
+	optionLabel: { type: [String, Function], default: () => 'label' },
+	/**
+	 * Se options è un array di oggetti, optionValue = nome del campo da utilizzare come value oppure una funzione per ricavare il value
+	 */
+	optionValue: { type: [String, Function], default: () => 'value' },
+	hintLabel: { type: String, default: '' },
+	valid: Boolean,
+	validLabel: [String, Array],
+	error: Boolean,
+	errors: [String, Array]
+})
 
-		const { hasHint, isInvalid, isValid } = useHintSlot(props, context)
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
+// Use group composable to provide the group state to children
+useProvideGroupState(groupState, emit)
+// #endregion group
 
-		const { getOptionLabel, getOptionValue } = useOptions(props, context)
+const { isInvalid, isValid } = useValidationState(props, { emit })
+const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
-		return {
-			group,
-			getOptionLabel,
-			getOptionValue,
-			hasHint,
-			isInvalid,
-			isValid
-		}
-	},
-	computed: {
-		groupClass() {
-			return {
-				'vv-input-radio-group': true,
-				'vv-input-radio-group--horizontal': !this.vertical,
-				'vv-input-radio-group--valid': this.isValid,
-				'vv-input-radio-group--invalid': this.isInvalid
-			}
-		}
-	},
-	methods: {
-		getOptionProps(option: any, oIndex: Number) {
-			return {
-				id: `${this.name}_opt${oIndex}`,
-				name: this.name,
-				label: this.getOptionLabel(option),
-				value: this.getOptionValue(option)
-			}
-		}
+//Computed
+const groupClass = computed(() => {
+	return {
+		'vv-input-radio-group': true,
+		'vv-input-radio-group--horizontal': !props.vertical,
+		'vv-input-radio-group--valid': isValid.value,
+		'vv-input-radio-group--invalid': isInvalid.value
 	}
 })
+
+//Methods
+function getOptionProps(option: any, oIndex: number) {
+	return {
+		id: `${props.name}_opt${oIndex}`,
+		name: props.name,
+		label: getOptionLabel(option),
+		value: getOptionValue(option)
+	}
+}
+
+const HintSlot = HintSlotFactory(props, slots)
 </script>
 
 <style lang="scss">

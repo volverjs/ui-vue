@@ -144,7 +144,7 @@ export default defineComponent({
 					}
 				})
 			}
-			return this.iconName
+			return this.iconName || this.name
 		},
 		hasClass() {
 			return ['vv-icon', this.hasModifiers]
