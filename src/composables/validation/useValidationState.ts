@@ -1,7 +1,7 @@
 import { computed, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
-function joinErrors(errors: Array<any> | String): String {
+function joinErrors(errors: Array<any> | string): string {
 	if (Array.isArray(errors))
 		return errors
 			.filter((e) => ObjectUtilities.isString(e))
@@ -26,15 +26,20 @@ export function useValidationState(props: any, context: any) {
 
 	const hasErrors = computed(() => {
 		//No error
-		if (!error || error?.value !== true) return false
+		if (!error.value || error?.value !== true) return false
 
 		//Error true
 		if (slots.error) return true
 
-		if (errors && Array.isArray(errors.value) && errors.value.length > 0)
+		if (
+			errors.value &&
+			Array.isArray(errors.value) &&
+			errors.value.length > 0
+		)
 			return true
 
-		if (errors && ObjectUtilities.isNotEmpty(errors.value)) return true
+		if (errors.value && ObjectUtilities.isNotEmpty(errors.value))
+			return true
 
 		return false
 	})
@@ -44,6 +49,8 @@ export function useValidationState(props: any, context: any) {
 		else return errors.value
 	})
 
+	const isDirty = computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
+
 	return {
 		valid,
 		error,
@@ -51,6 +58,7 @@ export function useValidationState(props: any, context: any) {
 		hasErrors,
 		isInvalid,
 		isValid,
+		isDirty,
 		errorMessage,
 		validLabel
 	}

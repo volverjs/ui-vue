@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 import { useFocus } from '@vueuse/core'
 
 interface IFocusOptions {
-	emit: Function
+	emit: () => any
 }
 
 /**

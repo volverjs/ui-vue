@@ -91,3 +91,5 @@ export const HintSlotFactory = (pProps, pSlots) => {
 		}
 	}
 }
+
+export default HintSlotFactory
