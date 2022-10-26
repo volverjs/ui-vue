@@ -80,7 +80,7 @@ export function useGroupOrLocalState(
 			const childState = localState as InputGroupState
 			return inputGroupState.readonly.value || childState?.readonly?.value
 		}
-		return false
+		return (localState as InputGroupState)?.readonly || false
 	})
 	//#endregion Computed prop per le shared props
 
