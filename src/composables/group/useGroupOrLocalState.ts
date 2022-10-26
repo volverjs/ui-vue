@@ -90,7 +90,6 @@ export function useGroupOrLocalState(
 			isSelected = ObjectUtilities.contains(value, modelValue.value)
 		} else {
 			isSelected =
-				isInGroup.value &&
 				ObjectUtilities.isNotEmpty(modelValue.value) &&
 				ObjectUtilities.equals(modelValue.value, value)
 		}
