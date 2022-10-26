@@ -1,7 +1,18 @@
 import type { AccordionGroupState } from '../../composables/group/models'
-import { computed, unref } from 'vue'
+import { computed, unref, type ComputedRef, type Ref } from 'vue'
 import type { IAccordionGroupState } from '../../composables/group/types'
-import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { useGroupOrLocalState } from './useGroupOrLocalState'
+import ObjectUtilities from '../../utils/ObjectUtilities'
+
+export interface UseAccordionGroupReturn {
+	modelValue: Ref<any>
+	isInGroup: ComputedRef<boolean>
+	isDisabled: ComputedRef<boolean>
+	hasIconRight: ComputedRef<boolean>
+	isBordered: ComputedRef<boolean>
+	isAccordionMode: ComputedRef<boolean>
+	isSelectedInGroup: ComputedRef<boolean>
+}
 
 /**
  * Utilizza lo stato locale o quello del gruppo di appartenenza.
@@ -32,13 +43,43 @@ export function useAccordionGroup(
 		return accordionGroup?.accordion?.value
 	})
 
+	// init group modelValue
+	if (isInGroup.value && !modelValue.value) {
+		modelValue.value = isAccordionMode.value ? '' : []
+	}
+
+	const isSelectedInGroup: ComputedRef<boolean> = computed(() => {
+		if (modelValue.value && isInGroup.value) {
+			return isAccordionMode.value
+				? modelValue.value === localState.modelValue.value
+				: modelValue.value.includes(localState.modelValue.value)
+		}
+		return false
+	})
+
+	const toggleElement = () => {
+		if (isAccordionMode.value) {
+			modelValue.value = isSelectedInGroup.value
+				? null
+				: localState.modelValue.value
+		} else {
+			modelValue.value = isSelectedInGroup.value
+				? ObjectUtilities.removeFromList(
+						localState.modelValue.value,
+						modelValue.value
+				  )
+				: [...modelValue.value, localState.modelValue.value]
+		}
+	}
+
 	return {
-		group,
 		modelValue,
 		isInGroup,
 		isDisabled,
 		hasIconRight,
 		isBordered,
-		isAccordionMode
+		isAccordionMode,
+		isSelectedInGroup,
+		toggleElement
 	}
 }

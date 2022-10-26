@@ -17,12 +17,8 @@
 <script setup lang="ts">
 import { computed, type ComputedRef } from 'vue'
 import { useModifiers } from '../../composables/useModifiers'
-import { AccordionGroupState, GroupState } from '../../composables/group/models'
-import type {
-	IAccordionGroupOptions,
-	IGroupOptions
-} from '../../composables/group/types'
-import { VV_ACCORDION_GROUP } from '../../constants'
+import { AccordionGroupState } from '../../composables/group/models'
+import type { IAccordionGroupOptions } from '../../composables/group/types'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 
@@ -79,10 +75,7 @@ const accordionGroupOptions: IAccordionGroupOptions = {
 	accordion: props.accordion
 }
 // Create groupState instance
-const accordionGroupState = new AccordionGroupState(
-	VV_ACCORDION_GROUP,
-	accordionGroupOptions
-)
+const accordionGroupState = new AccordionGroupState(accordionGroupOptions)
 // Use group composable to provide the group state to children
 useProvideGroupState(accordionGroupState, emit)
 // #endregion group

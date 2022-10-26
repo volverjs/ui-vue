@@ -7,7 +7,7 @@ import { useFocus } from '@vueuse/core'
  */
 export function useComponentFocus(
 	inputTemplateRef: Ref<HTMLInputElement>,
-	emit: (event: string, ...args: any[]) => void
+	emit: (event: any, ...args: any[]) => void
 ) {
 	const { focused } = useFocus(inputTemplateRef)
 

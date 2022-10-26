@@ -26,7 +26,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { useModifiers } from '../../composables/useModifiers'
 import { AccordionGroupState } from '../../composables/group/models'
 import type { IAccordionGroupOptions } from '../../composables/group/types'
-import { VV_ACCORDION_GROUP } from '../../constants'
 import { useAccordionGroup } from '../../composables/group/useAccordionGroup'
 
 export interface VvAccordionProps {
@@ -78,17 +77,20 @@ const accordionGroupOptions: IAccordionGroupOptions = {
 	iconRight: props.iconRight
 }
 // Create groupState instance
-const accordionGroupState = new AccordionGroupState(
-	VV_ACCORDION_GROUP,
-	accordionGroupOptions
-)
+const accordionGroupState = new AccordionGroupState(accordionGroupOptions)
 // Use group composable to inject the provided group (from parent accordion group)
-const { modelValue, isDisabled, hasIconRight, isBordered, isInGroup } =
-	useAccordionGroup(accordionGroupState.key, accordionGroupState)
+const {
+	isDisabled,
+	hasIconRight,
+	isBordered,
+	isInGroup,
+	isSelectedInGroup,
+	toggleElement
+} = useAccordionGroup(accordionGroupState.key, accordionGroupState)
 // #endregion group
 
 const isOpen = computed(() => {
-	return isInGroup.value ? modelValue.value === accordionName : props.open
+	return isInGroup.value ? isSelectedInGroup.value : props.open
 })
 
 const hasClass = computed(() => [
@@ -102,17 +104,18 @@ const hasClass = computed(() => [
 ])
 
 // methods
+// Toggle is used for accordion single element
 const onToggle = (e: Event) => {
 	const target = e.target as HTMLDetailsElement
 	// Emit toggle opened value
 	emit('update:open', target.open)
 }
 
+// Click is handled for toggleElement from group modelValue (array or single string value)
 const onClick = (e: Event) => {
 	// Update modelValue watched from group provider
 	if (isInGroup.value) {
-		modelValue.value =
-			modelValue.value === accordionName ? null : accordionName
+		toggleElement()
 		// prevent auto-toggle in group mode
 		e.preventDefault()
 	}
