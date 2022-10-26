@@ -77,7 +77,7 @@ export const HintSlotFactory = (pProps, pSlots) => {
 			const hintContent = computed(() => {
 				const slotProps = { modelValue, error, valid }
 
-				if (error.value) {
+				if (error?.value) {
 					return (
 						errorSlot?.(slotProps) ||
 						errorMessage?.value ||
@@ -85,14 +85,14 @@ export const HintSlotFactory = (pProps, pSlots) => {
 					)
 				}
 
-				if (valid.value)
+				if (valid?.value)
 					return (
 						validSlot?.(slotProps) ||
 						validLabel?.value ||
 						hintLabel?.value
 					)
 
-				if (loading.value)
+				if (loading?.value)
 					return (
 						loadingSlot?.(slotProps) ||
 						loadingLabel?.value ||
