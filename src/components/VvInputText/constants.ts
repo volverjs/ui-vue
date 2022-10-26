@@ -27,7 +27,7 @@ const TYPES_ICON = {
 	SEARCH: 'search'
 }
 
-const EVENTS = ['update:modelValue', 'focus', 'blur']
+const EVENTS = ['update:modelValue', 'focus', 'blur', 'input']
 
 export default {
 	TYPES,

@@ -9,7 +9,8 @@
 			<input
 				ref="input"
 				v-bind="innerInputProps"
-				v-model="inputTextData" />
+				v-model="inputTextData"
+				@input="emit('input', $event)" />
 			<!-- @slot icon-right to replace icon right -->
 			<slot name="icon-right" v-bind="iconSlotProps">
 				<!-- default password icon -->
@@ -58,6 +59,7 @@ import {
 	ref,
 	shallowRef,
 	toRefs,
+	watch,
 	onMounted
 } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
@@ -70,7 +72,7 @@ import HintSlotFactory from '../common/HintSlot'
 import INPUT from './constants'
 
 //Composables
-import { useVModel } from '@vueuse/core'
+import { refDebounced } from '@vueuse/core'
 import { useInputPassword } from './useInputPassword'
 import { useInputNumber } from './useInputNumber'
 import { useComponentIcons } from '../../composables/icons/useComponentIcons'
@@ -121,7 +123,17 @@ const props = defineProps({
 	/**
 	 * True = label flottante
 	 */
-	floating: Boolean
+	floating: Boolean,
+	/**
+	 * Debaounce time in ms
+	 */
+	debounce: {
+		type: Number,
+		default: 0,
+		validator(value) {
+			return Number.isInteger(value)
+		}
+	}
 })
 const emit = defineEmits(INPUT.EVENTS)
 const slots = useSlots()
@@ -131,11 +143,15 @@ const attrs = useAttrs()
 const input = ref()
 
 //Data
-const inputTextData = useVModel(props, 'modelValue', emit)
+const inputTextData = ref(props.modelValue)
 const { disabled, readonly, type, icon, iconPosition } = toRefs(props)
 
 //Component computed
 const isActionsDisabled = computed(() => disabled.value || readonly.value)
+
+//Debounce
+const debouncedInputTextData = refDebounced(inputTextData, props.debounce || 0)
+watch(debouncedInputTextData, (v) => emit('update:modelValue', v))
 
 //Gestione ICONE
 const iconProps = { icon, iconPosition }
