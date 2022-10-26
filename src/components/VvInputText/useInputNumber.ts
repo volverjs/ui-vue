@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { ref, computed, unref } from 'vue'
+import { computed, unref } from 'vue'
 import INPUT from './constants'
 
 interface useVvInputNumberProps {

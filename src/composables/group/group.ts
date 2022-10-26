@@ -9,20 +9,20 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
  */
 export interface GroupParentState {
 	modelValue: Ref<any>
-	disabled: Ref<Boolean>
-	toggle?: Ref<Boolean>
-	readonly?: Ref<Boolean>
+	disabled: Ref<boolean>
+	toggle?: Ref<boolean>
+	readonly?: Ref<boolean>
 }
 
 export class ButtonGroupState implements IButtonGroupState {
 	type: 'ButtonGroup'
 
-	key: Symbol
+	key: symbol
 	modelValue: Ref<any>
-	disabled: Ref<Boolean>
-	toggle: Ref<Boolean>
+	disabled: Ref<boolean>
+	toggle: Ref<boolean>
 
-	constructor(key: Symbol, state: GroupParentState) {
+	constructor(key: symbol, state: GroupParentState) {
 		this.type = 'ButtonGroup'
 
 		if (!isRef(state.modelValue)) throw Error('ModelValue is not a Ref')
@@ -35,7 +35,7 @@ export class ButtonGroupState implements IButtonGroupState {
 		this.toggle = state.toggle
 	}
 
-	static create(key: Symbol, parentProps: any): ButtonGroupState {
+	static create(key: symbol, parentProps: any): ButtonGroupState {
 		const { modelValue, disabled, toggle } = toRefs(parentProps)
 		return new ButtonGroupState(key, { modelValue, disabled, toggle })
 	}
@@ -44,12 +44,12 @@ export class ButtonGroupState implements IButtonGroupState {
 export class InputGroupState implements IInputGroupState {
 	type: 'InputGroup'
 
-	key: Symbol
+	key: symbol
 	modelValue: Ref<any>
-	disabled: Ref<Boolean>
-	readonly: Ref<Boolean>
+	disabled: Ref<boolean>
+	readonly: Ref<boolean>
 
-	constructor(key: Symbol, state: GroupParentState) {
+	constructor(key: symbol, state: GroupParentState) {
 		this.type = 'InputGroup'
 
 		if (!isRef(state.modelValue)) throw Error('ModelValue is not a Ref')
@@ -62,7 +62,7 @@ export class InputGroupState implements IInputGroupState {
 		this.readonly = state.readonly
 	}
 
-	static create(key: Symbol, parentProps: any): InputGroupState {
+	static create(key: symbol, parentProps: any): InputGroupState {
 		const { modelValue, disabled, readonly } = toRefs(parentProps)
 		return new InputGroupState(key, { modelValue, disabled, readonly })
 	}

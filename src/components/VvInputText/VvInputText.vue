@@ -51,7 +51,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, useSlots, ref, shallowRef, toRefs } from 'vue'
+import {
+	computed,
+	useAttrs,
+	useSlots,
+	ref,
+	shallowRef,
+	toRefs,
+	onMounted
+} from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 //Componenti
@@ -65,7 +73,8 @@ import INPUT from './constants'
 import { useVModel } from '@vueuse/core'
 import { useInputPassword } from './useInputPassword'
 import { useInputNumber } from './useInputNumber'
-import { useComponentIcons } from '../../composables/icons/useIcons'
+import { useComponentIcons } from '../../composables/icons/useComponentIcons'
+import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 
 //Props, Emits, Slots e Attrs
 const props = defineProps({
@@ -78,6 +87,7 @@ const props = defineProps({
 	id: String,
 	name: { type: String, required: true },
 	autocomplete: { type: String, default: 'off' },
+	autofocus: Boolean,
 	minlength: Number,
 	maxlength: Number,
 	min: [Number, Date],
@@ -122,16 +132,18 @@ const input = ref()
 
 //Data
 const inputTextData = useVModel(props, 'modelValue', emit)
-const { disabled, readonly, type } = toRefs(props)
+const { disabled, readonly, type, icon, iconPosition } = toRefs(props)
 
-//Generic computed
+//Component computed
 const isActionsDisabled = computed(() => disabled.value || readonly.value)
 
 //Gestione ICONE
-const { hasIconLeft, hasIconRight } = useComponentIcons(props, {
+const iconProps = { icon, iconPosition }
+const iconSlots = {
 	iconLeft: slots['icon-left'],
 	iconRight: slots['icon-right']
-})
+}
+const { hasIconLeft, hasIconRight } = useComponentIcons(iconProps, iconSlots)
 const inputRightIcon = computed(() => {
 	if (hasIconRight.value) return props.icon
 
@@ -151,24 +163,34 @@ const inputRightIcon = computed(() => {
 			return ''
 	}
 })
+
 //Gestione input tipo password
+const inputPswProps = {
+	type,
+	disabled,
+	readonly
+}
 const {
 	isPassword,
 	isPasswordVisible,
 	passwordButtonIcon,
 	toggleShowHidePassword
-} = useInputPassword({
-	type,
-	disabled,
-	readonly
-})
+} = useInputPassword(inputPswProps)
+
 //Gestione input tipo NUMBER
-const { isNumber, stepUp, stepDown } = useInputNumber(inputTextData, {
+const inputNumberProps = {
 	disabled,
 	readonly,
 	type,
 	inputTemplateRef: input
-})
+}
+const { isNumber, stepUp, stepDown } = useInputNumber(
+	inputTextData,
+	inputNumberProps
+)
+
+//Input FOCUS
+const { focused } = useComponentFocus(input, emit)
 
 //Styles & Bindings
 const vvInputTextProps = computed(() => {
@@ -253,16 +275,23 @@ const inputAriaAttrs = computed(() => {
 	}
 })
 
+//Slot props
 const iconSlotProps = computed(() => {
-	const { modelValue } = props
+	const { modelValue, valid, error } = props
 	return {
-		isValid,
-		isInvalid,
+		valid,
+		error,
 		modelValue
 	}
 })
 
+//Hint
 const HintSlot = shallowRef(HintSlotFactory(props, slots))
+
+onMounted(() => {
+	if (props.autofocus) focused.value = true
+	console.log('Focused', focused.value)
+})
 </script>
 
 <script lang="ts">

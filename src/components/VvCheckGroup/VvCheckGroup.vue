@@ -23,7 +23,6 @@
 import { useSlots, computed, shallowRef } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
-import { useValidationState } from '../../composables/validation/useValidationState'
 import { InputGroupState } from '../../composables/group/group'
 import { VV_CHECK_GROUP } from '../../constants'
 
@@ -101,7 +100,6 @@ const slots = useSlots()
 //Deps...
 const groupState = InputGroupState.create(VV_CHECK_GROUP, props)
 useProvideGroupState(groupState, emit)
-const { isInvalid, isValid } = useValidationState(props, { emit })
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
 //Computed
@@ -109,8 +107,8 @@ const groupClass = computed(() => {
 	return {
 		'vv-input-checkbox-group': true,
 		'vv-input-checkbox-group--horizontal': !props.vertical,
-		'vv-input-checkbox-group--valid': isValid.value,
-		'vv-input-checkbox-group--invalid': isInvalid.value
+		'vv-input-checkbox-group--valid': props.valid,
+		'vv-input-checkbox-group--invalid': props.error
 	}
 })
 

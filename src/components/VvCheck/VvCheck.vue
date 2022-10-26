@@ -14,11 +14,10 @@
 
 <script setup lang="ts">
 import { toRefs, type InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots, defineProps, defineEmits } from 'vue'
+import { computed, useAttrs, useSlots, ref } from 'vue'
 import { VV_CHECK_GROUP } from '../../constants'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
-import { useValidationState } from '../../composables/validation/useValidationState'
-import { useInputFocus } from '../../composables/focus/useInputFocus'
+import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import type { GroupParentState } from '../../composables/group/group'
 
@@ -76,10 +75,10 @@ const emit = defineEmits([
 ])
 
 //data
+const input = ref()
 const { modelValue, isDisabled, isReadonly, checkIsSelected } =
 	useGroupOrLocalState(VV_CHECK_GROUP, toRefs(props) as GroupParentState)
-const { input, focused } = useInputFocus({ emit })
-const { isValid, isInvalid } = useValidationState(props, { slots })
+const { focused } = useComponentFocus(input, emit)
 
 //Computed
 const isChecked = computed(() => {
@@ -92,8 +91,8 @@ const checkClass = computed(() => {
 	return {
 		'vv-input-checkbox': true,
 		'vv-input-checkbox--switch': props.switch,
-		'vv-input-checkbox--valid': isValid.value,
-		'vv-input-checkbox--invalid': isInvalid.value,
+		'vv-input-checkbox--valid': props.valid,
+		'vv-input-checkbox--invalid': props.error,
 		class: cssClass
 	}
 })

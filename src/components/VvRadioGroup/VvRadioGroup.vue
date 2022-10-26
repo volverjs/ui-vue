@@ -23,7 +23,6 @@
 import { useSlots, computed, shallowRef } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
-import { useValidationState } from '../../composables/validation/useValidationState'
 import { InputGroupState } from '../../composables/group/group'
 import { VV_RADIO_GROUP } from '../../constants'
 
@@ -69,7 +68,6 @@ const props = defineProps({
 
 const groupState = InputGroupState.create(VV_RADIO_GROUP, props)
 useProvideGroupState(groupState, emit)
-const { isInvalid, isValid } = useValidationState(props, { emit })
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
 //Computed
@@ -77,8 +75,8 @@ const groupClass = computed(() => {
 	return {
 		'vv-input-radio-group': true,
 		'vv-input-radio-group--horizontal': !props.vertical,
-		'vv-input-radio-group--valid': isValid.value,
-		'vv-input-radio-group--invalid': isInvalid.value
+		'vv-input-radio-group--valid': props.valid,
+		'vv-input-radio-group--invalid': props.error
 	}
 })
 

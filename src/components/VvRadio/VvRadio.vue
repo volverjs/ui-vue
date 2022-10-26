@@ -13,11 +13,10 @@
 
 <script setup lang="ts">
 import { toRefs, type InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots, defineProps, defineEmits } from 'vue'
+import { computed, useAttrs, useSlots, ref } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
-import { useInputFocus } from '../../composables/focus/useInputFocus'
+import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
-import { useValidationState } from '../../composables/validation/useValidationState'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import type { GroupParentState } from '@/composables/group/group'
 
@@ -45,10 +44,10 @@ const props = defineProps({
 	errors: [String, Array]
 })
 
-let { modelValue, isDisabled, isReadonly, checkIsSelected } =
+const input = ref()
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
 	useGroupOrLocalState(VV_RADIO_GROUP, toRefs(props) as GroupParentState)
-let { input, focused } = useInputFocus({ emit })
-const { isValid, isInvalid } = useValidationState(props, { slots })
+const { focused } = useComponentFocus(input, emit)
 
 //Computed
 const isChecked = computed(() => {
@@ -58,8 +57,8 @@ const radioClass = computed(() => {
 	const { class: cssClass } = attrs
 	return {
 		'vv-input-radio': true,
-		'vv-input-radio--valid': isValid.value,
-		'vv-input-radio--invalid': isInvalid.value,
+		'vv-input-radio--valid': props.valid,
+		'vv-input-radio--invalid': props.error,
 		class: cssClass
 	}
 })
