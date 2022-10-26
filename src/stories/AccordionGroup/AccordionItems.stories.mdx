@@ -1,0 +1,45 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvAccordionGroup from '../../components/VvAccordionGroup/VvAccordionGroup.vue'
+
+<Meta title="Components/AccordionGroup/Props/items" />
+
+# VvAccordionGroup items
+
+Stories of `VvAccordionGroup` with `items`.
+
+<Canvas>
+	<Story name="items" args={{}}>
+		{(args) => ({
+			components: { VvAccordionGroup },
+			data() {
+				return {
+					accordion: '',
+					content:
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
+					items: [
+						{
+							title: 'Accordion',
+							content:
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+						},
+						{
+							title: 'Accordion',
+							content:
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+						}
+					]
+				}
+			},
+			template:
+				/*html*/
+				`<div class="w-1/2">
+					<vv-accordion-group v-model:modelValue="accordion" :items="items" icon-right bordered />
+				</div>`
+		})}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-accordion-group v-model:modelValue="accordion" :items="items" icon-right bordered />`}
+/>

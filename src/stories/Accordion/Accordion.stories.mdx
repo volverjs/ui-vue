@@ -5,6 +5,7 @@ import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 	title="Components/Accordion"
 	component={VvAccordion}
 	args={{
+		open: false,
 		title: 'Lorem Ipsum',
 		content:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
@@ -13,26 +14,21 @@ import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 
 export const Template = (args) => ({
 	components: { VvAccordion },
-	data() {
-		return {
-			open: false
-		}
-	},
 	setup() {
 		return { args }
 	},
 	template:
 		/*html*/
 		`<div class="w-1/2">
-            <vv-accordion v-bind="args" v-model:open="open" />
+            <vv-accordion v-bind="args" v-model:open="args.open" />
         </div>
         `
 })
 
-# VvButton
+# VvAccordion
 
-Stories of `VvButton`.
-Let's define a story for our playground `button`:
+Stories of `VvAccordion`.
+Let's define a story for our playground `accordion`:
 
 <Canvas>
 	<Story name="vv-accordion" args={{}}>

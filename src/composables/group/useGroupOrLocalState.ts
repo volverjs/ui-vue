@@ -85,12 +85,11 @@ export function useGroupOrLocalState(
 	//#endregion Computed prop per le shared props
 
 	const checkIsSelected = (value: any) => {
-		let isSelected = false
+		let isSelected = null
 		if (Array.isArray(modelValue.value) && isInGroup.value) {
 			isSelected = ObjectUtilities.contains(value, modelValue.value)
-		} else {
+		} else if (isInGroup.value) {
 			isSelected =
-				isInGroup.value &&
 				ObjectUtilities.isNotEmpty(modelValue.value) &&
 				ObjectUtilities.equals(modelValue.value, value)
 		}

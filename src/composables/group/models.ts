@@ -7,7 +7,10 @@ import type {
 	IButtonGroupOptions,
 	IInputGroupOptions,
 	ButtonGroup,
-	InputGroup
+	InputGroup,
+	AccordionGroup,
+	IAccordionGroupOptions,
+	IAccordionGroupState
 } from './types'
 
 export class GroupState implements IGroupState {
@@ -19,6 +22,23 @@ export class GroupState implements IGroupState {
 		this.key = key
 		this.modelValue = ref(state.modelValue)
 		this.disabled = ref(state.disabled)
+	}
+}
+
+export class AccordionGroupState
+	extends GroupState
+	implements IAccordionGroupState
+{
+	type: AccordionGroup = 'AccordionGroup'
+	iconRight: Ref<boolean>
+	bordered: Ref<boolean>
+	accordion: Ref<boolean>
+
+	constructor(key: symbol, state: IAccordionGroupOptions) {
+		super(key, state)
+		this.iconRight = ref(state.iconRight || false)
+		this.bordered = ref(state.bordered || false)
+		this.accordion = ref(state.bordered || false)
 	}
 }
 
