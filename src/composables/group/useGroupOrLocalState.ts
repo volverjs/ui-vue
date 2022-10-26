@@ -86,7 +86,7 @@ export function useGroupOrLocalState(
 
 	const checkIsSelected = (value: any) => {
 		let isSelected = false
-		if (Array.isArray(modelValue.value) && isInGroup.value) {
+		if (Array.isArray(modelValue.value)) {
 			isSelected = ObjectUtilities.contains(value, modelValue.value)
 		} else {
 			isSelected =

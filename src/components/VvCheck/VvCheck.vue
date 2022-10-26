@@ -166,6 +166,12 @@ function onChange() {
 		return
 	}
 
+	if (modelValue.value === null) {
+		modelValue.value = [props.value]
+		emit('update:modelValue', modelValue.value)
+		return
+	}
+
 	if (Array.isArray(modelValue.value)) {
 		modelValue.value = !isChecked.value
 			? [...modelValue.value, props.value]
