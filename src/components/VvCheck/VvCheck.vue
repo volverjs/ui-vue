@@ -14,19 +14,20 @@
 
 <script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots } from 'vue'
-import { VV_CHECK_GROUP } from '../../constants'
-import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
-import { useValidationState } from '../../composables/validation/useValidationState'
-import { useInputFocus } from '../../composables/focus/useInputFocus'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { InputGroupState } from '../../composables/group/models'
 import type { IInputGroupOptions } from '../../composables/group/types'
 
-const attrs = useAttrs()
-const slots = useSlots()
+import { computed, useAttrs, ref } from 'vue'
+import ObjectUtilities from '../../utils/ObjectUtilities'
+import { InputGroupState } from '../../composables/group/models'
 
-//Props
+//Costanti
+import { VV_CHECK_GROUP } from '../../constants'
+
+//Composables
+import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+
+//Props, Emits, Slots e Attrs
 const props = defineProps({
 	/**
 	 * Valore della check
@@ -66,8 +67,6 @@ const props = defineProps({
 	disabled: Boolean,
 	readonly: Boolean
 })
-
-//Emits
 const emit = defineEmits([
 	'click',
 	'update:modelValue',
@@ -75,6 +74,17 @@ const emit = defineEmits([
 	'focus',
 	'blur'
 ])
+const attrs = useAttrs()
+
+//Template References
+const input = ref()
+
+//Component computed
+const isChecked = computed(() => {
+	return props.binary
+		? ObjectUtilities.equals(modelValue.value, props.trueValue)
+		: checkIsSelected(props.value)
+})
 
 // #region group
 // Define input options
@@ -90,22 +100,17 @@ const { modelValue, isDisabled, isReadonly, checkIsSelected } =
 	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
 // #endregion group
 
-const { input, focused } = useInputFocus({ emit })
-const { isValid, isInvalid } = useValidationState(props, { slots })
+// FOCUS
+const { focused } = useComponentFocus(input, emit)
 
-//Computed
-const isChecked = computed(() => {
-	return props.binary
-		? ObjectUtilities.equals(modelValue.value, props.trueValue)
-		: checkIsSelected(props.value)
-})
+// Styles & Bindings
 const checkClass = computed(() => {
 	const { class: cssClass } = attrs
 	return {
 		'vv-input-checkbox': true,
 		'vv-input-checkbox--switch': props.switch,
-		'vv-input-checkbox--valid': isValid.value,
-		'vv-input-checkbox--invalid': isInvalid.value,
+		'vv-input-checkbox--valid': props.valid,
+		'vv-input-checkbox--invalid': props.error,
 		class: cssClass
 	}
 })
@@ -157,6 +162,12 @@ const checkInputAriaAttrs = computed(() => {
 function onChange() {
 	if (props.binary) {
 		modelValue.value = isChecked.value ? props.falseValue : props.trueValue
+		emit('update:modelValue', modelValue.value)
+		return
+	}
+
+	if (modelValue.value === null) {
+		modelValue.value = [props.value]
 		emit('update:modelValue', modelValue.value)
 		return
 	}

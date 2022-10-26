@@ -20,18 +20,23 @@
 </template>
 
 <script setup lang="ts">
-import { useSlots, computed } from 'vue'
-import { useProvideGroupState } from '../../composables/group/useGroup'
-import { useOptions } from '../../composables/options/useOptions'
-import { useValidationState } from '../../composables/validation/useValidationState'
-import { InputGroupState } from '../../composables/group/models'
-import { VV_RADIO_GROUP } from '../../constants'
-
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-import { HintSlotFactory } from '../common/HintSlot'
 import type { IInputGroupOptions } from '../../composables/group/types'
 
-const slots = useSlots()
+import { useSlots, computed, shallowRef } from 'vue'
+import { InputGroupState } from '../../composables/group/models'
+
+//Composables
+import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useOptions } from '../../composables/options/useOptions'
+
+//Constants
+import { VV_RADIO_GROUP } from '../../constants'
+
+//Components
+import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import { HintSlotFactory } from '../common/HintSlot'
+
+//Props, Emits, Slots e Attrs
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
 	/**
@@ -67,6 +72,7 @@ const props = defineProps({
 	error: Boolean,
 	errors: [String, Array]
 })
+const slots = useSlots()
 
 // #region group
 // Define reactive props
@@ -81,16 +87,16 @@ const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
 useProvideGroupState(groupState, emit)
 // #endregion group
 
-const { isInvalid, isValid } = useValidationState(props, { emit })
+//OPTIONS
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
-//Computed
+//Styles & Bindings
 const groupClass = computed(() => {
 	return {
 		'vv-input-radio-group': true,
 		'vv-input-radio-group--horizontal': !props.vertical,
-		'vv-input-radio-group--valid': isValid.value,
-		'vv-input-radio-group--invalid': isInvalid.value
+		'vv-input-radio-group--valid': props.valid,
+		'vv-input-radio-group--invalid': props.error
 	}
 })
 
@@ -104,7 +110,7 @@ function getOptionProps(option: any, oIndex: number) {
 	}
 }
 
-const HintSlot = HintSlotFactory(props, slots)
+const HintSlot = shallowRef(HintSlotFactory(props, slots))
 </script>
 
 <style lang="scss">

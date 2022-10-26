@@ -1,0 +1,31 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+
+<Meta title="Components/InputText/Max" component={VvInputText} />
+
+<Canvas>
+	<Story
+		name="Max - DateTime"
+		args={{
+			name: 'input-datetime-max',
+			type: 'date',
+			max: new Date().toISOString().split('T')[0]
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Max - Number"
+		args={{
+			name: 'input-number-max',
+			type: 'number',
+			max: 15
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

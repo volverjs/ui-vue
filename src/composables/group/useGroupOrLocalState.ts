@@ -80,13 +80,13 @@ export function useGroupOrLocalState(
 			const childState = localState as InputGroupState
 			return inputGroupState.readonly.value || childState?.readonly?.value
 		}
-		return false
+		return (localState as InputGroupState)?.readonly || false
 	})
 	//#endregion Computed prop per le shared props
 
 	const checkIsSelected = (value: any) => {
-		let isSelected = null
-		if (Array.isArray(modelValue.value) && isInGroup.value) {
+		let isSelected = false
+		if (Array.isArray(modelValue.value)) {
 			isSelected = ObjectUtilities.contains(value, modelValue.value)
 		} else if (isInGroup.value) {
 			isSelected =
