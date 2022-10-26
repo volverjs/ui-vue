@@ -20,17 +20,23 @@
 </template>
 
 <script setup lang="ts">
-import { useSlots, computed, shallowRef } from 'vue'
-import { useProvideGroupState } from '../../composables/group/useGroup'
-import { useOptions } from '../../composables/options/useOptions'
-import { InputGroupState } from '../../composables/group/group'
-import { VV_CHECK_GROUP } from '../../constants'
-
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
-import { HintSlotFactory } from '../common/HintSlot'
 import type { IInputGroupOptions } from '@/composables/group/types'
 
-//Props
+import { useSlots, computed, shallowRef } from 'vue'
+import { InputGroupState } from '../../composables/group/models'
+
+//Costanti
+import { VV_CHECK_GROUP } from '../../constants'
+
+//Composables
+import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useOptions } from '../../composables/options/useOptions'
+
+//Components
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import { HintSlotFactory } from '../common/HintSlot'
+
+//Props, Emits, Slots e Attrs
 const props = defineProps({
 	/**
 	 * VModel
@@ -91,11 +97,7 @@ const props = defineProps({
 	 */
 	errors: [String, Array]
 })
-
-//Emits
 const emit = defineEmits(['update:modelValue', 'change'])
-
-//Slots
 const slots = useSlots()
 
 // #region group
@@ -110,10 +112,11 @@ const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
 // Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
 // #endregion group
-// use options composable to retrieve correct label and value
+
+// OPTIONS
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
-//Computed
+//Styles & Bindings
 const groupClass = computed(() => {
 	return {
 		'vv-input-checkbox-group': true,

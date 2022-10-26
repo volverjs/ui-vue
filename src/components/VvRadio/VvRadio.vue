@@ -13,23 +13,20 @@
 
 <script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
-import { computed, useAttrs, useSlots, ref } from 'vue'
-import { VV_RADIO_GROUP } from '../../constants'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
-import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { InputGroupState } from '../../composables/group/models'
 import type { IInputGroupOptions } from '../../composables/group/types'
 
-const attrs = useAttrs()
-const slots = useSlots()
-const emit = defineEmits([
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-])
+import { computed, useAttrs, ref } from 'vue'
+import ObjectUtilities from '../../utils/ObjectUtilities'
+import { InputGroupState } from '../../composables/group/models'
+
+//Costanti
+import { VV_RADIO_GROUP } from '../../constants'
+
+//Composables
+import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+
+//Props, Emits, Slots e Attrs
 const props = defineProps({
 	/**
 	 * Valore del radio
@@ -43,6 +40,22 @@ const props = defineProps({
 	validLabel: [String, Array],
 	error: Boolean,
 	errors: [String, Array]
+})
+const emit = defineEmits([
+	'click',
+	'update:modelValue',
+	'change',
+	'focus',
+	'blur'
+])
+const attrs = useAttrs()
+
+//Template References
+const input = ref()
+
+//Component computed
+const isChecked = computed(() => {
+	return checkIsSelected(props.value)
 })
 
 // #region group
@@ -59,13 +72,11 @@ const { modelValue, isDisabled, isReadonly, checkIsSelected } =
 	useGroupOrLocalState(VV_RADIO_GROUP, groupState)
 // #endregion group
 
-const input = ref()
+// #region FOCUS
 const { focused } = useComponentFocus(input, emit)
+// #endregion FOCUS
 
-//Computed
-const isChecked = computed(() => {
-	return checkIsSelected(props.value)
-})
+//Styles & Bindings
 const radioClass = computed(() => {
 	const { class: cssClass } = attrs
 	return {

@@ -20,17 +20,23 @@
 </template>
 
 <script setup lang="ts">
-import { useSlots, computed, shallowRef } from 'vue'
-import { useProvideGroupState } from '../../composables/group/useGroup'
-import { useOptions } from '../../composables/options/useOptions'
-import { InputGroupState } from '../../composables/group/group'
-import { VV_RADIO_GROUP } from '../../constants'
-
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-import { HintSlotFactory } from '../common/HintSlot'
 import type { IInputGroupOptions } from '../../composables/group/types'
 
-const slots = useSlots()
+import { useSlots, computed, shallowRef } from 'vue'
+import { InputGroupState } from '../../composables/group/models'
+
+//Composables
+import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useOptions } from '../../composables/options/useOptions'
+
+//Constants
+import { VV_RADIO_GROUP } from '../../constants'
+
+//Components
+import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import { HintSlotFactory } from '../common/HintSlot'
+
+//Props, Emits, Slots e Attrs
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
 	/**
@@ -66,6 +72,7 @@ const props = defineProps({
 	error: Boolean,
 	errors: [String, Array]
 })
+const slots = useSlots()
 
 // #region group
 // Define reactive props
@@ -79,9 +86,11 @@ const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
 // Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
 // #endregion group
+
+//OPTIONS
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
-//Computed
+//Styles & Bindings
 const groupClass = computed(() => {
 	return {
 		'vv-input-radio-group': true,
