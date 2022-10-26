@@ -28,6 +28,7 @@ import { VV_RADIO_GROUP } from '../../constants'
 
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 import { HintSlotFactory } from '../common/HintSlot'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
 const slots = useSlots()
 const emit = defineEmits(['update:modelValue'])
@@ -66,8 +67,18 @@ const props = defineProps({
 	errors: [String, Array]
 })
 
-const groupState = InputGroupState.create(VV_RADIO_GROUP, props)
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
+// Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
+// #endregion group
 const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
 
 //Computed

@@ -1,0 +1,68 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+
+<Meta title="Components/Button/Props/loading" />
+
+# VvButton loading
+
+Stories of `VvButton` with `loading`.
+
+## Loading
+
+Let's define a story for our `loading` button.
+
+<Canvas>
+	<Story name="loading">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Loading" loading />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button loading />'} />
+
+## Loading icon
+
+Let's define a story for `loading-icon`
+
+<Canvas>
+	<Story name="loading-icon">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button loading-icon="reload" loading />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button loading-icon="reload" loading />'} />
+
+## Loading label
+
+Let's define a story for `loading-label`
+
+<Canvas>
+	<Story name="loading-label">
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button loading-label="Caricamento..." loading />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={'<vv-button loading-label="Caricamento..." loading />'}
+/>

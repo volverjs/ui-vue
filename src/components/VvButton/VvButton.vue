@@ -43,14 +43,15 @@
 </template>
 
 <script lang="ts">
-import { reactive, type PropType } from 'vue'
+import { computed, defineComponent, type PropType } from 'vue'
 import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 import { v4 as uuidv4 } from 'uuid'
-import { computed, defineComponent, unref, toRefs, ref } from 'vue'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { VV_BUTTON_GROUP } from '../../constants'
+import { ButtonGroupState } from '../../composables/group/models'
+import type { IButtonGroupOptions } from '../../composables/group/types'
 
 export default defineComponent({
 	components: { VvIcon },
@@ -133,14 +134,21 @@ export default defineComponent({
 		 */
 		fullBleed: Boolean
 	},
-	setup(props, context) {
-		const { attrs } = context
-
-		let btnName = attrs?.name || uuidv4()
-		let btnSharedProps = reactive({
+	emits: ['update:modelValue'],
+	setup(props, { attrs, emit }) {
+		const btnName = attrs?.name || uuidv4()
+		// #region group
+		// Define reactive props
+		const buttonGroupOptions: IButtonGroupOptions = {
 			modelValue: btnName,
 			disabled: props.disabled
-		})
+		}
+		// Create groupState instance
+		const groupState = new ButtonGroupState(
+			VV_BUTTON_GROUP,
+			buttonGroupOptions
+		)
+		// Use group composable to inject the provided group
 		const {
 			group,
 			modelValue,
@@ -148,18 +156,18 @@ export default defineComponent({
 			isDisabled,
 			isToggleEnabled,
 			checkIsSelected
-		} = useGroupOrLocalState(VV_BUTTON_GROUP, toRefs(btnSharedProps))
+		} = useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
 
 		return {
 			group,
 			isInGroup,
-			isActive: computed(
+			isSelected: computed(
 				() => isToggleEnabled.value && checkIsSelected(btnName)
 			),
 			isDisabled,
-			onClick(e: Event) {
+			onClick() {
 				modelValue.value = btnName
-				context.emit('update:modelValue', modelValue.value)
+				emit('update:modelValue', modelValue.value)
 			}
 		}
 		// #endregion button-group logic
@@ -181,8 +189,7 @@ export default defineComponent({
 				'aria-disabled': this.isDisabled,
 				role: 'button',
 				class: this.hasClass,
-				to: this.to,
-				disabled: this.isDisabled
+				to: this.to
 			}
 		},
 		/**
@@ -203,12 +210,6 @@ export default defineComponent({
 			}
 			return toReturn
 		},
-		/**
-		 * Check disabled state based on attributes
-		 */
-		// isDisabled() {
-		// 	return 'disabled' in this.$attrs
-		// },
 		/**
 		 * @description Select the tag type in based on the props before.
 		 * @returns {string} The type of component
@@ -237,10 +238,11 @@ export default defineComponent({
 				this.hasVariant,
 				this.hasIconPosition,
 				{
-					'vv-button--active': this.active || this.isActive,
+					'vv-button--active': this.active || this.isSelected,
 					'vv-button--block': this.block,
 					'vv-button--rounded': this.rounded,
-					'vv-button--full-bleed': this.fullBleed
+					'vv-button--full-bleed': this.fullBleed,
+					'vv-button--disabled': this.isDisabled
 				}
 			]
 		},

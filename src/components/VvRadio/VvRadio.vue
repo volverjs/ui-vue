@@ -12,13 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, type InputHTMLAttributes } from 'vue'
+import type { InputHTMLAttributes } from 'vue'
 import { computed, useAttrs, useSlots, ref } from 'vue'
 import { VV_RADIO_GROUP } from '../../constants'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import type { GroupParentState } from '@/composables/group/group'
+import { InputGroupState } from '../../composables/group/models'
+import type { IInputGroupOptions } from '../../composables/group/types'
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -44,9 +45,21 @@ const props = defineProps({
 	errors: [String, Array]
 })
 
-const input = ref()
+// #region group
+// Define reactive props
+const inputGroupOptions: IInputGroupOptions = {
+	disabled: props.disabled,
+	modelValue: props.modelValue,
+	readonly: props.readonly
+}
+// Create groupState instance
+const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
+// Use group composable to inject the provided group
 const { modelValue, isDisabled, isReadonly, checkIsSelected } =
-	useGroupOrLocalState(VV_RADIO_GROUP, toRefs(props) as GroupParentState)
+	useGroupOrLocalState(VV_RADIO_GROUP, groupState)
+// #endregion group
+
+const input = ref()
 const { focused } = useComponentFocus(input, emit)
 
 //Computed
