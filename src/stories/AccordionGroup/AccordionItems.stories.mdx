@@ -13,17 +13,19 @@ Stories of `VvAccordionGroup` with `items`.
 			components: { VvAccordionGroup },
 			data() {
 				return {
-					accordion: '',
+					selected: [],
 					content:
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 					items: [
 						{
-							title: 'Accordion',
+							name: 'a-1',
+							title: 'Details 1',
 							content:
 								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 						},
 						{
-							title: 'Accordion',
+							name: 'a-2',
+							title: 'Details 2',
 							content:
 								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 						}
@@ -32,8 +34,13 @@ Stories of `VvAccordionGroup` with `items`.
 			},
 			template:
 				/*html*/
-				`<div class="w-1/2">
-					<vv-accordion-group v-model:modelValue="accordion" :items="items" icon-right bordered />
+				`<div class="flex">
+					<div class="w-1/2">
+						<vv-accordion-group v-model:modelValue="selected" :items="items" icon-right bordered />
+					</div>
+					<div v-if="selected" class="w-1/2 flex justify-end">
+						selected: {{ selected }}
+					</div>
 				</div>`
 		})}
 	</Story>

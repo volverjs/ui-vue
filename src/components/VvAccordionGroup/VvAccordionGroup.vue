@@ -5,6 +5,7 @@
 				v-for="item in items"
 				:key="item.title"
 				v-bind="{
+					name: item.name,
 					title: item.title,
 					content: item.content,
 					...props
@@ -39,6 +40,7 @@ interface VvAccordionGroupProps {
 	 * Accordion items
 	 */
 	items?: Array<{
+		name?: string
 		title: string
 		content: string
 	}>
