@@ -114,7 +114,7 @@ useProvideGroupState(groupState, emit)
 // #endregion group
 
 // OPTIONS
-const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
+const { getOptionLabel, getOptionValue } = useOptions(props)
 
 //Styles & Bindings
 const groupClass = computed(() => {
