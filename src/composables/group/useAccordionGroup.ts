@@ -49,26 +49,23 @@ export function useAccordionGroup(
 	}
 
 	const isSelectedInGroup: ComputedRef<boolean> = computed(() => {
+		const childValue = localState.modelValue.value
 		if (modelValue.value && isInGroup.value) {
 			return isAccordionMode.value
-				? modelValue.value === localState.modelValue.value
-				: modelValue.value.includes(localState.modelValue.value)
+				? modelValue.value === childValue
+				: modelValue.value.includes(childValue)
 		}
 		return false
 	})
 
 	const toggleElement = () => {
+		const childValue = localState.modelValue.value
 		if (isAccordionMode.value) {
-			modelValue.value = isSelectedInGroup.value
-				? null
-				: localState.modelValue.value
+			modelValue.value = isSelectedInGroup.value ? null : childValue
 		} else {
 			modelValue.value = isSelectedInGroup.value
-				? ObjectUtilities.removeFromList(
-						localState.modelValue.value,
-						modelValue.value
-				  )
-				: [...modelValue.value, localState.modelValue.value]
+				? ObjectUtilities.removeFromList(childValue, modelValue.value)
+				: [...modelValue.value, childValue]
 		}
 	}
 

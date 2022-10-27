@@ -15,7 +15,7 @@ export interface UseGroupOrLocalStateReturn {
 	modelValue: Ref<any>
 	isInGroup: ComputedRef<boolean>
 	isDisabled: ComputedRef<boolean>
-	isReadonly: ComputedRef<boolean | undefined>
+	isReadonly: ComputedRef<boolean>
 	isToggleEnabled: ComputedRef<boolean>
 	checkIsSelected: (value: any) => boolean
 }
@@ -80,7 +80,7 @@ export function useGroupOrLocalState(
 			const childState = localState as InputGroupState
 			return inputGroupState.readonly.value || childState?.readonly?.value
 		}
-		return (localState as InputGroupState)?.readonly || false
+		return (localState as InputGroupState)?.readonly.value || false
 	})
 	//#endregion Computed prop per le shared props
 

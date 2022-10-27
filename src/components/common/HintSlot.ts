@@ -1,8 +1,13 @@
-import { h } from 'vue'
+import { h, type Component, type ExtractPropTypes, type Slots } from 'vue'
 import { computed, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
-function joinErrors(errors) {
+/**
+ * Merge errors from Array<string> to string errors separated from new line (\n)
+ * @param {Array<string> | string} errors
+ * @returns {string}
+ */
+function joinErrors(errors: Array<string> | string) {
 	if (Array.isArray(errors))
 		return errors
 			.filter((e) => ObjectUtilities.isString(e))
@@ -13,7 +18,36 @@ function joinErrors(errors) {
 	else return errors
 }
 
-export const HintSlotFactory = (pProps, pSlots) => {
+interface HintSlotProps {
+	hintLabel: {
+		type: StringConstructor
+		default: ''
+		required: true
+	}
+	modelValue: null
+	valid: BooleanConstructor
+	validLabel: (StringConstructor | ArrayConstructor)[]
+	error: BooleanConstructor
+	errors: (StringConstructor | ArrayConstructor)[]
+}
+
+interface HintSlotPropsWithLoading extends HintSlotProps {
+	loading: BooleanConstructor
+	loadingLabel: StringConstructor
+}
+
+/**
+ * Return a vue component to render and manage hint, errors, valid, loading state and messages
+ * @param {Readonly<ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>>} pProps vue props
+ * @param {Slots} pSlots vue slots
+ * @returns {Component} vue component
+ */
+export function HintSlotFactory(
+	pProps: Readonly<
+		ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>
+	>,
+	pSlots: Slots
+): Component {
 	return {
 		setup() {
 			const props = toRefs(pProps)
@@ -27,31 +61,28 @@ export const HintSlotFactory = (pProps, pSlots) => {
 			} = pSlots
 
 			//Props hint + errors
-			const {
-				hintLabel,
-				modelValue,
-				loading,
-				loadingLabel,
-				valid,
-				validLabel,
-				error,
-				errors
-			} = props
+			const { hintLabel, modelValue, valid, validLabel, error, errors } =
+				props
+			const loading = ObjectUtilities.resolveFieldData(props, 'loading')
+			const loadingLabel = ObjectUtilities.resolveFieldData(
+				props,
+				'loadingLabel'
+			)
 
 			const hasErrors = computed(() => {
 				//No error
-				if (!error.value || error?.value === false) return false
+				if (!error.value) return false
 
 				if (error.value && errorSlot) return true
 
 				if (
-					errors.value &&
+					errors?.value &&
 					Array.isArray(errors.value) &&
 					errors.value.length > 0
 				)
 					return true
 
-				if (errors.value && ObjectUtilities.isNotEmpty(errors.value))
+				if (errors?.value && ObjectUtilities.isNotEmpty(errors.value))
 					return true
 
 				return false
@@ -65,13 +96,14 @@ export const HintSlotFactory = (pProps, pSlots) => {
 					(validLabel && validLabel.value) ||
 					hasErrors.value ||
 					(loading?.value && loadingSlot) ||
-					(loading?.value && loadingLabel.value)
+					(loading?.value && loadingLabel?.value)
 				)
 			})
 
 			const errorMessage = computed(() => {
-				if (Array.isArray(errors.value)) return joinErrors(errors.value)
-				else return errors.value
+				if (Array.isArray(errors?.value))
+					return joinErrors(errors?.value || '')
+				else return errors?.value
 			})
 
 			const hintContent = computed(() => {
