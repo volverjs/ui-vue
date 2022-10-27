@@ -207,5 +207,26 @@ export default {
 	 */
 	isString(value: any) {
 		return typeof value === 'string' || value instanceof String
+	},
+
+	/**
+	 * Convert props definition to object with "prop" as key and default as value
+	 * @param {ComponentObjectPropsOptions} props vue component props
+	 * @returns {Object}
+	 */
+	propsToObjectInstance(props: any) {
+		return Object.keys(props).reduce((initValue: any, value: any) => {
+			if (this.isFunction(props[value])) {
+				initValue[value] = props[value]()
+			} else if (Array.isArray(props[value])) {
+				initValue[value] = props[value][0]()
+			} else if (
+				props[value]?.type &&
+				Array.isArray(props[value]?.type)
+			) {
+				initValue[value] = props[value]?.type[0]()
+			}
+			return initValue
+		}, {})
 	}
 }
