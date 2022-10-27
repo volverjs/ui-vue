@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
 	build: {
 		lib: {
-			name: 'Volverjs ui-vue',
+			name: '@volverjs/ui-vue',
 			entry: path.resolve(__dirname, 'src/main.ts')
 		},
 		rollupOptions: {
