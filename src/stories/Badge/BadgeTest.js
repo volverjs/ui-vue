@@ -1,6 +1,5 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import { axe, toHaveNoViolations } from 'jest-axe'
-import { within, userEvent } from '@storybook/testing-library'
+import { within } from '@storybook/testing-library'
 import { expect } from '@storybook/jest'
 
 export const variantTest = async ({ badge, color }) => {

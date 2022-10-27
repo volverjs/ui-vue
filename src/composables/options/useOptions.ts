@@ -1,6 +1,6 @@
 import { toRefs } from 'vue'
 
-export function useOptions(props: any, context: any) {
+export function useOptions(props: any) {
 	const { options, optionLabel, optionValue } = toRefs(props)
 
 	const getOptionLabel = (o: any) => {
