@@ -138,7 +138,3 @@ const getOptionProps = (option: any, oIndex: number) => {
 
 const HintSlot = shallowRef(HintSlotFactory(props, slots))
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-input-checkbox-group';
-</style>

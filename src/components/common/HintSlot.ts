@@ -37,7 +37,7 @@ interface HintSlotPropsWithLoading extends HintSlotProps {
 }
 
 /**
- * Return a vue component to render and manage hint, errors, valid, loading state and messages
+ * Return a vue component (HintSlot) to render and manage hint, errors, valid, loading state and messages
  * @param {Readonly<ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>>} pProps vue props
  * @param {Slots} pSlots vue slots
  * @returns {Component} vue component

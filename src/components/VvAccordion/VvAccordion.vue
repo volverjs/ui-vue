@@ -121,7 +121,3 @@ const onClick = (e: Event) => {
 	}
 }
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/scss/components/vv-accordion';
-</style>

@@ -90,7 +90,3 @@ const hasClass = computed(() => [
 	}
 ])
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/scss/components/vv-accordion';
-</style>

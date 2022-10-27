@@ -196,7 +196,3 @@ export default {
 	inheritAttrs: false
 }
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-input-checkbox';
-</style>

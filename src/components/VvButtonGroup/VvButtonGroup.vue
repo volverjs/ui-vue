@@ -63,7 +63,3 @@ const groupState = new ButtonGroupState(buttonGroupOptions)
 useProvideGroupState(groupState, emit)
 // #endregion group
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-button-group';
-</style>
