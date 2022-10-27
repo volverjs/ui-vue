@@ -20,6 +20,7 @@
 							:checked="
 								modelValue?.includes(String(option.value))
 							"
+							@click="onClick(String(option.value))"
 							@input="onInput" />
 						{{ option.label }}
 					</label>
@@ -82,11 +83,32 @@ const hasClass = computed(() => [
 	}
 ])
 
+function onClick(value: string) {
+	if (
+		Array.isArray(props.modelValue) &&
+		props.modelValue?.includes?.(value)
+	) {
+		emit(
+			'update:modelValue',
+			ObjectUtilities.removeFromList(value, props.modelValue)
+		)
+	}
+}
+
 function onInput(event: Event) {
-	if (dropdown.value) {
+	if (dropdown.value && !props.multiple) {
+		// close details dropdown on option select
 		dropdown.value.open = false
 	}
 	const target = event.target as HTMLSelectElement
-	emit('update:modelValue', target.value)
+	let value: string | string[] = target.value
+	if (props.multiple) {
+		if (Array.isArray(props.modelValue)) {
+			value = [...props.modelValue, value]
+		} else {
+			value = [value]
+		}
+	}
+	emit('update:modelValue', value)
 }
 </script>
