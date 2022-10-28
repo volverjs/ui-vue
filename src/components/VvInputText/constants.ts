@@ -1,4 +1,4 @@
-const TYPES = {
+export const TYPES = {
 	TEXT: 'text',
 	PASSWORD: 'password',
 	DATE: 'date',
@@ -13,12 +13,12 @@ const TYPES = {
 	FILE: 'file'
 }
 
-const ICON_POSITIONS = {
+export const ICON_POSITIONS = {
 	LEFT: 'left',
 	RIGHT: 'right'
 }
 
-const TYPES_ICON = {
+export const TYPES_ICON = {
 	PASSWORD_ON: 'eye-on',
 	PASSWORD_OFF: 'eye-off',
 	DATE: 'calendar',
@@ -27,11 +27,8 @@ const TYPES_ICON = {
 	SEARCH: 'search'
 }
 
-const EVENTS = ['update:modelValue', 'focus', 'blur']
-
 export default {
 	TYPES,
 	ICON_POSITIONS,
-	TYPES_ICON,
-	EVENTS
+	TYPES_ICON
 }

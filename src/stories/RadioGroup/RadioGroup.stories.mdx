@@ -3,6 +3,8 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
+import { radioGroupTest } from './RadioPropertyTest.js'
+
 <Meta title="Components/RadioGroup" component={VvRadioGroup} />
 
 export const Template = (args, { argTypes }) => ({
@@ -35,6 +37,7 @@ A group of radios.
 <Canvas>
 	<Story
 		name="vv-radio-group"
+		play={radioGroupTest}
 		args={{
 			name: 'story1',
 			label: 'Prova',
@@ -44,7 +47,8 @@ A group of radios.
 			options: [],
 			optionLabel: 'label',
 			optionValue: 'value',
-			hintLabel: 'Ciccio'
+			hintLabel: 'Ciccio',
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {

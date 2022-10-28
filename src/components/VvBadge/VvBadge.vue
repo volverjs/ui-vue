@@ -4,11 +4,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { VvBadgeProps } from './VvBadge'
 
-const props = defineProps<{
-	value?: string | number
-	color?: string
-}>()
+const props = defineProps(VvBadgeProps)
 
 const hasClass = computed(() => (props.color ? `vv-badge--${props.color}` : ''))
 </script>

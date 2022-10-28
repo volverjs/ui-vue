@@ -24,6 +24,7 @@ import type { IInputGroupOptions } from '../../composables/group/types'
 
 import { useSlots, computed } from 'vue'
 import { InputGroupState } from '../../composables/group/models'
+import { VvRadioGroupProps, VvRadioGroupEvents } from './VvRadioGroup'
 
 //Composables
 import { useProvideGroupState } from '../../composables/group/useGroup'
@@ -37,41 +38,8 @@ import VvRadio from '../../components/VvRadio/VvRadio.vue'
 import { HintSlotFactory } from '../common/HintSlot'
 
 //Props, Emits, Slots e Attrs
-const emit = defineEmits(['update:modelValue'])
-const props = defineProps({
-	/**
-	 * VModel
-	 */
-	modelValue: null,
-	label: { type: String, default: '' },
-	/**
-	 * Nome da utilizzare per il radio group
-	 */
-	name: { type: String, default: '', required: true },
-	disabled: { type: Boolean, default: false },
-	readonly: { type: Boolean, default: false },
-	/**
-	 * True = show buttons vertically
-	 */
-	vertical: { type: Boolean, default: false },
-	/**
-	 * Lista delle radio options
-	 */
-	options: { type: Array, default: () => [] },
-	/**
-	 * Se options è un array di oggetti, optionLabel = nome del campo da utilizzare come label oppure una funzione per ricavare la label
-	 */
-	optionLabel: { type: [String, Function], default: () => 'label' },
-	/**
-	 * Se options è un array di oggetti, optionValue = nome del campo da utilizzare come value oppure una funzione per ricavare il value
-	 */
-	optionValue: { type: [String, Function], default: () => 'value' },
-	hintLabel: { type: String, default: '' },
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errors: [String, Array]
-})
+const emit = defineEmits(VvRadioGroupEvents)
+const props = defineProps(VvRadioGroupProps)
 const slots = useSlots()
 
 // #region group

@@ -2,60 +2,35 @@
 	<progress v-bind="properties" />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { VvProgressProps } from './VvProgress'
 
-export default defineComponent({
-	props: {
-		/**
-		 * Progress value
-		 */
-		value: {
-			type: Number
-		},
-		/**
-		 * Progress max value
-		 */
-		max: {
-			type: Number
-		},
-		/**
-		 * Progress label
-		 */
-		ariaLabel: {
-			type: String,
-			default: 'progress-bar'
-		},
-		/**
-		 * Indeterminate attribute
-		 */
-		indeterminate: Boolean
-	},
-	computed: {
-		/**
-		 * Compute component properties
-		 */
-		properties() {
-			return {
-				'aria-label': this.ariaLabel,
-				role: 'progressbar',
-				class: this.hasClass,
-				value: this.value,
-				max: this.max
-			}
-		},
-		/**
-		 * @description Define css classes.
-		 * @returns {string} The classes
-		 */
-		hasClass(): Array<string | object> {
-			return [
-				'vv-progress',
-				{
-					'vv-progress--indeterminate': this.indeterminate
-				}
-			]
-		}
+//Props, emits, slots, attrs
+const props = defineProps(VvProgressProps)
+
+/**
+ * Compute component properties
+ */
+const properties = computed(() => {
+	return {
+		'aria-label': props.ariaLabel,
+		role: 'progressbar',
+		class: hasClass.value,
+		value: props.value,
+		max: props.max
 	}
+})
+/**
+ * @description Define css classes.
+ * @returns {string} The classes
+ */
+const hasClass = computed((): Array<string | object> => {
+	return [
+		'vv-progress',
+		{
+			'vv-progress--indeterminate': props.indeterminate
+		}
+	]
 })
 </script>

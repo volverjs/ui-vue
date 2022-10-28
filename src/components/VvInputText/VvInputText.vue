@@ -62,6 +62,7 @@ import {
 	type InputHTMLAttributes
 } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
+import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
 
 //Componenti
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
@@ -78,53 +79,8 @@ import { useComponentIcons } from '../../composables/icons/useComponentIcons'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps({
-	modelValue: null,
-	type: {
-		type: String,
-		default: INPUT.TYPES.TEXT,
-		validator: (value: string) => Object.values(INPUT.TYPES).includes(value)
-	},
-	id: String,
-	name: { type: String, required: true },
-	autocomplete: { type: String, default: 'off' },
-	autofocus: Boolean,
-	minlength: Number,
-	maxlength: Number,
-	min: [Number, Date],
-	max: [Number, Date],
-	step: Number,
-	label: String,
-	disabled: Boolean,
-	readonly: Boolean,
-	placeholder: String,
-	hintLabel: { type: String, default: '' },
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errors: [String, Array],
-	loading: Boolean,
-	loadingLabel: String,
-	/**
-	 * Nome dell'icona
-	 * @see DsIcon
-	 */
-	icon: { type: String, default: '' },
-	/**
-	 * Posizione dell'icona
-	 */
-	iconPosition: {
-		type: String,
-		validation: (value: string) =>
-			Object.values(INPUT.ICON_POSITIONS).includes(value),
-		default: INPUT.ICON_POSITIONS.RIGHT
-	},
-	/**
-	 * True = label flottante
-	 */
-	floating: Boolean
-})
-const emit = defineEmits(INPUT.EVENTS)
+const props = defineProps(VvInputTextProps)
+const emit = defineEmits(VvInputTextEvents)
 const slots = useSlots()
 const attrs = useAttrs()
 

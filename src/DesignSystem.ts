@@ -30,7 +30,7 @@ interface IDesignSystemParams {
 	iconsCollections?: IconifyJSON[]
 }
 
-interface IDesignSystem extends IDesignSystemParams {
+export interface IDesignSystem extends IDesignSystemParams {
 	/**
 	 * @param {String} src Icon source path (url)
 	 * @param {RequestInit} options
@@ -50,7 +50,14 @@ interface IDesignSystem extends IDesignSystemParams {
 	 * @returns {Boolean} true on success, false if something is wrong with data
 	 */
 	addIcon(name: string, data: IconifyIcon): boolean
+	/**
+	 * Current provider
+	 */
 	provider: string
+	/**
+	 * Icon collections
+	 */
+	iconsCollections: IconifyJSON[]
 }
 
 export default class DesignSystem implements IDesignSystem {
@@ -85,6 +92,8 @@ export default class DesignSystem implements IDesignSystem {
 
 		// register global methods
 		app.config.globalProperties.$ds = this
+
+		app.provide('ds', this)
 	}
 
 	addCollection(collection: IconifyJSON, providerName?: string): boolean {

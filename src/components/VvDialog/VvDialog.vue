@@ -31,18 +31,18 @@ import type { DialogHTMLAttributes } from 'vue'
 
 import { computed, ref } from 'vue'
 import { useVModel, onClickOutside } from '@vueuse/core'
-import VvDialogProps from './VvDialog.props'
+import { VvDialogEvents, VvDialogProps } from './VvDialog'
 
 //Components
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 //Constants
-import VV_DIALOG from './constants'
+import { VV_DIALOG_SIZES } from './constants'
 import { title } from 'process'
 
 //Props, emits, slots, attrs
 const props = defineProps(VvDialogProps)
-const emit = defineEmits(VV_DIALOG.EVENTS)
+const emit = defineEmits(VvDialogEvents)
 
 //Data
 const openDialog = useVModel(props, 'open', emit)
@@ -62,8 +62,8 @@ const dialogAttrs = computed(() => {
 const dialogClass = computed(() => {
 	return {
 		'vv-dialog': true,
-		'vv-dialog--small': props.size === VV_DIALOG.SIZES.small,
-		'vv-dialog--fullscreen': props.size === VV_DIALOG.SIZES.fullscreen
+		'vv-dialog--small': props.size === VV_DIALOG_SIZES.small,
+		'vv-dialog--fullscreen': props.size === VV_DIALOG_SIZES.fullscreen
 	}
 })
 

@@ -18,6 +18,7 @@ import type { IInputGroupOptions } from '../../composables/group/types'
 import { computed, useAttrs, ref } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { InputGroupState } from '../../composables/group/models'
+import { VvRadioProps, VvRadioEvents } from './VvRadio'
 
 //Costanti
 import { VV_RADIO_GROUP } from '../../constants'
@@ -27,27 +28,8 @@ import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps({
-	/**
-	 * Valore del radio
-	 */
-	value: null,
-	modelValue: { type: [Object, Number, Boolean, String] },
-	label: { type: String, default: '' },
-	disabled: Boolean,
-	readonly: Boolean,
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errors: [String, Array]
-})
-const emit = defineEmits([
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-])
+const props = defineProps(VvRadioProps)
+const emit = defineEmits(VvRadioEvents)
 const attrs = useAttrs()
 
 //Template References

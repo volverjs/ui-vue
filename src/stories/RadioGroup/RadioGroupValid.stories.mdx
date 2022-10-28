@@ -3,6 +3,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
+import { validTest } from './RadioPropertyTest.js'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/Valid" component={VvRadioGroup} />
@@ -12,6 +13,7 @@ import { Template } from './RadioGroup.stories.mdx'
 <Canvas>
 	<Story
 		name="Valid"
+		play={validTest}
 		args={{
 			name: 'vv-group-options-valid-label',
 			options: [
@@ -21,7 +23,8 @@ import { Template } from './RadioGroup.stories.mdx'
 			],
 			optionLabel: (o) => `Frutto: ${o.name}`,
 			valid: true,
-			validLabel: 'Campo corretto'
+			validLabel: 'Campo corretto',
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>
