@@ -1,11 +1,5 @@
-const EVENTS = ['open', 'close', 'update:open']
-const SIZES = {
+export const VV_DIALOG_SIZES = {
 	normal: '',
 	small: 'small',
 	fullscreen: 'fullscreen'
-}
-
-export default {
-	EVENTS,
-	SIZES
 }

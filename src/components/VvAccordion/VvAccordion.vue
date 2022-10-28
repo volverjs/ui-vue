@@ -21,50 +21,27 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, type ComputedRef } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-import { useModifiers } from '../../composables/useModifiers'
-import { AccordionGroupState } from '../../composables/group/models'
+import type { ComputedRef } from 'vue'
 import type { IAccordionGroupOptions } from '../../composables/group/types'
+
+import { computed, useAttrs } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
+import { AccordionGroupState } from '../../composables/group/models'
+import { VvAccordionProps, VvAccordionEvents } from './VvAccordion'
+
+//Composables
+import { useModifiers } from '../../composables/useModifiers'
 import { useAccordionGroup } from '../../composables/group/useAccordionGroup'
 
-export interface VvAccordionProps {
-	/**
-	 * Accordion header title
-	 */
-	title?: string
-	/**
-	 * Accordion content description
-	 */
-	content?: string
-	/**
-	 * (Optional) Defines if item is open. Event "update:open" is emitted on accordion header click
-	 */
-	open?: boolean
-	/**
-	 * Change icon position to right side
-	 */
-	iconRight?: boolean
-	/**
-	 * Add border to accordion item
-	 */
-	bordered?: boolean
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
-	 */
-	modifiers?: string | string[]
-	disabled?: boolean
-}
-
 // Define component props, attributes and events emitted
-const props = defineProps<VvAccordionProps>()
+const props = defineProps(VvAccordionProps)
 const attrs = useAttrs()
-const emit = defineEmits(['update:open'])
+const emit = defineEmits(VvAccordionEvents)
 
 // Get computed string with all css classes (modifiers) with 'vv-accordion' prefix
 const hasModifiers: ComputedRef<string> = useModifiers(
 	'vv-accordion',
-	props.modifiers
+	props.modifiers as string | string[]
 )
 
 // #region group

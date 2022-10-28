@@ -16,55 +16,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ComputedRef } from 'vue'
-import { useModifiers } from '../../composables/useModifiers'
+import type { ComputedRef } from 'vue'
+
+import { computed } from 'vue'
 import { AccordionGroupState } from '../../composables/group/models'
 import type { IAccordionGroupOptions } from '../../composables/group/types'
+
+//Components
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+
+//Composables
+import { useModifiers } from '../../composables/useModifiers'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 
-interface VvAccordionGroupProps {
-	/**
-	 * VModel
-	 */
-	modelValue?: string | string[]
-	/**
-	 * Change icon position to right side
-	 */
-	iconRight?: boolean
-	/**
-	 * Add border to accordion item
-	 */
-	bordered?: boolean
-	/**
-	 * Accordion items
-	 */
-	items?: Array<{
-		name?: string
-		title: string
-		content: string
-	}>
-	/**
-	 * If true, close others accordion when an item is open
-	 */
-	accordion?: boolean
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
-	 */
-	modifiers?: string | string[]
-	disabled?: boolean
-}
+import {
+	VvAccordionGroupProps,
+	VvAccordionGroupEvents
+} from './VvAccordionGroup'
 
 // Define component props, attributes and events emitted
-const props = withDefaults(defineProps<VvAccordionGroupProps>(), {
-	items: () => []
-})
-const emit = defineEmits(['update:modelValue'])
+const props = defineProps(VvAccordionGroupProps)
+const emit = defineEmits(VvAccordionGroupEvents)
 
 // Get computed string with all css classes (modifiers) with 'vv-accordion-group' prefix
 const hasModifiers: ComputedRef<string> = useModifiers(
 	'vv-accordion-group',
-	props.modifiers
+	props.modifiers as string | string[]
 )
 
 // #region group

@@ -19,6 +19,7 @@ import type { IInputGroupOptions } from '../../composables/group/types'
 import { computed, useAttrs, ref } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { InputGroupState } from '../../composables/group/models'
+import { VvCheckProps, VvCheckEvents } from './VvCheck'
 
 //Costanti
 import { VV_CHECK_GROUP } from '../../constants'
@@ -28,52 +29,8 @@ import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalSta
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps({
-	/**
-	 * Valore della check
-	 */
-	value: null,
-	/**
-	 * VModel
-	 * @description
-	 * Se Binary = true, modelValue puo essere Object,Boolean,Number
-	 * Altrimenti modelValue sarà un Array
-	 */
-	modelValue: null,
-	/**
-	 * True - ritorna un valore del checkbox binario (es True/False) invece di un valori multipli
-	 */
-	binary: Boolean,
-	/**
-	 * Se binary=true, valore associato allo stato checked (ritornato al posto di TRUE)
-	 */
-	trueValue: { type: null, default: true },
-	/**
-	 * Se binary=true, valore associato allo stato unchecked (ritornato al posto di FALSE)
-	 */
-	falseValue: { type: null, default: false },
-	/**
-	 * True - visualizza il VvCheck come un pulsante Switch/Toggle
-	 */
-	switch: Boolean,
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	/**
-	 * Messaggi di errore.
-	 */
-	errors: [String, Array],
-	label: String,
-	disabled: Boolean,
-	readonly: Boolean
-})
-const emit = defineEmits([
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-])
+const props = defineProps(VvCheckProps)
+const emit = defineEmits(VvCheckEvents)
 const attrs = useAttrs()
 
 //Template References
