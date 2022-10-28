@@ -21,3 +21,12 @@ export function useModifiers(
 		return ''
 	})
 }
+
+import type { IValid, IError } from '../types/props'
+
+type IBemValid = Pick<IValid, 'valid'>
+type IBemError = Pick<IError, 'error'>
+
+type IBemModifiers = IBemValid & IBemError
+
+export function useBemModifiers(prefix = '', props: IBemModifiers) {}
