@@ -1,0 +1,31 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+
+<Meta title="Components/InputText/Min" component={VvInputText} />
+
+<Canvas>
+	<Story
+		name="Min - DateTime"
+		args={{
+			name: 'input-datetime-min',
+			type: 'date',
+			max: new Date().toISOString().split('T')[0]
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Min - Number"
+		args={{
+			name: 'input-number-min',
+			type: 'number',
+			min: 5
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

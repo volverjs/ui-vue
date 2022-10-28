@@ -1,0 +1,43 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvAccordionGroup from '../../components/VvAccordionGroup/VvAccordionGroup.vue'
+import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+
+<Meta
+	title="Components/AccordionGroup"
+	component={VvAccordionGroup}
+	args={{}}
+/>
+
+export const Template = (args) => ({
+	components: { VvAccordionGroup, VvAccordion },
+	data() {
+		return {
+			accordion: '',
+			content:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+		}
+	},
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`<div class="w-1/2">
+			<vv-accordion-group v-bind="args" v-model:modelValue="accordion">
+				<vv-accordion title="Details 1" :content="content" />
+				<vv-accordion title="Details 2" :content="content" />
+				<vv-accordion title="Details 3" :content="content" />
+			</vv-accordion-group>
+        </div>`
+})
+
+# VvAccordionGroup
+
+Stories of `VvAccordionGroup`.
+Let's define a story for our playground `accordion-group`:
+
+<Canvas>
+	<Story name="vv-accordion-group" args={{}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

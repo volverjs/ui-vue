@@ -41,7 +41,11 @@ export const Template = (args, { argTypes }) => ({
 			loadingLabel: 'Ciao sono il loading',
 			icon: '',
 			iconPosition: null,
-			floating: false
+			floating: false,
+			min: null,
+			max: null,
+			minlength: null,
+			maxlength: null
 		}}
 		argTypes={{
 			id: {
@@ -60,13 +64,31 @@ export const Template = (args, { argTypes }) => ({
 				control: {
 					type: 'select',
 					options: [null, 'left', 'right']
-				}
+				},
+				table: { category: 'Attributes' }
 			},
 			type: {
 				control: {
 					type: 'select',
-					options: ['text', 'password']
-				}
+					options: ['text', 'password', 'date', 'datetime-local']
+				},
+				table: { category: 'Attributes' }
+			},
+			minlength: {
+				description: 'Lunghezza minima testo',
+				table: { category: 'Attributes' }
+			},
+			maxlength: {
+				description: 'Lunghezza massima testo',
+				table: { category: 'Attributes' }
+			},
+			min: {
+				description: 'Valore minimo',
+				table: { category: 'Attributes' }
+			},
+			max: {
+				description: 'Valore massimo',
+				table: { category: 'Attributes' }
 			}
 		}}>
 		{Template.bind({})}

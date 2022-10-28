@@ -20,18 +20,23 @@
 </template>
 
 <script setup lang="ts">
-import { useSlots, computed } from 'vue'
-import { useProvideGroupState } from '../../composables/group/useGroup'
-import { useOptions } from '../../composables/options/useOptions'
-import { useValidationState } from '../../composables/validation/useValidationState'
-import { InputGroupState } from '../../composables/group/models'
-import { VV_CHECK_GROUP } from '../../constants'
-
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
-import { HintSlotFactory } from '../common/HintSlot'
 import type { IInputGroupOptions } from '@/composables/group/types'
 
-//Props
+import { useSlots, computed, shallowRef } from 'vue'
+import { InputGroupState } from '../../composables/group/models'
+
+//Costanti
+import { VV_CHECK_GROUP } from '../../constants'
+
+//Composables
+import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useOptions } from '../../composables/options/useOptions'
+
+//Components
+import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import { HintSlotFactory } from '../common/HintSlot'
+
+//Props, Emits, Slots e Attrs
 const props = defineProps({
 	/**
 	 * VModel
@@ -92,11 +97,7 @@ const props = defineProps({
 	 */
 	errors: [String, Array]
 })
-
-//Emits
 const emit = defineEmits(['update:modelValue', 'change'])
-
-//Slots
 const slots = useSlots()
 
 // #region group
@@ -112,19 +113,16 @@ const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
 useProvideGroupState(groupState, emit)
 // #endregion group
 
-// use validation state composable
-const { isInvalid, isValid } = useValidationState(props, { emit })
+// OPTIONS
+const { getOptionLabel, getOptionValue } = useOptions(props)
 
-// use options composable to retrieve correct label and value
-const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
-
-//Computed
+//Styles & Bindings
 const groupClass = computed(() => {
 	return {
 		'vv-input-checkbox-group': true,
 		'vv-input-checkbox-group--horizontal': !props.vertical,
-		'vv-input-checkbox-group--valid': isValid.value,
-		'vv-input-checkbox-group--invalid': isInvalid.value
+		'vv-input-checkbox-group--valid': props.valid,
+		'vv-input-checkbox-group--invalid': props.error
 	}
 })
 
@@ -138,9 +136,5 @@ const getOptionProps = (option: any, oIndex: number) => {
 	}
 }
 
-const HintSlot = HintSlotFactory(props, slots)
+const HintSlot = shallowRef(HintSlotFactory(props, slots))
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-input-checkbox-group';
-</style>
