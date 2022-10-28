@@ -214,17 +214,25 @@ export default {
 	 * @param {ComponentObjectPropsOptions} props vue component props
 	 * @returns {Object}
 	 */
-	propsToObjectInstance(props: any) {
+	propsToObject(props: any) {
 		return Object.keys(props).reduce((initValue: any, value: any) => {
 			if (this.isFunction(props[value])) {
+				// case prop1: String
 				initValue[value] = props[value]()
 			} else if (Array.isArray(props[value])) {
+				// case prop1: [ String, Array ]
 				initValue[value] = props[value][0]()
-			} else if (
-				props[value]?.type &&
-				Array.isArray(props[value]?.type)
-			) {
-				initValue[value] = props[value]?.type[0]()
+			} else if (props[value]?.type) {
+				// case prop1: { type: ... }
+				if (Array.isArray(props[value].type)) {
+					// case prop1: { type: [ String, Array ] }
+					initValue[value] =
+						props[value]?.default || props[value]?.type[0]()
+				} else {
+					// case prop1: { type: String }
+					initValue[value] =
+						props[value]?.default || props[value]?.type()
+				}
 			}
 			return initValue
 		}, {})

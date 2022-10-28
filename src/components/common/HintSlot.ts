@@ -49,6 +49,7 @@ export function HintSlotFactory(
 	pSlots: Slots
 ): Component {
 	return {
+		name: 'HintSlot',
 		setup() {
 			const props = toRefs(pProps)
 

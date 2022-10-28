@@ -1,8 +1,7 @@
 import type { PropType } from 'vue'
 
-interface Option {
-	value: string | number | boolean
-	label: string
+export interface Option {
+	[key: string]: any
 }
 
 export const VvSelectProps = {
@@ -13,14 +12,16 @@ export const VvSelectProps = {
 	label: String,
 	placeholder: String,
 	options: {
-		type: Array as PropType<Array<Option>>,
+		type: Array as PropType<Array<Option | string>>,
 		required: true
 	},
-	multiple: Boolean,
+	labelKey: { type: String, default: 'label' },
+	valueKey: { type: String, default: 'value' },
 	iconLeft: String,
 	iconRight: String,
 	disabled: Boolean,
 	readonly: Boolean,
+	hintLabel: { type: String, default: '' },
 	valid: Boolean,
 	validLabel: [String, Array],
 	error: Boolean,

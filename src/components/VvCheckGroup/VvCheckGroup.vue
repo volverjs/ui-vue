@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import type { IInputGroupOptions } from '@/composables/group/types'
 
-import { useSlots, computed, shallowRef } from 'vue'
+import { useSlots, computed } from 'vue'
 import { InputGroupState } from '../../composables/group/models'
 
 //Costanti
@@ -136,5 +136,5 @@ const getOptionProps = (option: any, oIndex: number) => {
 	}
 }
 
-const HintSlot = shallowRef(HintSlotFactory(props, slots))
+const HintSlot = HintSlotFactory(props, slots)
 </script>

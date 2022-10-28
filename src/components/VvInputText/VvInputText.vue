@@ -56,9 +56,10 @@ import {
 	useAttrs,
 	useSlots,
 	ref,
-	shallowRef,
 	toRefs,
-	onMounted
+	onMounted,
+	type HTMLAttributes,
+	type InputHTMLAttributes
 } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
@@ -201,7 +202,7 @@ const vvInputTextProps = computed(() => {
 	return {
 		style,
 		...dataAttrs
-	}
+	} as HTMLAttributes
 })
 const vvInputInputClass = computed(() => {
 	const { class: cssClass } = attrs
@@ -260,7 +261,7 @@ const innerInputProps = computed(() => {
 		max,
 		step,
 		...inputAriaAttrs.value
-	}
+	} as InputHTMLAttributes
 })
 const inputAriaAttrs = computed(() => {
 	const { name } = attrs
@@ -286,7 +287,7 @@ const iconSlotProps = computed(() => {
 })
 
 //Hint
-const HintSlot = shallowRef(HintSlotFactory(props, slots))
+const HintSlot = HintSlotFactory(props, slots)
 
 onMounted(() => {
 	if (props.autofocus) focused.value = true

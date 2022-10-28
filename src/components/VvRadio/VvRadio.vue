@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import type { InputHTMLAttributes } from 'vue'
+import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 import type { IInputGroupOptions } from '../../composables/group/types'
 
 import { computed, useAttrs, ref } from 'vue'
@@ -95,7 +95,7 @@ const radioAttrs = computed(() => {
 		for: (id || name) as string,
 		style,
 		...dataAttrs
-	}
+	} as LabelHTMLAttributes
 })
 const radioInputClass = computed(() => {
 	return {
@@ -116,7 +116,7 @@ const radioInputAttrs = computed(() => {
 		readonly: isReadonly.value,
 		checked: isChecked.value,
 		...radioInputAriaAttrs.value
-	}
+	} as InputHTMLAttributes
 })
 const radioInputAriaAttrs = computed(() => {
 	const { name } = attrs

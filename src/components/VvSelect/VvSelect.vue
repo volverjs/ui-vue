@@ -1,53 +1,24 @@
 <template>
 	<div :class="hasClass">
 		<label v-if="props.label" for="select">{{ props.label }}</label>
-		<!-- #region custom dropdown select -->
-		<details
-			v-if="props.multiple"
-			ref="dropdown"
-			role="list"
-			class="vv-select__wrapper">
-			<summary class="vv-select__input" aria-haspopup="listbox">
-				{{ modelValue }}
-			</summary>
-			<ul class="vv-dropdown" role="listbox">
-				<li v-for="(option, index) in props.options" :key="index">
-					<label :for="`select-${index}`">
-						<input
-							:id="`select-${index}`"
-							type="radio"
-							:value="option.value"
-							:checked="
-								modelValue?.includes(String(option.value))
-							"
-							@click="onClick(String(option.value))"
-							@input="onInput" />
-						{{ option.label }}
-					</label>
-				</li>
-			</ul>
-		</details>
-		<!-- #endregion custom dropdown select -->
-
 		<!-- #region native select -->
-		<div v-else class="vv-select__wrapper">
+		<div class="vv-select__wrapper">
 			<slot name="icon-left">
 				<vv-icon v-if="props.iconLeft" :name="props.iconLeft" />
 			</slot>
 			<select
 				id="select"
-				aria-describedby="select-hint"
 				:value="props.modelValue"
 				:disabled="props.disabled || props.readonly"
 				@input="onInput">
-				<option value="" disabled selected>
+				<option v-if="props.placeholder" value="" disabled selected>
 					{{ props.placeholder }}
 				</option>
 				<option
 					v-for="(option, index) in props.options"
 					:key="index"
-					:value="option.value">
-					{{ option.label }}
+					:value="getValue(option)">
+					{{ getLabel(option) }}
 				</option>
 			</select>
 			<slot name="icon-right">
@@ -55,20 +26,22 @@
 			</slot>
 		</div>
 		<!-- #endregion native select -->
+		<HintSlot class="vv-select__hint" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, useSlots } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
+import { VvSelectProps, type Option } from './VvSelect'
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
-import { VvSelectProps } from './VvSelect'
+import HintSlotFactory from '../common/HintSlot'
 
 const props = defineProps(VvSelectProps)
+const slots = useSlots()
 const emit = defineEmits(['update:modelValue'])
-
-// html ref
-const dropdown = ref()
+//Hint component
+const HintSlot = HintSlotFactory(props, slots)
 
 const hasClass = computed(() => [
 	'vv-select',
@@ -83,32 +56,16 @@ const hasClass = computed(() => [
 	}
 ])
 
-function onClick(value: string) {
-	if (
-		Array.isArray(props.modelValue) &&
-		props.modelValue?.includes?.(value)
-	) {
-		emit(
-			'update:modelValue',
-			ObjectUtilities.removeFromList(value, props.modelValue)
-		)
-	}
+function getValue(option: string | Option) {
+	return typeof option === 'string' ? option : option[props.valueKey]
+}
+
+function getLabel(option: string | Option) {
+	return typeof option === 'string' ? option : option[props.labelKey]
 }
 
 function onInput(event: Event) {
-	if (dropdown.value && !props.multiple) {
-		// close details dropdown on option select
-		dropdown.value.open = false
-	}
 	const target = event.target as HTMLSelectElement
-	let value: string | string[] = target.value
-	if (props.multiple) {
-		if (Array.isArray(props.modelValue)) {
-			value = [...props.modelValue, value]
-		} else {
-			value = [value]
-		}
-	}
-	emit('update:modelValue', value)
+	emit('update:modelValue', target.value)
 }
 </script>
