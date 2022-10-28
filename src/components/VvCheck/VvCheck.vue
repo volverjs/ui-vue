@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type { InputHTMLAttributes } from 'vue'
+import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 import type { IInputGroupOptions } from '../../composables/group/types'
 
 import { computed, useAttrs, ref } from 'vue'
@@ -123,7 +123,7 @@ const checkAttrs = computed(() => {
 		for: (id || name) as string,
 		style,
 		...dataAttrs
-	}
+	} as LabelHTMLAttributes
 })
 const checkInputClass = computed(() => {
 	return {
@@ -134,7 +134,7 @@ const checkInputClass = computed(() => {
 	}
 })
 const checkInputAttrs = computed(() => {
-	const { id = '', name = '' } = attrs as InputHTMLAttributes
+	const { id = '', name = '' } = attrs
 	return {
 		type: 'checkbox',
 		id: id || name,
@@ -144,7 +144,7 @@ const checkInputAttrs = computed(() => {
 		readonly: isReadonly.value,
 		checked: isChecked.value,
 		...checkInputAriaAttrs.value
-	}
+	} as InputHTMLAttributes
 })
 const checkInputAriaAttrs = computed(() => {
 	const { name } = attrs
