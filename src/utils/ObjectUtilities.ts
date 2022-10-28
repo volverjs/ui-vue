@@ -236,5 +236,29 @@ export default {
 			}
 			return initValue
 		}, {})
+	},
+
+	/**
+	 * Filter array objects by filter array
+	 * @param {object[]} list the listo to filter
+	 * @param {object[] | string[]} filter the filter list, array of string or array of object
+	 * @param {string} key
+	 * @return {object[]}
+	 */
+	filterArray<T = { [key: string]: any }>(
+		list: T[],
+		filter: T[] | string[],
+		key: string
+	): T[] {
+		return list.filter((el) => {
+			return filter.some((f) => {
+				return typeof f === 'string'
+					? el[key as keyof typeof el] == f
+					: this.equals(
+							el[key as keyof typeof el],
+							f[key as keyof typeof f]
+					  )
+			})
+		})
 	}
 }
