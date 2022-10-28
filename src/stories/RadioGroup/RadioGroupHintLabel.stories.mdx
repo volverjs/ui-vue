@@ -3,7 +3,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
-import { Template } from './RadioGroup.stories.mdx'
+import { hintLabelTest } from './RadioPropertyTest.js'
 
 <Meta title="Components/RadioGroup/HintLabel" component={VvRadioGroup} />
 
@@ -12,6 +12,7 @@ import { Template } from './RadioGroup.stories.mdx'
 <Canvas>
 	<Story
 		name="HintLabel"
+		play={hintLabelTest}
 		args={{
 			name: 'vv-group-options-hint-label',
 			options: [
@@ -20,8 +21,8 @@ import { Template } from './RadioGroup.stories.mdx'
 				{ value: 3, name: 'Banana' }
 			],
 			optionLabel: (o) => `Frutto: ${o.name}`,
-			hintLabel: 'Prova prova prova prova'
-		}}>
-		{Template.bind({})}
-	</Story>
+			hintLabel: 'Prova prova prova prova',
+			role: 'radiogroup'
+		}}
+	/>
 </Canvas>

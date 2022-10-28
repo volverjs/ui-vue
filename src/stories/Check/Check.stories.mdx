@@ -21,7 +21,7 @@ export const Template = (args, { argTypes }) => ({
 	template:
 		/*html*/
 		`
-		<div class="flex flex-row justify-between">
+		<div :data-testData="ckValue" data-testId="checkbox" class="flex flex-row justify-between">
 			<vv-check v-bind="args" v-model:modelValue="ckValue"/>
 			<strong v-if="ckValue">Valore selez: {{ckValue}} </strong> 
 		</div>

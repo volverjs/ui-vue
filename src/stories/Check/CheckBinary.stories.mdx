@@ -2,7 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
-
+import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
 import { Template } from './Check.stories.mdx'
 
 <Meta
@@ -18,6 +18,12 @@ import { Template } from './Check.stories.mdx'
 <Canvas>
 	<Story
 		name="True/false"
+		play={(ctx) =>
+			checkTest({
+				...ctx,
+				functions: [booleanTest]
+			})
+		}
 		args={{
 			id: 4,
 			label: 'Voglio acquistare questa enciclopedia!',
@@ -34,15 +40,43 @@ import { Template } from './Check.stories.mdx'
 <Canvas>
 	<Story
 		name="Binario Si/No (sperimentale)"
+		play={({ canvasElement }) => {
+			console.log({ canvasElement })
+		}}
 		args={{
 			id: 5,
 			label: 'Voglio acquistare questa enciclopedia!',
 			name: 'ck5',
 			binary: true,
 			trueValue: 'Si',
-			falseValue: 'No',
-			modelValue: 'No'
+			falseValue: 'No'
 		}}>
-		{Template.bind({})}
+		{(args) => {
+			return {
+				components: { VvCheck },
+				setup() {
+					return { args }
+				},
+				data() {
+					return {
+						checkValue: 'No'
+					}
+				},
+				watch: {
+					checkValue: {
+						immediate: true,
+						handler(newValue) {
+							console.log(newValue)
+						}
+					}
+				},
+				template:
+					/*html*/
+					`<div :data-testData="checkValue" :key="checkValue">
+						<vv-check v-model:modelValue="checkValue" v-bind="args"  />
+						<strong v-if="checkValue">Valore selez: {{checkValue}} </strong>
+					</div>`
+			}
+		}}
 	</Story>
 </Canvas>
