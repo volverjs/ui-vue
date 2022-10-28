@@ -12,7 +12,3 @@ const props = defineProps<{
 
 const hasClass = computed(() => (props.color ? `vv-badge--${props.color}` : ''))
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-badge';
-</style>

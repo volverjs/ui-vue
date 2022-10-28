@@ -1,0 +1,84 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+
+<Meta title="Components/Accordion/Slots" />
+
+# VvAccordion slots
+
+Stories of `VvAccordion` with `slot`.
+
+## Slot header
+
+Let's define a story for our accordion with `header` slot.
+
+<Canvas>
+	<Story name="slot-header">
+		{() => {
+			return {
+				components: { VvAccordion },
+				data() {
+					return {
+						content:
+							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+					}
+				},
+				template:
+					/*html*/
+					`<div class="w-1/2">
+						<vv-accordion :content="content" bordered icon-right>
+							<template #header>
+								<p class="text-word-3">Slot title</p>
+							</template>
+						</vv-accordion>
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-accordion :content="content" bordered icon-right>
+	<template #header>
+		<p class="text-word-3">Slot title</p>
+	</template>
+</vv-accordion>`}
+/>
+
+## Slot details
+
+Let's define a story for our accordion with `details` slot.
+
+<Canvas>
+	<Story name="slot-details">
+		{() => {
+			return {
+				components: { VvAccordion },
+				data() {
+					return {
+						details:
+							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+					}
+				},
+				template:
+					/*html*/
+					`<div class="w-1/2">
+						<vv-accordion title="Slot details" bordered icon-right>
+							<template #details>
+								<p class='font-light text-word-3'>{{ details }}</p>
+							</template>
+						</vv-accordion>
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-accordion title="Slot details" bordered icon-right>
+	<template #details>
+		<p class='font-light text-word-3'>{{ details }}</p>
+	</template>
+</vv-accordion>`}
+/>

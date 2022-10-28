@@ -1,4 +1,4 @@
-import type { IGroupState } from './types'
+import type { GroupStateTypes } from './types'
 import { provide, watch, computed } from 'vue'
 
 /**
@@ -7,7 +7,7 @@ import { provide, watch, computed } from 'vue'
  * @param {Function} emit the vue component emit function to bind parent data
  */
 export function useProvideGroupState(
-	groupState: IGroupState,
+	groupState: GroupStateTypes,
 	emit: (event: 'update:modelValue', args: any) => void
 ) {
 	provide(

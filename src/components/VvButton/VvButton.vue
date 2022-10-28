@@ -144,10 +144,7 @@ export default defineComponent({
 			disabled: props.disabled
 		}
 		// Create groupState instance
-		const groupState = new ButtonGroupState(
-			VV_BUTTON_GROUP,
-			buttonGroupOptions
-		)
+		const groupState = new ButtonGroupState(buttonGroupOptions)
 		// Use group composable to inject the provided group
 		const {
 			group,
@@ -271,7 +268,3 @@ export default defineComponent({
 	}
 })
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-button';
-</style>

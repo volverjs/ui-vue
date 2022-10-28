@@ -30,6 +30,16 @@ export interface IButtonGroupState extends IGroupState {
 }
 
 /**
+ * Stato condiviso per un gruppo di pulsanti
+ */
+export interface IAccordionGroupState extends IGroupState {
+	type: AccordionGroup
+	iconRight: Ref<boolean>
+	bordered: Ref<boolean>
+	accordion: Ref<boolean>
+}
+
+/**
  * Stato condiviso per in un gruppo di inputs
  */
 export interface IInputGroupState extends IGroupState {
@@ -41,7 +51,11 @@ export interface IInputGroupState extends IGroupState {
 }
 
 // All available Group States Types
-export type GroupStateTypes = IInputGroupState | IButtonGroupState | IGroupState
+export type GroupStateTypes =
+	| IAccordionGroupState
+	| IInputGroupState
+	| IButtonGroupState
+	| IGroupState
 
 // #region group options
 export interface IGroupOptions {
@@ -56,12 +70,19 @@ export interface IButtonGroupOptions extends IGroupOptions {
 export interface IInputGroupOptions extends IGroupOptions {
 	readonly: boolean
 }
+
+export interface IAccordionGroupOptions extends IGroupOptions {
+	iconRight?: boolean
+	bordered?: boolean
+	accordion?: boolean
+}
 // #endregion group input options
 
 // Available Groups
 export type ButtonGroup = 'ButtonGroup'
 export type InputGroup = 'InputGroup'
-type GroupTypes = ButtonGroup | InputGroup
+export type AccordionGroup = 'AccordionGroup'
+type GroupTypes = ButtonGroup | InputGroup | AccordionGroup
 
 // #region type checks
 export function isButtonGroupType(groupType: GroupTypes): boolean {
@@ -70,5 +91,9 @@ export function isButtonGroupType(groupType: GroupTypes): boolean {
 
 export function isInputGroupType(groupType: GroupTypes): boolean {
 	return groupType === 'InputGroup'
+}
+
+export function isAccordionGroupType(groupType: GroupTypes): boolean {
+	return groupType === 'AccordionGroup'
 }
 // #endregion type checks

@@ -114,7 +114,7 @@ useProvideGroupState(groupState, emit)
 // #endregion group
 
 // OPTIONS
-const { getOptionLabel, getOptionValue } = useOptions(props, { emit })
+const { getOptionLabel, getOptionValue } = useOptions(props)
 
 //Styles & Bindings
 const groupClass = computed(() => {
@@ -138,7 +138,3 @@ const getOptionProps = (option: any, oIndex: number) => {
 
 const HintSlot = shallowRef(HintSlotFactory(props, slots))
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-input-checkbox-group';
-</style>

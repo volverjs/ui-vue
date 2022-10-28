@@ -59,7 +59,3 @@ export default defineComponent({
 	}
 })
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-progress';
-</style>

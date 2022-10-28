@@ -8,7 +8,6 @@
 import { computed } from 'vue'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { ButtonGroupState } from '../../composables/group/models'
-import { VV_BUTTON_GROUP } from '../../constants'
 import type { IButtonGroupOptions } from '../../composables/group/types'
 
 const emit = defineEmits(['update:modelValue'])
@@ -59,12 +58,8 @@ const buttonGroupOptions: IButtonGroupOptions = {
 	toggle: props.toggle
 }
 // Create groupState instance
-const groupState = new ButtonGroupState(VV_BUTTON_GROUP, buttonGroupOptions)
+const groupState = new ButtonGroupState(buttonGroupOptions)
 // Use group composable to provide the group state to children
 useProvideGroupState(groupState, emit)
 // #endregion group
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/components/vv-button-group';
-</style>

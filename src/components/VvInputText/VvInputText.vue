@@ -315,7 +315,3 @@ export default {
 	inheritAttrs: false
 }
 </script>
-
-<style lang="scss">
-@import '@volverjs/style/scss/components/vv-input-text';
-</style>
