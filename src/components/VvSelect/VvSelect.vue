@@ -1,28 +1,33 @@
 <template>
-	<div :class="hasClass">
-		<label v-if="props.label" for="select">{{ props.label }}</label>
+	<div :class="selectClasses">
+		<label v-if="label" for="select">{{ label }}</label>
 		<!-- #region native select -->
 		<div class="vv-select__wrapper">
 			<slot name="icon-left">
-				<vv-icon v-if="props.iconLeft" :name="props.iconLeft" />
+				<vv-icon v-if="iconLeft" :name="iconLeft" />
 			</slot>
 			<select
 				id="select"
-				:value="props.modelValue"
-				:disabled="props.disabled || props.readonly"
+				:value="modelValue"
+				:disabled="disabled || readonly"
 				@input="onInput">
-				<option v-if="props.placeholder" value="" disabled selected>
-					{{ props.placeholder }}
+				<option v-if="placeholder" value="" disabled selected>
+					{{ placeholder }}
 				</option>
 				<option
-					v-for="(option, index) in props.options"
+					v-for="(option, index) in options"
 					:key="index"
+					:disabled="
+						typeof option === 'object'
+							? option.disabled ?? disabled
+							: disabled
+					"
 					:value="getValue(option)">
 					{{ getLabel(option) }}
 				</option>
 			</select>
 			<slot name="icon-right">
-				<vv-icon v-if="props.iconRight" :name="props.iconRight" />
+				<vv-icon v-if="iconRight" :name="iconRight" />
 			</slot>
 		</div>
 		<!-- #endregion native select -->
@@ -31,11 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, toRefs, useSlots } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvSelectProps, type Option } from './VvSelect'
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
+import { useBemModifiers } from '../../composables/useModifiers'
 
 const props = defineProps(VvSelectProps)
 const slots = useSlots()
@@ -43,18 +49,22 @@ const emit = defineEmits(['update:modelValue'])
 //Hint component
 const HintSlot = HintSlotFactory(props, slots)
 
-const hasClass = computed(() => [
-	'vv-select',
-	{
-		'vv-select--dirty': ObjectUtilities.isNotEmpty(props.modelValue),
-		'vv-select--readonly': props.readonly,
-		'vv-select--valid': props.valid || props.validLabel,
-		'vv-select--invalid':
-			props.error || ObjectUtilities.isNotEmpty(props.errors),
-		'vv-select--icon-left': props.iconLeft,
-		'vv-select--icon-right': props.iconRight
-	}
-])
+const { modifiers, disabled, readonly, loading, iconLeft, iconRight } =
+	toRefs(props)
+
+//Styles & css classes modifiers
+const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
+	modifiers,
+	loading,
+	readonly,
+	iconLeft,
+	iconRight,
+	valid: computed(() => props.valid || props.validLabel),
+	invalid: computed(
+		() => props.error || ObjectUtilities.isNotEmpty(props.errors)
+	),
+	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
+})
 
 function getValue(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.valueKey]

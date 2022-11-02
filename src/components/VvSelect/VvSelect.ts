@@ -19,6 +19,11 @@ export const VvSelectProps = {
 	valueKey: { type: String, default: 'value' },
 	iconLeft: String,
 	iconRight: String,
+	/**
+	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-dropdown--'
+	 */
+	modifiers: [String, Array],
+	loading: Boolean,
 	disabled: Boolean,
 	readonly: Boolean,
 	hintLabel: { type: String, default: '' },

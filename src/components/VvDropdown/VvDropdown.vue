@@ -1,10 +1,11 @@
 <template>
-	<div :class="hasClass">
+	<div :class="dropdownClasses">
 		<label v-if="label" for="select">{{ label }}</label>
 		<details
 			ref="dropdown"
 			role="list"
 			class="vv-select__wrapper"
+			@click="disabled || readonly ? $event.preventDefault() : null"
 			@keyup.esc="dropdown.open = false"
 			@toggle="onToggle">
 			<summary
@@ -38,6 +39,11 @@
 							:type="multiple ? 'checkbox' : 'radio'"
 							:value="getValue(option)"
 							:checked="isSelected(option)"
+							:disabled="
+								typeof option === 'object'
+									? option.disabled ?? disabled
+									: disabled
+							"
 							@input="onInput" />
 						{{ getLabel(option) }}
 					</label>
@@ -49,11 +55,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, useSlots, watch } from 'vue'
+import { computed, ref, toRefs, useSlots, watch } from 'vue'
 import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvDropdownProps, type Option } from './VvDropdown'
 import HintSlotFactory from '../common/HintSlot'
+import { useBemModifiers } from '../../composables/useModifiers'
 
 const props = defineProps(VvDropdownProps)
 const slots = useSlots()
@@ -72,6 +79,8 @@ useFocus(inputSearch, { initialValue: true })
 const searchText = ref('')
 const debouncedSearchText = refDebounced(searchText, props.debounceSearch)
 const dropdownOpen = ref(false)
+const { modifiers, disabled, readonly, loading, iconLeft, iconRight } =
+	toRefs(props)
 
 // watch
 // emit on change search text
@@ -79,19 +88,22 @@ watch(debouncedSearchText, () =>
 	emit('change:search', debouncedSearchText.value)
 )
 
+//Styles & css classes modifiers
+const { bemCssClasses: dropdownClasses } = useBemModifiers('vv-select', {
+	modifiers,
+	disabled,
+	loading,
+	readonly,
+	iconLeft,
+	iconRight,
+	valid: computed(() => props.valid || props.validLabel),
+	invalid: computed(
+		() => props.error || ObjectUtilities.isNotEmpty(props.errors)
+	),
+	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
+})
+
 // computed
-const hasClass = computed(() => [
-	'vv-select',
-	{
-		'vv-select--dirty': ObjectUtilities.isNotEmpty(props.modelValue),
-		'vv-select--readonly': props.readonly,
-		'vv-select--valid': props.valid || props.validLabel,
-		'vv-select--invalid':
-			props.error || ObjectUtilities.isNotEmpty(props.errors),
-		'vv-select--icon-left': props.iconLeft,
-		'vv-select--icon-right': props.iconRight
-	}
-])
 
 // Check if options are objects
 const isOptionsObjects = computed(() =>
