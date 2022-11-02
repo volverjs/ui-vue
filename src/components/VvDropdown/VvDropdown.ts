@@ -5,10 +5,7 @@ export interface Option {
 }
 
 export const VvDropdownProps = {
-	modelValue: {
-		type: [String, Array, Object],
-		required: true
-	},
+	modelValue: [String, Array, Object],
 	label: String,
 	placeholder: String,
 	options: {
