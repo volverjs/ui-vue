@@ -19,7 +19,7 @@
 import { toRefs, computed, useAttrs } from 'vue'
 import { VvCardProps } from './VvCard'
 
-//Computed
+//Components
 import { useBemModifiers } from '../../composables/useModifiers'
 
 //Props, Emits, attrs ...
@@ -27,9 +27,9 @@ const props = defineProps(VvCardProps)
 const attrs = useAttrs()
 
 //Styles & bindings
-const { variant } = toRefs(props)
+const { modifiers } = toRefs(props)
 const { bemCssClasses: cardClass } = useBemModifiers('vv-card', {
-	variant
+	modifiers
 })
 const cardAttrs = computed(() => {
 	return attrs

@@ -1,5 +1,5 @@
 import { VV_ACCORDION_GROUP, VV_BUTTON_GROUP } from '../../constants'
-import { ref, type Ref } from 'vue'
+import { ref, toRefs, type Ref } from 'vue'
 import type {
 	IButtonGroupState,
 	IGroupState,
@@ -21,8 +21,8 @@ export class GroupState implements IGroupState {
 
 	constructor(key: symbol, state: IGroupOptions) {
 		this.key = key
-		this.modelValue = ref(state.modelValue)
-		this.disabled = ref(state.disabled)
+		this.modelValue = state.modelValue || ref(null)
+		this.disabled = state.disabled || ref(false)
 	}
 }
 
@@ -37,9 +37,9 @@ export class AccordionGroupState
 
 	constructor(state: IAccordionGroupOptions) {
 		super(VV_ACCORDION_GROUP, state)
-		this.iconRight = ref(state.iconRight || false)
-		this.bordered = ref(state.bordered || false)
-		this.accordion = ref(state.accordion || false)
+		this.iconRight = state.iconRight || ref(false)
+		this.bordered = state.bordered || ref(false)
+		this.accordion = state.accordion || ref(false)
 	}
 }
 

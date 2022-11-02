@@ -6,5 +6,5 @@ export interface IVvCardProps extends IVariant {
 
 export const VvCardProps = {
 	title: String,
-	variant: [String, Array]
+	modifiers: [String, Array]
 }

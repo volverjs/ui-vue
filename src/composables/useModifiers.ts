@@ -1,4 +1,5 @@
 import { computed, unref, type ComputedRef, type Ref } from 'vue'
+import ObjectUtilities from '@/utils/ObjectUtilities'
 
 /**
  * @description Create css modifiers classes
@@ -27,7 +28,7 @@ interface IBemModifiers {
 		| Ref<boolean>
 		| Ref<string | unknown[] | undefined>
 		| undefined
-	variant: Ref<string | unknown[] | undefined> | undefined
+	modifiers: Ref<string | unknown[] | undefined> | undefined
 }
 
 export function useBemModifiers(prefix = '', modifiers: IBemModifiers) {
@@ -42,7 +43,7 @@ export function useBemModifiers(prefix = '', modifiers: IBemModifiers) {
 
 			if (!_modifier) return acc
 
-			if (k === 'variant') {
+			if (k === 'modifiers') {
 				const _reduceModifiers = Array.isArray(_modifier)
 					? _modifier
 					: [_modifier]
@@ -52,7 +53,9 @@ export function useBemModifiers(prefix = '', modifiers: IBemModifiers) {
 						(accVariant: object, currentVariant: string) => {
 							return {
 								...accVariant,
-								[`${prefix}--${currentVariant}`]: true
+								[`${prefix}--${ObjectUtilities.kebabCase(
+									currentVariant
+								)}`]: true
 							}
 						},
 						{}
@@ -61,7 +64,7 @@ export function useBemModifiers(prefix = '', modifiers: IBemModifiers) {
 			} else {
 				return {
 					...acc,
-					[`${prefix}--${k}`]: _modifier
+					[`${prefix}--${ObjectUtilities.kebabCase(k)}`]: _modifier
 				}
 			}
 		}, baseCssClass)

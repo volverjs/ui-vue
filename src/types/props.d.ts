@@ -14,5 +14,5 @@ export interface ILoading {
 }
 
 export interface IVariant {
-	variant: string | array<string>
+	modifiers: string | array<string>
 }
