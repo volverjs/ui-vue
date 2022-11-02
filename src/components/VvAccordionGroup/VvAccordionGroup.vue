@@ -1,5 +1,5 @@
 <template>
-	<div :class="hasClass">
+	<div :class="accGroupClass">
 		<template v-if="props.items?.length > 0">
 			<vv-accordion
 				v-for="item in items"
@@ -16,18 +16,15 @@
 </template>
 
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-
-import { computed } from 'vue'
+import { toRefs, ref } from 'vue'
 import { AccordionGroupState } from '../../composables/group/models'
-import type { IAccordionGroupOptions } from '../../composables/group/types'
 
 //Components
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 
 //Composables
-import { useModifiers } from '../../composables/useModifiers'
 import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useBemModifiers } from '../../composables/useModifiers'
 
 import {
 	VvAccordionGroupProps,
@@ -38,32 +35,31 @@ import {
 const props = defineProps(VvAccordionGroupProps)
 const emit = defineEmits(VvAccordionGroupEvents)
 
-// Get computed string with all css classes (modifiers) with 'vv-accordion-group' prefix
-const hasModifiers: ComputedRef<string> = useModifiers(
-	'vv-accordion-group',
-	props.modifiers as string | string[]
-)
+//Data
+const {
+	disabled,
+	bordered,
+	iconRight,
+	accordion,
+	modelValue,
+	modifiers,
+	items
+} = toRefs(props)
 
 // #region group
-// Define group options
-const accordionGroupOptions: IAccordionGroupOptions = {
-	disabled: props.disabled ?? false,
-	modelValue: props.modelValue || null,
-	bordered: props.bordered,
-	iconRight: props.iconRight,
-	accordion: props.accordion
-}
-// Create groupState instance
-const accordionGroupState = new AccordionGroupState(accordionGroupOptions)
-// Use group composable to provide the group state to children
+const accordionGroupState = new AccordionGroupState({
+	modelValue: ref(modelValue?.value || []),
+	disabled,
+	bordered,
+	iconRight,
+	accordion
+})
 useProvideGroupState(accordionGroupState, emit)
 // #endregion group
 
-const hasClass = computed(() => [
-	'vv-accordion-group',
-	hasModifiers.value,
-	{
-		'vv-accordion-group--disabled': props.disabled
-	}
-])
+//Styles & bindings
+const { bemCssClasses: accGroupClass } = useBemModifiers('vv-accordion-group', {
+	modifiers,
+	disabled
+})
 </script>
