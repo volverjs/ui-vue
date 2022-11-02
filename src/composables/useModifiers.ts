@@ -1,4 +1,4 @@
-import { computed, type ComputedRef } from 'vue'
+import { computed, unref, type ComputedRef, type Ref } from 'vue'
 
 /**
  * @description Create css modifiers classes
@@ -22,11 +22,52 @@ export function useModifiers(
 	})
 }
 
-import type { IValid, IError } from '../types/props'
+interface IBemModifiers {
+	[key: string]:
+		| Ref<boolean>
+		| Ref<string | unknown[] | undefined>
+		| undefined
+	variant: Ref<string | unknown[] | undefined> | undefined
+}
 
-type IBemValid = Pick<IValid, 'valid'>
-type IBemError = Pick<IError, 'error'>
+export function useBemModifiers(prefix = '', modifiers: IBemModifiers) {
+	if (!prefix) return {}
+	if (!modifiers) return {}
 
-type IBemModifiers = IBemValid & IBemError
+	const baseCssClass: object = { [`${prefix}`]: true }
 
-export function useBemModifiers(prefix = '', props: IBemModifiers) {}
+	const bemCssClasses = computed(() => {
+		return Object.keys(modifiers).reduce((acc, k) => {
+			const _modifier = unref(modifiers[k] as Ref<any>) || false
+
+			if (!_modifier) return acc
+
+			if (k === 'variant') {
+				const _reduceModifiers = Array.isArray(_modifier)
+					? _modifier
+					: [_modifier]
+				return {
+					...acc,
+					..._reduceModifiers.reduce(
+						(accVariant: object, currentVariant: string) => {
+							return {
+								...accVariant,
+								[`${prefix}--${currentVariant}`]: true
+							}
+						},
+						{}
+					)
+				}
+			} else {
+				return {
+					...acc,
+					[`${prefix}--${k}`]: _modifier
+				}
+			}
+		}, baseCssClass)
+	})
+
+	return {
+		bemCssClasses
+	}
+}

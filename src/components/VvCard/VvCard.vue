@@ -1,7 +1,9 @@
 <template>
-	<article class="vv-card">
+	<article :class="cardClass" v-bind="cardAttrs">
 		<header v-if="$slots.header || title" class="vv-card__header">
-			<slot name="header"></slot>
+			<slot name="header">
+				{{ title }}
+			</slot>
 		</header>
 		<slot />
 		<div v-if="$slots.content" class="vv-card__content">
@@ -14,13 +16,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from '@vue/reactivity';
+import { toRefs, computed, useAttrs } from 'vue'
 import { VvCardProps } from './VvCard'
 
-const props = defineProps(VvCardProps)
+//Computed
+import { useBemModifiers } from '../../composables/useModifiers'
 
-const cardClass = computed(() => {
-    let {....} = props
-    useBEM('vv-card', props)
+//Props, Emits, attrs ...
+const props = defineProps(VvCardProps)
+const attrs = useAttrs()
+
+//Styles & bindings
+const { variant } = toRefs(props)
+const { bemCssClasses: cardClass } = useBemModifiers('vv-card', {
+	variant
+})
+const cardAttrs = computed(() => {
+	return attrs
 })
 </script>
