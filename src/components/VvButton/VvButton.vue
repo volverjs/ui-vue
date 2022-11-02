@@ -46,8 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs } from 'vue'
-import type { IButtonGroupOptions } from '../../composables/group/types'
+import { ref, toRefs, useAttrs } from 'vue'
 
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
@@ -60,6 +59,7 @@ import VvIcon from '../VvIcon/VvIcon.vue'
 
 //Composables
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Constasts
 import { VV_BUTTON_GROUP } from '../../constants'
@@ -69,9 +69,68 @@ const props = defineProps(VvButtonProps)
 const emit = defineEmits(VvButtonEvents)
 const attrs = useAttrs()
 
+//Data
 const btnName = attrs?.name || uuidv4()
+const {
+	disabled,
+	modifiers,
+	active,
+	block,
+	rounded,
+	fullBleed,
+	iconPosition,
+	icon,
+	label
+} = toRefs(props)
 
-//Style e Binding
+/**
+ * @description Select the tag type in based on the props before.
+ * @returns {string} The type of component
+ */
+const isComponent = computed(() => {
+	switch (true) {
+		case isDisabled.value:
+			return ButtonTag.button
+		case props.to !== undefined:
+			return ButtonTag.routerLink
+		case props.href !== undefined:
+			return ButtonTag.a
+		default:
+			return ButtonTag.button
+	}
+})
+
+//GROUP
+const groupState = new ButtonGroupState({
+	modelValue: ref(btnName),
+	disabled
+})
+const { modelValue, isDisabled, isToggleEnabled, checkIsSelected } =
+	useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
+const isSelected = computed(
+	() => isToggleEnabled.value && checkIsSelected(btnName)
+)
+
+//Styles & bindings
+const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
+	modifiers,
+	active: computed(() => active.value || isSelected.value),
+	block,
+	rounded,
+	fullBleed,
+	disabled: isDisabled,
+	reverse: computed(() =>
+		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
+			iconPosition.value
+		)
+	),
+	column: computed(() =>
+		[ButtonIconPosition.top, ButtonIconPosition.bottom].includes(
+			iconPosition.value
+		)
+	),
+	iconOnly: computed(() => icon?.value && !label?.value)
+})
 /**
  * Compute component properties
  */
@@ -81,7 +140,7 @@ const properties = computed(() => {
 		'aria-label': props.label || attrs['aria-label'],
 		'aria-disabled': isDisabled.value,
 		role: 'button',
-		class: hasClass.value,
+		class: btnClass.value,
 		to: props.to
 	}
 })
@@ -103,81 +162,6 @@ const linkProps = computed(() => {
 	}
 	return toReturn
 })
-/**
- * @description Select the tag type in based on the props before.
- * @returns {string} The type of component
- */
-const isComponent = computed(() => {
-	switch (true) {
-		case isDisabled.value:
-			return ButtonTag.button
-		case props.to !== undefined:
-			return ButtonTag.routerLink
-		case props.href !== undefined:
-			return ButtonTag.a
-		default:
-			return ButtonTag.button
-	}
-})
-/**
- * @description Define css classes.
- * @returns {string} The classes
- */
-const hasClass = computed((): Array<string | object> => {
-	return [
-		'vv-button',
-		hasVariant.value,
-		hasIconPosition.value,
-		{
-			'vv-button--active': props.active || isSelected.value,
-			'vv-button--block': props.block,
-			'vv-button--rounded': props.rounded,
-			'vv-button--full-bleed': props.fullBleed,
-			'vv-button--disabled': isDisabled.value
-		}
-	]
-})
-/**
- * @description Returns icon position.
- * @returns {string} The class
- */
-const hasIconPosition = computed(() => {
-	return {
-		'vv-button--reverse': props.iconPosition === ButtonIconPosition.right,
-		'vv-button--column vv-button--reverse':
-			props.iconPosition === ButtonIconPosition.bottom,
-		'vv-button--column': props.iconPosition === ButtonIconPosition.top,
-		'vv-button--icon-only': props.icon && !props.label
-	}
-})
-/**
- * @description Returns button variants.
- * @returns {string} The class
- */
-const hasVariant = computed(() => {
-	return props.variant ? `vv-button--${props.variant}` : ''
-})
-
-//GROUP
-// Define reactive props
-const buttonGroupOptions: IButtonGroupOptions = {
-	modelValue: btnName,
-	disabled: props.disabled
-}
-// Create groupState instance
-const groupState = new ButtonGroupState(buttonGroupOptions)
-// Use group composable to inject the provided group
-const {
-	// group,
-	modelValue,
-	// isInGroup,
-	isDisabled,
-	isToggleEnabled,
-	checkIsSelected
-} = useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
-const isSelected = computed(
-	() => isToggleEnabled.value && checkIsSelected(btnName)
-)
 
 //Methods
 function onBtnClick() {

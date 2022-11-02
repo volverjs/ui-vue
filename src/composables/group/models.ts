@@ -49,7 +49,7 @@ export class ButtonGroupState extends GroupState implements IButtonGroupState {
 
 	constructor(state: IButtonGroupOptions) {
 		super(VV_BUTTON_GROUP, state)
-		this.toggle = ref(state.toggle || false)
+		this.toggle = state.toggle || ref(false)
 	}
 }
 
