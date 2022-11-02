@@ -8,6 +8,11 @@ export const VvDropdownProps = {
 	modelValue: [String, Array, Object],
 	label: String,
 	placeholder: String,
+	searchPlaceholder: String,
+	debounceSearch: {
+		type: Number,
+		default: 0
+	},
 	options: {
 		type: Array as PropType<Array<Option | string>>,
 		required: true
@@ -19,6 +24,7 @@ export const VvDropdownProps = {
 	valueKey: { type: String, default: 'value' },
 	iconLeft: String,
 	iconRight: String,
+	searchable: Boolean,
 	disabled: Boolean,
 	readonly: Boolean,
 	hintLabel: { type: String, default: '' },

@@ -1,12 +1,33 @@
 <template>
 	<div :class="hasClass">
 		<label v-if="props.label" for="select">{{ props.label }}</label>
-		<details ref="dropdown" role="list" class="vv-select__wrapper">
-			<summary class="vv-select__input" aria-haspopup="listbox">
-				{{ labelValue || props.placeholder }}
+		<details
+			ref="dropdown"
+			role="list"
+			class="vv-select__wrapper"
+			@toggle="onToggle">
+			<summary
+				class="vv-select__input"
+				aria-haspopup="listbox"
+				@keyup.space="
+					props.searchable ? $event.preventDefault() : null
+				">
+				<!-- #region search input -->
+				<template v-if="props.searchable && dropdownOpen">
+					<input
+						v-model="searchText"
+						ref="inputSearch"
+						:placeholder="props.searchPlaceholder" />
+				</template>
+				<!-- #endregion search input -->
+				<!-- #region label of selected value/s -->
+				<template v-else>
+					{{ labelValue || props.placeholder }}
+				</template>
+				<!-- #endregion label of selected value/s -->
 			</summary>
 			<ul class="vv-dropdown" role="listbox">
-				<li v-for="(option, index) in props.options" :key="index">
+				<li v-for="(option, index) in currentOptions" :key="index">
 					<label :for="`select-${index}`">
 						<input
 							:id="`select-${index}`"
@@ -24,22 +45,34 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useSlots } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { computed, nextTick, ref, useSlots, watch } from 'vue'
+import { onClickOutside, refDebounced } from '@vueuse/core'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvDropdownProps, type Option } from './VvDropdown'
 import HintSlotFactory from '../common/HintSlot'
 
 const props = defineProps(VvDropdownProps)
 const slots = useSlots()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change:search'])
 
 //Hint component
 const HintSlot = HintSlotFactory(props, slots)
 
 // html ref
 const dropdown = ref()
+const inputSearch = ref()
 
+// data
+const searchText = ref('')
+const debouncedSearchText = refDebounced(searchText, props.debounceSearch)
+const dropdownOpen = ref(false)
+
+// emit on change search text
+watch(debouncedSearchText, () =>
+	emit('change:search', debouncedSearchText.value)
+)
+
+// computed
 const hasClass = computed(() => [
 	'vv-select',
 	{
@@ -57,6 +90,25 @@ const hasClass = computed(() => [
 const isOptionsObjects = computed(() =>
 	props.options?.every((option) => typeof option === 'object')
 )
+
+// current options, filtered or prop options
+const currentOptions = computed(() =>
+	props.searchable ? filteredOptions.value : props.options
+)
+
+// options filtered by search text
+const filteredOptions = computed(() => {
+	return props.options?.filter((option) => {
+		if (typeof option === 'string') {
+			return option
+				.toLowerCase()
+				.includes(debouncedSearchText.value.toLowerCase().trim())
+		}
+		return option[props.labelKey]
+			.toLowerCase()
+			.includes(debouncedSearchText.value.toLowerCase().trim())
+	})
+})
 
 /**
  * Compute the label to show to the user
@@ -99,10 +151,19 @@ const labelValue = computed(() => {
 	// #endregion single mode
 })
 
+// methods
+
 // close dropdown on click outside
 onClickOutside(dropdown, () => {
 	dropdown.value.open = false
 })
+
+// Function triggered on toggle dropdown (open/close)
+function onToggle(event: Event) {
+	const target = event.target as HTMLDetailsElement
+	dropdownOpen.value = target.open
+	nextTick(() => (target.open ? inputSearch.value.focus() : null))
+}
 
 /**
  * Retrieve the option value based on prop "valueKey" or the option if it is a string
