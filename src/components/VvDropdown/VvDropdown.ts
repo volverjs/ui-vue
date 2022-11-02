@@ -7,6 +7,7 @@ export interface Option {
 export const VvDropdownProps = {
 	modelValue: [String, Array, Object],
 	label: String,
+	labelNoResult: { type: String, default: 'No results' },
 	placeholder: String,
 	searchPlaceholder: String,
 	debounceSearch: {

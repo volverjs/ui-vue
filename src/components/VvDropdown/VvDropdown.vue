@@ -1,37 +1,41 @@
 <template>
 	<div :class="hasClass">
-		<label v-if="props.label" for="select">{{ props.label }}</label>
+		<label v-if="label" for="select">{{ label }}</label>
 		<details
 			ref="dropdown"
 			role="list"
 			class="vv-select__wrapper"
+			@keyup.esc="dropdown.open = false"
 			@toggle="onToggle">
 			<summary
 				class="vv-select__input"
 				aria-haspopup="listbox"
-				@keyup.space="
-					props.searchable ? $event.preventDefault() : null
-				">
+				@keyup.space="searchable ? $event.preventDefault() : null">
 				<!-- #region search input -->
-				<template v-if="props.searchable && dropdownOpen">
+				<template v-if="searchable && dropdownOpen">
 					<input
 						v-model="searchText"
 						ref="inputSearch"
-						:placeholder="props.searchPlaceholder" />
+						:placeholder="searchPlaceholder" />
 				</template>
 				<!-- #endregion search input -->
 				<!-- #region label of selected value/s -->
 				<template v-else>
-					{{ labelValue || props.placeholder }}
+					{{ labelValue || placeholder }}
 				</template>
 				<!-- #endregion label of selected value/s -->
 			</summary>
 			<ul class="vv-dropdown" role="listbox">
+				<li v-if="searchable && !currentOptions?.length">
+					<label>
+						{{ labelNoResult }}
+					</label>
+				</li>
 				<li v-for="(option, index) in currentOptions" :key="index">
 					<label :for="`select-${index}`">
 						<input
 							:id="`select-${index}`"
-							:type="props.multiple ? 'checkbox' : 'radio'"
+							:type="multiple ? 'checkbox' : 'radio'"
 							:value="getValue(option)"
 							:checked="isSelected(option)"
 							@input="onInput" />
@@ -46,7 +50,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
-import { onClickOutside, refDebounced } from '@vueuse/core'
+import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvDropdownProps, type Option } from './VvDropdown'
 import HintSlotFactory from '../common/HintSlot'
@@ -61,12 +65,15 @@ const HintSlot = HintSlotFactory(props, slots)
 // html ref
 const dropdown = ref()
 const inputSearch = ref()
+// autofocus input search
+useFocus(inputSearch, { initialValue: true })
 
 // data
 const searchText = ref('')
 const debouncedSearchText = refDebounced(searchText, props.debounceSearch)
 const dropdownOpen = ref(false)
 
+// watch
 // emit on change search text
 watch(debouncedSearchText, () =>
 	emit('change:search', debouncedSearchText.value)
@@ -162,7 +169,6 @@ onClickOutside(dropdown, () => {
 function onToggle(event: Event) {
 	const target = event.target as HTMLDetailsElement
 	dropdownOpen.value = target.open
-	nextTick(() => (target.open ? inputSearch.value.focus() : null))
 }
 
 /**
