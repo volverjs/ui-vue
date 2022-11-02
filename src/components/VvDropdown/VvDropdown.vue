@@ -19,16 +19,23 @@
 				</li>
 			</ul>
 		</details>
+		<HintSlot class="vv-select__hint" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, useSlots } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvDropdownProps, type Option } from './VvDropdown'
+import HintSlotFactory from '../common/HintSlot'
 
 const props = defineProps(VvDropdownProps)
+const slots = useSlots()
 const emit = defineEmits(['update:modelValue'])
+
+//Hint component
+const HintSlot = HintSlotFactory(props, slots)
 
 // html ref
 const dropdown = ref()
@@ -47,9 +54,16 @@ const hasClass = computed(() => [
 ])
 
 // Check if options are objects
-const isOptionsObjects = computed(() => typeof props.options?.[0] === 'object')
+const isOptionsObjects = computed(() =>
+	props.options?.every((option) => typeof option === 'object')
+)
 
+/**
+ * Compute the label to show to the user
+ * Check if is multiple mode, object mode or "string" mode
+ */
 const labelValue = computed(() => {
+	// #region multiple mode
 	if (
 		props.multiple &&
 		props.modelValue?.length &&
@@ -68,7 +82,9 @@ const labelValue = computed(() => {
 			return props.modelValue.join(props.separator)
 		}
 	}
+	// #endregion multiple mode
 
+	// #region single mode
 	const selectedOption = props.useObject
 		? props.modelValue
 		: props.options?.find((option) =>
@@ -80,42 +96,72 @@ const labelValue = computed(() => {
 	return typeof selectedOption === 'object'
 		? selectedOption?.[props.labelKey]
 		: selectedOption
+	// #endregion single mode
 })
 
+// close dropdown on click outside
+onClickOutside(dropdown, () => {
+	dropdown.value.open = false
+})
+
+/**
+ * Retrieve the option value based on prop "valueKey" or the option if it is a string
+ * @param {String | Option} option
+ */
 function getValue(option: string | Option) {
-	return typeof option === 'string' ? option : option[props.valueKey]
+	return typeof option === 'string' ? option : String(option[props.valueKey])
 }
 
+/**
+ * Retrieve the option label based on prop "labelKey" or the option if it is a string
+ * @param {String | Option} option
+ */
 function getLabel(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.labelKey]
 }
 
-function isSelected(option: Option | string) {
+/**
+ * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
+ * @param {String | Option} option
+ */
+function isSelected(option: string | Option) {
+	let optionValue: Option | string = typeof option === 'string' ? option : ''
+	if (!optionValue) {
+		optionValue = props.useObject ? option : getValue(option)
+	}
 	return props.multiple && Array.isArray(props.modelValue)
-		? ObjectUtilities.contains(option, props.modelValue)
-		: ObjectUtilities.equals(option, props.modelValue)
+		? ObjectUtilities.contains(optionValue, props.modelValue)
+		: ObjectUtilities.equals(optionValue, props.modelValue)
 }
 
+/**
+ * Function triggered on input of checkbox or radio (multple or single mode)
+ * @param event on input event (checkbox or radio input)
+ */
 function onInput(event: Event) {
+	// close dropdown in single mode
 	if (dropdown.value && !props.multiple) {
-		// close details dropdown on option select
 		dropdown.value.open = false
 	}
 	const target = event.target as HTMLInputElement
 
 	// Value initialized with string input value
-	// Then can be an Array of string or an Option or Array of Options
+	// Can be an Array of string or an Option or Array of Options
 	let value: string | string[] | Option | Option[] = target.value
+	// Find option object if useObject prop is true and options are objects
 	const valueObject =
 		props.useObject && isOptionsObjects.value
 			? props.options?.find(
 					(option) => (option as Option)[props.valueKey] == value
 			  )
 			: null
-	value = props.useObject && valueObject ? valueObject : value
+
+	// use valueObject if exist or the target value
+	value = valueObject || value
+
+	// Check multiple prop, override value with array and remove or add the value
 	if (props.multiple) {
 		if (Array.isArray(props.modelValue)) {
-			// remove or add value
 			value = ObjectUtilities.contains(value, props.modelValue)
 				? ObjectUtilities.removeFromList(value, props.modelValue)
 				: [...props.modelValue, value]
