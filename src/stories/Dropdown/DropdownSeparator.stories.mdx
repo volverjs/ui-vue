@@ -1,0 +1,68 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+
+<Meta title="Components/Dropdown/Props/separator" />
+
+# VvDropdown separator
+
+Let's define a story for our `separator` select.
+
+<Source
+	language="json"
+	/*html*/
+	code={`[
+	{
+		"label": "Option 1",
+		"value": 1
+	},
+	{
+		"label": "Option 2",
+		"value": 2
+	},
+	{
+		"label": "Option 3",
+		"value": 3
+	}
+]`}
+/>
+
+<Canvas>
+	<Story name="separator">
+		{() => {
+			return {
+				components: { VvDropdown },
+				data() {
+					return {
+						value: '',
+						options: [
+							{
+								label: 'Option 1',
+								value: 1
+							},
+							{
+								label: 'Option 2',
+								value: 2
+							},
+							{
+								label: 'Option 3',
+								value: 3
+							}
+						]
+					}
+				},
+				template:
+					/*html*/
+					`<div class="w-1/2">
+						<vv-dropdown v-model:modelValue="value" :options="options" label="Label 1" multiple separator=" - " />
+						value: {{ value }}
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="html"
+	/*html*/
+	code={`<vv-dropdown v-model:modelValue="value" :options="options" label="Label 1" multiple separator=" - " />`}
+/>

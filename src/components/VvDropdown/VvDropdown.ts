@@ -33,7 +33,7 @@ export const VvDropdownProps = {
 	 * the input search debounce time in ms
 	 */
 	debounceSearch: {
-		type: Number,
+		type: [Number, String],
 		default: 0
 	},
 	/**

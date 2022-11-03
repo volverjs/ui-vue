@@ -1,5 +1,5 @@
 <template>
-	<div :class="dropdownClasses">
+	<div :class="dropdownClasses" :id="id">
 		<label v-if="label" for="select">{{ label }}</label>
 		<details
 			ref="dropdown"
@@ -8,6 +8,9 @@
 			@click="disabled || readonly ? $event.preventDefault() : null"
 			@keyup.esc="dropdown.open = false"
 			@toggle="onToggle">
+			<slot name="icon-left">
+				<vv-icon v-if="iconLeft" :name="iconLeft" />
+			</slot>
 			<summary
 				class="vv-select__input"
 				aria-haspopup="listbox"
@@ -33,9 +36,9 @@
 					</label>
 				</li>
 				<li v-for="(option, index) in currentOptions" :key="index">
-					<label :for="`select-${index}`">
+					<label :for="`select-${index}-${id}`">
 						<input
-							:id="`select-${index}`"
+							:id="`select-${index}-${id}`"
 							:type="multiple ? 'checkbox' : 'radio'"
 							:value="getValue(option)"
 							:checked="isSelected(option)"
@@ -57,9 +60,11 @@
 <script setup lang="ts">
 import { computed, ref, toRefs, useSlots, watch } from 'vue'
 import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
+import { v4 as uuidv4 } from 'uuid'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvDropdownProps, type Option } from './VvDropdown'
 import HintSlotFactory from '../common/HintSlot'
+import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import { useBemModifiers } from '../../composables/useModifiers'
 
 const props = defineProps(VvDropdownProps)
@@ -76,8 +81,12 @@ const inputSearch = ref()
 useFocus(inputSearch, { initialValue: true })
 
 // data
+const id = uuidv4()
 const searchText = ref('')
-const debouncedSearchText = refDebounced(searchText, props.debounceSearch)
+const debouncedSearchText = refDebounced(
+	searchText,
+	Number(props.debounceSearch)
+)
 const dropdownOpen = ref(false)
 const {
 	modifiers,
