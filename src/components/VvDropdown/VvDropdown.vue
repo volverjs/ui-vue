@@ -255,6 +255,22 @@ function onInput(event: Event) {
 
 	// Check multiple prop, override value with array and remove or add the value
 	if (props.multiple) {
+		// check maxValues prop and block check new values
+		if (
+			typeof props.maxValues !== 'undefined' &&
+			props.maxValues >= 0 &&
+			props.modelValue?.length >= props.maxValues
+		) {
+			if (
+				(Array.isArray(props.modelValue) &&
+					!ObjectUtilities.contains(value, props.modelValue)) ||
+				props.maxValues == 0
+			) {
+				target.checked = false
+				// maxValues reached
+				return
+			}
+		}
 		if (Array.isArray(props.modelValue)) {
 			value = ObjectUtilities.contains(value, props.modelValue)
 				? ObjectUtilities.removeFromList(value, props.modelValue)

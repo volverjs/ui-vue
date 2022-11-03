@@ -68,6 +68,10 @@ export const VvDropdownProps = {
 	 */
 	multiple: Boolean,
 	/**
+	 * The max number of selected values
+	 */
+	maxValues: [Number, String],
+	/**
 	 * The dropdown label separator visible to the user
 	 */
 	separator: { type: String, default: ', ' },
