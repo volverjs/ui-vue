@@ -8,7 +8,11 @@
 			</slot>
 			<select
 				id="select"
-				:value="modelValue"
+				:value="
+					typeof modelValue === 'string'
+						? modelValue
+						: modelValue?.[valueKey]
+				"
 				:disabled="disabled || readonly"
 				@input="onInput">
 				<option v-if="placeholder" value="" disabled selected>
@@ -82,6 +86,17 @@ function getLabel(option: string | Option) {
 
 function onInput(event: Event) {
 	const target = event.target as HTMLSelectElement
-	emit('update:modelValue', target.value)
+
+	// Find option object if useObject prop is true
+	const valueObject = props.useObject
+		? props.options?.find(
+				(option) => (option as Option)[props.valueKey] == target.value
+		  )
+		: null
+
+	// use valueObject if exist or the target value
+	const value = valueObject || target.value
+
+	emit('update:modelValue', value)
 }
 </script>
