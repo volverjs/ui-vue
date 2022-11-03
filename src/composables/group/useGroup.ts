@@ -18,7 +18,6 @@ export function useProvideGroupState(
 	watch(
 		groupState.modelValue,
 		(newVal) => {
-			debugger
 			emit('update:modelValue', newVal)
 		},
 		{

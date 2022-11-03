@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref } from 'vue'
+import { toRefs } from 'vue'
 import { ButtonGroupState } from '../../composables/group/models'
 import { VvButtonGroupProps, VvButtonGroupEvents } from './VvButtonGroup'
 
@@ -31,7 +31,7 @@ const { bemCssClasses: btnGroupClass } = useBemModifiers('vv-button-group', {
 
 // #region group
 const groupState = new ButtonGroupState({
-	modelValue: ref(modelValue?.value),
+	modelValue,
 	disabled,
 	toggle
 })
