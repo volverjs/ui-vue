@@ -56,14 +56,6 @@ export const VvButtonProps = {
 		default: 'Loading...'
 	},
 	/**
-	 * The variant of the button
-	 * @values
-	 * @defaultvalue default
-	 */
-	variant: {
-		type: String
-	},
-	/**
 	 * The router-link/nuxt-link property, if it is defined the button is rendered as a ruouter-link or nuxt-link.
 	 * @see Documentation of [router-link](https://router.vuejs.org/api/#router-link) and [nuxt-link](https://nuxtjs.org/api/components-nuxt-link/)
 	 */
@@ -100,5 +92,11 @@ export const VvButtonProps = {
 	/**
 	 *
 	 */
-	fullBleed: Boolean
+	fullBleed: Boolean,
+	/**
+	 * The variant of the button
+	 * @values
+	 * @defaultvalue default
+	 */
+	modifiers: [Array, String]
 }

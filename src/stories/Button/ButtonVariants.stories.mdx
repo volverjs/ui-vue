@@ -2,11 +2,11 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { buttonTest, classTest } from './test.js'
 
-<Meta title="Components/Button/Props/variant" />
+<Meta title="Components/Button/Props/modifiers" />
 
-# VvButton variants
+# VvButton modifierss
 
-Stories of `VvButton` `variant`.
+Stories of `VvButton` `modifiers`.
 
 ## Default
 
@@ -46,7 +46,7 @@ Let's define a story for our `primary` button:
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Primary" variant="primary" />`
+					`<vv-button label="Primary" modifiers="primary" />`
 			}
 		}}
 	</Story>
@@ -71,7 +71,7 @@ Let's define a story for our `secondary` button:
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Secondary" variant="secondary" />`
+					`<vv-button label="Secondary" modifiers="secondary" />`
 			}
 		}}
 	</Story>
@@ -96,7 +96,7 @@ Let's define a story for our `danger` button:
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Danger" variant="danger" />`
+					`<vv-button label="Danger" modifiers="danger" />`
 			}
 		}}
 	</Story>
@@ -121,7 +121,7 @@ Let's define a story for our `ghost` button:
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Ghost" variant="ghost" />`
+					`<vv-button label="Ghost" modifiers="ghost" />`
 			}
 		}}
 	</Story>
@@ -146,7 +146,7 @@ Let's define a story for our `text` button:
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Text" variant="text" />`
+					`<vv-button label="Text" modifiers="text" />`
 			}
 		}}
 	</Story>
@@ -176,7 +176,7 @@ Let's define a story for our `static-light` button:
 					/*html*/
 					`
 					<div class="bg-black p-16">
-						<vv-button label="Static Light" variant="static-light" />
+						<vv-button label="Static Light" modifiers="static-light" />
 					</div>
 					`
 			}
@@ -203,7 +203,7 @@ Let's define a story for our `static-dark` button:
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Static Dark" variant="static-dark" />`
+					`<vv-button label="Static Dark" modifiers="static-dark" />`
 			}
 		}}
 	</Story>
