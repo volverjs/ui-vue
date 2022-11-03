@@ -1,10 +1,26 @@
 import type { PropType } from 'vue'
+import {
+	ValidProps,
+	ErrorProps,
+	HintProps,
+	LoadingProps,
+	DisabledProps,
+	ReadonlyProps,
+	ModifiersProps
+} from '../../props'
 
 export interface Option {
 	[key: string]: any
 }
 
 export const VvDropdownProps = {
+	...ValidProps,
+	...ErrorProps,
+	...HintProps,
+	...LoadingProps,
+	...DisabledProps,
+	...ReadonlyProps,
+	...ModifiersProps,
 	/**
 	 * modelValue can be an Object, a String or an Array of Object/String
 	 */
@@ -70,17 +86,5 @@ export const VvDropdownProps = {
 	/**
 	 * Icon name of icon in right position
 	 */
-	iconRight: String,
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-dropdown--'
-	 */
-	modifiers: [String, Array],
-	loading: Boolean,
-	disabled: Boolean,
-	readonly: Boolean,
-	hintLabel: { type: String, default: '' },
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errorLabel: [String, Array]
+	iconRight: String
 }
