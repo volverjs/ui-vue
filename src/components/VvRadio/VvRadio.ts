@@ -1,4 +1,4 @@
-import { ValidProps, ErrorProps } from '../common/Props'
+import { ValidProps, ErrorProps } from '../../props'
 
 export const VvRadioProps = {
 	...ValidProps,

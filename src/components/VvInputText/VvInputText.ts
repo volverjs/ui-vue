@@ -1,9 +1,4 @@
-import {
-	ValidProps,
-	ErrorProps,
-	HintProps,
-	LoadingProps
-} from '../common/Props'
+import { ValidProps, ErrorProps, HintProps, LoadingProps } from '../../props'
 import { TYPES, ICON_POSITIONS } from './constants'
 
 export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur']
