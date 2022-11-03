@@ -7,6 +7,27 @@ import VvSelect from '../../components/VvSelect/VvSelect.vue'
 
 Let's define a story for our `valueKey` and `labelKey` select.
 
+Options object array with custom `valueKey` ("val") and custom `labelKey` ("title"):
+
+<Source
+	language="json"
+	/*html*/
+	code={`[
+	{
+		"title": "Option 1",
+		"val": 1
+	},
+	{
+		"title": "Option 2",
+		"val": 2
+	},
+	{
+		"title": "Option 3",
+		"val": 3
+	}
+]`}
+/>
+
 <Canvas>
 	<Story name="valueKey-labelKey">
 		{() => {
@@ -36,10 +57,6 @@ Let's define a story for our `valueKey` and `labelKey` select.
 					`<div class="w-1/2">
 						<vv-select v-model:modelValue="value" :options="options" value-key="val" label-key="title" />
 						value: {{ value }}
-						<div class="mt-lg">Options: </div>
-						<div class="mt-sm">
-							[<div v-for="option in options" class="mt-sm ml-lg">{{ option }}</div>]
-						</div>
 					</div>`
 			}
 		}}
@@ -48,5 +65,6 @@ Let's define a story for our `valueKey` and `labelKey` select.
 
 <Source
 	language="jsx"
+	/*html*/
 	code={`<vv-select v-model:modelValue="value" :options="options" value-key="val" label-key="title" />`}
 />

@@ -9,7 +9,8 @@
 			<input
 				ref="input"
 				v-bind="innerInputProps"
-				v-model="inputTextData" />
+				v-model="inputTextData"
+				@input="emit('input', $event)" />
 			<!-- @slot icon-right to replace icon right -->
 			<slot name="icon-right" v-bind="iconSlotProps">
 				<!-- default password icon -->
@@ -58,6 +59,7 @@ import {
 	ref,
 	toRefs,
 	onMounted,
+	watch,
 	type HTMLAttributes,
 	type InputHTMLAttributes
 } from 'vue'
@@ -72,11 +74,12 @@ import HintSlotFactory from '../common/HintSlot'
 import INPUT from './constants'
 
 //Composables
-import { useVModel } from '@vueuse/core'
+import { refDebounced } from '@vueuse/core'
 import { useInputPassword } from './useInputPassword'
 import { useInputNumber } from './useInputNumber'
 import { useComponentIcons } from '../../composables/icons/useComponentIcons'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
 const props = defineProps(VvInputTextProps)
@@ -88,11 +91,27 @@ const attrs = useAttrs()
 const input = ref()
 
 //Data
-const inputTextData = useVModel(props, 'modelValue', emit)
-const { disabled, readonly, type, icon, iconPosition } = toRefs(props)
+const inputTextData = ref(props.modelValue)
+const {
+	disabled,
+	readonly,
+	type,
+	icon,
+	iconPosition,
+	valid,
+	error,
+	loading,
+	floating,
+	label,
+	modelValue
+} = toRefs(props)
 
 //Component computed
 const isActionsDisabled = computed(() => disabled.value || readonly.value)
+
+//Debounce
+const debouncedInputTextData = refDebounced(inputTextData, props.debounce || 0)
+watch(debouncedInputTextData, (v) => emit('update:modelValue', v))
 
 //Gestione ICONE
 const iconProps = { icon, iconPosition }
@@ -150,6 +169,25 @@ const { isNumber, stepUp, stepDown } = useInputNumber(
 const { focused } = useComponentFocus(input, emit)
 
 //Styles & Bindings
+const { bemCssClasses: bemInputClass } = useBemModifiers('vv-input-text', {
+	readonly,
+	valid,
+	invalid: error,
+	loading,
+	iconLeft: hasIconLeft,
+	iconRight: computed(() => ObjectUtilities.isNotEmpty(inputRightIcon.value)),
+	floating: computed(
+		() => floating.value && ObjectUtilities.isNotEmpty(label?.value)
+	),
+	dirty: computed(() => ObjectUtilities.isNotEmpty(modelValue))
+})
+const vvInputInputClass = computed(() => {
+	const { class: cssClass } = attrs
+	return {
+		class: cssClass,
+		...bemInputClass.value
+	}
+})
 const vvInputTextProps = computed(() => {
 	const { style } = attrs
 	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
@@ -159,24 +197,6 @@ const vvInputTextProps = computed(() => {
 		style,
 		...dataAttrs
 	} as HTMLAttributes
-})
-const vvInputInputClass = computed(() => {
-	const { class: cssClass } = attrs
-	return {
-		'vv-input-text': true,
-		'vv-input-text--readonly': props.readonly,
-		'vv-input-text--valid': props.valid,
-		'vv-input-text--invalid': props.error,
-		'vv-input-text--loading': props.loading,
-		'vv-input-text--icon-left': hasIconLeft.value,
-		'vv-input-text--icon-right': ObjectUtilities.isNotEmpty(
-			inputRightIcon.value
-		),
-		'vv-input-text--floating':
-			props.floating && ObjectUtilities.isNotEmpty(props.label),
-		'vv-input-text--dirty': ObjectUtilities.isNotEmpty(props.modelValue),
-		class: cssClass
-	}
 })
 const innerInputProps = computed(() => {
 	const {

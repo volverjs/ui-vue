@@ -1,9 +1,4 @@
-import {
-	ValidProps,
-	ErrorProps,
-	HintProps,
-	OptionsProps
-} from '../common/Props'
+import { ValidProps, ErrorProps, HintProps, OptionsProps } from '../../props'
 
 export const VvCheckGroupProps = {
 	...ValidProps,
