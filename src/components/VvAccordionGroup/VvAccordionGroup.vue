@@ -23,6 +23,7 @@ import { AccordionGroupState } from '../../composables/group/models'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 
 //Composables
+import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useBemModifiers } from '../../composables/useModifiers'
 
@@ -36,19 +37,13 @@ const props = defineProps(VvAccordionGroupProps)
 const emit = defineEmits(VvAccordionGroupEvents)
 
 //Data
-const {
-	disabled,
-	bordered,
-	iconRight,
-	accordion,
-	modelValue,
-	modifiers,
-	items
-} = toRefs(props)
+const modelValue = useVModel(props, 'modelValue', emit)
+const { disabled, bordered, iconRight, accordion, modifiers, items } =
+	toRefs(props)
 
 // #region group
 const accordionGroupState = new AccordionGroupState({
-	modelValue: ref(modelValue?.value || []),
+	modelValue,
 	disabled,
 	bordered,
 	iconRight,
