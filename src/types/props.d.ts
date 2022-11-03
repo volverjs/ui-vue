@@ -5,7 +5,7 @@ export interface IValid {
 
 export interface IError {
 	error: boolean
-	errors: string | array<string>
+	errorLabel: string | array<string>
 }
 
 export interface ILoading {

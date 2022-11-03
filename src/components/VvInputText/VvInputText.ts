@@ -26,7 +26,7 @@ export const VvInputTextProps = {
 	valid: Boolean,
 	validLabel: [String, Array],
 	error: Boolean,
-	errors: [String, Array],
+	errorLabel: [String, Array],
 	loading: Boolean,
 	loadingLabel: String,
 	/**

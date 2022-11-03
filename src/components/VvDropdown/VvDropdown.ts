@@ -37,5 +37,5 @@ export const VvDropdownProps = {
 	valid: Boolean,
 	validLabel: [String, Array],
 	error: Boolean,
-	errors: [String, Array]
+	errorLabel: [String, Array]
 }

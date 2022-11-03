@@ -1,5 +1,5 @@
 import { VV_ACCORDION_GROUP, VV_BUTTON_GROUP } from '../../constants'
-import { ref, toRefs, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type {
 	IButtonGroupState,
 	IGroupState,
@@ -22,7 +22,7 @@ export class GroupState implements IGroupState {
 	constructor(key: symbol, state: IGroupOptions) {
 		this.key = key
 		//NB - creo un ref per il modelValue, altrimenti se usassi quello ricavato dalle props non sarebbe writeble.
-		this.modelValue = ref(state?.modelValue?.value) || ref(null)
+		this.modelValue = state.modelValue || ref(null)
 		this.disabled = state.disabled || ref(false)
 	}
 }
@@ -60,6 +60,6 @@ export class InputGroupState extends GroupState implements IInputGroupState {
 
 	constructor(key: symbol, state: IInputGroupOptions) {
 		super(key, state)
-		this.readonly = ref(state.readonly)
+		this.readonly = state.readonly
 	}
 }

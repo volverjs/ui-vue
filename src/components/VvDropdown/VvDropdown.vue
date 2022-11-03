@@ -15,8 +15,8 @@
 				<!-- #region search input -->
 				<template v-if="searchable && dropdownOpen">
 					<input
-						v-model="searchText"
 						ref="inputSearch"
+						v-model="searchText"
 						:placeholder="searchPlaceholder" />
 				</template>
 				<!-- #endregion search input -->
@@ -98,7 +98,7 @@ const { bemCssClasses: dropdownClasses } = useBemModifiers('vv-select', {
 	iconRight,
 	valid: computed(() => props.valid || props.validLabel),
 	invalid: computed(
-		() => props.error || ObjectUtilities.isNotEmpty(props.errors)
+		() => props.error || ObjectUtilities.isNotEmpty(props.errorLabel)
 	),
 	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
 })

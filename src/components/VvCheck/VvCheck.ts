@@ -1,4 +1,8 @@
+import { ValidProps, ErrorProps } from '../common/Props'
+
 export const VvCheckProps = {
+	...ValidProps,
+	...ErrorProps,
 	/**
 	 * Valore della check
 	 */
@@ -26,13 +30,6 @@ export const VvCheckProps = {
 	 * True - visualizza il VvCheck come un pulsante Switch/Toggle
 	 */
 	switch: Boolean,
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	/**
-	 * Messaggi di errore.
-	 */
-	errors: [String, Array],
 	label: String,
 	disabled: Boolean,
 	readonly: Boolean

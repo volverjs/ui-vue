@@ -61,7 +61,7 @@ const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
 	iconRight,
 	valid: computed(() => props.valid || props.validLabel),
 	invalid: computed(
-		() => props.error || ObjectUtilities.isNotEmpty(props.errors)
+		() => props.error || ObjectUtilities.isNotEmpty(props.errorLabel)
 	),
 	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
 })
