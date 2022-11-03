@@ -43,7 +43,9 @@ export function useGroupOrLocalState(
 
 		// watch of child modelValue and set of parent modelValue
 		watch(modelValue, (value) => {
-			unref(group).modelValue.value = value
+			if (!ObjectUtilities.equals(value, unref(group).modelValue.value)) {
+				unref(group).modelValue.value = value
+			}
 		})
 
 		// watch of parent modelValue and set of child modelValue

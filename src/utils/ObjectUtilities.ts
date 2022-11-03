@@ -207,5 +207,69 @@ export default {
 	 */
 	isString(value: any) {
 		return typeof value === 'string' || value instanceof String
+	},
+
+	/**
+	 * Convert props definition to object with "prop" as key and default as value
+	 * @param {ComponentObjectPropsOptions} props vue component props
+	 * @returns {Object}
+	 */
+	propsToObject(props: any) {
+		return Object.keys(props).reduce((initValue: any, value: any) => {
+			if (this.isFunction(props[value])) {
+				// case prop1: String
+				initValue[value] = props[value]()
+			} else if (Array.isArray(props[value])) {
+				// case prop1: [ String, Array ]
+				initValue[value] = props[value][0]()
+			} else if (props[value]?.type) {
+				// case prop1: { type: ... }
+				if (Array.isArray(props[value].type)) {
+					// case prop1: { type: [ String, Array ] }
+					initValue[value] =
+						props[value]?.default || props[value]?.type[0]()
+				} else {
+					// case prop1: { type: String }
+					initValue[value] =
+						props[value]?.default || props[value]?.type()
+				}
+			}
+			return initValue
+		}, {})
+	},
+
+	/**
+	 * Filter array objects by filter array
+	 * @param {object[]} list the listo to filter
+	 * @param {object[] | string[]} filter the filter list, array of string or array of object
+	 * @param {string} key
+	 * @return {object[]}
+	 */
+	filterArray<T = { [key: string]: any }>(
+		list: T[],
+		filter: T[] | string[],
+		key: string
+	): T[] {
+		return list.filter((el) => {
+			return filter.some((f) => {
+				return typeof f === 'string'
+					? el[key as keyof typeof el] == f
+					: this.equals(
+							el[key as keyof typeof el],
+							f[key as keyof typeof f]
+					  )
+			})
+		})
+	},
+
+	kebabCase(value: string) {
+		if (value) {
+			return value
+				.match(
+					/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g
+				)
+				?.join('-')
+				?.toLowerCase()
+		}
 	}
 }

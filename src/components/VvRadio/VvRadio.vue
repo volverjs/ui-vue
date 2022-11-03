@@ -12,12 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import type { InputHTMLAttributes } from 'vue'
-import type { IInputGroupOptions } from '../../composables/group/types'
+import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 
-import { computed, useAttrs, ref } from 'vue'
+import { computed, useAttrs, ref, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { InputGroupState } from '../../composables/group/models'
+import { VvRadioProps, VvRadioEvents } from './VvRadio'
 
 //Costanti
 import { VV_RADIO_GROUP } from '../../constants'
@@ -25,30 +25,21 @@ import { VV_RADIO_GROUP } from '../../constants'
 //Composables
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps({
-	/**
-	 * Valore del radio
-	 */
-	value: null,
-	modelValue: { type: [Object, Number, Boolean, String] },
-	label: { type: String, default: '' },
-	disabled: Boolean,
-	readonly: Boolean,
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errors: [String, Array]
-})
-const emit = defineEmits([
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-])
+const props = defineProps(VvRadioProps)
+const emit = defineEmits(VvRadioEvents)
 const attrs = useAttrs()
+
+//Data
+const {
+	disabled,
+	readonly,
+	modelValue: propsModelValue,
+	valid,
+	error
+} = toRefs(props)
 
 //Template References
 const input = ref()
@@ -59,15 +50,11 @@ const isChecked = computed(() => {
 })
 
 // #region group
-// Define reactive props
-const inputGroupOptions: IInputGroupOptions = {
-	disabled: props.disabled,
-	modelValue: props.modelValue,
-	readonly: props.readonly
-}
-// Create groupState instance
-const groupState = new InputGroupState(VV_RADIO_GROUP, inputGroupOptions)
-// Use group composable to inject the provided group
+const groupState = new InputGroupState(VV_RADIO_GROUP, {
+	modelValue: propsModelValue,
+	disabled,
+	readonly
+})
 const { modelValue, isDisabled, isReadonly, checkIsSelected } =
 	useGroupOrLocalState(VV_RADIO_GROUP, groupState)
 // #endregion group
@@ -77,13 +64,29 @@ const { focused } = useComponentFocus(input, emit)
 // #endregion FOCUS
 
 //Styles & Bindings
+const { bemCssClasses: bemRadioClass } = useBemModifiers('vv-input-radio', {
+	valid,
+	invalid: error
+})
+const { bemCssClasses: bemInputRadioClass } = useBemModifiers(
+	'vv-input-radio__input',
+	{
+		checked: isChecked,
+		disabled: isDisabled,
+		readonly: isReadonly
+	}
+)
 const radioClass = computed(() => {
 	const { class: cssClass } = attrs
 	return {
-		'vv-input-radio': true,
-		'vv-input-radio--valid': props.valid,
-		'vv-input-radio--invalid': props.error,
-		class: cssClass
+		class: cssClass,
+		...bemRadioClass.value
+	}
+})
+const radioInputClass = computed(() => {
+	return {
+		'focus-visible': focused.value,
+		...bemInputRadioClass.value
 	}
 })
 const radioAttrs = computed(() => {
@@ -95,15 +98,7 @@ const radioAttrs = computed(() => {
 		for: (id || name) as string,
 		style,
 		...dataAttrs
-	}
-})
-const radioInputClass = computed(() => {
-	return {
-		'focus-visible': focused.value,
-		'vv-input-radio__input--checked': isChecked.value,
-		'vv-input-radio__input--disabled': isDisabled.value,
-		'vv-input-radio__input--readonly': isReadonly.value
-	}
+	} as LabelHTMLAttributes
 })
 const radioInputAttrs = computed(() => {
 	const { id = '', name = '' } = attrs as InputHTMLAttributes
@@ -116,7 +111,7 @@ const radioInputAttrs = computed(() => {
 		readonly: isReadonly.value,
 		checked: isChecked.value,
 		...radioInputAriaAttrs.value
-	}
+	} as InputHTMLAttributes
 })
 const radioInputAriaAttrs = computed(() => {
 	const { name } = attrs

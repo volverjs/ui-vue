@@ -1,6 +1,6 @@
 <template>
 	<details
-		:class="hasClass"
+		:class="accordionClass"
 		:open="isOpen"
 		@toggle="onToggle"
 		@click="onClick">
@@ -21,64 +21,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, type ComputedRef } from 'vue'
+import { computed, useAttrs, toRefs, ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { useModifiers } from '../../composables/useModifiers'
 import { AccordionGroupState } from '../../composables/group/models'
-import type { IAccordionGroupOptions } from '../../composables/group/types'
-import { useAccordionGroup } from '../../composables/group/useAccordionGroup'
+import { VvAccordionProps, VvAccordionEvents } from './VvAccordion'
 
-export interface VvAccordionProps {
-	/**
-	 * Accordion header title
-	 */
-	title?: string
-	/**
-	 * Accordion content description
-	 */
-	content?: string
-	/**
-	 * (Optional) Defines if item is open. Event "update:open" is emitted on accordion header click
-	 */
-	open?: boolean
-	/**
-	 * Change icon position to right side
-	 */
-	iconRight?: boolean
-	/**
-	 * Add border to accordion item
-	 */
-	bordered?: boolean
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
-	 */
-	modifiers?: string | string[]
-	disabled?: boolean
-}
+//Composables
+import { useAccordionGroup } from '../../composables/group/useAccordionGroup'
+import { useBemModifiers } from '../../composables/useModifiers'
 
 // Define component props, attributes and events emitted
-const props = defineProps<VvAccordionProps>()
+const props = defineProps(VvAccordionProps)
 const attrs = useAttrs()
-const emit = defineEmits(['update:open'])
+const emit = defineEmits(VvAccordionEvents)
 
-// Get computed string with all css classes (modifiers) with 'vv-accordion' prefix
-const hasModifiers: ComputedRef<string> = useModifiers(
-	'vv-accordion',
-	props.modifiers
-)
+//Data
+const { modifiers, bordered, disabled = ref(false), iconRight } = toRefs(props)
 
 // #region group
-const accordionName = attrs?.name || uuidv4()
-// Define group options
-const accordionGroupOptions: IAccordionGroupOptions = {
-	disabled: props.disabled ?? false,
+const accordionName = ref(attrs?.name || uuidv4())
+const accordionGroupState = new AccordionGroupState({
 	modelValue: accordionName,
-	bordered: props.bordered,
-	iconRight: props.iconRight
-}
-// Create groupState instance
-const accordionGroupState = new AccordionGroupState(accordionGroupOptions)
-// Use group composable to inject the provided group (from parent accordion group)
+	disabled,
+	bordered,
+	iconRight
+})
 const {
 	isDisabled,
 	hasIconRight,
@@ -93,15 +60,13 @@ const isOpen = computed(() => {
 	return isInGroup.value ? isSelectedInGroup.value : props.open
 })
 
-const hasClass = computed(() => [
-	'vv-accordion',
-	hasModifiers.value,
-	{
-		'vv-accordion--disabled': isDisabled.value,
-		'vv-accordion--marker-right': hasIconRight.value,
-		'vv-accordion--bordered': isBordered.value
-	}
-])
+//Styles & bindings
+const { bemCssClasses: accordionClass } = useBemModifiers('vv-accordion', {
+	modifiers,
+	disabled: isDisabled,
+	markerRight: hasIconRight,
+	bordered: isBordered
+})
 
 // methods
 // Toggle is used for accordion single element

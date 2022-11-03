@@ -15,13 +15,13 @@ export function useProvideGroupState(
 		computed(() => groupState)
 	)
 
-	watch(
-		groupState.modelValue,
-		(newVal) => {
-			emit('update:modelValue', newVal)
-		},
-		{
-			immediate: true
-		}
-	)
+	// watch(
+	// 	groupState.modelValue,
+	// 	(newVal) => {
+	// 		emit('update:modelValue', newVal)
+	// 	},
+	// 	{
+	// 		immediate: true
+	// 	}
+	// )
 }

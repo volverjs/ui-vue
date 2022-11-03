@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvSelect from '../../components/VvSelect/VvSelect.vue'
+
+<Meta title="Components/Select/Props/disabled" />
+
+# VvSelect disabled
+
+Let's define a story for our `disabled` select.
+
+<Canvas>
+	<Story name="disabled">
+		{() => {
+			return {
+				components: { VvSelect },
+				data() {
+					return {
+						value: '',
+						options: ['Option 1', 'Option 2', 'Option 3']
+					}
+				},
+				template:
+					/*html*/
+					`<div class="w-1/2">
+						<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />
+						value: {{ value }}
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>

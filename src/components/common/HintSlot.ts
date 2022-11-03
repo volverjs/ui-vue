@@ -28,7 +28,7 @@ interface HintSlotProps {
 	valid: BooleanConstructor
 	validLabel: (StringConstructor | ArrayConstructor)[]
 	error: BooleanConstructor
-	errors: (StringConstructor | ArrayConstructor)[]
+	errorLabel: (StringConstructor | ArrayConstructor)[]
 }
 
 interface HintSlotPropsWithLoading extends HintSlotProps {
@@ -49,6 +49,7 @@ export function HintSlotFactory(
 	pSlots: Slots
 ): Component {
 	return {
+		name: 'HintSlot',
 		setup() {
 			const props = toRefs(pProps)
 
@@ -61,8 +62,14 @@ export function HintSlotFactory(
 			} = pSlots
 
 			//Props hint + errors
-			const { hintLabel, modelValue, valid, validLabel, error, errors } =
-				props
+			const {
+				hintLabel,
+				modelValue,
+				valid,
+				validLabel,
+				error,
+				errorLabel
+			} = props
 			const loading = ObjectUtilities.resolveFieldData(props, 'loading')
 			const loadingLabel = ObjectUtilities.resolveFieldData(
 				props,
@@ -76,13 +83,16 @@ export function HintSlotFactory(
 				if (error.value && errorSlot) return true
 
 				if (
-					errors?.value &&
-					Array.isArray(errors.value) &&
-					errors.value.length > 0
+					errorLabel?.value &&
+					Array.isArray(errorLabel.value) &&
+					errorLabel.value.length > 0
 				)
 					return true
 
-				if (errors?.value && ObjectUtilities.isNotEmpty(errors.value))
+				if (
+					errorLabel?.value &&
+					ObjectUtilities.isNotEmpty(errorLabel.value)
+				)
 					return true
 
 				return false
@@ -101,9 +111,9 @@ export function HintSlotFactory(
 			})
 
 			const errorMessage = computed(() => {
-				if (Array.isArray(errors?.value))
-					return joinErrors(errors?.value || '')
-				else return errors?.value
+				if (Array.isArray(errorLabel?.value))
+					return joinErrors(errorLabel?.value || '')
+				else return errorLabel?.value
 			})
 
 			const hintContent = computed(() => {
