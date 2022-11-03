@@ -4,6 +4,7 @@ import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
 import { Template } from './RadioGroup.stories.mdx'
+import { labelTest } from './RadioPropertyTest.js'
 
 <Meta title="Components/RadioGroup/Label" component={VvRadioGroup} />
 
@@ -12,6 +13,7 @@ import { Template } from './RadioGroup.stories.mdx'
 <Canvas>
 	<Story
 		name="Label"
+		play={labelTest}
 		args={{
 			name: 'story-label',
 			options: [
@@ -19,7 +21,8 @@ import { Template } from './RadioGroup.stories.mdx'
 				{ value: 2, label: 'Pera' },
 				{ value: 3, label: 'Banana' }
 			],
-			label: 'Custom label'
+			label: 'Custom label',
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>

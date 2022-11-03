@@ -1,0 +1,36 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvDialog from '../../components/VvDialog/VvDialog.vue'
+
+import { Template } from './Dialog.stories.mdx'
+
+<Meta title="Components/Dialog/Size" component={VvDialog} />
+
+# Normal
+
+<Canvas>
+	<Story name="Normal" args={{ id: 'dialog-normal', size: '' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Small
+
+<Canvas>
+	<Story
+		name="Small"
+		args={{ id: 'dialog-small', size: 'small', transition: 'scale' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Fullscreen
+
+<Canvas>
+	<Story
+		name="Fullscreen"
+		args={{ id: 'dialog-fullscreen', size: 'fullscreen' }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

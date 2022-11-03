@@ -59,22 +59,22 @@ export type GroupStateTypes =
 
 // #region group options
 export interface IGroupOptions {
-	modelValue: any
-	disabled: boolean
+	modelValue: Ref<any> | undefined
+	disabled: Ref<boolean>
 }
 
 export interface IButtonGroupOptions extends IGroupOptions {
-	toggle?: boolean
+	toggle?: Ref<boolean>
 }
 
 export interface IInputGroupOptions extends IGroupOptions {
-	readonly: boolean
+	readonly: Ref<boolean>
 }
 
 export interface IAccordionGroupOptions extends IGroupOptions {
-	iconRight?: boolean
-	bordered?: boolean
-	accordion?: boolean
+	iconRight?: Ref<boolean>
+	bordered?: Ref<boolean>
+	accordion?: Ref<boolean>
 }
 // #endregion group input options
 

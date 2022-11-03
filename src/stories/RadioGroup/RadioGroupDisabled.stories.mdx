@@ -3,6 +3,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
+import { disabledTest } from './RadioPropertyTest.js'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/Disabled" component={VvRadioGroup} />
@@ -12,14 +13,16 @@ import { Template } from './RadioGroup.stories.mdx'
 <Canvas>
 	<Story
 		name="Disabled"
+		play={disabledTest}
 		args={{
-			name: 'story-disabled',
+			name: 'disabled',
 			options: [
 				{ value: 1, label: 'Mela' },
 				{ value: 2, label: 'Pera' },
 				{ value: 3, label: 'Banana' }
 			],
-			disabled: true
+			disabled: true,
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>

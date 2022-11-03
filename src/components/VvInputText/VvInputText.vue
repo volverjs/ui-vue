@@ -57,12 +57,13 @@ import {
 	useAttrs,
 	useSlots,
 	ref,
-	shallowRef,
 	toRefs,
-	watch,
-	onMounted
+	onMounted,
+	type HTMLAttributes,
+	type InputHTMLAttributes
 } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
+import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
 
 //Componenti
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
@@ -79,63 +80,8 @@ import { useComponentIcons } from '../../composables/icons/useComponentIcons'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps({
-	modelValue: null,
-	type: {
-		type: String,
-		default: INPUT.TYPES.TEXT,
-		validator: (value: string) => Object.values(INPUT.TYPES).includes(value)
-	},
-	id: String,
-	name: { type: String, required: true },
-	autocomplete: { type: String, default: 'off' },
-	autofocus: Boolean,
-	minlength: Number,
-	maxlength: Number,
-	min: [Number, Date],
-	max: [Number, Date],
-	step: Number,
-	label: String,
-	disabled: Boolean,
-	readonly: Boolean,
-	placeholder: String,
-	hintLabel: { type: String, default: '' },
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errors: [String, Array],
-	loading: Boolean,
-	loadingLabel: String,
-	/**
-	 * Nome dell'icona
-	 * @see DsIcon
-	 */
-	icon: { type: String, default: '' },
-	/**
-	 * Posizione dell'icona
-	 */
-	iconPosition: {
-		type: String,
-		validation: (value: string) =>
-			Object.values(INPUT.ICON_POSITIONS).includes(value),
-		default: INPUT.ICON_POSITIONS.RIGHT
-	},
-	/**
-	 * True = label flottante
-	 */
-	floating: Boolean,
-	/**
-	 * Debaounce time in ms
-	 */
-	debounce: {
-		type: Number,
-		default: 0,
-		validator(value) {
-			return Number.isInteger(value)
-		}
-	}
-})
-const emit = defineEmits(INPUT.EVENTS)
+const props = defineProps(VvInputTextProps)
+const emit = defineEmits(VvInputTextEvents)
 const slots = useSlots()
 const attrs = useAttrs()
 
@@ -217,7 +163,7 @@ const vvInputTextProps = computed(() => {
 	return {
 		style,
 		...dataAttrs
-	}
+	} as HTMLAttributes
 })
 const vvInputInputClass = computed(() => {
 	const { class: cssClass } = attrs
@@ -276,7 +222,7 @@ const innerInputProps = computed(() => {
 		max,
 		step,
 		...inputAriaAttrs.value
-	}
+	} as InputHTMLAttributes
 })
 const inputAriaAttrs = computed(() => {
 	const { name } = attrs
@@ -302,7 +248,7 @@ const iconSlotProps = computed(() => {
 })
 
 //Hint
-const HintSlot = shallowRef(HintSlotFactory(props, slots))
+const HintSlot = HintSlotFactory(props, slots)
 
 onMounted(() => {
 	if (props.autofocus) focused.value = true

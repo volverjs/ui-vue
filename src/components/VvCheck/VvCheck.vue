@@ -13,12 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import type { InputHTMLAttributes } from 'vue'
-import type { IInputGroupOptions } from '../../composables/group/types'
+import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 
-import { computed, useAttrs, ref } from 'vue'
+import { computed, useAttrs, ref, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { InputGroupState } from '../../composables/group/models'
+import { VvCheckProps, VvCheckEvents } from './VvCheck'
 
 //Costanti
 import { VV_CHECK_GROUP } from '../../constants'
@@ -26,58 +26,38 @@ import { VV_CHECK_GROUP } from '../../constants'
 //Composables
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps({
-	/**
-	 * Valore della check
-	 */
-	value: null,
-	/**
-	 * VModel
-	 * @description
-	 * Se Binary = true, modelValue puo essere Object,Boolean,Number
-	 * Altrimenti modelValue sarà un Array
-	 */
-	modelValue: null,
-	/**
-	 * True - ritorna un valore del checkbox binario (es True/False) invece di un valori multipli
-	 */
-	binary: Boolean,
-	/**
-	 * Se binary=true, valore associato allo stato checked (ritornato al posto di TRUE)
-	 */
-	trueValue: { type: null, default: true },
-	/**
-	 * Se binary=true, valore associato allo stato unchecked (ritornato al posto di FALSE)
-	 */
-	falseValue: { type: null, default: false },
-	/**
-	 * True - visualizza il VvCheck come un pulsante Switch/Toggle
-	 */
-	switch: Boolean,
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	/**
-	 * Messaggi di errore.
-	 */
-	errors: [String, Array],
-	label: String,
-	disabled: Boolean,
-	readonly: Boolean
-})
-const emit = defineEmits([
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-])
+const props = defineProps(VvCheckProps)
+const emit = defineEmits(VvCheckEvents)
 const attrs = useAttrs()
+
+//Data
+const {
+	disabled,
+	readonly,
+	valid,
+	error,
+	switch: propsSwitch,
+	modelValue: propsModelValue
+} = toRefs(props)
 
 //Template References
 const input = ref()
+
+// #region group
+const groupState = new InputGroupState(VV_CHECK_GROUP, {
+	modelValue: propsModelValue,
+	disabled,
+	readonly
+})
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
+	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
+// #endregion group
+
+// FOCUS
+const { focused } = useComponentFocus(input, emit)
 
 //Component computed
 const isChecked = computed(() => {
@@ -86,32 +66,31 @@ const isChecked = computed(() => {
 		: checkIsSelected(props.value)
 })
 
-// #region group
-// Define input options
-const inputGroupOptions: IInputGroupOptions = {
-	disabled: props.disabled,
-	modelValue: props.modelValue,
-	readonly: props.readonly
-}
-// Create groupState instance
-const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
-// Use group composable to inject the provided group
-const { modelValue, isDisabled, isReadonly, checkIsSelected } =
-	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
-// #endregion group
-
-// FOCUS
-const { focused } = useComponentFocus(input, emit)
-
 // Styles & Bindings
+const { bemCssClasses: bemCheckClass } = useBemModifiers('vv-input-checkbox', {
+	switch: propsSwitch,
+	valid,
+	invalid: error
+})
+const { bemCssClasses: bemCheckInputClass } = useBemModifiers(
+	'vv-input-check__input',
+	{
+		checked: isChecked,
+		disabled: isDisabled,
+		readonly: isReadonly
+	}
+)
 const checkClass = computed(() => {
-	const { class: cssClass } = attrs
+	const cssClass = attrs.class as string
 	return {
-		'vv-input-checkbox': true,
-		'vv-input-checkbox--switch': props.switch,
-		'vv-input-checkbox--valid': props.valid,
-		'vv-input-checkbox--invalid': props.error,
-		class: cssClass
+		[cssClass]: true,
+		...bemCheckClass.value
+	}
+})
+const checkInputClass = computed(() => {
+	return {
+		...bemCheckInputClass.value,
+		'focus-visible': focused.value
 	}
 })
 const checkAttrs = computed(() => {
@@ -123,18 +102,10 @@ const checkAttrs = computed(() => {
 		for: (id || name) as string,
 		style,
 		...dataAttrs
-	}
-})
-const checkInputClass = computed(() => {
-	return {
-		'focus-visible': focused.value,
-		'vv-input-check__input--checked': isChecked.value,
-		'vv-input-check__input--disabled': isDisabled.value,
-		'vv-input-check__input--readonly': isReadonly.value
-	}
+	} as LabelHTMLAttributes
 })
 const checkInputAttrs = computed(() => {
-	const { id = '', name = '' } = attrs as InputHTMLAttributes
+	const { id = '', name = '' } = attrs
 	return {
 		type: 'checkbox',
 		id: id || name,
@@ -144,7 +115,7 @@ const checkInputAttrs = computed(() => {
 		readonly: isReadonly.value,
 		checked: isChecked.value,
 		...checkInputAriaAttrs.value
-	}
+	} as InputHTMLAttributes
 })
 const checkInputAriaAttrs = computed(() => {
 	const { name } = attrs
