@@ -1,13 +1,13 @@
 <template>
 	<div :class="selectClasses">
-		<label v-if="label" for="select">{{ label }}</label>
+		<label v-if="label" :for="id">{{ label }}</label>
 		<!-- #region native select -->
 		<div class="vv-select__wrapper">
 			<slot name="icon-left">
 				<vv-icon v-if="iconLeft" :name="iconLeft" />
 			</slot>
 			<select
-				id="select"
+				:id="id"
 				:value="
 					typeof modelValue === 'string'
 						? modelValue
@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 import { computed, toRefs, useSlots } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvSelectProps, type Option } from './VvSelect'
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
@@ -53,6 +54,7 @@ const emit = defineEmits(['update:modelValue'])
 //Hint component
 const HintSlot = HintSlotFactory(props, slots)
 
+// data
 const {
 	modifiers,
 	disabled,
@@ -63,6 +65,8 @@ const {
 	error,
 	valid
 } = toRefs(props)
+
+const id = uuidv4()
 
 //Styles & css classes modifiers
 const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
