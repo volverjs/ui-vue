@@ -1,0 +1,45 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvSelect from '../../components/VvSelect/VvSelect.vue'
+
+<Meta title="Components/Select/Props/icon" />
+
+# VvSelect iconLeft/iconRight
+
+Let's define a story for our `icon-left` and `icon-right` select.
+
+<Canvas>
+	<Story name="icon">
+		{() => {
+			return {
+				components: { VvSelect },
+				data() {
+					return {
+						value1: '',
+						value2: '',
+						options: ['Option 1', 'Option 2', 'Option 3']
+					}
+				},
+				template:
+					/*html*/
+					`<div class="flex gap-32">
+						<div class="w-1/2">
+							<vv-select v-model:modelValue="value1" :options="options" label="Icon left" icon-left="email" />
+							value 1: {{ value1 }}
+						</div>
+						<div class="w-1/2">
+							<vv-select v-model:modelValue="value2" :options="options" label="Icon right" icon-right="phone" />
+							value 2: {{ value2 }}
+						</div>
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="html"
+	/*html*/
+	code={`<vv-select v-model:modelValue="value" :options="options" label="Icon left" icon-left="email" />
+	
+<vv-select v-model:modelValue="value" :options="options" label="Icon right" icon-right="phone" />`}
+/>
