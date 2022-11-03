@@ -5,7 +5,7 @@ export interface IValid {
 
 export interface IError {
 	error: boolean
-	errors: string | array<string>
+	errorLabel: string | array<string>
 }
 
 export interface ILoading {
@@ -13,6 +13,16 @@ export interface ILoading {
 	loadingLabel: string
 }
 
-export interface IVariant {
+export interface IModifiers {
 	modifiers: string | array<string>
+}
+
+export interface IHint {
+	hintLabel: string
+}
+
+export interface IOptions {
+	options: array<any>
+	optionLabel: string | ((a: string) => void)
+	optionValue: string | ((a: string) => void)
 }

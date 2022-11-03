@@ -18,8 +18,8 @@
 				<!-- #region search input -->
 				<template v-if="searchable && dropdownOpen">
 					<input
-						v-model="searchText"
 						ref="inputSearch"
+						v-model="searchText"
 						:placeholder="searchPlaceholder" />
 				</template>
 				<!-- #endregion search input -->

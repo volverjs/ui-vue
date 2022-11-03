@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import type { IInputGroupOptions } from '@/composables/group/types'
 
-import { useSlots, computed } from 'vue'
+import { useSlots, computed, toRefs } from 'vue'
 import { InputGroupState } from '../../composables/group/models'
 import { VvCheckGroupProps, VvCheckGroupEvents } from './VvCheckGroup'
 
@@ -30,8 +30,10 @@ import { VvCheckGroupProps, VvCheckGroupEvents } from './VvCheckGroup'
 import { VV_CHECK_GROUP } from '../../constants'
 
 //Composables
+import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '../../composables/group/useGroup'
 import { useOptions } from '../../composables/options/useOptions'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Components
 import VvCheck from '../../components/VvCheck/VvCheck.vue'
@@ -42,16 +44,16 @@ const props = defineProps(VvCheckGroupProps)
 const emit = defineEmits(VvCheckGroupEvents)
 const slots = useSlots()
 
+//Data
+const modelValue = useVModel(props, 'modelValue', emit)
+const { disabled, readonly, error, valid } = toRefs(props)
+
 // #region group
-// Define reactive props
-const inputGroupOptions: IInputGroupOptions = {
-	disabled: props.disabled,
-	modelValue: props.modelValue,
-	readonly: props.readonly
-}
-// Create groupState instance
-const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
-// Use group composable to provide the group state to children
+const groupState = new InputGroupState(VV_CHECK_GROUP, {
+	modelValue,
+	disabled,
+	readonly
+})
 useProvideGroupState(groupState, emit)
 // #endregion group
 
@@ -59,14 +61,14 @@ useProvideGroupState(groupState, emit)
 const { getOptionLabel, getOptionValue } = useOptions(props)
 
 //Styles & Bindings
-const groupClass = computed(() => {
-	return {
-		'vv-input-checkbox-group': true,
-		'vv-input-checkbox-group--horizontal': !props.vertical,
-		'vv-input-checkbox-group--valid': props.valid,
-		'vv-input-checkbox-group--invalid': props.error
+const { bemCssClasses: groupClass } = useBemModifiers(
+	'vv-input-checkbox-group',
+	{
+		horizontal: computed(() => !props.vertical),
+		valid,
+		invalid: error
 	}
-})
+)
 
 //Methods
 const getOptionProps = (option: any, oIndex: number) => {

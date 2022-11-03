@@ -14,9 +14,8 @@
 
 <script setup lang="ts">
 import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
-import type { IInputGroupOptions } from '../../composables/group/types'
 
-import { computed, useAttrs, ref } from 'vue'
+import { computed, useAttrs, ref, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { InputGroupState } from '../../composables/group/models'
 import { VvCheckProps, VvCheckEvents } from './VvCheck'
@@ -27,14 +26,38 @@ import { VV_CHECK_GROUP } from '../../constants'
 //Composables
 import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
 const props = defineProps(VvCheckProps)
 const emit = defineEmits(VvCheckEvents)
 const attrs = useAttrs()
 
+//Data
+const {
+	disabled,
+	readonly,
+	valid,
+	error,
+	switch: propsSwitch,
+	modelValue: propsModelValue
+} = toRefs(props)
+
 //Template References
 const input = ref()
+
+// #region group
+const groupState = new InputGroupState(VV_CHECK_GROUP, {
+	modelValue: propsModelValue,
+	disabled,
+	readonly
+})
+const { modelValue, isDisabled, isReadonly, checkIsSelected } =
+	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
+// #endregion group
+
+// FOCUS
+const { focused } = useComponentFocus(input, emit)
 
 //Component computed
 const isChecked = computed(() => {
@@ -43,32 +66,31 @@ const isChecked = computed(() => {
 		: checkIsSelected(props.value)
 })
 
-// #region group
-// Define input options
-const inputGroupOptions: IInputGroupOptions = {
-	disabled: props.disabled,
-	modelValue: props.modelValue,
-	readonly: props.readonly
-}
-// Create groupState instance
-const groupState = new InputGroupState(VV_CHECK_GROUP, inputGroupOptions)
-// Use group composable to inject the provided group
-const { modelValue, isDisabled, isReadonly, checkIsSelected } =
-	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
-// #endregion group
-
-// FOCUS
-const { focused } = useComponentFocus(input, emit)
-
 // Styles & Bindings
+const { bemCssClasses: bemCheckClass } = useBemModifiers('vv-input-checkbox', {
+	switch: propsSwitch,
+	valid,
+	invalid: error
+})
+const { bemCssClasses: bemCheckInputClass } = useBemModifiers(
+	'vv-input-check__input',
+	{
+		checked: isChecked,
+		disabled: isDisabled,
+		readonly: isReadonly
+	}
+)
 const checkClass = computed(() => {
-	const { class: cssClass } = attrs
+	const cssClass = attrs.class as string
 	return {
-		'vv-input-checkbox': true,
-		'vv-input-checkbox--switch': props.switch,
-		'vv-input-checkbox--valid': props.valid,
-		'vv-input-checkbox--invalid': props.error,
-		class: cssClass
+		[cssClass]: true,
+		...bemCheckClass.value
+	}
+})
+const checkInputClass = computed(() => {
+	return {
+		...bemCheckInputClass.value,
+		'focus-visible': focused.value
 	}
 })
 const checkAttrs = computed(() => {
@@ -81,14 +103,6 @@ const checkAttrs = computed(() => {
 		style,
 		...dataAttrs
 	} as LabelHTMLAttributes
-})
-const checkInputClass = computed(() => {
-	return {
-		'focus-visible': focused.value,
-		'vv-input-check__input--checked': isChecked.value,
-		'vv-input-check__input--disabled': isDisabled.value,
-		'vv-input-check__input--readonly': isReadonly.value
-	}
 })
 const checkInputAttrs = computed(() => {
 	const { id = '', name = '' } = attrs

@@ -20,17 +20,25 @@ export function useComponentIcons(
 	const { icon, iconPosition } = props
 
 	const hasIconLeft = computed(
-		() => (icon.value && iconPosition.value === 'left') || slots.iconLeft
+		() =>
+			!!((icon.value && iconPosition.value === 'left') || slots.iconLeft)
 	)
 	const hasIconRight = computed(
-		() => (icon.value && iconPosition.value === 'right') || slots.iconRight
+		() =>
+			!!(
+				(icon.value && iconPosition.value === 'right') ||
+				slots.iconRight
+			)
 	)
 	const hasIconTop = computed(
-		() => (icon.value && iconPosition.value === 'top') || slots.iconTop
+		() => !!((icon.value && iconPosition.value === 'top') || slots.iconTop)
 	)
 	const hasIconBottom = computed(
 		() =>
-			(icon.value && iconPosition.value === 'bottom') || slots.iconBottom
+			!!(
+				(icon.value && iconPosition.value === 'bottom') ||
+				slots.iconBottom
+			)
 	)
 
 	return {

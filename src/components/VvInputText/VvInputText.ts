@@ -1,8 +1,18 @@
+import {
+	ValidProps,
+	ErrorProps,
+	HintProps,
+	LoadingProps
+} from '../common/Props'
 import { TYPES, ICON_POSITIONS } from './constants'
 
 export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur']
 
 export const VvInputTextProps = {
+	...ValidProps,
+	...ErrorProps,
+	...HintProps,
+	...LoadingProps,
 	modelValue: null,
 	type: {
 		type: String,
@@ -22,13 +32,6 @@ export const VvInputTextProps = {
 	disabled: Boolean,
 	readonly: Boolean,
 	placeholder: String,
-	hintLabel: { type: String, default: '' },
-	valid: Boolean,
-	validLabel: [String, Array],
-	error: Boolean,
-	errors: [String, Array],
-	loading: Boolean,
-	loadingLabel: String,
 	/**
 	 * Nome dell'icona
 	 * @see DsIcon
@@ -46,5 +49,6 @@ export const VvInputTextProps = {
 	/**
 	 * True = label flottante
 	 */
-	floating: Boolean
+	floating: Boolean,
+	debounce: Number
 }

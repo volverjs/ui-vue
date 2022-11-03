@@ -68,7 +68,7 @@ export interface IButtonGroupOptions extends IGroupOptions {
 }
 
 export interface IInputGroupOptions extends IGroupOptions {
-	readonly: boolean
+	readonly: Ref<boolean>
 }
 
 export interface IAccordionGroupOptions extends IGroupOptions {
