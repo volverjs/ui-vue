@@ -1,0 +1,86 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvSelect from '../../components/VvSelect/VvSelect.vue'
+
+<Meta title="Components/Select/Props/options" />
+
+# VvSelect options
+
+Let's define a story for our `options` select.
+
+Options string array:
+
+<Source
+	language="json"
+	/*html*/
+	code={`[ "Option 4", "Option 5", "Option 6" ]`}
+/>
+
+Options object array and default `valueKey` ("value") and `labelKey` ("label"):
+
+<Source
+	language="json"
+	/*html*/
+	code={`[
+	{
+		"label": "Option 1",
+		"value": 1
+	},
+	{
+		"label": "Option 2",
+		"value": 2
+	},
+	{
+		"label": "Option 3",
+		"value": 3
+	}
+]`}
+/>
+
+<Canvas>
+	<Story name="options">
+		{() => {
+			return {
+				components: { VvSelect },
+				data() {
+					return {
+						value: '',
+						objectValue: '',
+						options: ['Option 4', 'Option 5', 'Option 6'],
+						optionsObject: [
+							{
+								label: 'Option 1',
+								value: 1
+							},
+							{
+								label: 'Option 2',
+								value: 2
+							},
+							{
+								label: 'Option 3',
+								value: 3
+							}
+						]
+					}
+				},
+				template:
+					/*html*/
+					`<div class="flex gap-32">
+						<div class="w-1/2">
+							<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />
+							value: {{ value }}
+						</div>
+						<div class="w-1/2">
+							<vv-select v-model:modelValue="objectValue" :options="optionsObject" placeholder="Placeholder" label="Label 1" />
+							value: {{ objectValue }}
+						</div>
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="html"
+	/*html*/
+	code={`<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
+/>

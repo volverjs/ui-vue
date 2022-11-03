@@ -49,8 +49,16 @@ const emit = defineEmits(['update:modelValue'])
 //Hint component
 const HintSlot = HintSlotFactory(props, slots)
 
-const { modifiers, disabled, readonly, loading, iconLeft, iconRight } =
-	toRefs(props)
+const {
+	modifiers,
+	disabled,
+	readonly,
+	loading,
+	iconLeft,
+	iconRight,
+	error,
+	valid
+} = toRefs(props)
 
 //Styles & css classes modifiers
 const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
@@ -59,10 +67,8 @@ const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
 	readonly,
 	iconLeft,
 	iconRight,
-	valid: computed(() => props.valid || props.validLabel),
-	invalid: computed(
-		() => props.error || ObjectUtilities.isNotEmpty(props.errors)
-	),
+	valid,
+	invalid: error,
 	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
 })
 

@@ -79,8 +79,16 @@ useFocus(inputSearch, { initialValue: true })
 const searchText = ref('')
 const debouncedSearchText = refDebounced(searchText, props.debounceSearch)
 const dropdownOpen = ref(false)
-const { modifiers, disabled, readonly, loading, iconLeft, iconRight } =
-	toRefs(props)
+const {
+	modifiers,
+	disabled,
+	readonly,
+	loading,
+	iconLeft,
+	iconRight,
+	valid,
+	error
+} = toRefs(props)
 
 // watch
 // emit on change search text
@@ -96,10 +104,8 @@ const { bemCssClasses: dropdownClasses } = useBemModifiers('vv-select', {
 	readonly,
 	iconLeft,
 	iconRight,
-	valid: computed(() => props.valid || props.validLabel),
-	invalid: computed(
-		() => props.error || ObjectUtilities.isNotEmpty(props.errors)
-	),
+	valid,
+	invalid: error,
 	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
 })
 
