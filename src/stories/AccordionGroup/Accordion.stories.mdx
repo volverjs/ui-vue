@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvAccordionGroup from '../../components/VvAccordionGroup/VvAccordionGroup.vue'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+import { accordionTest } from './accordionGroupTest.js'
 
 <Meta title="Components/AccordionGroup/Props/accordion" />
 
@@ -9,7 +10,7 @@ import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 Stories of `VvAccordionGroup` with `accordion`.
 
 <Canvas>
-	<Story name="accordion">
+	<Story name="accordion" play={accordionTest}>
 		{(args) => ({
 			components: { VvAccordionGroup, VvAccordion },
 			data() {
@@ -24,12 +25,12 @@ Stories of `VvAccordionGroup` with `accordion`.
 				`<div class="flex">
 					<div class="w-1/2">
 						<vv-accordion-group v-model:modelValue="selected" icon-right bordered accordion>
-							<vv-accordion name="accordion 1" title="Details 1" :content="content" />
+							<vv-accordion data-testId="accordion-1" name="accordion 1" title="Details 1" :content="content" />
 							<vv-accordion name="accordion 2" title="Details 2" :content="content" />
 							<vv-accordion name="accordion 3" title="Details 3" :content="content" />
 						</vv-accordion-group>
 					</div>
-					<div v-if="selected" class="w-1/2 flex justify-end">
+					<div data-testId="selected" v-if="selected" class="w-1/2 flex justify-end" >
 						selected: {{ selected }}
 					</div>
 				</div>`

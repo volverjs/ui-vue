@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvAccordionGroup from '../../components/VvAccordionGroup/VvAccordionGroup.vue'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+import { accordionGroupTest } from './accordionGroupTest.js'
 
 <Meta
 	title="Components/AccordionGroup"
@@ -24,8 +25,8 @@ export const Template = (args) => ({
 	template:
 		/*html*/
 		`<div class="w-1/2">
-			<vv-accordion-group v-bind="args" :disabled="disabled" v-model:modelValue="accordion">
-				<vv-accordion title="Details 1" :content="content" />
+			<vv-accordion-group data-testId="accordion-group" v-bind="args" :disabled="disabled" v-model:modelValue="accordion">
+				<vv-accordion data-testId="accordion-1" title="Details 1" :content="content" />
 				<vv-accordion title="Details 2" :content="content" />
 				<vv-accordion title="Details 3" :content="content" />
 			</vv-accordion-group>
@@ -38,7 +39,7 @@ Stories of `VvAccordionGroup`.
 Let's define a story for our playground `accordion-group`:
 
 <Canvas>
-	<Story name="vv-accordion-group" args={{}}>
+	<Story name="vv-accordion-group" play={accordionGroupTest} args={{}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
