@@ -1,5 +1,7 @@
+import type { IButtonGroupState } from '../../composables/group/types'
+
 //Composables
-import { useInjectedGroupState } from '@/composables/group/useGroupOrLocalState'
+import { useInjectedGroupState } from '../../composables/group/useGroupOrLocalState'
 
 //Constasts
 import { VV_BUTTON_GROUP } from '../../constants'
@@ -12,12 +14,12 @@ export function toGroupButtonRefs<T extends object>(
 	props: T,
 	emit: (event: any, ...args: any[]) => void
 ) {
-	const { isInGroup, useGroupOrLocalReadOnlyRef, useGroupOrLocalRef } =
-		useInjectedGroupState(VV_BUTTON_GROUP)
+	const { isInGroup, getGroupOrLocalReadOnlyRef, getGroupOrLocalRef } =
+		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
 
-	const modelValue = useGroupOrLocalRef(props, 'modelValue', emit)
-	const disabled = useGroupOrLocalReadOnlyRef(props, 'disabled')
-	const toggle = useGroupOrLocalReadOnlyRef(props, 'toggle')
+	const modelValue = getGroupOrLocalRef(props, 'modelValue', emit)
+	const disabled = getGroupOrLocalReadOnlyRef(props, 'disabled')
+	const toggle = getGroupOrLocalReadOnlyRef(props, 'toggle')
 
 	return {
 		modelValue,

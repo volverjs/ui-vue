@@ -57,6 +57,12 @@ export type GroupStateTypes =
 	| IInputGroupState
 	| IButtonGroupState
 
+export type GroupStateProps =
+	| keyof IGroupState
+	| keyof IAccordionGroupState
+	| keyof IInputGroupState
+	| keyof IButtonGroupState
+
 // #region group options
 export interface IGroupOptions {
 	modelValue: Ref<any> | undefined

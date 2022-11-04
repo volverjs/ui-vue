@@ -2,6 +2,7 @@ import type { ComputedRef, Ref } from 'vue'
 import {
 	isButtonGroupType,
 	isInputGroupType,
+	type ButtonGroup,
 	type GroupStateTypes,
 	type IGroupState
 } from './types'
@@ -110,11 +111,13 @@ export function useGroupOrLocalState(
 }
 
 /**
- * Esegue l'inject dello stato condiviso da un componente Group.
+ * Esegue l'inject dello stato condiviso da un componente padre.
  */
-export function useInjectedGroupState(groupKey: symbol) {
+export function useInjectedGroupState<
+	TGroup extends IGroupState //{ [key: string]: Ref<any> | any }
+>(groupKey: symbol) {
 	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
-	const group = inject<Ref<GroupStateTypes> | undefined>(groupKey, undefined)
+	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
 
 	//Check if component is in group
 	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
@@ -123,22 +126,22 @@ export function useInjectedGroupState(groupKey: symbol) {
 	 * Crea una ref variable (writable) che utilizza il valore iniettato se mi trovo in
 	 * un gruppo.
 	 */
-	function useGroupOrLocalRef<T extends object>(
+	function getGroupOrLocalRef<T extends object>(
 		props: T,
-		propName: Exclude<keyof GroupStateTypes, 'key'>,
+		propName: keyof TGroup,
 		emit: (event: any, ...args: any[]) => void
 	) {
 		let myProp: Ref
 		if (group?.value) {
+			const groupPropValue = unref(group.value)[propName] as Ref<any>
 			myProp = toRef(group.value, propName)
 			watch(myProp, (value) => {
-				const groupPropValue = unref(group.value)[propName]
 				if (!ObjectUtilities.equals(value, groupPropValue.value)) {
 					groupPropValue.value = value
 				}
 			})
 			watch(
-				() => unref(group)[propName].value,
+				() => groupPropValue.value,
 				(value) => {
 					if (!ObjectUtilities.equals(value, myProp.value)) {
 						myProp.value = value
@@ -147,9 +150,9 @@ export function useInjectedGroupState(groupKey: symbol) {
 				{ immediate: true }
 			)
 		} else {
-			myProp = toRef(props as T, propName as keyof T)
+			myProp = toRef(props, propName as keyof T)
 			watch(myProp, (value) => {
-				emit(`update:${propName}`, value)
+				emit(`update:${propName as string}`, value)
 			})
 			watch(
 				() => props[propName as keyof T],
@@ -168,15 +171,15 @@ export function useInjectedGroupState(groupKey: symbol) {
 	 * Crea una ref variable (readonly) che utilizza il valore iniettato se mi trovo in
 	 * un gruppo.
 	 */
-	function useGroupOrLocalReadOnlyRef<T extends object>(
+	function getGroupOrLocalReadOnlyRef<T extends object>(
 		props: T,
-		propName: Exclude<keyof GroupStateTypes, 'key'>
+		propName: keyof TGroup
 	) {
 		const myProp = ref(null)
 		watch(
 			() =>
 				group && group.value
-					? unref(group)[propName].value
+					? (unref(group)[propName] as Ref<any>).value
 					: props[propName as keyof T],
 			(value) => {
 				if (!ObjectUtilities.equals(value, myProp.value)) {
@@ -191,7 +194,7 @@ export function useInjectedGroupState(groupKey: symbol) {
 	return {
 		group,
 		isInGroup,
-		useGroupOrLocalRef,
-		useGroupOrLocalReadOnlyRef
+		getGroupOrLocalRef,
+		getGroupOrLocalReadOnlyRef
 	}
 }
