@@ -68,9 +68,18 @@ const attrs = useAttrs()
 
 //Data
 const btnName = attrs?.name || uuidv4()
-const { modifiers, block, rounded, fullBleed, iconPosition, icon, label } =
-	toRefs(props)
-const { modelValue, disabled, toggle } = toGroupButtonRefs(props, emit)
+const {
+	modifiers,
+	block,
+	rounded,
+	fullBleed,
+	iconPosition,
+	icon,
+	label,
+	modelValue,
+	disabled,
+	toggle
+} = toGroupButtonRefs(props, emit)
 
 /**
  * @description Select the tag type in based on the props before.

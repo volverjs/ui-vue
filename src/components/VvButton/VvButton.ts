@@ -1,4 +1,4 @@
-import type { PropType } from 'vue'
+import type { PropType, ExtractPropTypes } from 'vue'
 
 export enum ButtonIconPosition {
 	left = 'left',
@@ -100,3 +100,6 @@ export const VvButtonProps = {
 	 */
 	modifiers: [Array, String]
 }
+
+type _VvButtonPropsType = typeof VvButtonProps
+export type VvButtonPropsTypes = ExtractPropTypes<_VvButtonPropsType>
