@@ -1,11 +1,11 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import VvSelect from '../../components/VvSelect/VvSelect.vue'
 
-<Meta title="Components/Dropdown/Props/separator" />
+<Meta title="Components/Select/Props/multiple" />
 
-# VvDropdown separator
+# VvSelect multiple
 
-Let's define a story for our `separator` dropdown.
+Let's define a story for our `multiple` select.
 
 <Source
 	language="json"
@@ -27,10 +27,10 @@ Let's define a story for our `separator` dropdown.
 />
 
 <Canvas>
-	<Story name="separator">
+	<Story name="multiple">
 		{() => {
 			return {
-				components: { VvDropdown },
+				components: { VvSelect },
 				data() {
 					return {
 						value: '',
@@ -53,7 +53,7 @@ Let's define a story for our `separator` dropdown.
 				template:
 					/*html*/
 					`<div class="w-1/2">
-						<vv-dropdown v-model:modelValue="value" :options="options" label="Label 1" multiple separator=" - " />
+						<vv-select v-model:modelValue="value" :options="options" label="Label 1" multiple />
 						value: {{ value }}
 					</div>`
 			}
@@ -64,5 +64,5 @@ Let's define a story for our `separator` dropdown.
 <Source
 	language="html"
 	/*html*/
-	code={`<vv-dropdown v-model:modelValue="value" :options="options" label="Label 1" multiple separator=" - " />`}
+	code={`<vv-select v-model:modelValue="value" :options="options" label="Label 1" multiple />`}
 />

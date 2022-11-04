@@ -1,14 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
-import { VvSelectProps } from '../../components/VvSelect/VvSelect'
+import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import { VvNativeSelectProps } from '../../components/VvNativeSelect/VvNativeSelect'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 <Meta
-	title="Components/Select"
-	component={VvSelect}
+	title="Components/NativeSelect"
+	component={VvNativeSelect}
 	args={{
-		...ObjectUtilities.propsToObject(VvSelectProps),
-		maxValues: -1,
+		...ObjectUtilities.propsToObject(VvNativeSelectProps),
 		label: 'Lorem Ipsum',
 		placeholder: 'Placeholder',
 		options: [
@@ -29,29 +28,28 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
 />
 
 export const Template = (args) => ({
-	components: { VvSelect },
+	components: { VvNativeSelect },
 	setup() {
 		return { args }
 	},
 	data() {
 		return {
-			value: '',
-			optionsString: ['Option 4', 'Option 5', 'Option 6']
+			selectValue: ''
 		}
 	},
 	template:
 		/*html*/
 		`<div class="w-1/2">
-            <vv-select v-bind="args" v-model:modelValue="value" />
-			value: {{ value }}
+            <vv-native-select v-bind="args" v-model:modelValue="selectValue" />
+			value: {{ selectValue }}
         </div>`
 })
 
-# VvSelect
+# VvNativeSelect
 
-Stories of `VvSelect`.
+Stories of `VvNativeSelect`.
 Let's define a story for our playground `select`:
 
 <Canvas>
-	<Story name="vv-select">{Template.bind({})}</Story>
+	<Story name="vv-native-select">{Template.bind({})}</Story>
 </Canvas>
