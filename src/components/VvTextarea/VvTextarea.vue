@@ -1,53 +1,25 @@
 <template>
-	<div v-bind="vvInputTextProps" :class="vvInputInputClass">
-		<label v-if="label" :for="innerInputProps.id">{{ label }}</label>
-		<div class="vv-input-text__wrapper">
+	<div v-bind="vvTextareaProps" :class="vvInputTextareaClass">
+		<label v-if="label" :for="innerTextareaProps.id">{{ label }}</label>
+		<div class="vv-textarea__wrapper">
 			<!-- @slot icon-left to replace icon left -->
 			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
-				<vv-icon class="vv-input-text__icon-left" :name="icon" />
+				<vv-icon class="vv-textarea__icon-left" :name="icon" />
 			</slot>
-			<input
+			<textarea
 				ref="input"
-				v-bind="innerInputProps"
+				v-bind="innerTextareaProps"
 				v-model="inputTextData"
 				@input="emit('input', $event)" />
 			<!-- @slot icon-right to replace icon right -->
-			<slot name="icon-right" v-bind="iconSlotProps">
+			<slot v-if="hasIconRight" name="icon-right" v-bind="iconSlotProps">
 				<!-- default password icon -->
-				<template v-if="isPassword">
-					<div class="vv-input-text__actions-group">
-						<button
-							class="vv-input-text__action"
-							:disabled="isActionsDisabled"
-							@click.prevent="toggleShowHidePassword">
-							<vv-icon :name="inputRightIcon" />
-						</button>
-					</div>
-				</template>
-				<!-- default number icon -->
-				<template v-else-if="isNumber">
-					<div class="vv-input-text__actions-group">
-						<button
-							type="button"
-							class="vv-input-text__action-chevron vv-input-text__action-chevron-up"
-							:disabled="isActionsDisabled"
-							@click.prevent="stepUp()"></button>
-						<button
-							type="button"
-							class="vv-input-text__action-chevron"
-							:disabled="isActionsDisabled"
-							@click.prevent="stepDown()"></button>
-					</div>
-				</template>
-				<!-- default icon -->
-				<template v-else>
-					<vv-icon :name="inputRightIcon" />
-				</template>
+				<vv-icon :name="icon" />
 			</slot>
 		</div>
 		<HintSlot
 			:id="inputAriaAttrs['aria-describedby']"
-			class="vv-input-text__hint" />
+			class="vv-textarea__hint" />
 	</div>
 </template>
 
@@ -61,29 +33,24 @@ import {
 	onMounted,
 	watch,
 	type HTMLAttributes,
-	type InputHTMLAttributes
+	type TextareaHTMLAttributes
 } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
+import { VvTextareaProps, VvTextareaEvents } from './VvTextarea'
 
 //Componenti
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
 
-//Constanti
-import INPUT from './constants'
-
 //Composables
 import { refDebounced } from '@vueuse/core'
-import { useInputPassword } from './useInputPassword'
-import { useInputNumber } from './useInputNumber'
 import { useComponentIcons } from '../../composables/icons/useComponentIcons'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useBemModifiers } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
-const props = defineProps(VvInputTextProps)
-const emit = defineEmits(VvInputTextEvents)
+const props = defineProps(VvTextareaProps)
+const emit = defineEmits(VvTextareaEvents)
 const slots = useSlots()
 const attrs = useAttrs()
 
@@ -93,9 +60,7 @@ const input = ref()
 //Data
 const inputTextData = ref(props.modelValue)
 const {
-	disabled,
 	readonly,
-	type,
 	icon,
 	iconPosition,
 	valid,
@@ -105,9 +70,6 @@ const {
 	label,
 	modelValue
 } = toRefs(props)
-
-//Component computed
-const isActionsDisabled = computed(() => disabled.value || readonly.value)
 
 //Debounce
 const debouncedInputTextData = refDebounced(inputTextData, props.debounce || 0)
@@ -120,75 +82,31 @@ const iconSlots = {
 	iconRight: slots['icon-right']
 }
 const { hasIconLeft, hasIconRight } = useComponentIcons(iconProps, iconSlots)
-const inputRightIcon = computed(() => {
-	if (hasIconRight.value) return props.icon
-
-	switch (props.type) {
-		case INPUT.TYPES.PASSWORD:
-			return passwordButtonIcon.value
-		case INPUT.TYPES.COLOR:
-			return INPUT.TYPES_ICON.COLOR
-		case INPUT.TYPES.DATE:
-		case INPUT.TYPES.DATETIME_LOCAL:
-			return INPUT.TYPES_ICON.DATE
-		case INPUT.TYPES.TIME:
-			return INPUT.TYPES_ICON.TIME
-		case INPUT.TYPES.SEARCH:
-			return INPUT.TYPES_ICON.SEARCH
-		default:
-			return ''
-	}
-})
-
-//Gestione input tipo password
-const inputPswProps = {
-	type,
-	disabled,
-	readonly
-}
-const {
-	isPassword,
-	isPasswordVisible,
-	passwordButtonIcon,
-	toggleShowHidePassword
-} = useInputPassword(inputPswProps)
-
-//Gestione input tipo NUMBER
-const inputNumberProps = {
-	disabled,
-	readonly,
-	type,
-	inputTemplateRef: input
-}
-const { isNumber, stepUp, stepDown } = useInputNumber(
-	inputTextData,
-	inputNumberProps
-)
 
 //Input FOCUS
 const { focused } = useComponentFocus(input, emit)
 
 //Styles & Bindings
-const { bemCssClasses: bemInputClass } = useBemModifiers('vv-input-text', {
+const { bemCssClasses: bemInputClass } = useBemModifiers('vv-textarea', {
 	readonly,
 	valid,
 	invalid: error,
 	loading,
 	iconLeft: hasIconLeft,
-	iconRight: computed(() => ObjectUtilities.isNotEmpty(inputRightIcon.value)),
+	iconRight: hasIconRight,
 	floating: computed(
 		() => floating.value && ObjectUtilities.isNotEmpty(label?.value)
 	),
 	dirty: computed(() => ObjectUtilities.isNotEmpty(modelValue))
 })
-const vvInputInputClass = computed(() => {
+const vvInputTextareaClass = computed(() => {
 	const { class: cssClass } = attrs
 	return {
 		class: cssClass,
 		...bemInputClass.value
 	}
 })
-const vvInputTextProps = computed(() => {
+const vvTextareaProps = computed(() => {
 	const { style } = attrs
 	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
 		k.startsWith('data-')
@@ -198,32 +116,28 @@ const vvInputTextProps = computed(() => {
 		...dataAttrs
 	} as HTMLAttributes
 })
-const innerInputProps = computed(() => {
+const innerTextareaProps = computed(() => {
 	const {
 		id,
 		name,
-		type,
 		autocomplete,
 		minlength,
 		maxlength,
-		min,
-		max,
-		step,
 		disabled,
 		readonly,
 		floating,
-		placeholder
+		placeholder,
+		cols,
+		rows
 	} = props
 
 	const _id = id || name
-	const _type = isPassword.value && isPasswordVisible.value ? 'text' : type
 	//BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const _placeholder =
 		floating && ObjectUtilities.isEmpty(placeholder) ? ' ' : placeholder
 
 	return {
 		id: _id,
-		type: _type,
 		placeholder: _placeholder,
 		name,
 		autocomplete,
@@ -231,11 +145,10 @@ const innerInputProps = computed(() => {
 		readonly,
 		minlength,
 		maxlength,
-		min,
-		max,
-		step,
+		cols,
+		rows,
 		...inputAriaAttrs.value
-	} as InputHTMLAttributes
+	} as TextareaHTMLAttributes
 })
 const inputAriaAttrs = computed(() => {
 	const { name } = attrs
