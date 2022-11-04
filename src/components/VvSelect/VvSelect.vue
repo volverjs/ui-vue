@@ -1,14 +1,18 @@
 <template>
 	<div :class="selectClasses">
-		<label v-if="label" for="select">{{ label }}</label>
+		<label v-if="label" :for="id">{{ label }}</label>
 		<!-- #region native select -->
 		<div class="vv-select__wrapper">
 			<slot name="icon-left">
 				<vv-icon v-if="iconLeft" :name="iconLeft" />
 			</slot>
 			<select
-				id="select"
-				:value="modelValue"
+				:id="id"
+				:value="
+					typeof modelValue === 'string'
+						? modelValue
+						: modelValue?.[valueKey]
+				"
 				:disabled="disabled || readonly"
 				@input="onInput">
 				<option v-if="placeholder" value="" disabled selected>
@@ -37,6 +41,7 @@
 
 <script setup lang="ts">
 import { computed, toRefs, useSlots } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvSelectProps, type Option } from './VvSelect'
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
@@ -49,6 +54,7 @@ const emit = defineEmits(['update:modelValue'])
 //Hint component
 const HintSlot = HintSlotFactory(props, slots)
 
+// data
 const {
 	modifiers,
 	disabled,
@@ -59,6 +65,8 @@ const {
 	error,
 	valid
 } = toRefs(props)
+
+const id = uuidv4()
 
 //Styles & css classes modifiers
 const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
@@ -82,6 +90,17 @@ function getLabel(option: string | Option) {
 
 function onInput(event: Event) {
 	const target = event.target as HTMLSelectElement
-	emit('update:modelValue', target.value)
+
+	// Find option object if useObject prop is true
+	const valueObject = props.useObject
+		? props.options?.find(
+				(option) => (option as Option)[props.valueKey] == target.value
+		  )
+		: null
+
+	// use valueObject if exist or the target value
+	const value = valueObject || target.value
+
+	emit('update:modelValue', value)
 }
 </script>

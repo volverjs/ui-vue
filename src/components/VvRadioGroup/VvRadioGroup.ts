@@ -1,9 +1,4 @@
-import {
-	ValidProps,
-	ErrorProps,
-	OptionsProps,
-	HintProps
-} from '../common/Props'
+import { ValidProps, ErrorProps, OptionsProps, HintProps } from '../../props'
 
 export const VvRadioGroupEvents = ['update:modelValue']
 

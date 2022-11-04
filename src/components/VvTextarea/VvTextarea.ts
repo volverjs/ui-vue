@@ -1,31 +1,30 @@
-import { ValidProps, ErrorProps, HintProps, LoadingProps } from '../../props'
-import { TYPES, ICON_POSITIONS } from './constants'
+import {
+	ValidProps,
+	ErrorProps,
+	HintProps,
+	LoadingProps,
+	DisabledProps,
+	ReadonlyProps
+} from '../../props'
+import { ICON_POSITIONS, WRAP } from './constants'
 
-export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur']
+export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur']
 
-export const VvInputTextProps = {
+export const VvTextareaProps = {
 	...ValidProps,
 	...ErrorProps,
 	...HintProps,
 	...LoadingProps,
+	...DisabledProps,
+	...ReadonlyProps,
 	modelValue: null,
-	type: {
-		type: String,
-		default: TYPES.TEXT,
-		validator: (value: string) => Object.values(TYPES).includes(value)
-	},
 	id: String,
 	name: { type: String, required: true },
 	autocomplete: { type: String, default: 'off' },
 	autofocus: Boolean,
 	minlength: Number,
 	maxlength: Number,
-	min: [Number, Date],
-	max: [Number, Date],
-	step: Number,
 	label: String,
-	disabled: Boolean,
-	readonly: Boolean,
 	placeholder: String,
 	/**
 	 * Nome dell'icona
@@ -45,5 +44,12 @@ export const VvInputTextProps = {
 	 * True = label flottante
 	 */
 	floating: Boolean,
-	debounce: Number
+	debounce: Number,
+	cols: { type: Number, default: 50 },
+	rows: { type: Number, default: 5 },
+	/**
+	 * Specifica come il testo sarà wrappato
+	 * @see Documentation https://www.w3schools.com/tags/att_textarea_wrap.asp
+	 */
+	wrap: { type: String, default: WRAP.soft }
 }

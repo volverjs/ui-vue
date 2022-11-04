@@ -13,6 +13,14 @@ export const LoadingProps = {
 	loadingLabel: String
 }
 
+export const DisabledProps = {
+	disabled: Boolean
+}
+
+export const ReadonlyProps = {
+	readonly: Boolean
+}
+
 export const ModifiersProps = {
 	modifiers: [String, Array]
 }
