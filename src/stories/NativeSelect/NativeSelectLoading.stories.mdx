@@ -1,10 +1,10 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
-import { Template } from './Select.stories.mdx'
+import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import { Template } from './NativeSelect.stories.mdx'
 
-<Meta title="Components/Select/Props/loading" />
+<Meta title="Components/NativeSelect/Props/loading" />
 
-# VvSelect loading
+# VvNativeSelect loading
 
 Let's define a story for our `loading` select.
 
@@ -24,5 +24,5 @@ Let's define a story for our `loading` select.
 <Source
 	language="html"
 	/*html*/
-	code={`<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" loading />`}
+	code={`<vv-native-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" loading />`}
 />

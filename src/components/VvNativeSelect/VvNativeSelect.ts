@@ -13,7 +13,7 @@ export interface Option {
 	[key: string]: any
 }
 
-export const VvDropdownProps = {
+export const VvNativeSelectProps = {
 	...ValidProps,
 	...ErrorProps,
 	...HintProps,
@@ -24,36 +24,20 @@ export const VvDropdownProps = {
 	/**
 	 * modelValue can be an Object, a String or an Array of Object/String
 	 */
-	modelValue: [String, Array, Object],
+	modelValue: {
+		type: [String, Object],
+		required: true
+	},
 	/**
-	 * Dropdown input label
+	 * Select input label
 	 */
 	label: String,
 	/**
-	 * Label of "no results" options
-	 */
-	labelNoResult: { type: String, default: 'No results' },
-	/**
-	 * Dropdown input placeholder
+	 * Select input placeholder
 	 */
 	placeholder: String,
 	/**
-	 * Use input text to search on options
-	 */
-	searchable: Boolean,
-	/**
-	 * On searchable dropdown is the input search placeholder
-	 */
-	searchPlaceholder: String,
-	/**
-	 * the input search debounce time in ms
-	 */
-	debounceSearch: {
-		type: [Number, String],
-		default: 0
-	},
-	/**
-	 * Select options, can be string[] or object[]
+	 * Select options, can be an Array of string or an array of objects
 	 */
 	options: {
 		type: Array as PropType<Array<Option | string>>,
@@ -63,18 +47,6 @@ export const VvDropdownProps = {
 	 * Use objects as modelValue (object or object[])
 	 */
 	useObject: Boolean,
-	/**
-	 * Manage modelValue as string[] or object[]
-	 */
-	multiple: Boolean,
-	/**
-	 * The max number of selected values
-	 */
-	maxValues: [Number, String],
-	/**
-	 * The dropdown label separator visible to the user
-	 */
-	separator: { type: String, default: ', ' },
 	/**
 	 * Used when options are objects: key to use for option label
 	 */
@@ -90,5 +62,9 @@ export const VvDropdownProps = {
 	/**
 	 * Icon name of icon in right position
 	 */
-	iconRight: String
+	iconRight: String,
+	/**
+	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-native-select--'
+	 */
+	modifiers: [String, Array]
 }

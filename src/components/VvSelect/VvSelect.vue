@@ -1,60 +1,93 @@
 <template>
-	<div :class="selectClasses">
-		<label v-if="label" :for="id">{{ label }}</label>
-		<!-- #region native select -->
-		<div class="vv-select__wrapper">
+	<div :id="id" :class="selectClasses">
+		<label v-if="label" for="select">{{ label }}</label>
+		<details
+			ref="dropdown"
+			role="list"
+			class="vv-select__wrapper"
+			@click="disabled || readonly ? $event.preventDefault() : null"
+			@keyup.esc="dropdown.open = false"
+			@toggle="onToggle">
 			<slot name="icon-left">
 				<vv-icon v-if="iconLeft" :name="iconLeft" />
 			</slot>
-			<select
-				:id="id"
-				:value="
-					typeof modelValue === 'string'
-						? modelValue
-						: modelValue?.[valueKey]
-				"
-				:disabled="disabled || readonly"
-				@input="onInput">
-				<option v-if="placeholder" value="" disabled selected>
-					{{ placeholder }}
-				</option>
-				<option
-					v-for="(option, index) in options"
-					:key="index"
-					:disabled="
-						typeof option === 'object'
-							? option.disabled ?? disabled
-							: disabled
-					"
-					:value="getValue(option)">
-					{{ getLabel(option) }}
-				</option>
-			</select>
-			<slot name="icon-right">
-				<vv-icon v-if="iconRight" :name="iconRight" />
-			</slot>
-		</div>
-		<!-- #endregion native select -->
+			<summary
+				class="vv-select__input"
+				aria-haspopup="listbox"
+				@keyup.space="searchable ? $event.preventDefault() : null">
+				<!-- #region search input -->
+				<template v-if="searchable && dropdownOpen">
+					<input
+						ref="inputSearch"
+						v-model="searchText"
+						:placeholder="searchPlaceholder" />
+				</template>
+				<!-- #endregion search input -->
+				<!-- #region label of selected value/s -->
+				<template v-else>
+					{{ labelValue || placeholder }}
+				</template>
+				<!-- #endregion label of selected value/s -->
+			</summary>
+			<ul class="vv-dropdown" role="listbox">
+				<li v-if="searchable && !currentOptions?.length">
+					<label>
+						{{ labelNoResult }}
+					</label>
+				</li>
+				<li v-for="(option, index) in currentOptions" :key="index">
+					<label :for="`select-${index}-${id}`">
+						<input
+							:id="`select-${index}-${id}`"
+							:type="multiple ? 'checkbox' : 'radio'"
+							:value="getValue(option)"
+							:checked="isSelected(option)"
+							:disabled="
+								typeof option === 'object'
+									? option.disabled ?? disabled
+									: disabled
+							"
+							@input="onInput" />
+						{{ getLabel(option) }}
+					</label>
+				</li>
+			</ul>
+		</details>
 		<HintSlot class="vv-select__hint" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, useSlots } from 'vue'
+import { computed, ref, toRefs, useSlots, watch } from 'vue'
+import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import { VvSelectProps, type Option } from './VvSelect'
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
+import VvIcon from '../VvIcon/VvIcon.vue'
 import { useBemModifiers } from '../../composables/useModifiers'
 
 const props = defineProps(VvSelectProps)
 const slots = useSlots()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change:search'])
+
 //Hint component
 const HintSlot = HintSlotFactory(props, slots)
 
+// html ref
+const dropdown = ref()
+const inputSearch = ref()
+// autofocus input search
+useFocus(inputSearch, { initialValue: true })
+
 // data
+const id = uuidv4()
+const searchText = ref('')
+const debouncedSearchText = refDebounced(
+	searchText,
+	Number(props.debounceSearch)
+)
+const dropdownOpen = ref(false)
 const {
 	modifiers,
 	disabled,
@@ -62,15 +95,20 @@ const {
 	loading,
 	iconLeft,
 	iconRight,
-	error,
-	valid
+	valid,
+	error
 } = toRefs(props)
 
-const id = uuidv4()
+// watch
+// emit on change search text
+watch(debouncedSearchText, () =>
+	emit('change:search', debouncedSearchText.value)
+)
 
 //Styles & css classes modifiers
 const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
 	modifiers,
+	disabled,
 	loading,
 	readonly,
 	iconLeft,
@@ -80,27 +118,167 @@ const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
 	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
 })
 
-function getValue(option: string | Option) {
-	return typeof option === 'string' ? option : option[props.valueKey]
+// computed
+
+// Check if options are objects
+const isOptionsObjects = computed(() =>
+	props.options?.every((option) => typeof option === 'object')
+)
+
+// current options, filtered or prop options
+const currentOptions = computed(() =>
+	props.searchable ? filteredOptions.value : props.options
+)
+
+// options filtered by search text
+const filteredOptions = computed(() => {
+	return props.options?.filter((option) => {
+		if (typeof option === 'string') {
+			return option
+				.toLowerCase()
+				.includes(debouncedSearchText.value.toLowerCase().trim())
+		}
+		return option[props.labelKey]
+			.toLowerCase()
+			.includes(debouncedSearchText.value.toLowerCase().trim())
+	})
+})
+
+/**
+ * Compute the label to show to the user
+ * Check if is multiple mode, object mode or "string" mode
+ */
+const labelValue = computed(() => {
+	// #region multiple mode
+	if (
+		props.multiple &&
+		props.modelValue?.length &&
+		Array.isArray(props.modelValue)
+	) {
+		if (isOptionsObjects.value) {
+			// filter options by selected values
+			return ObjectUtilities.filterArray<Option>(
+				props.options as Option[],
+				props.modelValue,
+				props.valueKey
+			)
+				.map((option) => option[props.labelKey])
+				.join(props.separator)
+		} else {
+			return props.modelValue.join(props.separator)
+		}
+	}
+	// #endregion multiple mode
+
+	// #region single mode
+	const selectedOption = props.useObject
+		? props.modelValue
+		: props.options?.find((option) =>
+				typeof option === 'object'
+					? option[props.valueKey] == props.modelValue
+					: option == props.modelValue
+		  )
+
+	return typeof selectedOption === 'object'
+		? selectedOption?.[props.labelKey]
+		: selectedOption
+	// #endregion single mode
+})
+
+// methods
+
+// close dropdown on click outside
+onClickOutside(dropdown, () => {
+	dropdown.value.open = false
+})
+
+// Function triggered on toggle dropdown (open/close)
+function onToggle(event: Event) {
+	const target = event.target as HTMLDetailsElement
+	dropdownOpen.value = target.open
 }
 
+/**
+ * Retrieve the option value based on prop "valueKey" or the option if it is a string
+ * @param {String | Option} option
+ */
+function getValue(option: string | Option) {
+	return typeof option === 'string' ? option : String(option[props.valueKey])
+}
+
+/**
+ * Retrieve the option label based on prop "labelKey" or the option if it is a string
+ * @param {String | Option} option
+ */
 function getLabel(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.labelKey]
 }
 
-function onInput(event: Event) {
-	const target = event.target as HTMLSelectElement
+/**
+ * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
+ * @param {String | Option} option
+ */
+function isSelected(option: string | Option) {
+	let optionValue: Option | string = typeof option === 'string' ? option : ''
+	if (!optionValue) {
+		optionValue = props.useObject ? option : getValue(option)
+	}
+	return props.multiple && Array.isArray(props.modelValue)
+		? ObjectUtilities.contains(optionValue, props.modelValue)
+		: ObjectUtilities.equals(optionValue, props.modelValue)
+}
 
-	// Find option object if useObject prop is true
-	const valueObject = props.useObject
-		? props.options?.find(
-				(option) => (option as Option)[props.valueKey] == target.value
-		  )
-		: null
+/**
+ * Function triggered on input of checkbox or radio (multple or single mode)
+ * @param event on input event (checkbox or radio input)
+ */
+function onInput(event: Event) {
+	// close dropdown in single mode
+	if (dropdown.value && !props.multiple) {
+		dropdown.value.open = false
+	}
+	const target = event.target as HTMLInputElement
+
+	// Value initialized with string input value
+	// Can be an Array of string or an Option or Array of Options
+	let value: string | string[] | Option | Option[] = target.value
+	// Find option object if useObject prop is true and options are objects
+	const valueObject =
+		props.useObject && isOptionsObjects.value
+			? props.options?.find(
+					(option) => (option as Option)[props.valueKey] == value
+			  )
+			: null
 
 	// use valueObject if exist or the target value
-	const value = valueObject || target.value
+	value = valueObject || value
 
+	// Check multiple prop, override value with array and remove or add the value
+	if (props.multiple) {
+		// check maxValues prop and block check new values
+		if (
+			typeof props.maxValues !== 'undefined' &&
+			props.maxValues >= 0 &&
+			props.modelValue?.length >= props.maxValues
+		) {
+			if (
+				(Array.isArray(props.modelValue) &&
+					!ObjectUtilities.contains(value, props.modelValue)) ||
+				props.maxValues == 0
+			) {
+				target.checked = false
+				// maxValues reached
+				return
+			}
+		}
+		if (Array.isArray(props.modelValue)) {
+			value = ObjectUtilities.contains(value, props.modelValue)
+				? ObjectUtilities.removeFromList(value, props.modelValue)
+				: [...props.modelValue, value]
+		} else {
+			value = [value]
+		}
+	}
 	emit('update:modelValue', value)
 }
 </script>
