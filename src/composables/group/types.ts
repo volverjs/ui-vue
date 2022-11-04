@@ -52,10 +52,10 @@ export interface IInputGroupState extends IGroupState {
 
 // All available Group States Types
 export type GroupStateTypes =
+	| IGroupState
 	| IAccordionGroupState
 	| IInputGroupState
 	| IButtonGroupState
-	| IGroupState
 
 // #region group options
 export interface IGroupOptions {

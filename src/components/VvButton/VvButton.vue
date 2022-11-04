@@ -46,23 +46,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs, useAttrs } from 'vue'
+import { toRefs, useAttrs } from 'vue'
 
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { ButtonIconPosition, ButtonTag } from './VvButton'
-import { ButtonGroupState } from '../../composables/group/models'
 import { VvButtonProps, VvButtonEvents } from './VvButton'
+import ObjectUtilities from '@/utils/ObjectUtilities'
 
 //Components
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 //Composables
-import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
 import { useBemModifiers } from '@/composables/useModifiers'
-
-//Constasts
-import { VV_BUTTON_GROUP } from '../../constants'
+import { toGroupRefs } from './useButtonGroupProps'
 
 //Props, emits, attrs, slots
 const props = defineProps(VvButtonProps)
@@ -71,17 +68,9 @@ const attrs = useAttrs()
 
 //Data
 const btnName = attrs?.name || uuidv4()
-const {
-	disabled,
-	modifiers,
-	active,
-	block,
-	rounded,
-	fullBleed,
-	iconPosition,
-	icon,
-	label
-} = toRefs(props)
+const { modifiers, block, rounded, fullBleed, iconPosition, icon, label } =
+	toRefs(props)
+const { modelValue, disabled, toggle } = toGroupRefs(props, emit)
 
 /**
  * @description Select the tag type in based on the props before.
@@ -89,7 +78,7 @@ const {
  */
 const isComponent = computed(() => {
 	switch (true) {
-		case isDisabled.value:
+		case disabled.value:
 			return ButtonTag.button
 		case props.to !== undefined:
 			return ButtonTag.routerLink
@@ -100,25 +89,25 @@ const isComponent = computed(() => {
 	}
 })
 
-//GROUP
-const groupState = new ButtonGroupState({
-	modelValue: ref(btnName),
-	disabled
+/**
+ * Stato active del pulsante.
+ * Se in un button group toggle, forza l'active in base al valore selezionato
+ */
+const active = computed(() => {
+	if (!toggle.value) return props.active
+
+	return Array.isArray(modelValue.value)
+		? ObjectUtilities.contains(btnName, modelValue.value)
+		: ObjectUtilities.equals(btnName, modelValue.value)
 })
-const { modelValue, isDisabled, isToggleEnabled, checkIsSelected } =
-	useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
-const isSelected = computed(
-	() => isToggleEnabled.value && checkIsSelected(btnName)
-)
 
 //Styles & bindings
 const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
 	modifiers,
-	active: computed(() => active.value || isSelected.value),
+	active,
 	block,
 	rounded,
 	fullBleed,
-	disabled: isDisabled,
 	reverse: computed(() =>
 		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
 			iconPosition.value
@@ -138,7 +127,7 @@ const properties = computed(() => {
 	return {
 		...linkProps.value,
 		'aria-label': props.label || attrs['aria-label'],
-		'aria-disabled': isDisabled.value,
+		'aria-disabled': disabled.value,
 		role: 'button',
 		class: btnClass.value,
 		to: props.to
@@ -151,7 +140,7 @@ const linkProps = computed(() => {
 	const isLink = isComponent.value === ButtonTag.a
 	let toReturn = {}
 	if (isLink) {
-		toReturn = isDisabled.value
+		toReturn = disabled.value
 			? {
 					href: 'javascript:;'
 			  }

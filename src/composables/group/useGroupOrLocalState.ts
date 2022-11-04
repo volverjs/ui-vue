@@ -7,7 +7,7 @@ import {
 } from './types'
 import type { ButtonGroupState, InputGroupState } from './models'
 
-import { inject, computed, unref, watch, ref } from 'vue'
+import { inject, computed, unref, watch, ref, toRef } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 
 export interface UseGroupOrLocalStateReturn {
@@ -109,9 +109,89 @@ export function useGroupOrLocalState(
 	}
 }
 
-// const {isInGroup, group} = useGroupItem(KEY)
-// const {modelValue, isDisabled, isReadonly} = useGroupOrLocalState(group, {
-//     modelValue: props.modelValue,
-//     disabled: props.disabled,
-//     readonly: props.readonly
-// }, emit)
+/**
+ * Esegue l'inject dello stato condiviso da un componente Group.
+ */
+export function useInjectedGroupState(groupKey: symbol) {
+	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
+	const group = inject<Ref<GroupStateTypes> | undefined>(groupKey, undefined)
+
+	//Check if component is in group
+	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
+
+	/**
+	 * Crea una ref variable (writable) che utilizza il valore iniettato se mi trovo in
+	 * un gruppo.
+	 */
+	function useGroupOrLocalRef<T extends object>(
+		props: T,
+		propName: Exclude<keyof GroupStateTypes, 'key'>,
+		emit: (event: any, ...args: any[]) => void
+	) {
+		let myProp: Ref
+		if (group?.value) {
+			myProp = toRef(group.value, propName)
+			watch(myProp, (value) => {
+				const groupPropValue = unref(group.value)[propName]
+				if (!ObjectUtilities.equals(value, groupPropValue.value)) {
+					groupPropValue.value = value
+				}
+			})
+			watch(
+				() => unref(group)[propName].value,
+				(value) => {
+					if (!ObjectUtilities.equals(value, myProp.value)) {
+						myProp.value = value
+					}
+				},
+				{ immediate: true }
+			)
+		} else {
+			myProp = toRef(props as T, propName as keyof T)
+			watch(myProp, (value) => {
+				emit(`update:${propName}`, value)
+			})
+			watch(
+				() => props[propName as keyof T],
+				(value) => {
+					if (!ObjectUtilities.equals(value, myProp.value)) {
+						myProp.value = value
+					}
+				},
+				{ immediate: true }
+			)
+		}
+		return myProp
+	}
+
+	/**
+	 * Crea una ref variable (readonly) che utilizza il valore iniettato se mi trovo in
+	 * un gruppo.
+	 */
+	function useGroupOrLocalReadOnlyRef<T extends object>(
+		props: T,
+		propName: Exclude<keyof GroupStateTypes, 'key'>
+	) {
+		const myProp = ref(null)
+		watch(
+			() =>
+				group && group.value
+					? unref(group)[propName].value
+					: props[propName as keyof T],
+			(value) => {
+				if (!ObjectUtilities.equals(value, myProp.value)) {
+					myProp.value = value
+				}
+			},
+			{ immediate: true }
+		)
+		return myProp
+	}
+
+	return {
+		group,
+		isInGroup,
+		useGroupOrLocalRef,
+		useGroupOrLocalReadOnlyRef
+	}
+}
