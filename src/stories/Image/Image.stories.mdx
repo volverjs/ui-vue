@@ -1,0 +1,19 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+
+import VvImage from '../../components/VvImage/VvImage.vue'
+
+<Meta title="Components/Image" component={VvImage} />
+
+export const Template = (args) => ({
+	components: { VvImage },
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`<vv-image v-bind="args" />`
+})
+
+<Story name="vv-image" args={{}}>
+	{Template.bind({})}
+</Story>

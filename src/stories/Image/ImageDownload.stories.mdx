@@ -1,0 +1,27 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+
+import VvImage from '../../components/VvImage/VvImage.vue'
+import { Template } from './Image.stories.mdx'
+
+<Meta title="Components/Image/Download" component={VvImage} />
+
+<Story
+	name="Image download"
+	args={{
+		src: 'https://www.w3schools.com/tags/img_girl.jpg',
+		alt: 'Prova immagine',
+		download: true
+	}}>
+	{Template.bind({})}
+</Story>
+
+<Story
+	name="Image download filename"
+	args={{
+		src: 'https://source.unsplash.com/featured/300×300/?ocean',
+		alt: 'Prova immagine',
+		download: true,
+		downloadFileName: 'Prova'
+	}}>
+	{Template.bind({})}
+</Story>

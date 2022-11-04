@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+
+import VvImage from '../../components/VvImage/VvImage.vue'
+import { Template } from './Image.stories.mdx'
+
+<Meta title="Components/Image/Src" component={VvImage} />
+
+<Story
+	name="Image from url"
+	args={{
+		src: 'https://source.unsplash.com/featured/300×300/?ocean',
+		alt: 'Prova immagine'
+	}}>
+	{Template.bind({})}
+</Story>
