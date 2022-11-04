@@ -17,7 +17,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
 
 	/**
-	 *
+	 * Crea una computed ref (writable) che può utilizzare esporre il valore o dall'oggetto props oppure dal group
 	 */
 	function getGroupOrLocalRef<T extends object>(
 		props: T,

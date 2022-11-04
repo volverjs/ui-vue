@@ -59,7 +59,7 @@ import VvIcon from '../VvIcon/VvIcon.vue'
 
 //Composables
 import { useBemModifiers } from '@/composables/useModifiers'
-import { toGroupButtonRefs } from './useButtonGroupProps'
+import { toButtonRefs } from './useButtonGroupProps'
 
 //Props, emits, attrs, slots
 const props = defineProps(VvButtonProps)
@@ -79,7 +79,7 @@ const {
 	modelValue,
 	disabled,
 	toggle
-} = toGroupButtonRefs(props, emit)
+} = toButtonRefs(props, emit)
 
 /**
  * @description Select the tag type in based on the props before.

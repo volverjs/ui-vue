@@ -13,7 +13,7 @@ import type { VvButtonPropsTypes } from './VvButton'
  * Estreae tutte le prop del componente VvButton che possono essere
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
-export function toGroupButtonRefs(
+export function toButtonRefs(
 	props: VvButtonPropsTypes,
 	emit: (event: any, ...args: any[]) => void
 ) {
