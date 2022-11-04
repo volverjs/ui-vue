@@ -21,7 +21,7 @@ export const VvAccordionGroupProps = {
 	 * Accordion items
 	 * @type VvAccordionGroupItem
 	 */
-	items: { type: Array, default: () => [] },
+	items: { type: Array<VvAccordionGroupItem>, default: () => [] },
 	/**
 	 * If true, close others accordion when an item is open
 	 */

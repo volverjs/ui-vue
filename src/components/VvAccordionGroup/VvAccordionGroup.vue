@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref } from 'vue'
+import { toRefs } from 'vue'
 import { AccordionGroupState } from '../../composables/group/models'
 
 //Components

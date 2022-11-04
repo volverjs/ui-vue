@@ -1,11 +1,11 @@
 export interface IValid {
 	valid: boolean
-	validLabel: string | array<string>
+	validLabel: string | Array<string>
 }
 
 export interface IError {
 	error: boolean
-	errorLabel: string | array<string>
+	errorLabel: string | Array<string>
 }
 
 export interface ILoading {
@@ -14,7 +14,7 @@ export interface ILoading {
 }
 
 export interface IModifiers {
-	modifiers: string | array<string>
+	modifiers: string | Array<string>
 }
 
 export interface IHint {
@@ -22,7 +22,7 @@ export interface IHint {
 }
 
 export interface IOptions {
-	options: array<any>
+	options: Array<any>
 	optionLabel: string | ((a: string) => void)
 	optionValue: string | ((a: string) => void)
 }
