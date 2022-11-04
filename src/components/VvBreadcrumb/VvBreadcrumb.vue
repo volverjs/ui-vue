@@ -4,28 +4,33 @@
 			<li
 				v-for="(route, index) in routes"
 				:key="`${route.label}-${index}`"
-				class="vv-breadcrumb__item"
+				:class="{
+					'vv-breadcrumb__item': index < Number(routes?.length) - 1,
+					'vv-breadcrumb__item-active':
+						index === Number(routes?.length) - 1
+				}"
 				itemprop="itemListElement"
 				itemtype="https://schema.org/ListItem"
 				itemscope>
 				<component
-					v-bind="route"
 					:is="route.to ? 'router-link' : route.href ? 'a' : 'span'"
-					active-class="vv-breadcrumb__item-active"
-					exact-active-class="vv-breadcrumb__item-active"
-					class="vv-breadcrumb__link"
+					v-bind="route"
+					:class="{
+						'vv-breadcrumb__link':
+							index < Number(routes?.length) - 1
+					}"
+					:aria-current="
+						index === Number(routes?.length) - 1
+							? 'page'
+							: undefined
+					"
 					itemprop="item">
-					<span itemprop="name">
-						{{ route.label }}
-					</span>
+					<!-- <span itemprop="name"> -->
+					{{ route.label }}
+					<!-- </span> -->
 				</component>
+				<meta itemprop="position" :content="`${index + 1}`" />
 			</li>
-			<!-- <li class="vv-breadcrumb__item">
-				<a class="vv-breadcrumb__link" href="#">Library</a>
-			</li>
-			<li class="vv-breadcrumb__item-active" aria-current="page">
-				My Component
-			</li> -->
 		</ol>
 	</nav>
 </template>

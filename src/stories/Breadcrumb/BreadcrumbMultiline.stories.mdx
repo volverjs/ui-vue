@@ -3,12 +3,14 @@ import vueRouter from 'storybook-vue3-router'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
+import { BreadcrumbStory } from './Breadcrumb.stories.mdx'
 
 <Meta
-	title="Components/Breadcrumb"
+	title="Components/Breadcrumb/Props/multiline"
 	component={VvBreadcrumb}
 	args={{
 		...ObjectUtilities.propsToObject(VvBreadcrumbProps),
+		multiline: true,
 		routes: [
 			{
 				label: 'Home',
@@ -28,41 +30,10 @@ import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 	}}
 />
 
-export const Template = (args) => ({
-	components: { VvBreadcrumb },
-	setup() {
-		return { args }
-	},
-	template:
-		/*html*/
-		`<vv-breadcrumb v-bind="args" />`
-})
-
-export const BreadcrumbStory = Template.bind({})
-BreadcrumbStory.decorators = [
-	vueRouter([
-		{
-			path: '/',
-			name: 'home',
-			component: VvBreadcrumb
-		},
-		{
-			path: '/library',
-			name: 'library',
-			component: VvBreadcrumb
-		},
-		{
-			path: '/book1',
-			name: 'book1',
-			component: VvBreadcrumb
-		}
-	])
-]
-
 # VvBreadcrumb
 
 Stories of `VvBreadcrumb`.
-Let's define a story for our playground `breadcrumb`:
+Let's define a story for our `multiline` `breadcrumb`:
 
 <Canvas>
 	<Story name="vv-breadcrumb" args={{}}>

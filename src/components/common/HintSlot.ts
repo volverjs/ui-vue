@@ -155,15 +155,7 @@ export function HintSlotFactory(
 		},
 		render() {
 			if (this.hasHint) {
-				return h(
-					'span',
-					{
-						style: {
-							'white-space': 'pre'
-						}
-					},
-					this.hintContent
-				)
+				return h('span', null, this.hintContent)
 			}
 		}
 	}
