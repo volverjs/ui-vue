@@ -1,11 +1,11 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
 
-<Meta title="Components/Dropdown/Props/useObject" />
+<Meta title="Components/NativeSelect/Props/useObject" />
 
-# VvDropdown useObject
+# VvNativeSelect useObject
 
-Let's define a story for our `useObject` dropdown.
+Let's define a story for our `useObject` select.
 
 Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
@@ -32,7 +32,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 	<Story name="useObject">
 		{() => {
 			return {
-				components: { VvDropdown },
+				components: { VvNativeSelect },
 				data() {
 					return {
 						value: '',
@@ -55,7 +55,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 				template:
 					/*html*/
 					`<div class="w-1/2">
-						<vv-dropdown v-model:modelValue="value" :options="options" label="Label 1" use-object />
+						<vv-native-select v-model:modelValue="value" :options="options" label="Label 1" use-object />
 						value: {{ value }}
 					</div>`
 			}
@@ -66,5 +66,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 <Source
 	language="html"
 	/*html*/
-	code={`<vv-dropdown v-model:modelValue="value" :options="options" label="Label 1" use-object />`}
+	code={`<vv-native-select v-model:modelValue="value" :options="options" label="Label 1" use-object />`}
 />

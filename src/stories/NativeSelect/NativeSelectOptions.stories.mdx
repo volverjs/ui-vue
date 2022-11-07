@@ -1,11 +1,11 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
 
-<Meta title="Components/Dropdown/Props/options" />
+<Meta title="Components/NativeSelect/Props/options" />
 
-# VvDropdown options
+# VvNativeSelect options
 
-Let's define a story for our `options` dropdown.
+Let's define a story for our `options` select.
 
 Options string array:
 
@@ -40,7 +40,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 	<Story name="options">
 		{() => {
 			return {
-				components: { VvDropdown },
+				components: { VvNativeSelect },
 				data() {
 					return {
 						value: '',
@@ -66,11 +66,11 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 					/*html*/
 					`<div class="flex gap-32">
 						<div class="w-1/2">
-							<vv-dropdown v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />
+							<vv-native-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />
 							value: {{ value }}
 						</div>
 						<div class="w-1/2">
-							<vv-dropdown v-model:modelValue="objectValue" :options="optionsObject" placeholder="Placeholder" label="Label 1" />
+							<vv-native-select v-model:modelValue="objectValue" :options="optionsObject" placeholder="Placeholder" label="Label 1" />
 							value: {{ objectValue }}
 						</div>
 					</div>`
@@ -82,5 +82,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 <Source
 	language="html"
 	/*html*/
-	code={`<vv-dropdown v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
+	code={`<vv-native-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
 />

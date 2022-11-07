@@ -1,9 +1,9 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import VvSelect from '../../components/VvSelect/VvSelect.vue'
 
-<Meta title="Components/Dropdown/Props/searchable" />
+<Meta title="Components/Select/Props/searchable" />
 
-# VvDropdown searchable
+# VvSelect searchable
 
 Let's define a story for our select with props:
 
@@ -32,7 +32,7 @@ Let's define a story for our select with props:
 	<Story name="searchable">
 		{() => {
 			return {
-				components: { VvDropdown },
+				components: { VvSelect },
 				data() {
 					return {
 						value: '',
@@ -56,7 +56,7 @@ Let's define a story for our select with props:
 				template:
 					/*html*/
 					`<div class="w-1/2 flex gap-32">
-						<vv-dropdown v-model:modelValue="value" @change:search="searchText = $event" :options="options" label="Label 1" searchable label-no-result="No results" search-placeholder="Search" debounce-search="1000" />
+						<vv-select v-model:modelValue="value" @change:search="searchText = $event" :options="options" label="Label 1" searchable label-no-result="No results" search-placeholder="Search" debounce-search="1000" />
 						<div class="my-auto">
 							search text: {{ searchText }}
 						</div>
@@ -72,7 +72,7 @@ Let's define a story for our select with props:
 <Source
 	language="html"
 	/*html*/
-	code={`<vv-dropdown
+	code={`<vv-select
 	v-model:modelValue="value"
 	:options="options"
 	label="Label 1"

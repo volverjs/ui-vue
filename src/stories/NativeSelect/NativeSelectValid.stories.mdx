@@ -1,22 +1,22 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
-import { Template } from './Select.stories.mdx'
+import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import { Template } from './NativeSelect.stories.mdx'
 
-<Meta title="Components/Select/Props/error" />
+<Meta title="Components/NativeSelect/Props/valid" />
 
-# VvSelect error/error-label
+# VvNativeSelect valid/valid-label
 
-Let's define a story for our `error` and `error-label` select.
+Let's define a story for our `valid` and `valid-label` select.
 
 <Canvas>
 	<Story
-		name="error"
+		name="valid"
 		args={{
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			options: ['Option 1', 'Option 2', 'Option 3'],
-			error: true,
-			errorLabel: 'An error occurred!'
+			valid: true,
+			validLabel: 'The field is correct!'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -31,7 +31,7 @@ Let's define a story for our `error` and `error-label` select.
 	:options="options"
 	placeholder="Placeholder"
 	label="Label 1"
-	error
-	error-label="An error occurred!"
+	valid
+	valid-label="An error occurred!"
 />`}
 />

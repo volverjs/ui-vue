@@ -1,7 +1,13 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import vueRouter from 'storybook-vue3-router'
-import { buttonTest, disableTest, cssTest, propertyTest, classTest } from './test.js'
+import {
+	buttonTest,
+	disableTest,
+	cssTest,
+	propertyTest,
+	classTest
+} from './test.js'
 
 <Meta title="Components/Button/link" />
 
@@ -27,7 +33,7 @@ Stories of `VvButton` with `link`.
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Link text" href="https://google.it" target="_blank" variant="text" />`
+					`<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" />`
 			}
 		}}
 	</Story>
@@ -155,8 +161,10 @@ RouterLinkStory.decorators = [
 ]
 
 <Canvas>
-	<Story name="router-link" args={{}}
-	play={(ctx) =>
+	<Story
+		name="router-link"
+		args={{}}
+		play={(ctx) =>
 			buttonTest({
 				...ctx,
 				functions: [propertyTest, classTest],

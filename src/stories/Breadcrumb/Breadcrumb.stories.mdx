@@ -1,0 +1,71 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import vueRouter from 'storybook-vue3-router'
+import ObjectUtilities from '../../utils/ObjectUtilities'
+import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
+import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
+
+<Meta
+	title="Components/Breadcrumb"
+	component={VvBreadcrumb}
+	args={{
+		...ObjectUtilities.propsToObject(VvBreadcrumbProps),
+		routes: [
+			{
+				label: 'Home',
+				title: 'Home',
+				to: '/'
+			},
+			{
+				label: 'Library',
+				title: 'Library',
+				to: '/library'
+			},
+			{
+				label: 'Book 1',
+				title: 'Book 1'
+			}
+		]
+	}}
+/>
+
+export const Template = (args) => ({
+	components: { VvBreadcrumb },
+	setup() {
+		return { args }
+	},
+	template:
+		/*html*/
+		`<vv-breadcrumb v-bind="args" />`
+})
+
+export const BreadcrumbStory = Template.bind({})
+BreadcrumbStory.decorators = [
+	vueRouter([
+		{
+			path: '/',
+			name: 'home',
+			component: VvBreadcrumb
+		},
+		{
+			path: '/library',
+			name: 'library',
+			component: VvBreadcrumb
+		},
+		{
+			path: '/book1',
+			name: 'book1',
+			component: VvBreadcrumb
+		}
+	])
+]
+
+# VvBreadcrumb
+
+Stories of `VvBreadcrumb`.
+Let's define a story for our playground `breadcrumb`:
+
+<Canvas>
+	<Story name="vv-breadcrumb" args={{}}>
+		{BreadcrumbStory}
+	</Story>
+</Canvas>
