@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import type IAccordionGroupState from '@/composables/group2/types/IAccordionGroupState'
+import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
 
 import { toRefs } from 'vue'
 import { VV_ACCORDION_GROUP } from './../../constants'
@@ -26,7 +26,7 @@ import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group2/useProvideGroupState'
+import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
 import { useBemModifiers } from '../../composables/useModifiers'
 
 import {

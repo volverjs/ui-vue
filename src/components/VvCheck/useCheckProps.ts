@@ -1,10 +1,10 @@
 import type { VvCheckPropsTypes } from './VvCheck'
-import type { IInputGroupState } from '@/composables/group2/types/IInputGroup'
+import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 
 import { toRefs } from 'vue'
 
 //Composables
-import { useInjectedGroupState } from '../../composables/group2/useInjectedGroupState'
+import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
 
 //Constasts
 import { VV_CHECK_GROUP } from '../../constants'

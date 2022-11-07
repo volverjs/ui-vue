@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IInputGroupState } from '@/composables/group2/types/IInputGroup'
+import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 
 import { useSlots, computed, toRefs } from 'vue'
 import { VvCheckGroupProps, VvCheckGroupEvents } from './VvCheckGroup'
@@ -30,7 +30,7 @@ import { VV_CHECK_GROUP } from '../../constants'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group2/useProvideGroupState'
+import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
 import { useOptions } from '../../composables/options/useOptions'
 import { useBemModifiers } from '@/composables/useModifiers'
 

@@ -1,10 +1,10 @@
 import type { VvAccordionPropsTypes } from './VvAccordion'
-import type IAccordionGroupState from '@/composables/group2/types/IAccordionGroupState'
+import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
 
 import { toRefs } from 'vue'
 
 //Composables
-import { useInjectedGroupState } from '../../composables/group2/useInjectedGroupState'
+import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
 
 //Constasts
 import { VV_ACCORDION_GROUP } from '../../constants'

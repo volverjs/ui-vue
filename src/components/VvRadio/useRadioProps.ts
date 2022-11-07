@@ -1,10 +1,10 @@
 import type { VvRadioPropsTypes } from '../VvRadioGroup/VvRadioGroup'
-import type { IInputGroupState } from '@/composables/group2/types/IInputGroup'
+import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 
 import { toRefs } from 'vue'
 
 //Composables
-import { useInjectedGroupState } from '../../composables/group2/useInjectedGroupState'
+import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
 
 //Constasts
 import { VV_RADIO_GROUP } from '../../constants'

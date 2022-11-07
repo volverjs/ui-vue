@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type IButtonGroupState from '@/composables/group2/types/IButtonGroupState'
+import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
 
 import { toRefs } from 'vue'
 import { VvButtonGroupProps, VvButtonGroupEvents } from './VvButtonGroup'
@@ -13,7 +13,7 @@ import { VV_BUTTON_GROUP } from '../../constants'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group2/useProvideGroupState'
+import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
 import { useBemModifiers } from '@/composables/useModifiers'
 
 //Emits, props, attrs, slots

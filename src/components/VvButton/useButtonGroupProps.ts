@@ -1,8 +1,8 @@
 import { toRefs } from 'vue'
-import type IButtonGroupState from '../../composables/group2/types/IButtonGroupState'
+import type IButtonGroupState from '../../composables/group/types/IButtonGroupState'
 
 //Composables
-import { useInjectedGroupState } from '../../composables/group2/useInjectedGroupState'
+import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
 
 //Constasts
 import { VV_BUTTON_GROUP } from '../../constants'

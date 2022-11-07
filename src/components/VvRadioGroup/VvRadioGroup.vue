@@ -21,12 +21,12 @@
 
 <script setup lang="ts">
 import { useSlots, computed, toRefs } from 'vue'
-import type { IInputGroupState } from '@/composables/group2/types/IInputGroup'
+import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { VvRadioGroupProps, VvRadioGroupEvents } from './VvRadioGroup'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group2/useProvideGroupState'
+import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
 import { useOptions } from '../../composables/options/useOptions'
 import { useBemModifiers } from '@/composables/useModifiers'
 
