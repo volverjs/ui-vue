@@ -17,7 +17,7 @@
 							? option.disabled ?? disabled
 							: disabled
 					"
-					@input="emit('update:modelValue', $event)" />
+					@input="onInput" />
 				{{ getLabel(option) }}
 			</label>
 		</li>
@@ -77,5 +77,54 @@ function getValue(option: string | Option) {
  */
 function getLabel(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.labelKey]
+}
+
+/**
+ * Function triggered on input of checkbox or radio (multple or single mode)
+ * @param event on input event (checkbox or radio input)
+ */
+function onInput(event: Event) {
+	const target = event.target as HTMLInputElement
+
+	// Value initialized with string input value
+	// Can be an Array of string or an Option or Array of Options
+	let value: string | string[] | Option | Option[] = target.value
+	// Find option object if useObject prop is true and options are objects
+	const valueObject = props.useObject
+		? props.options?.find(
+				(option) => (option as Option)[props.valueKey] == value
+		  )
+		: null
+
+	// use valueObject if exist or the target value
+	value = valueObject || value
+
+	// Check multiple prop, override value with array and remove or add the value
+	if (props.multiple) {
+		// check maxValues prop and block check new values
+		if (
+			typeof props.maxValues !== 'undefined' &&
+			props.maxValues >= 0 &&
+			props.modelValue?.length >= props.maxValues
+		) {
+			if (
+				(Array.isArray(props.modelValue) &&
+					!ObjectUtilities.contains(value, props.modelValue)) ||
+				props.maxValues == 0
+			) {
+				target.checked = false
+				// maxValues reached
+				return
+			}
+		}
+		if (Array.isArray(props.modelValue)) {
+			value = ObjectUtilities.contains(value, props.modelValue)
+				? ObjectUtilities.removeFromList(value, props.modelValue)
+				: [...props.modelValue, value]
+		} else {
+			value = [value]
+		}
+	}
+	emit('update:modelValue', value)
 }
 </script>

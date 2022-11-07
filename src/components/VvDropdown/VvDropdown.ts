@@ -24,9 +24,17 @@ export const VvDropdownProps = {
 		required: true
 	},
 	/**
+	 * Use objects as modelValue (object or object[])
+	 */
+	useObject: Boolean,
+	/**
 	 * Manage modelValue as string[] or object[]
 	 */
 	multiple: Boolean,
+	/**
+	 * The max number of selected values
+	 */
+	maxValues: [Number, String],
 	/**
 	 * Used when options are objects: key to use for option label
 	 */

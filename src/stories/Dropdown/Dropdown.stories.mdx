@@ -1,0 +1,52 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import { VvDropdownProps } from '../../components/VvDropdown/VvDropdown'
+import ObjectUtilities from '../../utils/ObjectUtilities'
+
+<Meta
+	title="Components/Dropdown"
+	component={VvDropdown}
+	args={{
+		...ObjectUtilities.propsToObject(VvDropdownProps),
+		options: [
+			{
+				label: 'Option 1',
+				value: 1
+			},
+			{
+				label: 'Option 2',
+				value: 2
+			},
+			{
+				label: 'Option 3',
+				value: 3
+			}
+		]
+	}}
+/>
+
+export const Template = (args) => ({
+	components: { VvDropdown },
+	setup() {
+		return { args }
+	},
+	data() {
+		return {
+			value: ''
+		}
+	},
+	template:
+		/*html*/
+		`<div class="mb-lg">Value: {{ value }}</div>
+		<vv-dropdown v-bind="args" v-model:modelValue="value" class="w-1/2 ml-lg" />
+		`
+})
+
+# VvDropdown
+
+Stories of `VvDropdown`.
+Let's define a story for our playground `dropdown`:
+
+<Canvas>
+	<Story name="vv-dropdown">{Template.bind({})}</Story>
+</Canvas>

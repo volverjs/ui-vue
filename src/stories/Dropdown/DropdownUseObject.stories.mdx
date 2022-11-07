@@ -1,0 +1,60 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import { Template } from './Dropdown.stories.mdx'
+
+<Meta title="Components/Dropdown/Props/useObject" />
+
+# VvDropdown useObject
+
+Let's define a story for our `useObject` dropdown.
+
+Options object array and default `valueKey` ("value") and `labelKey` ("label"):
+
+<Source
+	language="json"
+	/*html*/
+	code={`[
+	{
+		"label": "Option 1",
+		"value": 1
+	},
+	{
+		"label": "Option 2",
+		"value": 2
+	},
+	{
+		"label": "Option 3",
+		"value": 3
+	}
+]`}
+/>
+
+<Canvas>
+	<Story
+		name="useObject"
+		args={{
+			options: [
+				{
+					label: 'Option 1',
+					value: 1
+				},
+				{
+					label: 'Option 2',
+					value: 2
+				},
+				{
+					label: 'Option 3',
+					value: 3
+				}
+			],
+			useObject: true
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Source
+	language="html"
+	/*html*/
+	code={`<vv-dropdown v-model:modelValue="value" :options="options" use-object />`}
+/>

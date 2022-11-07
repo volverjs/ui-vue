@@ -1,0 +1,84 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+
+<Meta title="Components/Dropdown/Props/options" />
+
+# VvDropdown options
+
+Let's define a story for our `options` dropdown.
+
+Options string array:
+
+<Source
+	language="json"
+	/*html*/
+	code={`[ "Option 4", "Option 5", "Option 6" ]`}
+/>
+
+Options object array and default `valueKey` ("value") and `labelKey` ("label"):
+
+<Source
+	language="json"
+	/*html*/
+	code={`[
+	{
+		"label": "Option 1",
+		"value": 1
+	},
+	{
+		"label": "Option 2",
+		"value": 2
+	},
+	{
+		"label": "Option 3",
+		"value": 3
+	}
+]`}
+/>
+
+<Canvas>
+	<Story name="options">
+		{() => {
+			return {
+				components: { VvDropdown },
+				data() {
+					return {
+						value: '',
+						objectValue: '',
+						options: ['Option 4', 'Option 5', 'Option 6'],
+						optionsObject: [
+							{
+								label: 'Option 1',
+								value: 1
+							},
+							{
+								label: 'Option 2',
+								value: 2
+							},
+							{
+								label: 'Option 3',
+								value: 3
+							}
+						]
+					}
+				},
+				template:
+					/*html*/
+					`<div class="h-100 mb-xl">
+						<vv-dropdown v-model:modelValue="value" :options="options" class="w-1/2 ml-lg" />
+						<div class="flex justify-end">Value: {{ value }}</div>
+					</div>
+					<div class="h-100 pt-lg">
+						<vv-dropdown v-model:modelValue="objectValue" :options="optionsObject" class="w-1/2 ml-lg" />
+						<div class="flex justify-end">Value: {{ objectValue }}</div>
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="html"
+	/*html*/
+	code={`<vv-dropdown v-model:modelValue="value" :options="options" />`}
+/>
