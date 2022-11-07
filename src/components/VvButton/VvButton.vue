@@ -51,7 +51,7 @@ import { useAttrs } from 'vue'
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { ButtonIconPosition, ButtonTag } from './VvButton'
-import { VvButtonProps, VvButtonEvents } from './VvButton'
+import { VvButtonProps } from './VvButton'
 import ObjectUtilities from '@/utils/ObjectUtilities'
 
 //Components
@@ -63,7 +63,6 @@ import { toButtonRefs } from './useButtonGroupProps'
 
 //Props, emits, attrs, slots
 const props = defineProps(VvButtonProps)
-const emit = defineEmits(VvButtonEvents)
 const attrs = useAttrs()
 
 //Data
@@ -78,8 +77,9 @@ const {
 	label,
 	modelValue,
 	disabled,
-	toggle
-} = toButtonRefs(props, emit)
+	toggle,
+	isInGroup
+} = toButtonRefs(props)
 
 /**
  * @description Select the tag type in based on the props before.
@@ -117,6 +117,7 @@ const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
 	block,
 	rounded,
 	fullBleed,
+	disabled,
 	reverse: computed(() =>
 		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
 			iconPosition.value
@@ -163,6 +164,9 @@ const linkProps = computed(() => {
 
 //Methods
 function onBtnClick() {
-	modelValue.value = btnName
+	// set group modelValue
+	if (isInGroup.value) {
+		modelValue.value = btnName
+	}
 }
 </script>

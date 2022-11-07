@@ -33,7 +33,7 @@ Stories of `VvButton` with `link`.
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" />`
+					`<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" @click="$event.preventDefault()" />`
 			}
 		}}
 	</Story>
@@ -90,7 +90,7 @@ Stories of `VvButton` with `link`.
 				components: { VvButton },
 				template:
 					/*html*/
-					`<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" />`
+					`<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" @click="$event.preventDefault()" />`
 			}
 		}}
 	</Story>
