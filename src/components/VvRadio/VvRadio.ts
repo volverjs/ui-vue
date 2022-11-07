@@ -1,3 +1,4 @@
+import type { ExtractPropTypes } from 'vue'
 import { ValidProps, ErrorProps } from '../../props'
 
 export const VvRadioProps = {
@@ -20,3 +21,6 @@ export const VvRadioEvents = [
 	'focus',
 	'blur'
 ]
+
+type _VvRadioType = typeof VvRadioProps
+export type VvRadioGroupType = ExtractPropTypes<_VvRadioType>

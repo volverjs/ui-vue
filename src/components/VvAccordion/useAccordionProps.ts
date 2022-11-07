@@ -1,48 +1,45 @@
+import type { VvAccordionPropsTypes } from './VvAccordion'
+import type IAccordionGroupState from '@/composables/group2/types/IAccordionGroupState'
+
 import { toRefs } from 'vue'
-import type IButtonGroupState from '../../composables/group2/types/IButtonGroupState'
 
 //Composables
 import { useInjectedGroupState } from '../../composables/group2/useInjectedGroupState'
 
 //Constasts
-import { VV_BUTTON_GROUP } from '../../constants'
-
-import type { VvButtonPropsTypes } from './VvButton'
+import { VV_ACCORDION_GROUP } from '../../constants'
 
 /**
  * Estreae tutte le prop del componente VvButton che possono essere
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
-export function toButtonRefs(
-	props: VvButtonPropsTypes,
+export function toAccordionRefs(
+	props: VvAccordionPropsTypes,
 	emit: (event: any, ...args: any[]) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
-		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
+		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
 
 	//Local props
-	const { modifiers, block, rounded, fullBleed, iconPosition, icon, label } =
-		toRefs(props)
+	const { modifiers } = toRefs(props)
 
 	//Group based props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
+	const bordered = getGroupOrLocalRef('bordered', props)
 	const disabled = getGroupOrLocalRef('disabled', props)
-	const toggle = getGroupOrLocalRef('toggle', props)
+	const iconRight = getGroupOrLocalRef('iconRight', props)
+	const accordion = getGroupOrLocalRef('accordion', props)
 
 	return {
 		//Group based props
 		modelValue,
 		disabled,
-		toggle,
+		bordered,
+		iconRight,
 		isInGroup,
 		group,
+		accordion,
 		//Local props
-		modifiers,
-		block,
-		rounded,
-		fullBleed,
-		iconPosition,
-		icon,
-		label
+		modifiers
 	}
 }

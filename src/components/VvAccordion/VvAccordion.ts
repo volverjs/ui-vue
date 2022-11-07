@@ -1,3 +1,5 @@
+import type { ExtractPropTypes } from 'vue'
+
 export const VvAccordionProps = {
 	/**
 	 * Accordion header title
@@ -27,3 +29,6 @@ export const VvAccordionProps = {
 }
 
 export const VvAccordionEvents = ['update:open']
+
+type _VvAccordionPropsType = typeof VvAccordionProps
+export type VvAccordionPropsTypes = ExtractPropTypes<_VvAccordionPropsType>

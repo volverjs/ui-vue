@@ -13,6 +13,8 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
 	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
 
+	console.log('Inject - ', group)
+
 	//Check if component is in group
 	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
 
@@ -20,11 +22,15 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	 * Crea una computed ref (writable) che può utilizzare esporre il valore o dall'oggetto props oppure dal group
 	 */
 	function getGroupOrLocalRef<T extends object>(
-		props: T,
 		propName: keyof TGroup,
-		emit: (event: any, ...args: any[]) => void
+		props: T,
+		emit?: (event: any, ...args: any[]) => void
 	) {
+		//Check se propName non è in gruppo o locale -> Spaccarsi
 		if (group?.value) {
+			// if (!Object.keys(group.value).includes(propName as string))
+			// 	throw Error(`${propName as string} is not a group valid prop`)
+
 			const groupPropValue = unref(group.value)[propName] as Ref<any>
 			return computed({
 				get() {
@@ -35,13 +41,16 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 				}
 			})
 		} else {
+			// if (!Object.keys(props).includes(propName as string))
+			// 	throw Error(`${propName as string} is not a valid prop`)
+
 			const propRef = toRef(props, propName as keyof T)
 			return computed({
 				get() {
 					return propRef.value
 				},
 				set(value) {
-					emit(`update:${propName as string}`, value)
+					if (emit) emit(`update:${propName as string}`, value)
 				}
 			})
 		}

@@ -164,6 +164,5 @@ const linkProps = computed(() => {
 //Methods
 function onBtnClick() {
 	modelValue.value = btnName
-	emit('update:modelValue', modelValue.value)
 }
 </script>

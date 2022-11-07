@@ -5,13 +5,15 @@
 </template>
 
 <script setup lang="ts">
+import type IButtonGroupState from '@/composables/group2/types/IButtonGroupState'
+
 import { toRefs } from 'vue'
-import { ButtonGroupState } from '../../composables/group/models'
 import { VvButtonGroupProps, VvButtonGroupEvents } from './VvButtonGroup'
+import { VV_BUTTON_GROUP } from '../../constants'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useProvideGroupState } from '../../composables/group2/useProvideGroupState'
 import { useBemModifiers } from '@/composables/useModifiers'
 
 //Emits, props, attrs, slots
@@ -31,11 +33,12 @@ const { bemCssClasses: btnGroupClass } = useBemModifiers('vv-button-group', {
 })
 
 // #region group
-const groupState = new ButtonGroupState({
+const groupState: IButtonGroupState = {
+	key: VV_BUTTON_GROUP,
 	modelValue,
 	disabled,
 	toggle
-})
-useProvideGroupState(groupState, emit)
+}
+useProvideGroupState(groupState)
 // #endregion group
 </script>

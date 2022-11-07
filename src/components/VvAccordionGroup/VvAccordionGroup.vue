@@ -16,15 +16,17 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref } from 'vue'
-import { AccordionGroupState } from '../../composables/group/models'
+import type IAccordionGroupState from '@/composables/group2/types/IAccordionGroupState'
+
+import { toRefs } from 'vue'
+import { VV_ACCORDION_GROUP } from './../../constants'
 
 //Components
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useProvideGroupState } from '../../composables/group2/useProvideGroupState'
 import { useBemModifiers } from '../../composables/useModifiers'
 
 import {
@@ -42,14 +44,15 @@ const { disabled, bordered, iconRight, accordion, modifiers, items } =
 	toRefs(props)
 
 // #region group
-const accordionGroupState = new AccordionGroupState({
+const accordionGroupState: IAccordionGroupState = {
+	key: VV_ACCORDION_GROUP,
 	modelValue,
 	disabled,
 	bordered,
 	iconRight,
 	accordion
-})
-useProvideGroupState(accordionGroupState, emit)
+}
+useProvideGroupState(accordionGroupState)
 // #endregion group
 
 //Styles & bindings

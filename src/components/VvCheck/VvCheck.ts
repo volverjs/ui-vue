@@ -1,3 +1,4 @@
+import type { ExtractPropTypes } from 'vue'
 import { ValidProps, ErrorProps } from '../../props'
 
 export const VvCheckProps = {
@@ -42,3 +43,6 @@ export const VvCheckEvents = [
 	'focus',
 	'blur'
 ]
+
+type _VvCheckPropsType = typeof VvCheckProps
+export type VvCheckPropsTypes = ExtractPropTypes<_VvCheckPropsType>

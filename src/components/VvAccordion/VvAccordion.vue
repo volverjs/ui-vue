@@ -21,14 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, toRefs, ref } from 'vue'
+import { computed, useAttrs, ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { AccordionGroupState } from '../../composables/group/models'
 import { VvAccordionProps, VvAccordionEvents } from './VvAccordion'
 
 //Composables
-import { useAccordionGroup } from '../../composables/group/useAccordionGroup'
+import { toAccordionRefs } from './useAccordionProps'
 import { useBemModifiers } from '../../composables/useModifiers'
+import ObjectUtilities from '@/utils/ObjectUtilities'
 
 // Define component props, attributes and events emitted
 const props = defineProps(VvAccordionProps)
@@ -36,36 +36,31 @@ const attrs = useAttrs()
 const emit = defineEmits(VvAccordionEvents)
 
 //Data
-const { modifiers, bordered, disabled = ref(false), iconRight } = toRefs(props)
-
-// #region group
-const accordionName = ref(attrs?.name || uuidv4())
-const accordionGroupState = new AccordionGroupState({
-	modelValue: accordionName,
-	disabled,
-	bordered,
-	iconRight
-})
+const accordionName = attrs?.name || uuidv4()
 const {
-	isDisabled,
-	hasIconRight,
-	isBordered,
+	modelValue,
+	modifiers,
+	bordered,
+	disabled = ref(false),
+	iconRight,
 	isInGroup,
-	isSelectedInGroup,
-	toggleElement
-} = useAccordionGroup(accordionGroupState.key, accordionGroupState)
-// #endregion group
+	accordion
+} = toAccordionRefs(props, emit)
 
 const isOpen = computed(() => {
-	return isInGroup.value ? isSelectedInGroup.value : props.open
+	if (!isInGroup.value) return props.open
+
+	return accordion.value
+		? ObjectUtilities.equals(accordionName, modelValue.value)
+		: ObjectUtilities.contains(accordionName, modelValue.value)
 })
 
 //Styles & bindings
 const { bemCssClasses: accordionClass } = useBemModifiers('vv-accordion', {
 	modifiers,
-	disabled: isDisabled,
-	markerRight: hasIconRight,
-	bordered: isBordered
+	disabled,
+	markerRight: computed(() => iconRight.value),
+	bordered
 })
 
 // methods
@@ -80,7 +75,16 @@ const onToggle = (e: Event) => {
 const onClick = (e: Event) => {
 	// Update modelValue watched from group provider
 	if (isInGroup.value) {
-		toggleElement()
+		if (accordion.value) {
+			modelValue.value = isOpen.value ? null : accordionName
+		} else {
+			modelValue.value = isOpen.value
+				? ObjectUtilities.removeFromList(
+						accordionName,
+						modelValue.value
+				  )
+				: [...modelValue.value, accordionName]
+		}
 		// prevent auto-toggle in group mode
 		e.preventDefault()
 	}
