@@ -50,3 +50,38 @@ export function useComponentIcons(
 		hasIconBottom
 	}
 }
+
+export function useComponentIcon(
+	icon,
+	iconPosition,
+	slots: ComponentIconSlots
+) {
+	const hasIconLeft = computed(
+		() =>
+			!!((icon.value && iconPosition.value === 'left') || slots.iconLeft)
+	)
+	const hasIconRight = computed(
+		() =>
+			!!(
+				(icon.value && iconPosition.value === 'right') ||
+				slots.iconRight
+			)
+	)
+	const hasIconTop = computed(
+		() => !!((icon.value && iconPosition.value === 'top') || slots.iconTop)
+	)
+	const hasIconBottom = computed(
+		() =>
+			!!(
+				(icon.value && iconPosition.value === 'bottom') ||
+				slots.iconBottom
+			)
+	)
+
+	return {
+		hasIconLeft,
+		hasIconRight,
+		hasIconTop,
+		hasIconBottom
+	}
+}
