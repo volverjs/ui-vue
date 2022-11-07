@@ -21,12 +21,12 @@
 
 <script setup lang="ts">
 import { useSlots, computed, toRefs } from 'vue'
-import { InputGroupState } from '../../composables/group/models'
+import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { VvRadioGroupProps, VvRadioGroupEvents } from './VvRadioGroup'
 
 //Composables
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group/useGroup'
+import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
 import { useOptions } from '../../composables/options/useOptions'
 import { useBemModifiers } from '@/composables/useModifiers'
 
@@ -47,12 +47,13 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const { disabled, readonly, vertical, valid, error } = toRefs(props)
 
 // #region group
-const groupState = new InputGroupState(VV_RADIO_GROUP, {
+const groupState: IInputGroupState = {
+	key: VV_RADIO_GROUP,
 	modelValue,
 	disabled,
 	readonly
-})
-useProvideGroupState(groupState, emit)
+}
+useProvideGroupState(groupState)
 // #endregion group
 
 //OPTIONS

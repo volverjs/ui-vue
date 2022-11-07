@@ -15,16 +15,12 @@
 <script setup lang="ts">
 import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 
-import { computed, useAttrs, ref, toRefs } from 'vue'
+import { computed, useAttrs, ref } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import { InputGroupState } from '../../composables/group/models'
 import { VvCheckProps, VvCheckEvents } from './VvCheck'
 
-//Costanti
-import { VV_CHECK_GROUP } from '../../constants'
-
 //Composables
-import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
+import { toCheckInputRefs } from './useCheckProps'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useBemModifiers } from '@/composables/useModifiers'
 
@@ -34,36 +30,23 @@ const emit = defineEmits(VvCheckEvents)
 const attrs = useAttrs()
 
 //Data
-const {
-	disabled,
-	readonly,
-	valid,
-	error,
-	switch: propsSwitch,
-	modelValue: propsModelValue
-} = toRefs(props)
+const { disabled, readonly, valid, error, propsSwitch, modelValue } =
+	toCheckInputRefs(props, emit)
 
 //Template References
 const input = ref()
-
-// #region group
-const groupState = new InputGroupState(VV_CHECK_GROUP, {
-	modelValue: propsModelValue,
-	disabled,
-	readonly
-})
-const { modelValue, isDisabled, isReadonly, checkIsSelected } =
-	useGroupOrLocalState(VV_CHECK_GROUP, groupState)
-// #endregion group
 
 // FOCUS
 const { focused } = useComponentFocus(input, emit)
 
 //Component computed
 const isChecked = computed(() => {
-	return props.binary
-		? ObjectUtilities.equals(modelValue.value, props.trueValue)
-		: checkIsSelected(props.value)
+	if (props.binary)
+		return ObjectUtilities.equals(modelValue.value, props.trueValue)
+
+	return Array.isArray(modelValue.value)
+		? ObjectUtilities.contains(props.value, modelValue.value)
+		: ObjectUtilities.equals(props.value, modelValue.value)
 })
 
 // Styles & Bindings
@@ -76,8 +59,8 @@ const { bemCssClasses: bemCheckInputClass } = useBemModifiers(
 	'vv-input-check__input',
 	{
 		checked: isChecked,
-		disabled: isDisabled,
-		readonly: isReadonly
+		disabled,
+		readonly
 	}
 )
 const checkClass = computed(() => {
@@ -111,8 +94,8 @@ const checkInputAttrs = computed(() => {
 		id: id || name,
 		name,
 		value: props.value,
-		disabled: isDisabled.value,
-		readonly: isReadonly.value,
+		disabled: disabled.value,
+		readonly: readonly.value,
 		checked: isChecked.value,
 		...checkInputAriaAttrs.value
 	} as InputHTMLAttributes
@@ -133,13 +116,11 @@ const checkInputAriaAttrs = computed(() => {
 function onChange() {
 	if (props.binary) {
 		modelValue.value = isChecked.value ? props.falseValue : props.trueValue
-		emit('update:modelValue', modelValue.value)
 		return
 	}
 
 	if (modelValue.value === null) {
 		modelValue.value = [props.value]
-		emit('update:modelValue', modelValue.value)
 		return
 	}
 
@@ -147,14 +128,13 @@ function onChange() {
 		modelValue.value = !isChecked.value
 			? [...modelValue.value, props.value]
 			: ObjectUtilities.removeFromList(props.value, modelValue.value)
-		emit('update:modelValue', modelValue.value)
 		return
 	}
 
 	console.warn('Cannot change value - VvCheck modelValue is not an array')
 }
 function onClick(event: MouseEvent | undefined) {
-	if (!isDisabled) {
+	if (!disabled.value) {
 		emit('click', event)
 		emit('change', isChecked.value ? props.value : null)
 		focused.value = true
