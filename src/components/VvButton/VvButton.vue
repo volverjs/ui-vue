@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, useAttrs } from 'vue'
+import { useAttrs } from 'vue'
 
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
