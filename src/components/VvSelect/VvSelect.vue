@@ -8,9 +8,6 @@
 			@click="disabled || readonly ? $event.preventDefault() : null"
 			@keyup.esc="dropdown.open = false"
 			@toggle="onToggle">
-			<slot name="icon-left">
-				<vv-icon v-if="iconLeft" :name="iconLeft" />
-			</slot>
 			<summary
 				class="vv-select__input"
 				aria-haspopup="listbox"
@@ -29,42 +26,31 @@
 				</template>
 				<!-- #endregion label of selected value/s -->
 			</summary>
-			<ul class="vv-dropdown" role="listbox">
-				<li v-if="searchable && !currentOptions?.length">
-					<label>
-						{{ labelNoResult }}
-					</label>
-				</li>
-				<li v-for="(option, index) in currentOptions" :key="index">
-					<label :for="`select-${index}-${id}`">
-						<input
-							:id="`select-${index}-${id}`"
-							:type="multiple ? 'checkbox' : 'radio'"
-							:value="getValue(option)"
-							:checked="isSelected(option)"
-							:disabled="
-								typeof option === 'object'
-									? option.disabled ?? disabled
-									: disabled
-							"
-							@input="onInput" />
-						{{ getLabel(option) }}
-					</label>
-				</li>
-			</ul>
+			<VvDropdown
+				v-bind="{
+					disabled,
+					modelValue,
+					labelNoResult,
+					multiple,
+					labelKey,
+					valueKey,
+					options: currentOptions
+				}"
+				@update:model-value="onInput" />
 		</details>
 		<HintSlot class="vv-select__hint" />
 	</div>
 </template>
 
 <script setup lang="ts">
+import type { Option } from '../VvDropdown/VvDropdown'
 import { computed, ref, toRefs, useSlots, watch } from 'vue'
 import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvSelectProps, type Option } from './VvSelect'
+import { VvSelectProps } from './VvSelect'
 import HintSlotFactory from '../common/HintSlot'
-import VvIcon from '../VvIcon/VvIcon.vue'
+import VvDropdown from '../VvDropdown/VvDropdown.vue'
 import { useBemModifiers } from '../../composables/useModifiers'
 
 const props = defineProps(VvSelectProps)
@@ -196,36 +182,6 @@ onClickOutside(dropdown, () => {
 function onToggle(event: Event) {
 	const target = event.target as HTMLDetailsElement
 	dropdownOpen.value = target.open
-}
-
-/**
- * Retrieve the option value based on prop "valueKey" or the option if it is a string
- * @param {String | Option} option
- */
-function getValue(option: string | Option) {
-	return typeof option === 'string' ? option : String(option[props.valueKey])
-}
-
-/**
- * Retrieve the option label based on prop "labelKey" or the option if it is a string
- * @param {String | Option} option
- */
-function getLabel(option: string | Option) {
-	return typeof option === 'string' ? option : option[props.labelKey]
-}
-
-/**
- * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
- * @param {String | Option} option
- */
-function isSelected(option: string | Option) {
-	let optionValue: Option | string = typeof option === 'string' ? option : ''
-	if (!optionValue) {
-		optionValue = props.useObject ? option : getValue(option)
-	}
-	return props.multiple && Array.isArray(props.modelValue)
-		? ObjectUtilities.contains(optionValue, props.modelValue)
-		: ObjectUtilities.equals(optionValue, props.modelValue)
 }
 
 /**

@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { Option } from '../VvDropdown/VvDropdown'
 import {
 	ValidProps,
 	ErrorProps,
@@ -8,10 +9,6 @@ import {
 	ReadonlyProps,
 	ModifiersProps
 } from '../../props'
-
-export interface Option {
-	[key: string]: any
-}
 
 export const VvSelectProps = {
 	...ValidProps,
