@@ -22,7 +22,16 @@ const props = defineProps(VvButtonGroupProps)
 
 //Data
 const modelValue = useVModel(props, 'modelValue', emit)
-const { disabled, vertical, compact, block, rounded, toggle } = toRefs(props)
+const {
+	disabled,
+	vertical,
+	compact,
+	block,
+	rounded,
+	toggle,
+	action,
+	actionQuiet
+} = toRefs(props)
 
 //Computed
 const { bemCssClasses: btnGroupClass } = useBemModifiers('vv-button-group', {
@@ -37,7 +46,9 @@ const groupState: IButtonGroupState = {
 	modelValue,
 	disabled,
 	toggle,
-	rounded
+	rounded,
+	action,
+	actionQuiet
 }
 useProvideGroupState(groupState)
 // #endregion group

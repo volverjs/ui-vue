@@ -4,22 +4,23 @@ import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
 import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
 
-<Meta title="Components/ButtonGroup/Props" component={VvButtonGroup} />
+<Meta
+	title="Components/ButtonGroup/Props/action-quiet"
+	component={VvButtonGroup}
+/>
 
-# Block
+# Action quiet
 
-A VvButtonGroup with the <strong>block</strong> prop will be render with <strong>.vv-button-group--block</strong> css class. <br/>
-
-<Source language="jsx" code={'<vv-button block></vv-button>'} />
+A VvButtonGroup with the `action-quiet` prop
 
 <Canvas>
 	<Story
-		name="block"
+		name="action-quiet"
 		play={(ctx) =>
 			buttonGroupTest({
 				...ctx,
 				functions: [classTest],
-				className: 'block'
+				className: 'action-quiet'
 			})
 		}>
 		{() => {
@@ -29,14 +30,23 @@ A VvButtonGroup with the <strong>block</strong> prop will be render with <strong
 					/*html*/
 					`
 					<div class="flex flex-col">
-						<vv-button-group block class="mt-22">
+						<vv-button-group action-quiet>
                             <vv-button>Button 1</vv-button>
-                            <vv-button id="btn2">Button 2</vv-button>
+                            <vv-button>Button 2</vv-button>
                             <vv-button>Button 3</vv-button>
-                        </vv-button-group> 
+                        </vv-button-group>
 					</div>
                     `
 			}
 		}}
 	</Story>
 </Canvas>
+
+<Source
+	language="html"
+	code={`<vv-button-group action-quiet>
+	<vv-button>Button 1</vv-button>
+	<vv-button>Button 2</vv-button>
+	<vv-button>Button 3</vv-button>
+</vv-button-group>`}
+/>

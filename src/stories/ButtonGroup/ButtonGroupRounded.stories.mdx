@@ -4,7 +4,7 @@ import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
 import { buttonGroupTest, classTest, mixClassTest } from './ButtonGroupTest.js'
 
-<Meta title="Components/ButtonGroup/Rounded" component={VvButtonGroup} />
+<Meta title="Components/ButtonGroup/Props/rounded" component={VvButtonGroup} />
 
 # Rounded
 
@@ -19,7 +19,7 @@ A VvButtonGroup with the <strong>rounded</strong> prop will be render with <stro
 			buttonGroupTest({
 				...ctx,
 				functions: [classTest],
-				className: 'rounded',
+				className: 'rounded'
 			})
 		}>
 		{() => {
@@ -44,16 +44,16 @@ A VvButtonGroup with the <strong>rounded</strong> prop will be render with <stro
 You can manage the rounded stile of single buttons into group. Set rounded=false and add <strong>.vv-button--rounded</strong> to single buttons.
 
 <Canvas>
-	<Story name="mix"
-	play={(ctx) =>
+	<Story
+		name="mix"
+		play={(ctx) =>
 			buttonGroupTest({
 				...ctx,
 				functions: [mixClassTest],
 				numberOfElements: 2,
-				classToTest: 'rounded',
+				classToTest: 'rounded'
 			})
-		}
-	>
+		}>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },

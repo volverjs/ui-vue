@@ -1,0 +1,239 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvButton from '../../components/VvButton/VvButton.vue'
+import { within, userEvent } from '@storybook/testing-library'
+import { buttonTest, classTest, cssTest, disableTest } from './test.js'
+
+<Meta title="Components/Button/Variant" />
+
+# VvButton variant
+
+Stories of `VvButton` default `variant`.
+
+## Block
+
+Let's define a story for our `block` button.
+Create block level button that span the full width of a parent.
+
+<Canvas>
+	<Story
+		name="block"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest, cssTest],
+				className: 'block',
+				cssString: 'display: block'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Block" block />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Block" block />'} />
+
+## Rounded
+
+Let's define a story for our `rounded` button:
+
+<Canvas>
+	<Story
+		name="rounded"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest, cssTest],
+				className: 'rounded',
+				cssString: 'border-radius: 9999px'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Rounded" rounded />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Rounded" rounded />'} />
+
+## Full-bleed
+
+Let's define a story for our `full-bleed` button:
+
+<Canvas>
+	<Story
+		name="full-bleed"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'full-bleed'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<div class="flex gap-4">
+						<vv-button label="Full bleed" full-bleed />
+					</div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<div class="flex gap-4">
+	<vv-button label="Full bleed" full-bleed />
+</div>`}
+/>
+
+## Disabled
+
+Let's define a story for our `disabled` button.
+
+<Canvas>
+	<Story
+		name="disabled"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [cssTest, disableTest],
+				cssString: 'cursor: not-allowed'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Disabled" disabled />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Disabled" disabled />'} />
+
+## Active
+
+Let's define a story for our `active` button.
+
+<Canvas>
+	<Story
+		name="active"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'active'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Active" active />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Active" active />'} />
+
+## Action
+
+Let's define a story for our `action` button.
+
+<Canvas>
+	<Story
+		name="action"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'action'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Action" action />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Action" action />'} />
+
+## Action Selected
+
+Let's define a story for our `action` `selected` button.
+
+<Canvas>
+	<Story
+		name="selected"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'selected'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Action Selected" action selected />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source language="jsx" code={'<vv-button label="Action" action selected />'} />
+
+## Action quiet
+
+Let's define a story for our `action-quiet` button.
+
+<Canvas>
+	<Story
+		name="action-quiet"
+		play={(ctx) =>
+			buttonTest({
+				...ctx,
+				functions: [classTest],
+				className: 'selected'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton },
+				template:
+					/*html*/
+					`<vv-button label="Action quiet" action-quiet />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={'<vv-button label="Action quiet" action-quiet />'}
+/>

@@ -18,7 +18,7 @@ export function toButtonRefs(props: VvButtonPropsTypes) {
 		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
 
 	//Local props
-	const { modifiers, fullBleed, iconPosition, icon, label, block } =
+	const { modifiers, fullBleed, iconPosition, icon, label, block, selected } =
 		toRefs(props)
 
 	//Group based props
@@ -26,6 +26,8 @@ export function toButtonRefs(props: VvButtonPropsTypes) {
 	const disabled = getGroupOrLocalRef('disabled', props)
 	const toggle = getGroupOrLocalRef('toggle', props)
 	const rounded = getGroupOrLocalRef('rounded', props)
+	const action = getGroupOrLocalRef('action', props)
+	const actionQuiet = getGroupOrLocalRef('actionQuiet', props)
 
 	return {
 		//Group based props
@@ -36,6 +38,9 @@ export function toButtonRefs(props: VvButtonPropsTypes) {
 		group,
 		//Local props
 		modifiers,
+		action,
+		actionQuiet,
+		selected,
 		block,
 		rounded,
 		fullBleed,
