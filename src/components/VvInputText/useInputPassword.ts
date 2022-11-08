@@ -1,18 +1,20 @@
-import type { Ref } from 'vue'
-import { ref, computed } from 'vue'
+// import type { Ref } from 'vue'
+import type { VvInputTextPropsTypes } from './VvInputText'
+
+import { ref, computed, toRefs } from 'vue'
 import INPUT from './constants'
 
-interface useVvInputPasswordProps {
-	type: Ref<string>
-	disabled: Ref<boolean>
-	readonly: Ref<boolean>
-}
+// interface useVvInputPasswordProps {
+// 	type: Ref<string>
+// 	disabled: Ref<boolean>
+// 	readonly: Ref<boolean>
+// }
 
 /**
  * Funzionalità input password.
  */
-export function useInputPassword(props: useVvInputPasswordProps) {
-	const { type, disabled, readonly } = props
+export function useInputPassword(props: VvInputTextPropsTypes) {
+	const { type, disabled, readonly } = toRefs(props)
 	const bHidePassword = ref(true)
 
 	const isPassword = computed(() => type.value === INPUT.TYPES.PASSWORD)

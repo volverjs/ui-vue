@@ -1,6 +1,8 @@
 <template>
 	<div v-bind="textAreaProps" :class="textAreaClass">
-		<label v-if="label" :for="textAreaId">{{ label }}</label>
+		<label v-if="label" :id="textAreaLabeledBy" :for="textAreaId">{{
+			label
+		}}</label>
 		<div class="vv-textarea__wrapper">
 			<!-- @slot icon-left to replace icon left -->
 			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
@@ -11,11 +13,20 @@
 				v-model="inputTextData"
 				v-bind="htmlTextareaProps"
 				@input="emit('input', $event)" />
+			<!-- autoclear text button -->
+			<button
+				v-if="autoclear && textLength > 0"
+				class="vv-button vv-button--ghost"
+				@click="clearTextarea">
+				<vv-icon name="clear-field" />
+			</button>
 			<!-- @slot icon-right to replace icon right -->
 			<slot v-if="hasIconRight" name="icon-right" v-bind="iconSlotProps">
-				<!-- default password icon -->
 				<vv-icon :name="icon" />
 			</slot>
+			<span v-if="showLimit || $slots.limit" class="vv-textarea__limit">
+				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
+			</span>
 		</div>
 		<HintSlot :id="textAreaDescribedBy" class="vv-textarea__hint" />
 	</div>
@@ -29,7 +40,6 @@ import {
 	ref,
 	toRefs,
 	onMounted,
-	watch,
 	type HTMLAttributes,
 	type TextareaHTMLAttributes
 } from 'vue'
@@ -44,6 +54,7 @@ import HintSlotFactory from '../common/HintSlot'
 import { useComponentIcon } from '../../composables/icons/useComponentIcons'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
 import { useDebouncedInput } from '../../composables/debouncedInput/useDebouncedInput'
+import { useTextLimit } from '../../composables/textLimit/useTextLimit'
 import { toBem } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
@@ -56,18 +67,10 @@ const attrs = useAttrs()
 const input = ref()
 
 //Data
-const {
-	readonly,
-	icon,
-	iconPosition,
-	valid,
-	error,
-	loading,
-	floating,
-	label,
-	modelValue
-} = toRefs(props)
+const { icon, iconPosition, label, modelValue, showLimit, autoclear } =
+	toRefs(props)
 const textAreaId = props.id || props.name
+const textAreaLabeledBy = `${props.name}-label`
 const textAreaDescribedBy = `${props.name}-hint`
 //BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 const textAreaPlaceholder = computed(() =>
@@ -88,19 +91,26 @@ const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
 //Input FOCUS
 const { focused } = useComponentFocus(input, emit)
 
+//Conteggio battute
+const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
+	mode: props.showLimitMode,
+	upperLimit: props.maxlength || 0
+})
+
 //Styles & Bindings
 const textAreaClass = computed(() => {
 	return [
 		toBem('vv-textarea', {
-			readonly,
-			valid,
-			invalid: error,
-			loading,
+			modifiers: props.modifiers,
+			readonly: props.readonly,
+			valid: props.valid,
+			invalid: props.error,
+			loading: props.loading,
 			iconLeft: hasIconLeft,
 			iconRight: hasIconRight,
-			floating:
-				floating.value && ObjectUtilities.isNotEmpty(label?.value),
-			dirty: ObjectUtilities.isNotEmpty(modelValue)
+			floating: props.floating && ObjectUtilities.isNotEmpty(props.label),
+			dirty: ObjectUtilities.isNotEmpty(modelValue?.value),
+			resizable: props.resizable
 		}),
 		attrs.class
 	]
@@ -120,7 +130,7 @@ const htmlTextareaProps = computed(() => {
 	)
 
 	return {
-		id: props.id,
+		id: textAreaId,
 		placeholder: textAreaPlaceholder.value,
 		name: props.name,
 		autocomplete: props.autocomplete,
@@ -130,20 +140,27 @@ const htmlTextareaProps = computed(() => {
 		maxlength: props.maxlength,
 		cols: props.cols,
 		rows: props.rows,
-		'aria-label': props.label || props.name,
-		'aria-describedby': textAreaDescribedBy,
+		required: props.required,
+		tabindex: attrs.tabindex,
 		'aria-invalid': props.error,
+		'aria-valid': !props.valid,
+		'aria-labeledby': textAreaLabeledBy,
+		'aria-describedby': textAreaDescribedBy,
+		'aria-errormessage': textAreaDescribedBy,
 		...ariaAttrs
 	} as TextareaHTMLAttributes
 })
 
 //Slot props
 const iconSlotProps = computed(() => {
-	const { modelValue, valid, error } = props
+	const { modelValue, valid, error, maxlength, hintLabel } = props
 	return {
 		valid,
 		error,
-		modelValue
+		modelValue,
+		hintLabel,
+		maxlength,
+		textLength
 	}
 })
 
@@ -151,6 +168,10 @@ const iconSlotProps = computed(() => {
 const HintSlot = HintSlotFactory(props, slots)
 
 //methods
+function clearTextarea() {
+	inputTextData.value = ''
+}
+
 onMounted(() => {
 	if (props.autofocus) focused.value = true
 	console.log('Focused', focused.value)

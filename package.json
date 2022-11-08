@@ -13,7 +13,7 @@
 		"generate-iconify-json": "ts-node-esm scripts/icons/generateIcons.ts"
 	},
 	"dependencies": {
-		"@volverjs/style": "^0.1.2-beta.7",
+		"@volverjs/style": "^0.1.2-beta-12",
 		"@vueuse/core": "^9.3.0",
 		"jsdom": "^20.0.1",
 		"vue": "^3.2.41",

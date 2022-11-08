@@ -1,22 +1,25 @@
 import type { Ref } from 'vue'
-import { computed, unref } from 'vue'
+import type { VvInputTextPropsTypes } from './VvInputText'
+
+import { computed, toRefs, unref } from 'vue'
 import INPUT from './constants'
 
-interface useVvInputNumberProps {
-	type: Ref<string>
-	disabled: Ref<boolean>
-	readonly: Ref<boolean>
-	inputTemplateRef: Ref<HTMLInputElement>
-}
+// interface useVvInputNumberProps {
+// 	type: Ref<string>
+// 	disabled: Ref<boolean>
+// 	readonly: Ref<boolean>
+// 	inputTemplateRef: Ref<HTMLInputElement>
+// }
 
 /**
  * Funzionalità input number
  */
 export function useInputNumber(
 	inputModelValue: Ref<any>,
-	options: useVvInputNumberProps
+	inputTemplateRef: Ref<HTMLInputElement>,
+	props: VvInputTextPropsTypes
 ) {
-	const { type, disabled, readonly, inputTemplateRef } = options
+	const { type, disabled, readonly } = toRefs(props)
 	const isNumber = computed(() => type.value === INPUT.TYPES.NUMBER)
 
 	function stepUp() {

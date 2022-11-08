@@ -1,3 +1,4 @@
+import type { ExtractPropTypes } from 'vue'
 import { ValidProps, ErrorProps, HintProps, LoadingProps } from '../../props'
 import { TYPES, ICON_POSITIONS } from './constants'
 
@@ -45,5 +46,16 @@ export const VvInputTextProps = {
 	 * True = label flottante
 	 */
 	floating: Boolean,
-	debounce: Number
+	debounce: Number,
+	/**
+	 * Se true, attiva il conteggio caratteri
+	 */
+	characterCount: Boolean,
+	/**
+	 * Se true, attiva la possibilità di cancellare il testo nella textarea
+	 */
+	autoclear: Boolean
 }
+
+type VvInputTextPropsType = typeof VvInputTextProps
+export type VvInputTextPropsTypes = ExtractPropTypes<VvInputTextPropsType>

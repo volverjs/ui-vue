@@ -4,18 +4,12 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Floating" component={VvTextarea} />
+<Meta title="Components/Textarea/Modifiers" component={VvTextarea} />
 
 <Canvas>
 	<Story
-		name="Floating"
-		args={{
-			name: 'textarea-floating',
-			label: 'Label di prova',
-			floating: true,
-			type: 'text',
-			placeholder: 'asdasd'
-		}}>
+		name="Modifiers"
+		args={{ name: 'textarea-modifiers', modifiers: 'variante-1' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

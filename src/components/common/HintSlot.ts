@@ -1,3 +1,4 @@
+import { toReactive } from '@vueuse/core'
 import { h, type Component, type ExtractPropTypes, type Slots } from 'vue'
 import { computed, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
@@ -50,7 +51,10 @@ export function HintSlotFactory(
 ): Component {
 	return {
 		name: 'HintSlot',
-		setup() {
+		props: {
+			params: { type: Object, default: () => {} }
+		},
+		setup(hProps) {
 			const props = toRefs(pProps)
 
 			//Slots
@@ -117,7 +121,17 @@ export function HintSlotFactory(
 			})
 
 			const hintContent = computed(() => {
-				const slotProps = { modelValue, error, valid }
+				const slotProps = toReactive({
+					hintLabel,
+					modelValue,
+					valid,
+					validLabel,
+					error,
+					errorLabel,
+					loading,
+					loadingLabel,
+					...hProps.params
+				})
 
 				if (error?.value) {
 					return (

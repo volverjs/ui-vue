@@ -4,7 +4,8 @@ import {
 	HintProps,
 	LoadingProps,
 	DisabledProps,
-	ReadonlyProps
+	ReadonlyProps,
+	ModifiersProps
 } from '../../props'
 import { ICON_POSITIONS, WRAP } from './constants'
 
@@ -17,6 +18,7 @@ export const VvTextareaProps = {
 	...LoadingProps,
 	...DisabledProps,
 	...ReadonlyProps,
+	...ModifiersProps,
 	modelValue: null,
 	id: String,
 	name: { type: String, required: true },
@@ -26,6 +28,7 @@ export const VvTextareaProps = {
 	maxlength: Number,
 	label: String,
 	placeholder: String,
+	required: Boolean,
 	/**
 	 * Nome dell'icona
 	 * @see DsIcon
@@ -51,5 +54,24 @@ export const VvTextareaProps = {
 	 * Specifica come il testo sarà wrappato
 	 * @see Documentation https://www.w3schools.com/tags/att_textarea_wrap.asp
 	 */
-	wrap: { type: String, default: WRAP.soft }
+	wrap: { type: String, default: WRAP.soft },
+	/**
+	 * Se true, attiva il conteggio caratteri
+	 */
+	showLimit: Boolean,
+	showLimitMode: {
+		type: String,
+		default: 'limit',
+		validator: (value: string) => ['limit', 'countdown'].includes(value)
+	},
+	/**
+	 * Se true, attiva la possibilità di cancellare il testo nella textarea
+	 */
+	autoclear: Boolean,
+	/**
+	 * Se true, la textbox può essere ridimensionata verticalmente.
+	 * @description
+	 * Il resize è pilotato via css. Al momento è attivo solamente il resize verticale
+	 */
+	resizable: Boolean
 }

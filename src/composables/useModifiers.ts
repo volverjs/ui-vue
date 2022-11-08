@@ -28,8 +28,16 @@ interface IBemModifiers {
 		| Ref<boolean>
 		| Ref<string | unknown[] | undefined>
 		| boolean
+		| string
+		| string[]
 		| undefined
-	modifiers?: Ref<string | unknown[] | undefined> | undefined
+		| unknown[]
+	modifiers?:
+		| Ref<string | unknown[] | undefined>
+		| undefined
+		| string[]
+		| string
+		| unknown[]
 }
 
 export function useBemModifiers(prefix: string, modifiers: IBemModifiers) {
