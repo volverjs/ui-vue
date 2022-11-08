@@ -5,6 +5,7 @@ import { expect } from '@storybook/jest'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { VvButtonProps } from '../../components/VvButton/VvButton'
+import { testButton } from './Button.test'
 
 <Meta
 	title="Components/Button"
@@ -63,13 +64,6 @@ export const Template = (args) => ({
 Stories of `VvButton`.
 Let's define a story for our playground `button`:
 
-<Story
-	name="vv-button"
-	args={{}}
-	play={async ({ args, canvasElement }) => {
-		const canvas = within(canvasElement)
-		await userEvent.click(canvas.getByRole('button'))
-		await expect.extend(toHaveNoViolations)
-	}}>
+<Story name="vv-button" args={{}} play={testButton}>
 	{Template.bind({})}
 </Story>
