@@ -8,7 +8,8 @@
 		"build": "node ./scripts/build.js",
 		"type-check": "vue-tsc --noEmit",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-		"generate-iconify-json": "ts-node-esm scripts/icons/generateIcons.ts"
+		"generate-iconify-json": "ts-node-esm scripts/icons/generateIcons.ts",
+		"vue-tsc": "vue-tsc --declaration --emitDeclarationOnly"
 	},
 	"files": [
 		"src",

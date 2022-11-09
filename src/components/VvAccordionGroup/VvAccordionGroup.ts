@@ -1,4 +1,4 @@
-interface VvAccordionGroupItem {
+export interface VvAccordionGroupItem {
 	name?: string
 	title: string
 	content: string

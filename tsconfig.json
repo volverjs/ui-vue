@@ -3,7 +3,13 @@
 	"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
 	"compilerOptions": {
 		"baseUrl": ".",
-		"types": ["node", "vite/client"],
+		"types": [
+			"node",
+			"vite/client",
+			"@iconify/types",
+			"@types/jsdom",
+			"@types/uuid"
+		],
 		"paths": {
 			"@/*": ["./src/*"]
 		}

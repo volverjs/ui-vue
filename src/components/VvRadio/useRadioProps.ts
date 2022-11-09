@@ -1,4 +1,4 @@
-import type { VvRadioPropsTypes } from '../VvRadioGroup/VvRadioGroup'
+import type { VvRadioPropsType } from '../VvRadio/VvRadio'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 
 import { toRefs } from 'vue'
@@ -14,7 +14,7 @@ import { VV_RADIO_GROUP } from '../../constants'
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
 export function toRadioInputRefs(
-	props: VvRadioPropsTypes,
+	props: VvRadioPropsType,
 	emit: (event: any, ...args: any[]) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
