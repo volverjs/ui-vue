@@ -27,7 +27,7 @@ import { VvAccordionProps, VvAccordionEvents } from './VvAccordion'
 
 //Composables
 import { toAccordionRefs } from './useAccordionProps'
-import { useBemModifiers } from '../../composables/useModifiers'
+import { useBemModifiers } from '@/composables/useModifiers'
 import ObjectUtilities from '@/utils/ObjectUtilities'
 
 // Define component props, attributes and events emitted

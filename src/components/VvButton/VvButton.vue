@@ -55,7 +55,7 @@ import { VvButtonProps } from './VvButton'
 import ObjectUtilities from '@/utils/ObjectUtilities'
 
 //Components
-import VvIcon from '../VvIcon/VvIcon.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 //Composables
 import { useBemModifiers } from '@/composables/useModifiers'

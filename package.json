@@ -4,12 +4,12 @@
 	"type": "module",
 	"scripts": {
 		"dev": "storybook dev -p 6006",
-		"docs": "build-storybook",
-		"build": "npm run generate-icons && node ./scripts/build.js",
+		"styleguide": "storybook build",
+		"build": "npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
 		"type-check": "vue-tsc --noEmit",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
 		"generate-icons": "ts-node-esm scripts/icons/generateIcons.ts",
-		"vue-tsc": "vue-tsc --declaration --emitDeclarationOnly"
+		"generate-tsd": "vue-tsc --declaration --emitDeclarationOnly"
 	},
 	"files": [
 		"src",
@@ -89,7 +89,6 @@
 		"ts-node": "^10.9.1",
 		"typescript": "~4.8.4",
 		"vite": "^3.2.3",
-		"vite-plugin-dts": "^1.7.0",
 		"vite-plugin-eslint": "^1.8.1",
 		"vite-plugin-externalize-deps": "^0.4.0",
 		"vitest": "^0.25.1",
@@ -108,81 +107,81 @@
 			"import": "./dist/icons.js",
 			"default": "./dist/icons.umd.js"
 		},
-		"./vv-accordion": {
-			"import": "./dist/components/vv-accordion.js",
-			"default": "./dist/components/vv-accordion.umd.js"
+		"./VvAccordion": {
+			"import": "./dist/components/VvAccordion/vv-accordion.js",
+			"default": "./dist/components/VvAccordion/vv-accordion.umd.js"
 		},
-		"./vv-accordion-group": {
-			"import": "./dist/components/vv-accordion-group.js",
-			"default": "./dist/components/vv-accordion-group.umd.js"
+		"./VvAccordionGroup": {
+			"import": "./dist/components/VvAccordionGroup/vv-accordion-group.js",
+			"default": "./dist/components/VvAccordionGroup/vv-accordion-group.umd.js"
 		},
-		"./vv-badge": {
-			"import": "./dist/components/vv-badge.js",
-			"default": "./dist/components/vv-badge.umd.js"
+		"./VvBadge": {
+			"import": "./dist/components/VvBadge/vv-badge.js",
+			"default": "./dist/components/VvBadge/vv-badge.umd.js"
 		},
-		"./vv-breadcrumb": {
-			"import": "./dist/components/vv-breadcrumb.js",
-			"default": "./dist/components/vv-breadcrumb.umd.js"
+		"./VvBreadcrumb": {
+			"import": "./dist/components/VvBreadcrumb/vv-breadcrumb.js",
+			"default": "./dist/components/VvBreadcrumb/vv-breadcrumb.umd.js"
 		},
-		"./vv-button": {
-			"import": "./dist/components/vv-button.js",
-			"default": "./dist/components/vv-button.umd.js"
+		"./VvButton": {
+			"import": "./dist/components/VvButton/vv-button.js",
+			"default": "./dist/components/VvButton/vv-button.umd.js"
 		},
-		"./vv-button-group": {
-			"import": "./dist/components/vv-button-group.js",
-			"default": "./dist/components/vv-button-group.umd.js"
+		"./VvButtonGroup": {
+			"import": "./dist/components/VvButtonGroup/vv-button-group.js",
+			"default": "./dist/components/VvButtonGroup/vv-button-group.umd.js"
 		},
-		"./vv-card": {
-			"import": "./dist/components/vv-card.js",
-			"default": "./dist/components/vv-card.umd.js"
+		"./VvCard": {
+			"import": "./dist/components/VvCard/vv-card.js",
+			"default": "./dist/components/VvCard/vv-card.umd.js"
 		},
-		"./vv-check": {
-			"import": "./dist/components/vv-check.js",
-			"default": "./dist/components/vv-check.umd.js"
+		"./VvCheck": {
+			"import": "./dist/components/VvCheck/vv-check.js",
+			"default": "./dist/components/VvCheck/vv-check.umd.js"
 		},
-		"./vv-check-group": {
-			"import": "./dist/components/vv-check-group.js",
-			"default": "./dist/components/vv-check-group.umd.js"
+		"./VvCheckGroup": {
+			"import": "./dist/components/VvCheckGroup/vv-check-group.js",
+			"default": "./dist/components/VvCheckGroup/vv-check-group.umd.js"
 		},
-		"./vv-dialog": {
-			"import": "./dist/components/vv-dialog.js",
-			"default": "./dist/components/vv-dialog.umd.js"
+		"./VvDialog": {
+			"import": "./dist/components/VvDialog/vv-dialog.js",
+			"default": "./dist/components/VvDialog/vv-dialog.umd.js"
 		},
-		"./vv-dropdown": {
-			"import": "./dist/components/vv-dropdown.js",
-			"default": "./dist/components/vv-dropdown.umd.js"
+		"./VvDropdown": {
+			"import": "./dist/components/VvDropdown/vv-dropdown.js",
+			"default": "./dist/components/VvDropdown/vv-dropdown.umd.js"
 		},
-		"./vv-icon": {
-			"import": "./dist/components/vv-icon.js",
-			"default": "./dist/components/vv-icon.umd.js"
+		"./VvIcon": {
+			"import": "./dist/components/VvIcon/vv-icon.js",
+			"default": "./dist/components/VvIcon/vv-icon.umd.js"
 		},
-		"./vv-input-text": {
-			"import": "./dist/components/vv-input-text.js",
-			"default": "./dist/components/vv-input-text.umd.js"
+		"./VvInputText": {
+			"import": "./dist/components/VvInputText/vv-input-text.js",
+			"default": "./dist/components/VvInputText/vv-input-text.umd.js"
 		},
-		"./vv-native-select": {
-			"import": "./dist/components/vv-native-select.js",
-			"default": "./dist/components/vv-native-select.umd.js"
+		"./VvNativeSelect": {
+			"import": "./dist/components/VvNativeSelect/vv-native-select.js",
+			"default": "./dist/components/VvNativeSelect/vv-native-select.umd.js"
 		},
-		"./vv-progress": {
-			"import": "./dist/components/vv-progress.js",
-			"default": "./dist/components/vv-progress.umd.js"
+		"./VvProgress": {
+			"import": "./dist/components/VvProgress/vv-progress.js",
+			"default": "./dist/components/VvProgress/vv-progress.umd.js"
 		},
-		"./vv-radio": {
-			"import": "./dist/components/vv-radio.js",
-			"default": "./dist/components/vv-radio.umd.js"
+		"./VvRadio": {
+			"import": "./dist/components/VvRadio/vv-radio.js",
+			"default": "./dist/components/VvRadio/vv-radio.umd.js"
 		},
-		"./vv-radio-group": {
-			"import": "./dist/components/vv-radio-group.js",
-			"default": "./dist/components/vv-radio-group.umd.js"
+		"./VvRadioGroup": {
+			"import": "./dist/components/VvRadioGroup/vv-radio-group.js",
+			"default": "./dist/components/VvRadioGroup/vv-radio-group.umd.js"
 		},
-		"./vv-select": {
-			"import": "./dist/components/vv-select.js",
-			"default": "./dist/components/vv-select.umd.js"
+		"./VvSelect": {
+			"import": "./dist/components/VvSelect/vv-select.js",
+			"default": "./dist/components/VvSelect/vv-select.umd.js"
 		},
-		"./vv-textarea": {
-			"import": "./dist/components/vv-textarea.js",
-			"default": "./dist/components/vv-textarea.umd.js"
+		"./VvTextarea": {
+			"import": "./dist/components/VvTextarea/vv-textarea.js",
+			"default": "./dist/components/VvTextarea/vv-textarea.umd.js"
 		}
 	}
 }

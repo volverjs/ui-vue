@@ -5,7 +5,6 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
 import { paramCase } from 'change-case'
-import dts from 'vite-plugin-dts'
 
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
@@ -15,7 +14,7 @@ packageJson.exports = {
 }
 
 const baseConfig = {
-	plugins: [vue(), externalizeDeps(), dts()],
+	plugins: [vue(), externalizeDeps()],
 	configFile: false,
 	resolve: {
 		alias: {
@@ -63,7 +62,7 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 	const sources = files.map((entry) => {
 		const exportName = entry.replace(/.\/src\/|.vue|\/index/gm, '')
 		const splittedExportName = exportName.split('/')
-		const name = paramCase(splittedExportName.pop())
+		const name = splittedExportName.pop()
 		return {
 			name,
 			entry
@@ -73,9 +72,11 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 	// build
 	await Promise.all(
 		sources.map(({ name, entry }) => {
+			const paramCaseName = paramCase(name)
+			const subPath = `components/${name}/${paramCaseName}`
 			packageJson.exports[`./${name}`] = {
-				import: `./dist/components/${name}.js`,
-				default: `./dist/components/${name}.umd.js`
+				import: `./dist/${subPath}.js`,
+				default: `./dist/${subPath}.umd.js`
 			}
 
 			return build({
@@ -84,7 +85,7 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 					lib: {
 						name,
 						entry,
-						fileName: (format) => `components/${name}.${format}.js`
+						fileName: (format) => `${subPath}.${format}.js`
 					},
 					emptyOutDir: false
 				}
