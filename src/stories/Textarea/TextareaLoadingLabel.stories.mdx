@@ -4,19 +4,19 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/Autoclear" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/LoadingLabel" component={VvTextarea} />
 
-# Autoclear - Experimental
+# LoadingLabel
 
-`Autoclear` permette all'utente di cancellare il contenuto l'intero contenuto della textarea
+`LoadingLabel` visualizza un messaggio in fase di loading.
 
 <Canvas>
 	<Story
-		name="Autoclear"
+		name="Loading"
 		args={{
-			name: 'textarea-autoclear',
-			label: 'Autoclear',
-			autoclear: true
+			name: 'textarea-loading',
+			loading: true,
+			loadingLabel: 'Loading label!'
 		}}>
 		{Template.bind({})}
 	</Story>

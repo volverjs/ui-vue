@@ -43,3 +43,44 @@ export const OptionsProps = {
 	 */
 	optionValue: { type: [String, Function], default: () => 'value' }
 }
+
+export const LimitProps = {
+	/**
+	 * Se true, attiva il conteggio caratteri
+	 */
+	showLimit: Boolean,
+	/**
+	 * Modalità conteggio
+	 * @description
+	 * mode="limit", mostra quanti caratteri ho digitato sin ora e qualì'è la maxlength.
+	 * mode="countdown", mostra quanti caratteri mancano per raggiungere la maxlength.
+	 */
+	showLimitMode: {
+		type: String,
+		default: 'limit',
+		validator: (value: string) => ['limit', 'countdown'].includes(value)
+	}
+}
+
+export const InputProps = {
+	id: String,
+	name: { type: String, required: true },
+	autocomplete: { type: String, default: 'off' },
+	autofocus: Boolean,
+	minlength: Number,
+	maxlength: Number,
+	label: String,
+	placeholder: String,
+	required: Boolean,
+	disabled: Boolean,
+	readonly: Boolean
+}
+
+export const DebounceProps = {
+	/**
+	 * Debounce time (millisecondi)
+	 * @descrition
+	 * Tempo che deve passare dall'ultima battuta prima che modelValue venga aggiornato.
+	 */
+	debounce: Number
+}

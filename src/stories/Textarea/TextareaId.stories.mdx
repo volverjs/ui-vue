@@ -4,20 +4,16 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/Autoclear" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Id" component={VvTextarea} />
 
-# Autoclear - Experimental
+# Id
 
-`Autoclear` permette all'utente di cancellare il contenuto l'intero contenuto della textarea
+`Id` definisce l'id della Textarea
 
 <Canvas>
 	<Story
-		name="Autoclear"
-		args={{
-			name: 'textarea-autoclear',
-			label: 'Autoclear',
-			autoclear: true
-		}}>
+		name="Id"
+		args={{ name: 'textarea-id', id: 'ID_11_11', label: 'Label di prova' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

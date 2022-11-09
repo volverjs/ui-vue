@@ -25,7 +25,11 @@ export function useTextLimit(inputText: Ref<string>, options: useTextOptions) {
 	})
 
 	const formattedTextLimitLength = computed(() => {
-		if (options.mode === 'limit')
+		if (
+			options.mode === 'limit' &&
+			options.upperLimit &&
+			options.upperLimit > 0
+		)
 			return `${textLimitLength.value}/${unref(options.upperLimit)}`
 		else return textLimitLength.value
 	})

@@ -4,19 +4,19 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/Autoclear" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Name" component={VvTextarea} />
 
-# Autoclear - Experimental
+# Name
 
-`Autoclear` permette all'utente di cancellare il contenuto l'intero contenuto della textarea
+`Name` definisce il name della Textarea
 
 <Canvas>
 	<Story
-		name="Autoclear"
+		name="Name"
 		args={{
-			name: 'textarea-autoclear',
-			label: 'Autoclear',
-			autoclear: true
+			name: 'textarea-name',
+			name: 'my-name',
+			label: 'Label di prova'
 		}}>
 		{Template.bind({})}
 	</Story>

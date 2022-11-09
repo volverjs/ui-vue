@@ -4,15 +4,18 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Error" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Error" component={VvTextarea} />
+
+# Error
+
+`Error` attiva lo stato errore della textarea.
 
 <Canvas>
 	<Story
 		name="Error"
 		args={{
 			name: 'textarea-error',
-			error: true,
-			errorLabel: 'Error message!'
+			error: true
 		}}>
 		{Template.bind({})}
 	</Story>

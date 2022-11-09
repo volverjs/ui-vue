@@ -20,46 +20,25 @@
 			</button>
 			<!-- @slot icon-right to replace icon right -->
 			<slot name="icon-right" v-bind="iconSlotProps">
-				<!-- default password icon -->
 				<template v-if="isPassword">
-					<div class="vv-input-text__actions-group">
-						<button
-							class="vv-input-text__action"
-							:disabled="isActionsDisabled"
-							@click.prevent="toggleShowHidePassword">
-							<vv-icon :name="iconRight" />
-						</button>
-					</div>
+					<PasswordInputActions
+						@action-password-on="showPassword = true"
+						@action-password-off="showPassword = false" />
 				</template>
-				<!-- default number icon -->
 				<template v-else-if="isNumber">
-					<div class="vv-input-text__actions-group">
-						<button
-							type="button"
-							class="vv-input-text__action-chevron vv-input-text__action-chevron-up"
-							:disabled="isActionsDisabled"
-							@click.prevent="stepUp()"></button>
-						<button
-							type="button"
-							class="vv-input-text__action-chevron"
-							:disabled="isActionsDisabled"
-							@click.prevent="stepDown()"></button>
-					</div>
+					<NumberInputActions
+						@action-step-up="stepUp"
+						@action-step-down="stepDown" />
 				</template>
-				<!-- default icon -->
-				<template v-else>
-					<vv-icon :name="iconRight" />
+				<template v-else-if="hasIconRight || defaultRightIcon">
+					<vv-icon :name="icon || defaultRightIcon" />
 				</template>
 			</slot>
+			<span v-if="showLimit" class="vv-input-text__limit">
+				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
+			</span>
 		</div>
-		<HintSlot
-			:id="inputTextDescribedBy"
-			class="vv-input-text__hint"
-			:params="{
-				maxlength,
-				textLength,
-				characterCount
-			}" />
+		<HintSlot :id="inputTextDescribedBy" class="vv-input-text__hint" />
 	</div>
 </template>
 
@@ -71,6 +50,7 @@ import {
 	ref,
 	toRefs,
 	onMounted,
+	unref,
 	type HTMLAttributes,
 	type InputHTMLAttributes
 } from 'vue'
@@ -80,16 +60,16 @@ import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
 //Componenti
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
+import VvInputTextActionsFactory from './VvInputTextActions'
 
 //Constanti
 import INPUT from './constants'
 
 //Composables
-import { useInputPassword } from './useInputPassword'
-import { useInputNumber } from './useInputNumber'
 import { useComponentIcon } from '../../composables/icons/useComponentIcons'
 import { useComponentFocus } from '../../composables/focus/useComponentFocus'
-import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
+import { useDebouncedInput } from '../../composables/debouncedInput/useDebouncedInput'
+import { useTextLimit } from '../../composables/textLimit/useTextLimit'
 import { toBem } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
@@ -102,19 +82,8 @@ const attrs = useAttrs()
 const input = ref()
 
 //Data
-const {
-	disabled,
-	readonly,
-	type,
-	icon,
-	iconPosition,
-	floating,
-	label,
-	modelValue,
-	maxlength,
-	autoclear,
-	characterCount
-} = toRefs(props)
+const { icon, iconPosition, label, modelValue, autoclear, showLimit } =
+	toRefs(props)
 const inputTextId = props.id || props.name
 const inputTextLabeledBy = `${props.name}-label`
 const inputTextDescribedBy = `${props.name}-hint`
@@ -129,31 +98,35 @@ const inputTextPlaceholder = computed(() =>
 const inputTextData = useDebouncedInput(modelValue, props.debounce, emit)
 
 //Gestione input tipo password
-const {
-	isPassword,
-	isPasswordVisible,
-	passwordButtonIcon,
-	toggleShowHidePassword
-} = useInputPassword(props)
+const showPassword = ref(false)
+const isPassword = computed(() => props.type === INPUT.TYPES.PASSWORD)
 
 //Gestione input tipo NUMBER
-const { isNumber, stepUp, stepDown } = useInputNumber(
-	inputTextData,
-	input,
-	props
-)
+const isNumber = computed(() => props.type === INPUT.TYPES.NUMBER)
+function stepUp() {
+	const _max = props.max as number
+	if (!isActionsDisabled.value && inputTextData.value + 1 <= _max) {
+		input.value.stepUp()
+		inputTextData.value = unref(input.value).value
+	}
+}
+function stepDown() {
+	const _min = props.min as number
+	if (!isActionsDisabled.value && inputTextData.value - 1 <= _min) {
+		input.value.stepDown()
+		inputTextData.value = unref(input.value).value
+	}
+}
 
 //Gestione ICONE
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
 	iconLeft: slots['icon-left'],
 	iconRight: slots['icon-right']
 })
-const iconRight = computed(() => {
-	if (hasIconRight.value) return props.icon
-
+const defaultRightIcon = computed(() => {
 	switch (props.type) {
 		case INPUT.TYPES.PASSWORD:
-			return passwordButtonIcon.value
+			return INPUT.TYPES_ICON.PASSWORD_OFF
 		case INPUT.TYPES.COLOR:
 			return INPUT.TYPES_ICON.COLOR
 		case INPUT.TYPES.DATE:
@@ -169,25 +142,28 @@ const iconRight = computed(() => {
 })
 
 //Conteggio battute
-const textLength = computed(() => {
-	return inputTextData.value?.length
+const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
+	mode: props.showLimitMode,
+	upperLimit: props.maxlength || 0
 })
 
 //Input FOCUS
 const { focused } = useComponentFocus(input, emit)
 
 //Component computed
-const isActionsDisabled = computed(() => disabled.value || readonly.value)
+const isActionsDisabled = computed(() => props.disabled || props.readonly)
 
 //Styles & Bindings
 const inputTextClass = computed(() => {
-	const _hasIconRigth = ObjectUtilities.isNotEmpty(iconRight.value)
+	const _hasIconRigth =
+		hasIconRight.value || ObjectUtilities.isNotEmpty(defaultRightIcon.value)
 	const _isFloating =
-		floating.value && ObjectUtilities.isNotEmpty(label?.value)
+		props.floating && ObjectUtilities.isNotEmpty(props.label)
 	const _isDirty = ObjectUtilities.isNotEmpty(modelValue?.value)
 
 	return [
 		toBem('vv-input-text', {
+			modifiers: props.modifiers,
 			readonly: props.readonly,
 			valid: props.valid,
 			invalid: props.error,
@@ -211,7 +187,7 @@ const vvInputTextProps = computed(() => {
 	} as HTMLAttributes
 })
 const innerInputProps = computed(() => {
-	const _type = isPassword.value && isPasswordVisible.value ? 'text' : type
+	const _type = isPassword.value && showPassword.value ? 'text' : props.type
 	const ariaAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
 		k.startsWith('aria-')
 	)
@@ -248,8 +224,13 @@ const iconSlotProps = computed(() => {
 	}
 })
 
-//Hint
+//Other components
 const HintSlot = HintSlotFactory(props, slots)
+const PasswordInputActions = VvInputTextActionsFactory(
+	INPUT.TYPES.PASSWORD,
+	props
+)
+const NumberInputActions = VvInputTextActionsFactory(INPUT.TYPES.NUMBER, props)
 
 //Methods
 function clearInputText() {

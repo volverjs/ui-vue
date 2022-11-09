@@ -1,5 +1,12 @@
 import type { ExtractPropTypes } from 'vue'
-import { ValidProps, ErrorProps, HintProps, LoadingProps } from '../../props'
+import {
+	ValidProps,
+	ErrorProps,
+	HintProps,
+	LoadingProps,
+	ModifiersProps,
+	LimitProps
+} from '../../props'
 import { TYPES, ICON_POSITIONS } from './constants'
 
 export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur']
@@ -9,6 +16,8 @@ export const VvInputTextProps = {
 	...ErrorProps,
 	...HintProps,
 	...LoadingProps,
+	...ModifiersProps,
+	...LimitProps,
 	modelValue: null,
 	type: {
 		type: String,
@@ -47,10 +56,6 @@ export const VvInputTextProps = {
 	 */
 	floating: Boolean,
 	debounce: Number,
-	/**
-	 * Se true, attiva il conteggio caratteri
-	 */
-	characterCount: Boolean,
 	/**
 	 * Se true, attiva la possibilità di cancellare il testo nella textarea
 	 */

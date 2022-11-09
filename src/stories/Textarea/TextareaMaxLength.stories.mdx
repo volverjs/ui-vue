@@ -4,33 +4,16 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/MaxLength" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/MaxLength" component={VvTextarea} />
+
+# maxLength
+
+`maxlength` numero massimo di caratteri che posso digitare
 
 <Canvas>
 	<Story
 		name="MaxLength"
 		args={{ name: 'textarea-max-length', maxlength: 5 }}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="MaxLength - limit"
-		args={{ name: 'textarea-limit', maxlength: 5, showLimit: true }}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="MaxLength - countdown"
-		args={{
-			name: 'textarea-limit-countdown',
-			maxlength: 5,
-			showLimit: true,
-			showLimitMode: 'countdown'
-		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

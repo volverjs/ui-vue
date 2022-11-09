@@ -13,3 +13,24 @@ import { Template } from './InputText.stories.mdx'
 		{Template.bind({})}
 	</Story>
 </Canvas>
+
+<Canvas>
+	<Story
+		name="MaxLength - limit"
+		args={{ name: 'input-text-limit', maxlength: 5, showLimit: true }}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="MaxLength - countdown"
+		args={{
+			name: 'input-text-limit-countdown',
+			maxlength: 5,
+			showLimit: true,
+			showLimitMode: 'countdown'
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
