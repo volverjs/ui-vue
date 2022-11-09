@@ -10,7 +10,8 @@ module.exports = {
 		'@vue/eslint-config-prettier',
 		'prettier',
 		'plugin:storybook/recommended',
-		'plugin:storybook/recommended'
+		// "parser": "eslint-mdx", // enable `eslint-mdx` manually if it does not work
+		'plugin:mdx/recommended'
 	],
 	rules: {
 		'vue/require-default-prop': 'off'
