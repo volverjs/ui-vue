@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvBadge from '../../components/VvBadge/VvBadge.vue'
+import { testButtonWithBadge } from './Button.test'
 
 <Meta title="Components/Button/badge" />
 
@@ -9,7 +10,7 @@ import VvBadge from '../../components/VvBadge/VvBadge.vue'
 Stories of `VvButton` with `badge`.
 
 <Canvas>
-	<Story name="badge">
+	<Story name="badge" play={testButtonWithBadge}>
 		{() => {
 			return {
 				components: { VvButton, VvBadge },
