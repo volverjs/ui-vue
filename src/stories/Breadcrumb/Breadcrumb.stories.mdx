@@ -13,12 +13,12 @@ import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 			{
 				label: 'Home',
 				title: 'Home',
-				to: '/'
+				href: '/'
 			},
 			{
 				label: 'Library',
 				title: 'Library',
-				to: '/library'
+				href: '/library'
 			},
 			{
 				label: 'Book 1',
@@ -28,34 +28,13 @@ import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 	}}
 />
 
-export const Template = {
-	// decorators: [
-	// 	vueRouter([
-	// 		{
-	// 			path: '/',
-	// 			name: 'home',
-	// 			component: VvBreadcrumb
-	// 		},
-	// 		{
-	// 			path: '/library',
-	// 			name: 'library',
-	// 			component: VvBreadcrumb
-	// 		},
-	// 		{
-	// 			path: '/book1',
-	// 			name: 'book1',
-	// 			component: VvBreadcrumb
-	// 		}
-	// 	])
-	// ],
-	render: (args) => ({
-		components: { VvBreadcrumb },
-		setup() {
-			return { args }
-		},
-		template: `<vv-breadcrumb v-bind="args" />`
-	})
-}
+export const Template = (args) => ({
+	components: { VvBreadcrumb },
+	setup() {
+		return { args }
+	},
+	template: `<vv-breadcrumb v-bind="args" />`
+})
 
 # VvBreadcrumb
 

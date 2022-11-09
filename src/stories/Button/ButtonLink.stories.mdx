@@ -129,26 +129,10 @@ Stories of `VvButton` with `link`.
 
 ## Router-link
 
-export const Template = {
-	// decorators: [
-	// 	vueRouter([
-	// 		{
-	// 			path: '/',
-	// 			name: 'home',
-	// 			component: VvButton
-	// 		},
-	// 		{
-	// 			path: '/test',
-	// 			name: 'test',
-	// 			component: VvButton
-	// 		}
-	// 	])
-	// ],
-	render: () => ({
-		components: { VvButton },
-		template: `<vv-button label="Router link" to="/test" variant="text" />`
-	})
-}
+export const Template = () => ({
+	components: { VvButton },
+	template: `<vv-button label="Router link" to="/test" variant="text" />`
+})
 
 <Canvas>
 	<Story

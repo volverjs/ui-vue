@@ -8,7 +8,8 @@ module.exports = {
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
-		'@storybook/addon-docs'
+		'@storybook/addon-docs',
+		'storybook-dark-mode'
 	],
 	staticDirs: ['./static'],
 	framework: '@storybook/vue3-vite',
