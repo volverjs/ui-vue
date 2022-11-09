@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { within, userEvent } from '@storybook/testing-library'
 import { buttonTest, classTest } from './test.js'
+import { testButton } from './Button.test'
 
 <Meta title="Components/Button/Props/icon-position" />
 
@@ -14,7 +15,7 @@ Stories of `VvButton` with `icon`.
 Let's define a story for our text `icon` button.
 
 <Canvas>
-	<Story name="icon-left" play={buttonTest}>
+	<Story name="icon-left" play={testButton}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -35,13 +36,11 @@ Let's define a story for our right `icon` button.
 <Canvas>
 	<Story
 		name="icon-right"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'reverse'
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--reverse'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -63,7 +62,13 @@ Let's define a story for our right `icon` button.
 Let's define a story for our top `icon` button.
 
 <Canvas>
-	<Story name="icon-top" play={buttonTest}>
+	<Story
+		name="icon-top"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--column'
+			})
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -87,13 +92,11 @@ Let's define a story for our bottom `icon` button.
 <Canvas>
 	<Story
 		name="icon-bottom"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'reverse'
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: ['vv-button--column', 'vv-button--reverse']
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },

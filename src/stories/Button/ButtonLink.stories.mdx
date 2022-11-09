@@ -1,13 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import vueRouter from 'storybook-vue3-router'
-import {
-	buttonTest,
-	disableTest,
-	cssTest,
-	propertyTest,
-	classTest
-} from './test.js'
+import { testButtonLink } from './Button.test'
 
 <Meta title="Components/Button/Link" />
 
@@ -20,12 +14,9 @@ Stories of `VvButton` with `link`.
 <Canvas>
 	<Story
 		name="link-text"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [propertyTest, classTest],
-				properties: ['target', 'href'],
-				className: 'text'
+		play={async (ctx) =>
+			testButtonLink(ctx, {
+				className: 'vv-button--text'
 			})
 		}>
 		{() => {
@@ -50,11 +41,9 @@ Stories of `VvButton` with `link`.
 	<Story
 		name="link-text-disabled"
 		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [disableTest, cssTest, classTest],
-				cssString: 'cursor: not-allowed',
-				className: 'text'
+			testButtonLink(ctx, {
+				isClickDisabled: true,
+				className: 'vv-button--disabled'
 			})
 		}>
 		{() => {
@@ -76,15 +65,7 @@ Stories of `VvButton` with `link`.
 ## Button link
 
 <Canvas>
-	<Story
-		name="button-link"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [propertyTest],
-				properties: ['target', 'href']
-			})
-		}>
+	<Story name="button-link" play={(ctx) => testButtonLink(ctx)}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -113,10 +94,9 @@ Stories of `VvButton` with `link`.
 	<Story
 		name="button-link-disabled"
 		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [disableTest, cssTest],
-				cssString: 'cursor: not-allowed'
+			testButtonLink(ctx, {
+				isClickDisabled: true,
+				className: 'vv-button--disabled'
 			})
 		}>
 		{() => {
@@ -161,17 +141,7 @@ RouterLinkStory.decorators = [
 ]
 
 <Canvas>
-	<Story
-		name="router-link"
-		args={{}}
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [propertyTest, classTest],
-				properties: ['href'],
-				className: 'text'
-			})
-		}>
+	<Story name="router-link" args={{}} play={(ctx) => testButtonLink(ctx)}>
 		{RouterLinkStory}
 	</Story>
 </Canvas>

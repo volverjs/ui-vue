@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { buttonTest, classTest, cssTest, disableTest } from './test.js'
-import { testButton, testButtonClass } from './Button.test'
+import { testButton } from './Button.test'
 
 <Meta title="Components/Button/Variant" />
 
@@ -18,7 +18,7 @@ Create block level button that span the full width of a parent.
 	<Story
 		name="block"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: `vv-button--block`
 			})
 		}}>
@@ -43,7 +43,7 @@ Let's define a story for our `rounded` button:
 	<Story
 		name="rounded"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: `vv-button--rounded`
 			})
 		}}>
@@ -68,7 +68,7 @@ Let's define a story for our `full-bleed` button:
 	<Story
 		name="full-bleed"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: `vv-button--full-bleed`
 			})
 		}}>
@@ -125,7 +125,7 @@ Let's define a story for our `active` button.
 	<Story
 		name="active"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: 'vv-button--active'
 			})
 		}}>
@@ -150,7 +150,7 @@ Let's define a story for our `action` button.
 	<Story
 		name="action"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: 'vv-button--action'
 			})
 		}}>
@@ -175,7 +175,7 @@ Let's define a story for our `action` `selected` button.
 	<Story
 		name="selected"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: 'vv-button--selected'
 			})
 		}}>
@@ -200,7 +200,7 @@ Let's define a story for our `action-quiet` button.
 	<Story
 		name="action-quiet"
 		play={async (ctx) => {
-			testButtonClass(ctx, {
+			testButton(ctx, {
 				className: 'vv-button--action-quiet'
 			})
 		}}>

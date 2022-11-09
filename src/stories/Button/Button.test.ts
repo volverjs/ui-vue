@@ -4,42 +4,28 @@ import { expect } from '@/test/expect'
 
 interface ButtonConfig {
 	isClickDisabled?: boolean
-	className?: string | string[]
-}
-
-const buttonState: { component: HTMLElement | null } = {
-	component: null
-}
-
-async function buttonWithin(canvasElement: HTMLElement) {
-	const component = await within(canvasElement).findByRole('button')
-	buttonState.component = component
-	return component
-}
-
-async function getComponent(canvasElement: HTMLElement) {
-	if (buttonState.component) {
-		return buttonState.component
-	}
-	return await buttonWithin(canvasElement)
+	className?: string | string[] | null
 }
 
 export async function testButton(
 	{ canvasElement }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false }: ButtonConfig = {}
+	{ isClickDisabled = false, className = null }: ButtonConfig = {}
 ) {
-	const button = await getComponent(canvasElement)
+	const button = await within(canvasElement).findByRole('button')
 	if (isClickDisabled) {
 		await expect(button).not.toBeClicked()
 	} else {
 		await expect(button).toBeClicked()
 	}
 	expect(button).toHaveClass('vv-button')
+	if (className) {
+		expect(button).toHaveClass(className)
+	}
 	await expect(button).toHaveNoViolations()
 }
 
 export async function testButtonWithBadge({ canvasElement }: PlayAttributes) {
-	const button = await getComponent(canvasElement)
+	const button = await within(canvasElement).findByRole('button')
 	expect(button.innerHTML).toContain('vv-badge')
 	await testButton({ canvasElement })
 }
@@ -47,24 +33,25 @@ export async function testButtonWithBadge({ canvasElement }: PlayAttributes) {
 export async function testButtonWithIconLeft({
 	canvasElement
 }: PlayAttributes) {
-	const button = await getComponent(canvasElement)
+	const button = await within(canvasElement).findByRole('button')
 	expect(button.innerHTML).toContain('vv-icon')
 	await testButton({ canvasElement })
 }
 export async function testButtonWithIconOnly({
 	canvasElement
 }: PlayAttributes) {
-	const button = await getComponent(canvasElement)
+	const button = await within(canvasElement).findByRole('button')
 	expect(button.classList).toContain('vv-button--icon-only')
 	await testButton({ canvasElement })
 }
 
-export async function testButtonClass(
+export async function testButtonLink(
 	{ canvasElement }: PlayAttributes,
-	{ className = '' }: ButtonConfig = {}
+	{ isClickDisabled = false, className = null }: ButtonConfig = {}
 ) {
-	const button = await getComponent(canvasElement)
-	expect(button).toBeClicked()
-	expect(button).toHaveClass(className, button)
-	expect(button).toHaveNoViolations()
+	const button = await within(canvasElement).findByRole('button')
+	await testButton({ canvasElement }, { isClickDisabled, className })
+	expect(button).toHaveProperty('href')
+	expect(button).toHaveProperty('target')
+	await testButton({ canvasElement })
 }
