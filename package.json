@@ -55,6 +55,7 @@
 		"@storybook/testing-library": "^0.0.14-next.0",
 		"@storybook/vue3": "^7.0.0-alpha.48",
 		"@storybook/vue3-vite": "^7.0.0-alpha.48",
+		"@types/jest-axe": "^3.5.5",
 		"@types/jsdom": "^20.0.1",
 		"@types/node": "18.11.9",
 		"@types/react": "^18.0.25",
