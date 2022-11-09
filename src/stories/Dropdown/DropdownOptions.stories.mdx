@@ -9,17 +9,12 @@ Let's define a story for our `options` dropdown.
 
 Options string array:
 
-<Source
-	language="json"
-	/*html*/
-	code={`[ "Option 4", "Option 5", "Option 6" ]`}
-/>
+<Source language="json" code={`[ "Option 4", "Option 5", "Option 6" ]`} />
 
 Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="json"
-	/*html*/
 	code={`[
 	{
 		"label": "Option 1",
@@ -62,9 +57,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 						]
 					}
 				},
-				template:
-					/*html*/
-					`<div class="h-100 mb-xl">
+				template: `<div class="h-100 mb-xl">
 						<vv-dropdown v-model:modelValue="value" :options="options" class="w-1/2 ml-lg" />
 						<div class="flex justify-end">Value: {{ value }}</div>
 					</div>
@@ -79,6 +72,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="html"
-	/*html*/
 	code={`<vv-dropdown v-model:modelValue="value" :options="options" />`}
 />

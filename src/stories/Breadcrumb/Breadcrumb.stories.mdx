@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import vueRouter from 'storybook-vue3-router'
+// import vueRouter from 'storybook-vue3-router'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
@@ -28,36 +28,34 @@ import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 	}}
 />
 
-export const Template = (args) => ({
-	components: { VvBreadcrumb },
-	setup() {
-		return { args }
-	},
-	template:
-		/*html*/
-		`<vv-breadcrumb v-bind="args" />`
-})
-
-export const BreadcrumbStory = Template.bind({})
-BreadcrumbStory.decorators = [
-	vueRouter([
-		{
-			path: '/',
-			name: 'home',
-			component: VvBreadcrumb
+export const Template = {
+	// decorators: [
+	// 	vueRouter([
+	// 		{
+	// 			path: '/',
+	// 			name: 'home',
+	// 			component: VvBreadcrumb
+	// 		},
+	// 		{
+	// 			path: '/library',
+	// 			name: 'library',
+	// 			component: VvBreadcrumb
+	// 		},
+	// 		{
+	// 			path: '/book1',
+	// 			name: 'book1',
+	// 			component: VvBreadcrumb
+	// 		}
+	// 	])
+	// ],
+	render: (args) => ({
+		components: { VvBreadcrumb },
+		setup() {
+			return { args }
 		},
-		{
-			path: '/library',
-			name: 'library',
-			component: VvBreadcrumb
-		},
-		{
-			path: '/book1',
-			name: 'book1',
-			component: VvBreadcrumb
-		}
-	])
-]
+		template: `<vv-breadcrumb v-bind="args" />`
+	})
+}
 
 # VvBreadcrumb
 
@@ -65,7 +63,5 @@ Stories of `VvBreadcrumb`.
 Let's define a story for our playground `breadcrumb`:
 
 <Canvas>
-	<Story name="vv-breadcrumb" args={{}}>
-		{BreadcrumbStory}
-	</Story>
+	<Story name="vv-breadcrumb" args={{}} render={Template.bind()} />
 </Canvas>

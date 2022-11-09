@@ -23,9 +23,7 @@ A VvButtonGroup with the `action` prop
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
-				template:
-					/*html*/
-					`
+				template: `
 					<div class="flex flex-col">
 						<vv-button-group action class="mt-22">
                             <vv-button>Button 1</vv-button>
@@ -60,9 +58,7 @@ A VvButtonGroup with the `action`, `toggle` and `compact` props
 						modelValue: ''
 					}
 				},
-				template:
-					/*html*/
-					`
+				template: `
 					<div class="flex">
 						<vv-button-group v-model:modelValue="modelValue" action toggle compact class="mt-22">
                             <vv-button name="first" icon="akar-icons:copy" label="First" />

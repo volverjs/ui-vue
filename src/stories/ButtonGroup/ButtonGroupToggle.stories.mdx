@@ -40,9 +40,7 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
 					}
 				},
 				data: () => ({ selected: null }),
-				template:
-					/*html*/
-					`
+				template: `
 					<div class="flex flex-row justify-between">
                         <vv-button-group toggle compact @update:modelValue="selected = $event" :modelValue="selected">
                             <vv-button name="1a">Button 1</vv-button>
@@ -75,9 +73,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 					}
 				},
 				data: () => ({ selected: null, selected2: null }),
-				template:
-					/*html*/
-					`
+				template: `
                         <div class="flex flex-row justify-between">
 							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">
 								<vv-button name="1a">Button 1</vv-button>
@@ -114,9 +110,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 					}
 				},
 				data: () => ({ hide2b: false, selected: null }),
-				template:
-					/*html*/
-					`
+				template: `
 					<div class="flex flex-col">
 						<div class="flex flex-row justify-between">
 							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">

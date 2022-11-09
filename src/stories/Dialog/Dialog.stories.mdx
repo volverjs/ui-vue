@@ -12,9 +12,7 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ open: false }),
-	template:
-		/*html*/
-		`
+	template: `
 		<div class="flex flex-column">
 			<button class="vv-button" @click="open=true">Open</button>
             <vv-dialog v-bind="args" v-model:open="open">

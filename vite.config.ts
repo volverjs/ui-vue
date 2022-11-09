@@ -8,7 +8,7 @@ export default defineConfig({
 	build: {
 		lib: {
 			name: '@volverjs/ui-vue',
-			entry: path.resolve(__dirname, 'src/main.ts')
+			entry: path.resolve(__dirname, 'src/index.ts')
 		},
 		rollupOptions: {
 			external: ['vue'],

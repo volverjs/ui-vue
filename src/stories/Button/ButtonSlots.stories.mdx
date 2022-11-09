@@ -17,9 +17,7 @@ Let's define a story for our button with `default` slot.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button>
+				template: `<vv-button>
 						Override all button content with
 						<span class="font-bold">Slot default</span>
 						<span
@@ -49,9 +47,7 @@ Let's define a story for our button with `before` slot.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Slot before">
+				template: `<vv-button label="Slot before">
 						<template #before>
 							Add before content with
 						</template>
@@ -79,9 +75,7 @@ Let's define a story for our button with `after` slot.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Slot after">
+				template: `<vv-button label="Slot after">
 						<template #after>
 							Add after content
 						</template>
@@ -109,9 +103,7 @@ Let's define a story for our button with `label` slot.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Slot label">
+				template: `<vv-button label="Slot label">
 						<template #label>
 							<span class="font-bold">Label slot!</span>
 						</template>

@@ -11,21 +11,23 @@ module.exports = {
 		'@storybook/addon-docs'
 	],
 	staticDirs: ['./static'],
-	framework: '@storybook/vue3',
+	framework: '@storybook/vue3-vite',
 	core: {
 		builder: '@storybook/builder-vite'
 	},
 	features: {
-		storyStoreV7: true
+		// storyStoreV7: true,
+		// previewMdx2: true // 👈 MDX 2 enabled here
 	},
 	async viteFinal(config) {
 		config.base = '/storybook/'
-
 		config.resolve.alias = {
 			...config.resolve.alias,
 			'@': '../src'
 		}
-
 		return config
+	},
+	docsPage: {
+		docs: 'automatic'
 	}
 }

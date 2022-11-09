@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
-import vueRouter from 'storybook-vue3-router'
+// import vueRouter from 'storybook-vue3-router'
 import {
 	buttonTest,
 	disableTest,
@@ -31,9 +31,7 @@ Stories of `VvButton` with `link`.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" @click="$event.preventDefault()" />`
+				template: `<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" @click="$event.preventDefault()" />`
 			}
 		}}
 	</Story>
@@ -60,9 +58,7 @@ Stories of `VvButton` with `link`.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`
+				template: `<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`
 			}
 		}}
 	</Story>
@@ -88,9 +84,7 @@ Stories of `VvButton` with `link`.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" @click="$event.preventDefault()" />`
+				template: `<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" @click="$event.preventDefault()" />`
 			}
 		}}
 	</Story>
@@ -122,9 +116,7 @@ Stories of `VvButton` with `link`.
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`
+				template: `<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`
 			}
 		}}
 	</Story>
@@ -137,28 +129,26 @@ Stories of `VvButton` with `link`.
 
 ## Router-link
 
-export const Template = () => ({
-	components: { VvButton },
-	template:
-		/*html*/
-		`<vv-button label="Router link" to="/test" variant="text" />`
-})
-
-export const RouterLinkStory = Template.bind({})
-RouterLinkStory.decorators = [
-	vueRouter([
-		{
-			path: '/',
-			name: 'home',
-			component: VvButton
-		},
-		{
-			path: '/test',
-			name: 'test',
-			component: VvButton
-		}
-	])
-]
+export const Template = {
+	// decorators: [
+	// 	vueRouter([
+	// 		{
+	// 			path: '/',
+	// 			name: 'home',
+	// 			component: VvButton
+	// 		},
+	// 		{
+	// 			path: '/test',
+	// 			name: 'test',
+	// 			component: VvButton
+	// 		}
+	// 	])
+	// ],
+	render: () => ({
+		components: { VvButton },
+		template: `<vv-button label="Router link" to="/test" variant="text" />`
+	})
+}
 
 <Canvas>
 	<Story
@@ -172,7 +162,7 @@ RouterLinkStory.decorators = [
 				className: 'text'
 			})
 		}>
-		{RouterLinkStory}
+		{Template.bind()}
 	</Story>
 </Canvas>
 

@@ -18,9 +18,7 @@ Let's define a story for our `disabled` select.
 						options: ['Option 1', 'Option 2', 'Option 3']
 					}
 				},
-				template:
-					/*html*/
-					`<div class="w-1/2">
+				template: `<div class="w-1/2">
 						<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />
 					</div>`
 			}
@@ -30,6 +28,5 @@ Let's define a story for our `disabled` select.
 
 <Source
 	language="html"
-	/*html*/
 	code={`<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />`}
 />

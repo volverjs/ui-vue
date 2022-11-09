@@ -35,9 +35,7 @@ export const Template = (args) => ({
 			value: ''
 		}
 	},
-	template:
-		/*html*/
-		`<div class="mb-lg">Value: {{ value }}</div>
+	template: `<div class="mb-lg">Value: {{ value }}</div>
 		<vv-dropdown v-bind="args" v-model:modelValue="value" class="w-1/2 ml-lg" />
 		`
 })

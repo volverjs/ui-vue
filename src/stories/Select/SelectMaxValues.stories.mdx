@@ -18,9 +18,7 @@ Let's define a story for our multple `max-values` select.
 						options: ['Option 4', 'Option 5', 'Option 6']
 					}
 				},
-				template:
-					/*html*/
-					`<div class="w-1/2">
+				template: `<div class="w-1/2">
 						<vv-select v-model:modelValue="value" :options="options" label="Label 1" multiple max-values="2" />
 						value: {{ value }}
 					</div>`
@@ -31,6 +29,5 @@ Let's define a story for our multple `max-values` select.
 
 <Source
 	language="html"
-	/*html*/
 	code={`<vv-select v-model:modelValue="value" :options="options" label="Label 1" multiple max-values="2" />`}
 />

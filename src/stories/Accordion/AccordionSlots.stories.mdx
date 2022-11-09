@@ -24,9 +24,7 @@ Let's define a story for our accordion with `header` slot.
 							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 					}
 				},
-				template:
-					/*html*/
-					`<div class="w-1/2">
+				template: `<div class="w-1/2">
 						<vv-accordion :content="content"  bordered icon-right>
 							<template #header>
 								<p data-testId="slot" class="text-word-3">{{ title }}</p>
@@ -62,9 +60,7 @@ Let's define a story for our accordion with `details` slot.
 							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 					}
 				},
-				template:
-					/*html*/
-					`<div class="w-1/2">
+				template: `<div class="w-1/2">
 						<vv-accordion title="Slot details" bordered icon-right>
 							<template #details>
 								<p data-testId="slot" class='font-light text-word-3'>{{ details }}</p>

@@ -70,9 +70,7 @@ import { Template } from './Check.stories.mdx'
 						}
 					}
 				},
-				template:
-					/*html*/
-					`<div :data-testData="checkValue" :key="checkValue">
+				template: `<div :data-testData="checkValue" :key="checkValue">
 						<vv-check v-model:modelValue="checkValue" v-bind="args"  />
 						<strong v-if="checkValue">Valore selez: {{checkValue}} </strong>
 					</div>`

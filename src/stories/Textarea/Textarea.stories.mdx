@@ -12,9 +12,7 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ value: args.modelValue || '' }),
-	template:
-		/*html*/
-		`
+	template: `
 		<div class="flex flex-col justify-between">
 			<vv-textarea v-bind="args" v-model:modelValue="value"/>
 			<strong v-if="value">Valore: {{value}} </strong> 
