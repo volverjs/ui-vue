@@ -65,7 +65,6 @@ specifiers:
   storybook: ^7.0.0-alpha.48
   storybook-addon-markdown-docs: ^1.0.5
   storybook-dark-mode: ^1.1.2
-  storybook-vue3-router: ^2.3.1
   ts-node: ^10.9.1
   typescript: ~4.8.4
   uuid: ^9.0.0
@@ -147,7 +146,6 @@ devDependencies:
   storybook: 7.0.0-alpha.48_yalvw3r2waubxycyb7k7qsruca
   storybook-addon-markdown-docs: 1.0.5
   storybook-dark-mode: 1.1.2_biqbaboplfbrettd7655fr4n2y
-  storybook-vue3-router: 2.3.1_jiukxna6h7hcja7hmdzk3eh3hu
   ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
   typescript: 4.8.4
   vite: 3.2.3_ajklay5k626t46b6fyghkbup3i
@@ -4673,10 +4671,6 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.2.43
       '@vue/shared': 3.2.43
-
-  /@vue/devtools-api/6.4.5:
-    resolution: {integrity: sha512-JD5fcdIuFxU4fQyXUu3w2KpAJHzTVdN+p4iOX2lMWSHMOoQdMAcpFLZzm9Z/2nmsoZ1a96QEhZ26e50xLBsgOQ==}
-    dev: true
 
   /@vue/eslint-config-prettier/7.0.0_mbd4zptqpjbepwpyh2zbtslqey:
     resolution: {integrity: sha512-/CTc6ML3Wta1tCe1gUeO0EYnVXfo3nJXsIhZ8WJr3sov+cGASr6yuiibJTL6lmIBm7GobopToOuB3B6AWyV0Iw==}
@@ -12904,24 +12898,6 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: true
 
-  /storybook-vue3-router/2.3.1_jiukxna6h7hcja7hmdzk3eh3hu:
-    resolution: {integrity: sha512-e+nhYUoJJCW85TBrKnpaa4Wc6FAiiXFaYFdC49EY7n28jIEabPGq7j1isJN226QfFP45HLpcZb5i8z1Q1+LPUg==}
-    peerDependencies:
-      '@storybook/addons': ^6.3.6
-      '@storybook/vue3': 6.x
-      vue: 3.x
-    peerDependenciesMeta:
-      vue:
-        optional: true
-      vue-router:
-        optional: true
-    dependencies:
-      '@storybook/addons': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
-      '@storybook/vue3': 7.0.0-alpha.48_zzz6spyytf7prcn4td4h5gbfci
-      vue: 3.2.43
-      vue-router: 4.1.6_vue@3.2.43
-    dev: true
-
   /storybook/7.0.0-alpha.48_yalvw3r2waubxycyb7k7qsruca:
     resolution: {integrity: sha512-hI5eDjJ2YSMWwg6f3JJ+wJQ/o0H5zusJ8mkXtfjfQRg3cDDP4Y479E7tdNC2YCUM2sV7c+DpLhe+Y3yICiwkzg==}
     hasBin: true
@@ -14091,15 +14067,6 @@ packages:
       loader-utils: 2.0.3
       vue: 3.2.43
       webpack: 5.75.0
-    dev: true
-
-  /vue-router/4.1.6_vue@3.2.43:
-    resolution: {integrity: sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==}
-    peerDependencies:
-      vue: ^3.2.0
-    dependencies:
-      '@vue/devtools-api': 6.4.5
-      vue: 3.2.43
     dev: true
 
   /vue-template-compiler/2.7.14:
