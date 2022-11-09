@@ -5,10 +5,10 @@
 	"scripts": {
 		"dev": "storybook dev -p 6006",
 		"docs": "build-storybook",
-		"build": "node ./scripts/build.js",
+		"build": "npm run generate-icons && node ./scripts/build.js",
 		"type-check": "vue-tsc --noEmit",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-		"generate-iconify-json": "ts-node-esm scripts/icons/generateIcons.ts",
+		"generate-icons": "ts-node-esm scripts/icons/generateIcons.ts",
 		"vue-tsc": "vue-tsc --declaration --emitDeclarationOnly"
 	},
 	"files": [
