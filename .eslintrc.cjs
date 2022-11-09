@@ -9,6 +9,7 @@ module.exports = {
 		'@vue/eslint-config-typescript/recommended',
 		'@vue/eslint-config-prettier',
 		'prettier',
+		'plugin:storybook/recommended',
 		'plugin:storybook/recommended'
 	],
 	rules: {
