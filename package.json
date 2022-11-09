@@ -29,6 +29,7 @@
 		"@babel/preset-env": "^7.20.2",
 		"@iconify/tools": "^2.1.1",
 		"@iconify/types": "^2.0.0",
+		"@iconify/utils": "^2.0.1",
 		"@mdx-js/react": "^2.1.5",
 		"@rushstack/eslint-patch": "^1.2.0",
 		"@storybook/addon-a11y": "^7.0.0-alpha.48",

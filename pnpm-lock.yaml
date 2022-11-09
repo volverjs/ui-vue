@@ -5,6 +5,7 @@ specifiers:
   '@babel/preset-env': ^7.20.2
   '@iconify/tools': ^2.1.1
   '@iconify/types': ^2.0.0
+  '@iconify/utils': ^2.0.1
   '@iconify/vue': ^4.0.0
   '@mdx-js/react': ^2.1.5
   '@rushstack/eslint-patch': ^1.2.0
@@ -88,6 +89,7 @@ devDependencies:
   '@babel/preset-env': 7.20.2_@babel+core@7.20.2
   '@iconify/tools': 2.1.1_@iconify+types@2.0.0
   '@iconify/types': 2.0.0
+  '@iconify/utils': 2.0.1
   '@mdx-js/react': 2.1.5_react@18.2.0
   '@rushstack/eslint-patch': 1.2.0
   '@storybook/addon-a11y': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
