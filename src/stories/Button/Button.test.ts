@@ -4,6 +4,7 @@ import { expect } from '@/test/expect'
 
 interface ButtonConfig {
 	isClickDisabled?: boolean
+	className?: string | string[]
 }
 
 const buttonState: { component: HTMLElement | null } = {
@@ -33,6 +34,7 @@ export async function testButton(
 	} else {
 		await expect(button).toBeClicked()
 	}
+	expect(button).toHaveClass('vv-button')
 	await expect(button).toHaveNoViolations()
 }
 
@@ -55,4 +57,14 @@ export async function testButtonWithIconOnly({
 	const button = await getComponent(canvasElement)
 	expect(button.classList).toContain('vv-button--icon-only')
 	await testButton({ canvasElement })
+}
+
+export async function testButtonClass(
+	{ canvasElement }: PlayAttributes,
+	{ className = '' }: ButtonConfig = {}
+) {
+	const button = await getComponent(canvasElement)
+	expect(button).toBeClicked()
+	expect(button).toHaveClass(className, button)
+	expect(button).toHaveNoViolations()
 }

@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
-import { within, userEvent } from '@storybook/testing-library'
 import { buttonTest, classTest, cssTest, disableTest } from './test.js'
+import { testButton, testButtonClass } from './Button.test'
 
 <Meta title="Components/Button/Variant" />
 
@@ -17,14 +17,11 @@ Create block level button that span the full width of a parent.
 <Canvas>
 	<Story
 		name="block"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest, cssTest],
-				className: 'block',
-				cssString: 'display: block'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: `vv-button--block`
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -45,14 +42,11 @@ Let's define a story for our `rounded` button:
 <Canvas>
 	<Story
 		name="rounded"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest, cssTest],
-				className: 'rounded',
-				cssString: 'border-radius: 9999px'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: `vv-button--rounded`
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -73,13 +67,11 @@ Let's define a story for our `full-bleed` button:
 <Canvas>
 	<Story
 		name="full-bleed"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'full-bleed'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: `vv-button--full-bleed`
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -107,13 +99,11 @@ Let's define a story for our `disabled` button.
 <Canvas>
 	<Story
 		name="disabled"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [cssTest, disableTest],
-				cssString: 'cursor: not-allowed'
+		play={async (ctx) => {
+			testButton(ctx, {
+				isClickDisabled: true
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -134,13 +124,11 @@ Let's define a story for our `active` button.
 <Canvas>
 	<Story
 		name="active"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'active'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: 'vv-button--active'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -161,13 +149,11 @@ Let's define a story for our `action` button.
 <Canvas>
 	<Story
 		name="action"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'action'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: 'vv-button--action'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -188,13 +174,11 @@ Let's define a story for our `action` `selected` button.
 <Canvas>
 	<Story
 		name="selected"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'selected'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: 'vv-button--selected'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
@@ -215,13 +199,11 @@ Let's define a story for our `action-quiet` button.
 <Canvas>
 	<Story
 		name="action-quiet"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'selected'
+		play={async (ctx) => {
+			testButtonClass(ctx, {
+				className: 'vv-button--action-quiet'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },

@@ -35,6 +35,7 @@
 		"@storybook/jest": "^0.0.10",
 		"@storybook/testing-library": "^0.0.13",
 		"@storybook/vue3": "^6.5.12",
+		"@types/jest-axe": "^3.5.5",
 		"@types/jsdom": "^20.0.0",
 		"@types/node": "18.8.0",
 		"@types/uuid": "^8.3.4",
