@@ -1,9 +1,9 @@
-import '../src/stories/stories.scss'
+import '@/stories/stories.scss'
 import { setup } from '@storybook/vue3'
-import DesignSystem from '../src/DesignSystem'
-import iconsSimple from '../src/assets/icons/simple.json'
-import iconsNormal from '../src/assets/icons/normal.json'
-import iconsDetailed from '../src/assets/icons/detailed.json'
+import DesignSystem from '@/DesignSystem'
+import iconsSimple from '@/assets/icons/simple.json'
+import iconsNormal from '@/assets/icons/normal.json'
+import iconsDetailed from '@/assets/icons/detailed.json'
 
 const volver = new DesignSystem({
 	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
@@ -23,7 +23,7 @@ export const parameters = {
 	},
 	darkMode: {
 		// Set the initial theme
-		current: 'light',
+		// current: 'light',
 		darkClass: 'theme--dark',
 		lightClass: 'theme--light',
 		stylePreview: true
