@@ -1,26 +1,37 @@
 import { Meta, Story } from '@storybook/addon-docs'
 import VvTooltip from '@/components/VvTooltip/VvTooltip.vue'
+import { VvTooltipProps } from '@/components/VvTooltip/VvTooltip'
+import ObjectUtilities from '@/utils/ObjectUtilities'
 
-<Meta title="Tooltip" component={VvTooltip} />
+<Meta
+	title="Components/Tooltip"
+	component={VvTooltip}
+	args={{ ...ObjectUtilities.propsToObject(VvTooltipProps) }}
+	argTypes={{
+		position: {
+			type: 'select',
+			options: [undefined, 'left', 'right', 'bottom', 'top']
+		}
+	}}
+/>
 
-<Story
-	name="Primary"
-	render={() => ({
-		components: { VvTooltip },
-		template: `<VvTooltip  />`
-	})}
-/>
-<Story
-	name="Secondary"
-	render={() => ({
-		components: { VvTooltip },
-		template: `<VvTooltip  />`
-	})}
-/>
-<Story
-	name="Tertiary"
-	render={() => ({
-		components: { VvTooltip },
-		template: `<VvTooltip  />`
-	})}
-/>
+export const Template = (args) => ({
+	components: { VvTooltip },
+	setup() {
+		return { args }
+	},
+	template:
+		/* html */
+		`<div class="m-xl pl-xl">
+			<VvTooltip v-bind="args">
+				pippo
+				<template #tooltip>
+					Let's make our tooltip!
+				</template>
+			</VvTooltip>
+		</div>`
+})
+
+<Story name="vv-tooltip" args={{}}>
+	{Template.bind({})}
+</Story>
