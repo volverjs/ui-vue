@@ -21,6 +21,8 @@
 	"dependencies": {
 		"@iconify/vue": "^4.0.0",
 		"@vueuse/core": "^9.5.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-mdx": "^2.0.5",
 		"jsdom": "^20.0.2",
 		"uuid": "^9.0.0",
 		"vue": "^3.2.42"
