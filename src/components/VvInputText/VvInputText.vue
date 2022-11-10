@@ -34,7 +34,7 @@
 					<vv-icon :name="icon || defaultRightIcon" />
 				</template>
 			</slot>
-			<span v-if="showLimit" class="vv-input-text__limit">
+			<span v-if="limit" class="vv-input-text__limit">
 				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
 			</span>
 		</div>
@@ -82,7 +82,7 @@ const attrs = useAttrs()
 const input = ref()
 
 //Data
-const { icon, iconPosition, label, modelValue, autoclear, showLimit } =
+const { icon, iconPosition, label, modelValue, autoclear, limit } =
 	toRefs(props)
 const inputTextId = props.id || props.name
 const inputTextLabeledBy = `${props.name}-label`
@@ -143,7 +143,7 @@ const defaultRightIcon = computed(() => {
 
 //Conteggio battute
 const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
-	mode: props.showLimitMode,
+	mode: props.limit,
 	upperLimit: props.maxlength || 0
 })
 

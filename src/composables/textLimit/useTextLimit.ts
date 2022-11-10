@@ -2,7 +2,7 @@ import { isString } from '@vueuse/core'
 import { computed, unref, type Ref } from 'vue'
 
 interface useTextOptions {
-	mode: string //'limit' | 'countdown'
+	mode: string | boolean
 	upperLimit: number
 }
 
@@ -18,15 +18,17 @@ export function useTextLimit(inputText: Ref<string>, options: useTextOptions) {
 	const textLimitLength = computed(() => {
 		const _text = unref(inputText) || ''
 
-		if (!isString(_text)) return 0
+		if (!isString(_text) || options.mode === false) return 0
 
-		if (options.mode === 'limit') return _text.length
+		if (options.mode === true) return _text.length
 		else return unref(options.upperLimit) - _text.length
 	})
 
 	const formattedTextLimitLength = computed(() => {
+		if (options.mode === false) return ''
+
 		if (
-			options.mode === 'limit' &&
+			options.mode === true &&
 			options.upperLimit &&
 			options.upperLimit > 0
 		)

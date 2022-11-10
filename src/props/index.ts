@@ -46,19 +46,17 @@ export const OptionsProps = {
 
 export const LimitProps = {
 	/**
-	 * Se true, attiva il conteggio caratteri
-	 */
-	showLimit: Boolean,
-	/**
-	 * Modalità conteggio
+	 * Conteggio caratteri
 	 * @description
-	 * mode="limit", mostra quanti caratteri ho digitato sin ora e qualì'è la maxlength.
-	 * mode="countdown", mostra quanti caratteri mancano per raggiungere la maxlength.
+	 * Se false, non mostrare il conteggio caratteri
+	 * Se true, mostra quanti caratteri ho digitato sin ora e qualì'è la maxlength.
+	 * Se true e maxlength > 0, mostra quanti caratteri ho digitato sin ora e qualì'è la maxlength.
+	 * Se "countdown", mostra quanti caratteri mancano per raggiungere la maxlength.
 	 */
-	showLimitMode: {
-		type: String,
-		default: 'limit',
-		validator: (value: string) => ['limit', 'countdown'].includes(value)
+	limit: {
+		type: [Boolean, String],
+		default: false,
+		validator: (value: string) => [true, false, 'countdown'].includes(value)
 	}
 }
 

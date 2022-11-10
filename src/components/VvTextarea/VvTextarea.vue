@@ -24,7 +24,7 @@
 			<slot v-if="hasIconRight" name="icon-right" v-bind="iconSlotProps">
 				<vv-icon :name="icon" />
 			</slot>
-			<span v-if="showLimit" class="vv-textarea__limit">
+			<span v-if="limit" class="vv-textarea__limit">
 				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
 			</span>
 		</div>
@@ -67,7 +67,7 @@ const attrs = useAttrs()
 const input = ref()
 
 //Data
-const { icon, iconPosition, label, modelValue, autoclear, showLimit } =
+const { icon, iconPosition, label, modelValue, autoclear, limit } =
 	toRefs(props)
 const textAreaId = props.id || props.name
 const textAreaLabeledBy = `${props.name}-label`
@@ -93,7 +93,7 @@ const { focused } = useComponentFocus(input, emit)
 
 //Conteggio battute
 const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
-	mode: props.showLimitMode,
+	mode: props.limit,
 	upperLimit: props.maxlength || 0
 })
 

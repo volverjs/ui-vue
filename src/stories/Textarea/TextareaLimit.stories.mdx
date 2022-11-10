@@ -4,18 +4,18 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/ShowLimit" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Limit" component={VvTextarea} />
 
-# ShowLimit
+# Limit
 
-`ShowLimit` mostra il contatore dei caratteri digitati.
+`Limit` mostra il contatore dei caratteri digitati.
 
 <Canvas>
 	<Story
-		name="ShowLimit"
+		name="Limit"
 		args={{
 			name: 'textarea-show-limit',
-			showLimit: true
+			limit: true
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -25,10 +25,24 @@ Se imposto anche il maxlength, visualizza anche il numero massimo di caratteri c
 
 <Canvas>
 	<Story
-		name="ShowLimit with Max"
+		name="Limit with Max"
 		args={{
 			name: 'textarea-show-limit',
-			showLimit: true,
+			limit: true,
+			maxlength: 25
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+`limit='countdown'` conteggia quanti caratteri posso ancora inserire.
+
+<Canvas>
+	<Story
+		name="Limit countdown"
+		args={{
+			name: 'textarea-show-countdown',
+			limit: 'countdown',
 			maxlength: 25
 		}}>
 		{Template.bind({})}
