@@ -4,35 +4,31 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/IconPosition" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/ValidLabel" component={VvTextarea} />
 
-# IconPosition
+# ValidLabel
 
-`iconPosition` posizione dell'icona
-
-`iconPosition='right'` posiziona l'icona a dx
+`ValidLabel` messaggio associato allo stato valid.
 
 <Canvas>
 	<Story
-		name="Left"
+		name="ValidLabel"
 		args={{
-			name: 'textarea-icon',
-			icon: 'add',
-			iconPosition: 'left'
+			name: 'textarea-validlabel',
+			valid: true,
+			validLabel: 'Il dato è corretto!'
 		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
-`iconPosition='left'` posiziona l'icona a sx
-
 <Canvas>
 	<Story
-		name="Right"
+		name="ValidLabels"
 		args={{
-			name: 'textarea-icon',
-			icon: 'add',
-			iconPosition: 'right'
+			name: 'textarea-validlabels',
+			valid: true,
+			validLabel: ['Il dato è corretto!', 'Ottimo!']
 		}}>
 		{Template.bind({})}
 	</Story>

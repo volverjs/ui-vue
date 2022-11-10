@@ -4,18 +4,19 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/Error" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Debounce" component={VvTextarea} />
 
-# Error
+# Debounce
 
-`Error` attiva lo stato errore della textarea.
+`Debounce` definisce l'intervallo di tempo in millisecondi che deve passare dall'ultima battuta prima che il testo venga sincronizzato.
 
 <Canvas>
 	<Story
-		name="Error"
+		name="Disabled"
 		args={{
-			name: 'textarea-error',
-			error: true
+			name: 'textarea-disabled',
+			disabled: true,
+			modelValue: 'Prova'
 		}}>
 		{Template.bind({})}
 	</Story>

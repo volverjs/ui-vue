@@ -1,0 +1,24 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+
+import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
+import { Template } from './Textarea.stories.mdx'
+
+<Meta title="Components/Textarea/Props/Modifiers" component={VvTextarea} />
+
+# Modifiers
+
+`Modifiers` mi permette di aggiungere uno o più modificatori alla textarea.
+
+Ogni modificatore verrà convertito in una classe `vv-textarea--${#modifier#}`
+
+<Canvas>
+	<Story
+		name="Modifiers"
+		args={{
+			name: 'textarea-modifiers',
+			modifiers: ['variante-1', 'variante-2']
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

@@ -4,15 +4,18 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/TextArea/Valid" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Valid" component={VvTextarea} />
+
+# Valid
+
+`Valid` imposta lo stato valid per la textarea.
 
 <Canvas>
 	<Story
 		name="Valid"
 		args={{
-			name: 'input-textarea',
-			valid: true,
-			validLabel: 'Valid label!'
+			name: 'textarea-valid',
+			valid: true
 		}}>
 		{Template.bind({})}
 	</Story>

@@ -1,3 +1,4 @@
+import { toReactive } from '@vueuse/core'
 import { h, type Component, type ExtractPropTypes, type Slots } from 'vue'
 import { computed, toRefs } from 'vue'
 import ObjectUtilities from '../../utils/ObjectUtilities'
@@ -7,7 +8,7 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
  * @param {Array<string> | string} errors
  * @returns {string}
  */
-function joinErrors(errors: Array<string> | string) {
+function joinLines(errors: Array<string> | string | unknown[] | undefined) {
 	if (Array.isArray(errors))
 		return errors
 			.filter((e) => ObjectUtilities.isString(e))
@@ -50,7 +51,10 @@ export function HintSlotFactory(
 ): Component {
 	return {
 		name: 'HintSlot',
-		setup() {
+		props: {
+			params: { type: Object, default: () => {} }
+		},
+		setup(hProps) {
 			const props = toRefs(pProps)
 
 			//Slots
@@ -110,19 +114,29 @@ export function HintSlotFactory(
 				)
 			})
 
-			const errorMessage = computed(() => {
-				if (Array.isArray(errorLabel?.value))
-					return joinErrors(errorLabel?.value || '')
-				else return errorLabel?.value
-			})
+			// const errorMessage = computed(() => {
+			// 	if (Array.isArray(errorLabel?.value))
+			// 		return joinLines(errorLabel?.value || '')
+			// 	else return errorLabel?.value
+			// })
 
 			const hintContent = computed(() => {
-				const slotProps = { modelValue, error, valid }
+				const slotProps = toReactive({
+					hintLabel,
+					modelValue,
+					valid,
+					validLabel,
+					error,
+					errorLabel,
+					loading,
+					loadingLabel,
+					...hProps.params
+				})
 
 				if (error?.value) {
 					return (
 						errorSlot?.(slotProps) ||
-						errorMessage?.value ||
+						joinLines(errorLabel?.value) ||
 						hintLabel?.value
 					)
 				}
@@ -130,20 +144,20 @@ export function HintSlotFactory(
 				if (valid?.value)
 					return (
 						validSlot?.(slotProps) ||
-						validLabel?.value ||
+						joinLines(validLabel?.value) ||
 						hintLabel?.value
 					)
 
 				if (loading?.value)
 					return (
 						loadingSlot?.(slotProps) ||
-						loadingLabel?.value ||
+						joinLines(loadingLabel?.value) ||
 						hintLabel?.value
 					)
 
 				return (
 					hintSlot?.(slotProps) ||
-					hintLabel?.value ||
+					joinLines(hintLabel?.value) ||
 					hintLabel?.value
 				)
 			})
@@ -155,7 +169,11 @@ export function HintSlotFactory(
 		},
 		render() {
 			if (this.hasHint) {
-				return h('span', null, this.hintContent)
+				return h(
+					'pre',
+					{ style: { 'white-space': 'pre' } },
+					this.hintContent
+				)
 			}
 		}
 	}

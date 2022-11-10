@@ -4,12 +4,20 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Autocomplete" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Autocomplete" component={VvTextarea} />
+
+# Autocomplete
+
+`Autocomplete` abilita (`ON`) o disabilita (`OFF`) l'autocomplete della singola textarea.
 
 <Canvas>
 	<Story
 		name="Autocomplete"
-		args={{ name: 'textarea-autocomplete', autocomplete: 'on' }}>
+		args={{
+			name: 'textarea-autocomplete-on',
+			label: 'Nome',
+			autocomplete: 'on'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

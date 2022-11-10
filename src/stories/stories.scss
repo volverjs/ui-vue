@@ -23,3 +23,14 @@ $zero-specificity-for-utilities: false;
 @import '@volverjs/style/scss/components/vv-textarea';
 @import '@volverjs/style/scss/components/vv-breadcrumb';
 @import '@volverjs/style/scss/components/vv-tooltip';
+
+
+//Custom classes for stories
+.vv-textarea {
+    &--variante-1{
+        --vv-textarea-element-input-color: red;
+    }
+    &--variante-2{
+        --vv-textarea-element-wrapper-background-color: green;
+    }
+}

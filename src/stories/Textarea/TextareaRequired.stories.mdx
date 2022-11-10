@@ -4,18 +4,18 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
 
-<Meta title="Components/Textarea/Props/Error" component={VvTextarea} />
+<Meta title="Components/Textarea/Props/Required" component={VvTextarea} />
 
-# Error
+# Required
 
-`Error` attiva lo stato errore della textarea.
+`Required` identifica la textarea come un campo required
 
 <Canvas>
 	<Story
-		name="Error"
+		name="Required"
 		args={{
-			name: 'textarea-error',
-			error: true
+			name: 'textarea-required',
+			required: true
 		}}>
 		{Template.bind({})}
 	</Story>

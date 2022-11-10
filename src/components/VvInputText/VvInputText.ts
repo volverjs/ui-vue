@@ -1,4 +1,12 @@
-import { ValidProps, ErrorProps, HintProps, LoadingProps } from '../../props'
+import type { ExtractPropTypes } from 'vue'
+import {
+	ValidProps,
+	ErrorProps,
+	HintProps,
+	LoadingProps,
+	ModifiersProps,
+	LimitProps
+} from '../../props'
 import { TYPES, ICON_POSITIONS } from './constants'
 
 export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur']
@@ -8,6 +16,8 @@ export const VvInputTextProps = {
 	...ErrorProps,
 	...HintProps,
 	...LoadingProps,
+	...ModifiersProps,
+	...LimitProps,
 	modelValue: null,
 	type: {
 		type: String,
@@ -45,5 +55,12 @@ export const VvInputTextProps = {
 	 * True = label flottante
 	 */
 	floating: Boolean,
-	debounce: Number
+	debounce: Number,
+	/**
+	 * Se true, attiva la possibilità di cancellare il testo nella textarea
+	 */
+	autoclear: Boolean
 }
+
+type VvInputTextPropsType = typeof VvInputTextProps
+export type VvInputTextPropsTypes = ExtractPropTypes<VvInputTextPropsType>
