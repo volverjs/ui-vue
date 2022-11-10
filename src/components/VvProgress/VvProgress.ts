@@ -1,15 +1,18 @@
+import { ModifiersProps } from '../../props'
+
 export const VvProgressProps = {
+	...ModifiersProps,
 	/**
 	 * Progress value
 	 */
 	value: {
-		type: Number
+		type: [Number, String]
 	},
 	/**
 	 * Progress max value
 	 */
 	max: {
-		type: Number
+		type: [Number, String]
 	},
 	/**
 	 * Progress label
@@ -19,7 +22,7 @@ export const VvProgressProps = {
 		default: 'progress-bar'
 	},
 	/**
-	 * Indeterminate attribute
+	 * determinate attribute
 	 */
-	indeterminate: Boolean
+	determinate: { type: Boolean, default: false }
 }

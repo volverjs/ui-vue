@@ -22,5 +22,4 @@ export const VvRadioEvents = [
 	'blur'
 ]
 
-type _VvRadioType = typeof VvRadioProps
-export type VvRadioGroupType = ExtractPropTypes<_VvRadioType>
+export type VvRadioPropsType = ExtractPropTypes<typeof VvRadioProps>

@@ -1,15 +1,8 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
-import vueRouter from 'storybook-vue3-router'
-import {
-	buttonTest,
-	disableTest,
-	cssTest,
-	propertyTest,
-	classTest
-} from './test.js'
+import { testButtonLink } from './Button.test'
 
-<Meta title="Components/Button/link" />
+<Meta title="Components/Button/Link" />
 
 # VvButton link
 
@@ -20,20 +13,15 @@ Stories of `VvButton` with `link`.
 <Canvas>
 	<Story
 		name="link-text"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [propertyTest, classTest],
-				properties: ['target', 'href'],
-				className: 'text'
+		play={async (ctx) =>
+			testButtonLink(ctx, {
+				className: 'vv-button--text'
 			})
 		}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" />`
+				template: `<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" @click="$event.preventDefault()" />`
 			}
 		}}
 	</Story>
@@ -50,19 +38,15 @@ Stories of `VvButton` with `link`.
 	<Story
 		name="link-text-disabled"
 		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [disableTest, cssTest, classTest],
-				cssString: 'cursor: not-allowed',
-				className: 'text'
+			testButtonLink(ctx, {
+				isClickDisabled: true,
+				className: 'vv-button--disabled'
 			})
 		}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`
+				template: `<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`
 			}
 		}}
 	</Story>
@@ -76,21 +60,11 @@ Stories of `VvButton` with `link`.
 ## Button link
 
 <Canvas>
-	<Story
-		name="button-link"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [propertyTest],
-				properties: ['target', 'href']
-			})
-		}>
+	<Story name="button-link" play={(ctx) => testButtonLink(ctx)}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" />`
+				template: `<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" @click="$event.preventDefault()" />`
 			}
 		}}
 	</Story>
@@ -113,18 +87,15 @@ Stories of `VvButton` with `link`.
 	<Story
 		name="button-link-disabled"
 		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [disableTest, cssTest],
-				cssString: 'cursor: not-allowed'
+			testButtonLink(ctx, {
+				isClickDisabled: true,
+				className: 'vv-button--disabled'
 			})
 		}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`
+				template: `<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`
 			}
 		}}
 	</Story>
@@ -139,39 +110,11 @@ Stories of `VvButton` with `link`.
 
 export const Template = () => ({
 	components: { VvButton },
-	template:
-		/*html*/
-		`<vv-button label="Router link" to="/test" variant="text" />`
+	template: `<vv-button label="Router link" to="/test" variant="text" />`
 })
 
-export const RouterLinkStory = Template.bind({})
-RouterLinkStory.decorators = [
-	vueRouter([
-		{
-			path: '/',
-			name: 'home',
-			component: VvButton
-		},
-		{
-			path: '/test',
-			name: 'test',
-			component: VvButton
-		}
-	])
-]
-
 <Canvas>
-	<Story
-		name="router-link"
-		args={{}}
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [propertyTest, classTest],
-				properties: ['href'],
-				className: 'text'
-			})
-		}>
+	<Story name="router-link" args={{}} play={(ctx) => testButtonLink(ctx)}>
 		{RouterLinkStory}
 	</Story>
 </Canvas>

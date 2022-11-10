@@ -1,5 +1,4 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import vueRouter from 'storybook-vue3-router'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
@@ -13,12 +12,12 @@ import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 			{
 				label: 'Home',
 				title: 'Home',
-				to: '/'
+				href: '/'
 			},
 			{
 				label: 'Library',
 				title: 'Library',
-				to: '/library'
+				href: '/library'
 			},
 			{
 				label: 'Book 1',
@@ -33,31 +32,8 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template:
-		/*html*/
-		`<vv-breadcrumb v-bind="args" />`
+	template: `<vv-breadcrumb v-bind="args" />`
 })
-
-export const BreadcrumbStory = Template.bind({})
-BreadcrumbStory.decorators = [
-	vueRouter([
-		{
-			path: '/',
-			name: 'home',
-			component: VvBreadcrumb
-		},
-		{
-			path: '/library',
-			name: 'library',
-			component: VvBreadcrumb
-		},
-		{
-			path: '/book1',
-			name: 'book1',
-			component: VvBreadcrumb
-		}
-	])
-]
 
 # VvBreadcrumb
 
@@ -65,7 +41,5 @@ Stories of `VvBreadcrumb`.
 Let's define a story for our playground `breadcrumb`:
 
 <Canvas>
-	<Story name="vv-breadcrumb" args={{}}>
-		{BreadcrumbStory}
-	</Story>
+	<Story name="vv-breadcrumb" args={{}} render={Template.bind()} />
 </Canvas>

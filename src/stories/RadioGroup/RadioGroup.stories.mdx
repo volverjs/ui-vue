@@ -14,9 +14,7 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ selected: args.modelValue || null }),
-	template:
-		/*html*/
-		`
+	template: `
 		<div class="flex flex-row justify-between">
             <vv-radio-group v-bind="args" v-model:modelValue="selected">
                 <template v-slot:hint>
@@ -57,9 +55,7 @@ A group of radios.
 				setup() {
 					return { args }
 				},
-				template:
-					/*html*/
-					`
+				template: `
                     <div class="flex flex-row justify-between">
                         <vv-radio-group v-bind="args" v-model:modelValue="selected">
                             <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>

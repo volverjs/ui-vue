@@ -21,9 +21,7 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ ckValue: args.modelValue }),
-	template:
-		/*html*/
-		`
+	template: `
         <div class="flex flex-row justify-between">
 			<vv-radio v-bind="args" v-model:modelValue="ckValue"/>
 			<strong >Valore selez: {{ckValue}} </strong> 

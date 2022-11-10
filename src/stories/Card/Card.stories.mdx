@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvCard from '../../components/VvCard/VvCard.vue'
 
-<Meta title="Components/VvCard" component={VvCard} />
+<Meta title="Components/Card" component={VvCard} />
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
@@ -11,9 +11,7 @@ export const Template = (args, { argTypes }) => ({
 	setup() {
 		return { args }
 	},
-	template:
-		/*html*/
-		`
+	template: `
         <vv-card v-bind="args">
             Default
         </vv-card>

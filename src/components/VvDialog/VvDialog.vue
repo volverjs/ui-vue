@@ -38,7 +38,6 @@ import VvIcon from '../VvIcon/VvIcon.vue'
 
 //Constants
 import { VV_DIALOG_SIZES } from './constants'
-import { title } from 'process'
 
 //Props, emits, slots, attrs
 const props = defineProps(VvDialogProps)

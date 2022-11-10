@@ -46,16 +46,16 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs } from 'vue'
+import { useAttrs, useSlots } from 'vue'
 
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { ButtonIconPosition, ButtonTag } from './VvButton'
-import { VvButtonProps, VvButtonEvents } from './VvButton'
+import { VvButtonProps } from './VvButton'
 import ObjectUtilities from '@/utils/ObjectUtilities'
 
 //Components
-import VvIcon from '../VvIcon/VvIcon.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 //Composables
 import { useBemModifiers } from '@/composables/useModifiers'
@@ -63,13 +63,15 @@ import { toButtonRefs } from './useButtonGroupProps'
 
 //Props, emits, attrs, slots
 const props = defineProps(VvButtonProps)
-const emit = defineEmits(VvButtonEvents)
 const attrs = useAttrs()
+const slots = useSlots()
 
 //Data
 const btnName = attrs?.name || uuidv4()
 const {
 	modifiers,
+	action,
+	actionQuiet,
 	block,
 	rounded,
 	fullBleed,
@@ -78,8 +80,9 @@ const {
 	label,
 	modelValue,
 	disabled,
-	toggle
-} = toButtonRefs(props, emit)
+	toggle,
+	isInGroup
+} = toButtonRefs(props)
 
 /**
  * @description Select the tag type in based on the props before.
@@ -110,13 +113,29 @@ const active = computed(() => {
 		: ObjectUtilities.equals(btnName, modelValue.value)
 })
 
+/**
+ * Selected button state
+ * If on button "toggle" and "action" GROUP force the selected state
+ */
+const selected = computed(() => {
+	if (!toggle.value) return props.selected
+
+	return Array.isArray(modelValue.value)
+		? ObjectUtilities.contains(btnName, modelValue.value)
+		: ObjectUtilities.equals(btnName, modelValue.value)
+})
+
 //Styles & bindings
 const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
 	modifiers,
 	active,
+	action,
+	actionQuiet,
+	selected,
 	block,
 	rounded,
 	fullBleed,
+	disabled,
 	reverse: computed(() =>
 		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
 			iconPosition.value
@@ -163,6 +182,9 @@ const linkProps = computed(() => {
 
 //Methods
 function onBtnClick() {
-	modelValue.value = btnName
+	// set group modelValue
+	if (isInGroup.value) {
+		modelValue.value = btnName
+	}
 }
 </script>

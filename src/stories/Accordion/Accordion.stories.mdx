@@ -19,9 +19,7 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template:
-		/*html*/
-		`<div class="w-1/2">
+	template: `<div class="w-1/2">
             <vv-accordion data-testId="accordion" v-bind="args" v-model:open="args.open" />
         </div>
         `

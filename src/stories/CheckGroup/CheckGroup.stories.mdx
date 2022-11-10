@@ -12,9 +12,7 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ selected: args.modelValue || [] }),
-	template:
-		/*html*/
-		`
+	template: `
 		<div class="flex flex-row justify-between">
             <vv-check-group v-bind="args" v-model:modelValue="selected">
                 <template v-slot:hint>
@@ -53,9 +51,7 @@ A group of checks.
 				setup() {
 					return { args }
 				},
-				template:
-					/*html*/
-					`
+				template: `
                     <div class="flex flex-row justify-between">
                         <vv-check-group v-bind="args" v-model:modelValue="selected">
                             <vv-check id="o1" name="opts" value="1">Opt 1</vv-check>

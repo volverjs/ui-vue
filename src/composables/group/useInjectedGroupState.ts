@@ -34,7 +34,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 			const groupPropValue = unref(group.value)[propName] as Ref<any>
 			return computed({
 				get() {
-					return groupPropValue.value
+					return groupPropValue?.value
 				},
 				set(value) {
 					groupPropValue.value = value

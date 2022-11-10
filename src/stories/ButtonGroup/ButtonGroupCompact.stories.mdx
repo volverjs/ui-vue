@@ -4,7 +4,7 @@ import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
 import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
 
-<Meta title="Components/ButtonGroup/Compact" component={VvButtonGroup} />
+<Meta title="Components/ButtonGroup/Props/compact" component={VvButtonGroup} />
 
 # Compact
 
@@ -13,20 +13,19 @@ A VvButtonGroup with the <strong>compact</strong> prop will be render with <stro
 <Source language="jsx" code={'<vv-button compact></vv-button>'} />
 
 <Canvas>
-	<Story name="compact"
-	play={(ctx) =>
+	<Story
+		name="compact"
+		play={(ctx) =>
 			buttonGroupTest({
 				...ctx,
 				functions: [classTest],
-				className: 'compact',
+				className: 'compact'
 			})
 		}>
 		{() => {
 			return {
 				components: { VvButton, VvButtonGroup },
-				template:
-					/*html*/
-					`
+				template: `
                         <vv-button-group compact>
                             <vv-button id="btn1">Button 1</vv-button>
                             <vv-button id="btn2">Button 2</vv-button>

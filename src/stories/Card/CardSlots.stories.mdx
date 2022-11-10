@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvCard from '../../components/VvCard/VvCard.vue'
 
-<Meta title="Components/VvCard/Slots" component={VvCard} />
+<Meta title="Components/Card/Slots" component={VvCard} />
 
 <Canvas>
 	<Story name="Slots">
@@ -15,9 +15,7 @@ import VvCard from '../../components/VvCard/VvCard.vue'
 						args
 					}
 				},
-				template:
-					/*html*/
-					`
+				template: `
 					<vv-card v-bind="args" class="absolute inset-32">
 						<template #header>
 							Header

@@ -21,6 +21,14 @@ export const VvButtonGroupProps = {
 	 */
 	rounded: { type: Boolean, default: false },
 	/**
+	 * Button action mode
+	 */
+	action: Boolean,
+	/**
+	 * Button action mode
+	 */
+	actionQuiet: Boolean,
+	/**
 	 * Active button (name)
 	 */
 	modelValue: { type: String, default: undefined }

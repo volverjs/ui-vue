@@ -1,155 +1,180 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvButton from '../../components/VvButton/VvButton.vue'
-import { within, userEvent } from '@storybook/testing-library'
-import { buttonTest, classTest, cssTest, disableTest } from './test.js'
+import { testButton } from './Button.test'
 
-<Meta title="Components/Button/modifiers" />
+<Meta title="Components/Button/Props/modifiers" />
 
 # VvButton modifiers
 
-Stories of `VvButton` default `modifiers`.
+Stories of `VvButton` `modifiers`.
 
-## Block
+## Default
 
-Let's define a story for our `block` button.
-Create block level button that span the full width of a parent.
+Let's define a story for our `default` button:
 
 <Canvas>
-	<Story
-		name="block"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest, cssTest],
-				className: 'block',
-				cssString: 'display: block'
-			})
-		}>
+	<Story name="default" play={testButton}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Block" block />`
+				template: `<vv-button label="Default" data-testid="button" />`
 			}
 		}}
 	</Story>
 </Canvas>
 
-<Source language="jsx" code={'<vv-button label="Block" block />'} />
+<Source language="jsx" code={'<vv-button label="Default" />'} />
 
-## Rounded
+## Primary
 
-Let's define a story for our `rounded` button:
+Let's define a story for our `primary` button:
 
 <Canvas>
 	<Story
-		name="rounded"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest, cssTest],
-				className: 'rounded',
-				cssString: 'border-radius: 9999px'
+		name="primary"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: ['vv-button--primary']
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Rounded" rounded />`
+				template: `<vv-button label="Primary" modifiers="primary" />`
 			}
 		}}
 	</Story>
 </Canvas>
 
-<Source language="jsx" code={'<vv-button label="Rounded" rounded />'} />
+## Secondary
 
-## Full-bleed
-
-Let's define a story for our `full-bleed` button:
+Let's define a story for our `secondary` button:
 
 <Canvas>
 	<Story
-		name="full-bleed"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'full-bleed'
+		name="secondary"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--secondary'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<div class="flex gap-4">
-						<vv-button label="Full bleed" full-bleed />
-					</div>`
+				template: `<vv-button label="Secondary" modifiers="secondary" />`
 			}
 		}}
 	</Story>
 </Canvas>
 
-<Source
-	language="jsx"
-	code={`<div class="flex gap-4">
-	<vv-button label="Full bleed" full-bleed />
-</div>`}
-/>
+## Danger
 
-## Disabled
-
-Let's define a story for our `disabled` button.
+Let's define a story for our `danger` button:
 
 <Canvas>
 	<Story
-		name="disabled"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [cssTest, disableTest],
-				cssString: 'cursor: not-allowed'
+		name="danger"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--danger'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Disabled" disabled />`
+				template: `<vv-button label="Danger" modifiers="danger" />`
 			}
 		}}
 	</Story>
 </Canvas>
 
-<Source language="jsx" code={'<vv-button label="Disabled" disabled />'} />
+## Ghost
 
-## Active
-
-Let's define a story for our `active` button.
+Let's define a story for our `ghost` button:
 
 <Canvas>
 	<Story
-		name="active"
-		play={(ctx) =>
-			buttonTest({
-				...ctx,
-				functions: [classTest],
-				className: 'active'
+		name="ghost"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--ghost'
 			})
-		}>
+		}}>
 		{() => {
 			return {
 				components: { VvButton },
-				template:
-					/*html*/
-					`<vv-button label="Active" active />`
+				template: `<vv-button label="Ghost" modifiers="ghost" />`
 			}
 		}}
 	</Story>
 </Canvas>
 
-<Source language="jsx" code={'<vv-button label="Active" active />'} />
+## Text
+
+Let's define a story for our `text` button:
+
+<Canvas>
+	<Story
+		name="text"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--text'
+			})
+		}}>
+		{() => {
+			return {
+				components: { VvButton },
+				template: `<vv-button label="Text" modifiers="text" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## Static Light
+
+Let's define a story for our `static-light` button:
+
+<Canvas>
+	<Story
+		name="static-light"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--static-light'
+			})
+		}}>
+		{() => {
+			return {
+				components: { VvButton },
+				backgrounds: {
+					default: 'dark'
+				},
+				template: `
+					<div class="bg-black p-16">
+						<vv-button label="Static Light" modifiers="static-light" />
+					</div>
+					`
+			}
+		}}
+	</Story>
+</Canvas>
+
+## Static Dark
+
+Let's define a story for our `static-dark` button:
+
+<Canvas>
+	<Story
+		name="static-dark"
+		play={async (ctx) => {
+			testButton(ctx, {
+				className: 'vv-button--static-dark'
+			})
+		}}>
+		{() => {
+			return {
+				components: { VvButton },
+				template: `<vv-button label="Static Dark" modifiers="static-dark" />`
+			}
+		}}
+	</Story>
+</Canvas>

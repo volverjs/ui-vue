@@ -90,9 +90,21 @@ export const VvButtonProps = {
 	 */
 	disabled: Boolean,
 	/**
-	 *
+	 * Button with min-width
 	 */
 	fullBleed: Boolean,
+	/**
+	 * Button action mode
+	 */
+	action: Boolean,
+	/**
+	 * Button action mode
+	 */
+	actionQuiet: Boolean,
+	/**
+	 * Button selected mode
+	 */
+	selected: Boolean,
 	/**
 	 * The variant of the button
 	 * @values

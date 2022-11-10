@@ -1,21 +1,24 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import ObjectUtilities from '../../utils/ObjectUtilities'
 
 import VvButton from '../../components/VvButton/VvButton.vue'
 import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import { VvButtonGroupProps } from '../../components/VvButtonGroup/VvButtonGroup'
 
-<Meta title="Components/ButtonGroup" component={VvButtonGroup} />
+<Meta
+	title="Components/ButtonGroup"
+	component={VvButtonGroup}
+	args={{ ...ObjectUtilities.propsToObject(VvButtonGroupProps) }}
+/>
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
 	components: { VvButton, VvButtonGroup },
-	data: () => ({ disabled: false }),
 	setup() {
 		return { args }
 	},
-	template:
-		/*html*/
-		`
-        <vv-button-group :disabled="disabled">
+	template: `
+        <vv-button-group v-bind="args">
             <vv-button name="1a">Button 1</vv-button>
             <vv-button name="2b">Button 2</vv-button>
             <vv-button name="3c">Button 3</vv-button>

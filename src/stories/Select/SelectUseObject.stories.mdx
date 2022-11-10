@@ -11,7 +11,6 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="json"
-	/*html*/
 	code={`[
 	{
 		"label": "Option 1",
@@ -52,9 +51,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 						]
 					}
 				},
-				template:
-					/*html*/
-					`<div class="w-1/2">
+				template: `<div class="w-1/2">
 						<vv-select v-model:modelValue="value" :options="options" label="Label 1" use-object />
 						value: {{ value }}
 					</div>`
@@ -65,6 +62,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="html"
-	/*html*/
 	code={`<vv-select v-model:modelValue="value" :options="options" label="Label 1" use-object />`}
 />

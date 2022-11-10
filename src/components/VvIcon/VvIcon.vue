@@ -1,7 +1,7 @@
 <template>
 	<Icon
 		v-if="show"
-		:class="hasClass"
+		:class="iconClass"
 		v-bind="{
 			...$props,
 			provider: currentProvider,
@@ -10,36 +10,30 @@
 </template>
 
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
 import type { IDesignSystem } from '../../DesignSystem'
 
-import { inject } from 'vue'
+import { inject, toRefs } from 'vue'
 
 import { ref, computed } from 'vue'
 import { Icon, addIcon, iconExists } from '@iconify/vue'
 import { VvIconProps } from './VvIcon'
 
 //Composables
-import { useModifiers } from '@/composables/useModifiers'
+import { useBemModifiers } from '@/composables/useModifiers'
 
 //Props,emits,slots
 const props = defineProps(VvIconProps)
 
 //Data
 const show = ref(true)
+const { modifiers } = toRefs(props)
 
 //Inject
 const ds = inject<IDesignSystem>('ds')
 
-// Modificatori
-// Get computed string with all css classes (modifiers) with 'vv-icon' prefix
-const hasModifiers: ComputedRef<string> = useModifiers(
-	'vv-icon',
-	props.modifiers
-)
-
-const hasClass = computed(() => {
-	return ['vv-icon', hasModifiers.value]
+//Styles & bindings
+const { bemCssClasses: iconClass } = useBemModifiers('vv-icon', {
+	modifiers
 })
 
 const currentProvider = computed(() => {

@@ -1,0 +1,83 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvButton from '../../components/VvButton/VvButton.vue'
+import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
+
+<Meta title="Components/ButtonGroup/Props/action" component={VvButtonGroup} />
+
+# Action
+
+A VvButtonGroup with the `action` prop
+
+<Canvas>
+	<Story
+		name="action"
+		play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest],
+				className: 'action'
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				template: `
+					<div class="flex flex-col">
+						<vv-button-group action class="mt-22">
+                            <vv-button>Button 1</vv-button>
+                            <vv-button id="btn2">Button 2</vv-button>
+                            <vv-button>Button 3</vv-button>
+                        </vv-button-group> 
+					</div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Action toggle compact
+
+A VvButtonGroup with the `action`, `toggle` and `compact` props
+
+<Canvas>
+	<Story
+		name="action-toggle-compact"
+		play={(ctx) =>
+			buttonGroupTest({
+				...ctx,
+				functions: [classTest]
+			})
+		}>
+		{() => {
+			return {
+				components: { VvButton, VvButtonGroup },
+				data() {
+					return {
+						modelValue: ''
+					}
+				},
+				template: `
+					<div class="flex">
+						<vv-button-group v-model:modelValue="modelValue" action toggle compact class="mt-22">
+                            <vv-button name="first" icon="akar-icons:copy" label="First" />
+                            <vv-button name="second" icon="akar-icons:pencil" label="Second" />
+                            <vv-button name="third" icon="akar-icons:trash-bin" label="Third" />
+                        </vv-button-group>
+						<div class="mt-auto ml-xl">Value: {{ modelValue }}</div>
+					</div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Source
+	language="html"
+	code={`<vv-button-group v-model:modelValue="modelValue" action toggle compact>
+	<vv-button name="first" icon="akar-icons:copy" label="First" />
+	<vv-button name="second" icon="akar-icons:pencil" label="Second" />
+	<vv-button name="third" icon="akar-icons:trash-bin" label="Third" />
+</vv-button-group>`}
+/>

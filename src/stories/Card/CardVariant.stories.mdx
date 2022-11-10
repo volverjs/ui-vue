@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvCard from '../../components/VvCard/VvCard.vue'
 
-<Meta title="Components/VvCard/Variant" component={VvCard} />
+<Meta title="Components/Card/Variant" component={VvCard} />
 
 <Canvas>
 	<Story
@@ -19,9 +19,7 @@ import VvCard from '../../components/VvCard/VvCard.vue'
 						args
 					}
 				},
-				template:
-					/*html*/
-					`
+				template: `
 					<div class="relative theme theme--light"  style="width: 450px">
 						<picture>
 							<img class="aspect-photo block" src="https://source.unsplash.com/featured/300×300/?ocean" alt="Card picture"/>
