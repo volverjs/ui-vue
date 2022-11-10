@@ -1,0 +1,18 @@
+import { Meta, Story } from '@storybook/addon-docs'
+import VvAlert from '../../components/VvAlert/VvAlert.vue'
+
+import { Template } from './Alert.stories.mdx'
+
+<Meta
+	title="Components/Alert/Props/Fixed"
+	component={VvAlert}
+	args={{ title: 'Alert variant', message: 'Alert message' }}
+/>
+
+# Fixed
+
+Visualizza l'alert in posizione fixed (default: top centrale)
+
+<Story name="fixed" args={{ fixed: true, visible: true }}>
+	{Template.bind({})}
+</Story>

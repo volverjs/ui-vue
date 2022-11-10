@@ -1,0 +1,27 @@
+import { Meta, Story } from '@storybook/addon-docs'
+import VvAlert from '../../components/VvAlert/VvAlert.vue'
+
+import { Template } from './Alert.stories.mdx'
+
+<Meta
+	title="Components/Alert/Props/modifiers"
+	component={VvAlert}
+	args={{ title: 'Alert variant', message: 'Alert message' }}
+/>
+
+# Success
+
+<Story name="success" args={{ modifiers: 'success' }}>
+	{Template.bind({})}
+</Story>
+
+# Danger
+
+<Story name="danger" args={{ modifiers: 'danger' }}>
+	{Template.bind({})}
+</Story>
+
+<vv-alert fixed position="top-lg inset-x-sm" />
+<vv-alert fixed position="top-lg inset-x-sm" class="my-class my-class-1" />
+<vv-alert fixed class="my-class my-class-1 top-lg inset-x-sm" />
+<vv-alert fixed position="bottom-right|middle|top-right" />

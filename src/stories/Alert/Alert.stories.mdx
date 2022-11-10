@@ -1,0 +1,28 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvAlert from '../../components/VvAlert/VvAlert.vue'
+
+<Meta title="Components/Alert" component={VvAlert} />
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvAlert },
+	setup() {
+		return { args }
+	},
+	data: () => ({ bVisible: args.visible || false }),
+	template:
+		/**html */
+		`
+        <vv-alert v-bind="args" v-model:visible="bVisible"/>
+        `
+})
+
+# VvAlert
+
+Alerts are used to communicate a state that affects a system, feature or page.
+
+<Story
+	name="vv-alert"
+	args={{ title: 'Alert prova', message: 'Alert message di prova' }}>
+	{Template.bind({})}
+</Story>
