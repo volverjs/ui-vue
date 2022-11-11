@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs, useSlots } from 'vue'
+import { useAttrs } from 'vue'
 
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
@@ -64,7 +64,6 @@ import { toButtonRefs } from './useButtonGroupProps'
 //Props, emits, attrs, slots
 const props = defineProps(VvButtonProps)
 const attrs = useAttrs()
-const slots = useSlots()
 
 //Data
 const btnName = attrs?.name || uuidv4()

@@ -2,8 +2,9 @@ const path = require('path')
 
 module.exports = {
 	stories: [
-		'../src/**/*.stories.mdx',
-		'../src/**/*.stories.@(js|jsx|ts|tsx)'
+		'../src/stories/volver-ui-vue.stories.mdx',
+		'../src/stories/**/*.stories.mdx',
+		'../src/stories/**/*.stories.@(js|jsx|ts|tsx)'
 	],
 	addons: [
 		'@storybook/addon-a11y',
