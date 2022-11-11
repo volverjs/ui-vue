@@ -1,0 +1,94 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvToast from '../../components/VvToast/VvToast.vue'
+
+import { ref, computed } from 'vue'
+import { Template } from './Toast.stories.mdx'
+
+<Meta
+	title="Components/Toast/Props/Positions"
+	component={VvToast}
+	args={{ title: 'Toast variant', message: 'Toast message' }}
+/>
+
+<Story name="positions" args={{ icon: 'bell', closable: true, visible: true }}>
+	{(args, { argTypes }) => ({
+		props: Object.keys(argTypes),
+		components: { VvToast },
+		setup() {
+			const positionInline = ref('right')
+			const positionBlock = ref('top')
+			const bVisible = ref(args.visible || false)
+
+    		const toastProps = computed(() => ({
+    			...args,
+    			right: positionInline.value === 'right',
+    			left: positionInline.value === 'left',
+    			top: positionInline.value === 'top',
+    			bottom: positionInline.value === 'bottom'
+    		}))
+
+    		return {
+    			toastProps,
+    			positionInline,
+    			positionBlock,
+    			bVisible
+    		}
+    	},
+    	template:
+    		/**html */
+    		`
+    		<fieldset class="vv-input-radio-group vv-input-radio-group--horizontal">
+    			<legend>Position Inline</legend>
+    			<div class="vv-input-radio-group__wrapper">
+    				<label class="vv-input-radio" for="position-right">
+    					<input
+    						v-model="positionInline"
+    						id="position-right"
+    						type="radio"
+    						name="position-inline"
+    						value="right"
+    					/>
+    					right
+    				</label>
+    				<label class="vv-input-radio" for="position-left">
+    					<input
+    						v-model="positionInline"
+    						id="position-left"
+    						type="radio"
+    						name="position-inline"
+    						value="left"
+    							/>
+    					left
+    				</label>
+    			</div>
+    		</fieldset>
+    		<fieldset class="vv-input-radio-group vv-input-radio-group--horizontal">
+    			<legend>Position Block</legend>
+    			<div class="vv-input-radio-group__wrapper">
+    				<label class="vv-input-radio" for="position-top">
+    					<input
+    						v-model="positionBlock"
+    						id="position-top"
+    						type="radio"
+    						name="position-block"
+    						value="top" />
+    					top
+    				</label>
+    				<label class="vv-input-radio" for="position-bottom">
+    					<input
+    						v-model="positionBlock"
+    						id="position-bottom"
+    						type="radio"
+    						name="position-block"
+    						value="bottom"
+    							/>
+    					bottom
+    				</label>
+    			</div>
+    		</fieldset>
+    		<button class="vv-button" @click="bVisible = !bVisible">Toggle Toast</button>
+    		<vv-toast v-model:visible="bVisible" v-bind="toastProps"/>
+    		`
+    })}
+
+</Story>

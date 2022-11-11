@@ -1,0 +1,18 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvToast from '../../components/VvToast/VvToast.vue'
+
+import { Template } from './Toast.stories.mdx'
+
+<Meta
+	title="Components/Toast/Props/icon"
+	component={VvToast}
+	args={{ title: 'Toast variant', message: 'Toast message', visible: true }}
+/>
+
+# Icon
+
+Nome del'icona dell'alert.
+
+<Story name="icon" args={{ icon: 'bell' }}>
+	{Template.bind({})}
+</Story>

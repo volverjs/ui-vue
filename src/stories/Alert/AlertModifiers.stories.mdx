@@ -6,22 +6,17 @@ import { Template } from './Alert.stories.mdx'
 <Meta
 	title="Components/Alert/Props/modifiers"
 	component={VvAlert}
-	args={{ title: 'Alert variant', message: 'Alert message' }}
+	args={{ title: 'Alert variant', message: 'Alert message', visible: true }}
 />
 
 # Success
 
-<Story name="success" args={{ modifiers: 'success' }}>
+<Story name="success" args={{ modifiers: 'success', visible: true }}>
 	{Template.bind({})}
 </Story>
 
 # Danger
 
-<Story name="danger" args={{ modifiers: 'danger' }}>
+<Story name="danger" args={{ modifiers: 'danger', visible: true }}>
 	{Template.bind({})}
 </Story>
-
-<vv-alert fixed position="top-lg inset-x-sm" />
-<vv-alert fixed position="top-lg inset-x-sm" class="my-class my-class-1" />
-<vv-alert fixed class="my-class my-class-1 top-lg inset-x-sm" />
-<vv-alert fixed position="bottom-right|middle|top-right" />

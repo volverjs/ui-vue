@@ -155,7 +155,7 @@ const isActionsDisabled = computed(() => props.disabled || props.readonly)
 
 //Styles & Bindings
 const inputTextClass = computed(() => {
-	const _hasIconRigth =
+	const _hasIconRight =
 		hasIconRight.value || ObjectUtilities.isNotEmpty(defaultRightIcon.value)
 	const _isFloating =
 		props.floating && ObjectUtilities.isNotEmpty(props.label)
@@ -169,7 +169,7 @@ const inputTextClass = computed(() => {
 			invalid: props.error,
 			loading: props.loading,
 			iconLeft: hasIconLeft,
-			iconRight: _hasIconRigth,
+			iconRight: _hasIconRight,
 			floating: _isFloating,
 			dirty: _isDirty
 		}),

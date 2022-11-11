@@ -1,26 +1,22 @@
 <template>
 	<transition :name="transition">
-		<div
-			v-if="visible"
-			:class="alertClass"
-			role="alert"
-			@click.prevent="closeAlertOnClick">
+		<div v-if="visible" :class="toastClass">
 			<slot v-bind="slotParams">
-				<button
-					v-if="closable"
-					class="vv-alert__close"
-					type="button"
-					aria-label="Close"
-					@click.prevent="closeAlert" />
-				<slot v-if="hasIcon" name="icon" v-bind="slotParams">
-					<vv-icon :name="icon" />
-				</slot>
-				<div v-if="hasTitle" class="vv-alert__title">
-					<slot name="title" v-bind="slotParams">
+				<div v-if="hasHeader" class="vv-toast__header">
+					<slot name="header" v-bind="slotParams">
+						<button
+							v-if="closable"
+							class="vv-toast__close"
+							type="button"
+							aria-label="Close"
+							@click.prevent="closeToast" />
+						<slot v-if="hasIcon" name="icon" v-bind="slotParams">
+							<vv-icon :name="icon" class="mr-xs" />
+						</slot>
 						{{ title }}
 					</slot>
 				</div>
-				<div v-if="hasContent" class="vv-alert__content">
+				<div v-if="hasContent" class="vv-toast__content">
 					<slot name="content" v-bind="slotParams">
 						{{ message }}
 					</slot>
@@ -32,7 +28,7 @@
 
 <script lang="ts" setup>
 import { computed, watch, toRefs, useSlots } from 'vue'
-import { VvAlertProps, VvAlertEvents } from './VvAlert'
+import { VvToastProps, VvToastEvents } from './VvToast'
 
 //Components
 import VvIcon from '../VvIcon/VvIcon.vue'
@@ -42,8 +38,8 @@ import { toBem } from '@/composables/useModifiers'
 import { useVModel } from '@vueuse/core'
 
 //Props, emits, attrs , slots
-const props = defineProps(VvAlertProps)
-const emit = defineEmits(VvAlertEvents)
+const props = defineProps(VvToastProps)
+const emit = defineEmits(VvToastEvents)
 const slots = useSlots()
 
 //Data
@@ -52,7 +48,7 @@ const { closable } = toRefs(props)
 const visible = useVModel(props, 'visible', emit)
 
 //Computed
-const hasTitle = computed(() => !!(props.title || slots['title']))
+const hasHeader = computed(() => !!(props.title || slots['header']))
 const hasContent = computed(() => !!(props.message || slots['content']))
 const hasIcon = computed(() => !!(props.icon || slots['icon']))
 const hasAutocloseTimeout = computed(
@@ -61,21 +57,20 @@ const hasAutocloseTimeout = computed(
 
 //Slots
 const slotParams = computed(() => ({
-	closeAlert
+	closeToast
 }))
 
 //Styles
-const alertClass = computed(() => {
+const toastClass = computed(() => {
 	return {
-		...toBem('vv-alert', {
+		...toBem('vv-toast', {
 			modifiers: props.modifiers,
-			icon: hasIcon.value,
-			close: props.closable,
-			fixed: props.fixed,
-			top: props.fixed && props.top,
-			bottom: props.fixed && props.bottom
+			top: props.top,
+			bottom: props.bottom,
+			right: props.right,
+			left: props.left
 		}),
-		'z-notification-alert': props.fixed
+		'z-toast': true
 	}
 })
 
@@ -85,7 +80,7 @@ watch(
 	(bVisible: boolean) => {
 		if (bVisible && hasAutocloseTimeout.value) {
 			closeTimeout = setTimeout(() => {
-				closeAlert()
+				closeToast()
 				clearTimeout(closeTimeout)
 			}, props.autoclose)
 		}
@@ -93,13 +88,9 @@ watch(
 	{ immediate: true }
 )
 
-function closeAlert() {
+function closeToast() {
 	visible.value = false
 	emit('close')
 	if (closeTimeout) clearTimeout(closeTimeout)
-}
-function closeAlertOnClick() {
-	emit('close')
-	if (props.closeOnClick) visible.value = false
 }
 </script>

@@ -1,0 +1,20 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvToast from '../../components/VvToast/VvToast.vue'
+
+import { Template } from './Toast.stories.mdx'
+
+<Meta
+	title="Components/Toast/Props/autoclose"
+	component={VvToast}
+	args={{ title: 'Toast variant', message: 'Toast message' }}
+/>
+
+# autoclose
+
+Toast viene automaticamente chiuso l'intervallo di tempo definito.
+
+<Story
+	name="autoclose"
+	args={{ icon: 'bell', closable: true, visible: true, autoclose: 5000 }}>
+	{Template.bind({})}
+</Story>

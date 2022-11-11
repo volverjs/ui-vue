@@ -1,0 +1,33 @@
+import { Meta, Story } from '@storybook/addon-docs'
+import VvAlert from '../../components/VvAlert/VvAlert.vue'
+
+import { useAlert2 } from '@/composables/alert/useAlert'
+
+<Meta title="Components/Alert/Api" />
+
+# Api
+
+<Story
+	name="AlertApi"
+	args={{ icon: 'bell' }}>
+	{
+		(args, { argTypes }) => ({
+			props: Object.keys(argTypes),
+			setup() {
+				const notify = useAlert2()
+				
+				function openAlert(){
+					notify.show()
+    			}
+
+    			return { args, openAlert }
+    		},
+    		template:
+    			/**html */
+    			`
+    			<button class="vv-button" @click="openAlert">Clicca qua!</button>
+    			`
+    	})
+    }
+
+</Story>

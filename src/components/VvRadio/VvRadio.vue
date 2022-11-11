@@ -50,6 +50,7 @@ const { focused } = useComponentFocus(input, emit)
 
 //Styles & Bindings
 const { bemCssClasses: bemRadioClass } = useBemModifiers('vv-input-radio', {
+	checked: isChecked,
 	valid,
 	invalid: error
 })

@@ -1,0 +1,22 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvToast from '../../components/VvToast/VvToast.vue'
+
+import { Template } from './Toast.stories.mdx'
+
+<Meta
+	title="Components/Toast/Props/modifiers"
+	component={VvToast}
+	args={{ title: 'Toast variant', message: 'Toast message', visible: true }}
+/>
+
+# Success
+
+<Story name="success" args={{ modifiers: 'success', visible: true }}>
+	{Template.bind({})}
+</Story>
+
+# Danger
+
+<Story name="danger" args={{ modifiers: 'danger', visible: true }}>
+	{Template.bind({})}
+</Story>

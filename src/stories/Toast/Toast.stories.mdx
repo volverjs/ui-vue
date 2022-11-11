@@ -1,0 +1,32 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvToast from '../../components/VvToast/VvToast.vue'
+
+<Meta title="Components/Toast" component={VvToast} />
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvToast },
+	setup() {
+		return { args }
+	},
+	data: () => ({ bVisible: args.visible || false }),
+	template:
+		/**html */
+		`
+        <vv-toast v-bind="args" v-model:visible="bVisible"/>
+        `
+})
+
+# VvToast
+
+Push notifications to your visitors with a toast, a lightweight and easily customizable alert message.
+
+<Story
+	name="vv-toast"
+	args={{
+		title: 'Toast prova',
+		message: 'Toast message di prova',
+		visible: true
+	}}>
+	{Template.bind({})}
+</Story>

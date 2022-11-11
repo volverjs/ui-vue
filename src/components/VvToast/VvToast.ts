@@ -2,22 +2,23 @@ import type { ExtractPropTypes } from 'vue'
 
 import { ModifiersProps } from '@/props'
 
-export const VvAlertProps = {
+export const VvToastProps = {
 	...ModifiersProps,
 	title: String,
 	message: String,
 	icon: String,
 	closable: Boolean,
 	visible: Boolean,
-	fixed: Boolean,
 	top: Boolean,
 	bottom: Boolean,
+	right: Boolean,
+	left: Boolean,
 	autoclose: Number,
 	closeOnClick: Boolean,
 	transition: String
 }
 
-export const VvAlertEvents = ['close', 'update:visible']
+export const VvToastEvents = ['close', 'update:visible']
 
-type VvAlertPropsType = typeof VvAlertProps
-export type VvAlertPropsTypes = ExtractPropTypes<VvAlertPropsType>
+type VvToastPropsType = typeof VvToastProps
+export type VvToastPropsTypes = ExtractPropTypes<VvToastPropsType>

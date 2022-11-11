@@ -1,0 +1,18 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvToast from '../../components/VvToast/VvToast.vue'
+
+import { Template } from './Toast.stories.mdx'
+
+<Meta
+	title="Components/Toast/Props/closable"
+	component={VvToast}
+	args={{ title: 'Toast variant', message: 'Toast message' }}
+/>
+
+# closable
+
+Toast può essere chiuso
+
+<Story name="closable" args={{ icon: 'bell', closable: true, visible: true }}>
+	{Template.bind({})}
+</Story>

@@ -5,11 +5,14 @@ import iconsSimple from '@/assets/icons/simple.json'
 import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
 
+import NotifyPlugin from '@/plugins/notify/notify.ts'
+
 const volver = new DesignSystem({
 	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
 })
 setup((app) => {
 	app.use(volver)
+	app.use(NotifyPlugin)
 })
 
 export const parameters = {
