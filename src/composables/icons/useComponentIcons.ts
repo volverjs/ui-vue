@@ -52,8 +52,8 @@ export function useComponentIcons(
 }
 
 export function useComponentIcon(
-	icon,
-	iconPosition,
+	icon: Ref<string>,
+	iconPosition: Ref<string>,
 	slots: ComponentIconSlots
 ) {
 	const hasIconLeft = computed(
