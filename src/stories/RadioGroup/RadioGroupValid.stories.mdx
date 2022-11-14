@@ -3,7 +3,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
-import { validTest } from './RadioPropertyTest.js'
+import { radioGroupTest } from './RadioProperty.test.ts'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/Valid" component={VvRadioGroup} />
@@ -13,7 +13,11 @@ import { Template } from './RadioGroup.stories.mdx'
 <Canvas>
 	<Story
 		name="Valid"
-		play={validTest}
+		play={async (ctx) => {
+			radioGroupTest(ctx, {
+				className: 'vv-input-radio-group--valid'
+			})
+		}}
 		args={{
 			name: 'vv-group-options-valid-label',
 			options: [
