@@ -24,34 +24,38 @@ export async function testButton(
 	await expect(button).toHaveNoViolations()
 }
 
-export async function testButtonWithBadge({ canvasElement }: PlayAttributes) {
-	const button = await within(canvasElement).findByRole('button')
+export async function testButtonWithBadge(playAttributes: PlayAttributes) {
+	const button = await within(playAttributes.canvasElement).findByRole(
+		'button'
+	)
 	expect(button.innerHTML).toContain('vv-badge')
-	await testButton({ canvasElement })
+	await testButton(playAttributes)
 }
 
-export async function testButtonWithIconLeft({
-	canvasElement
-}: PlayAttributes) {
-	const button = await within(canvasElement).findByRole('button')
+export async function testButtonWithIconLeft(playAttributes: PlayAttributes) {
+	const button = await within(playAttributes.canvasElement).findByRole(
+		'button'
+	)
 	expect(button.innerHTML).toContain('vv-icon')
-	await testButton({ canvasElement })
+	await testButton(playAttributes)
 }
-export async function testButtonWithIconOnly({
-	canvasElement
-}: PlayAttributes) {
-	const button = await within(canvasElement).findByRole('button')
+export async function testButtonWithIconOnly(playAttributes: PlayAttributes) {
+	const button = await within(playAttributes.canvasElement).findByRole(
+		'button'
+	)
 	expect(button.classList).toContain('vv-button--icon-only')
-	await testButton({ canvasElement })
+	await testButton(playAttributes)
 }
 
 export async function testButtonLink(
-	{ canvasElement }: PlayAttributes,
+	playAttributes: PlayAttributes,
 	{ isClickDisabled = false, className = null }: ButtonConfig = {}
 ) {
-	const button = await within(canvasElement).findByRole('button')
-	await testButton({ canvasElement }, { isClickDisabled, className })
+	const button = await within(playAttributes.canvasElement).findByRole(
+		'button'
+	)
+	await testButton(playAttributes, { isClickDisabled, className })
 	expect(button).toHaveProperty('href')
 	expect(button).toHaveProperty('target')
-	await testButton({ canvasElement })
+	await testButton(playAttributes)
 }
