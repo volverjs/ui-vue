@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import { expect } from '@storybook/jest'
-import { userEvent, within } from '@storybook/testing-library'
+import { userEvent } from '@storybook/testing-library'
 import { toHaveNoViolations, axe } from 'jest-axe'
 
 async function disabledTest() {

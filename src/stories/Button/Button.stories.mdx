@@ -49,9 +49,7 @@ import { testButton } from './Button.test'
 export const Template = (args) => ({
 	components: { VvButton },
 	setup() {
-		function onClick() {
-			console.log('onClick')
-		}
+		function onClick() {}
 		return { args, onClick }
 	},
 	template: `<vv-button v-bind="args" @click="onClick" />`
