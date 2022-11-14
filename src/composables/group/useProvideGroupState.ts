@@ -15,7 +15,6 @@ export function useProvideGroupState<TGroup extends IGroupState>(
 	)
 		throw Error("One or more groupState props aren't ref.")
 
-	console.log('PRovide - ', groupState)
 	provide(
 		groupState.key,
 		computed(() => groupState)

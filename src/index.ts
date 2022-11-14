@@ -1,7 +1,15 @@
-// export all components as vue plugin
-export * from './components'
+import VolverPlugin from './Volver'
+import type { Volver } from './Volver'
 
-// export IconifyJSON default icons
-export { default as iconsSimple } from './assets/icons/simple.json'
-export { default as iconsNormal } from './assets/icons/normal.json'
-export { default as iconsDetailed } from './assets/icons/detailed.json'
+// export all components as vue plugin
+export * from './components/index'
+
+export { VolverPlugin }
+
+// https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties
+// Add custom property and extend vue type definition
+declare module 'vue' {
+	interface ComponentCustomProperties {
+		$ds?: typeof Volver.prototype
+	}
+}

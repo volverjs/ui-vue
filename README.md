@@ -34,20 +34,20 @@ $ npm i @volverjs/ui-vue
 ## Basic usage
 
 ```typescript
-import { iconsSimple, iconsNormal, iconsDetailed } from '@volverjs/ui-vue/icons'
-import { DesygnSystem } from '@volverjs/ui-vue'
+import iconsDetailed from '@volverjs/ui-vue/src/assets/icons/detailed.json'
+import iconsNormal from '@volverjs/ui-vue/src/assets/icons/normal.json'
+import iconsSimple from '@volverjs/ui-vue/src/assets/icons/simple.json'
+import { VolverPlugin } from '@volverjs/ui-vue'
 
-const volver = new DesignSystem({
+app.use(VolverPlugin, {
 	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
 })
-
-app.use(volver)
 ```
 
 Constructor parameters:
 
 ```typescript
-interface IDesignSystemParams {
+interface IVolverParams {
 	/**
 	 * If true set "fetchOptions" with credentials: 'include'
 	 */
@@ -64,10 +64,10 @@ interface IDesignSystemParams {
 }
 ```
 
-Design System definition
+Volver definition
 
 ```typescript
-interface IDesignSystem extends IDesignSystemParams {
+interface IVolver extends IVolverParams {
 	/**
 	 * @param {String} src Icon source path (url)
 	 * @param {RequestInit} options

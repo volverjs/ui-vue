@@ -4,17 +4,11 @@ import {
 	type IconifyIcon,
 	type IconifyJSON
 } from '@iconify/vue'
-import type { App } from 'vue'
+import type { App, Plugin } from 'vue'
 
-// https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties
-// Add custom property and extend vue type definition
-declare module 'vue' {
-	interface ComponentCustomProperties {
-		$ds: typeof DesignSystem.prototype
-	}
-}
+export const VOLVER_PREFIX = 'ds'
 
-interface IDesignSystemParams {
+interface IVolverParams {
 	/**
 	 * If true set "fetchOptions" with credentials: 'include'
 	 */
@@ -30,7 +24,7 @@ interface IDesignSystemParams {
 	iconsCollections?: IconifyJSON[]
 }
 
-export interface IDesignSystem extends IDesignSystemParams {
+export interface IVolver extends IVolverParams {
 	/**
 	 * @param {String} src Icon source path (url)
 	 * @param {RequestInit} options
@@ -60,7 +54,7 @@ export interface IDesignSystem extends IDesignSystemParams {
 	iconsCollections: IconifyJSON[]
 }
 
-export default class DesignSystem implements IDesignSystem {
+export class Volver implements IVolver {
 	fetchOptions: RequestInit
 	iconsCollections: IconifyJSON[]
 	provider: string
@@ -69,31 +63,18 @@ export default class DesignSystem implements IDesignSystem {
 		fetchWithCredentials = false,
 		fetchOptions = {},
 		iconsCollections = []
-	}: IDesignSystemParams = {}) {
+	}: IVolverParams = {}) {
 		if (fetchWithCredentials) {
 			fetchOptions = { ...fetchOptions, credentials: 'include' }
 		}
-		this.provider = 'vv'
+		this.provider = VOLVER_PREFIX
 		this.fetchOptions = fetchOptions
 		this.iconsCollections = iconsCollections
-	}
-
-	/**
-	 * Vue.use() hook
-	 * @param {App} Vue
-	 * @param {Object} options
-	 */
-	install(app: App) {
 		// Add default icons collection (simple, normal, detailed)
 		// and others custom collections
 		this.iconsCollections.forEach((iconsCollection) => {
 			this.addCollection(iconsCollection, this.provider)
 		})
-
-		// register global methods
-		app.config.globalProperties.$ds = this
-
-		app.provide('ds', this)
 	}
 
 	addCollection(collection: IconifyJSON, providerName?: string): boolean {
@@ -113,3 +94,21 @@ export default class DesignSystem implements IDesignSystem {
 		})
 	}
 }
+
+const VolverPlugin: Plugin = {
+	/**
+	 * Vue.use() hook
+	 * @param {App} Vue
+	 * @param {Object} options
+	 */
+	install(app: App, options: IVolverParams) {
+		const volver = new Volver(options)
+
+		// register global methods
+		app.config.globalProperties.$ds = volver
+
+		app.provide(VOLVER_PREFIX, volver)
+	}
+}
+
+export default VolverPlugin

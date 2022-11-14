@@ -52,7 +52,12 @@ export function HintSlotFactory(
 	return {
 		name: 'HintSlot',
 		props: {
-			params: { type: Object, default: () => {} }
+			params: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			}
 		},
 		setup(hProps) {
 			const props = toRefs(pProps)

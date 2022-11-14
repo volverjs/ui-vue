@@ -14,6 +14,12 @@ module.exports = {
 		'plugin:mdx/recommended'
 	],
 	rules: {
-		'vue/require-default-prop': 'off'
+		'vue/require-default-prop': 'off',
+		'no-console': process.env.NODE_ENV === 'development' ? 'off' : 'error',
+		'no-debugger': process.env.NODE_ENV === 'development' ? 'off' : 'error',
+		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
+		'vue/multi-word-component-names': 'off',
+		'no-unused-vars': 'off',
+		'sort-imports': 'off'
 	}
 }

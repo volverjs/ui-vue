@@ -1,15 +1,14 @@
 import '@/stories/stories.scss'
 import { setup } from '@storybook/vue3'
-import DesignSystem from '@/DesignSystem'
+import VolverPlugin from '@/Volver'
 import iconsSimple from '@/assets/icons/simple.json'
 import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
 
-const volver = new DesignSystem({
-	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
-})
 setup((app) => {
-	app.use(volver)
+	app.use(VolverPlugin, {
+		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
+	})
 })
 
 export const parameters = {

@@ -13,8 +13,6 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
 	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
 
-	console.log('Inject - ', group)
-
 	//Check if component is in group
 	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
 

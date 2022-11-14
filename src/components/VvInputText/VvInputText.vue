@@ -239,7 +239,6 @@ function clearInputText() {
 
 onMounted(() => {
 	if (props.autofocus) focused.value = true
-	console.log('Focused', focused.value)
 })
 </script>
 

@@ -4,6 +4,7 @@ import { build } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
+import ESLint from 'vite-plugin-eslint'
 import { paramCase } from 'change-case'
 
 // load package.json and reset exports
@@ -14,7 +15,7 @@ packageJson.exports = {
 }
 
 const baseConfig = {
-	plugins: [vue(), externalizeDeps()],
+	plugins: [vue(), externalizeDeps(), ESLint()],
 	configFile: false,
 	resolve: {
 		alias: {
@@ -25,24 +26,43 @@ const baseConfig = {
 
 // build library
 packageJson.exports['.'] = {
-	import: './dist/ui-vue.js',
-	default: './dist/ui-vue.umd.js'
+	types: './dist/index.d.ts',
+	import: './dist/index.es.js',
+	default: './dist/index.umd.js'
 }
 build({
 	...baseConfig,
 	build: {
 		emptyOutDir: false,
 		lib: {
-			name: 'ui-vue',
+			name: 'volver',
 			entry: './src/index.ts',
-			fileName: (format) => `ui-vue.${format}.js`
+			fileName: (format) => `index.${format}.js`
+		}
+	}
+})
+
+// build all components library
+packageJson.exports['./components'] = {
+	types: './dist/index.d.ts',
+	import: './dist/components/index.es.js',
+	default: './dist/components/index.umd.js'
+}
+build({
+	...baseConfig,
+	build: {
+		emptyOutDir: false,
+		lib: {
+			name: 'components',
+			entry: './src/components/index.ts',
+			fileName: (format) => `components/index.${format}.js`
 		}
 	}
 })
 
 // build icons
 packageJson.exports[`./icons`] = {
-	import: './dist/icons.js',
+	import: './dist/icons.es.js',
 	default: './dist/icons.umd.js'
 }
 build({
@@ -73,9 +93,10 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 	await Promise.all(
 		sources.map(({ name, entry }) => {
 			const paramCaseName = paramCase(name)
-			const subPath = `components/${name}/${paramCaseName}`
-			packageJson.exports[`./${name}`] = {
-				import: `./dist/${subPath}.js`,
+			const subPath = `components/${name}/${name}`
+			packageJson.exports[`./${paramCaseName}`] = {
+				types: `./dist/${subPath}.vue.d.ts`,
+				import: `./dist/${subPath}.es.js`,
 				default: `./dist/${subPath}.umd.js`
 			}
 

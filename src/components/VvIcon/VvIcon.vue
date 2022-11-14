@@ -10,12 +10,13 @@
 </template>
 
 <script setup lang="ts">
-import type { IDesignSystem } from '../../DesignSystem'
+import type { IVolver } from '../../Volver'
+import { VOLVER_PREFIX } from '../../Volver'
 
 import { inject, toRefs } from 'vue'
 
 import { ref, computed } from 'vue'
-import { Icon, addIcon, iconExists } from '@iconify/vue'
+import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
 import { VvIconProps } from './VvIcon'
 
 //Composables
@@ -29,7 +30,7 @@ const show = ref(true)
 const { modifiers } = toRefs(props)
 
 //Inject
-const ds = inject<IDesignSystem>('ds')
+const ds = inject<IVolver>(VOLVER_PREFIX)
 
 //Styles & bindings
 const { bemCssClasses: iconClass } = useBemModifiers('vv-icon', {
@@ -57,7 +58,7 @@ const icon = computed(() => {
 	} else {
 		// Check into all collections and set "iconName" data
 		return (
-			ds?.iconsCollections.find((iconsCollection) => {
+			ds?.iconsCollections.find((iconsCollection: IconifyJSON) => {
 				const icon = `@${currentProvider.value}:${iconsCollection.prefix}:${_name}`
 				if (iconExists(icon)) {
 					return icon

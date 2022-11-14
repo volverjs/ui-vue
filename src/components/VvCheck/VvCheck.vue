@@ -130,8 +130,6 @@ function onChange() {
 			: ObjectUtilities.removeFromList(props.value, modelValue.value)
 		return
 	}
-
-	console.warn('Cannot change value - VvCheck modelValue is not an array')
 }
 function onClick(event: MouseEvent | undefined) {
 	if (!disabled.value) {
