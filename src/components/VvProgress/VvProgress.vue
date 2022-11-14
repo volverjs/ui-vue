@@ -1,5 +1,5 @@
 <template>
-	<progress v-bind="properties" />
+	<progress ref="progress" aria-label="progressbar" v-bind="properties" />
 </template>
 
 <script setup lang="ts">
