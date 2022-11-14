@@ -15,7 +15,9 @@ export const VvToastProps = {
 	left: Boolean,
 	autoclose: Number,
 	closeOnClick: Boolean,
-	transition: String
+	transition: String,
+	center: Boolean,
+	fixed: Boolean
 }
 
 export const VvToastEvents = ['close', 'update:visible']

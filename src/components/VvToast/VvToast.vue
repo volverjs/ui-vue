@@ -9,7 +9,7 @@
 							class="vv-toast__close"
 							type="button"
 							aria-label="Close"
-							@click.prevent="closeToast" />
+							@click.stop.prevent="closeToast" />
 						<slot v-if="hasIcon" name="icon" v-bind="slotParams">
 							<vv-icon :name="icon" class="mr-xs" />
 						</slot>
@@ -65,10 +65,12 @@ const toastClass = computed(() => {
 	return {
 		...toBem('vv-toast', {
 			modifiers: props.modifiers,
+			fixed: props.fixed,
 			top: props.top,
 			bottom: props.bottom,
 			right: props.right,
-			left: props.left
+			left: props.left,
+			center: props.center
 		}),
 		'z-toast': true
 	}

@@ -6,13 +6,18 @@ import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
 
 import NotifyPlugin from '@/plugins/notify/notify.ts'
+import VvAlert from '@/components/VvAlert/VvAlert.vue'
+import VvToast from '@/components/VvToast/VvToast.vue'
 
 const volver = new DesignSystem({
 	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
 })
 setup((app) => {
 	app.use(volver)
-	app.use(NotifyPlugin)
+	app.use(NotifyPlugin, {
+		alert: VvAlert,
+		toast: VvToast
+	})
 })
 
 export const parameters = {

@@ -11,7 +11,7 @@
 					class="vv-alert__close"
 					type="button"
 					aria-label="Close"
-					@click.prevent="closeAlert" />
+					@click.stop.prevent="closeAlert" />
 				<slot v-if="hasIcon" name="icon" v-bind="slotParams">
 					<vv-icon :name="icon" />
 				</slot>
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, toRefs, useSlots } from 'vue'
+import { computed, watch, toRefs, useSlots, onUnmounted } from 'vue'
 import { VvAlertProps, VvAlertEvents } from './VvAlert'
 
 //Components
@@ -86,7 +86,6 @@ watch(
 		if (bVisible && hasAutocloseTimeout.value) {
 			closeTimeout = setTimeout(() => {
 				closeAlert()
-				clearTimeout(closeTimeout)
 			}, props.autoclose)
 		}
 	},
@@ -95,6 +94,7 @@ watch(
 
 function closeAlert() {
 	visible.value = false
+	console.log('Close', props.title)
 	emit('close')
 	if (closeTimeout) clearTimeout(closeTimeout)
 }

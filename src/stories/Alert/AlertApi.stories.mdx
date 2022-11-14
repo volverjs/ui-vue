@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/addon-docs'
 import VvAlert from '../../components/VvAlert/VvAlert.vue'
 
-import { useAlert2 } from '@/composables/alert/useAlert'
+import { useNotify } from '@/composables/notify/useNotify'
 
 <Meta title="Components/Alert/Api" />
 
@@ -14,10 +14,18 @@ import { useAlert2 } from '@/composables/alert/useAlert'
 		(args, { argTypes }) => ({
 			props: Object.keys(argTypes),
 			setup() {
-				const notify = useAlert2()
+				const {messages, addMessage} = useNotify()
 				
-				function openAlert(){
-					notify.show()
+				function openAlert(position){
+					addMessage({
+						type: 'alert', 
+						title: `Alert ${Math.random()}`,
+						top: position === 'top',
+						bottom: position === 'bottom',
+						left: true, 
+						visible: true,
+						closable: true
+					})
     			}
 
     			return { args, openAlert }
@@ -25,7 +33,8 @@ import { useAlert2 } from '@/composables/alert/useAlert'
     		template:
     			/**html */
     			`
-    			<button class="vv-button" @click="openAlert">Clicca qua!</button>
+    			<button class="vv-button" @click="openAlert('top')">Aggiungi un alert top</button>
+    			<button class="vv-button" @click="openAlert('bottom')">Aggiungi un alert bottom</button>
     			`
     	})
     }
