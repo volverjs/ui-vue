@@ -151,7 +151,16 @@ export default {
 	 * @param {string | null | undefined | number | Array<any> | object} value element to checj
 	 * @returns {boolean}
 	 */
-	isEmpty(value: string | null | undefined | number | Array<any> | object) {
+	isEmpty(
+		value:
+			| string
+			| null
+			| undefined
+			| number
+			| Array<any>
+			| object
+			| boolean
+	) {
 		return (
 			value === null ||
 			value === undefined ||
@@ -168,7 +177,14 @@ export default {
 	 * @returns {boolean}
 	 */
 	isNotEmpty(
-		value: string | null | undefined | number | Array<any> | object
+		value:
+			| string
+			| null
+			| undefined
+			| number
+			| Array<any>
+			| object
+			| boolean
 	) {
 		return !this.isEmpty(value)
 	},

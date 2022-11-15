@@ -1,16 +1,31 @@
 import type { Component } from 'vue'
 
-export interface NotifyOptions {
+export interface INotifyOptions {
 	/**
 	 * Container per le notifiche.
 	 */
-	container: Component
+	container: INotifyContainerOptions
 	/**
-	 * Componente per la visualizzazione degli alert
+	 * Opzioni per la visualizzazione delle alert notifications.
 	 */
-	alert: Component
+	alert: INotifyComponentOptions
 	/**
-	 * Componente per la visualizzazione dei toast.
+	 * Opzioni per la visualizzazione delle toast notifications.
 	 */
-	toast: Component
+	toast: INotifyComponentOptions
+}
+
+export interface INotifyContainerOptions {
+	component: Component
+	top?: boolean
+	bottom?: boolean
+	left?: boolean
+	right?: boolean
+	center?: boolean
+}
+
+export interface INotifyComponentOptions {
+	component: Component
+	closable: boolean
+	autoclose: number
 }

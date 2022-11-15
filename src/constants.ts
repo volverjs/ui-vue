@@ -5,3 +5,5 @@ export const VV_RADIO_GROUP = Symbol('VV_RADIO_GROUP')
 export const VV_CHECK_GROUP = Symbol('VV_CHECK_GROUP')
 
 export const VV_ACCORDION_GROUP = Symbol('VV_ACCORDION_GROUP')
+
+export const VV_NOTIFY_PLUGIN = Symbol('VV_NOTIFY_PLUGIN')
