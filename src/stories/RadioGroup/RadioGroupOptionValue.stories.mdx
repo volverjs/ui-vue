@@ -8,6 +8,7 @@ import {
 	optionsValueStringTest,
 	optionsValueFunctionTest
 } from './RadioOptionsTest.js'
+import { test } from './RadioOption.test.ts'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/OptionsValue" component={VvRadioGroup} />
@@ -19,12 +20,7 @@ Change object prop for value
 <Canvas>
 	<Story
 		name="OptionsValue - string"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsValueStringTest]
-			})
-		}
+		play={test}
 		args={{
 			name: 'options',
 			options: [
@@ -45,12 +41,7 @@ Use function to define option value
 <Canvas>
 	<Story
 		name="OptionsValue - function"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsValueFunctionTest]
-			})
-		}
+		play={test}
 		args={{
 			name: 'options',
 			options: [

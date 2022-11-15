@@ -8,6 +8,7 @@ import {
 	optionsLabelStringTest,
 	optionsLabelFunctionTest
 } from './RadioOptionsTest'
+import { test } from './RadioOption.test.ts'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/OptionLabel" component={VvRadioGroup} />
@@ -19,12 +20,7 @@ Change object prop for label
 <Canvas>
 	<Story
 		name="OptionsLabel - string"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsLabelStringTest]
-			})
-		}
+		play={test}
 		args={{
 			name: 'options',
 			options: [
@@ -45,12 +41,7 @@ Use function to define option label
 <Canvas>
 	<Story
 		name="OptionsLabel - function"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsLabelFunctionTest]
-			})
-		}
+		play={test}
 		args={{
 			name: 'options',
 			options: [
