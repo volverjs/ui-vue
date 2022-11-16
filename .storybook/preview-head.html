@@ -1,3 +1,13 @@
 <script>
 	window.global = window
+	document.addEventListener('DOMContentLoaded', () => {
+		const body = document.getElementsByTagName('body')?.[0]
+		body?.classList?.add?.('theme')
+	})
 </script>
+
+<style>
+	body {
+		height: 100vh;
+	}
+</style>

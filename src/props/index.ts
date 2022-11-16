@@ -1,3 +1,5 @@
+import type { PropType } from 'vue'
+
 export const ValidProps = {
 	valid: Boolean,
 	validLabel: [String, Array]
@@ -22,7 +24,7 @@ export const ReadonlyProps = {
 }
 
 export const ModifiersProps = {
-	modifiers: [String, Array]
+	modifiers: [String, Array] as PropType<string | Array<string>>
 }
 
 export const HintProps = {

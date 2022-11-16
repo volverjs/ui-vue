@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
 
-import { toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 import { VvButtonGroupProps, VvButtonGroupEvents } from './VvButtonGroup'
 import { VV_BUTTON_GROUP } from '../../constants'
 
@@ -22,22 +22,13 @@ const props = defineProps(VvButtonGroupProps)
 
 //Data
 const modelValue = useVModel(props, 'modelValue', emit)
-const {
-	disabled,
-	vertical,
-	compact,
-	block,
-	rounded,
-	toggle,
-	action,
-	actionQuiet
-} = toRefs(props)
+const { disabled, vertical, compact, toggle, modifiers } = toRefs(props)
 
 //Computed
 const { bemCssClasses: btnGroupClass } = useBemModifiers('vv-button-group', {
+	modifiers,
 	vertical,
-	compact,
-	block
+	compact
 })
 
 // #region group
@@ -46,9 +37,7 @@ const groupState: IButtonGroupState = {
 	modelValue,
 	disabled,
 	toggle,
-	rounded,
-	action,
-	actionQuiet
+	modifiers: modifiers?.value ? modifiers : ref([])
 }
 useProvideGroupState(groupState)
 // #endregion group

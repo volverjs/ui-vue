@@ -1,3 +1,4 @@
+import { DisabledProps, ModifiersProps } from '@/props'
 import type { PropType, ExtractPropTypes } from 'vue'
 
 export enum ButtonIconPosition {
@@ -24,6 +25,8 @@ export enum ButtonTarget {
 export const VvButtonEvents = ['update:modelValue']
 
 export const VvButtonProps = {
+	...ModifiersProps,
+	...DisabledProps,
 	/**
 	 * Button icon
 	 */
@@ -73,44 +76,11 @@ export const VvButtonProps = {
 		type: String as PropType<ButtonTarget>,
 		validator: (value: string) => value in ButtonTarget
 	},
-	/**
-	 * Create block level button that span the full width of a parent.
-	 */
-	block: Boolean,
-	/**
-	 * Button active state.
-	 */
 	active: Boolean,
-	/**
-	 * Button rounded.
-	 */
-	rounded: Boolean,
-	/**
-	 * Button disabled
-	 */
-	disabled: Boolean,
-	/**
-	 * Button with min-width
-	 */
-	fullBleed: Boolean,
-	/**
-	 * Button action mode
-	 */
-	action: Boolean,
-	/**
-	 * Button action mode
-	 */
-	actionQuiet: Boolean,
 	/**
 	 * Button selected mode
 	 */
-	selected: Boolean,
-	/**
-	 * The variant of the button
-	 * @values
-	 * @defaultvalue default
-	 */
-	modifiers: [Array, String]
+	selected: Boolean
 }
 
 type _VvButtonPropsType = typeof VvButtonProps

@@ -1,5 +1,5 @@
 <template>
-	<div :id="id" :class="selectClasses">
+	<div v-if="!native" :id="id" :class="selectClasses">
 		<label v-if="label" for="select">{{ label }}</label>
 		<details
 			ref="dropdown"
@@ -35,6 +35,10 @@
 		</details>
 		<HintSlot class="vv-select__hint" />
 	</div>
+	<VvNativeSelect
+		v-else
+		v-bind="props"
+		@update:model-value="emit('update:modelValue', $event)" />
 </template>
 
 <script setup lang="ts">
@@ -47,9 +51,11 @@ import { VvSelectProps } from './VvSelect'
 import HintSlotFactory from '../common/HintSlot'
 import VvDropdown from '../VvDropdown/VvDropdown.vue'
 import { useBemModifiers } from '../../composables/useModifiers'
+import VvNativeSelect from '../VvNativeSelect/VvNativeSelect.vue'
 
 const props = defineProps(VvSelectProps)
 const slots = useSlots()
+
 const emit = defineEmits(['update:modelValue', 'change:search'])
 
 //Hint component

@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs } from 'vue'
+import { useAttrs, useSlots } from 'vue'
 
 import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
@@ -64,16 +64,12 @@ import { toButtonRefs } from './useButtonGroupProps'
 //Props, emits, attrs, slots
 const props = defineProps(VvButtonProps)
 const attrs = useAttrs()
+const slots = useSlots()
 
 //Data
 const btnName = attrs?.name || uuidv4()
 const {
 	modifiers,
-	action,
-	actionQuiet,
-	block,
-	rounded,
-	fullBleed,
 	iconPosition,
 	icon,
 	label,
@@ -128,12 +124,7 @@ const selected = computed(() => {
 const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
 	modifiers,
 	active,
-	action,
-	actionQuiet,
 	selected,
-	block,
-	rounded,
-	fullBleed,
 	disabled,
 	reverse: computed(() =>
 		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
@@ -145,7 +136,7 @@ const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
 			iconPosition.value
 		)
 	),
-	iconOnly: computed(() => icon?.value && !label?.value)
+	iconOnly: computed(() => icon?.value && !label?.value && !slots['default'])
 })
 /**
  * Compute component properties

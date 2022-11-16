@@ -87,5 +87,9 @@ export const VvSelectProps = {
 	/**
 	 * Icon name of icon in right position
 	 */
-	iconRight: String
+	iconRight: String,
+	/**
+	 * Icon name of icon in right position
+	 */
+	native: Boolean
 }

@@ -1,0 +1,65 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvBadge from '../../components/VvBadge/VvBadge.vue'
+import VvButton from '../../components/VvButton/VvButton.vue'
+
+<Meta title="Components/Badge/Props/modifiers" />
+
+# VvBadge rounded
+
+Let's define a story for our `rounded` badge.
+
+<Canvas>
+	<Story name="rounded">
+		{() => {
+			return {
+				components: { VvBadge, VvButton },
+				template: `<vv-badge modifiers="rounded" value="99+" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+# VvBadge outline
+
+Let's define a story for our `outline` badge.
+
+<Canvas>
+	<Story name="outline">
+		{() => {
+			return {
+				components: { VvBadge, VvButton },
+				template: `<vv-badge modifiers="outline" value="99+" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+# VvBadge ghost
+
+Let's define a story for our `ghost` badge.
+
+<Canvas>
+	<Story name="ghost">
+		{() => {
+			return {
+				components: { VvBadge, VvButton },
+				template: `<vv-badge modifiers="ghost" value="99+" />`
+			}
+		}}
+	</Story>
+</Canvas>
+
+# VvBadge small
+
+Let's define a story for our `sm` badge.
+
+<Canvas>
+	<Story name="sm">
+		{() => {
+			return {
+				components: { VvBadge, VvButton },
+				template: `<vv-badge modifiers="sm" value="99+" />`
+			}
+		}}
+	</Story>
+</Canvas>

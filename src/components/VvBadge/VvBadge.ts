@@ -1,4 +1,6 @@
+import { ModifiersProps } from '@/props'
+
 export const VvBadgeProps = {
-	value: [String, Number],
-	color: String
+	...ModifiersProps,
+	value: [String, Number]
 }
