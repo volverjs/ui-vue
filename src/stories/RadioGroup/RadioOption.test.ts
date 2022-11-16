@@ -20,7 +20,7 @@ async function radioOptionsTest({ canvasElement, ...data }: PlayAttributes) {
 	const options: { [key: string]: string }[] = data.args.options
 	options.forEach((option, index: number) => {
 		const radio = radioGroupWrapper.children[index] as HTMLElement
-		const radioValue = radio.children[0].value
+		const radioValue = radio.children[0]
 		const radioLabel = radio.innerText
 		expect(radioLabel).toEqual(getValueToTest(option, optionParamLabel))
 		expect(radioValue).toEqual(getValueToTest(option, optionParamValue))
@@ -34,7 +34,7 @@ async function arrayOptionsTest({ canvasElement, ...data }: PlayAttributes) {
 	const options: { [key: string]: string }[] = data.args.options
 	options.forEach((option, index: number) => {
 		const radio = radioGroupWrapper.children[index] as HTMLElement
-		const radioValue = radio.children[0].value
+		const radioValue = radio.children[0]
 		const radioLabel = radio.innerText
 		expect(radioLabel).toEqual(option)
 		expect(radioValue).toEqual(option)
