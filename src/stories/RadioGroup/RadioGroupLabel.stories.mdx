@@ -13,8 +13,11 @@ import { labelTest } from './RadioProperty.test.ts'
 <Canvas>
 	<Story
 		name="Label"
-		play={async ({ canvasElement, args }) => {
-			labelTest({ canvasElement, args }, 0, 'label')
+		play={async (ctx) => {
+			labelTest(ctx, {
+				chid: 0,
+				propName: 'label'
+			})
 		}}
 		args={{
 			name: 'story-label',
