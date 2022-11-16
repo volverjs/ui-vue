@@ -3,11 +3,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
-import {
-	mainOptionsTest,
-	optionsLabelStringTest,
-	optionsLabelFunctionTest
-} from './RadioOptionsTest'
+import { radioOptionsTest } from './RadioOption.test.ts'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/OptionLabel" component={VvRadioGroup} />
@@ -19,12 +15,7 @@ Change object prop for label
 <Canvas>
 	<Story
 		name="OptionsLabel - string"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsLabelStringTest]
-			})
-		}
+		play={radioOptionsTest}
 		args={{
 			name: 'options',
 			options: [
@@ -32,7 +23,8 @@ Change object prop for label
 				{ value: 2, name: 'Pera' },
 				{ value: 3, name: 'Banana' }
 			],
-			optionLabel: 'name'
+			optionLabel: 'name',
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -45,12 +37,7 @@ Use function to define option label
 <Canvas>
 	<Story
 		name="OptionsLabel - function"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsLabelFunctionTest]
-			})
-		}
+		play={radioOptionsTest}
 		args={{
 			name: 'options',
 			options: [
@@ -58,7 +45,8 @@ Use function to define option label
 				{ value: 2, name: 'Pera' },
 				{ value: 3, name: 'Banana' }
 			],
-			optionLabel: (o) => `Frutto: ${o.name}`
+			optionLabel: (o) => `Frutto: ${o.name}`,
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>

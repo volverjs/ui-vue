@@ -11,7 +11,7 @@ interface RadioConfig {
 }
 
 async function radioGroupTest(
-	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
+	{ canvasElement }: PlayAttributes = {} as PlayAttributes,
 	{
 		isClickDisabled = false,
 		className = null,
@@ -21,9 +21,9 @@ async function radioGroupTest(
 	const radioGroupParent = await within(canvasElement).findByRole(
 		'radiogroup'
 	)
-	const prefix = data.args.name
-	const radio1 = document.getElementById(`${prefix}_opt1`) as HTMLInputElement
-	const radio2 = document.getElementById(`${prefix}_opt2`) as HTMLInputElement
+	const radios = document.getElementsByClassName('vv-input-radio__input')
+	const radio1 = radios[0] as HTMLInputElement
+	const radio2 = radios[1] as HTMLInputElement
 	expect(radioGroupParent).toHaveClass('vv-input-radio-group')
 	if (!isVertical) {
 		expect(radioGroupParent).toHaveClass([

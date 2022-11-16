@@ -3,7 +3,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
-import { slotsTest } from './RadioSlotsTest.js'
+import { slotsTest } from './RadioSlots.test.ts'
 
 <Meta title="Components/RadioGroup/Slots" component={VvRadioGroup} />
 
@@ -44,11 +44,10 @@ import { slotsTest } from './RadioSlotsTest.js'
 <Canvas>
 	<Story
 		name="Hint"
-		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement })
-		}}
+		play={slotsTest}
 		args={{
-			name: 'story-slot-hint'
+			name: 'story-slot-hint',
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {
@@ -85,11 +84,12 @@ import { slotsTest } from './RadioSlotsTest.js'
 	<Story
 		name="Valid"
 		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement }, 'valid')
+			slotsTest({ canvasElement }, { className: 'valid' })
 		}}
 		args={{
 			name: 'story-slot-valid',
-			valid: true
+			valid: true,
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {
@@ -126,11 +126,12 @@ import { slotsTest } from './RadioSlotsTest.js'
 	<Story
 		name="Error"
 		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement }, 'invalid')
+			slotsTest({ canvasElement }, { className: 'invalid' })
 		}}
 		args={{
 			name: 'story-slot-error',
-			error: true
+			error: true,
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {

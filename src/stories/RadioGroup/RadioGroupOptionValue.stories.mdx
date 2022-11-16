@@ -3,11 +3,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
 
-import {
-	mainOptionsTest,
-	optionsValueStringTest,
-	optionsValueFunctionTest
-} from './RadioOptionsTest.js'
+import { radioOptionsTest } from './RadioOption.test.ts'
 import { Template } from './RadioGroup.stories.mdx'
 
 <Meta title="Components/RadioGroup/OptionsValue" component={VvRadioGroup} />
@@ -19,12 +15,7 @@ Change object prop for value
 <Canvas>
 	<Story
 		name="OptionsValue - string"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsValueStringTest]
-			})
-		}
+		play={radioOptionsTest}
 		args={{
 			name: 'options',
 			options: [
@@ -32,7 +23,8 @@ Change object prop for value
 				{ qta: 2, label: 'Pera' },
 				{ qta: 3, label: 'Banana' }
 			],
-			optionValue: 'qta'
+			optionValue: 'qta',
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -45,12 +37,7 @@ Use function to define option value
 <Canvas>
 	<Story
 		name="OptionsValue - function"
-		play={(ctx) =>
-			mainOptionsTest({
-				...ctx,
-				functions: [optionsValueFunctionTest]
-			})
-		}
+		play={radioOptionsTest}
 		args={{
 			name: 'options',
 			options: [
@@ -58,7 +45,8 @@ Use function to define option value
 				{ qta: 2, label: 'Pera' },
 				{ qta: 3, label: 'Banana' }
 			],
-			optionValue: (o) => `${o.qta}_${o.label}`
+			optionValue: (o) => `${o.qta}_${o.label}`,
+			role: 'radiogroup'
 		}}>
 		{Template.bind({})}
 	</Story>
