@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import type { NotifyOptions } from './types/NotifyOptions'
+import type { INotifyOptions } from './types/NotifyOptions'
 
 import { NotifyApp } from './components/NotifyApp'
 import { VV_NOTIFY_PLUGIN } from '@/constants'
@@ -10,7 +10,7 @@ import { VV_NOTIFY_PLUGIN } from '@/constants'
  * Plugin che mi permette di presentare all'utente delle notifiche. Utilizzabile in qualsiasi punto dell'applicazione.
  */
 export default {
-	install: (app: App, options: NotifyOptions) => {
+	install: (app: App, options: INotifyOptions) => {
 		if (!options) throw Error('Option are missing')
 		// if (!options.container)
 		// 	throw new Error('Notification container is missing')

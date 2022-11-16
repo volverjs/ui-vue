@@ -14,16 +14,15 @@ import { useNotify } from '@/composables/notify/useNotify'
 		(args, { argTypes }) => ({
 			props: Object.keys(argTypes),
 			setup() {
-				const {messages, addMessage} = useNotify()
+				const {show} = useNotify()
 				
 				function openAlert(position){
-					addMessage({
-						type: 'alert', 
-						title: `Alert ${Math.random()}`,
+					show('alert',{
+						title: `Alert ${Math.random()}`
+					}, {
 						top: position === 'top',
 						bottom: position === 'bottom',
-						left: true, 
-						visible: true,
+						left: true,  
 						closable: true
 					})
     			}

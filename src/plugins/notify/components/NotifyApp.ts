@@ -1,103 +1,86 @@
 import type { VNode } from 'vue'
-import type {
-	IMessage,
-	IAlertMessage,
-	IToastMessage
-} from '@/composables/notify/types/IMessage'
-import type { NotifyOptions } from '../types/NotifyOptions'
+import type { INotifyOptions } from '../types/NotifyOptions'
 
 import { createApp, h, nextTick } from 'vue'
 import { NotifyContainer } from '../components/NotifyContainer'
 import { useNotify } from '@/composables/notify/useNotify'
+import { type INotify, MessageType } from '@/composables/notify/types/IMessage'
 
-export const NotifyApp = (options: NotifyOptions) =>
+const isGlobalPositionedGroup = (groupId: string) =>
+	groupId.startsWith('TOP_') || groupId.startsWith('BOTTOM_')
+
+export const NotifyApp = (options: INotifyOptions) =>
 	createApp({
 		name: 'VvNotifyPlugin',
 		setup() {
-			const { messages, removeMessage, hideMessage } = useNotify()
+			const { messages, remove, hide } = useNotify()
 
-			function getAlertPositionKey(msg: IMessage) {
-				const { top, bottom } = msg as IAlertMessage
-				return {
-					top,
-					bottom
-				}
-			}
-			function getToastPositionKey(msg: IMessage) {
-				const { top, bottom, left, right, center } =
-					msg as IToastMessage
-				return {
-					top,
-					bottom,
-					left,
-					right,
-					center
-				}
-			}
 			function getMessageNotifyContainer() {
 				return options.container || NotifyContainer
 			}
-			function getMessageTemplateComponent(msg: IMessage) {
-				if (msg.type === 'alert' && options.alert) return options.alert
-				if (msg.type === 'toast' && options.toast) return options.toast
+
+			function getMessageTemplateComponent(notify: INotify) {
+				if (notify.type === MessageType.ALERT && options.alert)
+					return options.alert.component
+				if (notify.type === MessageType.TOAST && options.toast)
+					return options.toast.component
 				throw Error(
 					'Message template is missing. No Alert or Toast component was found'
 				)
 			}
-			function getMessageComponent(msg: IMessage) {
-				const template = getMessageTemplateComponent(msg)
+
+			function getMessageComponent(notify: INotify) {
+				const template = getMessageTemplateComponent(notify)
 				return h(template, {
-					...msg,
-					onClose: () => closeMessage(msg),
+					...notify.message,
+					...notify.options,
+					visible: notify.visible,
+					onClose: () => closeNotify(notify),
 					class: ['my-2']
 				})
 			}
-			function closeMessage(msg: IMessage) {
-				hideMessage(msg)
+
+			function closeNotify(notify: INotify) {
+				hide(notify)
 				nextTick(() => {
-					removeMessage(msg)
+					remove(notify)
 				})
 			}
 
 			return {
 				messages,
 				getMessageNotifyContainer,
-				getAlertPositionKey,
-				getToastPositionKey,
 				getMessageComponent
 			}
 		},
 		render() {
-			const groups = new Map()
 			const containers = [] as Array<VNode>
-			if (this.messages.length > 0) {
-				this.messages.forEach((msg: IMessage) => {
-					const key = JSON.stringify(
-						msg.type === 'alert'
-							? this.getAlertPositionKey(msg)
-							: this.getToastPositionKey(msg)
+			const groupIterator = this.messages.keys()
+			let groupIndex = groupIterator.next()
+			while (!groupIndex.done) {
+				const notifies = isGlobalPositionedGroup(groupIndex.value)
+					? this.messages.get(groupIndex.value)
+					: []
+				if (notifies.length > 0) {
+					const _content = notifies.map((n: INotify) =>
+						this.getMessageComponent(n)
 					)
-					if (!groups.has(key)) groups.set(key, [])
-					groups.set(key, [
-						...groups.get(key),
-						this.getMessageComponent(msg)
-					])
-				})
-
-				groups.forEach((value, key) => {
-					const gPosition = JSON.parse(key)
 					containers.push(
 						h(
 							this.getMessageNotifyContainer(),
 							{
-								...gPosition
+								top: notifies[0].options?.top || false,
+								bottom: notifies[0].options?.bottom || false,
+								left: notifies[0].options?.left || false,
+								right: notifies[0].options?.right || false,
+								center: notifies[0].options?.center || false
 							},
-							() => value
+							() => _content
 						)
 					)
-				})
+				}
+				groupIndex = groupIterator.next()
 			}
-
 			return containers
 		}
 	})

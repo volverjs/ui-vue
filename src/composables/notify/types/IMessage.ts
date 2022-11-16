@@ -9,7 +9,7 @@ export interface IMessage {
 }
 
 export interface IMessageOptions {
-	groupId?: string
+	groupId: string
 	modifiers?: string | Array<string>
 	closable?: boolean
 	autoclose?: number
@@ -38,15 +38,6 @@ export interface INotify {
 }
 
 export enum MessageType {
-	ALERT,
-	TOAST
-}
-export enum DEFAULT_GROUPS {
-	TOP_LEFT,
-	TOP_CENTER,
-	TOP_RIGHT,
-	CENTER,
-	BOTTOM_LEFT,
-	BOTTOM_RIGHT,
-	BOTTOM_CENTER
+	ALERT = 'alert',
+	TOAST = 'toast'
 }

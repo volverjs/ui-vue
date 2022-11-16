@@ -15,8 +15,12 @@ const volver = new DesignSystem({
 setup((app) => {
 	app.use(volver)
 	app.use(NotifyPlugin, {
-		alert: VvAlert,
-		toast: VvToast
+		alert: {
+			component: VvAlert
+		},
+		toast: {
+			component: VvToast
+		}
 	})
 })
 

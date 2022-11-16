@@ -21,8 +21,8 @@ const groupPositionKey = ({
 	[k: string]: boolean
 }) => {
 	let key = ''
-	if (top) key += '_TOP'
-	if (bottom) key += '_BOTTOM'
+	if (top) key += 'TOP'
+	if (bottom) key += 'BOTTOM'
 	if (right) key += '_RIGHT'
 	if (left) key += '_LEFT'
 	if (center) key += '_CENTER'
@@ -30,7 +30,6 @@ const groupPositionKey = ({
 }
 
 class BaseNotifyOptions {
-	#groupId?: string
 	modifiers?: string | Array<string>
 	closable?: boolean
 	autoclose?: number
@@ -40,7 +39,6 @@ class BaseNotifyOptions {
 		options: IMessageOptions,
 		pluginNotifyOptions?: INotifyComponentOptions
 	) {
-		this.#groupId = options.groupId
 		this.modifiers = options.modifiers || []
 		this.onClose = options.onClose
 
@@ -57,6 +55,7 @@ export class AlertMessageOptions
 	extends BaseNotifyOptions
 	implements IAlertMessageOptions
 {
+	groupId: string
 	top: boolean
 	bottom: boolean
 
@@ -68,16 +67,13 @@ export class AlertMessageOptions
 
 		this.top = options.top || false
 		this.bottom = options.bottom || false
-	}
-
-	get groupId(): string {
-		return (
-			this.groupId ||
+		this.groupId =
+			options.groupId ||
 			groupPositionKey({
 				top: this.top,
-				bottom: this.bottom
+				bottom: this.bottom,
+				center: true
 			})
-		)
 	}
 }
 
@@ -85,6 +81,7 @@ export class ToastMessageOptions
 	extends BaseNotifyOptions
 	implements IToastMessageOptions
 {
+	groupId: string
 	top: boolean
 	bottom: boolean
 	left: boolean
@@ -102,11 +99,9 @@ export class ToastMessageOptions
 		this.left = options.left || false
 		this.right = options.right || false
 		this.center = options.center || false
-	}
 
-	get groupId(): string {
-		return (
-			this.groupId ||
+		this.groupId =
+			options.groupId ||
 			groupPositionKey({
 				top: this.top,
 				bottom: this.bottom,
@@ -114,7 +109,6 @@ export class ToastMessageOptions
 				right: this.right,
 				center: this.center
 			})
-		)
 	}
 }
 
@@ -127,13 +121,13 @@ export const NotifyOptionsFactory = {
 		switch (type) {
 			case MessageType.ALERT: {
 				return new AlertMessageOptions(
-					options || {},
+					options as IAlertMessageOptions,
 					globalNotification?.alert
 				)
 			}
 			case MessageType.TOAST: {
 				return new ToastMessageOptions(
-					options || {},
+					options as IToastMessageOptions,
 					globalNotification?.toast
 				)
 			}

@@ -5,19 +5,33 @@ import type {
 	INotify
 } from './types/IMessage'
 import type { INotifyOptions } from '@/plugins/notify/types/NotifyOptions'
-import { ref, computed, unref, inject } from 'vue'
+import { ref, inject } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { VV_NOTIFY_PLUGIN } from '@/constants'
 import { NotifyOptionsFactory } from './models/MessageOptions'
+import ObjectUtilities from '@/utils/ObjectUtilities'
 
 const messageQueue = ref(new Map<string, Array<INotify>>())
 export function useNotify() {
 	//Recupero delle impostazioni del plugin Notify (se utilizzato)
 	const pluginNotifyOptions = inject<INotifyOptions>(VV_NOTIFY_PLUGIN)
 
-	// const isEmpty = computed(() => {
-	// 	return messageQueue.value.length === 0
-	// })
+	/**
+	 * Cerca notifica
+	 * @param id
+	 */
+	function findById(id: string): INotify | null {
+		if (!id) return null
+		const groupsIter = messageQueue.value.keys()
+		let groupIndex = groupsIter.next()
+		let notify = null
+		while (!notify || !groupIndex.done) {
+			const group = messageQueue.value.get(groupIndex.value)
+			notify = group?.find((item) => item.id === id)
+			groupIndex = groupsIter.next()
+		}
+		return notify
+	}
 
 	function show(type: MessageType, msg: IMessage, options?: IMessageOptions) {
 		//Calcolo le opzioni per il messaggio da visualizzare.
@@ -41,57 +55,58 @@ export function useNotify() {
 			options: msgOptions
 		}
 
+		//Aggiungi al gruppo
 		const group = messageQueue.value.get(groupId)
 		group?.push(notify)
+
+		return notify
 	}
 
-	function addMessage(msg: IMessage) {
-		if (!msg) throw Error('Message is null or empty')
-		if (!msg.id) msg.id = uuidv4()
+	function remove(notify: string | INotify) {
+		const notifyToRemove = ObjectUtilities.isString(notify)
+			? findById(notify as string)
+			: (notify as INotify)
+		const notifyGroupId = notifyToRemove?.options?.groupId as string
+		const notifyGroup = notifyToRemove
+			? messageQueue.value.get(notifyGroupId)
+			: null
 
-		unref(messageQueue).push(msg)
-		return msg
-	}
-	function removeMessage(msg: IMessage) {
-		if (!msg) throw Error('Message is null or empty')
-		if (!msg.id) throw Error('Message id is null or empty')
-
-		const _msgIndexToRemove = unref(messageQueue).findIndex(
-			(m) => m.id === msg.id
-		)
-		if (_msgIndexToRemove > -1) {
-			unref(messageQueue).splice(_msgIndexToRemove, 1)
+		if (notifyToRemove && notifyGroup) {
+			const notifyInGroupIndex = notifyGroup.findIndex(
+				(m) => m.id === notifyToRemove.id
+			)
+			notifyGroup.splice(notifyInGroupIndex, 1)
+			messageQueue.value.set(notifyGroupId, notifyGroup)
 		}
-
-		console.log('Remove_', {
-			msg,
-			_msgIndexToRemove
-		})
-
-		return msg
 	}
+
 	function clear() {
-		messageQueue.value = []
+		messageQueue.value.clear()
 	}
-	function hideMessage(msg: IMessage) {
-		if (!msg) throw Error('Message is null or empty')
-		if (!msg.id) throw Error('Message id is null or empty')
-		const _msgIndexToHide = unref(messageQueue).findIndex(
-			(m) => m.id === msg.id
-		)
-		if (_msgIndexToHide > -1) {
-			const updateMessage = unref(messageQueue)[_msgIndexToHide]
-			updateMessage.visible = false
-			unref(messageQueue).splice(_msgIndexToHide, 1, updateMessage)
+
+	function hide(notify: string | INotify) {
+		const notifyToHide = ObjectUtilities.isString(notify)
+			? findById(notify as string)
+			: (notify as INotify)
+		const notifyGroupId = notifyToHide?.options?.groupId as string
+		const notifyGroup = notifyToHide
+			? messageQueue.value.get(notifyGroupId)
+			: null
+
+		if (notifyToHide && notifyGroup) {
+			const notifyInGroupIndex = notifyGroup.findIndex(
+				(m) => m.id === notifyToHide.id
+			)
+			notifyGroup[notifyInGroupIndex].visible = false
+			messageQueue.value.set(notifyGroupId, notifyGroup)
 		}
 	}
 
 	return {
 		messages: messageQueue,
-		isEmpty,
-		addMessage,
-		removeMessage,
-		hideMessage,
+		show,
+		remove,
+		hide,
 		clear
 	}
 }
