@@ -38,7 +38,7 @@ specifiers:
   '@types/react': ^18.0.25
   '@types/uuid': ^8.3.4
   '@vitejs/plugin-vue': ^3.2.0
-  '@volverjs/style': ^0.1.2-beta.7
+  '@volverjs/style': ^0.1.2-beta.23
   '@vue/compiler-sfc': ^3.2.42
   '@vue/eslint-config-prettier': ^7.0.0
   '@vue/eslint-config-typescript': ^11.0.2
@@ -2619,7 +2619,7 @@ packages:
       '@storybook/addons': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/router': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/types': 7.0.0-alpha.48
       global: 4.4.0
@@ -2907,7 +2907,7 @@ packages:
       '@storybook/channels': 7.0.0-alpha.48
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/router': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/theming': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/types': 7.0.0-alpha.48
@@ -2935,7 +2935,7 @@ packages:
       '@storybook/channels': 7.0.0-alpha.48
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/router': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/theming': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/types': 7.0.0-alpha.48
@@ -2968,7 +2968,7 @@ packages:
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/components': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/docs-tools': 7.0.0-alpha.48_yalvw3r2waubxycyb7k7qsruca
       '@storybook/preview-web': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/store': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
@@ -3139,7 +3139,7 @@ packages:
     dependencies:
       '@storybook/addons': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/client-logger': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/store': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/types': 7.0.0-alpha.48
       '@types/qs': 6.9.7
@@ -3163,7 +3163,7 @@ packages:
     dependencies:
       '@storybook/addons': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/client-logger': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/store': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/types': 7.0.0-alpha.48
       '@types/qs': 6.9.7
@@ -3196,7 +3196,7 @@ packages:
     resolution: {integrity: sha512-d2WLiSUxKVeqCooK8EPF7PN9Ek9xhtNJHdhbgKCZHyDklBZ8G0TTIJ6rnUw9rnf86D3S4Ylj4pC+KgLGxiNgyA==}
     dependencies:
       '@babel/types': 7.20.2
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/csf-tools': 7.0.0-alpha.48
       '@storybook/node-logger': 7.0.0-alpha.48
       '@storybook/types': 7.0.0-alpha.48
@@ -3237,7 +3237,7 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@storybook/client-logger': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/theming': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/types': 7.0.0-alpha.48
       memoizerific: 1.11.3
@@ -3263,7 +3263,7 @@ packages:
       '@storybook/client-api': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/preview-web': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/store': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/types': 7.0.0-alpha.48
@@ -3291,7 +3291,7 @@ packages:
       '@storybook/client-api': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/preview-web': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/store': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/types': 7.0.0-alpha.48
@@ -3417,7 +3417,7 @@ packages:
       '@storybook/core-client': 7.0.0-alpha.48_yalvw3r2waubxycyb7k7qsruca
       '@storybook/core-common': 7.0.0-alpha.48_yalvw3r2waubxycyb7k7qsruca
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/csf-tools': 7.0.0-alpha.48
       '@storybook/docs-mdx': 0.0.1-canary.12433cf.0
       '@storybook/node-logger': 7.0.0-alpha.48
@@ -3491,7 +3491,7 @@ packages:
     resolution: {integrity: sha512-CUSGRuDqr9ZxEv44i+jFzuORks269iezbEMvlm7d7vjpRmnNghHsdRC45cZZqu/uNIsTtn9P1dZp2piWLSTgSQ==}
     dependencies:
       '@babel/types': 7.20.2
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/types': 7.0.0-alpha.48
       fs-extra: 9.1.0
       ts-dedent: 2.2.0
@@ -3511,8 +3511,8 @@ packages:
       lodash: 4.17.21
     dev: true
 
-  /@storybook/csf/0.0.2-next.2:
-    resolution: {integrity: sha512-FYTirVrndR8L/FgYPy2BGZdLo28MD0kOUgbqmqTunObxTo4cA88tvRLhs/TnwgcOWX4za4R/LOchxWqMokVsfA==}
+  /@storybook/csf/0.0.2-next.7:
+    resolution: {integrity: sha512-OPBZ7WWFjkg6KSpdt+HA9N0WEJqr7wwZaMONNnjo/MxDXZgWNwGDouPBjk7CNuIh2aoDgTo6MfCMg6SOK0/IMQ==}
     dependencies:
       expect-type: 0.14.2
       lodash: 4.17.21
@@ -3731,7 +3731,7 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/types': 7.0.0-alpha.48
       estraverse: 5.3.0
       lodash: 4.17.21
@@ -3751,7 +3751,7 @@ packages:
       '@storybook/addons': 7.0.0-alpha.48_biqbaboplfbrettd7655fr4n2y
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/types': 7.0.0-alpha.48
       dequal: 2.0.3
       global: 4.4.0
@@ -3776,7 +3776,7 @@ packages:
       '@storybook/addons': 7.0.0-alpha.48_wcqkhtmu7mswc6yz4uyexck3ty
       '@storybook/client-logger': 7.0.0-alpha.48
       '@storybook/core-events': 7.0.0-alpha.48
-      '@storybook/csf': 0.0.2-next.2
+      '@storybook/csf': 0.0.2-next.7
       '@storybook/types': 7.0.0-alpha.48
       dequal: 2.0.3
       global: 4.4.0

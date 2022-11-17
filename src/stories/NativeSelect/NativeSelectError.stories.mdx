@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
+import { errorTest } from './NativeSelectTest.js'
 
 <Meta title="Components/NativeSelect/Props/error" />
 
@@ -11,12 +12,14 @@ Let's define a story for our `error` and `error-label` select.
 <Canvas>
 	<Story
 		name="error"
+		play={errorTest}
 		args={{
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			options: ['Option 1', 'Option 2', 'Option 3'],
 			error: true,
-			errorLabel: 'An error occurred!'
+			errorLabel: 'An error occurred!',
+			'data-testId': 'select'
 		}}>
 		{Template.bind({})}
 	</Story>

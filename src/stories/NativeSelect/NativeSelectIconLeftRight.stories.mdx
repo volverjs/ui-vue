@@ -1,5 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import { iconTest } from './NativeSelectTest.js'
 
 <Meta title="Components/NativeSelect/Props/icon" />
 
@@ -8,7 +9,7 @@ import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
 Let's define a story for our `icon-left` and `icon-right` select.
 
 <Canvas>
-	<Story name="icon">
+	<Story name="icon" play={iconTest}>
 		{() => {
 			return {
 				components: { VvNativeSelect },
@@ -21,11 +22,11 @@ Let's define a story for our `icon-left` and `icon-right` select.
 				},
 				template: `<div class="flex gap-32">
 						<div class="w-1/2">
-							<vv-native-select v-model:modelValue="value1" :options="options" label="Icon left" icon-left="email" />
+							<vv-native-select data-testid="icon-left" v-model:modelValue="value1" :options="options" label="Icon left" icon-left="email" />
 							value 1: {{ value1 }}
 						</div>
 						<div class="w-1/2">
-							<vv-native-select v-model:modelValue="value2" :options="options" label="Icon right" icon-right="phone" />
+							<vv-native-select data-testid="icon-right" v-model:modelValue="value2" :options="options" label="Icon right" icon-right="phone" />
 							value 2: {{ value2 }}
 						</div>
 					</div>`

@@ -61,7 +61,7 @@
 		"@types/react": "^18.0.25",
 		"@types/uuid": "^8.3.4",
 		"@vitejs/plugin-vue": "^3.2.0",
-		"@volverjs/style": "^0.1.2-beta.7",
+		"@volverjs/style": "^0.1.2-beta.23",
 		"@vue/compiler-sfc": "^3.2.42",
 		"@vue/eslint-config-prettier": "^7.0.0",
 		"@vue/eslint-config-typescript": "^11.0.2",
