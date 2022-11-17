@@ -1,5 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import { Template } from './NativeSelect.stories.mdx'
+import { customKeysTest } from './NativeSelectTest.js'
 
 <Meta title="Components/NativeSelect/Props/value-key_label-key" />
 
@@ -28,35 +30,32 @@ Options object array with custom `valueKey` ("val") and custom `labelKey` ("titl
 />
 
 <Canvas>
-	<Story name="value-key_label-key">
-		{() => {
-			return {
-				components: { VvNativeSelect },
-				data() {
-					return {
-						value: '',
-						options: [
-							{
-								title: 'Option 1',
-								val: 1
-							},
-							{
-								title: 'Option 2',
-								val: 2
-							},
-							{
-								title: 'Option 3',
-								val: 3
-							}
-						]
-					}
+	<Story
+		name="value-key_label-key"
+		play={customKeysTest}
+		args={{
+			label: 'Lorem Ipsum',
+			placeholder: 'Placeholder',
+			value: '',
+			options: [
+				{
+					title: 'Option 1',
+					val: 1
 				},
-				template: `<div class="w-1/2">
-						<vv-native-select v-model:modelValue="value" :options="options" value-key="val" label-key="title" />
-						value: {{ value }}
-					</div>`
-			}
-		}}
+				{
+					title: 'Option 2',
+					val: 2
+				},
+				{
+					title: 'Option 3',
+					val: 3
+				}
+			],
+			'value-key': 'val',
+			'label-key': 'title',
+			'data-testid': 'native-select'
+		}}>
+		{Template.bind({})}
 	</Story>
 </Canvas>
 
