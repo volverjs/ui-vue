@@ -1,4 +1,4 @@
-import type { ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, PropType } from 'vue'
 import {
 	ValidProps,
 	ErrorProps,
@@ -9,7 +9,7 @@ import {
 } from '../../props'
 import { TYPES, ICON_POSITIONS } from './constants'
 
-export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur']
+export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
 
 export const VvInputTextProps = {
 	...ValidProps,
@@ -18,13 +18,15 @@ export const VvInputTextProps = {
 	...LoadingProps,
 	...ModifiersProps,
 	...LimitProps,
-	modelValue: null,
+	modelValue: {
+		type: [String, Number],
+		default: null
+	},
 	type: {
 		type: String,
 		default: TYPES.TEXT,
 		validator: (value: string) => Object.values(TYPES).includes(value)
 	},
-	id: String,
 	name: { type: String, required: true },
 	autocomplete: { type: String, default: 'off' },
 	autofocus: Boolean,
@@ -41,7 +43,10 @@ export const VvInputTextProps = {
 	 * Nome dell'icona
 	 * @see DsIcon
 	 */
-	icon: { type: String, default: '' },
+	icon: {
+		type: [String, Object],
+		default: ''
+	},
 	/**
 	 * Posizione dell'icona
 	 */

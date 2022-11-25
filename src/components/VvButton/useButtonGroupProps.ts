@@ -1,16 +1,11 @@
-import { toRefs } from 'vue'
-import type IButtonGroupState from '../../composables/group/types/IButtonGroupState'
-
-//Composables
-import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
-
-//Constasts
-import { VV_BUTTON_GROUP } from '../../constants'
-
 import type { VvButtonPropsTypes } from './VvButton'
+import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
+import { toRefs } from 'vue'
+import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
+import { VV_BUTTON_GROUP } from '@/constants'
 
 /**
- * Estreae tutte le prop del componente VvButton che possono essere
+ * Estrae tutte le prop del componente VvButton che possono essere
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
 export function toButtonRefs(props: VvButtonPropsTypes) {

@@ -1,37 +1,33 @@
-<template>
-	<div :class="btnGroupClass" role="group">
-		<slot />
-	</div>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvButtonGroup'
+}
+</script>
 
 <script setup lang="ts">
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-
 import { ref, toRefs } from 'vue'
 import { VvButtonGroupProps, VvButtonGroupEvents } from './VvButtonGroup'
-import { VV_BUTTON_GROUP } from '../../constants'
-
-//Composables
+import { VV_BUTTON_GROUP } from '@/constants'
 import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
+import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useBemModifiers } from '@/composables/useModifiers'
 
-//Emits, props, attrs, slots
+// emit and props
 const emit = defineEmits(VvButtonGroupEvents)
 const props = defineProps(VvButtonGroupProps)
 
-//Data
+// data
 const modelValue = useVModel(props, 'modelValue', emit)
 const { disabled, vertical, compact, toggle, modifiers } = toRefs(props)
 
-//Computed
+// style
 const { bemCssClasses: btnGroupClass } = useBemModifiers('vv-button-group', {
 	modifiers,
 	vertical,
 	compact
 })
 
-// #region group
 const groupState: IButtonGroupState = {
 	key: VV_BUTTON_GROUP,
 	modelValue,
@@ -40,5 +36,10 @@ const groupState: IButtonGroupState = {
 	modifiers: modifiers?.value ? modifiers : ref([])
 }
 useProvideGroupState(groupState)
-// #endregion group
 </script>
+
+<template>
+	<div :class="btnGroupClass" role="group">
+		<slot />
+	</div>
+</template>

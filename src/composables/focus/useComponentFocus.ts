@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import { watch } from 'vue'
+import { type Ref, watch } from 'vue'
 import { useFocus } from '@vueuse/core'
 
 /**
@@ -7,13 +6,12 @@ import { useFocus } from '@vueuse/core'
  */
 export function useComponentFocus(
 	inputTemplateRef: Ref<HTMLInputElement>,
-	emit: (event: any, ...args: any[]) => void
+	emit: (event: 'focus' | 'blur', value: unknown) => void
 ) {
 	const { focused } = useFocus(inputTemplateRef)
 
-	watch(focused, (bFocus) => {
-		if (bFocus) emit('focus', inputTemplateRef.value)
-		else emit('blur', inputTemplateRef.value)
+	watch(focused, (newValue) => {
+		emit(newValue ? 'focus' : 'blur', inputTemplateRef.value)
 	})
 
 	return {

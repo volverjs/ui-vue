@@ -29,6 +29,4 @@ export const VvAccordionProps = {
 }
 
 export const VvAccordionEvents = ['update:open']
-
-type _VvAccordionPropsType = typeof VvAccordionProps
-export type VvAccordionPropsTypes = ExtractPropTypes<_VvAccordionPropsType>
+export type VvAccordionPropsTypes = ExtractPropTypes<typeof VvAccordionProps>

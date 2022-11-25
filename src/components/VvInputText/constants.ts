@@ -24,7 +24,7 @@ export const TYPES_ICON = {
 	DATE: 'calendar',
 	TIME: 'time',
 	COLOR: 'color',
-	SEARCH: 'search'
+	SEARCH: 'close'
 }
 
 export default {

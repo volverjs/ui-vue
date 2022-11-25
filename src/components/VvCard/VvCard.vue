@@ -1,5 +1,24 @@
+<script lang="ts">
+export default {
+	name: 'VvCard'
+}
+</script>
+
+<script setup lang="ts">
+import { VvCardProps } from './VvCard'
+import { useBemModifiers } from '@/composables/useModifiers'
+
+// props and attrs
+const props = defineProps(VvCardProps)
+
+// styles
+const { bemCssClasses: hasClass } = useBemModifiers('vv-card', {
+	modifiers: props.modifiers
+})
+</script>
+
 <template>
-	<article :class="cardClass" v-bind="cardAttrs">
+	<article :class="hasClass">
 		<header v-if="$slots.header || title" class="vv-card__header">
 			<slot name="header">
 				{{ title }}
@@ -14,24 +33,3 @@
 		</footer>
 	</article>
 </template>
-
-<script setup lang="ts">
-import { toRefs, computed, useAttrs } from 'vue'
-import { VvCardProps } from './VvCard'
-
-//Components
-import { useBemModifiers } from '../../composables/useModifiers'
-
-//Props, Emits, attrs ...
-const props = defineProps(VvCardProps)
-const attrs = useAttrs()
-
-//Styles & bindings
-const { modifiers } = toRefs(props)
-const { bemCssClasses: cardClass } = useBemModifiers('vv-card', {
-	modifiers
-})
-const cardAttrs = computed(() => {
-	return attrs
-})
-</script>

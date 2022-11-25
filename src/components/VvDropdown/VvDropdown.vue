@@ -26,16 +26,16 @@
 
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
+import { nanoid } from 'nanoid'
 import { useBemModifiers } from '../../composables/useModifiers'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { contains, equals, removeFromList } from '../../utils/ObjectUtilities'
 import { VvDropdownProps, type Option } from './VvDropdown'
 
 const props = defineProps(VvDropdownProps)
 const emit = defineEmits(['update:modelValue'])
 
 // data
-const id = uuidv4()
+const id = nanoid()
 const { modifiers, disabled } = toRefs(props)
 
 //Styles & css classes modifiers
@@ -52,14 +52,14 @@ function isSelected(option: string | Option) {
 	if (Array.isArray(props.modelValue)) {
 		// check if contain whole option or option value
 		return (
-			ObjectUtilities.contains(option, props.modelValue) ||
-			ObjectUtilities.contains(getValue(option), props.modelValue)
+			contains(option, props.modelValue) ||
+			contains(getValue(option), props.modelValue)
 		)
 	}
 	// check if modelValue is equal to option or option value
 	return (
-		ObjectUtilities.equals(option, props.modelValue) ||
-		ObjectUtilities.equals(getValue(option), props.modelValue)
+		equals(option, props.modelValue) ||
+		equals(getValue(option), props.modelValue)
 	)
 }
 
@@ -109,7 +109,7 @@ function onInput(event: Event) {
 		) {
 			if (
 				(Array.isArray(props.modelValue) &&
-					!ObjectUtilities.contains(value, props.modelValue)) ||
+					!contains(value, props.modelValue)) ||
 				props.maxValues == 0
 			) {
 				target.checked = false
@@ -118,8 +118,8 @@ function onInput(event: Event) {
 			}
 		}
 		if (Array.isArray(props.modelValue)) {
-			value = ObjectUtilities.contains(value, props.modelValue)
-				? ObjectUtilities.removeFromList(value, props.modelValue)
+			value = contains(value, props.modelValue)
+				? removeFromList(value, props.modelValue)
 				: [...props.modelValue, value]
 		} else {
 			value = [value]

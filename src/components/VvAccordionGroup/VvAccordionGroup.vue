@@ -1,3 +1,48 @@
+<script lang="ts">
+export default {
+	name: 'VvAccordionGroup'
+}
+</script>
+
+<script setup lang="ts">
+import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
+import { toRefs } from 'vue'
+import { VV_ACCORDION_GROUP } from '@/constants'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+import { useVModel } from '@vueuse/core'
+import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
+import { useBemModifiers } from '@/composables/useModifiers'
+import {
+	VvAccordionGroupProps,
+	VvAccordionGroupEvents
+} from './VvAccordionGroup'
+
+// props and emit
+const props = defineProps(VvAccordionGroupProps)
+const emit = defineEmits(VvAccordionGroupEvents)
+
+// data
+const modelValue = useVModel(props, 'modelValue', emit)
+const { disabled, bordered, iconRight, accordion, modifiers, items } =
+	toRefs(props)
+
+const accordionGroupState: IAccordionGroupState = {
+	key: VV_ACCORDION_GROUP,
+	modelValue,
+	disabled,
+	bordered,
+	iconRight,
+	accordion
+}
+useProvideGroupState(accordionGroupState)
+
+// styles
+const { bemCssClasses: accGroupClass } = useBemModifiers('vv-accordion-group', {
+	modifiers,
+	disabled
+})
+</script>
+
 <template>
 	<div :class="accGroupClass">
 		<template v-if="props.items?.length > 0">
@@ -14,50 +59,3 @@
 		<slot v-else />
 	</div>
 </template>
-
-<script setup lang="ts">
-import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-
-import { toRefs } from 'vue'
-import { VV_ACCORDION_GROUP } from './../../constants'
-
-//Components
-import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
-
-//Composables
-import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
-import { useBemModifiers } from '../../composables/useModifiers'
-
-import {
-	VvAccordionGroupProps,
-	VvAccordionGroupEvents
-} from './VvAccordionGroup'
-
-// Define component props, attributes and events emitted
-const props = defineProps(VvAccordionGroupProps)
-const emit = defineEmits(VvAccordionGroupEvents)
-
-//Data
-const modelValue = useVModel(props, 'modelValue', emit)
-const { disabled, bordered, iconRight, accordion, modifiers, items } =
-	toRefs(props)
-
-// #region group
-const accordionGroupState: IAccordionGroupState = {
-	key: VV_ACCORDION_GROUP,
-	modelValue,
-	disabled,
-	bordered,
-	iconRight,
-	accordion
-}
-useProvideGroupState(accordionGroupState)
-// #endregion group
-
-//Styles & bindings
-const { bemCssClasses: accGroupClass } = useBemModifiers('vv-accordion-group', {
-	modifiers,
-	disabled
-})
-</script>

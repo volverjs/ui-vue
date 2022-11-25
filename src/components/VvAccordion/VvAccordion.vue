@@ -1,42 +1,24 @@
-<template>
-	<details
-		:class="accordionClass"
-		:open="isOpen"
-		@toggle="onToggle"
-		@click="onClick">
-		<summary
-			:aria-controls="`#${accordionName}`"
-			:aria-expanded="isOpen"
-			class="vv-collapse__summary">
-			<slot name="header">
-				{{ title }}
-			</slot>
-		</summary>
-		<div :aria-hidden="!isOpen" class="vv-collapse__content">
-			<slot name="details">
-				{{ content }}
-			</slot>
-		</div>
-	</details>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvAccordion'
+}
+</script>
 
 <script setup lang="ts">
 import { computed, useAttrs, ref } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
+import { nanoid } from 'nanoid'
 import { VvAccordionProps, VvAccordionEvents } from './VvAccordion'
-
-//Composables
 import { toAccordionRefs } from './useAccordionProps'
 import { useBemModifiers } from '@/composables/useModifiers'
-import ObjectUtilities from '@/utils/ObjectUtilities'
+import { equals, contains, removeFromList } from '@/utils/ObjectUtilities'
 
-// Define component props, attributes and events emitted
+// props, attrs and emit
 const props = defineProps(VvAccordionProps)
 const attrs = useAttrs()
 const emit = defineEmits(VvAccordionEvents)
 
-//Data
-const accordionName = attrs?.name || uuidv4()
+// data
+const accordionName = attrs?.name || nanoid()
 const {
 	modelValue,
 	modifiers,
@@ -51,11 +33,11 @@ const isOpen = computed(() => {
 	if (!isInGroup.value) return props.open
 
 	return accordion.value
-		? ObjectUtilities.equals(accordionName, modelValue.value)
-		: ObjectUtilities.contains(accordionName, modelValue.value)
+		? equals(accordionName, modelValue.value)
+		: contains(accordionName, modelValue.value)
 })
 
-//Styles & bindings
+// styles
 const { bemCssClasses: accordionClass } = useBemModifiers('vv-accordion', {
 	modifiers,
 	disabled,
@@ -79,10 +61,7 @@ const onClick = (e: Event) => {
 			modelValue.value = isOpen.value ? null : accordionName
 		} else {
 			modelValue.value = isOpen.value
-				? ObjectUtilities.removeFromList(
-						accordionName,
-						modelValue.value
-				  )
+				? removeFromList(accordionName, modelValue.value)
 				: [...modelValue.value, accordionName]
 		}
 		// prevent auto-toggle in group mode
@@ -90,3 +69,25 @@ const onClick = (e: Event) => {
 	}
 }
 </script>
+
+<template>
+	<details
+		:class="accordionClass"
+		:open="isOpen"
+		@toggle="onToggle"
+		@click="onClick">
+		<summary
+			:aria-controls="`#${accordionName}`"
+			:aria-expanded="isOpen"
+			class="vv-collapse__summary">
+			<slot name="header">
+				{{ title }}
+			</slot>
+		</summary>
+		<div :aria-hidden="!isOpen" class="vv-collapse__content">
+			<slot name="details">
+				{{ content }}
+			</slot>
+		</div>
+	</details>
+</template>

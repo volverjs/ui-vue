@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import { toGroup } from '../utils'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { VvTextareaProps } from '../../components/VvTextarea/VvTextarea'
 
@@ -31,7 +30,7 @@ export const Template = (args, { argTypes }) => ({
 	<Story
 		name="vv-textarea"
 		args={{
-			...ObjectUtilities.propsToObject(VvTextareaProps),
+			...propsToObject(VvTextareaProps),
 			maxlength: null
 		}}
 		argTypes={{

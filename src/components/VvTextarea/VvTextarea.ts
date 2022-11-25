@@ -22,7 +22,10 @@ export const VvTextareaProps = {
 	...LimitProps,
 	...InputProps,
 	...DebounceProps,
-	modelValue: null,
+	modelValue: {
+		type: [String],
+		default: null
+	},
 	cols: { type: Number, default: 50 },
 	rows: { type: Number, default: 5 },
 	/**

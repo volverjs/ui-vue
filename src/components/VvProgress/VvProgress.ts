@@ -20,9 +20,5 @@ export const VvProgressProps = {
 	ariaLabel: {
 		type: String,
 		default: 'progress-bar'
-	},
-	/**
-	 * determinate attribute
-	 */
-	determinate: { type: Boolean, default: false }
+	}
 }

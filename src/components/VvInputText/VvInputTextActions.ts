@@ -124,13 +124,19 @@ export default function VvInputTextActionsFactory(
 					_actions = [
 						h(VvInputStepAction, {
 							mode: 'up',
-							disabled: this.isDisabled,
+							disabled:
+								this.isDisabled ||
+								(parentProps.max !== undefined &&
+									parentProps.modelValue === parentProps.max),
 							onActionStepUp,
 							onActionStepDown
 						}),
 						h(VvInputStepAction, {
 							mode: 'down',
-							disabled: this.isDisabled,
+							disabled:
+								this.isDisabled ||
+								(parentProps.min !== undefined &&
+									parentProps.modelValue === parentProps.min),
 							onActionStepUp,
 							onActionStepDown
 						})

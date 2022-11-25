@@ -1,21 +1,18 @@
 import type { VvRadioPropsType } from '../VvRadio/VvRadio'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 
+import type { VvRadioEvents } from './VvRadio'
 import { toRefs } from 'vue'
-
-//Composables
-import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
-
-//Constasts
-import { VV_RADIO_GROUP } from '../../constants'
+import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
+import { VV_RADIO_GROUP } from '@/constants'
 
 /**
- * Estreae tutte le prop del componente VvButton che possono essere
+ * Estrae tutte le prop del componente VvButton che possono essere
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
 export function toRadioInputRefs(
 	props: VvRadioPropsType,
-	emit: (event: any, ...args: any[]) => void
+	emit: (event: typeof VvRadioEvents[number], value: unknown) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_RADIO_GROUP)

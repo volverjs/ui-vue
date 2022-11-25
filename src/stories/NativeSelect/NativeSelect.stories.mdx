@@ -1,14 +1,14 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
 import { VvNativeSelectProps } from '../../components/VvNativeSelect/VvNativeSelect'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 import { nativeSelectTest } from './NativeSelectTest.js'
 
 <Meta
 	title="Components/NativeSelect"
 	component={VvNativeSelect}
 	args={{
-		...ObjectUtilities.propsToObject(VvNativeSelectProps),
+		...propsToObject(VvNativeSelectProps),
 		label: 'Lorem Ipsum',
 		placeholder: 'Placeholder',
 		options: [

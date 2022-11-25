@@ -1,22 +1,20 @@
-<template>
-	<label :class="checkClass" v-bind="checkAttrs" @click="onClick">
-		<input
-			ref="input"
-			:class="checkInputClass"
-			v-bind="checkInputAttrs"
-			@input="onChange" />
-		<!-- @slot Use this slot for check label -->
-		<slot :value="modelValue">
-			{{ label }}
-		</slot>
-	</label>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvCheck',
+	inheritAttrs: false
+}
+</script>
 
 <script setup lang="ts">
 import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 
 import { computed, useAttrs, ref } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import {
+	contains,
+	equals,
+	pickBy,
+	removeFromList
+} from '../../utils/ObjectUtilities'
 import { VvCheckProps, VvCheckEvents } from './VvCheck'
 
 //Composables
@@ -41,12 +39,11 @@ const { focused } = useComponentFocus(input, emit)
 
 //Component computed
 const isChecked = computed(() => {
-	if (props.binary)
-		return ObjectUtilities.equals(modelValue.value, props.trueValue)
+	if (props.binary) return equals(modelValue.value, props.trueValue)
 
 	return Array.isArray(modelValue.value)
-		? ObjectUtilities.contains(props.value, modelValue.value)
-		: ObjectUtilities.equals(props.value, modelValue.value)
+		? contains(props.value, modelValue.value)
+		: equals(props.value, modelValue.value)
 })
 
 // Styles & Bindings
@@ -78,9 +75,7 @@ const checkInputClass = computed(() => {
 })
 const checkAttrs = computed(() => {
 	const { id, name, style } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
+	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('data-'))
 	return {
 		for: (id || name) as string,
 		style,
@@ -102,9 +97,7 @@ const checkInputAttrs = computed(() => {
 })
 const checkInputAriaAttrs = computed(() => {
 	const { name } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
-	)
+	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
 	return {
 		'aria-label': name,
 		'aria-checked': isChecked.value,
@@ -127,7 +120,7 @@ function onChange() {
 	if (Array.isArray(modelValue.value)) {
 		modelValue.value = !isChecked.value
 			? [...modelValue.value, props.value]
-			: ObjectUtilities.removeFromList(props.value, modelValue.value)
+			: removeFromList(props.value, modelValue.value)
 		return
 	}
 }
@@ -140,8 +133,16 @@ function onClick(event: MouseEvent | undefined) {
 }
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<label :class="checkClass" v-bind="checkAttrs" @click="onClick">
+		<input
+			ref="input"
+			:class="checkInputClass"
+			v-bind="checkInputAttrs"
+			@input="onChange" />
+		<!-- @slot Use this slot for check label -->
+		<slot :value="modelValue">
+			{{ label }}
+		</slot>
+	</label>
+</template>

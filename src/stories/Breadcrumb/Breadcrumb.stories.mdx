@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 
@@ -7,7 +7,7 @@ import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 	title="Components/Breadcrumb"
 	component={VvBreadcrumb}
 	args={{
-		...ObjectUtilities.propsToObject(VvBreadcrumbProps),
+		...propsToObject(VvBreadcrumbProps),
 		routes: [
 			{
 				label: 'Home',

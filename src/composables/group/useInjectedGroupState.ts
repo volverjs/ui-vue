@@ -2,7 +2,7 @@ import type IGroupState from './types/IGroupState'
 import { toRef, unref, type Ref } from 'vue'
 
 import { inject, computed } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { isEmpty } from '../../utils/ObjectUtilities'
 
 /**
  * Esegue l'inject dello stato condiviso da un componente padre.
@@ -14,7 +14,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
 
 	//Check if component is in group
-	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
+	const isInGroup = computed(() => !isEmpty(group))
 
 	/**
 	 * Crea una computed ref (writable) che può utilizzare esporre il valore o dall'oggetto props oppure dal group

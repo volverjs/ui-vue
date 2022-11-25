@@ -1,21 +1,16 @@
-import type { VvAccordionPropsTypes } from './VvAccordion'
-import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-
 import { toRefs } from 'vue'
-
-//Composables
-import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
-
-//Constasts
-import { VV_ACCORDION_GROUP } from '../../constants'
+import type { VvAccordionPropsTypes, VvAccordionEvents } from './VvAccordion'
+import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
+import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
+import { VV_ACCORDION_GROUP } from '@/constants'
 
 /**
- * Estreae tutte le prop del componente VvButton che possono essere
+ * Estrae tutte le prop del componente VvButton che possono essere
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
 export function toAccordionRefs(
 	props: VvAccordionPropsTypes,
-	emit: (event: any, ...args: any[]) => void
+	emit: (event: typeof VvAccordionEvents[number], value: unknown) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)

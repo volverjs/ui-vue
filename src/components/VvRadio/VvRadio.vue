@@ -1,21 +1,15 @@
-<template>
-	<label :class="radioClass" v-bind="radioAttrs" @click="onClick">
-		<input
-			ref="input"
-			:class="radioInputClass"
-			v-bind="radioInputAttrs"
-			@input="onChange" />
-		<slot :value="modelValue">
-			{{ label }}
-		</slot>
-	</label>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvRadio',
+	inheritAttrs: false
+}
+</script>
 
 <script setup lang="ts">
 import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
 
 import { computed, useAttrs, ref } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { contains, equals, pickBy } from '../../utils/ObjectUtilities'
 import { VvRadioProps, VvRadioEvents } from './VvRadio'
 
 //Composables
@@ -40,8 +34,8 @@ const input = ref()
 //Component computed
 const isChecked = computed(() => {
 	return Array.isArray(modelValue.value)
-		? ObjectUtilities.contains(props.value, modelValue.value)
-		: ObjectUtilities.equals(props.value, modelValue.value)
+		? contains(props.value, modelValue.value)
+		: equals(props.value, modelValue.value)
 })
 
 // #region FOCUS
@@ -76,9 +70,7 @@ const radioInputClass = computed(() => {
 })
 const radioAttrs = computed(() => {
 	const { id, name, style } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
+	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('data-'))
 	return {
 		for: (id || name) as string,
 		style,
@@ -100,9 +92,7 @@ const radioInputAttrs = computed(() => {
 })
 const radioInputAriaAttrs = computed(() => {
 	const { name } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
-	)
+	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
 	return {
 		'aria-label': name,
 		'aria-checked': isChecked.value,
@@ -123,8 +113,15 @@ function onClick(event: Event) {
 }
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<label :class="radioClass" v-bind="radioAttrs" @click="onClick">
+		<input
+			ref="input"
+			:class="radioInputClass"
+			v-bind="radioInputAttrs"
+			@input="onChange" />
+		<slot :value="modelValue">
+			{{ label }}
+		</slot>
+	</label>
+</template>

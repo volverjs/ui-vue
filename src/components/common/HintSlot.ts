@@ -1,7 +1,13 @@
+import {
+	type Component,
+	type ExtractPropTypes,
+	type Slots,
+	computed,
+	toRefs,
+	h
+} from 'vue'
 import { toReactive } from '@vueuse/core'
-import { h, type Component, type ExtractPropTypes, type Slots } from 'vue'
-import { computed, toRefs } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { isString, resolveFieldData, isEmpty } from '@/utils/ObjectUtilities'
 
 /**
  * Merge errors from Array<string> to string errors separated from new line (\n)
@@ -11,7 +17,7 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
 function joinLines(errors: Array<string> | string | unknown[] | undefined) {
 	if (Array.isArray(errors))
 		return errors
-			.filter((e) => ObjectUtilities.isString(e))
+			.filter((e) => isString(e))
 			.reduce((prevVal, currVal) => {
 				if (prevVal.length > 0) return prevVal + '\n' + currVal
 				return currVal
@@ -79,11 +85,8 @@ export function HintSlotFactory(
 				error,
 				errorLabel
 			} = props
-			const loading = ObjectUtilities.resolveFieldData(props, 'loading')
-			const loadingLabel = ObjectUtilities.resolveFieldData(
-				props,
-				'loadingLabel'
-			)
+			const loading = resolveFieldData(props, 'loading')
+			const loadingLabel = resolveFieldData(props, 'loadingLabel')
 
 			const hasErrors = computed(() => {
 				//No error
@@ -98,11 +101,7 @@ export function HintSlotFactory(
 				)
 					return true
 
-				if (
-					errorLabel?.value &&
-					ObjectUtilities.isNotEmpty(errorLabel.value)
-				)
-					return true
+				if (errorLabel?.value && !isEmpty(errorLabel)) return true
 
 				return false
 			})

@@ -1,38 +1,29 @@
-<template>
-	<Icon
-		v-if="show"
-		:class="iconClass"
-		v-bind="{
-			...$props,
-			provider: currentProvider,
-			icon
-		}" />
-</template>
+<script lang="ts">
+export default {
+	name: 'VvIcon'
+}
+</script>
 
 <script setup lang="ts">
-import type { IVolver } from '../../Volver'
-import { VOLVER_PREFIX } from '../../Volver'
-
-import { inject, toRefs } from 'vue'
-
-import { ref, computed } from 'vue'
+import { inject, toRefs, ref, computed } from 'vue'
 import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
+import { type IVolver, VOLVER_PREFIX } from '@/Volver'
 import { VvIconProps } from './VvIcon'
 
-//Composables
+// composables
 import { useBemModifiers } from '@/composables/useModifiers'
 
-//Props,emits,slots
+// props
 const props = defineProps(VvIconProps)
 
-//Data
+// data
 const show = ref(true)
 const { modifiers } = toRefs(props)
 
-//Inject
+// inject
 const ds = inject<IVolver>(VOLVER_PREFIX)
 
-//Styles & bindings
+// classes
 const { bemCssClasses: iconClass } = useBemModifiers('vv-icon', {
 	modifiers
 })
@@ -122,3 +113,14 @@ if (ds) {
 	}
 }
 </script>
+
+<template>
+	<Icon
+		v-if="show"
+		:class="iconClass"
+		v-bind="{
+			...$props,
+			provider: currentProvider,
+			icon
+		}" />
+</template>

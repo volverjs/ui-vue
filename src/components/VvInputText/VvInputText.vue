@@ -1,46 +1,9 @@
-<template>
-	<div v-bind="vvInputTextProps" :class="inputTextClass">
-		<label v-if="label" :for="inputTextId">{{ label }}</label>
-		<div class="vv-input-text__wrapper">
-			<!-- @slot icon-left to replace icon left -->
-			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
-				<vv-icon class="vv-input-text__icon-left" :name="icon" />
-			</slot>
-			<input
-				ref="input"
-				v-bind="innerInputProps"
-				v-model="inputTextData"
-				@input="emit('input', $event)" />
-			<!-- autoclear text button -->
-			<button
-				v-if="autoclear && textLength > 0"
-				class="vv-button vv-button--ghost"
-				@click="clearInputText">
-				<vv-icon name="clear-field" />
-			</button>
-			<!-- @slot icon-right to replace icon right -->
-			<slot name="icon-right" v-bind="iconSlotProps">
-				<template v-if="isPassword">
-					<PasswordInputActions
-						@action-password-on="showPassword = true"
-						@action-password-off="showPassword = false" />
-				</template>
-				<template v-else-if="isNumber">
-					<NumberInputActions
-						@action-step-up="stepUp"
-						@action-step-down="stepDown" />
-				</template>
-				<template v-else-if="hasIconRight || defaultRightIcon">
-					<vv-icon :name="icon || defaultRightIcon" />
-				</template>
-			</slot>
-			<span v-if="limit" class="vv-input-text__limit">
-				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
-			</span>
-		</div>
-		<HintSlot :id="inputTextDescribedBy" class="vv-input-text__hint" />
-	</div>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvInputText',
+	inheritAttrs: false
+}
+</script>
 
 <script setup lang="ts">
 import {
@@ -54,147 +17,186 @@ import {
 	type HTMLAttributes,
 	type InputHTMLAttributes
 } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { nanoid } from 'nanoid'
+import { isEmpty, pickBy } from '@/utils/ObjectUtilities'
 import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
 
-//Componenti
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
+// components
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
 import VvInputTextActionsFactory from './VvInputTextActions'
 
-//Constanti
+// constants
 import INPUT from './constants'
 
-//Composables
-import { useComponentIcon } from '../../composables/icons/useComponentIcons'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
-import { useDebouncedInput } from '../../composables/debouncedInput/useDebouncedInput'
-import { useTextLimit } from '../../composables/textLimit/useTextLimit'
+// composable
+import { useComponentIcon } from '@/composables/icons/useComponentIcons'
+import { useComponentFocus } from '@/composables/focus/useComponentFocus'
+import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
+import { useTextLimit } from '@/composables/textLimit/useTextLimit'
 import { toBem } from '@/composables/useModifiers'
 
-//Props, Emits, Slots e Attrs
+// props, emits, slots and attrs
 const props = defineProps(VvInputTextProps)
 const emit = defineEmits(VvInputTextEvents)
 const slots = useSlots()
 const attrs = useAttrs()
 
-//Template References
+// template refs
 const input = ref()
 
-//Data
+// data
 const { icon, iconPosition, label, modelValue, autoclear, limit } =
 	toRefs(props)
-const inputTextId = props.id || props.name
-const inputTextLabeledBy = `${props.name}-label`
-const inputTextDescribedBy = `${props.name}-hint`
-//BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
+const inputTextId = (attrs.id as string) || nanoid()
+const inputTextLabeledBy = `${inputTextId}-label`
+const inputTextDescribedBy = `${inputTextId}-hint`
+// BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 const inputTextPlaceholder = computed(() =>
-	props.floating && ObjectUtilities.isEmpty(props.placeholder)
-		? ' '
-		: props.placeholder
+	props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder
 )
 
-//Debounce input
-const inputTextData = useDebouncedInput(modelValue, props.debounce, emit)
+// debounce
+const inputTextData = useDebouncedInput(modelValue, emit, props.debounce)
 
-//Gestione input tipo password
+// password
 const showPassword = ref(false)
 const isPassword = computed(() => props.type === INPUT.TYPES.PASSWORD)
 
-//Gestione input tipo NUMBER
+// time, datetime and date
+const isDateTime = computed(() =>
+	[INPUT.TYPES.TIME, INPUT.TYPES.DATETIME_LOCAL, INPUT.TYPES.DATE].includes(
+		props.type
+	)
+)
+
+// number
 const isNumber = computed(() => props.type === INPUT.TYPES.NUMBER)
 function stepUp() {
-	const _max = props.max as number
-	if (!isActionsDisabled.value && inputTextData.value + 1 <= _max) {
+	if (!isDisabled.value) {
 		input.value.stepUp()
-		inputTextData.value = unref(input.value).value
+		inputTextData.value = unref(input).value
 	}
 }
 function stepDown() {
-	const _min = props.min as number
-	if (!isActionsDisabled.value && inputTextData.value - 1 <= _min) {
+	if (!isDisabled.value) {
 		input.value.stepDown()
-		inputTextData.value = unref(input.value).value
+		inputTextData.value = unref(input).value
 	}
 }
 
-//Gestione ICONE
+// search
+const isSearch = computed(() => props.type === INPUT.TYPES.SEARCH)
+
+// icons
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
 	iconLeft: slots['icon-left'],
 	iconRight: slots['icon-right']
 })
+const hasIcon = computed(() => {
+	if (typeof icon.value === 'string') {
+		return { name: icon.value }
+	}
+	return icon.value
+})
 const defaultRightIcon = computed(() => {
 	switch (props.type) {
 		case INPUT.TYPES.PASSWORD:
-			return INPUT.TYPES_ICON.PASSWORD_OFF
+			return { name: INPUT.TYPES_ICON.PASSWORD_OFF }
 		case INPUT.TYPES.COLOR:
-			return INPUT.TYPES_ICON.COLOR
+			return { name: INPUT.TYPES_ICON.COLOR }
 		case INPUT.TYPES.DATE:
 		case INPUT.TYPES.DATETIME_LOCAL:
-			return INPUT.TYPES_ICON.DATE
+			return { name: INPUT.TYPES_ICON.DATE }
 		case INPUT.TYPES.TIME:
-			return INPUT.TYPES_ICON.TIME
+			return { name: INPUT.TYPES_ICON.TIME }
 		case INPUT.TYPES.SEARCH:
-			return INPUT.TYPES_ICON.SEARCH
+			return { name: INPUT.TYPES_ICON.SEARCH }
 		default:
 			return ''
 	}
 })
 
-//Conteggio battute
+// value length
 const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
 	mode: props.limit,
 	upperLimit: props.maxlength || 0
 })
 
-//Input FOCUS
-const { focused } = useComponentFocus(input, emit)
-
-//Component computed
-const isActionsDisabled = computed(() => props.disabled || props.readonly)
-
-//Styles & Bindings
-const inputTextClass = computed(() => {
-	const _hasIconRigth =
-		hasIconRight.value || ObjectUtilities.isNotEmpty(defaultRightIcon.value)
-	const _isFloating =
-		props.floating && ObjectUtilities.isNotEmpty(props.label)
-	const _isDirty = ObjectUtilities.isNotEmpty(modelValue?.value)
-
-	return [
-		toBem('vv-input-text', {
-			modifiers: props.modifiers,
-			readonly: props.readonly,
-			valid: props.valid,
-			invalid: props.error,
-			loading: props.loading,
-			iconLeft: hasIconLeft,
-			iconRight: _hasIconRigth,
-			floating: _isFloating,
-			dirty: _isDirty
-		}),
-		attrs.class
-	]
+// focus
+const { focused: isFocused } = useComponentFocus(input, emit)
+defineExpose({
+	focus: () => {
+		isFocused.value = true
+	},
+	blur: () => {
+		isFocused.value = false
+	}
 })
-const vvInputTextProps = computed(() => {
-	const { style } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
+
+// disabled
+const isDisabled = computed(() => props.disabled || props.readonly)
+
+// dirty
+const isDirty = computed(() => !isEmpty(modelValue))
+
+// styles & bindings
+const hasClass = computed(() => [
+	toBem('vv-input-text', {
+		modifiers: props.modifiers,
+		readonly: props.readonly,
+		valid: props.valid,
+		invalid: props.error,
+		loading: props.loading,
+		iconLeft: hasIconLeft,
+		iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
+		floating: props.floating && !isEmpty(props.label),
+		dirty: isDirty,
+		focus: isFocused
+	}),
+	attrs.class
+])
+
+const getType = () => {
+	if (isPassword.value && showPassword.value) {
+		return INPUT.TYPES.TEXT
+	}
+	if (isDateTime.value && !isDirty.value && !isFocused.value) {
+		return INPUT.TYPES.TEXT
+	}
+	return props.type
+}
+
+const getAriaAttributes = () => {
 	return {
-		style,
-		...dataAttrs
-	} as HTMLAttributes
-})
-const innerInputProps = computed(() => {
-	const _type = isPassword.value && showPassword.value ? 'text' : props.type
-	const ariaAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
-	)
+		'aria-invalid': props.error,
+		'aria-valid': !props.valid,
+		'aria-labeledby': inputTextLabeledBy,
+		'aria-describedby': inputTextDescribedBy,
+		'aria-errormessage': inputTextDescribedBy,
+		...pickBy(attrs, (attr: string) => attr.startsWith('aria-'))
+	}
+}
 
+const getDataAttributes = () => {
+	return {
+		...pickBy(attrs, (attr: string) => attr.startsWith('data-'))
+	}
+}
+
+const wrapperProps = computed(
+	() =>
+		({
+			style: attrs.style,
+			class: hasClass.value,
+			...getDataAttributes()
+		} as HTMLAttributes)
+)
+
+const inputProps = computed(() => {
 	return {
 		id: inputTextId,
-		type: _type,
+		type: getType(),
 		placeholder: inputTextPlaceholder.value,
 		name: props.name,
 		autocomplete: props.autocomplete,
@@ -205,16 +207,12 @@ const innerInputProps = computed(() => {
 		min: props.min,
 		max: props.max,
 		step: props.step,
-		'aria-invalid': props.error,
-		'aria-valid': !props.valid,
-		'aria-labeledby': inputTextLabeledBy,
-		'aria-describedby': inputTextDescribedBy,
-		'aria-errormessage': inputTextDescribedBy,
-		...ariaAttrs
+		tabindex: attrs.tabindex ?? props.disabled ? -1 : 0,
+		...getAriaAttributes()
 	} as InputHTMLAttributes
 })
 
-//Slot props
+// slots
 const iconSlotProps = computed(() => {
 	const { modelValue, valid, error } = props
 	return {
@@ -224,7 +222,7 @@ const iconSlotProps = computed(() => {
 	}
 })
 
-//Other components
+// components
 const HintSlot = HintSlotFactory(props, slots)
 const PasswordInputActions = VvInputTextActionsFactory(
 	INPUT.TYPES.PASSWORD,
@@ -232,18 +230,62 @@ const PasswordInputActions = VvInputTextActionsFactory(
 )
 const NumberInputActions = VvInputTextActionsFactory(INPUT.TYPES.NUMBER, props)
 
-//Methods
+// methods
 function clearInputText() {
 	inputTextData.value = null
 }
 
+// lifecycle
 onMounted(() => {
-	if (props.autofocus) focused.value = true
+	if (props.autofocus) {
+		isFocused.value = true
+	}
 })
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<div v-bind="wrapperProps">
+		<label v-if="label" :id="inputTextLabeledBy" :for="inputTextId">
+			{{ label }}
+		</label>
+		<div class="vv-input-text__wrapper">
+			<!-- @slot icon-left to replace icon left -->
+			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
+				<VvIcon class="vv-input-text__icon-left" v-bind="hasIcon" />
+			</slot>
+			<input
+				ref="input"
+				v-bind="inputProps"
+				v-model="inputTextData"
+				@keyup="emit('keyup', $event)" />
+			<!-- autoclear text button -->
+			<button
+				v-if="autoclear && textLength > 0"
+				class="vv-button vv-button--ghost"
+				@click="clearInputText">
+				<VvIcon name="clear-field" />
+			</button>
+			<!-- @slot icon-right to replace icon right -->
+			<slot name="icon-right" v-bind="iconSlotProps">
+				<PasswordInputActions
+					v-if="isPassword"
+					@action-password-on="showPassword = true"
+					@action-password-off="showPassword = false" />
+				<NumberInputActions
+					v-else-if="isNumber"
+					@action-step-up="stepUp"
+					@action-step-down="stepDown" />
+				<VvIcon
+					v-if="isSearch && (isDirty || hasIconRight)"
+					v-bind="isDirty ? defaultRightIcon : hasIcon" />
+				<VvIcon
+					v-else-if="hasIconRight || defaultRightIcon"
+					v-bind="hasIconRight ? hasIcon : defaultRightIcon" />
+			</slot>
+			<span v-if="limit" class="vv-input-text__limit">
+				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
+			</span>
+		</div>
+		<HintSlot :id="inputTextDescribedBy" class="vv-input-text__hint" />
+	</div>
+</template>

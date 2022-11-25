@@ -2,7 +2,7 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import { within, userEvent } from '@storybook/testing-library'
 import { axe, toHaveNoViolations } from 'jest-axe'
 import { expect } from '@storybook/jest'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 import VvButton from '../../components/VvButton/VvButton.vue'
 import { VvButtonProps } from '../../components/VvButton/VvButton'
 import { testButton } from './Button.test'
@@ -11,7 +11,7 @@ import { testButton } from './Button.test'
 	title="Components/Button"
 	component={VvButton}
 	args={{
-		...ObjectUtilities.propsToObject(VvButtonProps),
+		...propsToObject(VvButtonProps),
 		target: undefined,
 		to: undefined,
 		href: undefined,

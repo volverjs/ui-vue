@@ -22,6 +22,10 @@ interface IVolverParams {
 	 * This collections will be added during plugin install
 	 */
 	iconsCollections?: IconifyJSON[]
+	/**
+	 * Set true inside nuxt
+	 */
+	nuxt?: boolean
 }
 
 export interface IVolver extends IVolverParams {
@@ -58,11 +62,13 @@ export class Volver implements IVolver {
 	fetchOptions: RequestInit
 	iconsCollections: IconifyJSON[]
 	provider: string
+	nuxt: boolean
 
 	constructor({
 		fetchWithCredentials = false,
 		fetchOptions = {},
-		iconsCollections = []
+		iconsCollections = [],
+		nuxt = false
 	}: IVolverParams = {}) {
 		if (fetchWithCredentials) {
 			fetchOptions = { ...fetchOptions, credentials: 'include' }
@@ -75,6 +81,7 @@ export class Volver implements IVolver {
 		this.iconsCollections.forEach((iconsCollection) => {
 			this.addCollection(iconsCollection, this.provider)
 		})
+		this.nuxt = nuxt
 	}
 
 	addCollection(collection: IconifyJSON, providerName?: string): boolean {

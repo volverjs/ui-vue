@@ -2,7 +2,7 @@ import type { VvCheckPropsTypes } from './VvCheck'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 
 import { toRefs } from 'vue'
-
+import type { VvCheckEvents } from './VvCheck'
 //Composables
 import { useInjectedGroupState } from '../../composables/group/useInjectedGroupState'
 
@@ -10,12 +10,12 @@ import { useInjectedGroupState } from '../../composables/group/useInjectedGroupS
 import { VV_CHECK_GROUP } from '../../constants'
 
 /**
- * Estreae tutte le prop del componente VvButton che possono essere
+ * Estrae tutte le prop del componente VvButton che possono essere
  * "sovrascritte" quando il buttone si trova in un gruppo.
  */
 export function toCheckInputRefs(
 	props: VvCheckPropsTypes,
-	emit: (event: any, ...args: any[]) => void
+	emit: (event: typeof VvCheckEvents[number], value: unknown) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_CHECK_GROUP)

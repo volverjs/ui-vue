@@ -52,7 +52,7 @@ export function useComponentIcons(
 }
 
 export function useComponentIcon(
-	icon: Ref<string>,
+	icon: Ref<string | object>,
 	iconPosition: Ref<string>,
 	slots: ComponentIconSlots
 ) {

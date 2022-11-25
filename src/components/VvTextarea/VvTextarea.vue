@@ -1,36 +1,9 @@
-<template>
-	<div v-bind="textAreaProps" :class="textAreaClass">
-		<label v-if="label" :id="textAreaLabeledBy" :for="textAreaId">{{
-			label
-		}}</label>
-		<div class="vv-textarea__wrapper">
-			<!-- @slot icon-left to replace icon left -->
-			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
-				<vv-icon class="vv-textarea__icon-left" :name="icon" />
-			</slot>
-			<textarea
-				ref="input"
-				v-model="inputTextData"
-				v-bind="htmlTextareaProps"
-				@input="emit('input', $event)" />
-			<!-- autoclear text button -->
-			<button
-				v-if="autoclear && textLength > 0"
-				class="vv-button vv-button--ghost"
-				@click="clearTextarea">
-				<vv-icon name="clear-field" />
-			</button>
-			<!-- @slot icon-right to replace icon right -->
-			<slot v-if="hasIconRight" name="icon-right" v-bind="iconSlotProps">
-				<vv-icon :name="icon" />
-			</slot>
-			<span v-if="limit" class="vv-textarea__limit">
-				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
-			</span>
-		</div>
-		<HintSlot :id="textAreaDescribedBy" class="vv-textarea__hint" />
-	</div>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvInputText',
+	inheritAttrs: false
+}
+</script>
 
 <script setup lang="ts">
 import {
@@ -43,18 +16,19 @@ import {
 	type HTMLAttributes,
 	type TextareaHTMLAttributes
 } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { nanoid } from 'nanoid'
+import { isEmpty, pickBy } from '@/utils/ObjectUtilities'
 import { VvTextareaProps, VvTextareaEvents } from './VvTextarea'
 
 //Componenti
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
 
 //Composables
-import { useComponentIcon } from '../../composables/icons/useComponentIcons'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
-import { useDebouncedInput } from '../../composables/debouncedInput/useDebouncedInput'
-import { useTextLimit } from '../../composables/textLimit/useTextLimit'
+import { useComponentIcon } from '@/composables/icons/useComponentIcons'
+import { useComponentFocus } from '@/composables/focus/useComponentFocus'
+import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
+import { useTextLimit } from '@/composables/textLimit/useTextLimit'
 import { toBem } from '@/composables/useModifiers'
 
 //Props, Emits, Slots e Attrs
@@ -69,18 +43,16 @@ const input = ref()
 //Data
 const { icon, iconPosition, label, modelValue, autoclear, limit } =
 	toRefs(props)
-const textAreaId = props.id || props.name
-const textAreaLabeledBy = `${props.name}-label`
-const textAreaDescribedBy = `${props.name}-hint`
+const textAreaId = (attrs.id as string) || nanoid()
+const textAreaLabeledBy = `${textAreaId}-label`
+const textAreaDescribedBy = `${textAreaId}-hint`
 //BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 const textAreaPlaceholder = computed(() =>
-	props.floating && ObjectUtilities.isEmpty(props.placeholder)
-		? ' '
-		: props.placeholder
+	props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder
 )
 
 //Debounce input
-const inputTextData = useDebouncedInput(modelValue, props.debounce, emit)
+const inputTextData = useDebouncedInput(modelValue, emit, props.debounce)
 
 //Gestione ICONE
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
@@ -108,26 +80,22 @@ const textAreaClass = computed(() => {
 			loading: props.loading,
 			iconLeft: hasIconLeft,
 			iconRight: hasIconRight,
-			floating: props.floating && ObjectUtilities.isNotEmpty(props.label),
-			dirty: ObjectUtilities.isNotEmpty(modelValue?.value),
+			floating: props.floating && !isEmpty(props.label),
+			dirty: !isEmpty(modelValue),
 			resizable: props.resizable
 		}),
 		attrs.class
 	]
 })
 const textAreaProps = computed(() => {
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
+	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('data-'))
 	return {
 		style: attrs.style,
 		...dataAttrs
 	} as HTMLAttributes
 })
 const htmlTextareaProps = computed(() => {
-	const ariaAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
-	)
+	const ariaAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
 
 	return {
 		id: textAreaId,
@@ -177,8 +145,36 @@ onMounted(() => {
 })
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<div v-bind="textAreaProps" :class="textAreaClass">
+		<label v-if="label" :id="textAreaLabeledBy" :for="textAreaId">{{
+			label
+		}}</label>
+		<div class="vv-textarea__wrapper">
+			<!-- @slot icon-left to replace icon left -->
+			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
+				<vv-icon class="vv-textarea__icon-left" :name="icon" />
+			</slot>
+			<textarea
+				ref="input"
+				v-model="inputTextData"
+				v-bind="htmlTextareaProps"
+				@input="emit('input', $event)" />
+			<!-- autoclear text button -->
+			<button
+				v-if="autoclear && textLength > 0"
+				class="vv-button vv-button--ghost"
+				@click="clearTextarea">
+				<vv-icon name="clear-field" />
+			</button>
+			<!-- @slot icon-right to replace icon right -->
+			<slot v-if="hasIconRight" name="icon-right" v-bind="iconSlotProps">
+				<vv-icon :name="icon" />
+			</slot>
+			<span v-if="limit" class="vv-textarea__limit">
+				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
+			</span>
+		</div>
+		<HintSlot :id="textAreaDescribedBy" class="vv-textarea__hint" />
+	</div>
+</template>

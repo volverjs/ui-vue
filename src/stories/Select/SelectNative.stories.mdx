@@ -2,7 +2,7 @@ import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvSelect from '../../components/VvSelect/VvSelect.vue'
 import { Template } from './Select.stories.mdx'
 import { VvSelectProps } from '../../components/VvSelect/VvSelect'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 
 <Meta title="Components/Select/Props/native" />
 
@@ -14,7 +14,7 @@ Let's define a story for our `native` select.
 	<Story
 		name="native"
 		args={{
-			...ObjectUtilities.propsToObject(VvSelectProps),
+			...propsToObject(VvSelectProps),
 			maxValues: -1,
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',

@@ -7,6 +7,9 @@ import { externalizeDeps } from 'vite-plugin-externalize-deps'
 import ESLint from 'vite-plugin-eslint'
 import { paramCase } from 'change-case'
 
+// eslint-disable-next-line no-undef
+const hot = process.argv.includes('--hot')
+
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 packageJson.exports = {
@@ -33,6 +36,8 @@ packageJson.exports['.'] = {
 build({
 	...baseConfig,
 	build: {
+		watch: hot ? {} : undefined,
+		minify: hot ? false : undefined,
 		emptyOutDir: false,
 		lib: {
 			name: 'volver',
@@ -51,6 +56,8 @@ packageJson.exports['./components'] = {
 build({
 	...baseConfig,
 	build: {
+		watch: hot ? {} : undefined,
+		minify: hot ? false : undefined,
 		emptyOutDir: false,
 		lib: {
 			name: 'components',
@@ -68,6 +75,8 @@ packageJson.exports[`./icons`] = {
 build({
 	configFile: false,
 	build: {
+		watch: hot ? {} : undefined,
+		minify: hot ? false : undefined,
 		emptyOutDir: false,
 		lib: {
 			name: 'icons',
@@ -103,6 +112,8 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 			return build({
 				...baseConfig,
 				build: {
+					watch: hot ? {} : undefined,
+					minify: hot ? false : undefined,
 					lib: {
 						name,
 						entry,

@@ -8,6 +8,12 @@ export enum ButtonIconPosition {
 	bottom = 'bottom'
 }
 
+export enum ButtonType {
+	button = 'button',
+	submit = 'submit',
+	reset = 'reset'
+}
+
 export enum ButtonTag {
 	nuxtLink = 'nuxt-link',
 	routerLink = 'router-link',
@@ -30,7 +36,10 @@ export const VvButtonProps = {
 	/**
 	 * Button icon
 	 */
-	icon: String,
+	icon: {
+		type: [String, Object],
+		default: ''
+	},
 	/**
 	 * Button icon position
 	 */
@@ -42,7 +51,7 @@ export const VvButtonProps = {
 	/**
 	 * Button label
 	 */
-	label: String,
+	label: [String, Number],
 	/**
 	 * Loading status
 	 */
@@ -80,7 +89,22 @@ export const VvButtonProps = {
 	/**
 	 * Button selected mode
 	 */
-	selected: Boolean
+	selected: Boolean,
+	/**
+	 * Link rel
+	 */
+	rel: {
+		type: String,
+		default: 'noopener noreferrer'
+	},
+	/**
+	 * Button type
+	 */
+	type: {
+		type: String,
+		default: ButtonType.button,
+		validator: (value: string) => value in ButtonType
+	}
 }
 
 type _VvButtonPropsType = typeof VvButtonProps

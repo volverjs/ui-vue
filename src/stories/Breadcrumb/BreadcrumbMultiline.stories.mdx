@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 import { Template } from './Breadcrumb.stories.mdx'
@@ -8,7 +8,7 @@ import { Template } from './Breadcrumb.stories.mdx'
 	title="Components/Breadcrumb/Props/multiline"
 	component={VvBreadcrumb}
 	args={{
-		...ObjectUtilities.propsToObject(VvBreadcrumbProps),
+		...propsToObject(VvBreadcrumbProps),
 		multiline: true,
 		routes: [
 			{

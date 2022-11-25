@@ -1,13 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
 import { VvDropdownProps } from '../../components/VvDropdown/VvDropdown'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { propsToObject } from '../../utils/ObjectUtilities'
 
 <Meta
 	title="Components/Dropdown"
 	component={VvDropdown}
 	args={{
-		...ObjectUtilities.propsToObject(VvDropdownProps),
+		...propsToObject(VvDropdownProps),
 		options: [
 			{
 				label: 'Option 1',
