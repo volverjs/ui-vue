@@ -4,26 +4,27 @@ import { action } from '@storybook/addon-actions'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import VvIcon from '../../components/VvIcon/VvIcon.vue'
 import { Template } from './Textarea.stories.mdx'
+import { slotsTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Slots" component={VvTextarea} />
 
 # Slot icons left e right
 
 <Canvas>
-	<Story name="left-right-slots">
+	<Story name="left-right-slots" play={slotsTest}>
 		{() => {
 			return {
 				components: { VvTextarea, VvIcon },
 				data: () => ({ text: '' }),
 				template: `
-					<vv-textarea name="r1" v-model:modelValue="text">
+					<vv-textarea name="r1" v-model:modelValue="text" data-testid="textarea">
 						<template v-slot:icon-left="slotProps">
-                            <VvIcon name="add"/>
+                            <VvIcon name="add" data-testid="icon"/>
                         </template>
                         <template v-slot:icon-right>
-                            <button class="vv-button"> QUA! </button>
+                            <button data class="vv-button" data-testid="button"> QUA! </button>
                         </template>
-					</vv-input-text>
+					</vv-textarea>
                     `
 			}
 		}}

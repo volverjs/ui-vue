@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { textareaTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Id" component={VvTextarea} />
 
@@ -13,6 +14,7 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Id"
+		play={textareaTest}
 		args={{ name: 'textarea-id', id: 'ID_11_11', label: 'Label di prova' }}>
 		{Template.bind({})}
 	</Story>

@@ -5,6 +5,7 @@ import { toGroup } from '../utils'
 import ObjectUtilities from '../../utils/ObjectUtilities'
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { VvTextareaProps } from '../../components/VvTextarea/VvTextarea'
+import { textareaTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea" component={VvTextarea} />
 
@@ -17,8 +18,8 @@ export const Template = (args, { argTypes }) => ({
 	data: () => ({ value: args.modelValue || '' }),
 	template: `
 		<div class="flex flex-col justify-between">
-			<vv-textarea v-bind="args" v-model:modelValue="value"/>
-			<strong v-if="value">Valore: {{value}} </strong> 
+			<vv-textarea v-bind="args" v-model:modelValue="value" data-testid="textarea"/>
+			<span>Valore: <strong id="value" data-testid="value">{{value}} </strong> </span>
 		</div>
         `
 })
@@ -30,6 +31,7 @@ export const Template = (args, { argTypes }) => ({
 <Canvas>
 	<Story
 		name="vv-textarea"
+		play={textareaTest}
 		args={{
 			...ObjectUtilities.propsToObject(VvTextareaProps),
 			maxlength: null

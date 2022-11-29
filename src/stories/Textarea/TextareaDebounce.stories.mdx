@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { debounceTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Debounce" component={VvTextarea} />
 
@@ -12,11 +13,12 @@ import { Template } from './Textarea.stories.mdx'
 
 <Canvas>
 	<Story
-		name="Disabled"
+		name="Debounce"
+		play={debounceTest}
 		args={{
-			name: 'textarea-disabled',
-			disabled: true,
-			modelValue: 'Prova'
+			name: 'textarea-debounce',
+			debounce: 700,
+			label: 'Debounce'
 		}}>
 		{Template.bind({})}
 	</Story>

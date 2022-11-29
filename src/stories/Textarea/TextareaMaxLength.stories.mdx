@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { limitTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/MaxLength" component={VvTextarea} />
 
@@ -13,7 +14,8 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="MaxLength"
-		args={{ name: 'textarea-max-length', maxlength: 5 }}>
+		play={limitTest}
+		args={{ name: 'textarea-max-length', maxlength: 7 }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { textareaTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/MinLength" component={VvTextarea} />
 
@@ -13,7 +14,8 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="MinLength"
-		args={{ name: 'textarea-min-length', minlength: 5 }}>
+		play={textareaTest}
+		args={{ name: 'textarea-min-length', minLength: 5 }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

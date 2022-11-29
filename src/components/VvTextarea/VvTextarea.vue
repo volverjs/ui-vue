@@ -15,7 +15,7 @@
 				@input="emit('input', $event)" />
 			<!-- autoclear text button -->
 			<button
-				v-if="autoclear && textLength > 0"
+				v-show="autoclear && textLength > 0"
 				class="vv-button vv-button--ghost"
 				@click="clearTextarea">
 				<vv-icon name="clear-field" />

@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { textareaTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Disabled" component={VvTextarea} />
 
@@ -13,10 +14,16 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Disabled"
+		play={(ctx) => {
+			textareaTest(ctx, {
+				isClickDisabled: true
+			})
+		}}
 		args={{
 			name: 'textarea-disabled',
 			disabled: true,
-			modelValue: 'Prova'
+			modelValue: 'Prova',
+			label: 'Disabled'
 		}}>
 		{Template.bind({})}
 	</Story>

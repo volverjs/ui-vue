@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { autoclearTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Autoclear" component={VvTextarea} />
 
@@ -13,6 +14,7 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Autoclear"
+		play={autoclearTest}
 		args={{
 			name: 'textarea-autoclear',
 			label: 'Autoclear',

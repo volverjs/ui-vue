@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { textareaTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Floating" component={VvTextarea} />
 
@@ -13,6 +14,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Floating"
+		play={(ctx) => {
+			textareaTest(ctx, {
+				className: 'vv-textarea--floating'
+			})
+		}}
 		args={{
 			name: 'textarea-floating',
 			label: 'Label di prova',

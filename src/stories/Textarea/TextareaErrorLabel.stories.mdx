@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { hintLabelTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/ErrorLabel" component={VvTextarea} />
 
@@ -13,6 +14,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Error"
+		play={async (ctx) => {
+			hintLabelTest(ctx, {
+				className: 'vv-textarea--invalid'
+			})
+		}}
 		args={{
 			name: 'textarea-error',
 			label: 'Single error message',
@@ -26,6 +32,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Errors"
+		play={async (ctx) => {
+			hintLabelTest(ctx, {
+				className: 'vv-textarea--invalid'
+			})
+		}}
 		args={{
 			name: 'textarea-error',
 			label: 'Multiple error messages',

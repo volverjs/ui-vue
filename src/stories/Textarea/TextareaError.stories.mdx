@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { textareaTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Error" component={VvTextarea} />
 
@@ -13,6 +14,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Error"
+		play={async (ctx) => {
+			textareaTest(ctx, {
+				className: 'vv-textarea--invalid'
+			})
+		}}
 		args={{
 			name: 'textarea-error',
 			error: true

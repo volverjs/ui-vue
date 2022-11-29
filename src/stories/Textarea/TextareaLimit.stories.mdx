@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { limitTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/Limit" component={VvTextarea} />
 
@@ -13,6 +14,7 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Limit"
+		play={limitTest}
 		args={{
 			name: 'textarea-show-limit',
 			limit: true
@@ -26,6 +28,7 @@ Se imposto anche il maxlength, visualizza anche il numero massimo di caratteri c
 <Canvas>
 	<Story
 		name="Limit with Max"
+		play={limitTest}
 		args={{
 			name: 'textarea-show-limit',
 			limit: true,
@@ -40,6 +43,7 @@ Se imposto anche il maxlength, visualizza anche il numero massimo di caratteri c
 <Canvas>
 	<Story
 		name="Limit countdown"
+		play={limitTest}
 		args={{
 			name: 'textarea-show-countdown',
 			limit: 'countdown',

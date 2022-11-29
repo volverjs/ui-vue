@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { hintLabelTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/ValidLabel" component={VvTextarea} />
 
@@ -13,6 +14,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="ValidLabel"
+		play={async (ctx) => {
+			hintLabelTest(ctx, {
+				className: 'vv-textarea--valid'
+			})
+		}}
 		args={{
 			name: 'textarea-validlabel',
 			valid: true,
@@ -25,6 +31,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="ValidLabels"
+		play={async (ctx) => {
+			hintLabelTest(ctx, {
+				className: 'vv-textarea--valid'
+			})
+		}}
 		args={{
 			name: 'textarea-validlabels',
 			valid: true,

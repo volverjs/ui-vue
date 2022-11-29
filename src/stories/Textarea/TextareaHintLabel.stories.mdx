@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { hintLabelTest } from './Textarea.test.ts'
 
 <Meta title="Components/Textarea/Props/HintLabel" component={VvTextarea} />
 
@@ -13,6 +14,11 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="HintLabel"
+		play={async (ctx) => {
+			hintLabelTest(ctx, {
+				className: null
+			})
+		}}
 		args={{
 			name: 'textarea-hint',
 			hintLabel: 'Help text di prova!'
