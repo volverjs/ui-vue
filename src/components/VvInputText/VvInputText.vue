@@ -144,7 +144,7 @@ const defaultRightIcon = computed(() => {
 //Conteggio battute
 const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
 	mode: props.limit,
-	upperLimit: props.maxlength || 0
+	upperLimit: props.maxLength || 0
 })
 
 //Input FOCUS
@@ -200,8 +200,8 @@ const innerInputProps = computed(() => {
 		autocomplete: props.autocomplete,
 		disabled: props.disabled,
 		readonly: props.readonly,
-		minlength: props.minlength,
-		maxlength: props.maxlength,
+		minLength: props.minLength,
+		maxLength: props.maxLength,
 		min: props.min,
 		max: props.max,
 		step: props.step,

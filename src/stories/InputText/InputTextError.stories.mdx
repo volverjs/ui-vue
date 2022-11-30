@@ -3,16 +3,23 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Error" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Error"
+		play={async (ctx) => {
+			testInputText(ctx, {
+				className: 'vv-input-text--invalid'
+			})
+		}}
 		args={{
 			name: 'input-text-error',
 			error: true,
-			errorLabel: 'Error message!'
+			errorLabel: 'Error message!',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

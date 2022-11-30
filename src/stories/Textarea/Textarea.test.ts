@@ -168,7 +168,6 @@ export async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
 }
 
 export async function debounceTest({ canvasElement, ...data }: PlayAttributes) {
-	console.log(data)
 	const textarea = document.querySelector('textarea') as HTMLTextAreaElement
 	const initialValue = document.getElementById('value') as HTMLElement
 	userEvent.click(textarea)

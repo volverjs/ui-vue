@@ -3,16 +3,19 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Readonly" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Readonly"
+		play={testInputText}
 		args={{
 			name: 'input-text-readonly',
 			readonly: true,
-			modelValue: 'Prova'
+			modelValue: 'Prova',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

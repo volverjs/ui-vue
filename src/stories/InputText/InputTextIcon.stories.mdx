@@ -3,15 +3,18 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { iconTest } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Icon" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Icon"
+		play={iconTest}
 		args={{
 			name: 'input-text-icon',
-			icon: 'add'
+			icon: 'add',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

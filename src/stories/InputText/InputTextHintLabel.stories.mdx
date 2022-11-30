@@ -3,15 +3,22 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { hintLabelTest } from './InputText.test.ts'
 
 <Meta title="Components/InputText/HintLabel" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="HintLabel"
+		play={async (ctx) => {
+			hintLabelTest(ctx, {
+				className: null
+			})
+		}}
 		args={{
 			name: 'input-text-hint',
-			hintLabel: 'Help text di prova!'
+			hintLabel: 'Help text di prova!',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

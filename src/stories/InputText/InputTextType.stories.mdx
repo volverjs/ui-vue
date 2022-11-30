@@ -3,23 +3,45 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Type" component={VvInputText} />
 
 <Canvas>
-	<Story name="Text" args={{ name: 'input-text', type: 'text' }}>
+	<Story
+		name="Text"
+		play={testInputText}
+		args={{
+			name: 'input-text',
+			type: 'text',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Password" args={{ name: 'input-password', type: 'password' }}>
+	<Story
+		name="Password"
+		play={testInputText}
+		args={{
+			name: 'input-password',
+			type: 'password',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Date" args={{ name: 'input-date', type: 'date' }}>
+	<Story
+		name="Date"
+		play={testInputText}
+		args={{
+			name: 'input-date',
+			type: 'date',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -27,55 +49,108 @@ import { Template } from './InputText.stories.mdx'
 <Canvas>
 	<Story
 		name="DateTime"
-		args={{ name: 'input-datetime', type: 'datetime-local' }}>
+		play={testInputText}
+		args={{
+			name: 'input-datetime',
+			type: 'datetime-local',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Number" args={{ name: 'input-number', type: 'number' }}>
+	<Story
+		name="Number"
+		play={testInputText}
+		args={{
+			name: 'input-number',
+			type: 'number',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Time" args={{ name: 'input-time', type: 'time' }}>
+	<Story
+		name="Time"
+		play={testInputText}
+		args={{
+			name: 'input-time',
+			type: 'time',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Email" args={{ name: 'input-email', type: 'email' }}>
+	<Story
+		name="Email"
+		play={testInputText}
+		args={{
+			name: 'input-email',
+			type: 'email',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Tel" args={{ name: 'input-tel', type: 'tel' }}>
+	<Story
+		name="Tel"
+		play={testInputText}
+		args={{ name: 'input-tel', type: 'tel', 'data-testId': 'input-text' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Url" args={{ name: 'input-url', type: 'url' }}>
+	<Story
+		name="Url"
+		play={testInputText}
+		args={{ name: 'input-url', type: 'url', 'data-testId': 'input-text' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Color" args={{ name: 'input-color', type: 'color' }}>
+	<Story
+		name="Color"
+		play={testInputText}
+		args={{
+			name: 'input-color',
+			type: 'color',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Search" args={{ name: 'input-search', type: 'search' }}>
+	<Story
+		name="Search"
+		play={testInputText}
+		args={{
+			name: 'input-search',
+			type: 'search',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="File" args={{ name: 'input-file', type: 'file' }}>
+	<Story
+		name="File"
+		play={testInputText}
+		args={{
+			name: 'input-file',
+			type: 'file',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

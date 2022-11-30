@@ -3,16 +3,23 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Valid" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Valid"
+		play={(ctx) => {
+			testInputText(ctx, {
+				className: 'vv-input-text--valid'
+			})
+		}}
 		args={{
 			name: 'input-text-valid',
 			valid: true,
-			validLabel: 'Valid label!'
+			validLabel: 'Valid label!',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>
