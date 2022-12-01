@@ -32,7 +32,7 @@ export const VvInputTextProps = {
 	maxLength: Number,
 	min: [Number, Date],
 	max: [Number, Date],
-	step: Number,
+	step: { type: Number, default: 1 },
 	label: String,
 	disabled: Boolean,
 	readonly: Boolean,

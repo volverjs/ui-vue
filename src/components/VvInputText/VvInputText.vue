@@ -104,18 +104,28 @@ const isPassword = computed(() => props.type === INPUT.TYPES.PASSWORD)
 //Gestione input tipo NUMBER
 const isNumber = computed(() => props.type === INPUT.TYPES.NUMBER)
 function stepUp() {
-	const _max = props.max as number
-	if (!isActionsDisabled.value && inputTextData.value + 1 <= _max) {
-		input.value.stepUp()
-		inputTextData.value = unref(input.value).value
-	}
+	const value = Number(unref(input.value).value)
+	if (
+		isNaN(value) ||
+		isActionsDisabled.value ||
+		(props.max && value + props.step > props.max)
+	)
+		return
+
+	input.value.stepUp()
+	inputTextData.value = Number(unref(input.value).value)
 }
 function stepDown() {
-	const _min = props.min as number
-	if (!isActionsDisabled.value && inputTextData.value - 1 <= _min) {
-		input.value.stepDown()
-		inputTextData.value = unref(input.value).value
-	}
+	const value = Number(unref(input.value).value)
+	if (
+		isNaN(value) ||
+		isActionsDisabled.value ||
+		(props.min && value - props.step < props.min)
+	)
+		return
+
+	input.value.stepDown()
+	inputTextData.value = Number(unref(input.value).value)
 }
 
 //Gestione ICONE
