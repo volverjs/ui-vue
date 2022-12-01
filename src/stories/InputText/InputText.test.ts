@@ -5,7 +5,7 @@ import { expect } from '@/test/expect'
 interface InputTextConfig {
 	isClickDisabled?: boolean
 	className?: string | string[] | null
-	customText?: string | number | null
+	customText?: string | null
 	customElement?: HTMLElement | HTMLOrSVGElement | null
 }
 
@@ -39,7 +39,7 @@ export async function testInputText(
 					: expect(inputText.value.length).toEqual(
 							data.args.maxLength
 					  )
-			} else {
+			} else if (!data.args.limit) {
 				expect(inputText.value).toEqual(data.args.modelValue || text)
 			}
 		}
@@ -68,6 +68,10 @@ export async function testInputText(
 		expect(inputTextWrapperParent.firstChild?.innerText).toEqual(
 			data.args.label
 		)
+	data.args.hintLabel &&
+		expect(inputTextWrapperParent.lastChild?.innerText).toEqual(
+			data.args.hintLabel
+		)
 	data.args.modelValue &&
 		expect(inputText.value).toEqual(data.args.modelValue)
 	data.args.readonly && expect(inputText.readOnly).toEqual(data.args.readonly)
@@ -77,51 +81,6 @@ export async function testInputText(
 	)
 	className && expect(inputTextWrapperParent).toHaveClass(className)
 	expect(inputTextWrapperParent).toHaveNoViolations()
-}
-
-export async function autoclearTest({
-	canvasElement,
-	...data
-}: PlayAttributes) {
-	const inputText = document.querySelector('input') as HTMLInputElement
-	expect(data.args.autoclear).toBe(true)
-	await testInputText({ canvasElement, ...data })
-	const button = document.getElementsByClassName(
-		'vv-button'
-	)[0] as HTMLButtonElement
-	await expect(button).toBeClicked()
-	expect(inputText.value).toBe('')
-}
-
-export async function hintLabelTest(
-	{ canvasElement, ...data }: PlayAttributes,
-	{ className }: InputTextConfig
-) {
-	const inputTextWrapperParent = await within(canvasElement).findByTestId(
-		'input-text'
-	)
-	let propLabel: string | string[]
-	const hintLabel = inputTextWrapperParent.lastChild?.innerText as HTMLElement
-	if (data.args.loading) {
-		data.args.error || data.args.valid
-			? (propLabel = data.args.loadingLabel)
-			: (propLabel = data.args.loadingLabel)
-	} else if (data.args.error) {
-		propLabel = data.args.errorLabel
-	} else if (data.args.valid) {
-		propLabel = data.args.validLabel
-	} else {
-		propLabel = data.args.hintLabel
-	}
-	if (typeof propLabel == 'string') {
-		expect(hintLabel).toEqual(propLabel)
-	}
-	if (Array.isArray(propLabel)) {
-		propLabel.forEach((label) => {
-			expect(hintLabel).toContain(label)
-		})
-	}
-	await testInputText({ canvasElement, ...data }, { className: className })
 }
 
 export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
@@ -135,14 +94,11 @@ export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
 			await userEvent.keyboard(
 				' dolor sit amet, consectetur adipiscing elit'
 			)
-		expect(inputText.value.length).toEqual(data.args.maxLength)
-		data.args.showLimit == true &&
-			data.args.showLimitMode !== 'countdown' &&
+		data.args.limit === true &&
 			expect(limit.innerText).toEqual(
 				`${inputText.value.length}/${data.args.maxLength}`
 			)
-		data.args.showLimit == true &&
-			data.args.showLimitMode == 'countdown' &&
+		data.args.limit === 'countdown' &&
 			expect(limit.innerHTML).toBe(
 				`${data.args.maxLength - inputText.value.length}`
 			)
@@ -182,25 +138,6 @@ export async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
 	expect(button.innerText).toBe('QUA!')
 }
 
-export async function debounceTest({ canvasElement, ...data }: PlayAttributes) {
-	const inputText = document.querySelector('input') as HTMLInputElement
-	const initialValue = document.getElementById('value') as HTMLElement
-	userEvent.click(inputText)
-	const text = 'test'
-	userEvent.keyboard(text)
-	expect(initialValue.innerText).toEqual('')
-	setTimeout(() => {
-		expect(initialValue.innerText).not.toEqual(inputText.value)
-	}, data.args.debounce - 1)
-	setTimeout(() => {
-		expect(initialValue.innerText).toEqual(inputText.value)
-	}, data.args.debounce + 10)
-	await setTimeout(async () => {
-		inputText.value = ''
-		await testInputText({ canvasElement, ...data }, { customText: text })
-	}, data.args.debounce * 1.3)
-}
-
 export async function inputNumberTest({
 	canvasElement,
 	...data
@@ -209,23 +146,18 @@ export async function inputNumberTest({
 	const actionButtonGroup = document.getElementsByClassName(
 		'vv-input-text__actions-group'
 	)
-	userEvent.click(inputText)
 	const buttonUp = actionButtonGroup[0].firstElementChild as HTMLButtonElement
 	const buttonDown = actionButtonGroup[0]
 		.lastElementChild as HTMLButtonElement
-	for (let i = 1; i < 3; i++) {
+	userEvent.click(inputText)
+	for (let i = 1; i < 4; i++) {
 		buttonUp.click()
-		// userEvent.keyboard(`${data.args.step * i}`)
-		// console.log(inputText.value, `${data.args.step * i}`)
 		expect(inputText.value).toEqual(`${data.args.step * i}`)
-		// inputText.value = ''
 	}
-	for (let i = 3; i > data.args.step; i--) {
+	const inputValue: number = parseFloat(inputText.value)
+	for (let i = inputValue; i > data.args.step; i--) {
 		buttonDown.click()
-		// userEvent.keyboard(`${i - data.args.step}`)
-		// console.log(inputText.value, `${i - data.args.step}`)
 		expect(inputText.value).toEqual(`${i - data.args.step}`)
-		// inputText.value = ''
 	}
 	await testInputText({ canvasElement, ...data })
 }

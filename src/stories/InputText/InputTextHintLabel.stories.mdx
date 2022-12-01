@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '../../components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
-import { hintLabelTest } from './InputText.test.ts'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/HintLabel" component={VvInputText} />
 
@@ -11,7 +11,7 @@ import { hintLabelTest } from './InputText.test.ts'
 	<Story
 		name="HintLabel"
 		play={async (ctx) => {
-			hintLabelTest(ctx, {
+			testInputText(ctx, {
 				className: null
 			})
 		}}
