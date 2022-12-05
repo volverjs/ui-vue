@@ -21,11 +21,15 @@ export async function textareaTest(
 		'textarea'
 	)
 	const textarea = document.querySelector('textarea') as HTMLTextAreaElement
+
+	// click test
 	if (isClickDisabled) {
 		await expect(textarea).not.toBeClicked()
 	} else {
 		await expect(textarea).toBeClicked()
 		await userEvent.click
+
+		// test maxlength and text
 		const text = customText || 'Lorem ipsum'
 		userEvent.keyboard(text)
 		if (!data.args.limit && data.args.maxlength) {
@@ -36,6 +40,8 @@ export async function textareaTest(
 			expect(textarea.value).toEqual(data.args.modelValue || text)
 		}
 	}
+
+	// test html attributes
 	const baseAttrs = [
 		'id',
 		'name',
@@ -50,12 +56,16 @@ export async function textareaTest(
 	baseAttrs.forEach((attr) => {
 		data.args[attr] && expect(textarea[attr]).toEqual(data.args[attr])
 	})
+	data.args.readonly && expect(textarea.readOnly).toEqual(data.args.readonly)
+
+	// test label and modelValue
 	data.args.label &&
 		expect(textareaWrapperParent.firstChild?.innerText).toEqual(
 			data.args.label
 		)
 	data.args.modelValue && expect(textarea.value).toEqual(data.args.modelValue)
-	data.args.readonly && expect(textarea.readOnly).toEqual(data.args.readonly)
+
+	// class test
 	expect(textareaWrapperParent).toHaveClass(
 		'vv-textarea',
 		'vv-textarea--dirty'
@@ -87,6 +97,8 @@ export async function hintLabelTest(
 	)
 	let propLabel: string | string[]
 	const hintLabel = textareaWrapperParent.lastChild?.innerText as HTMLElement
+
+	// test hint label based on his prop
 	if (data.args.loading) {
 		data.args.error || data.args.valid
 			? (propLabel = data.args.loadingLabel)
