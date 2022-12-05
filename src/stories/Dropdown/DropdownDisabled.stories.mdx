@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
 import { Template } from './Dropdown.stories.mdx'
+import { dropdownTest } from './Dropdown.test.ts'
 
 <Meta title="Components/Dropdown/Props/disabled" />
 
@@ -11,6 +12,12 @@ Let's define a story for our `disabled` dropdown.
 <Canvas>
 	<Story
 		name="disabled"
+		play={async (ctx) => {
+			dropdownTest(ctx, {
+				className: 'vv-dropdown--disabled',
+				isClickDisabled: true
+			})
+		}}
 		args={{
 			options: ['Option 4', 'Option 5', 'Option 6'],
 			disabled: true

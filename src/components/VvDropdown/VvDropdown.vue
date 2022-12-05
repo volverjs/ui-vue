@@ -17,8 +17,7 @@
 							? option.disabled ?? disabled
 							: disabled
 					"
-					@input="onInput" />
-				{{ getLabel(option) }}
+					@input="onInput" />{{ getLabel(option) }}
 			</label>
 		</li>
 	</ul>
