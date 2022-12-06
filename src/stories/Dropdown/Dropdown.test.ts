@@ -2,14 +2,14 @@ import type { PlayAttributes } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 
-interface InputTextConfig {
+interface DropdownConfig {
 	isClickDisabled?: boolean
 	className?: string | string[] | null
 }
 
 export async function dropdownTest(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false, className = null }: InputTextConfig = {}
+	{ isClickDisabled = false, className = null }: DropdownConfig = {}
 ) {
 	const dropdown = await within(canvasElement).findByRole('listbox')
 

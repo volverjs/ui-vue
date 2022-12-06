@@ -2,12 +2,14 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
 import VvCard from '../../components/VvCard/VvCard.vue'
+import { defaultCardTest } from './Card.test.ts'
 
 <Meta title="Components/Card/Variant" component={VvCard} />
 
 <Canvas>
 	<Story
 		name="Variant"
+		play={defaultCardTest}
 		args={{
 			variant: 'glass'
 		}}>
