@@ -3,6 +3,7 @@ import ObjectUtilities from '../../utils/ObjectUtilities'
 import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
 import { Template } from './Breadcrumb.stories.mdx'
+import { breadcrumbTest } from './Breadcrumb.test.ts'
 
 <Meta
 	title="Components/Breadcrumb/Props/multiline"
@@ -35,7 +36,14 @@ Stories of `VvBreadcrumb`.
 Let's define a story for our `multiline` `breadcrumb`:
 
 <Canvas>
-	<Story name="multiline" args={{}}>
+	<Story
+		name="multiline"
+		play={(ctx) => {
+			breadcrumbTest(ctx, {
+				className: 'vv-breadcrumb--multiline'
+			})
+		}}
+		args={{}}>
 		{Template.bind()}
 	</Story>
 </Canvas>
