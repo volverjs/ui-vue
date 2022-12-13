@@ -1,45 +1,16 @@
-/* eslint-disable no-console */
-
 import { expect } from '@storybook/jest'
-import { userEvent, within } from '@storybook/testing-library'
 import { toHaveNoViolations, axe } from 'jest-axe'
+import { hintLabelTest } from './CheckPropertyTest.js'
 
-async function disabledTest() {
-	const checkInput = document.getElementById('1')
-	await expect(checkInput).toHaveClass('vv-input-check__input--disabled')
-	await expect(checkInput).toBeDisabled()
-	await expect(checkInput).toHaveProperty('disabled')
-	await expect(checkInput).not.toBeChecked()
-	await expect(checkInput.value).toBe('')
-	await accessibilityTest(checkInput)
-}
-
-async function readOnlyTest() {
-	const checkInput = document.getElementById('2')
-	const value = document.getElementById('value')
-	console.log(checkInput.modelValue)
-	expect(checkInput).toHaveProperty('readOnly')
-	await expect(checkInput).toHaveClass('vv-input-check__input--readonly')
-	userEvent.click(checkInput)
-	await expect(checkInput).toBeChecked()
-	await console.log({ checkInput })
-	await classTest(checkInput, [
-		'focus-visible',
-		'vv-input-check__input--checked',
-		'vv-input-check__input--readonly'
-	])
-	accessibilityTest(checkInput)
-}
-
-async function switchTest() {
-	const checkInput = document.getElementById('3')
+async function errorTest({ ...data }) {
+	const checkInput = document.getElementById(data.args.id)
 	await expect(checkInput.parentElement).toHaveClass(
-		'vv-input-checkbox--switch'
+		'vv-input-checkbox--invalid'
 	)
-	userEvent.click(checkInput)
-	await expect(checkInput).toBeChecked()
-	console.log(checkInput.parentElement)
-	accessibilityTest(checkInput)
+	if (data.args.errorLabel) {
+		hintLabelTest({ ...data })
+	}
+	await accessibilityTest(checkInput)
 }
 
 expect.extend({
@@ -48,7 +19,6 @@ expect.extend({
 			pass: false,
 			message: `Click event doesn't work`
 		}
-		// await userEvent.click(checkInput)
 		await checkInput.click()
 		if (checkInput.checked) {
 			result = {
@@ -60,15 +30,9 @@ expect.extend({
 	}
 })
 
-async function classTest(input, classNames = []) {
-	classNames.forEach((cssClass) => {
-		expect(input).toHaveClass(cssClass)
-	})
-}
-
 async function accessibilityTest(element) {
 	expect.extend(toHaveNoViolations)
 	expect(await axe(element)).toHaveNoViolations()
 }
 
-export { disabledTest, readOnlyTest, switchTest }
+export { errorTest }

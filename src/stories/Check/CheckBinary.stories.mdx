@@ -40,13 +40,20 @@ import { Template } from './Check.stories.mdx'
 <Canvas>
 	<Story
 		name="Binario Si/No (sperimentale)"
+		play={(ctx) =>
+			checkTest({
+				...ctx,
+				functions: [binaryTest]
+			})
+		}
 		args={{
 			id: 5,
 			label: 'Voglio acquistare questa enciclopedia!',
 			name: 'ck5',
 			binary: true,
 			trueValue: 'Si',
-			falseValue: 'No'
+			falseValue: 'No',
+			'data-testid': 'checkbox'
 		}}>
 		{(args) => {
 			return {
@@ -67,7 +74,7 @@ import { Template } from './Check.stories.mdx'
 				},
 				template: `<div :data-testData="checkValue" :key="checkValue">
 						<vv-check v-model:modelValue="checkValue" v-bind="args"  />
-						<strong v-if="checkValue">Valore selez: {{checkValue}} </strong>
+						<strong id="value" v-if="checkValue">Valore selez: {{checkValue}} </strong>
 					</div>`
 			}
 		}}
