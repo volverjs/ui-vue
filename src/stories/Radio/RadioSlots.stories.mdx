@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import { radioTest } from './Radio.test.ts'
 
 <Meta title="Components/RadioButton/Slots" component={VvRadio} />
 
@@ -14,12 +15,18 @@ Slot default define the content of RadioButton
 />
 
 <Canvas>
-	<Story name="default">
+	<Story
+		name="default"
+		play={(ctx) => {
+			radioTest(ctx, {
+				slotContent: 'My content'
+			})
+		}}>
 		{() => {
 			return {
 				components: { VvRadio },
 				template: `
-					<vv-radio name="r1" value="1">
+					<vv-radio v-bind="args" name="r1" value="1">
 						My content
 					</vv-radio>
                     `

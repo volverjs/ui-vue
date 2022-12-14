@@ -44,7 +44,7 @@ expect.extend({
 				element.classList.contains(cssClass)
 			),
 			message: () =>
-				`One of these clsses doesn't exist: ${classes.join(', ')}`
+				`One of these classes doesn't exist: ${classes.join(', ')}`
 		}
 	}
 })

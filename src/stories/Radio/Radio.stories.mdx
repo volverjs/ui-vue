@@ -2,6 +2,7 @@ import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
 import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import { radioTest } from './Radio.test.ts'
 
 <Meta
 	title="Components/RadioButton"
@@ -38,6 +39,7 @@ A radio allows the user to select one option.
 <Canvas>
 	<Story
 		name="vv-radio"
+		play={radioTest}
 		args={{
 			id: 1,
 			label: 'opzione 1',
