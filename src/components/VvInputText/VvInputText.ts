@@ -60,7 +60,7 @@ export const VvInputTextProps = {
 	 * True = label flottante
 	 */
 	floating: Boolean,
-	debounce: Number,
+	debounce: [String, Number],
 	/**
 	 * Se true, attiva la possibilità di cancellare il testo nella textarea
 	 */

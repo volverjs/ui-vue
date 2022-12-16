@@ -69,7 +69,7 @@ const dialogClass = computed(() => {
 //Transitions
 const transitioName = computed(() => `vv-dialog--${props.transition}`)
 const dialogTransitionHandlers = {
-	'after-enter': () => {
+	'before-enter': () => {
 		htmlAttrIsOpen.value = true
 		emit('open')
 	},

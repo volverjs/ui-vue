@@ -1,17 +1,25 @@
 import { type Ref, computed } from 'vue'
 
-import { useDebounceFn } from '@vueuse/core'
-
 export function useDebouncedInput(
 	modelValue: Ref,
 	emit: (event: string, value: unknown) => void,
-	ms = 0
+	ms: string | number = 0
 ): Ref {
+	let timeout: NodeJS.Timeout
+
+	if (typeof ms === 'string') {
+		ms = parseInt(ms)
+	}
+
 	return computed({
 		get: () => modelValue.value,
-		set: (value) =>
-			useDebounceFn(() => {
+		set: (value) => {
+			if (timeout) {
+				clearTimeout(timeout)
+			}
+			timeout = setTimeout(() => {
 				emit('update:modelValue', value)
-			}, ms)()
+			}, ms as number)
+		}
 	})
 }

@@ -96,7 +96,10 @@ function addIconFromSvg(svg: string) {
 }
 
 if (ds) {
-	if (props.src) {
+	if (
+		props.src &&
+		!iconExists(`@${currentProvider.value}:${props.prefix}:${props.name}`)
+	) {
 		show.value = false
 		ds.fetchIcon(props.src)
 			.then((svg?: string) => {
