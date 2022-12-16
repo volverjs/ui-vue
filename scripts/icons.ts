@@ -107,8 +107,10 @@ async function generateIcons(
 	// Validate the IconifyJSON object
 	try {
 		validateIconSet(iconifyJson)
-	} catch (error: any) {
-		throw new Error(`Icon set is not valid: ${error?.message}`)
+	} catch (error) {
+		throw new Error(
+			`Icon set is not valid: ${(error as { message?: string })?.message}`
+		)
 	}
 
 	// Write IconifyJSON into file.json
@@ -130,10 +132,12 @@ export function createIconifyJsonFiles(
 	const objectFiles = getAllFiles(srcPath)
 
 	if (!Object.keys(objectFiles).length) {
+		// eslint-disable-next-line no-console
 		console.error(`There are no files in ${srcPath}`)
 	} else {
 		Object.keys(objectFiles).forEach((prefix) => {
 			generateIcons(prefix, objectFiles[prefix], destPath)
+			// eslint-disable-next-line no-console
 			console.info(`Icons generated in: ${destPath}/${prefix}.json\n`)
 		})
 	}

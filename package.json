@@ -10,13 +10,17 @@
     "hot": "node ./scripts/build.js --hot",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "generate-icons": "ts-node-esm scripts/icons/generateIcons.ts",
+    "generate-icons": "ts-node-esm scripts/icons.ts",
     "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly"
   },
   "files": [
+    "dist",
     "src",
-    "dist"
+    "*.d.ts"
   ],
+  "engines": {
+    "node": ">= 16"
+  },
   "main": "./dist/Volver.umd.js",
   "module": "./dist/Volver.es.js",
   "types": "./dist/index.d.ts",
@@ -94,6 +98,7 @@
     "storybook-dark-mode": "^2.0.4",
     "ts-node": "^10.9.1",
     "typescript": "~4.9.4",
+    "unplugin-vue-components": "^0.22.12",
     "vite": "^3.2.5",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-externalize-deps": "^0.4.0",
@@ -101,6 +106,19 @@
     "vue-loader": "^17.0.1",
     "vue-tsc": "^1.0.13",
     "webpack": "^5.75.0"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "resolvers/unplugin": [
+        "dist/resolvers/unplugin.d.ts"
+      ],
+      "icons": [
+        "dist/icons.d.ts"
+      ]
+    }
   },
   "exports": {
     ".": {
@@ -111,11 +129,17 @@
     "./src/*": "./src/*",
     "./dist/*": "./dist/*",
     "./components": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.es.js",
       "default": "./dist/components/index.umd.js"
     },
+    "./resolvers/unplugin": {
+      "types": "./dist/resolvers/unplugin.d.ts",
+      "import": "./dist/resolvers/unplugin.es.js",
+      "default": "./dist/resolvers/unplugin.umd.js"
+    },
     "./icons": {
+      "types": "./dist/icons.d.ts",
       "import": "./dist/icons.es.js",
       "default": "./dist/icons.umd.js"
     },
