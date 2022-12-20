@@ -12,15 +12,10 @@ export const VvAccordionProps = {
 	/**
 	 * (Optional) Defines if item is open. Event "update:open" is emitted on accordion header click
 	 */
-	open: Boolean,
-	/**
-	 * Change icon position to right side
-	 */
-	iconRight: Boolean,
-	/**
-	 * Add border to accordion item
-	 */
-	bordered: Boolean,
+	open: {
+		type: Boolean,
+		default: undefined
+	},
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
 	 */

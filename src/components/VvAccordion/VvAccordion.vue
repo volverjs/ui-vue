@@ -6,11 +6,11 @@ export default {
 
 <script setup lang="ts">
 import { computed, useAttrs, ref } from 'vue'
+import { useToggle } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 import { VvAccordionProps, VvAccordionEvents } from './VvAccordion'
 import { toAccordionRefs } from './useAccordionProps'
 import { useBemModifiers } from '@/composables/useModifiers'
-import { equals, contains, removeFromList } from '@/utils/ObjectUtilities'
 
 // props, attrs and emit
 const props = defineProps(VvAccordionProps)
@@ -19,73 +19,66 @@ const emit = defineEmits(VvAccordionEvents)
 
 // data
 const accordionName = attrs?.name || nanoid()
-const {
-	modelValue,
-	modifiers,
-	bordered,
-	disabled = ref(false),
-	iconRight,
-	isInGroup,
-	accordion
-} = toAccordionRefs(props, emit)
-
-const isOpen = computed(() => {
-	if (!isInGroup.value) return props.open
-
-	return accordion.value
-		? equals(accordionName, modelValue.value)
-		: contains(accordionName, modelValue.value)
+const { modifiers, disabled, collapse, isInGroup, modelValue } =
+	toAccordionRefs(props, emit)
+const localOpen = ref(false)
+const isOpen = computed({
+	get: () => {
+		if (isInGroup.value) {
+			if (collapse.value) {
+				return modelValue.value.includes(accordionName)
+			}
+			return modelValue.value === accordionName
+		}
+		if (props.open !== undefined) {
+			return props.open
+		}
+		return localOpen.value
+	},
+	set: (newValue) => {
+		if (isInGroup.value) {
+			if (collapse.value) {
+				if (newValue) {
+					modelValue.value.push(accordionName)
+					return
+				}
+				modelValue.value = modelValue.value.filter(
+					(name: string) => name !== accordionName
+				)
+				return
+			}
+			modelValue.value = newValue ? accordionName : null
+			return
+		}
+		if (props.open !== undefined) {
+			return emit('update:open', newValue)
+		}
+		localOpen.value = newValue
+	}
 })
 
 // styles
 const { bemCssClasses: accordionClass } = useBemModifiers('vv-accordion', {
 	modifiers,
-	disabled,
-	markerRight: computed(() => iconRight.value),
-	bordered
+	disabled
 })
 
 // methods
-// Toggle is used for accordion single element
-const onToggle = (e: Event) => {
-	const target = e.target as HTMLDetailsElement
-	// Emit toggle opened value
-	emit('update:open', target.open)
-}
-
-// Click is handled for toggleElement from group modelValue (array or single string value)
-const onClick = (e: Event) => {
-	// Update modelValue watched from group provider
-	if (isInGroup.value) {
-		if (accordion.value) {
-			modelValue.value = isOpen.value ? null : accordionName
-		} else {
-			modelValue.value = isOpen.value
-				? removeFromList(accordionName, modelValue.value)
-				: [...modelValue.value, accordionName]
-		}
-		// prevent auto-toggle in group mode
-		e.preventDefault()
-	}
-}
+const onClick = useToggle(isOpen)
 </script>
 
 <template>
-	<details
-		:class="accordionClass"
-		:open="isOpen"
-		@toggle="onToggle"
-		@click="onClick">
+	<details :class="accordionClass" :open="isOpen" @click.prevent="onClick()">
 		<summary
 			:aria-controls="`#${accordionName}`"
 			:aria-expanded="isOpen"
 			class="vv-collapse__summary">
-			<slot name="header">
+			<slot name="header" v-bind="{ open: isOpen }">
 				{{ title }}
 			</slot>
 		</summary>
 		<div :aria-hidden="!isOpen" class="vv-collapse__content">
-			<slot name="details">
+			<slot name="details" v-bind="{ open: isOpen }">
 				{{ content }}
 			</slot>
 		</div>

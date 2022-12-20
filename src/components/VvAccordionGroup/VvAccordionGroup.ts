@@ -1,7 +1,8 @@
 export interface VvAccordionGroupItem {
-	name?: string
 	title: string
 	content: string
+	name?: string
+	disabled?: boolean
 }
 
 export const VvAccordionGroupProps = {
@@ -10,22 +11,14 @@ export const VvAccordionGroupProps = {
 	 */
 	modelValue: [String, Array],
 	/**
-	 * Change icon position to right side
-	 */
-	iconRight: Boolean,
-	/**
-	 * Add border to accordion item
-	 */
-	bordered: Boolean,
-	/**
 	 * Accordion items
 	 * @type VvAccordionGroupItem
 	 */
 	items: { type: Array<VvAccordionGroupItem>, default: () => [] },
 	/**
-	 * If true, close others accordion when an item is open
+	 * If true, accordion items stay open when another item is opened.
 	 */
-	accordion: Boolean,
+	collapse: Boolean,
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
 	 */
@@ -33,4 +26,4 @@ export const VvAccordionGroupProps = {
 	disabled: Boolean
 }
 
-export const VvAccordionGroupEvents = ['update:open']
+export const VvAccordionGroupEvents = ['update:modelValue']

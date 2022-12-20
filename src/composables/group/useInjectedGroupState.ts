@@ -8,12 +8,12 @@ import { isEmpty } from '../../utils/ObjectUtilities'
  * Esegue l'inject dello stato condiviso da un componente padre.
  */
 export function useInjectedGroupState<TGroup extends IGroupState>(
-	groupKey: symbol
+	groupKey: string
 ) {
-	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
+	// Recupera, se esiste, lo stato condiviso fornito da un parent "group"
 	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
 
-	//Check if component is in group
+	// Check if component is in group
 	const isInGroup = computed(() => !isEmpty(group))
 
 	/**
@@ -24,7 +24,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 		props: T,
 		emit?: (event: any, ...args: any[]) => void
 	) {
-		//Check se propName non è in gruppo o locale -> Spaccarsi
+		// Check se propName non è in gruppo o locale -> Spaccarsi
 		if (group?.value) {
 			// if (!Object.keys(group.value).includes(propName as string))
 			// 	throw Error(`${propName as string} is not a group valid prop`)

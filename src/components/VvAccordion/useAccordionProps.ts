@@ -15,26 +15,22 @@ export function toAccordionRefs(
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
 
-	//Local props
+	// Local props
 	const { modifiers } = toRefs(props)
 
-	//Group based props
+	// Group based props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const bordered = getGroupOrLocalRef('bordered', props)
 	const disabled = getGroupOrLocalRef('disabled', props)
-	const iconRight = getGroupOrLocalRef('iconRight', props)
-	const accordion = getGroupOrLocalRef('accordion', props)
+	const collapse = getGroupOrLocalRef('collapse', props)
 
 	return {
-		//Group based props
+		// Group based props
 		modelValue,
 		disabled,
-		bordered,
-		iconRight,
 		isInGroup,
 		group,
-		accordion,
-		//Local props
+		collapse,
+		// Local props
 		modifiers
 	}
 }

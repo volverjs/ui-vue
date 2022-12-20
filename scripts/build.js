@@ -108,6 +108,21 @@ build({
 		}
 	}
 })
+build({
+	configFile: false,
+	build: {
+		watch,
+		minify,
+		emptyOutDir: false,
+		outDir: 'bin',
+		ssr: true,
+		lib: {
+			name: 'generate-icons',
+			entry: './scripts/icons.ts',
+			fileName: (format) => `generate-icons.${format}.js`
+		}
+	}
+})
 
 // build components
 glob('./src/components/**/!(_*).vue', async (err, files) => {

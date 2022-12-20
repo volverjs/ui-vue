@@ -1,4 +1,6 @@
 import fileSystem from 'fs'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 import {
 	SVG,
 	blankIconSet,
@@ -10,8 +12,6 @@ import {
 import path from 'path'
 import { validateIconSet } from '@iconify/utils'
 import type { IconifyJSON } from '@iconify/types'
-
-const ICONS_ROOT = 'src/assets/icons'
 
 /**
  * @field key is the iconify prefix
@@ -125,10 +125,7 @@ async function generateIcons(
  * @param srcPath
  * @param destPath
  */
-export function createIconifyJsonFiles(
-	srcPath = ICONS_ROOT,
-	destPath = ICONS_ROOT
-) {
+export function createIconifyJsonFiles(srcPath: string, destPath: string) {
 	const objectFiles = getAllFiles(srcPath)
 
 	if (!Object.keys(objectFiles).length) {
@@ -143,4 +140,18 @@ export function createIconifyJsonFiles(
 	}
 }
 
-createIconifyJsonFiles()
+const argv = yargs(hideBin(process.argv)).argv as {
+	srcPath?: string
+	destPath?: string
+}
+const srcPath = argv.srcPath
+const destPath = argv.destPath || srcPath
+
+if (!srcPath || !destPath) {
+	// eslint-disable-next-line no-console
+	console.error(
+		'Please specify the srcPath and destPath with --srcPath and --destPath'
+	)
+	process.exit()
+}
+createIconifyJsonFiles(srcPath, destPath)

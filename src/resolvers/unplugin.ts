@@ -35,8 +35,21 @@ export interface VolverResolverOptions {
 	prefix?: string
 }
 
-const STYLE_EXCLUDE = ['vv-icon', 'vv-native-select']
+const STYLE_EXCLUDE = ['vv-icon']
 const VOLVER_PREFIX = 'vv'
+
+const getStyleName = function (kebabName: string) {
+	if (STYLE_EXCLUDE.includes(kebabName)) {
+		return undefined
+	}
+	if (kebabName === 'vv-native-select') {
+		return 'vv-select'
+	}
+	if (kebabName === 'vv-accordion-group') {
+		return 'vv-accordion'
+	}
+	return kebabName
+}
 
 /**
  * Resolver for @volverjs/ui-vue
@@ -68,30 +81,15 @@ export function VolverResolver({
 				// import custom style
 				if (customStylePath) {
 					sideEffects.push(customStylePath)
-				} else {
-					sideEffects.push(
-						`@volverjs/style/${
-							importStyle === 'scss' ? 'scss/' : ''
-						}reset`
-					)
-					sideEffects.push(
-						`@volverjs/style/${
-							importStyle === 'scss' ? 'scss/' : ''
-						}props`
-					)
-					sideEffects.push(
-						`@volverjs/style/${
-							importStyle === 'scss' ? 'scss/' : ''
-						}utilities`
-					)
 				}
 
-				if (!STYLE_EXCLUDE.includes(kebabName)) {
+				const styleName = getStyleName(kebabName)
+				if (styleName) {
 					// import component
 					sideEffects.push(
 						`@volverjs/style/${
 							importStyle === 'scss' ? 'scss/' : ''
-						}components/${kebabName}`
+						}components/${styleName}`
 					)
 				}
 			}
