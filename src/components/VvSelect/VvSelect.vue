@@ -5,29 +5,30 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type { Option } from '@/components/VvDropdown/VvDropdown'
 import { computed, ref, toRefs, useSlots, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
+import type { Option } from '@/components/VvDropdown'
 import { isEmpty, filterArray } from '@/utils/ObjectUtilities'
-import { VvSelectProps } from './VvSelect'
 import { useBemModifiers } from '@/composables/useModifiers'
 import HintSlotFactory from '@/components/common/HintSlot'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
+import { VvSelectProps } from '@/components/VvSelect'
 
 const props = defineProps(VvSelectProps)
 const slots = useSlots()
 
 const emit = defineEmits(['update:modelValue', 'change:search'])
 
-//Hint component
+// hint slot
 const HintSlot = HintSlotFactory(props, slots)
 
-// html ref
+// template ref
 const dropdown = ref()
 const inputSearch = ref()
-// autofocus input search
+
+// focus state
 useFocus(inputSearch, { initialValue: true })
 
 // data
@@ -49,14 +50,13 @@ const {
 	error
 } = toRefs(props)
 
-// watch
 // emit on change search text
 watch(debouncedSearchText, () =>
 	emit('change:search', debouncedSearchText.value)
 )
 
-//Styles & css classes modifiers
-const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
+// styles
+const { bemCssClasses } = useBemModifiers('vv-select', {
 	modifiers,
 	disabled,
 	loading,
@@ -88,9 +88,12 @@ const filteredOptions = computed(() => {
 				.toLowerCase()
 				.includes(debouncedSearchText.value.toLowerCase().trim())
 		}
-		return option[props.labelKey]
-			.toLowerCase()
-			.includes(debouncedSearchText.value.toLowerCase().trim())
+		if (typeof option[props.labelKey] === 'string') {
+			return (option[props.labelKey] as string)
+				.toLowerCase()
+				.includes(debouncedSearchText.value.toLowerCase().trim())
+		}
+		return false
 	})
 })
 
@@ -157,13 +160,12 @@ function onInput(value: typeof props.modelValue) {
 	if (dropdown.value && !props.multiple) {
 		dropdown.value.open = false
 	}
-
 	emit('update:modelValue', value)
 }
 </script>
 
 <template>
-	<div v-if="!native" :id="id" :class="selectClasses">
+	<div v-if="!native" :id="id" :class="bemCssClasses">
 		<label v-if="label" for="select">{{ label }}</label>
 		<details
 			ref="dropdown"

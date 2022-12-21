@@ -8,8 +8,22 @@ import {
 	LimitProps,
 	InputProps,
 	DebounceProps
-} from '../../props'
-import { ICON_POSITIONS, WRAP } from './constants'
+} from '@/props'
+
+export const ICON_POSITIONS = {
+	LEFT: 'left',
+	RIGHT: 'right'
+}
+
+export const WRAP = {
+	hard: 'hard',
+	soft: 'soft'
+}
+
+export default {
+	ICON_POSITIONS,
+	WRAP
+}
 
 export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur']
 
@@ -29,12 +43,12 @@ export const VvTextareaProps = {
 	cols: { type: Number, default: 50 },
 	rows: { type: Number, default: 5 },
 	/**
-	 * Nome dell'icona
+	 * Icon name
 	 * @see DsIcon
 	 */
 	icon: { type: String, default: '' },
 	/**
-	 * Posizione dell'icona
+	 * Icon position
 	 */
 	iconPosition: {
 		type: String,
@@ -43,25 +57,24 @@ export const VvTextareaProps = {
 		default: ICON_POSITIONS.RIGHT
 	},
 	/**
-	 * True = label flottante
+	 * If true, the label will be floating
 	 */
 	floating: Boolean,
 	/**
-	 * Specifica come il testo sarà wrappato
+	 * How the text in a text area is to be wrapped.
 	 * @see Documentation https://www.w3schools.com/tags/att_textarea_wrap.asp
 	 */
 	wrap: { type: String, default: WRAP.soft },
 	/**
-	 * Se true, attiva la possibilità di cancellare il testo nella textarea
+	 * If true, the value of the textarea will be cleared automatically
 	 */
 	autoclear: Boolean,
 	/**
-	 * Se true, la textbox può essere ridimensionata verticalmente.
+	 * If true, the textarea will be resizable
 	 * @description
 	 * Il resize è pilotato via css. Al momento è attivo solamente il resize verticale
 	 */
 	resizable: Boolean
 }
 
-type VvTextareaPropsType = typeof VvTextareaProps
-export type VvTextareaPropsTypes = ExtractPropTypes<VvTextareaPropsType>
+export type VvTextareaPropsTypes = ExtractPropTypes<typeof VvTextareaProps>

@@ -3,26 +3,26 @@ import VvAccordionGroup from '../../components/VvAccordionGroup/VvAccordionGroup
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 import { accordionTest } from './accordionGroupTest.js'
 
-<Meta title="Components/AccordionGroup/Props/accordion" />
+<Meta title="Components/AccordionGroup/Props/collapse" />
 
 # VvAccordionGroup accordion
 
-Stories of `VvAccordionGroup` with `accordion`.
+Stories of `VvAccordionGroup` with `collapse`.
 
 <Canvas>
-	<Story name="accordion" play={accordionTest}>
+	<Story name="collapse" play={accordionTest}>
 		{(args) => ({
 			components: { VvAccordionGroup, VvAccordion },
 			data() {
 				return {
-					selected: '',
+					selected: [],
 					content:
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 				}
 			},
 			template: `<div class="flex">
 					<div class="w-1/2">
-						<vv-accordion-group v-model:modelValue="selected" icon-right bordered accordion>
+						<vv-accordion-group v-model="selected" collapse>
 							<vv-accordion data-testId="accordion-1" name="accordion 1" title="Details 1" :content="content" />
 							<vv-accordion name="accordion 2" title="Details 2" :content="content" />
 							<vv-accordion name="accordion 3" title="Details 3" :content="content" />
@@ -38,5 +38,5 @@ Stories of `VvAccordionGroup` with `accordion`.
 
 <Source
 	language="jsx"
-	code={`<vv-accordion-group v-model:modelValue="accordion" :items="items" icon-right bordered />`}
+	code={`<vv-accordion-group v-model:modelValue="accordion" :items="items" collapse />`}
 />

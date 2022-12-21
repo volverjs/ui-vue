@@ -1,4 +1,4 @@
-import type { ExtractPropTypes, PropType } from 'vue'
+import type { ExtractPropTypes } from 'vue'
 import {
 	ValidProps,
 	ErrorProps,
@@ -6,8 +6,42 @@ import {
 	LoadingProps,
 	ModifiersProps,
 	LimitProps
-} from '../../props'
-import { TYPES, ICON_POSITIONS } from './constants'
+} from '@/props'
+
+export const TYPES = {
+	TEXT: 'text',
+	PASSWORD: 'password',
+	DATE: 'date',
+	DATETIME_LOCAL: 'datetime-local',
+	NUMBER: 'number',
+	TIME: 'time',
+	EMAIL: 'email',
+	TEL: 'tel',
+	URL: 'url',
+	COLOR: 'color',
+	SEARCH: 'search',
+	FILE: 'file'
+}
+
+export const ICON_POSITIONS = {
+	LEFT: 'left',
+	RIGHT: 'right'
+}
+
+export const TYPES_ICON = {
+	PASSWORD_ON: 'eye-on',
+	PASSWORD_OFF: 'eye-off',
+	DATE: 'calendar',
+	TIME: 'time',
+	COLOR: 'color',
+	SEARCH: 'close'
+}
+
+export const INPUT = {
+	TYPES,
+	ICON_POSITIONS,
+	TYPES_ICON
+}
 
 export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
 
@@ -67,5 +101,4 @@ export const VvInputTextProps = {
 	autoclear: Boolean
 }
 
-type VvInputTextPropsType = typeof VvInputTextProps
-export type VvInputTextPropsTypes = ExtractPropTypes<VvInputTextPropsType>
+export type VvInputTextPropsTypes = ExtractPropTypes<typeof VvInputTextProps>

@@ -7,42 +7,41 @@ export default {
 
 <script setup lang="ts">
 import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
-
 import { computed, useAttrs, ref } from 'vue'
-import { contains, equals, pickBy } from '../../utils/ObjectUtilities'
-import { VvRadioProps, VvRadioEvents } from './VvRadio'
-
-//Composables
-import { toRadioInputRefs } from './useRadioProps'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+import { contains, equals, pickBy } from '@/utils/ObjectUtilities'
+import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useBemModifiers } from '@/composables/useModifiers'
+import {
+	VvRadioProps,
+	VvRadioEvents,
+	useGroupProps
+} from '@/components/VvRadio'
 
-//Props, Emits, Slots e Attrs
+// props, emit, slots and attrs
 const props = defineProps(VvRadioProps)
 const emit = defineEmits(VvRadioEvents)
 const attrs = useAttrs()
 
-//Data
-const { disabled, readonly, modelValue, valid, error } = toRadioInputRefs(
+// data
+const { disabled, readonly, modelValue, valid, error } = useGroupProps(
 	props,
 	emit
 )
 
-//Template References
+// template refs
 const input = ref()
 
-//Component computed
+// computed
 const isChecked = computed(() => {
 	return Array.isArray(modelValue.value)
 		? contains(props.value, modelValue.value)
 		: equals(props.value, modelValue.value)
 })
 
-// #region FOCUS
+// focus state
 const { focused } = useComponentFocus(input, emit)
-// #endregion FOCUS
 
-//Styles & Bindings
+// styles
 const { bemCssClasses: bemRadioClass } = useBemModifiers('vv-input-radio', {
 	valid,
 	invalid: error
@@ -100,7 +99,7 @@ const radioInputAriaAttrs = computed(() => {
 	}
 })
 
-//Methods
+// methods
 function onChange() {
 	if (!isChecked.value) emit('change', props.value)
 	modelValue.value = props.value

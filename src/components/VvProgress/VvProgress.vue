@@ -7,7 +7,7 @@ export default {
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
 import { useBemModifiers } from '@/composables/useModifiers'
-import { VvProgressProps } from './VvProgress'
+import { VvProgressProps } from '@/components/VvProgress'
 
 // props
 const props = defineProps(VvProgressProps)

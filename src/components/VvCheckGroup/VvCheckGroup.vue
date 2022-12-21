@@ -5,16 +5,19 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { useSlots, computed, toRefs } from 'vue'
-import { VvCheckGroupProps, VvCheckGroupEvents } from './VvCheckGroup'
+import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { VV_CHECK_GROUP } from '@/constants'
 import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useOptions } from '@/composables/options/useOptions'
 import { useBemModifiers } from '@/composables/useModifiers'
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
 import { HintSlotFactory } from '@/components/common/HintSlot'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import {
+	VvCheckGroupProps,
+	VvCheckGroupEvents
+} from '@/components/VvCheckGroup'
 
 // props, emit and slots
 const props = defineProps(VvCheckGroupProps)

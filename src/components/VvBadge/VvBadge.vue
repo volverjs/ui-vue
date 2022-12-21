@@ -5,18 +5,18 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useBemModifiers } from '@/composables/useModifiers'
 import { defineProps } from 'vue'
-import { VvBadgeProps } from './VvBadge'
+import { useBemModifiers } from '@/composables/useModifiers'
+import { VvBadgeProps } from '@/components/VvBadge'
 
 const props = defineProps(VvBadgeProps)
-const { bemCssClasses: badgeClass } = useBemModifiers('vv-badge', {
+const { bemCssClasses } = useBemModifiers('vv-badge', {
 	modifiers: props.modifiers
 })
 </script>
 
 <template>
-	<span :class="badgeClass" role="status">
+	<span :class="bemCssClasses" role="status">
 		<slot>{{ value }}</slot>
 	</span>
 </template>

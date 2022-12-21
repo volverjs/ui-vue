@@ -5,16 +5,16 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
 import { type Ref, computed, ref, toRefs, watchEffect } from 'vue'
+import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
 import { VV_ACCORDION_GROUP } from '@/constants'
-import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useBemModifiers } from '@/composables/useModifiers'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import {
 	VvAccordionGroupProps,
 	VvAccordionGroupEvents
-} from './VvAccordionGroup'
+} from '@/components/VvAccordionGroup/'
 
 // props and emit
 const props = defineProps(VvAccordionGroupProps)
@@ -67,14 +67,14 @@ const accordionGroupState: IAccordionGroupState = {
 useProvideGroupState(accordionGroupState)
 
 // styles
-const { bemCssClasses: accGroupClass } = useBemModifiers('vv-accordion-group', {
+const { bemCssClasses } = useBemModifiers('vv-accordion-group', {
 	modifiers,
 	disabled
 })
 </script>
 
 <template>
-	<div :class="accGroupClass">
+	<div :class="bemCssClasses">
 		<template v-if="props.items?.length > 0">
 			<vv-accordion
 				v-for="item in items"

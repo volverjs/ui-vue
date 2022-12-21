@@ -7,19 +7,25 @@ export default {
 <script setup lang="ts">
 import { useSlots, computed, toRefs } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-import { VvRadioGroupProps, VvRadioGroupEvents } from './VvRadioGroup'
 import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useOptions } from '@/composables/options/useOptions'
 import { useBemModifiers } from '@/composables/useModifiers'
 import { VV_RADIO_GROUP } from '@/constants'
-import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { HintSlotFactory } from '@/components/common/HintSlot'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
+import {
+	VvRadioGroupProps,
+	VvRadioGroupEvents
+} from '@/components/VvRadioGroup'
 
 // props, emit and slots
 const props = defineProps(VvRadioGroupProps)
 const emit = defineEmits(VvRadioGroupEvents)
 const slots = useSlots()
+
+// hint
+const HintSlot = HintSlotFactory(props, slots)
 
 // data
 const modelValue = useVModel(props, 'modelValue', emit)
@@ -43,17 +49,14 @@ const { bemCssClasses: groupClass } = useBemModifiers('vv-input-radio-group', {
 })
 
 // methods
-const getOptionProps = (option: any, oIndex: number) => {
+const getOptionProps = (option: unknown, index: number) => {
 	return {
-		id: `${props.name}_opt${oIndex}`,
+		id: `${props.name}_opt${index}`,
 		name: props.name,
 		label: getOptionLabel(option),
 		value: getOptionValue(option)
 	}
 }
-
-// hint
-const HintSlot = HintSlotFactory(props, slots)
 </script>
 
 <template>

@@ -1,16 +1,36 @@
-import type { VvRadioPropsType } from '../VvRadio/VvRadio'
+import { type ExtractPropTypes, toRefs } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-
-import type { VvRadioEvents } from './VvRadio'
-import { toRefs } from 'vue'
+import { ValidProps, ErrorProps } from '@/props'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_RADIO_GROUP } from '@/constants'
 
+export const VvRadioProps = {
+	...ValidProps,
+	...ErrorProps,
+	/**
+	 * Valore del radio
+	 */
+	value: null,
+	modelValue: { type: [Object, Number, Boolean, String] },
+	label: { type: String, default: '' },
+	disabled: Boolean,
+	readonly: Boolean
+}
+
+export const VvRadioEvents = [
+	'click',
+	'update:modelValue',
+	'change',
+	'focus',
+	'blur'
+]
+
+export type VvRadioPropsType = ExtractPropTypes<typeof VvRadioProps>
+
 /**
- * Estrae tutte le prop del componente VvButton che possono essere
- * "sovrascritte" quando il buttone si trova in un gruppo.
+ * Merges local and group props
  */
-export function toRadioInputRefs(
+export function useGroupProps(
 	props: VvRadioPropsType,
 	emit: (event: typeof VvRadioEvents[number], value: unknown) => void
 ) {

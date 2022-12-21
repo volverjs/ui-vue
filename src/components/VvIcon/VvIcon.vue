@@ -8,9 +8,7 @@ export default {
 import { inject, toRefs, ref, computed } from 'vue'
 import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
 import { type IVolver, VOLVER_PREFIX } from '@/Volver'
-import { VvIconProps } from './VvIcon'
-
-// composables
+import { VvIconProps } from '@/components/VvIcon'
 import { useBemModifiers } from '@/composables/useModifiers'
 
 // props
@@ -24,10 +22,13 @@ const { modifiers } = toRefs(props)
 const ds = inject<IVolver>(VOLVER_PREFIX)
 
 // classes
-const { bemCssClasses: iconClass } = useBemModifiers('vv-icon', {
+const { bemCssClasses } = useBemModifiers('vv-icon', {
 	modifiers
 })
 
+/**
+ * Provider name
+ */
 const currentProvider = computed(() => {
 	return props.provider || ds?.provider
 })
@@ -120,7 +121,7 @@ if (ds) {
 <template>
 	<Icon
 		v-if="show"
-		:class="iconClass"
+		:class="bemCssClasses"
 		v-bind="{
 			...$props,
 			provider: currentProvider,

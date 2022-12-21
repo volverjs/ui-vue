@@ -1,8 +1,9 @@
 import type { PropType } from 'vue'
-import { DisabledProps, ModifiersProps } from '../../props'
+import { DisabledProps, ModifiersProps } from '@/props'
 
 export interface Option {
-	[key: string]: any
+	[key: string]: unknown
+	disabled?: boolean
 }
 
 export const VvDropdownProps = {

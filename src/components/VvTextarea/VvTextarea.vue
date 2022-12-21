@@ -18,29 +18,25 @@ import {
 } from 'vue'
 import { nanoid } from 'nanoid'
 import { isEmpty, pickBy } from '@/utils/ObjectUtilities'
-import { VvTextareaProps, VvTextareaEvents } from './VvTextarea'
-
-//Componenti
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
-
-//Composables
+import HintSlotFactory from '@/components/common/HintSlot'
 import { useComponentIcon } from '@/composables/icons/useComponentIcons'
 import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
 import { useTextLimit } from '@/composables/textLimit/useTextLimit'
 import { toBem } from '@/composables/useModifiers'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
 
-//Props, Emits, Slots e Attrs
+// props, emit, slots and attrs
 const props = defineProps(VvTextareaProps)
 const emit = defineEmits(VvTextareaEvents)
 const slots = useSlots()
 const attrs = useAttrs()
 
-//Template References
+// template refs
 const input = ref()
 
-//Data
+// data
 const { icon, iconPosition, label, modelValue, autoclear, limit } =
 	toRefs(props)
 const textAreaId = (attrs.id as string) || nanoid()
@@ -51,25 +47,25 @@ const textAreaPlaceholder = computed(() =>
 	props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder
 )
 
-//Debounce input
+// debounce
 const inputTextData = useDebouncedInput(modelValue, emit, props.debounce)
 
-//Gestione ICONE
+// icons
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
 	iconLeft: slots['icon-left'],
 	iconRight: slots['icon-right']
 })
 
-//Input FOCUS
+// focus
 const { focused } = useComponentFocus(input, emit)
 
-//Conteggio battute
+// text limit
 const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
 	mode: props.limit,
 	upperLimit: props.maxlength || 0
 })
 
-//Styles & Bindings
+// styles
 const textAreaClass = computed(() => {
 	return [
 		toBem('vv-textarea', {
@@ -119,7 +115,7 @@ const htmlTextareaProps = computed(() => {
 	} as TextareaHTMLAttributes
 })
 
-//Slot props
+// slots props
 const iconSlotProps = computed(() => {
 	const { modelValue, valid, error, maxlength, hintLabel } = props
 	return {
@@ -132,14 +128,15 @@ const iconSlotProps = computed(() => {
 	}
 })
 
-//Hint
+// hint
 const HintSlot = HintSlotFactory(props, slots)
 
-//methods
+// methods
 function clearTextarea() {
 	inputTextData.value = ''
 }
 
+// lifecycle
 onMounted(() => {
 	if (props.autofocus) focused.value = true
 })

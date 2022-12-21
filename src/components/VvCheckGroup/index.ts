@@ -6,27 +6,27 @@ export const VvCheckGroupProps = {
 	...HintProps,
 	...OptionsProps,
 	/**
-	 * VModel
+	 * Input value
 	 */
 	modelValue: { type: Array },
 	/**
-	 * Radio group label
+	 * Input label
 	 */
 	label: { type: String, default: '' },
 	/**
-	 * Nome da utilizzare per il radio group
+	 * Input name
 	 */
 	name: { type: String, default: '', required: true },
 	/**
-	 * True se disabilitato
+	 * If true, the input will be disabled
 	 */
 	disabled: { type: Boolean, default: false },
 	/**
-	 * True se readonly
+	 * If true, the input will be readonly
 	 */
 	readonly: { type: Boolean, default: false },
 	/**
-	 * True = show buttons vertically
+	 * If true, the group will be displayed in a vertical column
 	 */
 	vertical: { type: Boolean, default: false }
 }

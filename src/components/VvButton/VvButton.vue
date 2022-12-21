@@ -7,12 +7,16 @@ export default {
 <script setup lang="ts">
 import { inject, useAttrs, useSlots, computed } from 'vue'
 import { nanoid } from 'nanoid'
-import { ButtonIconPosition, ButtonTag, VvButtonProps } from './VvButton'
 import { contains, equals } from '@/utils/ObjectUtilities'
 import { type IVolver, VOLVER_PREFIX } from '@/Volver'
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { useBemModifiers } from '@/composables/useModifiers'
-import { toButtonRefs } from './useButtonGroupProps'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import {
+	ButtonIconPosition,
+	ButtonTag,
+	VvButtonProps,
+	useGroupProps
+} from '@/components/VvButton'
 
 // props, attrs and slots
 const props = defineProps(VvButtonProps)
@@ -30,7 +34,7 @@ const {
 	disabled,
 	toggle,
 	isInGroup
-} = toButtonRefs(props)
+} = useGroupProps(props)
 
 // inject Volver
 const ds = inject<IVolver>(VOLVER_PREFIX)
@@ -68,7 +72,7 @@ const isSelected = computed(() => {
  * @description Define component classes with BEM style.
  * @returns {Array} The component classes.
  */
-const { bemCssClasses: hasClass } = useBemModifiers('vv-button', {
+const { bemCssClasses } = useBemModifiers('vv-button', {
 	modifiers,
 	active: props.active,
 	selected: isSelected,
@@ -100,7 +104,7 @@ const hasIconProps = computed(() =>
  */
 const hasProps = computed(() => {
 	const toReturn = {
-		class: hasClass.value,
+		class: bemCssClasses.value,
 		'aria-label': attrs['aria-label'],
 		'aria-selected': isSelected.value ? true : undefined
 	}

@@ -19,24 +19,21 @@ import {
 } from 'vue'
 import { nanoid } from 'nanoid'
 import { isEmpty, pickBy } from '@/utils/ObjectUtilities'
-import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
-
-// components
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
-import VvInputTextActionsFactory from './VvInputTextActions'
-
-// constants
-import INPUT from './constants'
-
-// composable
+import HintSlotFactory from '@/components/common/HintSlot'
 import { useComponentIcon } from '@/composables/icons/useComponentIcons'
 import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
 import { useTextLimit } from '@/composables/textLimit/useTextLimit'
 import { toBem } from '@/composables/useModifiers'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
+import {
+	VvInputTextEvents,
+	VvInputTextProps,
+	INPUT
+} from '@/components/VvInputText'
 
-// props, emits, slots and attrs
+// props, emit, slots and attrs
 const props = defineProps(VvInputTextProps)
 const emit = defineEmits(VvInputTextEvents)
 const slots = useSlots()

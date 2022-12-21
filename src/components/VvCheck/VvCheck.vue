@@ -6,38 +6,43 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
-
-import { computed, useAttrs, ref } from 'vue'
+import {
+	type InputHTMLAttributes,
+	type LabelHTMLAttributes,
+	computed,
+	useAttrs,
+	ref
+} from 'vue'
 import {
 	contains,
 	equals,
 	pickBy,
 	removeFromList
-} from '../../utils/ObjectUtilities'
-import { VvCheckProps, VvCheckEvents } from './VvCheck'
-
-//Composables
-import { toCheckInputRefs } from './useCheckProps'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+} from '@/utils/ObjectUtilities'
+import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useBemModifiers } from '@/composables/useModifiers'
+import {
+	VvCheckProps,
+	VvCheckEvents,
+	useGroupProps
+} from '@/components/VvCheck'
 
-//Props, Emits, Slots e Attrs
+// props, emits, slots and attrs
 const props = defineProps(VvCheckProps)
 const emit = defineEmits(VvCheckEvents)
 const attrs = useAttrs()
 
-//Data
+// data
 const { disabled, readonly, valid, error, propsSwitch, modelValue } =
-	toCheckInputRefs(props, emit)
+	useGroupProps(props, emit)
 
-//Template References
+// template ref
 const input = ref()
 
-// FOCUS
+// status
 const { focused } = useComponentFocus(input, emit)
 
-//Component computed
+// computed
 const isChecked = computed(() => {
 	if (props.binary) return equals(modelValue.value, props.trueValue)
 
@@ -46,13 +51,16 @@ const isChecked = computed(() => {
 		: equals(props.value, modelValue.value)
 })
 
-// Styles & Bindings
-const { bemCssClasses: bemCheckClass } = useBemModifiers('vv-input-checkbox', {
-	switch: propsSwitch,
-	valid,
-	invalid: error
-})
-const { bemCssClasses: bemCheckInputClass } = useBemModifiers(
+// styles
+const { bemCssClasses: bemCheckClasses } = useBemModifiers(
+	'vv-input-checkbox',
+	{
+		switch: propsSwitch,
+		valid,
+		invalid: error
+	}
+)
+const { bemCssClasses: bemInputClasses } = useBemModifiers(
 	'vv-input-check__input',
 	{
 		checked: isChecked,
@@ -60,16 +68,16 @@ const { bemCssClasses: bemCheckInputClass } = useBemModifiers(
 		readonly
 	}
 )
-const checkClass = computed(() => {
+const checkClasses = computed(() => {
 	const cssClass = attrs.class as string
 	return {
 		[cssClass]: true,
-		...bemCheckClass.value
+		...bemCheckClasses.value
 	}
 })
-const checkInputClass = computed(() => {
+const inputClasses = computed(() => {
 	return {
-		...bemCheckInputClass.value,
+		...bemInputClasses.value,
 		'focus-visible': focused.value
 	}
 })
@@ -82,7 +90,16 @@ const checkAttrs = computed(() => {
 		...dataAttrs
 	} as LabelHTMLAttributes
 })
-const checkInputAttrs = computed(() => {
+const inputAriaAttrs = computed(() => {
+	const { name } = attrs
+	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
+	return {
+		'aria-label': name,
+		'aria-checked': isChecked.value,
+		...dataAttrs
+	}
+})
+const inputAttrs = computed(() => {
 	const { id = '', name = '' } = attrs
 	return {
 		type: 'checkbox',
@@ -92,20 +109,11 @@ const checkInputAttrs = computed(() => {
 		disabled: disabled.value,
 		readonly: readonly.value,
 		checked: isChecked.value,
-		...checkInputAriaAttrs.value
+		...inputAriaAttrs.value
 	} as InputHTMLAttributes
 })
-const checkInputAriaAttrs = computed(() => {
-	const { name } = attrs
-	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
-	return {
-		'aria-label': name,
-		'aria-checked': isChecked.value,
-		...dataAttrs
-	}
-})
 
-//Methods
+// methods
 function onChange() {
 	if (props.binary) {
 		modelValue.value = isChecked.value ? props.falseValue : props.trueValue
@@ -134,11 +142,11 @@ function onClick(event: MouseEvent | undefined) {
 </script>
 
 <template>
-	<label :class="checkClass" v-bind="checkAttrs" @click="onClick">
+	<label :class="checkClasses" v-bind="checkAttrs" @click="onClick">
 		<input
 			ref="input"
-			:class="checkInputClass"
-			v-bind="checkInputAttrs"
+			:class="inputClasses"
+			v-bind="inputAttrs"
 			@input="onChange" />
 		<!-- @slot Use this slot for check label -->
 		<slot :value="modelValue">

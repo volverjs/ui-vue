@@ -15,8 +15,6 @@ Stories of `VvAccordionGroup` with `items`.
 			data() {
 				return {
 					selected: [],
-					content:
-						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 					items: [
 						{
 							name: 'a-1',
@@ -35,7 +33,7 @@ Stories of `VvAccordionGroup` with `items`.
 			},
 			template: `<div class="flex">
 					<div class="w-1/2">
-						<vv-accordion-group data-testId="accordion-group" v-model:modelValue="selected" :items="items" icon-right bordered />
+						<vv-accordion-group data-testId="accordion-group" v-model="selected" :items="items" />
 					</div>
 					<div data-testId="selected" v-if="selected" class="w-1/2 flex justify-end">
 						selected: {{ selected }}
@@ -47,5 +45,5 @@ Stories of `VvAccordionGroup` with `items`.
 
 <Source
 	language="jsx"
-	code={`<vv-accordion-group v-model:modelValue="accordion" :items="items" icon-right bordered />`}
+	code={`<vv-accordion-group v-model="accordion" :items="items" />`}
 />

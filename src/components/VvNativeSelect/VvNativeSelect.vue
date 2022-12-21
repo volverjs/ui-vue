@@ -7,16 +7,22 @@ export default {
 <script setup lang="ts">
 import { computed, toRefs, useSlots } from 'vue'
 import { nanoid } from 'nanoid'
-import { isEmpty } from '../../utils/ObjectUtilities'
-import { VvNativeSelectProps, type Option } from './VvNativeSelect'
-import VvIcon from '../VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
-import { useBemModifiers } from '../../composables/useModifiers'
+import { isEmpty } from '@/utils/ObjectUtilities'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import HintSlotFactory from '@/components/common/HintSlot'
+import { useBemModifiers } from '@/composables/useModifiers'
+import {
+	type Option,
+	VvNativeSelectProps,
+	VvNativeSelectEmits
+} from '@/components/VvNativeSelect'
 
+// props, emit and slots
 const props = defineProps(VvNativeSelectProps)
+const emit = defineEmits(VvNativeSelectEmits)
 const slots = useSlots()
-const emit = defineEmits(['update:modelValue'])
-//Hint component
+
+// hint
 const HintSlot = HintSlotFactory(props, slots)
 
 // data
@@ -33,8 +39,8 @@ const {
 
 const id = nanoid()
 
-//Styles & css classes modifiers
-const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
+// styles
+const { bemCssClasses } = useBemModifiers('vv-select', {
 	modifiers,
 	loading,
 	readonly,
@@ -45,14 +51,37 @@ const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
 	dirty: computed(() => !isEmpty(props.modelValue))
 })
 
+/**
+ * Retrieve the option value based on prop "valueKey" or the option if it is a string
+ * @param {String | Option} option
+ */
 function getValue(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.valueKey]
 }
 
+/**
+ * Retrieve the option label based on prop "labelKey" or the option if it is a string
+ * @param {String | Option} option
+ */
 function getLabel(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.labelKey]
 }
 
+/**
+ * Retrieve the disabled state of an option based on prop "disabled" or the disabled attribute
+ * @param {String | Option} option
+ */
+function getDisabled(option: string | Option): boolean {
+	if (typeof option === 'string' || option.disabled === undefined) {
+		return disabled.value
+	}
+	return option.disabled
+}
+
+/**
+ * Function triggered on select (multple or single mode)
+ * @param event on select event (checkbox or radio input)
+ */
 function onInput(event: Event) {
 	const target = event.target as HTMLSelectElement
 
@@ -71,7 +100,7 @@ function onInput(event: Event) {
 </script>
 
 <template>
-	<div :class="selectClasses">
+	<div :class="bemCssClasses">
 		<label v-if="label" :for="id">{{ label }}</label>
 		<!-- #region native select -->
 		<div class="vv-select__wrapper">
@@ -93,11 +122,7 @@ function onInput(event: Event) {
 				<option
 					v-for="(option, index) in options"
 					:key="index"
-					:disabled="
-						typeof option === 'object'
-							? option.disabled ?? disabled
-							: disabled
-					"
+					:disabled="getDisabled(option)"
 					:value="getValue(option)">
 					{{ getLabel(option) }}
 				</option>

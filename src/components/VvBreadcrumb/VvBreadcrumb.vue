@@ -6,17 +6,17 @@ export default {
 
 <script setup lang="ts">
 import { useBemModifiers } from '@/composables/useModifiers'
-import { VvBreadcrumbProps } from './VvBreadcrumb'
+import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
 const props = defineProps(VvBreadcrumbProps)
-const { bemCssClasses: hasClass } = useBemModifiers('vv-breadcrumb', {
+const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
 	modifiers: props.modifiers,
 	multiline: props.multiline
 })
 </script>
 
 <template>
-	<nav :class="hasClass" aria-label="breadcrumbs">
+	<nav :class="bemCssClasses" aria-label="breadcrumbs">
 		<ol class="vv-breadcrumb__list">
 			<li
 				v-for="(route, index) in routes"
@@ -42,9 +42,7 @@ const { bemCssClasses: hasClass } = useBemModifiers('vv-breadcrumb', {
 							: undefined
 					"
 					itemprop="item">
-					<!-- <span itemprop="name"> -->
 					{{ route.label }}
-					<!-- </span> -->
 				</component>
 				<meta itemprop="position" :content="`${index + 1}`" />
 			</li>

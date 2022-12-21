@@ -14,7 +14,7 @@ export const Template = (args) => ({
 	data() {
 		return {
 			disabled: false,
-			accordion: '',
+			openedId: '',
 			content:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 		}
@@ -23,7 +23,7 @@ export const Template = (args) => ({
 		return { args }
 	},
 	template: `<div class="w-1/2">
-			<vv-accordion-group data-testId="accordion-group" v-bind="args" :disabled="disabled" v-model:modelValue="accordion">
+			<vv-accordion-group data-testId="accordion-group" v-bind="args" :disabled="disabled" v-model="openedId">
 				<vv-accordion data-testId="accordion-1" title="Details 1" :content="content" />
 				<vv-accordion title="Details 2" :content="content" />
 				<vv-accordion title="Details 3" :content="content" />

@@ -8,10 +8,19 @@ export enum PREFIX {
 }
 
 export const VvIconProps = {
+	/**
+	 * Color
+	 */
 	color: String,
+	/**
+	 * Width
+	 */
 	width: {
 		type: [String, Number]
 	},
+	/**
+	 * Height
+	 */
 	height: {
 		type: [String, Number]
 	},

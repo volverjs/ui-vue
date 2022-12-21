@@ -25,7 +25,7 @@ Let's define a story for our accordion with `header` slot.
 					}
 				},
 				template: `<div class="w-1/2">
-						<vv-accordion :content="content"  bordered icon-right>
+						<vv-accordion :content="content">
 							<template #header>
 								<p data-testId="slot" class="text-word-3">{{ title }}</p>
 							</template>
@@ -38,7 +38,7 @@ Let's define a story for our accordion with `header` slot.
 
 <Source
 	language="jsx"
-	code={`<vv-accordion :content="content" bordered icon-right>
+	code={`<vv-accordion :content="content">
 	<template #header>
 		<p class="text-word-3">Slot title</p>
 	</template>
@@ -61,7 +61,7 @@ Let's define a story for our accordion with `details` slot.
 					}
 				},
 				template: `<div class="w-1/2">
-						<vv-accordion title="Slot details" bordered icon-right>
+						<vv-accordion title="Slot details">
 							<template #details>
 								<p data-testId="slot" class='font-light text-word-3'>{{ details }}</p>
 							</template>
@@ -74,7 +74,7 @@ Let's define a story for our accordion with `details` slot.
 
 <Source
 	language="jsx"
-	code={`<vv-accordion title="Slot details" bordered icon-right>
+	code={`<vv-accordion title="Slot details">
 	<template #details>
 		<p class='font-light text-word-3'>{{ details }}</p>
 	</template>

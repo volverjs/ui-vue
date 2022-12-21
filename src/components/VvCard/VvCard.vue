@@ -5,20 +5,20 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { VvCardProps } from './VvCard'
 import { useBemModifiers } from '@/composables/useModifiers'
+import { VvCardProps } from '@/components/VvCard'
 
 // props and attrs
 const props = defineProps(VvCardProps)
 
 // styles
-const { bemCssClasses: hasClass } = useBemModifiers('vv-card', {
+const { bemCssClasses } = useBemModifiers('vv-card', {
 	modifiers: props.modifiers
 })
 </script>
 
 <template>
-	<article :class="hasClass">
+	<article :class="bemCssClasses">
 		<header v-if="$slots.header || title" class="vv-card__header">
 			<slot name="header">
 				{{ title }}

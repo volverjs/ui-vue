@@ -1,5 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+import VvButton from '../../components/VvButton/VvButton.vue'
 
 import { accordionTest } from './accordionTest.js'
 
@@ -7,22 +8,28 @@ import { accordionTest } from './accordionTest.js'
 	title="Components/Accordion"
 	component={VvAccordion}
 	args={{
-		open: false,
 		title: 'Lorem Ipsum',
 		content:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 	}}
 />
 
-export const Template = (args) => ({
-	components: { VvAccordion },
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvAccordion, VvButton },
 	setup() {
 		return { args }
 	},
+	data() {
+		return {
+			open: false
+		}
+	},
 	template: `<div class="w-1/2">
-            <vv-accordion data-testId="accordion" v-bind="args" v-model:open="args.open" />
-        </div>
-        `
+					<vv-accordion data-testId="accordion" v-bind="args" v-model="open" />
+					<vv-button @click="open = !open">Toggle</vv-button>
+				</div>
+				`
 })
 
 # VvAccordion

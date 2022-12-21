@@ -1,5 +1,8 @@
 import { DisabledProps, ModifiersProps } from '@/props'
-import type { PropType, ExtractPropTypes } from 'vue'
+import { type PropType, type ExtractPropTypes, toRefs } from 'vue'
+import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
+import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
+import { VV_BUTTON_GROUP } from '@/constants'
 
 export enum ButtonIconPosition {
 	left = 'left',
@@ -107,5 +110,36 @@ export const VvButtonProps = {
 	}
 }
 
-type _VvButtonPropsType = typeof VvButtonProps
-export type VvButtonPropsTypes = ExtractPropTypes<_VvButtonPropsType>
+export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
+
+/**
+ * Merges local and group props
+ */
+export function useGroupProps(props: VvButtonPropsTypes) {
+	const { group, isInGroup, getGroupOrLocalRef } =
+		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
+
+	// Local props
+	const { iconPosition, icon, label, selected } = toRefs(props)
+
+	// Group props
+	const modelValue = getGroupOrLocalRef('modelValue', props)
+	const disabled = getGroupOrLocalRef('disabled', props)
+	const toggle = getGroupOrLocalRef('toggle', props)
+	const modifiers = getGroupOrLocalRef('modifiers', props)
+
+	return {
+		// Group props
+		modelValue,
+		disabled,
+		toggle,
+		isInGroup,
+		group,
+		modifiers,
+		// Local props
+		selected,
+		iconPosition,
+		icon,
+		label
+	}
+}
