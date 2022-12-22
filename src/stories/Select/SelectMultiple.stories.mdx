@@ -1,5 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvSelect from '../../components/VvSelect/VvSelect.vue'
+import { Template } from './Select.stories.mdx'
+import { selectTest } from './Select.test.ts'
 
 <Meta title="Components/Select/Props/multiple" />
 
@@ -26,35 +28,31 @@ Let's define a story for our `multiple` select.
 />
 
 <Canvas>
-	<Story name="multiple">
-		{() => {
-			return {
-				components: { VvSelect },
-				data() {
-					return {
-						value: '',
-						options: [
-							{
-								label: 'Option 1',
-								value: 1
-							},
-							{
-								label: 'Option 2',
-								value: 2
-							},
-							{
-								label: 'Option 3',
-								value: 3
-							}
-						]
-					}
+	<Story
+		name="multiple"
+		play={selectTest}
+		args={{
+			id: 1,
+			label: 'Label 1',
+			multiple: true,
+			maxValues: 2,
+			value: '',
+			options: [
+				{
+					label: 'Option 1',
+					value: 1
 				},
-				template: `<div class="w-1/2">
-						<vv-select v-model:modelValue="value" :options="options" label="Label 1" multiple />
-						value: {{ value }}
-					</div>`
-			}
-		}}
+				{
+					label: 'Option 2',
+					value: 2
+				},
+				{
+					label: 'Option 3',
+					value: 3
+				}
+			]
+		}}>
+		{Template.bind({})}
 	</Story>
 </Canvas>
 

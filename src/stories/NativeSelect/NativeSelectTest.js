@@ -10,6 +10,11 @@ async function nativeSelectTest({ canvasElement, ...data }) {
 	const select = selectParent.children[1].children[0]
 	expect(select.parentElement).toHaveClass('vv-select__wrapper')
 	userEvent.click(select)
+	data.args.options.forEach((option, index) => {
+		const opt = select[index + 1]
+		opt.selected = true
+		expect(select.value).toBe(JSON.stringify(option.value))
+	})
 	const opt_1 = select[1]
 	opt_1.selected = true
 	expect(select.value).toBe(JSON.stringify(data.args.options[0].value))

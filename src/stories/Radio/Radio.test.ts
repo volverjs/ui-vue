@@ -16,13 +16,11 @@ export async function radioTest(
 		slotContent = null
 	}: RadioConfig = {}
 ) {
-	console.log(data, data.args.id)
 	const radio =
 		(document.getElementById(data.args.id) as HTMLInputElement) ||
 		(document.getElementsByClassName(
 			'vv-input-radio__input'
 		)[0] as HTMLInputElement)
-	console.log({ radio })
 
 	expect(radio).toHaveClass('vv-input-radio__input')
 	className && expect(radio).toHaveClass(className)

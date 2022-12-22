@@ -2,7 +2,7 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvSelect from '../../components/VvSelect/VvSelect.vue'
 import { VvSelectProps } from '../../components/VvSelect/VvSelect'
 import ObjectUtilities from '../../utils/ObjectUtilities'
-import { selectTest } from './Select.test.js'
+import { selectTest } from './Select.test.ts'
 
 <Meta
 	title="Components/Select"
@@ -26,7 +26,7 @@ import { selectTest } from './Select.test.js'
 				value: 3
 			}
 		],
-		'data-testId': 'select'
+		id: 1
 	}}
 />
 
@@ -43,7 +43,9 @@ export const Template = (args) => ({
 	},
 	template: `<div class="w-1/2">
             <vv-select v-bind="args" v-model:modelValue="value" />
-			value: {{ value }}
+			<div id="value">
+				Value: {{ value }}
+			</div>
         </div>`
 })
 
