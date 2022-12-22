@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import { slotsTest } from './accordionTest.js'
 
 <Meta title="Components/Accordion/Slots" />
@@ -24,13 +24,11 @@ Let's define a story for our accordion with `header` slot.
 							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 					}
 				},
-				template: `<div class="w-1/2">
-						<vv-accordion :content="content">
-							<template #header>
-								<p data-testId="slot" class="text-word-3">{{ title }}</p>
-							</template>
-						</vv-accordion>
-					</div>`
+				template: `<vv-accordion :content="content">
+								<template #header>
+									<p data-testId="slot" class="text-word-3">{{ title }}</p>
+								</template>
+							</vv-accordion>`
 			}
 		}}
 	</Story>
@@ -38,10 +36,11 @@ Let's define a story for our accordion with `header` slot.
 
 <Source
 	language="jsx"
-	code={`<vv-accordion :content="content">
-	<template #header>
-		<p class="text-word-3">Slot title</p>
-	</template>
+	code={`
+<vv-accordion :content="content">
+  <template #header>
+    <p class="text-word-3">Slot title</p>
+  </template>
 </vv-accordion>`}
 />
 
@@ -61,12 +60,12 @@ Let's define a story for our accordion with `details` slot.
 					}
 				},
 				template: `<div class="w-1/2">
-						<vv-accordion title="Slot details">
-							<template #details>
-								<p data-testId="slot" class='font-light text-word-3'>{{ details }}</p>
-							</template>
-						</vv-accordion>
-					</div>`
+								<vv-accordion title="Slot details">
+									<template #details>
+										<p data-testId="slot" class='font-light text-word-3'>{{ details }}</p>
+									</template>
+								</vv-accordion>
+							</div>`
 			}
 		}}
 	</Story>
@@ -74,9 +73,10 @@ Let's define a story for our accordion with `details` slot.
 
 <Source
 	language="jsx"
-	code={`<vv-accordion title="Slot details">
-	<template #details>
-		<p class='font-light text-word-3'>{{ details }}</p>
-	</template>
+	code={`
+<vv-accordion title="Slot details">
+  <template #details>
+    <p class='font-light text-word-3'>{{ details }}</p>
+  </template>
 </vv-accordion>`}
 />

@@ -7,6 +7,7 @@ import { unref, type Ref } from 'vue'
  * @param {string} field optional field of obj1 and obj2 (also nested dotted field "prop1.prop12")
  * @returns {boolean}
  */
+// eslint-disable-next-line
 export function equals(obj1: any, obj2: any, field?: string) {
 	if (field)
 		return resolveFieldData(obj1, field) === resolveFieldData(obj2, field)
@@ -19,6 +20,7 @@ export function equals(obj1: any, obj2: any, field?: string) {
  * @param {any} b second literal
  * @returns {boolean}
  */
+// eslint-disable-next-line
 export function deepEquals(a: any, b: any) {
 	if (a === b) return true
 
@@ -76,7 +78,7 @@ export function deepEquals(a: any, b: any) {
  * @param {string} field ex: "prop1" or "prop1.prop12"
  * @returns {boolean}
  */
-export function resolveFieldData(data: { [key: string]: any }, field: string) {
+export function resolveFieldData(data: Record<string, unknown>, field: string) {
 	if (data && Object.keys(data).length && field) {
 		if (field.indexOf('.') === -1) {
 			return data[field]
@@ -89,7 +91,7 @@ export function resolveFieldData(data: { [key: string]: any }, field: string) {
 					return null
 				}
 
-				value = value[fields[i]]
+				value = value[fields[i]] as Record<string, unknown>
 			}
 
 			return value
@@ -103,6 +105,7 @@ export function resolveFieldData(data: { [key: string]: any }, field: string) {
  * @param {any} obj data to check
  * @returns {boolean}
  */
+// eslint-disable-next-line
 export function isFunction(obj: any) {
 	return !!(obj && obj.constructor && obj.call && obj.apply)
 }
@@ -113,7 +116,7 @@ export function isFunction(obj: any) {
  * @param {Array<any>} list array list
  * @returns {number} the index
  */
-export function findIndexInList(value: any, list: Array<any>) {
+export function findIndexInList<Type = unknown>(value: Type, list: Type[]) {
 	let index = -1
 
 	if (list) {
@@ -134,7 +137,7 @@ export function findIndexInList(value: any, list: Array<any>) {
  * @param {Array<any>} list array list
  * @returns {boolean} the index
  */
-export function contains(value: any, list: Array<any>) {
+export function contains<Type = unknown>(value: Type, list: Type[]) {
 	if (value != null && list && list.length) {
 		for (const val of list) {
 			if (equals(value, val)) {
@@ -146,11 +149,11 @@ export function contains(value: any, list: Array<any>) {
 }
 
 /**
- * @param {string | null | undefined | number | Array<any> | object} value element to checj
+ * @param {string | null | undefined | number | Array<unknown> | object} value element to checj
  * @returns {boolean}
  */
 export function isEmpty(
-	value: string | null | undefined | number | Array<any> | object | Ref
+	value: string | null | undefined | number | Array<unknown> | object | Ref
 ) {
 	return ((value) =>
 		value === null ||
@@ -169,7 +172,7 @@ export function isEmpty(
  * @returns {Object}
  */
 export function pickBy(
-	value: { [key: string]: any },
+	value: Record<string, unknown>,
 	predicate: (k: string) => boolean
 ) {
 	return Object.fromEntries(
@@ -183,7 +186,7 @@ export function pickBy(
  * @param {Array<any>} list
  * @returns {Array<any>}
  */
-export function removeFromList(value: any, list: Array<any>) {
+export function removeFromList<Type = unknown>(value: Type, list: Type[]) {
 	//check off
 	const indexElToRemove = findIndexInList(value, list)
 	if (indexElToRemove > -1) {
@@ -197,7 +200,7 @@ export function removeFromList(value: any, list: Array<any>) {
  * @param {any} value
  * @returns {boolean}
  */
-export function isString(value: any) {
+export function isString(value: unknown) {
 	return typeof value === 'string' || value instanceof String
 }
 
@@ -206,8 +209,10 @@ export function isString(value: any) {
  * @param {ComponentObjectPropsOptions} props vue component props
  * @returns {Object}
  */
+// eslint-disable-next-line
 export function propsToObject(props: any) {
-	return Object.keys(props).reduce((initValue: any, value: any) => {
+	// eslint-disable-next-line
+	return Object.keys(props).reduce((initValue: any, value: string) => {
 		if (isFunction(props[value])) {
 			// case prop1: String
 			initValue[value] = props[value]()
@@ -236,7 +241,7 @@ export function propsToObject(props: any) {
  * @param {string} key
  * @return {object[]}
  */
-export function filterArray<T = { [key: string]: any }>(
+export function filterArray<T = Record<string, unknown>>(
 	list: T[],
 	filter: T[] | string[],
 	key: string

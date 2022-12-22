@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { useBemModifiers } from '@/composables/useModifiers'
 import { VvBadgeProps } from '@/components/VvBadge'
 

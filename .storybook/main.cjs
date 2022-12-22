@@ -21,7 +21,6 @@ module.exports = {
 		if (configType === 'PRODUCTION') {
 			config.base = '/ui-vue/'
 		}
-		// config.base = '/storybook/'
 		config.resolve.alias = {
 			...config.resolve.alias,
 			'@': path.resolve(__dirname, '../src')

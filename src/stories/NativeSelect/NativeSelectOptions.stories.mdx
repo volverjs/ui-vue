@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
 import { optionsTest } from './NativeSelectTest.js'
 
@@ -78,5 +78,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="html"
-	code={`<vv-native-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
+	code={`<vv-native-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
 />

@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
-import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import VvCheckGroup from '@/components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
 
 <Meta title="Components/CheckGroup/Slots" component={VvCheckGroup} />
 
@@ -24,12 +24,12 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
 					/**html */
 					`
                     <div class="flex flex-row justify-between">
-                        <vv-check-group v-bind="args" v-model:modelValue="selected">
-                            <vv-check id="o1" name="opts" value="1">Opt 1</vv-check>
-                            <vv-check id="o2" name="opts" value="2">Opt 2</vv-check>
-                            <vv-check id="o3" name="opts" value="3">Opt 3</vv-check>
+                        <vv-check-group v-bind="args" v-model="selected">
+                            <vv-check id="o1" name="opts" value="1">Option 1</vv-check>
+                            <vv-check id="o2" name="opts" value="2">Option 2</vv-check>
+                            <vv-check id="o3" name="opts" value="3">Option 3</vv-check>
                         </vv-check-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong> 
+                        <strong v-if="selected">Selected options: {{selected}} </strong> 
                     </div>
                     `
 			}
@@ -56,18 +56,18 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
 					/**html */
 					`
                     <div class="flex flex-row justify-between">
-                        <vv-check-group v-bind="args" v-model:modelValue="selected">
+                        <vv-check-group v-bind="args" v-model="selected">
                             <template v-slot:default>
-                                <vv-check id="o1" name="opts" value="1">Opt 1</vv-check>
-                                <vv-check id="o2" name="opts" value="2">Opt 2</vv-check>
-                                <vv-check id="o3" name="opts" value="3">Opt 3</vv-check>
+                                <vv-check id="o1" name="opts" value="1">Option 1</vv-check>
+                                <vv-check id="o2" name="opts" value="2">Option 2</vv-check>
+                                <vv-check id="o3" name="opts" value="3">Option 3</vv-check>
                             </template>
                             <template v-slot:hint="slotProps">
-                                <p>Ciao sono lo slot HINT!</p>
-								<p>{{slotProps}}</p> 
+                                <div>Hint label</div>
+								<div>{{slotProps}}</div> 
                             </template>
                         </vv-check-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
                     </div>
                     `
 			}
@@ -95,17 +95,17 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
 					/**html */
 					`
                     <div class="flex flex-row justify-between">
-                        <vv-check-group v-bind="args" v-model:modelValue="selected">
+                        <vv-check-group v-bind="args" v-model="selected">
                             <template v-slot:default>
-                                <vv-check id="o1" name="opts" value="1">Opt 1</vv-check>
-                                <vv-check id="o2" name="opts" value="2">Opt 2</vv-check>
-                                <vv-check id="o3" name="opts" value="3">Opt 3</vv-check>
+                                <vv-check id="o1" name="opts" value="1">Option 1</vv-check>
+                                <vv-check id="o2" name="opts" value="2">Option 2</vv-check>
+                                <vv-check id="o3" name="opts" value="3">Option 3</vv-check>
                             </template>
                             <template v-slot:valid>
-                                <p>Ciao sono lo slot VALID!</p>
+                               Valid message
                             </template>
                         </vv-check-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
                     </div>
                     `
 			}
@@ -133,17 +133,17 @@ import VvCheck from '../../components/VvCheck/VvCheck.vue'
 					/**html */
 					`
                     <div class="flex flex-row justify-between">
-                        <vv-check-group v-bind="args" v-model:modelValue="selected">
+                        <vv-check-group v-bind="args" v-model="selected">
                             <template v-slot:default>
-                                <vv-check id="o1" name="opts" value="1">Opt 1</vv-check>
-                                <vv-check id="o2" name="opts" value="2">Opt 2</vv-check>
-                                <vv-check id="o3" name="opts" value="3">Opt 3</vv-check>
+                                <vv-check id="o1" name="opts" value="1">Option 1</vv-check>
+                                <vv-check id="o2" name="opts" value="2">Option 2</vv-check>
+                                <vv-check id="o3" name="opts" value="3">Option 3</vv-check>
                             </template>
                             <template v-slot:error>
-                                <p>Ciao sono lo slot ERROR!</p>
+                               Error message
                             </template>
                         </vv-check-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
                     </div>
                     `
 			}

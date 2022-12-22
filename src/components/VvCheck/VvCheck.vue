@@ -1,25 +1,12 @@
 <script lang="ts">
 export default {
-	name: 'VvCheck',
-	inheritAttrs: false
+	name: 'VvCheck'
 }
 </script>
 
 <script setup lang="ts">
-import {
-	type InputHTMLAttributes,
-	type LabelHTMLAttributes,
-	computed,
-	useAttrs,
-	ref
-} from 'vue'
-import {
-	contains,
-	equals,
-	pickBy,
-	removeFromList
-} from '@/utils/ObjectUtilities'
-import { useComponentFocus } from '@/composables/focus/useComponentFocus'
+import { computed, ref, watchEffect } from 'vue'
+import { contains, equals, removeFromList } from '@/utils/ObjectUtilities'
 import { useBemModifiers } from '@/composables/useModifiers'
 import {
 	VvCheckProps,
@@ -30,7 +17,6 @@ import {
 // props, emits, slots and attrs
 const props = defineProps(VvCheckProps)
 const emit = defineEmits(VvCheckEvents)
-const attrs = useAttrs()
 
 // data
 const { disabled, readonly, valid, error, propsSwitch, modelValue } =
@@ -39,20 +25,45 @@ const { disabled, readonly, valid, error, propsSwitch, modelValue } =
 // template ref
 const input = ref()
 
-// status
-const { focused } = useComponentFocus(input, emit)
-
 // computed
-const isChecked = computed(() => {
-	if (props.binary) return equals(modelValue.value, props.trueValue)
+const localModelValue = computed({
+	get() {
+		if (props.binary) {
+			return modelValue.value as boolean
+		}
+		return Array.isArray(modelValue.value)
+			? contains(props.value, modelValue.value)
+			: equals(props.value, modelValue.value)
+	},
+	set(newValue) {
+		if (props.binary) {
+			modelValue.value = newValue
+			return
+		}
+		if (Array.isArray(modelValue.value)) {
+			modelValue.value = !isChecked.value
+				? [...modelValue.value, props.value]
+				: removeFromList(props.value, modelValue.value)
+			return
+		}
+		modelValue.value = modelValue.value === null ? props.value : null
+		emit('change', newValue)
+	}
+})
 
+const isChecked = computed(() => {
+	if (props.binary) {
+		return props.trueValue !== undefined
+			? modelValue.value === props.trueValue
+			: modelValue.value !== null
+	}
 	return Array.isArray(modelValue.value)
 		? contains(props.value, modelValue.value)
 		: equals(props.value, modelValue.value)
 })
 
 // styles
-const { bemCssClasses: bemCheckClasses } = useBemModifiers(
+const { bemCssClasses: bemlabelClasses } = useBemModifiers(
 	'vv-input-checkbox',
 	{
 		switch: propsSwitch,
@@ -68,86 +79,32 @@ const { bemCssClasses: bemInputClasses } = useBemModifiers(
 		readonly
 	}
 )
-const checkClasses = computed(() => {
-	const cssClass = attrs.class as string
-	return {
-		[cssClass]: true,
-		...bemCheckClasses.value
-	}
-})
-const inputClasses = computed(() => {
-	return {
-		...bemInputClasses.value,
-		'focus-visible': focused.value
-	}
-})
-const checkAttrs = computed(() => {
-	const { id, name, style } = attrs
-	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('data-'))
-	return {
-		for: (id || name) as string,
-		style,
-		...dataAttrs
-	} as LabelHTMLAttributes
-})
-const inputAriaAttrs = computed(() => {
-	const { name } = attrs
-	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
-	return {
-		'aria-label': name,
-		'aria-checked': isChecked.value,
-		...dataAttrs
-	}
-})
-const inputAttrs = computed(() => {
-	const { id = '', name = '' } = attrs
-	return {
-		type: 'checkbox',
-		id: id || name,
-		name,
-		value: props.value,
-		disabled: disabled.value,
-		readonly: readonly.value,
-		checked: isChecked.value,
-		...inputAriaAttrs.value
-	} as InputHTMLAttributes
+
+const value = computed(() => {
+	return typeof props.value === 'string' ? props.value : undefined
 })
 
-// methods
-function onChange() {
-	if (props.binary) {
-		modelValue.value = isChecked.value ? props.falseValue : props.trueValue
-		return
+watchEffect(() => {
+	if (props.binary && Array.isArray(modelValue.value)) {
+		// eslint-disable-next-line no-console
+		console.warn(
+			`[VvCheck] The model value is an array but the component is in binary mode.`
+		)
 	}
-
-	if (modelValue.value === null) {
-		modelValue.value = [props.value]
-		return
-	}
-
-	if (Array.isArray(modelValue.value)) {
-		modelValue.value = !isChecked.value
-			? [...modelValue.value, props.value]
-			: removeFromList(props.value, modelValue.value)
-		return
-	}
-}
-function onClick(event: MouseEvent | undefined) {
-	if (!disabled.value) {
-		emit('click', event)
-		emit('change', isChecked.value ? props.value : null)
-		focused.value = true
-	}
-}
+})
 </script>
 
 <template>
-	<label :class="checkClasses" v-bind="checkAttrs" @click="onClick">
+	<label :class="bemlabelClasses">
 		<input
 			ref="input"
-			:class="inputClasses"
-			v-bind="inputAttrs"
-			@input="onChange" />
+			v-model="localModelValue"
+			type="checkbox"
+			:true-value="trueValue"
+			:false-value="falseValue"
+			:class="bemInputClasses"
+			:disabled="disabled"
+			:value="value" />
 		<!-- @slot Use this slot for check label -->
 		<slot :value="modelValue">
 			{{ label }}

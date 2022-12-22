@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import { expect } from '@storybook/jest'
-import { userEvent, within } from '@storybook/testing-library'
+import { userEvent } from '@storybook/testing-library'
 import { toHaveNoViolations, axe } from 'jest-axe'
 
 async function disabledTest() {
@@ -16,7 +16,6 @@ async function disabledTest() {
 
 async function readOnlyTest() {
 	const checkInput = document.getElementById('2')
-	const value = document.getElementById('value')
 	console.log(checkInput.modelValue)
 	expect(checkInput).toHaveProperty('readOnly')
 	await expect(checkInput).toHaveClass('vv-input-check__input--readonly')

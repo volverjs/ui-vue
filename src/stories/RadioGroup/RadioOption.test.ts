@@ -15,9 +15,13 @@ function getValueToTest(
 async function radioOptionsTest({ canvasElement, ...data }: PlayAttributes) {
 	const radioGroup = await within(canvasElement).findByRole('radiogroup')
 	const radioGroupWrapper = radioGroup.children[0]
-	const optionParamLabel = data.args.optionLabel || 'label'
-	const optionParamValue = data.args.optionValue || 'value'
-	const options: { [key: string]: string }[] = data.args.options
+	const optionParamLabel = (data.args.optionLabel || 'label') as
+		| string
+		| optionFn
+	const optionParamValue = (data.args.optionValue || 'value') as
+		| string
+		| optionFn
+	const options = data.args.options as Record<string, string>[]
 	options.forEach((option, index: number) => {
 		const radio = radioGroupWrapper.children[index] as HTMLElement
 		const radioValue = radio.children[0]
@@ -31,7 +35,7 @@ async function radioOptionsTest({ canvasElement, ...data }: PlayAttributes) {
 async function arrayOptionsTest({ canvasElement, ...data }: PlayAttributes) {
 	const radioGroup = await within(canvasElement).findByRole('radiogroup')
 	const radioGroupWrapper = radioGroup.children[0]
-	const options: { [key: string]: string }[] = data.args.options
+	const options = data.args.options as Record<string, string>[]
 	options.forEach((option, index: number) => {
 		const radio = radioGroupWrapper.children[index] as HTMLElement
 		const radioValue = radio.children[0]

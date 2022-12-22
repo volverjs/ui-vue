@@ -5,9 +5,11 @@ import { axe } from 'jest-axe'
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
 	namespace jest {
+		// eslint-disable-next-line
 		interface Matchers<R> {
 			toBeClicked: (expected?: HTMLElement) => CustomMatcherResult
 		}
+		// eslint-disable-next-line
 		interface Matchers<R> {
 			toHaveClass: (
 				className: string | string[],

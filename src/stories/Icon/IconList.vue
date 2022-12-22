@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
-import IconsNormal from '../../assets/icons/normal.json'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import IconsNormal from '@/assets/icons/normal.json'
 import { ref, watch, type Ref } from 'vue'
 
 const allIcons = Object.keys(IconsNormal.icons)

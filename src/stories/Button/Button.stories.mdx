@@ -2,9 +2,9 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import { within, userEvent } from '@storybook/testing-library'
 import { axe, toHaveNoViolations } from 'jest-axe'
 import { expect } from '@storybook/jest'
-import { propsToObject } from '../../utils/ObjectUtilities'
-import VvButton from '../../components/VvButton/VvButton.vue'
-import { VvButtonProps } from '../../components/VvButton/VvButton'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import { VvButtonProps } from '@/components/VvButton'
 import { testButton } from './Button.test'
 
 <Meta
@@ -20,18 +20,18 @@ import { testButton } from './Button.test'
 	argTypes={{
 		onClick: { action: 'clicked' },
 		modifiers: {
+			options: [
+				null,
+				'primary',
+				'secondary',
+				'danger',
+				'ghost',
+				'text',
+				'static-light',
+				'static-dark'
+			],
 			control: {
-				type: 'select',
-				options: [
-					null,
-					'primary',
-					'secondary',
-					'danger',
-					'ghost',
-					'text',
-					'static-light',
-					'static-dark'
-				]
+				type: 'select'
 			}
 		},
 		label: {

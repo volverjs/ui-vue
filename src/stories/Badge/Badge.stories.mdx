@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvBadge from '../../components/VvBadge/VvBadge.vue'
+import VvBadge from '@/components/VvBadge/VvBadge.vue'
 import testBadgeVariant from './BadgeTest.js'
 import testDangerBadge from './BadgeTest.js'
 
@@ -11,16 +11,17 @@ import testDangerBadge from './BadgeTest.js'
 			defaultValue: '14',
 			control: { type: 'text' }
 		},
-		color: {
+		modifiers: {
+			options: ['black', 'danger', 'success', 'warning'],
 			control: {
-				type: 'select',
-				options: ['', 'black', 'danger', 'success', 'warning']
+				type: 'select'
 			}
 		}
 	}}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvBadge },
 	setup() {
 		return { args }

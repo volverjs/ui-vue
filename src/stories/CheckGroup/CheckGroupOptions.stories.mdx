@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import VvCheckGroup from '@/components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
 
 import { Template } from './CheckGroup.stories.mdx'
 
@@ -17,9 +17,9 @@ Check group based on list of object list
 		args={{
 			name: 'story-options',
 			options: [
-				{ value: 1, label: 'Mela' },
-				{ value: 2, label: 'Pera' },
-				{ value: 3, label: 'Banana' }
+				{ value: 1, label: 'Option 1' },
+				{ value: 2, label: 'Option 2' },
+				{ value: 3, label: 'Option 3' }
 			]
 		}}>
 		{Template.bind({})}
@@ -33,7 +33,7 @@ Check group based on list of object list
 		name="Options as Array"
 		args={{
 			name: 'story-options-strings',
-			options: ['Primo', 'Secondo', 'Terzo']
+			options: ['First', 'Second', 'Third']
 		}}>
 		{Template.bind({})}
 	</Story>

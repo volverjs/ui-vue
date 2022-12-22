@@ -1,4 +1,4 @@
 export interface PlayAttributes {
 	canvasElement: HTMLElement
-	args: { [key: string]: any }
+	args: Record<string, unknown>
 }

@@ -1,5 +1,5 @@
+import { type PropType, type ExtractPropTypes, toRefs, type Ref } from 'vue'
 import { DisabledProps, ModifiersProps } from '@/props'
-import { type PropType, type ExtractPropTypes, toRefs } from 'vue'
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_BUTTON_GROUP } from '@/constants'
@@ -119,24 +119,26 @@ export function useGroupProps(props: VvButtonPropsTypes) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
 
-	// Local props
+	// local props
 	const { iconPosition, icon, label, selected } = toRefs(props)
 
-	// Group props
+	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props)
-	const disabled = getGroupOrLocalRef('disabled', props)
-	const toggle = getGroupOrLocalRef('toggle', props)
-	const modifiers = getGroupOrLocalRef('modifiers', props)
+	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
+	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
+	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
+		string[] | string
+	>
 
 	return {
-		// Group props
+		// group props
 		modelValue,
 		disabled,
 		toggle,
 		isInGroup,
 		group,
 		modifiers,
-		// Local props
+		// local props
 		selected,
 		iconPosition,
 		icon,

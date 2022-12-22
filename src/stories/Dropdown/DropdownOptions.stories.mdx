@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 
 <Meta title="Components/Dropdown/Props/options" />
 
@@ -58,11 +58,11 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 					}
 				},
 				template: `<div class="h-100 mb-xl">
-						<vv-dropdown v-model:modelValue="value" :options="options" class="w-1/2 ml-lg" />
+						<vv-dropdown v-model="value" :options="options" class="w-1/2 ml-lg" />
 						<div class="flex justify-end">Value: {{ value }}</div>
 					</div>
 					<div class="h-100 pt-lg">
-						<vv-dropdown v-model:modelValue="objectValue" :options="optionsObject" class="w-1/2 ml-lg" />
+						<vv-dropdown v-model="objectValue" :options="optionsObject" class="w-1/2 ml-lg" />
 						<div class="flex justify-end">Value: {{ objectValue }}</div>
 					</div>`
 			}
@@ -72,5 +72,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="html"
-	code={`<vv-dropdown v-model:modelValue="value" :options="options" />`}
+	code={`<vv-dropdown v-model="value" :options="options" />`}
 />

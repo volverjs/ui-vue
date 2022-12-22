@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
+import VvSelect from '@/components/VvSelect/VvSelect.vue'
 
 <Meta title="Components/Select/Props/searchable" />
 
@@ -53,7 +53,7 @@ Let's define a story for our select with props:
 					}
 				},
 				template: `<div class="w-1/2 flex gap-32">
-						<vv-select v-model:modelValue="value" @change:search="searchText = $event" :options="options" label="Label 1" searchable label-no-result="No results" search-placeholder="Search" debounce-search="1000" />
+						<vv-select v-model="value" @change:search="searchText = $event" :options="options" label="Label 1" searchable label-no-result="No results" search-placeholder="Search" debounce-search="1000" />
 						<div class="my-auto">
 							search text: {{ searchText }}
 						</div>
@@ -69,7 +69,7 @@ Let's define a story for our select with props:
 <Source
 	language="html"
 	code={`<vv-select
-	v-model:modelValue="value"
+	v-model="value"
 	:options="options"
 	label="Label 1"
 	searchable

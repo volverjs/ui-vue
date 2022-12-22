@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 
 import { Template } from './Radio.stories.mdx'
 
@@ -20,7 +20,7 @@ import { Template } from './Radio.stories.mdx'
 		name="Invalid"
 		args={{
 			id: 6,
-			label: 'Voglio acquistare questa enciclopedia!',
+			label: 'Accept terms and conditions',
 			name: 'ck6',
 			modelValue: false,
 			error: true
@@ -36,7 +36,7 @@ import { Template } from './Radio.stories.mdx'
 		name="Error with message"
 		args={{
 			id: 7,
-			label: 'Voglio acquistare questa enciclopedia!',
+			label: 'Accept terms and conditions',
 			name: 'ck7',
 			modelValue: false,
 			error: true,
@@ -53,7 +53,7 @@ import { Template } from './Radio.stories.mdx'
 		name="Error with messages"
 		args={{
 			id: 8,
-			label: 'Voglio acquistare questa enciclopedia!',
+			label: 'Accept terms and conditions',
 			name: 'ck8',
 			modelValue: false,
 			error: true,

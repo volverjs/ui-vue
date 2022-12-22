@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import VvCheckGroup from '@/components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
 
 import { Template } from './CheckGroup.stories.mdx'
 
@@ -15,9 +15,9 @@ import { Template } from './CheckGroup.stories.mdx'
 		args={{
 			name: 'story-readonly',
 			options: [
-				{ value: 1, label: 'Mela' },
-				{ value: 2, label: 'Pera' },
-				{ value: 3, label: 'Banana' }
+				{ value: 1, label: 'Option 1' },
+				{ value: 2, label: 'Option 2' },
+				{ value: 3, label: 'Option 3' }
 			],
 			readonly: true
 		}}>

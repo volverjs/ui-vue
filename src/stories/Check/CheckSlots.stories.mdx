@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
 
 <Meta title="Components/Check/Slots" component={VvCheck} />
 
@@ -10,7 +10,7 @@ Slot default define the content of Check
 
 <Source
 	language="jsx"
-	code={'<vv-check name="r1" value="1">My content</vv-check>'}
+	code={'<vv-check name="r1" value="1">My label</vv-check>'}
 />
 
 # Slot default
@@ -22,7 +22,7 @@ Slot default define the content of Check
 				components: { VvCheck },
 				template: `
 					<vv-check name="r1" value="1">
-						My content
+						My label
 					</vv-check>
                     `
 			}
@@ -39,9 +39,9 @@ Slot default define the content of Check
 				components: { VvCheck },
 				template: `
 					<vv-check name="r1" value="1">
-						My content
+						My label
 						<template #hint="{value}">
-							Valore selezionato: {{value}}
+							Selected value: {{value}}
 						</template>
 					</vv-check>
                     `

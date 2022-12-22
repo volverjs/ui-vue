@@ -1,4 +1,4 @@
-import { type ExtractPropTypes, toRefs } from 'vue'
+import { type ExtractPropTypes, toRefs, type Ref } from 'vue'
 import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_ACCORDION_GROUP } from '@/constants'
@@ -37,27 +37,27 @@ export type VvAccordionPropsTypes = ExtractPropTypes<typeof VvAccordionProps>
  */
 export function useGroupProps(
 	props: VvAccordionPropsTypes,
-	emit: (event: typeof VvAccordionEvents[number], value: unknown) => void
+	emit: (event: string, value: unknown) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
 
-	// Local props
+	// local props
 	const { modifiers, title, content } = toRefs(props)
 
-	// Group props
+	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const disabled = getGroupOrLocalRef('disabled', props)
-	const collapse = getGroupOrLocalRef('collapse', props)
+	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
+	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
 
 	return {
-		// Group props
+		// group props
 		modelValue,
 		disabled,
 		isInGroup,
 		group,
 		collapse,
-		// Local props
+		// local props
 		modifiers,
 		title,
 		content

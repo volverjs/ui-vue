@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvCheckGroup from '../../components/VvCheckGroup/VvCheckGroup.vue'
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import VvCheckGroup from '@/components/VvCheckGroup/VvCheckGroup.vue'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
 
 import { Template } from './CheckGroup.stories.mdx'
 
@@ -17,9 +17,9 @@ Change object prop for label
 		args={{
 			name: 'vv-group-options-label-string',
 			options: [
-				{ value: 1, name: 'Mela' },
-				{ value: 2, name: 'Pera' },
-				{ value: 3, name: 'Banana' }
+				{ value: 1, name: 'Option 1' },
+				{ value: 2, name: 'Option 2' },
+				{ value: 3, name: 'Option 3' }
 			],
 			optionLabel: 'name'
 		}}>
@@ -37,11 +37,11 @@ Use function to define option label
 		args={{
 			name: 'vv-group-options-label-function',
 			options: [
-				{ value: 1, name: 'Mela' },
-				{ value: 2, name: 'Pera' },
-				{ value: 3, name: 'Banana' }
+				{ value: 1, name: 'First' },
+				{ value: 2, name: 'Second' },
+				{ value: 3, name: 'Third' }
 			],
-			optionLabel: (o) => `Frutto: ${o.name}`
+			optionLabel: (o) => `${o.name} option`
 		}}>
 		{Template.bind({})}
 	</Story>

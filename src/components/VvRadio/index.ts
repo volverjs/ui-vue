@@ -1,4 +1,4 @@
-import { type ExtractPropTypes, toRefs } from 'vue'
+import { type ExtractPropTypes, type Ref, toRefs } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { ValidProps, ErrorProps } from '@/props'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
@@ -8,7 +8,7 @@ export const VvRadioProps = {
 	...ValidProps,
 	...ErrorProps,
 	/**
-	 * Valore del radio
+	 * Input value
 	 */
 	value: null,
 	modelValue: { type: [Object, Number, Boolean, String] },
@@ -37,19 +37,21 @@ export function useGroupProps(
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_RADIO_GROUP)
 
-	//Local props
+	// local props
 	const { valid, error } = toRefs(props)
 
-	//Global props
+	// global props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const readonly = getGroupOrLocalRef('readonly', props)
-	const disabled = getGroupOrLocalRef('disabled', props)
+	const readonly = getGroupOrLocalRef('readonly', props) as Ref<boolean>
+	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 
 	return {
-		group,
-		isInGroup,
+		// local props
 		valid,
 		error,
+		// global props
+		group,
+		isInGroup,
 		modelValue,
 		readonly,
 		disabled

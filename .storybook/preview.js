@@ -6,17 +6,17 @@ import iconsDetailed from '@/assets/icons/detailed.json'
 import { themes } from '@storybook/theming'
 import '@/stories/stories.scss'
 
-setup((app, ...config) => {
+setup((app) => {
 	const bodyClasses = document.getElementsByTagName('body')[0].classList
-	// inside docs mode, the body class has 'sb-show-main'
 	if (
 		bodyClasses &&
 		!document.getElementById('storybook-docs')?.getAttribute('hidden')
 	) {
-		bodyClasses.add('theme')
+		// inside docs mode, the body class has 'sb-show-main'
 		bodyClasses.remove('theme--dark')
 		bodyClasses.add('theme--light')
 	}
+	bodyClasses.add('theme')
 	app.use(VolverPlugin, {
 		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
 	})

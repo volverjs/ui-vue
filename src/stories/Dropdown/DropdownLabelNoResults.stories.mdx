@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import { Template } from './Dropdown.stories.mdx'
 
 <Meta title="Components/Dropdown/Props/labelNoResults" />
@@ -21,5 +21,5 @@ Let's define a story for our multple `max-values` dropdown.
 
 <Source
 	language="html"
-	code={`<vv-dropdown v-model:modelValue="value" :options="options" label-no-results="Non sono presenti elementi!" />`}
+	code={`<vv-dropdown v-model="value" :options="options" label-no-results="Non sono presenti elementi!" />`}
 />

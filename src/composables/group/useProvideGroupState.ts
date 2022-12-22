@@ -1,5 +1,5 @@
-import type IGroupState from './types/IGroupState'
 import { provide, computed, isRef } from 'vue'
+import type IGroupState from '@/composables/group/types/IGroupState'
 
 /**
  * Condividi parte dello stato del componente con tutti i suoi figli.

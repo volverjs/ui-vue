@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { propsToObject } from '../../utils/ObjectUtilities'
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
-import { VvIconProps } from '../../components/VvIcon/VvIcon'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import { VvIconProps } from '@/components/VvIcon'
 
 <Meta
 	title="Components/Icon"
@@ -12,15 +12,15 @@ import { VvIconProps } from '../../components/VvIcon/VvIcon'
 	}}
 	argTypes={{
 		mode: {
+			options: ['style', 'bg', 'mask', 'svg'],
 			control: {
-				type: 'select',
-				options: ['style', 'bg', 'mask', 'svg']
+				type: 'select'
 			}
 		},
 		prefix: {
+			options: ['simple', 'normal', 'detailed'],
 			control: {
-				type: 'select',
-				options: ['simple', 'normal', 'detailed']
+				type: 'select'
 			}
 		}
 	}}

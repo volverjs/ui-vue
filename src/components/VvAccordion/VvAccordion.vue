@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, useAttrs, ref, defineEmits, defineProps } from 'vue'
+import { computed, useAttrs, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 import { useBemModifiers } from '@/composables/useModifiers'
@@ -28,7 +28,7 @@ const localModelValue = ref(false)
 const isOpen = computed({
 	get: () => {
 		if (isInGroup.value) {
-			if (collapse.value) {
+			if (collapse.value && Array.isArray(modelValue.value)) {
 				return modelValue.value.includes(accordionName)
 			}
 			return modelValue.value === accordionName
@@ -37,11 +37,11 @@ const isOpen = computed({
 		if (modelValue.value === undefined) {
 			return localModelValue.value
 		}
-		return modelValue.value
+		return modelValue.value as boolean
 	},
 	set: (newValue) => {
 		if (isInGroup.value) {
-			if (collapse.value) {
+			if (collapse.value && Array.isArray(modelValue.value)) {
 				if (newValue) {
 					modelValue.value.push(accordionName)
 					return
@@ -55,7 +55,7 @@ const isOpen = computed({
 			return
 		}
 		// localModelValue is used when the accordion is not in a group
-		if (modelValue.value === undefined) {
+		if (modelValue.value === undefined && typeof newValue === 'boolean') {
 			localModelValue.value = newValue
 			return
 		}

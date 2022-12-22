@@ -66,7 +66,7 @@ export function toBem(prefix: string, modifiers: IBemModifiers) {
 
 	return (
 		Object.keys(modifiers).reduce((acc, k) => {
-			const _modifier = unref(modifiers[k] as Ref<any>) || false
+			const _modifier = unref(modifiers[k] as Ref<unknown>) || false
 
 			if (!_modifier) return acc
 

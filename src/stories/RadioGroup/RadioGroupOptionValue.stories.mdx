@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 
 import { radioOptionsTest } from './RadioOption.test.ts'
 import { Template } from './RadioGroup.stories.mdx'
@@ -19,9 +19,9 @@ Change object prop for value
 		args={{
 			name: 'options',
 			options: [
-				{ qta: 1, label: 'Mela' },
-				{ qta: 2, label: 'Pera' },
-				{ qta: 3, label: 'Banana' }
+				{ qta: 1, label: 'Option 1' },
+				{ qta: 2, label: 'Option 2' },
+				{ qta: 3, label: 'Option 3' }
 			],
 			optionValue: 'qta',
 			role: 'radiogroup'
@@ -41,9 +41,9 @@ Use function to define option value
 		args={{
 			name: 'options',
 			options: [
-				{ qta: 1, label: 'Mela' },
-				{ qta: 2, label: 'Pera' },
-				{ qta: 3, label: 'Banana' }
+				{ qta: 1, label: 'Option 1' },
+				{ qta: 2, label: 'Option 2' },
+				{ qta: 3, label: 'Option 3' }
 			],
 			optionValue: (o) => `${o.qta}_${o.label}`,
 			role: 'radiogroup'

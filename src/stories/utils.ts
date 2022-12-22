@@ -1,4 +1,4 @@
-type StorybookGroup = { [key: string]: any }
+type StorybookGroup = Record<string, unknown>
 
 export function toGroup(keys: string[], categoryName: string) {
 	return keys.reduce((acc, k) => {

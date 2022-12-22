@@ -1,4 +1,4 @@
-import { type ExtractPropTypes, toRefs } from 'vue'
+import { type ExtractPropTypes, type Ref, toRefs } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { ValidProps, ErrorProps } from '@/props'
@@ -8,7 +8,7 @@ export const VvCheckProps = {
 	...ValidProps,
 	...ErrorProps,
 	/**
-	 * Valore della check
+	 * Radio value
 	 */
 	value: null,
 	/**
@@ -25,11 +25,11 @@ export const VvCheckProps = {
 	/**
 	 * Value associated with the checked state (returned instead of TRUE)
 	 */
-	trueValue: { type: null, default: true },
+	trueValue: { type: [String, Number, Boolean], default: true },
 	/**
 	 * Value associated with the unchecked state (returned instead of FALSE)
 	 */
-	falseValue: { type: null, default: false },
+	falseValue: { type: [String, Number, Boolean], default: false },
 	/**
 	 * If true, the input will be displayed as a switch
 	 */
@@ -56,8 +56,7 @@ export const VvCheckEvents = [
 	'blur'
 ]
 
-type _VvCheckPropsType = typeof VvCheckProps
-export type VvCheckPropsTypes = ExtractPropTypes<_VvCheckPropsType>
+export type VvCheckPropsTypes = ExtractPropTypes<typeof VvCheckProps>
 
 /**
  * Merges local and group props
@@ -69,20 +68,22 @@ export function useGroupProps(
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_CHECK_GROUP)
 
-	//Local props
+	// local props
 	const { valid, error, switch: propsSwitch } = toRefs(props)
 
-	//Global props
+	// global props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const readonly = getGroupOrLocalRef('readonly', props)
-	const disabled = getGroupOrLocalRef('disabled', props)
+	const readonly = getGroupOrLocalRef('readonly', props) as Ref<boolean>
+	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 
 	return {
-		group,
-		isInGroup,
+		// local props
 		valid,
 		error,
 		propsSwitch,
+		// global props
+		group,
+		isInGroup,
 		modelValue,
 		readonly,
 		disabled

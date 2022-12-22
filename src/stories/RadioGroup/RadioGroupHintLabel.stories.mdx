@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 
 import { labelTest } from './RadioProperty.test.ts'
 
@@ -21,12 +21,12 @@ import { labelTest } from './RadioProperty.test.ts'
 		args={{
 			name: 'vv-group-options-hint-label',
 			options: [
-				{ value: 1, name: 'Mela' },
-				{ value: 2, name: 'Pera' },
-				{ value: 3, name: 'Banana' }
+				{ value: 1, name: 'First' },
+				{ value: 2, name: 'Second' },
+				{ value: 3, name: 'Third' }
 			],
-			optionLabel: (o) => `Frutto: ${o.name}`,
-			hintLabel: 'Prova prova prova prova',
+			optionLabel: (o) => `${o.name} option`,
+			hintLabel: 'Lorem ipsum dolor sit amet',
 			role: 'radiogroup'
 		}}
 	/>

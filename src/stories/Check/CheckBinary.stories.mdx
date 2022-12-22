@@ -1,19 +1,12 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvCheck from '../../components/VvCheck/VvCheck.vue'
+import VvCheck from '@/components/VvCheck/VvCheck.vue'
 import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
-import { Template } from './Check.stories.mdx'
 
-<Meta
-	title="Components/Check/Binary"
-	args={{
-		modelValue: []
-	}}
-	component={VvCheck}
-/>
+<Meta title="Components/Check/Binary" component={VvCheck} />
 
-# Binary True/false (sperimentale)
+# Binary True / false
 
 <Canvas>
 	<Story
@@ -26,26 +19,41 @@ import { Template } from './Check.stories.mdx'
 		}
 		args={{
 			id: 4,
-			label: 'Voglio acquistare questa enciclopedia!',
+			label: 'Accept terms and conditions',
 			name: 'ck4',
-			binary: true,
-			modelValue: false
+			binary: true
 		}}>
-		{Template.bind({})}
+		{(args) => {
+			return {
+				components: { VvCheck },
+				setup() {
+					return { args }
+				},
+				data() {
+					return {
+						checkValue: false
+					}
+				},
+				template: `<div :data-testData="checkValue" :key="checkValue">
+						      <vv-check v-model="checkValue" v-bind="args"  />
+							  <div>Selected value: {{checkValue}}</div>
+						   </div>`
+			}
+		}}
 	</Story>
 </Canvas>
 
-# Binary "Si"/"No" (sperimentale)
+# Binary "Yes" / "No"
 
 <Canvas>
 	<Story
-		name="Binario Si/No (sperimentale)"
+		name="Binary Yes / No"
 		args={{
 			id: 5,
-			label: 'Voglio acquistare questa enciclopedia!',
+			label: 'Accept terms and conditions',
 			name: 'ck5',
 			binary: true,
-			trueValue: 'Si',
+			trueValue: 'Yes',
 			falseValue: 'No'
 		}}>
 		{(args) => {
@@ -59,16 +67,10 @@ import { Template } from './Check.stories.mdx'
 						checkValue: 'No'
 					}
 				},
-				watch: {
-					checkValue: {
-						immediate: true,
-						handler(newValue) {}
-					}
-				},
 				template: `<div :data-testData="checkValue" :key="checkValue">
-						<vv-check v-model:modelValue="checkValue" v-bind="args"  />
-						<strong v-if="checkValue">Valore selez: {{checkValue}} </strong>
-					</div>`
+						      <vv-check v-model="checkValue" v-bind="args"  />
+							  <div>Selected value: {{checkValue}}</div>
+						   </div>`
 			}
 		}}
 	</Story>

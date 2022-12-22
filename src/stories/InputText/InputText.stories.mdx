@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 
 <Meta title="Components/InputText" component={VvInputText} />
 
@@ -14,8 +14,8 @@ export const Template = (args, { argTypes }) => ({
 	data: () => ({ value: args.modelValue || '' }),
 	template: `
 		<div class="flex flex-col justify-between">
-			<vv-input-text v-bind="args" v-model:modelValue="value"/>
-			<strong v-if="value">Valore: {{value}} </strong> 
+			<vv-input-text v-bind="args" v-model="value"/>
+			<strong v-if="value">Value: {{value}} </strong> 
 		</div>
         `
 })
@@ -27,16 +27,16 @@ export const Template = (args, { argTypes }) => ({
 			text: 'text',
 			id: 'vv-input-text',
 			name: 'vv-input-text',
-			placeholder: 'Prova input',
-			label: 'Campo di prova',
-			hintLabel: 'Hint label text',
+			placeholder: 'Placeholder',
+			label: 'Label',
+			hintLabel: 'Hint label',
 			autocomplete: 'off',
 			disabled: false,
 			readonly: false,
 			valid: false,
 			error: false,
 			loading: false,
-			loadingLabel: 'Ciao sono il loading',
+			loadingLabel: 'Loading...',
 			icon: '',
 			iconPosition: null,
 			floating: false,
@@ -47,45 +47,45 @@ export const Template = (args, { argTypes }) => ({
 		}}
 		argTypes={{
 			id: {
-				description: 'Id input element.',
+				description: 'Input id',
 				table: { category: 'Attributes' }
 			},
 			name: {
-				description: 'Nome input element',
+				description: 'Input name',
 				table: { category: 'Attributes' }
 			},
 			placeholder: {
-				description: 'Placeholder input',
+				description: 'Input placeholder',
 				table: { category: 'Attributes' }
 			},
 			iconPosition: {
+				options: [null, 'left', 'right'],
 				control: {
-					type: 'select',
-					options: [null, 'left', 'right']
+					type: 'select'
 				},
 				table: { category: 'Attributes' }
 			},
 			type: {
+				options: ['text', 'password', 'date', 'datetime-local'],
 				control: {
-					type: 'select',
-					options: ['text', 'password', 'date', 'datetime-local']
+					type: 'select'
 				},
 				table: { category: 'Attributes' }
 			},
 			minlength: {
-				description: 'Lunghezza minima testo',
+				description: 'Min length',
 				table: { category: 'Attributes' }
 			},
 			maxlength: {
-				description: 'Lunghezza massima testo',
+				description: 'Max length',
 				table: { category: 'Attributes' }
 			},
 			min: {
-				description: 'Valore minimo',
+				description: 'Min value',
 				table: { category: 'Attributes' }
 			},
 			max: {
-				description: 'Valore massimo',
+				description: 'Max value',
 				table: { category: 'Attributes' }
 			}
 		}}>

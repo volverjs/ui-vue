@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { propsToObject } from '../../utils/ObjectUtilities'
-import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
-import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvBreadcrumb from '@/components/VvBreadcrumb/VvBreadcrumb.vue'
+import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
 <Meta
 	title="Components/Breadcrumb"
@@ -32,7 +32,9 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template: `<vv-breadcrumb v-bind="args" />`
+	template: `<div class="bg-surface p-lg">
+			     <vv-breadcrumb v-bind="args" />
+			   </div>`
 })
 
 # VvBreadcrumb

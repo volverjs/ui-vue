@@ -1,9 +1,9 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 import { toGroup } from '../utils'
-import { propsToObject } from '../../utils/ObjectUtilities'
-import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
-import { VvTextareaProps } from '../../components/VvTextarea/VvTextarea'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
+import { VvTextareaProps } from '@/components/VvTextarea'
 
 <Meta title="Components/Textarea" component={VvTextarea} />
 
@@ -14,12 +14,7 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ value: args.modelValue || '' }),
-	template: `
-		<div class="flex flex-col justify-between">
-			<vv-textarea v-bind="args" v-model:modelValue="value"/>
-			<strong v-if="value">Valore: {{value}} </strong> 
-		</div>
-        `
+	template: `<vv-textarea v-bind="args" v-model="value"/><div v-if="value">Value: {{value}}</div>`
 })
 
 # VvTextarea

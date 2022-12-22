@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
-import { VvNativeSelectProps } from '../../components/VvNativeSelect/VvNativeSelect'
-import { propsToObject } from '../../utils/ObjectUtilities'
+import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
+import { VvNativeSelectProps } from '@/components/VvNativeSelect'
+import { propsToObject } from '@/utils/ObjectUtilities'
 import { nativeSelectTest } from './NativeSelectTest.js'
 
 <Meta
@@ -40,7 +40,7 @@ export const Template = (args) => ({
 		}
 	},
 	template: `<div class="w-1/2">
-            <vv-native-select v-bind="args" v-model:modelValue="selectValue" />
+            <vv-native-select v-bind="args" v-model="selectValue" />
 			value: {{ selectValue }}
         </div>`
 })

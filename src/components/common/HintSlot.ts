@@ -2,6 +2,7 @@ import {
 	type Component,
 	type ExtractPropTypes,
 	type Slots,
+	type Ref,
 	computed,
 	toRefs,
 	h
@@ -85,8 +86,12 @@ export function HintSlotFactory(
 				error,
 				errorLabel
 			} = props
-			const loading = resolveFieldData(props, 'loading')
-			const loadingLabel = resolveFieldData(props, 'loadingLabel')
+			const loading = resolveFieldData(props, 'loading') as
+				| Ref<boolean>
+				| undefined
+			const loadingLabel = resolveFieldData(props, 'loadingLabel') as
+				| Ref<string>
+				| undefined
 
 			const hasErrors = computed(() => {
 				//No error

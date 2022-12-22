@@ -1,13 +1,9 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvAccordionGroup from '../../components/VvAccordionGroup/VvAccordionGroup.vue'
-import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
+import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import { accordionGroupTest } from './accordionGroupTest.js'
 
-<Meta
-	title="Components/AccordionGroup"
-	component={VvAccordionGroup}
-	args={{}}
-/>
+<Meta title="Components/AccordionGroup" component={VvAccordionGroup} />
 
 export const Template = (args) => ({
 	components: { VvAccordionGroup, VvAccordion },
@@ -22,13 +18,11 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template: `<div class="w-1/2">
-			<vv-accordion-group data-testId="accordion-group" v-bind="args" :disabled="disabled" v-model="openedId">
-				<vv-accordion data-testId="accordion-1" title="Details 1" :content="content" />
-				<vv-accordion title="Details 2" :content="content" />
-				<vv-accordion title="Details 3" :content="content" />
-			</vv-accordion-group>
-        </div>`
+	template: `<vv-accordion-group data-testId="accordion-group" v-bind="args" :disabled="disabled" v-model="openedId">
+					<vv-accordion data-testId="accordion-1" title="Details 1" :content="content" />
+					<vv-accordion title="Details 2" :content="content" />
+					<vv-accordion title="Details 3" :content="content" />
+				</vv-accordion-group>`
 })
 
 # VvAccordionGroup

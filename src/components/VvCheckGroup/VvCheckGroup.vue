@@ -47,7 +47,7 @@ const { bemCssClasses: hasClass } = useBemModifiers('vv-input-checkbox-group', {
 })
 
 // methods
-const getOptionProps = (option: any, oIndex: number) => {
+const getOptionProps = (option: unknown, oIndex: number) => {
 	return {
 		id: `${props.name}_opt${oIndex}`,
 		name: props.name,

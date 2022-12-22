@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
-import { VvDropdownProps } from '../../components/VvDropdown/VvDropdown'
-import { propsToObject } from '../../utils/ObjectUtilities'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import { VvDropdownProps } from '@/components/VvDropdown'
+import { propsToObject } from '@/utils/ObjectUtilities'
 
 <Meta
 	title="Components/Dropdown"
@@ -36,7 +36,7 @@ export const Template = (args) => ({
 		}
 	},
 	template: `<div class="mb-lg">Value: {{ value }}</div>
-		<vv-dropdown v-bind="args" v-model:modelValue="value" class="w-1/2 ml-lg" />
+		<vv-dropdown v-bind="args" v-model="value" class="w-1/2 ml-lg" />
 		`
 })
 
