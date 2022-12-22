@@ -1,15 +1,10 @@
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { expect } from '@/test/expect'
 import { userEvent } from '@storybook/testing-library'
-import type { PlayAttributes } from '@/test/types'
-
-interface SelectConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-}
 
 export async function selectTest(
 	{ ...data }: PlayAttributes,
-	{ isClickDisabled = false, className = null }: SelectConfig = {}
+	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
 	// classes test
 	const selectParent = document.getElementById(data.args.id)

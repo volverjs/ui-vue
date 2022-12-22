@@ -1,13 +1,6 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within, userEvent } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
-
-export interface TextareaConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-	customText?: string | null
-	customElement?: HTMLElement | HTMLOrSVGElement | null
-}
 
 export async function textareaTest(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
@@ -15,7 +8,7 @@ export async function textareaTest(
 		isClickDisabled = false,
 		className = null,
 		customText = null
-	}: TextareaConfig = {}
+	}: ComponentConfig = {}
 ) {
 	const textareaWrapperParent = await within(canvasElement).findByTestId(
 		'textarea'

@@ -1,15 +1,11 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 import { radioGroupTest } from './RadioProperty.test'
 
-interface RadioConfig {
-	className?: string
-}
-
 async function slotsTest(
 	{ canvasElement, ...args }: PlayAttributes = {} as PlayAttributes,
-	{ className }: RadioConfig = {} as RadioConfig
+	{ className }: ComponentConfig = {} as ComponentConfig
 ) {
 	const radioGroupParent = await within(canvasElement).findByRole(
 		'radiogroup'

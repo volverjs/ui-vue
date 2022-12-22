@@ -1,8 +1,7 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within, userEvent } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 import { textareaTest } from './TextareaMain.test'
-import type { TextareaConfig } from './TextareaMain.test'
 
 export async function autoclearTest({
 	canvasElement,
@@ -20,7 +19,7 @@ export async function autoclearTest({
 
 export async function hintLabelTest(
 	{ canvasElement, ...data }: PlayAttributes,
-	{ className }: TextareaConfig
+	{ className }: ComponentConfig
 ) {
 	const textareaWrapperParent = await within(canvasElement).findByTestId(
 		'textarea'
@@ -78,7 +77,7 @@ export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
 
 export async function iconTest(
 	{ canvasElement, ...data }: PlayAttributes,
-	customElement: TextareaConfig
+	customElement: ComponentConfig
 ) {
 	const icon = customElement || document.querySelector('svg')
 	expect(icon.customElement || icon).toHaveClass([

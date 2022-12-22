@@ -1,15 +1,10 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 
-interface ButtonConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-}
-
 export async function testButton(
 	{ canvasElement }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false, className = null }: ButtonConfig = {}
+	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
 	const button = await within(canvasElement).findByRole('button')
 	if (isClickDisabled) {
@@ -49,7 +44,7 @@ export async function testButtonWithIconOnly(playAttributes: PlayAttributes) {
 
 export async function testButtonLink(
 	playAttributes: PlayAttributes,
-	{ isClickDisabled = false, className = null }: ButtonConfig = {}
+	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
 	const button = await within(playAttributes.canvasElement).findByRole(
 		'button'

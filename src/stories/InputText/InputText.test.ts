@@ -1,13 +1,6 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within, userEvent } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
-
-interface InputTextConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-	customText?: string | null
-	customElement?: HTMLElement | HTMLOrSVGElement | null
-}
 
 export async function testInputText(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
@@ -15,7 +8,7 @@ export async function testInputText(
 		isClickDisabled = false,
 		className = null,
 		customText = null
-	}: InputTextConfig = {}
+	}: ComponentConfig = {}
 ) {
 	const inputTextWrapperParent = await within(canvasElement).findByTestId(
 		'input-text'
@@ -107,7 +100,7 @@ export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
 
 export async function iconTest(
 	{ canvasElement, ...data }: PlayAttributes,
-	customElement: InputTextConfig
+	customElement: ComponentConfig
 ) {
 	const icon = customElement || document.querySelector('svg')
 	expect(icon.customElement || icon).toHaveClass([

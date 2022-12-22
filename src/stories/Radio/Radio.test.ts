@@ -1,12 +1,6 @@
-import type { PlayAttributes } from '@/test/types'
-import { within, userEvent } from '@storybook/testing-library'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
+import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
-
-interface RadioConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-	slotContent?: string | null
-}
 
 export async function radioTest(
 	{ ...data }: PlayAttributes = {} as PlayAttributes,
@@ -14,7 +8,7 @@ export async function radioTest(
 		isClickDisabled = false,
 		className = null,
 		slotContent = null
-	}: RadioConfig = {}
+	}: ComponentConfig = {}
 ) {
 	const radio =
 		(document.getElementById(data.args.id) as HTMLInputElement) ||
@@ -68,7 +62,7 @@ export async function hintLabelTest({
 	await radioTest({ canvasElement, ...data })
 }
 
-export async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
+export async function slotsTest({ canvasElement }: PlayAttributes) {
 	const inputTextWrapperParent = await within(canvasElement).findByTestId(
 		'input-text'
 	)

@@ -1,14 +1,6 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
-
-interface RadioConfig {
-	isClickDisabled?: boolean
-	isVertical?: boolean
-	className?: string | string[] | null
-	child?: number
-	propName?: string
-}
 
 async function radioGroupTest(
 	{ canvasElement }: PlayAttributes = {} as PlayAttributes,
@@ -16,7 +8,7 @@ async function radioGroupTest(
 		isClickDisabled = false,
 		className = null,
 		isVertical = false
-	}: RadioConfig = {}
+	}: ComponentConfig = {}
 ) {
 	const radioGroupParent = await within(canvasElement).findByRole(
 		'radiogroup'
@@ -52,7 +44,7 @@ async function radioGroupTest(
 
 async function labelTest(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
-	{ child = 0, propName = '' }: RadioConfig = {}
+	{ child = 0, propName = '' }: ComponentConfig = {}
 ) {
 	const radioGroupParent = await within(canvasElement).findByRole(
 		'radiogroup'

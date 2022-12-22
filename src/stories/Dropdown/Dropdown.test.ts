@@ -1,15 +1,10 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 
-interface DropdownConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-}
-
 export async function dropdownTest(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false, className = null }: DropdownConfig = {}
+	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
 	const dropdown = await within(canvasElement).findByRole('listbox')
 

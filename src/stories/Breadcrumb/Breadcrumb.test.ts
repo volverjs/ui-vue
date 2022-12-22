@@ -1,13 +1,9 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { expect } from '@/test/expect'
-
-interface BreadcrumbConfig {
-	className?: string | string[] | null
-}
 
 export async function breadcrumbTest(
 	{ ...data }: PlayAttributes = {} as PlayAttributes,
-	{ className = null }: BreadcrumbConfig = {}
+	{ className = null }: ComponentConfig = {}
 ) {
 	const breadcrumb = document.getElementsByClassName('vv-breadcrumb')[0]
 
