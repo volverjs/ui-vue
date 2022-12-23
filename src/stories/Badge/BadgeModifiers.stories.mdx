@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvBadge from '../../components/VvBadge/VvBadge.vue'
 import VvButton from '../../components/VvButton/VvButton.vue'
+import { badgeTest } from './Badge.test.ts'
 
 <Meta title="Components/Badge/Props/modifiers" />
 
@@ -9,7 +10,7 @@ import VvButton from '../../components/VvButton/VvButton.vue'
 Let's define a story for our `rounded` badge.
 
 <Canvas>
-	<Story name="rounded">
+	<Story name="rounded" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge, VvButton },
@@ -24,7 +25,7 @@ Let's define a story for our `rounded` badge.
 Let's define a story for our `outline` badge.
 
 <Canvas>
-	<Story name="outline">
+	<Story name="outline" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge, VvButton },
@@ -39,7 +40,7 @@ Let's define a story for our `outline` badge.
 Let's define a story for our `ghost` badge.
 
 <Canvas>
-	<Story name="ghost">
+	<Story name="ghost" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge, VvButton },
@@ -54,7 +55,7 @@ Let's define a story for our `ghost` badge.
 Let's define a story for our `sm` badge.
 
 <Canvas>
-	<Story name="sm">
+	<Story name="sm" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge, VvButton },

@@ -1,6 +1,7 @@
 export interface PlayAttributes {
 	canvasElement: HTMLElement
 	args: { [key: string]: any }
+	name?: string
 }
 
 interface ComponentConfig {
