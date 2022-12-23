@@ -1,30 +1,30 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 
-<Meta title="Components/Check" component={VvCheck} />
+<Meta title="Components/Checkbox" component={VvCheckbox} />
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
-	components: { VvCheck },
+	components: { VvCheckbox },
 	setup() {
 		return { args }
 	},
 	data: () => ({ ckValue: null }),
 	template: `
 		<div :data-testData="ckValue" data-testId="checkbox">
-			<vv-check v-bind="args" v-model="ckValue"/>
+			<vv-checkbox v-bind="args" v-model="ckValue"/>
 			<div>Selected value: {{ckValue}}</div> 
 		</div>
         `
 })
 
-<Source language="jsx" code={'<vv-check/>'} />
+<Source language="jsx" code={'<vv-checkbox/>'} />
 
 <Canvas>
 	<Story
-		name="vv-check"
+		name="vv-checkbox"
 		args={{
 			id: 1,
 			label: 'Option 1',
@@ -52,4 +52,4 @@ export const Template = (args, { argTypes }) => ({
 	</Story>
 </Canvas>
 
-<ArgsTable story="vv-check" />
+<ArgsTable story="vv-checkbox" />

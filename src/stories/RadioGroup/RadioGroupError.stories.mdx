@@ -15,15 +15,15 @@ import { Template } from './RadioGroup.stories.mdx'
 		name="Error"
 		play={async (ctx) => {
 			radioGroupTest(ctx, {
-				className: 'vv-input-radio-group--invalid'
+				className: 'vv-radio-group--invalid'
 			})
 		}}
 		args={{
 			name: 'error',
 			options: [
-				{ value: 1, name: 'First' },
-				{ value: 2, name: 'Second' },
-				{ value: 3, name: 'Third' }
+				{ value: 1, label: 'Option 1' },
+				{ value: 2, label: 'Option 2' },
+				{ value: 3, label: 'Option 3' }
 			],
 			optionLabel: (o) => `${o.name} option`,
 			error: true,

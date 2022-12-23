@@ -1,16 +1,16 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 
-import { Template } from './Check.stories.mdx'
+import { Template } from './Checkbox.stories.mdx'
 
 <Meta
-	title="Components/Check/HintLabel"
+	title="Components/Checkbox/HintLabel"
 	args={{
 		modelValue: []
 	}}
-	component={VvCheck}
+	component={VvCheckbox}
 />
 
 # Hint label
@@ -23,7 +23,7 @@ import { Template } from './Check.stories.mdx'
 			label: 'Accept terms and conditions',
 			name: 'ck9',
 			modelValue: false,
-			hintLabel: 'Aiuto! Son qui!'
+			hintLabel: 'Lorem ipsum dolor sit amet'
 		}}>
 		{Template.bind({})}
 	</Story>

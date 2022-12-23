@@ -6,7 +6,7 @@ import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './Radio.stories.mdx'
 
 <Meta
-	title="Components/RadioButton/HintLabel"
+	title="Components/Radio/HintLabel"
 	args={{
 		modelValue: null
 	}}
@@ -19,10 +19,9 @@ import { Template } from './Radio.stories.mdx'
 	<Story
 		name="HintLabel"
 		args={{
-			id: 1,
-			label: 'opzione 1',
+			label: 'Option 1',
+			hintLabel: 'Lorem ipsum dolor sit amet',
 			name: 'ck1',
-			disabled: true,
 			value: 1
 		}}>
 		{Template.bind({})}

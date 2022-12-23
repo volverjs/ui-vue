@@ -23,10 +23,18 @@ export const VvNativeSelectProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	/**
-	 * modelValue can be an Object, a String or an Array of Object/String
+	 * Input id
+	 */
+	id: String,
+	/**
+	 * Input name
+	 */
+	name: { type: String, required: true },
+	/**
+	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
 	modelValue: {
-		type: [String, Object],
+		type: [String, Number, Boolean, Object, Array],
 		required: true
 	},
 	/**

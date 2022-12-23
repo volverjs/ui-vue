@@ -105,8 +105,8 @@ const labelValue = computed(() => {
 	// #region multiple mode
 	if (
 		props.multiple &&
-		props.modelValue?.length &&
-		Array.isArray(props.modelValue)
+		Array.isArray(props.modelValue) &&
+		props.modelValue?.length
 	) {
 		if (isOptionsObjects.value) {
 			// filter options by selected values

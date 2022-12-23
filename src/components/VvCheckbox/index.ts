@@ -1,14 +1,23 @@
 import { type ExtractPropTypes, type Ref, toRefs } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
-import { ValidProps, ErrorProps } from '@/props'
+import { ValidProps, ErrorProps, HintProps } from '@/props'
 import { VV_CHECK_GROUP } from '@/constants'
 
-export const VvCheckProps = {
+export const VvCheckboxProps = {
 	...ValidProps,
 	...ErrorProps,
+	...HintProps,
 	/**
-	 * Radio value
+	 * Input id
+	 */
+	id: String,
+	/**
+	 * Input name
+	 */
+	name: { type: String, required: true },
+	/**
+	 * Input value
 	 */
 	value: null,
 	/**
@@ -17,23 +26,7 @@ export const VvCheckProps = {
 	 * If binary the input value can be an Object, a Boolean or a Number
 	 * If not binary the input value must be an Array
 	 */
-	modelValue: null,
-	/**
-	 * If true, the input will be displayed as a binary input
-	 */
-	binary: Boolean,
-	/**
-	 * Value associated with the checked state (returned instead of TRUE)
-	 */
-	trueValue: { type: [String, Number, Boolean], default: true },
-	/**
-	 * Value associated with the unchecked state (returned instead of FALSE)
-	 */
-	falseValue: { type: [String, Number, Boolean], default: false },
-	/**
-	 * If true, the input will be displayed as a switch
-	 */
-	switch: Boolean,
+	modelValue: [Object, Number, Boolean, String],
 	/**
 	 * Input name
 	 */
@@ -45,25 +38,31 @@ export const VvCheckProps = {
 	/**
 	 * If true, the input will be readonly
 	 */
-	readonly: Boolean
+	readonly: Boolean,
+	/**
+	 * Value associated with the checked state (returned instead of TRUE)
+	 */
+	trueValue: { type: [String, Number, Boolean], default: undefined },
+	/**
+	 * Value associated with the unchecked state (returned instead of FALSE)
+	 */
+	falseValue: { type: [String, Number, Boolean], default: undefined },
+	/**
+	 * If true, the input will be displayed as a switch
+	 */
+	switch: Boolean
 }
 
-export const VvCheckEvents = [
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-]
+export const VvCheckboxEvents = ['click', 'update:modelValue', 'change', 'blur']
 
-export type VvCheckPropsTypes = ExtractPropTypes<typeof VvCheckProps>
+export type VvCheckboxPropsTypes = ExtractPropTypes<typeof VvCheckboxProps>
 
 /**
  * Merges local and group props
  */
 export function useGroupProps(
-	props: VvCheckPropsTypes,
-	emit: (event: typeof VvCheckEvents[number], value: unknown) => void
+	props: VvCheckboxPropsTypes,
+	emit: (event: typeof VvCheckboxEvents[number], value: unknown) => void
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_CHECK_GROUP)

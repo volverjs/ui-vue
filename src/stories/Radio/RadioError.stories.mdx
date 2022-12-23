@@ -6,7 +6,7 @@ import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './Radio.stories.mdx'
 
 <Meta
-	title="Components/RadioButton/Error"
+	title="Components/Radio/Error"
 	args={{
 		modelValue: null
 	}}
@@ -17,22 +17,6 @@ import { Template } from './Radio.stories.mdx'
 
 <Canvas>
 	<Story
-		name="Invalid"
-		args={{
-			id: 6,
-			label: 'Accept terms and conditions',
-			name: 'ck6',
-			modelValue: false,
-			error: true
-		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-# Error with message
-
-<Canvas>
-	<Story
 		name="Error with message"
 		args={{
 			id: 7,
@@ -40,7 +24,7 @@ import { Template } from './Radio.stories.mdx'
 			name: 'ck7',
 			modelValue: false,
 			error: true,
-			errorLabel: 'Sbagliato!'
+			errorLabel: 'Error label'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -57,7 +41,7 @@ import { Template } from './Radio.stories.mdx'
 			name: 'ck8',
 			modelValue: false,
 			error: true,
-			errorLabel: ['Sbagliato!', 'Mona!']
+			errorLabel: ['First error', 'Second error']
 		}}>
 		{Template.bind({})}
 	</Story>

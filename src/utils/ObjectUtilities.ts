@@ -149,11 +149,19 @@ export function contains<Type = unknown>(value: Type, list: Type[]) {
 }
 
 /**
- * @param {string | null | undefined | number | Array<unknown> | object} value element to checj
+ * @param {boolean | string | null | undefined | number | Array<unknown> | object} value element to checj
  * @returns {boolean}
  */
 export function isEmpty(
-	value: string | null | undefined | number | Array<unknown> | object | Ref
+	value:
+		| boolean
+		| string
+		| null
+		| undefined
+		| number
+		| unknown[]
+		| object
+		| Ref
 ) {
 	return ((value) =>
 		value === null ||

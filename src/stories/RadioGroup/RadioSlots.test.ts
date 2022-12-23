@@ -15,12 +15,10 @@ async function slotsTest(
 		'radiogroup'
 	)
 	const slot = radioGroupParent.lastElementChild as HTMLElement
-	expect(slot).toHaveClass('vv-input-radio-group__hint')
+	expect(slot).toHaveClass('vv-radio-group__hint')
 	expect(slot.innerText).toBeTruthy()
 	if (className) {
-		expect(radioGroupParent).toHaveClass(
-			`vv-input-radio-group--${className}`
-		)
+		expect(radioGroupParent).toHaveClass(`vv-radio-group--${className}`)
 	}
 	expect(slot).toHaveNoViolations()
 	await radioGroupTest({ canvasElement, ...args })

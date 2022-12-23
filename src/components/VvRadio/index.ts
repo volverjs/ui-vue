@@ -1,29 +1,44 @@
 import { type ExtractPropTypes, type Ref, toRefs } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-import { ValidProps, ErrorProps } from '@/props'
+import { ValidProps, ErrorProps, HintProps } from '@/props'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_RADIO_GROUP } from '@/constants'
 
 export const VvRadioProps = {
 	...ValidProps,
 	...ErrorProps,
+	...HintProps,
+	/**
+	 * Input id
+	 */
+	id: String,
+	/**
+	 * Input name
+	 */
+	name: { type: String, required: true },
 	/**
 	 * Input value
 	 */
 	value: null,
-	modelValue: { type: [Object, Number, Boolean, String] },
-	label: { type: String, default: '' },
+	/**
+	 * Input value
+	 */
+	modelValue: [Object, Number, Boolean, String],
+	/**
+	 * Input name
+	 */
+	label: String,
+	/**
+	 * If true, the input will be disabled
+	 */
 	disabled: Boolean,
+	/**
+	 * If true, the input will be readonly
+	 */
 	readonly: Boolean
 }
 
-export const VvRadioEvents = [
-	'click',
-	'update:modelValue',
-	'change',
-	'focus',
-	'blur'
-]
+export const VvRadioEvents = ['click', 'update:modelValue', 'change', 'blur']
 
 export type VvRadioPropsType = ExtractPropTypes<typeof VvRadioProps>
 

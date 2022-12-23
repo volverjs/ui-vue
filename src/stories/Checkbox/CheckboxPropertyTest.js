@@ -21,7 +21,7 @@ async function checkTest({ canvasElement, functions, ...data }) {
 async function booleanTest(checkboxParent) {
 	const checkbox = document.getElementById(`${checkboxParent.args.id}`)
 	console.log([checkboxParent.checkboxParent.attributes[0]])
-	// expect(checkboxParent.children[0]).toHaveClass('vv-input-checkbox')
+	// expect(checkboxParent.children[0]).toHaveClass('vv-checkbox')
 	checkbox.addEventListener('change', (event) => {
 		expect(event).toBeTruthy
 	})
@@ -34,7 +34,7 @@ async function booleanTest(checkboxParent) {
 
 async function binaryTest() {
 	const checkbox = document.getElementById('5')
-	expect(checkbox.parentElement).toHaveClass('vv-input-checkbox')
+	expect(checkbox.parentElement).toHaveClass('vv-checkbox')
 	// userEvent.click(checkbox)
 	userEvent.click(checkbox)
 	accessibilityTest(checkbox)

@@ -42,7 +42,7 @@ useProvideGroupState(groupState)
 const { getOptionLabel, getOptionValue } = useOptions(props)
 
 // styles
-const { bemCssClasses: groupClass } = useBemModifiers('vv-input-radio-group', {
+const { bemCssClasses: groupClass } = useBemModifiers('vv-radio-group', {
 	horizontal: computed(() => !vertical.value),
 	valid,
 	invalid: error
@@ -62,7 +62,7 @@ const getOptionProps = (option: unknown, index: number) => {
 <template>
 	<fieldset :class="groupClass">
 		<legend v-if="label" v-text="label" />
-		<div class="vv-input-radio-group__wrapper">
+		<div class="vv-radio-group__wrapper">
 			<!-- #region options -->
 			<template v-if="options.length > 0">
 				<vv-radio
@@ -75,6 +75,6 @@ const getOptionProps = (option: unknown, index: number) => {
 			<slot v-else />
 			<!-- #endregion -->
 		</div>
-		<HintSlot class="vv-input-radio-group__hint" />
+		<HintSlot class="vv-radio-group__hint" />
 	</fieldset>
 </template>

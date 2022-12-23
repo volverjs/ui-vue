@@ -1,6 +1,6 @@
-import { ValidProps, ErrorProps, HintProps, OptionsProps } from '../../props'
+import { ValidProps, ErrorProps, HintProps, OptionsProps } from '@/props'
 
-export const VvCheckGroupProps = {
+export const VvCheckboxGroupProps = {
 	...ValidProps,
 	...ErrorProps,
 	...HintProps,
@@ -31,4 +31,4 @@ export const VvCheckGroupProps = {
 	vertical: { type: Boolean, default: false }
 }
 
-export const VvCheckGroupEvents = ['update:modelValue', 'change']
+export const VvCheckboxGroupEvents = ['update:modelValue', 'change']

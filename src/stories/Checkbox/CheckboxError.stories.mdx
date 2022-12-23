@@ -1,35 +1,13 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 
-import { Template } from './Check.stories.mdx'
+import { Template } from './Checkbox.stories.mdx'
 
-<Meta
-	title="Components/Check/Error"
-	args={{
-		modelValue: []
-	}}
-	component={VvCheck}
-/>
+<Meta title="Components/Checkbox/Error" component={VvCheckbox} />
 
 # Error
-
-<Canvas>
-	<Story
-		name="Invalid"
-		args={{
-			id: 6,
-			label: 'Accept terms and conditions',
-			name: 'ck6',
-			modelValue: false,
-			error: true
-		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-# Error with message
 
 <Canvas>
 	<Story
@@ -38,9 +16,9 @@ import { Template } from './Check.stories.mdx'
 			id: 7,
 			label: 'Accept terms and conditions',
 			name: 'ck7',
-			modelValue: false,
+			value: 'conditions',
 			error: true,
-			errorLabel: 'Sbagliato!'
+			errorLabel: 'Error label'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -55,9 +33,9 @@ import { Template } from './Check.stories.mdx'
 			id: 8,
 			label: 'Accept terms and conditions',
 			name: 'ck8',
-			modelValue: false,
+			value: 'conditions',
 			error: true,
-			errorLabel: ['Sbagliato!', 'Mona!']
+			errorLabel: ['First error', 'Second error']
 		}}>
 		{Template.bind({})}
 	</Story>

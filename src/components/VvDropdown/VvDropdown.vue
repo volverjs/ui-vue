@@ -97,6 +97,7 @@ function onInput(event: Event) {
 		if (
 			typeof props.maxValues !== 'undefined' &&
 			props.maxValues >= 0 &&
+			Array.isArray(props.modelValue) &&
 			props.modelValue?.length >= props.maxValues
 		) {
 			if (

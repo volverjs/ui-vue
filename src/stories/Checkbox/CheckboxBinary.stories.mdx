@@ -1,10 +1,10 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
-import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+import { checkTest, booleanTest, binaryTest } from './CheckboxPropertyTest.js'
 
-<Meta title="Components/Check/Binary" component={VvCheck} />
+<Meta title="Components/Checkbox/Binary" component={VvCheckbox} />
 
 # Binary True / false
 
@@ -21,11 +21,12 @@ import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
 			id: 4,
 			label: 'Accept terms and conditions',
 			name: 'ck4',
-			binary: true
+			trueValue: true,
+			falseValue: false
 		}}>
 		{(args) => {
 			return {
-				components: { VvCheck },
+				components: { VvCheckbox },
 				setup() {
 					return { args }
 				},
@@ -35,7 +36,7 @@ import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
 					}
 				},
 				template: `<div :data-testData="checkValue" :key="checkValue">
-						      <vv-check v-model="checkValue" v-bind="args"  />
+						      <vv-checkbox v-model="checkValue" v-bind="args"  />
 							  <div>Selected value: {{checkValue}}</div>
 						   </div>`
 			}
@@ -52,13 +53,12 @@ import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
 			id: 5,
 			label: 'Accept terms and conditions',
 			name: 'ck5',
-			binary: true,
 			trueValue: 'Yes',
 			falseValue: 'No'
 		}}>
 		{(args) => {
 			return {
-				components: { VvCheck },
+				components: { VvCheckbox },
 				setup() {
 					return { args }
 				},
@@ -68,7 +68,7 @@ import { checkTest, booleanTest, binaryTest } from './CheckPropertyTest.js'
 					}
 				},
 				template: `<div :data-testData="checkValue" :key="checkValue">
-						      <vv-check v-model="checkValue" v-bind="args"  />
+						      <vv-checkbox v-model="checkValue" v-bind="args"  />
 							  <div>Selected value: {{checkValue}}</div>
 						   </div>`
 			}

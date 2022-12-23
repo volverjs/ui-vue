@@ -24,13 +24,11 @@ async function radioGroupTest(
 	const radios = document.getElementsByClassName('vv-input-radio__input')
 	const radio1 = radios[0] as HTMLInputElement
 	const radio2 = radios[1] as HTMLInputElement
-	expect(radioGroupParent).toHaveClass('vv-input-radio-group')
+	expect(radioGroupParent).toHaveClass('vv-radio-group')
 	if (!isVertical) {
-		expect(radioGroupParent).toHaveClass([
-			'vv-input-radio-group--horizontal'
-		])
+		expect(radioGroupParent).toHaveClass(['vv-radio-group--horizontal'])
 	} else {
-		expect(radioGroupParent).not.toHaveClass('vv-input-radio--horizontal')
+		expect(radioGroupParent).not.toHaveClass('vv-radio--horizontal')
 	}
 	if (className) {
 		expect(radioGroupParent).toHaveClass(className)
@@ -69,7 +67,7 @@ async function readonlyTest(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes
 ) {
 	const radioGroupWrapper = await document.getElementsByClassName(
-		'vv-input-radio-group__wrapper'
+		'vv-radio-group__wrapper'
 	)[0]
 	const radioLabels = [...radioGroupWrapper.children]
 	radioLabels.forEach((label) => {

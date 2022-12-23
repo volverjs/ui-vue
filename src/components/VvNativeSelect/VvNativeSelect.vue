@@ -37,7 +37,7 @@ const {
 	valid
 } = toRefs(props)
 
-const id = nanoid()
+const id = computed(() => props.id || nanoid())
 
 // styles
 const { bemCssClasses } = useBemModifiers('vv-select', {
@@ -109,10 +109,11 @@ function onInput(event: Event) {
 			</slot>
 			<select
 				:id="id"
+				:name="name"
 				:value="
-					typeof modelValue === 'string'
-						? modelValue
-						: modelValue?.[valueKey]
+					typeof modelValue === 'object'
+						? (modelValue as Record<string, unknown>)?.[valueKey]
+						: modelValue
 				"
 				:disabled="disabled || readonly"
 				@input="onInput">

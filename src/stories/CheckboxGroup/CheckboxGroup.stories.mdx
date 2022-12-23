@@ -1,38 +1,38 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 
-import VvCheckGroup from '@/components/VvCheckGroup/VvCheckGroup.vue'
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import VvCheckboxGroup from '@/components/VvCheckboxGroup/VvCheckboxGroup.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 
-<Meta title="Components/CheckGroup" component={VvCheckGroup} />
+<Meta title="Components/CheckboxGroup" component={VvCheckboxGroup} />
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
-	components: { VvCheckGroup, VvCheck },
+	components: { VvCheckboxGroup, VvCheckbox },
 	setup() {
 		return { args }
 	},
 	data: () => ({ selected: args.modelValue || [] }),
 	template: `
 		<div class="flex flex-row justify-between">
-            <vv-check-group v-bind="args" v-model="selected">
+            <vv-checkbox-group v-bind="args" v-model="selected">
                 <template v-slot:hint>
                     <p>Lorem ipsum dolor sit amet</p>
                 </template> 
-            </vv-check-group>
+            </vv-checkbox-group>
             <strong v-if="selected">Selected options: {{selected}} </strong> 
         </div>
         `
 })
 
-# VvCheckGroup
+# VvCheckboxGroup
 
 A group of checks.
 
-<Source language="jsx" code={'<vv-radio-group>...</vv-radio-group>'} />
+<Source language="jsx" code={'<vv-checkbox-group>...</vv-checkbox-group>'} />
 
 <Canvas>
 	<Story
-		name="vv-check-group"
+		name="vv-checkbox-group"
 		args={{
 			name: 'story1',
 			label: 'Label',
@@ -46,18 +46,18 @@ A group of checks.
 		}}>
 		{(args) => {
 			return {
-				components: { VvCheckGroup, VvCheck },
+				components: { VvCheckboxGroup, VvCheckbox },
 				data: () => ({ selected: args.modelValue || [] }),
 				setup() {
 					return { args }
 				},
 				template: `
                     <div class="flex flex-row justify-between">
-                        <vv-check-group v-bind="args" v-model="selected">
-                            <vv-check id="o1" name="opts" value="1">Option 1</vv-check>
-                            <vv-check id="o2" name="opts" value="2">Option 2</vv-check>
-                            <vv-check id="o3" name="opts" value="3">Option 3</vv-check>
-                        </vv-check-group>
+                        <vv-checkbox-group v-bind="args" v-model="selected">
+                            <vv-checkbox id="o1" name="opts" value="1">Option 1</vv-checkbox>
+                            <vv-checkbox id="o2" name="opts" value="2">Option 2</vv-checkbox>
+                            <vv-checkbox id="o3" name="opts" value="3">Option 3</vv-checkbox>
+                        </vv-checkbox-group>
                         <strong v-if="selected">Selected options: {{selected}} </strong> 
                     </div>
                     `
@@ -66,4 +66,4 @@ A group of checks.
 	</Story>
 </Canvas>
 
-<ArgsTable of={VvCheckGroup} />
+<ArgsTable of={VvCheckboxGroup} />

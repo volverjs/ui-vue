@@ -19,9 +19,12 @@ export const VvSelectProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	/**
-	 * modelValue can be an Object, a String or an Array of Object/String
+	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
-	modelValue: [String, Array, Object],
+	modelValue: {
+		type: [String, Number, Boolean, Object, Array],
+		required: true
+	},
 	/**
 	 * Select input label
 	 */

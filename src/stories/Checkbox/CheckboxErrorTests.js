@@ -32,9 +32,7 @@ async function readOnlyTest() {
 
 async function switchTest() {
 	const checkInput = document.getElementById('3')
-	await expect(checkInput.parentElement).toHaveClass(
-		'vv-input-checkbox--switch'
-	)
+	await expect(checkInput.parentElement).toHaveClass('vv-checkbox--switch')
 	userEvent.click(checkInput)
 	await expect(checkInput).toBeChecked()
 	console.log(checkInput.parentElement)

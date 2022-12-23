@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-	name: 'VvCheckGroup'
+	name: 'VvCheckboxGroup'
 }
 </script>
 
@@ -13,15 +13,15 @@ import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useOptions } from '@/composables/options/useOptions'
 import { useBemModifiers } from '@/composables/useModifiers'
 import { HintSlotFactory } from '@/components/common/HintSlot'
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 import {
-	VvCheckGroupProps,
-	VvCheckGroupEvents
-} from '@/components/VvCheckGroup'
+	VvCheckboxGroupProps,
+	VvCheckboxGroupEvents
+} from '@/components/VvCheckboxGroup'
 
 // props, emit and slots
-const props = defineProps(VvCheckGroupProps)
-const emit = defineEmits(VvCheckGroupEvents)
+const props = defineProps(VvCheckboxGroupProps)
+const emit = defineEmits(VvCheckboxGroupEvents)
 const slots = useSlots()
 
 // data
@@ -40,7 +40,7 @@ useProvideGroupState(groupState)
 const { getOptionLabel, getOptionValue } = useOptions(props)
 
 // stypes
-const { bemCssClasses: hasClass } = useBemModifiers('vv-input-checkbox-group', {
+const { bemCssClasses: hasClass } = useBemModifiers('vv-checkbox-group', {
 	horizontal: computed(() => !props.vertical),
 	valid,
 	invalid: error
@@ -61,10 +61,10 @@ const HintSlot = HintSlotFactory(props, slots)
 <template>
 	<fieldset :class="hasClass">
 		<legend v-if="label" v-text="label" />
-		<div class="vv-input-checkbox-group__wrapper">
+		<div class="vv-checkbox-group__wrapper">
 			<!-- #region options set up -->
 			<template v-if="options.length > 0">
-				<vv-check
+				<vv-checkbox
 					v-for="(o, oIndex) in options"
 					:key="oIndex"
 					v-bind="getOptionProps(o, oIndex)" />
@@ -74,6 +74,6 @@ const HintSlot = HintSlotFactory(props, slots)
 			<slot v-else />
 			<!-- #endregion default -->
 		</div>
-		<HintSlot class="vv-input-checkbox-group__hint" />
+		<HintSlot class="vv-checkbox-group__hint" />
 	</fieldset>
 </template>

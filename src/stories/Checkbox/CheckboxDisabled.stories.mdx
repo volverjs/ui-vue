@@ -1,16 +1,16 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvCheck from '@/components/VvCheck/VvCheck.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 
-import { Template } from './Check.stories.mdx'
+import { Template } from './Checkbox.stories.mdx'
 
 <Meta
-	title="Components/Check/Disabled"
+	title="Components/Checkbox/Disabled"
 	args={{
 		modelValue: []
 	}}
-	component={VvCheck}
+	component={VvCheckbox}
 />
 
 # Disabled
@@ -20,7 +20,7 @@ import { Template } from './Check.stories.mdx'
 		name="Disabled"
 		args={{
 			id: 1,
-			label: 'opzione 1',
+			label: 'Option 1',
 			name: 'ck1',
 			disabled: true,
 			value: 1

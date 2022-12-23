@@ -16,14 +16,10 @@ import { isString, resolveFieldData, isEmpty } from '@/utils/ObjectUtilities'
  * @returns {string}
  */
 function joinLines(errors: Array<string> | string | unknown[] | undefined) {
-	if (Array.isArray(errors))
-		return errors
-			.filter((e) => isString(e))
-			.reduce((prevVal, currVal) => {
-				if (prevVal.length > 0) return prevVal + '\n' + currVal
-				return currVal
-			}, '')
-	else return errors
+	if (Array.isArray(errors)) {
+		return errors.filter((e) => isString(e)).join(' ')
+	}
+	return errors
 }
 
 interface HintSlotProps {
@@ -46,68 +42,68 @@ interface HintSlotPropsWithLoading extends HintSlotProps {
 
 /**
  * Return a vue component (HintSlot) to render and manage hint, errors, valid, loading state and messages
- * @param {Readonly<ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>>} pProps vue props
- * @param {Slots} pSlots vue slots
+ * @param {Readonly<ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>>} parentProps vue props
+ * @param {Slots} parentSlots vue slots
  * @returns {Component} vue component
  */
 export function HintSlotFactory(
-	pProps: Readonly<
+	parentProps: Readonly<
 		ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>
 	>,
-	pSlots: Slots
+	parentSlots: Slots
 ): Component {
 	return {
 		name: 'HintSlot',
 		props: {
 			params: {
 				type: Object,
-				default: () => {
-					return {}
-				}
+				default: () => ({})
 			}
 		},
-		setup(hProps) {
-			const props = toRefs(pProps)
-
-			//Slots
+		setup(props) {
+			// slots
 			const {
 				error: errorSlot,
 				valid: validSlot,
 				hint: hintSlot,
 				loading: loadingSlot
-			} = pSlots
+			} = parentSlots
 
-			//Props hint + errors
+			// props
 			const {
 				hintLabel,
 				modelValue,
 				valid,
 				validLabel,
 				error,
-				errorLabel
-			} = props
-			const loading = resolveFieldData(props, 'loading') as
+				errorLabel,
+				...otherProps
+			} = toRefs(parentProps)
+			const loading = resolveFieldData(otherProps, 'loading') as
 				| Ref<boolean>
 				| undefined
-			const loadingLabel = resolveFieldData(props, 'loadingLabel') as
-				| Ref<string>
-				| undefined
+			const loadingLabel = resolveFieldData(
+				otherProps,
+				'loadingLabel'
+			) as Ref<string> | undefined
 
 			const hasErrors = computed(() => {
-				//No error
-				if (!error.value) return false
-
-				if (error.value && errorSlot) return true
-
+				if (!error.value) {
+					return false
+				}
+				if (error.value && errorSlot) {
+					return true
+				}
 				if (
 					errorLabel?.value &&
 					Array.isArray(errorLabel.value) &&
 					errorLabel.value.length > 0
-				)
+				) {
 					return true
-
-				if (errorLabel?.value && !isEmpty(errorLabel)) return true
-
+				}
+				if (errorLabel?.value && !isEmpty(errorLabel)) {
+					return true
+				}
 				return false
 			})
 
@@ -123,12 +119,6 @@ export function HintSlotFactory(
 				)
 			})
 
-			// const errorMessage = computed(() => {
-			// 	if (Array.isArray(errorLabel?.value))
-			// 		return joinLines(errorLabel?.value || '')
-			// 	else return errorLabel?.value
-			// })
-
 			const hintContent = computed(() => {
 				const slotProps = toReactive({
 					hintLabel,
@@ -139,7 +129,7 @@ export function HintSlotFactory(
 					errorLabel,
 					loading,
 					loadingLabel,
-					...hProps.params
+					...props.params
 				})
 
 				if (error?.value) {
@@ -178,11 +168,7 @@ export function HintSlotFactory(
 		},
 		render() {
 			if (this.hasHint) {
-				return h(
-					'pre',
-					{ style: { 'white-space': 'pre' } },
-					this.hintContent
-				)
+				return h('small', this.hintContent)
 			}
 		}
 	}
