@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
-import { propsTest } from './accordionTest.js'
+import { Template } from './Accordion.stories.mdx'
+import { accordionTest } from './accordion.test.ts'
 
 <Meta title="Components/Accordion/Props/icon-right" />
 
@@ -11,22 +12,17 @@ Let's define a story for our `icon-right` accordion.
 <Canvas>
 	<Story
 		name="icon-right"
-		play={async ({ canvasElement }) => {
-			propsTest({ canvasElement }, 'marker-right')
-		}}>
-		{() => {
-			return {
-				components: { VvAccordion },
-				data() {
-					return {
-						content:
-							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
-					}
-				},
-				template: `<div class="w-1/2">
-						<vv-accordion data-testid="accordion" title="Icon right" :content="content" icon-right />
-					</div>`
-			}
+		play={(ctx) => {
+			accordionTest(ctx, {
+				className: 'vv-accordion--marker-right'
+			})
 		}}
+		args={{
+			title: 'Accoridon with icon right',
+			iconRight: true,
+			content:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+		}}>
+		{Template.bind({})}
 	</Story>
 </Canvas>

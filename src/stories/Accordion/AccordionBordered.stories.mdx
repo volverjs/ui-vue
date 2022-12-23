@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
 import { Template } from './Accordion.stories.mdx'
-import { propsTest } from './accordionTest.js'
+import { accordionTest } from './accordion.test.ts'
 
 <Meta title="Components/Accordion/Props/bordered" />
 
@@ -12,8 +12,10 @@ Let's define a story for our `bordered` accordion.
 <Canvas>
 	<Story
 		name="bordered"
-		play={async ({ canvasElement }) => {
-			propsTest({ canvasElement }, 'bordered')
+		play={(ctx) => {
+			accordionTest(ctx, {
+				className: 'vv-accordion--bordered'
+			})
 		}}
 		args={{
 			bordered: true,
