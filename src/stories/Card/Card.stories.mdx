@@ -12,8 +12,8 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	template: `
-        <vv-card v-bind="args">
-            Default
+        <vv-card v-bind="args" title="Card Title">
+            <template #content>Lorem ipsum dolor sit amet</template>
         </vv-card>
         `
 })

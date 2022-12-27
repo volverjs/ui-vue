@@ -28,17 +28,15 @@ export const Template = (args, { argTypes }) => ({
 
 A radio allows the user to select one option.
 
-<Source language="jsx" code={'<vv-radio/>'} />
+<Source language="jsx" code={'<vv-radio label="option" :value="{ a: 1 }" />'} />
 
 <Canvas>
 	<Story
 		name="vv-radio"
 		args={{
-			id: 1,
-			label: 'Option 1',
-			name: 'o1',
+			label: 'Option',
+			name: 'radio',
 			disabled: false,
-			modelValue: null,
 			value: { a: 1 }
 		}}
 		argTypes={{
