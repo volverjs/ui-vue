@@ -19,7 +19,7 @@ export const VvCheckboxProps = {
 	/**
 	 * Input value
 	 */
-	value: undefined,
+	value: [String, Number, Boolean],
 	/**
 	 * Input value
 	 * @description

@@ -15,7 +15,8 @@ module.exports = {
 	},
 	staticDirs: ['./static'],
 	docs: {
-		docsPage: true
+		docsPage: true,
+		autodocs: true
 	},
 	async viteFinal(config, { configType }) {
 		if (configType === 'PRODUCTION') {
