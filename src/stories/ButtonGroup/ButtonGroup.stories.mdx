@@ -1,14 +1,13 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-
-import VvButton from '../../components/VvButton/VvButton.vue'
-import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
-import { VvButtonGroupProps } from '../../components/VvButtonGroup/VvButtonGroup'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { VvButtonGroupProps } from '@/components/VvButtonGroup'
 
 <Meta
 	title="Components/ButtonGroup"
 	component={VvButtonGroup}
-	args={{ ...ObjectUtilities.propsToObject(VvButtonGroupProps) }}
+	args={{ ...propsToObject(VvButtonGroupProps) }}
 />
 
 export const Template = (args, { argTypes }) => ({

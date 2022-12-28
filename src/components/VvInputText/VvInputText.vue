@@ -1,259 +1,247 @@
-<template>
-	<div v-bind="vvInputTextProps" :class="inputTextClass">
-		<label v-if="label" :for="inputTextId">{{ label }}</label>
-		<div class="vv-input-text__wrapper">
-			<!-- @slot icon-left to replace icon left -->
-			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
-				<vv-icon class="vv-input-text__icon-left" :name="icon" />
-			</slot>
-			<input
-				ref="input"
-				v-bind="innerInputProps"
-				v-model="inputTextData"
-				@input="emit('input', $event)" />
-			<!-- autoclear text button -->
-			<button
-				v-if="autoclear && textLength > 0"
-				class="vv-button vv-button--ghost"
-				@click="clearInputText">
-				<vv-icon name="clear-field" />
-			</button>
-			<!-- @slot icon-right to replace icon right -->
-			<slot name="icon-right" v-bind="iconSlotProps">
-				<template v-if="isPassword">
-					<PasswordInputActions
-						@action-password-on="showPassword = true"
-						@action-password-off="showPassword = false" />
-				</template>
-				<template v-else-if="isNumber">
-					<NumberInputActions
-						@action-step-up="stepUp"
-						@action-step-down="stepDown" />
-				</template>
-				<template v-else-if="hasIconRight || defaultRightIcon">
-					<vv-icon :name="icon || defaultRightIcon" />
-				</template>
-			</slot>
-			<span v-if="limit" class="vv-input-text__limit">
-				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
-			</span>
-		</div>
-		<HintSlot :id="inputTextDescribedBy" class="vv-input-text__hint" />
-	</div>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvInputText'
+}
+</script>
 
 <script setup lang="ts">
 import {
 	computed,
-	useAttrs,
 	useSlots,
 	ref,
 	toRefs,
 	onMounted,
 	unref,
-	type HTMLAttributes,
 	type InputHTMLAttributes
 } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvInputTextEvents, VvInputTextProps } from './VvInputText'
+import { nanoid } from 'nanoid'
+import { isEmpty } from '@/utils/ObjectUtilities'
+import HintSlotFactory from '@/components/common/HintSlot'
+import { useComponentIcon } from '@/composables/icons/useComponentIcons'
+import { useComponentFocus } from '@/composables/focus/useComponentFocus'
+import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
+import { useTextLimit } from '@/composables/textLimit/useTextLimit'
+import { useBemModifiers } from '@/composables/useModifiers'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
+import {
+	VvInputTextEvents,
+	VvInputTextProps,
+	INPUT
+} from '@/components/VvInputText'
 
-//Componenti
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
-import VvInputTextActionsFactory from './VvInputTextActions'
-
-//Constanti
-import INPUT from './constants'
-
-//Composables
-import { useComponentIcon } from '../../composables/icons/useComponentIcons'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
-import { useDebouncedInput } from '../../composables/debouncedInput/useDebouncedInput'
-import { useTextLimit } from '../../composables/textLimit/useTextLimit'
-import { toBem } from '@/composables/useModifiers'
-
-//Props, Emits, Slots e Attrs
+// props, emit, slots and attrs
 const props = defineProps(VvInputTextProps)
 const emit = defineEmits(VvInputTextEvents)
 const slots = useSlots()
-const attrs = useAttrs()
 
-//Template References
+// template refs
 const input = ref()
 
-//Data
-const { icon, iconPosition, label, modelValue, autoclear, limit } =
-	toRefs(props)
-const inputTextId = props.id || props.name
-const inputTextLabeledBy = `${props.name}-label`
-const inputTextDescribedBy = `${props.name}-hint`
-//BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
+// data
+const { icon, iconPosition, label, modelValue, limit } = toRefs(props)
+const hasId = computed(() => String(props.id || nanoid()))
+const hasDescribedBy = computed(() => `${hasId.value}-hint`)
+// BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 const inputTextPlaceholder = computed(() =>
-	props.floating && ObjectUtilities.isEmpty(props.placeholder)
-		? ' '
-		: props.placeholder
+	props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder
 )
 
-//Debounce input
-const inputTextData = useDebouncedInput(modelValue, props.debounce, emit)
+// debounce
+const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
 
-//Gestione input tipo password
+// password
 const showPassword = ref(false)
 const isPassword = computed(() => props.type === INPUT.TYPES.PASSWORD)
+const onTogglePassword = () => {
+	showPassword.value = !showPassword.value
+}
 
-//Gestione input tipo NUMBER
+// time, datetime and date
+const isDateTime = computed(() =>
+	[INPUT.TYPES.TIME, INPUT.TYPES.DATETIME_LOCAL, INPUT.TYPES.DATE].includes(
+		props.type
+	)
+)
+
+// number
 const isNumber = computed(() => props.type === INPUT.TYPES.NUMBER)
-function stepUp() {
-	const value = Number(unref(input.value).value)
-	if (
-		isNaN(value) ||
-		isActionsDisabled.value ||
-		(props.max && value + props.step > props.max)
-	)
-		return
-
-	input.value.stepUp()
-	inputTextData.value = Number(unref(input.value).value)
+const onStepUp = () => {
+	if (!isDisabled.value) {
+		input.value.stepUp()
+		localModelValue.value = unref(input).value
+	}
 }
-function stepDown() {
-	const value = Number(unref(input.value).value)
-	if (
-		isNaN(value) ||
-		isActionsDisabled.value ||
-		(props.min && value - props.step < props.min)
-	)
-		return
-
-	input.value.stepDown()
-	inputTextData.value = Number(unref(input.value).value)
+const onStepDown = () => {
+	if (!isDisabled.value) {
+		input.value.stepDown()
+		localModelValue.value = unref(input).value
+	}
 }
 
-//Gestione ICONE
+// search
+const isSearch = computed(() => props.type === INPUT.TYPES.SEARCH)
+const onClear = () => {
+	localModelValue.value = null
+}
+
+// icons
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
 	iconLeft: slots['icon-left'],
 	iconRight: slots['icon-right']
 })
+const hasIcon = computed(() => {
+	if (typeof icon.value === 'string') {
+		return { name: icon.value }
+	}
+	return icon.value
+})
 const defaultRightIcon = computed(() => {
 	switch (props.type) {
-		case INPUT.TYPES.PASSWORD:
-			return INPUT.TYPES_ICON.PASSWORD_OFF
 		case INPUT.TYPES.COLOR:
-			return INPUT.TYPES_ICON.COLOR
+			return { name: INPUT.TYPES_ICON.COLOR }
 		case INPUT.TYPES.DATE:
 		case INPUT.TYPES.DATETIME_LOCAL:
-			return INPUT.TYPES_ICON.DATE
+			return { name: INPUT.TYPES_ICON.DATE }
 		case INPUT.TYPES.TIME:
-			return INPUT.TYPES_ICON.TIME
-		case INPUT.TYPES.SEARCH:
-			return INPUT.TYPES_ICON.SEARCH
+			return { name: INPUT.TYPES_ICON.TIME }
 		default:
 			return ''
 	}
 })
 
-//Conteggio battute
-const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
+// value length
+const { formattedTextLimitLength } = useTextLimit(localModelValue, {
 	mode: props.limit,
-	upperLimit: props.maxLength || 0
+	upperLimit: props.maxlength || 0
 })
 
-//Input FOCUS
+// focus
 const { focused } = useComponentFocus(input, emit)
 
-//Component computed
-const isActionsDisabled = computed(() => props.disabled || props.readonly)
+// disabled
+const isDisabled = computed(() => props.disabled || props.readonly)
+const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
-//Styles & Bindings
-const inputTextClass = computed(() => {
-	const _hasIconRigth =
-		hasIconRight.value || ObjectUtilities.isNotEmpty(defaultRightIcon.value)
-	const _isFloating =
-		props.floating && ObjectUtilities.isNotEmpty(props.label)
-	const _isDirty = ObjectUtilities.isNotEmpty(modelValue?.value)
+// dirty
+const isDirty = computed(() => !isEmpty(modelValue))
 
-	return [
-		toBem('vv-input-text', {
-			modifiers: props.modifiers,
-			readonly: props.readonly,
-			valid: props.valid,
-			invalid: props.error,
-			loading: props.loading,
-			iconLeft: hasIconLeft,
-			iconRight: _hasIconRigth,
-			floating: _isFloating,
-			dirty: _isDirty
-		}),
-		attrs.class
-	]
+// invalid
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
+	}
+	if (props.valid === true) {
+		return false
+	}
+	return undefined
 })
-const vvInputTextProps = computed(() => {
-	const { style } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
-	return {
-		style,
-		...dataAttrs
-	} as HTMLAttributes
-})
-const innerInputProps = computed(() => {
-	const _type = isPassword.value && showPassword.value ? 'text' : props.type
-	const ariaAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
-	)
 
+// styles
+const { bemCssClasses } = useBemModifiers('vv-input-text', {
+	modifiers: props.modifiers,
+	valid: props.valid,
+	invalid: props.error,
+	loading: props.loading,
+	iconLeft: hasIconLeft,
+	iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
+	floating: props.floating && !isEmpty(props.label),
+	dirty: isDirty,
+	focus: focused
+})
+
+// attrs
+const hasAttrs = computed(() => {
+	const type = (() => {
+		if (isPassword.value && showPassword.value) {
+			return INPUT.TYPES.TEXT
+		}
+		if (isDateTime.value && !isDirty.value && !focused.value) {
+			return INPUT.TYPES.TEXT
+		}
+		return props.type
+	})()
 	return {
-		id: inputTextId,
-		type: _type,
+		type,
 		placeholder: inputTextPlaceholder.value,
 		name: props.name,
 		autocomplete: props.autocomplete,
-		disabled: props.disabled,
-		readonly: props.readonly,
-		minLength: props.minLength,
-		maxLength: props.maxLength,
+		minlength: props.minlength,
+		maxlength: props.maxlength,
 		min: props.min,
 		max: props.max,
-		step: props.step,
-		'aria-invalid': props.error,
-		'aria-valid': !props.valid,
-		'aria-labeledby': inputTextLabeledBy,
-		'aria-describedby': inputTextDescribedBy,
-		'aria-errormessage': inputTextDescribedBy,
-		...ariaAttrs
+		step: type === INPUT.TYPES.NUMBER ? props.step : undefined,
+		tabindex: hasTabindex.value,
+		'aria-invalid': isInvalid.value,
+		'aria-describedby':
+			!hasErrors.value && hasHint.value
+				? hasDescribedBy.value
+				: undefined,
+		'aria-errormessage': hasErrors.value ? hasDescribedBy.value : undefined
 	} as InputHTMLAttributes
 })
 
-//Slot props
-const iconSlotProps = computed(() => {
-	const { modelValue, valid, error } = props
-	return {
-		valid,
-		error,
-		modelValue
-	}
-})
+// slots
+const iconSlotProps = computed(() => ({
+	valid: props.valid,
+	error: props.error,
+	modelValue: props.modelValue
+}))
 
-//Other components
-const HintSlot = HintSlotFactory(props, slots)
+// components
+const { HintSlot, hasHint, hasErrors } = HintSlotFactory(props, slots)
 const PasswordInputActions = VvInputTextActionsFactory(
 	INPUT.TYPES.PASSWORD,
 	props
 )
 const NumberInputActions = VvInputTextActionsFactory(INPUT.TYPES.NUMBER, props)
+const SearchInputActions = VvInputTextActionsFactory(INPUT.TYPES.SEARCH, props)
 
-//Methods
-function clearInputText() {
-	inputTextData.value = null
-}
-
+// lifecycle
 onMounted(() => {
-	if (props.autofocus) focused.value = true
+	if (props.autofocus) {
+		focused.value = true
+	}
 })
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<div :class="bemCssClasses">
+		<label v-if="label" :for="hasId" class="vv-input-text__label">
+			{{ label }}
+		</label>
+		<div class="vv-input-text__wrapper">
+			<!-- @slot icon-left to replace icon left -->
+			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
+				<VvIcon class="vv-input-text__icon-left" v-bind="hasIcon" />
+			</slot>
+			<input
+				:id="hasId"
+				ref="input"
+				v-model="localModelValue"
+				v-bind="hasAttrs"
+				:disabled="disabled"
+				:readonly="readonly"
+				:required="required"
+				@keyup="emit('keyup', $event)" />
+			<!-- @slot icon-right to replace icon right -->
+			<slot name="icon-right" v-bind="iconSlotProps">
+				<VvIcon
+					v-if="hasIconRight || defaultRightIcon"
+					v-bind="hasIconRight ? hasIcon : defaultRightIcon" />
+				<PasswordInputActions
+					v-else-if="isPassword"
+					@toggle-password="onTogglePassword" />
+				<NumberInputActions
+					v-else-if="isNumber"
+					@step-up="onStepUp"
+					@step-down="onStepDown" />
+				<SearchInputActions v-else-if="isSearch" @clear="onClear" />
+			</slot>
+			<span v-if="limit" class="vv-input-text__limit">
+				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
+			</span>
+		</div>
+		<HintSlot :id="hasDescribedBy" class="vv-input-text__hint" />
+	</div>
+</template>

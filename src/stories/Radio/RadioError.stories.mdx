@@ -1,12 +1,10 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-import { radioTest, hintLabelTest } from './Radio.test.ts'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './Radio.stories.mdx'
 
 <Meta
-	title="Components/RadioButton/Error"
+	title="Components/Radio/Error"
 	args={{
 		modelValue: null
 	}}
@@ -17,32 +15,13 @@ import { Template } from './Radio.stories.mdx'
 
 <Canvas>
 	<Story
-		name="Invalid"
-		play={radioTest}
-		args={{
-			id: 6,
-			label: 'Voglio acquistare questa enciclopedia!',
-			name: 'ck6',
-			modelValue: false,
-			error: true
-		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-# Error with message
-
-<Canvas>
-	<Story
 		name="Error with message"
-		play={hintLabelTest}
 		args={{
-			id: 7,
-			label: 'Voglio acquistare questa enciclopedia!',
-			name: 'ck7',
+			label: 'Accept terms and conditions',
+			name: 'radio-error',
 			modelValue: false,
 			error: true,
-			errorLabel: 'Sbagliato!'
+			errorLabel: 'Error label'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -53,14 +32,12 @@ import { Template } from './Radio.stories.mdx'
 <Canvas>
 	<Story
 		name="Error with messages"
-		play={hintLabelTest}
 		args={{
-			id: 8,
-			label: 'Voglio acquistare questa enciclopedia!',
-			name: 'ck8',
+			label: 'Accept terms and conditions',
+			name: 'radio-error',
 			modelValue: false,
 			error: true,
-			errorLabel: ['Sbagliato!', 'Mona!']
+			errorLabel: ['First error', 'Second error']
 		}}>
 		{Template.bind({})}
 	</Story>

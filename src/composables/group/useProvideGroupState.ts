@@ -1,5 +1,5 @@
-import type IGroupState from './types/IGroupState'
 import { provide, computed, isRef } from 'vue'
+import type IGroupState from '@/composables/group/types/IGroupState'
 
 /**
  * Condividi parte dello stato del componente con tutti i suoi figli.
@@ -14,7 +14,6 @@ export function useProvideGroupState<TGroup extends IGroupState>(
 		)
 	)
 		throw Error("One or more groupState props aren't ref.")
-
 	provide(
 		groupState.key,
 		computed(() => groupState)

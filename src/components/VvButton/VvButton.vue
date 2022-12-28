@@ -1,15 +1,159 @@
+<script lang="ts">
+export default {
+	name: 'VvButton'
+}
+</script>
+
+<script setup lang="ts">
+import { inject, useAttrs, useSlots, computed } from 'vue'
+import { nanoid } from 'nanoid'
+import { contains, equals } from '@/utils/ObjectUtilities'
+import { type IVolver, VOLVER_PREFIX } from '@/Volver'
+import { useBemModifiers } from '@/composables/useModifiers'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import {
+	ButtonIconPosition,
+	ButtonTag,
+	VvButtonProps,
+	useGroupProps
+} from '@/components/VvButton'
+
+// props, attrs and slots
+const props = defineProps(VvButtonProps)
+const attrs = useAttrs()
+const slots = useSlots()
+
+// data
+const btnName = attrs?.name || nanoid()
+const {
+	modifiers,
+	iconPosition,
+	icon,
+	label,
+	modelValue,
+	disabled,
+	toggle,
+	isInGroup
+} = useGroupProps(props)
+
+// inject Volver
+const ds = inject<IVolver>(VOLVER_PREFIX)
+
+/**
+ * @description The tag defined by props.
+ * @returns {string} The tag.
+ */
+const hasTag = computed(() => {
+	switch (true) {
+		case disabled.value:
+			return ButtonTag.button
+		case props.to !== undefined:
+			return ds?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
+		case props.href !== undefined:
+			return ButtonTag.a
+		default:
+			return ButtonTag.button
+	}
+})
+
+/**
+ * @description The component pressed state by prop or group.
+ * @returns {string} The component tag.
+ */
+const isPressed = computed(() => {
+	if (!toggle.value) return props.pressed
+
+	return Array.isArray(modelValue.value)
+		? contains(btnName, modelValue.value)
+		: equals(btnName, modelValue.value)
+})
+
+/**
+ * @description Define component classes with BEM style.
+ * @returns {Array} The component classes.
+ */
+const { bemCssClasses } = useBemModifiers('vv-button', {
+	modifiers,
+	active: props.active,
+	pressed: isPressed,
+	disabled,
+	reverse: computed(() =>
+		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
+			iconPosition.value
+		)
+	),
+	column: computed(() =>
+		[ButtonIconPosition.top, ButtonIconPosition.bottom].includes(
+			iconPosition.value
+		)
+	),
+	iconOnly: computed(() => icon?.value && !label?.value && !slots['default'])
+})
+
+/**
+ * @description Define icon attributes.
+ * @returns {Object} The icon attributes.
+ */
+const hasIconProps = computed(() =>
+	typeof icon?.value === 'string' ? { name: icon?.value } : icon?.value
+)
+
+/**
+ * @description Define component attributes.
+ * @returns {Object} The component attributes.
+ */
+const hasProps = computed(() => {
+	const toReturn = {
+		class: bemCssClasses.value,
+		'aria-label': attrs['aria-label'],
+		'aria-pressed': isPressed.value ? true : undefined
+	}
+	switch (hasTag.value) {
+		case ButtonTag.a:
+			return {
+				...toReturn,
+				role: 'button',
+				href: props.href,
+				target: props.target,
+				rel: props.rel
+			}
+		case ButtonTag.routerLink:
+		case ButtonTag.nuxtLink:
+			return {
+				...toReturn,
+				role: 'button',
+				to: props.to,
+				target: props.target
+			}
+		default:
+			return {
+				...toReturn,
+				type: props.type,
+				disabled: disabled.value
+			}
+	}
+})
+
+/**
+ * @description Catch click event in a group.
+ */
+function onBtnClick() {
+	// set group modelValue
+	if (isInGroup.value) {
+		modelValue.value = btnName
+	}
+}
+</script>
+
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component
-		v-bind="properties"
-		:is="isComponent"
-		@click.passive="onBtnClick">
+	<component v-bind="hasProps" :is="hasTag" @click.passive="onBtnClick">
 		<!-- @slot default to replace all button content -->
 		<slot>
 			<!-- #region loading -->
 			<template v-if="loading">
 				<slot name="loading">
-					<vv-icon
+					<VvIcon
 						v-if="loadingIcon"
 						class="vv-button__loading-icon"
 						:name="loadingIcon" />
@@ -25,7 +169,7 @@
 				<slot name="before" />
 				<!-- #region icon -->
 				<template v-if="icon">
-					<vv-icon class="vv-button__icon" :name="icon" />
+					<VvIcon class="vv-button__icon" v-bind="hasIconProps" />
 				</template>
 				<!-- #endregion icon -->
 				<!-- #region label  -->
@@ -44,137 +188,3 @@
 	</component>
 	<!-- #endregion component: button | a | router-link | nuxt-link -->
 </template>
-
-<script setup lang="ts">
-import { useAttrs, useSlots } from 'vue'
-
-import { computed } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-import { ButtonIconPosition, ButtonTag } from './VvButton'
-import { VvButtonProps } from './VvButton'
-import ObjectUtilities from '@/utils/ObjectUtilities'
-
-//Components
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
-
-//Composables
-import { useBemModifiers } from '@/composables/useModifiers'
-import { toButtonRefs } from './useButtonGroupProps'
-
-//Props, emits, attrs, slots
-const props = defineProps(VvButtonProps)
-const attrs = useAttrs()
-const slots = useSlots()
-
-//Data
-const btnName = attrs?.name || uuidv4()
-const {
-	modifiers,
-	iconPosition,
-	icon,
-	label,
-	modelValue,
-	disabled,
-	toggle,
-	isInGroup
-} = toButtonRefs(props)
-
-/**
- * @description Select the tag type in based on the props before.
- * @returns {string} The type of component
- */
-const isComponent = computed(() => {
-	switch (true) {
-		case disabled.value:
-			return ButtonTag.button
-		case props.to !== undefined:
-			return ButtonTag.routerLink
-		case props.href !== undefined:
-			return ButtonTag.a
-		default:
-			return ButtonTag.button
-	}
-})
-
-/**
- * Stato active del pulsante.
- * Se in un button group toggle, forza l'active in base al valore selezionato
- */
-const active = computed(() => {
-	if (!toggle.value) return props.active
-
-	return Array.isArray(modelValue.value)
-		? ObjectUtilities.contains(btnName, modelValue.value)
-		: ObjectUtilities.equals(btnName, modelValue.value)
-})
-
-/**
- * Selected button state
- * If on button "toggle" and "action" GROUP force the selected state
- */
-const selected = computed(() => {
-	if (!toggle.value) return props.selected
-
-	return Array.isArray(modelValue.value)
-		? ObjectUtilities.contains(btnName, modelValue.value)
-		: ObjectUtilities.equals(btnName, modelValue.value)
-})
-
-//Styles & bindings
-const { bemCssClasses: btnClass } = useBemModifiers('vv-button', {
-	modifiers,
-	active,
-	selected,
-	disabled,
-	reverse: computed(() =>
-		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
-			iconPosition.value
-		)
-	),
-	column: computed(() =>
-		[ButtonIconPosition.top, ButtonIconPosition.bottom].includes(
-			iconPosition.value
-		)
-	),
-	iconOnly: computed(() => icon?.value && !label?.value && !slots['default'])
-})
-/**
- * Compute component properties
- */
-const properties = computed(() => {
-	return {
-		...linkProps.value,
-		'aria-label': props.label || attrs['aria-label'],
-		'aria-disabled': disabled.value,
-		role: 'button',
-		class: btnClass.value,
-		to: props.to
-	}
-})
-/**
- * Compute link props (target, href)
- */
-const linkProps = computed(() => {
-	const isLink = isComponent.value === ButtonTag.a
-	let toReturn = {}
-	if (isLink) {
-		toReturn = disabled.value
-			? {
-					href: 'javascript:;'
-			  }
-			: {
-					target: props.target,
-					href: props.href
-			  }
-	}
-	return toReturn
-})
-
-//Methods
-function onBtnClick() {
-	// set group modelValue
-	if (isInGroup.value) {
-		modelValue.value = btnName
-	}
-}
-</script>

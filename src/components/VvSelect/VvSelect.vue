@@ -1,74 +1,38 @@
-<template>
-	<div v-if="!native" :id="id" :class="selectClasses">
-		<label v-if="label" for="select">{{ label }}</label>
-		<details
-			ref="dropdown"
-			role="list"
-			class="vv-select__wrapper"
-			@click="disabled || readonly ? $event.preventDefault() : null"
-			@keyup.esc="dropdown.open = false"
-			@toggle="onToggle">
-			<summary
-				class="vv-select__input"
-				aria-haspopup="listbox"
-				@keyup.space="searchable ? $event.preventDefault() : null">
-				<!-- #region search input -->
-				<template v-if="searchable && dropdownOpen">
-					<input
-						ref="inputSearch"
-						v-model="searchText"
-						:placeholder="searchPlaceholder" />
-				</template>
-				<!-- #endregion search input -->
-				<!-- #region label of selected value/s -->
-				<template v-else>
-					{{ labelValue || placeholder }}
-				</template>
-				<!-- #endregion label of selected value/s -->
-			</summary>
-			<VvDropdown
-				v-bind="{
-					...props,
-					options: currentOptions
-				}"
-				@update:model-value="onInput" />
-		</details>
-		<HintSlot class="vv-select__hint" />
-	</div>
-	<VvNativeSelect
-		v-else
-		v-bind="props"
-		@update:model-value="emit('update:modelValue', $event)" />
-</template>
+<script lang="ts">
+export default {
+	name: 'VvSelect'
+}
+</script>
 
 <script setup lang="ts">
-import type { Option } from '../VvDropdown/VvDropdown'
 import { computed, ref, toRefs, useSlots, watch } from 'vue'
+import { nanoid } from 'nanoid'
 import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
-import { v4 as uuidv4 } from 'uuid'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvSelectProps } from './VvSelect'
-import HintSlotFactory from '../common/HintSlot'
-import VvDropdown from '../VvDropdown/VvDropdown.vue'
-import { useBemModifiers } from '../../composables/useModifiers'
-import VvNativeSelect from '../VvNativeSelect/VvNativeSelect.vue'
+import type { Option } from '@/components/VvDropdown'
+import { isEmpty, filterArray } from '@/utils/ObjectUtilities'
+import { useBemModifiers } from '@/composables/useModifiers'
+import HintSlotFactory from '@/components/common/HintSlot'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
+import { VvSelectProps } from '@/components/VvSelect'
 
 const props = defineProps(VvSelectProps)
 const slots = useSlots()
 
 const emit = defineEmits(['update:modelValue', 'change:search'])
 
-//Hint component
-const HintSlot = HintSlotFactory(props, slots)
+// hint slot
+const { HintSlot } = HintSlotFactory(props, slots)
 
-// html ref
+// template ref
 const dropdown = ref()
 const inputSearch = ref()
-// autofocus input search
+
+// focus state
 useFocus(inputSearch, { initialValue: true })
 
 // data
-const id = uuidv4()
+const id = nanoid()
 const searchText = ref('')
 const debouncedSearchText = refDebounced(
 	searchText,
@@ -86,14 +50,21 @@ const {
 	error
 } = toRefs(props)
 
-// watch
 // emit on change search text
 watch(debouncedSearchText, () =>
 	emit('change:search', debouncedSearchText.value)
 )
 
-//Styles & css classes modifiers
-const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
+// dirty
+const isDirty = computed(() => !isEmpty(props.modelValue))
+
+// tabindex
+const hasTabindex = computed(() => {
+	return disabled.value || readonly.value ? -1 : props.tabindex
+})
+
+// styles
+const { bemCssClasses } = useBemModifiers('vv-select', {
 	modifiers,
 	disabled,
 	loading,
@@ -102,12 +73,10 @@ const { bemCssClasses: selectClasses } = useBemModifiers('vv-select', {
 	iconRight,
 	valid,
 	invalid: error,
-	dirty: computed(() => ObjectUtilities.isNotEmpty(props.modelValue))
+	dirty: isDirty
 })
 
-// computed
-
-// Check if options are objects
+// check if options are objects
 const isOptionsObjects = computed(() =>
 	props.options?.every((option) => typeof option === 'object')
 )
@@ -125,9 +94,12 @@ const filteredOptions = computed(() => {
 				.toLowerCase()
 				.includes(debouncedSearchText.value.toLowerCase().trim())
 		}
-		return option[props.labelKey]
-			.toLowerCase()
-			.includes(debouncedSearchText.value.toLowerCase().trim())
+		if (typeof option[props.labelKey] === 'string') {
+			return (option[props.labelKey] as string)
+				.toLowerCase()
+				.includes(debouncedSearchText.value.toLowerCase().trim())
+		}
+		return false
 	})
 })
 
@@ -139,12 +111,12 @@ const labelValue = computed(() => {
 	// #region multiple mode
 	if (
 		props.multiple &&
-		props.modelValue?.length &&
-		Array.isArray(props.modelValue)
+		Array.isArray(props.modelValue) &&
+		props.modelValue?.length
 	) {
 		if (isOptionsObjects.value) {
 			// filter options by selected values
-			return ObjectUtilities.filterArray<Option>(
+			return filterArray<Option>(
 				props.options as Option[],
 				props.modelValue,
 				props.valueKey
@@ -194,7 +166,56 @@ function onInput(value: typeof props.modelValue) {
 	if (dropdown.value && !props.multiple) {
 		dropdown.value.open = false
 	}
-
 	emit('update:modelValue', value)
 }
 </script>
+
+<template>
+	<div v-if="!native" :id="id" :class="bemCssClasses">
+		<label
+			v-if="label"
+			:id="`${id}-label`"
+			:for="searchable && dropdownOpen ? `${id}-input` : undefined"
+			>{{ label }}</label
+		>
+		<details
+			ref="dropdown"
+			class="vv-select__wrapper"
+			@click="disabled || readonly ? $event.preventDefault() : null"
+			@keyup.esc="dropdown.open = false"
+			@toggle="onToggle">
+			<summary
+				class="vv-select__input"
+				:tabindex="hasTabindex"
+				@keyup.space="searchable ? $event.preventDefault() : null">
+				<!-- #region search input -->
+				<template v-if="searchable && dropdownOpen">
+					<input
+						:id="`${id}-input`"
+						ref="inputSearch"
+						v-model="searchText"
+						role="combobox"
+						:placeholder="searchPlaceholder" />
+				</template>
+				<!-- #endregion search input -->
+				<!-- #region label of selected value/s -->
+				<template v-else>
+					{{ labelValue || placeholder }}
+				</template>
+				<!-- #endregion label of selected value/s -->
+			</summary>
+			<VvDropdown
+				:id="`${id}-dropdown`"
+				v-bind="{
+					...props,
+					options: currentOptions
+				}"
+				@update:model-value="onInput" />
+		</details>
+		<HintSlot class="vv-select__hint" />
+	</div>
+	<VvNativeSelect
+		v-else
+		v-bind="props"
+		@update:model-value="emit('update:modelValue', $event)" />
+</template>

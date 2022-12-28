@@ -1,13 +1,10 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-import { radioTest } from './Radio.test.ts'
-
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './Radio.stories.mdx'
 
 <Meta
-	title="Components/RadioButton/Disabled"
+	title="Components/Radio/Disabled"
 	args={{
 		modelValue: null
 	}}
@@ -19,16 +16,9 @@ import { Template } from './Radio.stories.mdx'
 <Canvas>
 	<Story
 		name="Disabled"
-		play={(ctx) => {
-			radioTest(ctx, {
-				isClickDisabled: true,
-				className: 'vv-input-radio__input--disabled'
-			})
-		}}
 		args={{
-			id: 1,
-			label: 'opzione 1',
-			name: 'ck1',
+			label: 'Option',
+			name: 'radio-disabled',
 			disabled: true,
 			value: 1
 		}}>

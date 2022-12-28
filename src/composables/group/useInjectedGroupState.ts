@@ -1,35 +1,29 @@
-import type IGroupState from './types/IGroupState'
-import { toRef, unref, type Ref } from 'vue'
-
-import { inject, computed } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import { type Ref, toRef, unref, inject, computed } from 'vue'
+import type IGroupState from '@/composables/group/types/IGroupState'
+import { isEmpty } from '@/utils/ObjectUtilities'
 
 /**
- * Esegue l'inject dello stato condiviso da un componente padre.
+ * Injects a group state
  */
 export function useInjectedGroupState<TGroup extends IGroupState>(
-	groupKey: symbol
+	groupKey: string
 ) {
-	//Recupera, se esiste, lo stato condiviso fornito da un parent "group"
+	// Get group state
 	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
 
-	//Check if component is in group
-	const isInGroup = computed(() => ObjectUtilities.isNotEmpty(group))
+	// Check if component is in group
+	const isInGroup = computed(() => !isEmpty(group))
 
 	/**
-	 * Crea una computed ref (writable) che può utilizzare esporre il valore o dall'oggetto props oppure dal group
+	 * Get a group or local property
 	 */
 	function getGroupOrLocalRef<T extends object>(
 		propName: keyof TGroup,
 		props: T,
-		emit?: (event: any, ...args: any[]) => void
+		emit?: (event: string, ...args: unknown[]) => void
 	) {
-		//Check se propName non è in gruppo o locale -> Spaccarsi
 		if (group?.value) {
-			// if (!Object.keys(group.value).includes(propName as string))
-			// 	throw Error(`${propName as string} is not a group valid prop`)
-
-			const groupPropValue = unref(group.value)[propName] as Ref<any>
+			const groupPropValue = unref(group.value)[propName] as Ref<unknown>
 			return computed({
 				get() {
 					return groupPropValue?.value
@@ -38,20 +32,16 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 					groupPropValue.value = value
 				}
 			})
-		} else {
-			// if (!Object.keys(props).includes(propName as string))
-			// 	throw Error(`${propName as string} is not a valid prop`)
-
-			const propRef = toRef(props, propName as keyof T)
-			return computed({
-				get() {
-					return propRef.value
-				},
-				set(value) {
-					if (emit) emit(`update:${propName as string}`, value)
-				}
-			})
 		}
+		const propRef = toRef(props, propName as keyof T)
+		return computed({
+			get() {
+				return propRef.value
+			},
+			set(value) {
+				if (emit) emit(`update:${propName as string}`, value)
+			}
+		})
 	}
 
 	return {

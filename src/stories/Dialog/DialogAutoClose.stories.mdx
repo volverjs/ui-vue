@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvDialog from '../../components/VvDialog/VvDialog.vue'
-import { dialogTest } from './Dialog.test.ts'
+import VvDialog from '@/components/VvDialog/VvDialog.vue'
 
 import { Template } from './Dialog.stories.mdx'
 
@@ -13,7 +12,6 @@ import { Template } from './Dialog.stories.mdx'
 <Canvas>
 	<Story
 		name="AutoClose"
-		play={dialogTest}
 		args={{ id: 'dialog-autoclose', size: '', autoClose: true }}>
 		{Template.bind({})}
 	</Story>

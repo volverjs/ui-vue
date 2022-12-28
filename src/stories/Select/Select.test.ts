@@ -1,13 +1,16 @@
 import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { expect } from '@/test/expect'
 import { userEvent } from '@storybook/testing-library'
+import { within } from '@storybook/testing-library'
 
 export async function selectTest(
-	{ ...data }: PlayAttributes,
+	{ canvasElement, ...data }: PlayAttributes,
 	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
+	const selectParent = (await within(canvasElement).findByTestId(
+		'select'
+	)) as HTMLDetailsElement
 	// classes test
-	const selectParent = document.getElementById(data.args.id)
 	expect(selectParent).toHaveClass('vv-select')
 	className && expect(selectParent).toHaveClass(className)
 	const select = document.getElementsByClassName(

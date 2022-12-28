@@ -1,23 +1,20 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvProgress from '../../components/VvProgress/VvProgress.vue'
-import { progressTest, indeterminateTest } from './ProgressTest.js'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvProgressProps } from '../../components/VvProgress/VvProgress'
+import VvProgress from '@/components/VvProgress/VvProgress.vue'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import { VvProgressProps } from '@/components/VvProgress'
+import { progressTest, indeterminateTest } from './Progress.test'
 
 <Meta
 	title="Components/Progress"
 	component={VvProgress}
 	args={{
-		...ObjectUtilities.propsToObject(VvProgressProps)
+		...propsToObject(VvProgressProps)
 	}}
 	argTypes={{
 		value: {
-			defaultValue: 30
-		},
-		max: {
-			defaultValue: 100
-		},
-		determinate: false
+			defaultValue: undefined,
+			control: { type: 'number', min: 0, max: 1, step: 0.1 }
+		}
 	}}
 />
 

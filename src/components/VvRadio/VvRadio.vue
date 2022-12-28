@@ -1,130 +1,103 @@
-<template>
-	<label :class="radioClass" v-bind="radioAttrs" @click="onClick">
-		<input
-			ref="input"
-			:class="radioInputClass"
-			v-bind="radioInputAttrs"
-			@input="onChange" />
-		<slot :value="modelValue">
-			{{ label }}
-		</slot>
-	</label>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvRadio'
+}
+</script>
 
 <script setup lang="ts">
-import type { InputHTMLAttributes, LabelHTMLAttributes } from 'vue'
-
-import { computed, useAttrs, ref } from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvRadioProps, VvRadioEvents } from './VvRadio'
-
-//Composables
-import { toRadioInputRefs } from './useRadioProps'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
+import { computed, ref, useSlots } from 'vue'
+import { contains, equals, removeFromList } from '@/utils/ObjectUtilities'
 import { useBemModifiers } from '@/composables/useModifiers'
+import {
+	VvRadioProps,
+	VvRadioEvents,
+	useGroupProps
+} from '@/components/VvRadio'
+import { HintSlotFactory } from '@/components/common/HintSlot'
 
-//Props, Emits, Slots e Attrs
+// props, emit and slots
 const props = defineProps(VvRadioProps)
 const emit = defineEmits(VvRadioEvents)
-const attrs = useAttrs()
+const slots = useSlots()
 
-//Data
-const { disabled, readonly, modelValue, valid, error } = toRadioInputRefs(
+// data
+const { disabled, readonly, modelValue, valid, error } = useGroupProps(
 	props,
 	emit
 )
 
-//Template References
+// template refs
 const input = ref()
 
-//Component computed
-const isChecked = computed(() => {
-	return Array.isArray(modelValue.value)
-		? ObjectUtilities.contains(props.value, modelValue.value)
-		: ObjectUtilities.equals(props.value, modelValue.value)
-})
-
-// #region FOCUS
-const { focused } = useComponentFocus(input, emit)
-// #endregion FOCUS
-
-//Styles & Bindings
-const { bemCssClasses: bemRadioClass } = useBemModifiers('vv-input-radio', {
-	valid,
-	invalid: error
-})
-const { bemCssClasses: bemInputRadioClass } = useBemModifiers(
-	'vv-input-radio__input',
-	{
-		checked: isChecked,
-		disabled,
-		readonly
-	}
+// computed
+const hasId = computed(() =>
+	props.id !== undefined ? String(props.id) : undefined
 )
-const radioClass = computed(() => {
-	const { class: cssClass } = attrs
-	return {
-		class: cssClass,
-		...bemRadioClass.value
+const isDisabled = computed(() => disabled.value || readonly.value)
+const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
 	}
-})
-const radioInputClass = computed(() => {
-	return {
-		'focus-visible': focused.value,
-		...bemInputRadioClass.value
+	if (props.valid === true) {
+		return false
 	}
+	return undefined
 })
-const radioAttrs = computed(() => {
-	const { id, name, style } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
-	return {
-		for: (id || name) as string,
-		style,
-		...dataAttrs
-	} as LabelHTMLAttributes
-})
-const radioInputAttrs = computed(() => {
-	const { id = '', name = '' } = attrs as InputHTMLAttributes
-	return {
-		type: 'radio',
-		id: id || name,
-		name,
-		value: props.value,
-		disabled: disabled.value,
-		readonly: readonly.value,
-		checked: isChecked.value,
-		...radioInputAriaAttrs.value
-	} as InputHTMLAttributes
-})
-const radioInputAriaAttrs = computed(() => {
-	const { name } = attrs
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
-	)
-	return {
-		'aria-label': name,
-		'aria-checked': isChecked.value,
-		...dataAttrs
+const isChecked = computed(() =>
+	Array.isArray(modelValue.value)
+		? contains(props.value, modelValue.value)
+		: equals(props.value, modelValue.value)
+)
+const hasValue = computed(() =>
+	['string', 'number', 'boolean'].includes(typeof props.value)
+		? props.value
+		: true
+)
+const localModelValue = computed({
+	get() {
+		return isChecked.value ? hasValue.value : null
+	},
+	set(newValue) {
+		if (Array.isArray(modelValue.value)) {
+			modelValue.value = newValue
+				? [...modelValue.value, props.value]
+				: removeFromList(props.value, modelValue.value)
+			return
+		}
+		modelValue.value = props.value
+		emit('change', newValue)
 	}
 })
 
-//Methods
-function onChange() {
-	if (!isChecked.value) emit('change', props.value)
-	modelValue.value = props.value
-}
-function onClick(event: Event) {
-	if (!disabled.value) {
-		emit('click', event)
-		focused.value = true
-	}
-}
+// styles
+const { bemCssClasses } = useBemModifiers('vv-radio', {
+	valid,
+	invalid: error,
+	disabled,
+	readonly
+})
+
+// hint
+const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<label :class="bemCssClasses" :for="hasId">
+		<input
+			:id="hasId"
+			ref="input"
+			v-model="localModelValue"
+			type="radio"
+			class="vv-radio__input"
+			:name="name"
+			:disabled="isDisabled"
+			:value="hasValue"
+			:tabindex="hasTabindex"
+			:aria-invalid="isInvalid" />
+		<slot :value="modelValue">
+			{{ label }}
+		</slot>
+		<HintSlot class="vv-radio__hint" :params="{ value: modelValue }" />
+	</label>
+</template>

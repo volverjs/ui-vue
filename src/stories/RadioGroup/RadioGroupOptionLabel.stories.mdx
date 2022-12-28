@@ -1,10 +1,8 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-
-import { radioOptionsTest } from './RadioOption.test.ts'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './RadioGroup.stories.mdx'
+import { radioOptionsTest } from './RadioGroup.test'
 
 <Meta title="Components/RadioGroup/OptionLabel" component={VvRadioGroup} />
 
@@ -19,9 +17,9 @@ Change object prop for label
 		args={{
 			name: 'options',
 			options: [
-				{ value: 1, name: 'Mela' },
-				{ value: 2, name: 'Pera' },
-				{ value: 3, name: 'Banana' }
+				{ value: 1, name: 'Option 1' },
+				{ value: 2, name: 'Option 2' },
+				{ value: 3, name: 'Option 3' }
 			],
 			optionLabel: 'name',
 			role: 'radiogroup'
@@ -30,7 +28,7 @@ Change object prop for label
 	</Story>
 </Canvas>
 
-# OptionLabel Function
+# OptionLabel function
 
 Use function to define option label
 
@@ -41,11 +39,11 @@ Use function to define option label
 		args={{
 			name: 'options',
 			options: [
-				{ value: 1, name: 'Mela' },
-				{ value: 2, name: 'Pera' },
-				{ value: 3, name: 'Banana' }
+				{ value: 1, name: 'First' },
+				{ value: 2, name: 'Second' },
+				{ value: 3, name: 'Third' }
 			],
-			optionLabel: (o) => `Frutto: ${o.name}`,
+			optionLabel: (o) => `${o.name} option`,
 			role: 'radiogroup'
 		}}>
 		{Template.bind({})}

@@ -2,7 +2,7 @@ import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { expect } from '@/test/expect'
 
 export async function breadcrumbTest(
-	{ ...data }: PlayAttributes = {} as PlayAttributes,
+	data: PlayAttributes = {} as PlayAttributes,
 	{ className = null }: ComponentConfig = {}
 ) {
 	const breadcrumb = document.getElementsByClassName('vv-breadcrumb')[0]
@@ -32,13 +32,10 @@ export async function breadcrumbTest(
 			expect(link).toBeClicked()
 
 			// tag type test
-			const expectedNodeName = data.args.multiline ? 'ROUTER-LINK' : 'A'
-			expect(link.nodeName).toEqual(expectedNodeName)
+			expect(link.nodeName).toEqual('A')
 
 			// route test
-			data.args.multiline
-				? expect(link.outerHTML).toContain(`to="${propRoutes.to}"`)
-				: expect(link.href).toContain(propRoutes.href)
+			expect(link.href).toContain(propRoutes.href)
 		} else {
 			expect(linkContainer).toHaveClass('vv-breadcrumb__item-active')
 			expect(link.nodeName).toBe('SPAN')

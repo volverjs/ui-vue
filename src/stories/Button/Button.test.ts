@@ -16,7 +16,7 @@ export async function testButton(
 	if (className) {
 		expect(button).toHaveClass(className)
 	}
-	await expect(button).toHaveNoViolations()
+	expect(button).toHaveNoViolations()
 }
 
 export async function testButtonWithBadge(playAttributes: PlayAttributes) {
@@ -50,7 +50,8 @@ export async function testButtonLink(
 		'button'
 	)
 	await testButton(playAttributes, { isClickDisabled, className })
-	expect(button).toHaveProperty('href')
-	expect(button).toHaveProperty('target')
-	await testButton(playAttributes)
+	if (!isClickDisabled) {
+		expect(button).toHaveProperty('href')
+		expect(button).toHaveProperty('target')
+	}
 }

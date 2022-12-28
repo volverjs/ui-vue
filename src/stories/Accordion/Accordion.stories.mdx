@@ -1,28 +1,29 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
-
-import { accordionTest } from './Accordion.test.ts'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+import { accordionTest } from './Accordion.test'
 
 <Meta
 	title="Components/Accordion"
 	component={VvAccordion}
 	args={{
-		open: false,
 		title: 'Lorem Ipsum',
 		content:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
 	}}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvAccordion },
 	setup() {
 		return { args }
 	},
-	template: `<div class="w-1/2">
-            <vv-accordion data-testId="accordion" v-bind="args" v-model:open="args.open" />
-        </div>
-        `
+	data() {
+		return {
+			open: false
+		}
+	},
+	template: `<vv-accordion data-testId="accordion" v-bind="args" v-model="open" />`
 })
 
 # VvAccordion

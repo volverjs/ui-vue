@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
 import { testInputText } from './InputText.test.ts'
 
@@ -13,6 +13,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-text',
+			label: 'Text',
 			type: 'text',
 			'data-testId': 'input-text'
 		}}>
@@ -26,6 +27,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-password',
+			label: 'Password',
 			type: 'password',
 			'data-testId': 'input-text'
 		}}>
@@ -39,6 +41,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-date',
+			label: 'Date',
 			type: 'date',
 			'data-testId': 'input-text'
 		}}>
@@ -52,6 +55,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-datetime',
+			label: 'Date Time',
 			type: 'datetime-local',
 			'data-testId': 'input-text'
 		}}>
@@ -65,6 +69,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-number',
+			label: 'Number',
 			type: 'number',
 			'data-testId': 'input-text'
 		}}>
@@ -78,6 +83,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-time',
+			label: 'Time',
 			type: 'time',
 			'data-testId': 'input-text'
 		}}>
@@ -91,6 +97,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-email',
+			label: 'Email',
 			type: 'email',
 			'data-testId': 'input-text'
 		}}>
@@ -102,7 +109,12 @@ import { testInputText } from './InputText.test.ts'
 	<Story
 		name="Tel"
 		play={testInputText}
-		args={{ name: 'input-tel', type: 'tel', 'data-testId': 'input-text' }}>
+		args={{
+			name: 'input-tel',
+			label: 'Tel',
+			type: 'tel',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -111,7 +123,12 @@ import { testInputText } from './InputText.test.ts'
 	<Story
 		name="Url"
 		play={testInputText}
-		args={{ name: 'input-url', type: 'url', 'data-testId': 'input-text' }}>
+		args={{
+			name: 'input-url',
+			label: 'Url',
+			type: 'url',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -122,6 +139,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-color',
+			label: 'Color',
 			type: 'color',
 			'data-testId': 'input-text'
 		}}>
@@ -135,8 +153,11 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-search',
+			label: 'Search',
 			type: 'search',
-			'data-testId': 'input-text'
+			'data-testId': 'input-text',
+			icon: 'search',
+			iconPosition: 'left'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -148,6 +169,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-file',
+			label: 'File',
 			type: 'file',
 			'data-testId': 'input-text'
 		}}>

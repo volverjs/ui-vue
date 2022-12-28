@@ -1,0 +1,38 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+import { collapseTest } from './AccordionGroup.test'
+
+<Meta title="Components/AccordionGroup/Props/collapse" />
+
+# VvAccordionGroup accordion
+
+Stories of `VvAccordionGroup` with `collapse`.
+
+<Canvas>
+	<Story name="collapse" play={collapseTest}>
+		{(args) => ({
+			components: { VvAccordionGroup, VvAccordion },
+			data() {
+				return {
+					selected: [],
+					content:
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+				}
+			},
+			template: `<vv-accordion-group data-testId="accordion-group"  v-model="selected" collapse>
+							<vv-accordion name="a-1" title="Details 1" :content="content" />
+							<vv-accordion name="a-2" title="Details 2" :content="content" />
+							<vv-accordion name="a-3" title="Details 3" :content="content" />
+						</vv-accordion-group>
+						<div v-if="selected" class="mt-24" data-testId="selected" >
+							selected: {{ selected }}
+						</div>`
+		})}
+	</Story>
+</Canvas>
+
+<Source
+	language="jsx"
+	code={`<vv-accordion-group v-model="accordion" :items="items" collapse />`}
+/>

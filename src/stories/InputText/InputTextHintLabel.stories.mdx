@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
 import { testInputText } from './InputText.test.ts'
 
@@ -17,7 +17,8 @@ import { testInputText } from './InputText.test.ts'
 		}}
 		args={{
 			name: 'input-text-hint',
-			hintLabel: 'Help text di prova!',
+			label: 'Input Text with Hint Label',
+			hintLabel: 'Lorem ipsum dolor sit amet',
 			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}

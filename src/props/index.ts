@@ -63,7 +63,13 @@ export const LimitProps = {
 }
 
 export const InputProps = {
-	id: String,
+	/**
+	 * Input id
+	 */
+	id: [String, Number],
+	/**
+	 * Input name
+	 */
 	name: { type: String, required: true },
 	autocomplete: { type: String, default: 'off' },
 	autofocus: Boolean,

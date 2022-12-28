@@ -1,7 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
-import { Template } from './Select.stories.mdx'
-import { selectTest } from './Select.test.ts'
+import VvSelect from '@/components/VvSelect/VvSelect.vue'
 
 <Meta title="Components/Select/Props/disabled" />
 
@@ -10,27 +8,25 @@ import { selectTest } from './Select.test.ts'
 Let's define a story for our `disabled` select.
 
 <Canvas>
-	<Story
-		name="disabled"
-		play={(ctx) => {
-			selectTest(ctx, {
-				className: 'vv-select--disabled',
-				isClickDisabled: true
-			})
+	<Story name="disabled">
+		{() => {
+			return {
+				components: { VvSelect },
+				data() {
+					return {
+						value: '',
+						options: ['Option 1', 'Option 2', 'Option 3']
+					}
+				},
+				template: `<div class="w-1/2">
+						<vv-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />
+					</div>`
+			}
 		}}
-		args={{
-			id: 1,
-			label: 'Label 1',
-			placeholder: 'Placeholder',
-			disabled: true,
-			value: '',
-			options: ['Option 1', 'Option 2', 'Option 3']
-		}}>
-		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Source
 	language="html"
-	code={`<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />`}
+	code={`<vv-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />`}
 />

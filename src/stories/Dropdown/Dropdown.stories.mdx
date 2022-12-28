@@ -1,14 +1,14 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
-import { VvDropdownProps } from '../../components/VvDropdown/VvDropdown'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { dropdownTest } from './Dropdown.test.ts'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import { VvDropdownProps } from '@/components/VvDropdown'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import { dropdownTest } from './Dropdown.test'
 
 <Meta
 	title="Components/Dropdown"
 	component={VvDropdown}
 	args={{
-		...ObjectUtilities.propsToObject(VvDropdownProps),
+		...propsToObject(VvDropdownProps),
 		options: [
 			{
 				label: 'Option 1',
@@ -36,8 +36,9 @@ export const Template = (args) => ({
 			value: ''
 		}
 	},
-	template: `<div class="mb-lg" id="value">Value: {{ value }}</div>
-		<vv-dropdown v-bind="args" v-model:modelValue="value" class="w-1/2 ml-lg" />
+	template: `
+		<vv-dropdown v-bind="args" v-model="value" class="max-w-224 relative" />
+		<div class="mt-24">Selected: <span data-testId="selected">{{ value }}</span></div>
 		`
 })
 

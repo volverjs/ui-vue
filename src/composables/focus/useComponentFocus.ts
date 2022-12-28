@@ -1,19 +1,17 @@
-import type { Ref } from 'vue'
-import { watch } from 'vue'
-import { useFocus } from '@vueuse/core'
+import { watch, unref } from 'vue'
+import { useFocus, type MaybeElement, type MaybeElementRef } from '@vueuse/core'
 
 /**
  *
  */
 export function useComponentFocus(
-	inputTemplateRef: Ref<HTMLInputElement>,
-	emit: (event: any, ...args: any[]) => void
+	inputTemplateRef: MaybeElementRef<MaybeElement>,
+	emit: (event: 'focus' | 'blur', value: unknown) => void
 ) {
 	const { focused } = useFocus(inputTemplateRef)
 
-	watch(focused, (bFocus) => {
-		if (bFocus) emit('focus', inputTemplateRef.value)
-		else emit('blur', inputTemplateRef.value)
+	watch(focused, (newValue) => {
+		emit(newValue ? 'focus' : 'blur', unref(inputTemplateRef))
 	})
 
 	return {

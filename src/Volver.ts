@@ -1,8 +1,10 @@
 import {
 	addCollection,
 	addIcon,
+	addAPIProvider,
 	type IconifyIcon,
-	type IconifyJSON
+	type IconifyJSON,
+	type PartialIconifyAPIConfig
 } from '@iconify/vue'
 import type { App, Plugin } from 'vue'
 
@@ -22,6 +24,10 @@ interface IVolverParams {
 	 * This collections will be added during plugin install
 	 */
 	iconsCollections?: IconifyJSON[]
+	/**
+	 * Set true inside nuxt
+	 */
+	nuxt?: boolean
 }
 
 export interface IVolver extends IVolverParams {
@@ -45,6 +51,16 @@ export interface IVolver extends IVolverParams {
 	 */
 	addIcon(name: string, data: IconifyIcon): boolean
 	/**
+	 * Add custom config for provider
+	 * @param {String} provider
+	 * @param {PartialIconifyAPIConfig} customConfig
+	 * @returns {Boolean} true on success, false if something is wrong with data
+	 */
+	addAPIProvider(
+		provider: string,
+		customConfig: PartialIconifyAPIConfig
+	): boolean
+	/**
 	 * Current provider
 	 */
 	provider: string
@@ -58,11 +74,13 @@ export class Volver implements IVolver {
 	fetchOptions: RequestInit
 	iconsCollections: IconifyJSON[]
 	provider: string
+	nuxt: boolean
 
 	constructor({
 		fetchWithCredentials = false,
 		fetchOptions = {},
-		iconsCollections = []
+		iconsCollections = [],
+		nuxt = false
 	}: IVolverParams = {}) {
 		if (fetchWithCredentials) {
 			fetchOptions = { ...fetchOptions, credentials: 'include' }
@@ -75,6 +93,7 @@ export class Volver implements IVolver {
 		this.iconsCollections.forEach((iconsCollection) => {
 			this.addCollection(iconsCollection, this.provider)
 		})
+		this.nuxt = nuxt
 	}
 
 	addCollection(collection: IconifyJSON, providerName?: string): boolean {
@@ -85,7 +104,17 @@ export class Volver implements IVolver {
 		return addIcon(name, data)
 	}
 
-	fetchIcon(src: string, options?: RequestInit): Promise<string | undefined> {
+	addAPIProvider(
+		provider: string,
+		customConfig: PartialIconifyAPIConfig
+	): boolean {
+		return addAPIProvider(provider, customConfig)
+	}
+
+	fetchIcon(
+		src: string,
+		options: RequestInit = { cache: 'force-cache' }
+	): Promise<string | undefined> {
 		return new Promise((resolve, reject) => {
 			fetch(src, { ...this.fetchOptions, ...options })
 				.catch((e) => reject(e))

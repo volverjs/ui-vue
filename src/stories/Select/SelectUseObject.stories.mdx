@@ -1,7 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
-import { Template } from './Select.stories.mdx'
-import { selectTest } from './Select.test.ts'
+import VvSelect from '@/components/VvSelect/VvSelect.vue'
 
 <Meta title="Components/Select/Props/useObject" />
 
@@ -30,34 +28,39 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 />
 
 <Canvas>
-	<Story
-		name="useObject"
-		play={selectTest}
-		args={{
-			id: 1,
-			label: 'Label 1',
-			value: '',
-			options: [
-				{
-					label: 'Option 1',
-					value: 1
+	<Story name="useObject">
+		{() => {
+			return {
+				components: { VvSelect },
+				data() {
+					return {
+						value: '',
+						options: [
+							{
+								label: 'Option 1',
+								value: 1
+							},
+							{
+								label: 'Option 2',
+								value: 2
+							},
+							{
+								label: 'Option 3',
+								value: 3
+							}
+						]
+					}
 				},
-				{
-					label: 'Option 2',
-					value: 2
-				},
-				{
-					label: 'Option 3',
-					value: 3
-				}
-			],
-			useObject: true
-		}}>
-		{Template.bind({})}
+				template: `<div class="w-1/2">
+						<vv-select v-model="value" :options="options" label="Label 1" use-object />
+						value: {{ value }}
+					</div>`
+			}
+		}}
 	</Story>
 </Canvas>
 
 <Source
 	language="html"
-	code={`<vv-select v-model:modelValue="value" :options="options" label="Label 1" use-object />`}
+	code={`<vv-select v-model="value" :options="options" label="Label 1" use-object />`}
 />

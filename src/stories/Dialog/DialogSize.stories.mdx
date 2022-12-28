@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvDialog from '../../components/VvDialog/VvDialog.vue'
-import { dialogTest } from './Dialog.test.ts'
+import VvDialog from '@/components/VvDialog/VvDialog.vue'
 
 import { Template } from './Dialog.stories.mdx'
 
@@ -11,10 +10,7 @@ import { Template } from './Dialog.stories.mdx'
 # Normal
 
 <Canvas>
-	<Story
-		name="Normal"
-		play={dialogTest}
-		args={{ id: 'dialog-normal', size: '' }}>
+	<Story name="Normal" args={{ id: 'dialog-normal', size: '' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -24,7 +20,6 @@ import { Template } from './Dialog.stories.mdx'
 <Canvas>
 	<Story
 		name="Small"
-		play={dialogTest}
 		args={{ id: 'dialog-small', size: 'small', transition: 'scale' }}>
 		{Template.bind({})}
 	</Story>
@@ -35,7 +30,6 @@ import { Template } from './Dialog.stories.mdx'
 <Canvas>
 	<Story
 		name="Fullscreen"
-		play={dialogTest}
 		args={{ id: 'dialog-fullscreen', size: 'fullscreen' }}>
 		{Template.bind({})}
 	</Story>

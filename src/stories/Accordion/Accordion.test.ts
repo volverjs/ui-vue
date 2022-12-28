@@ -1,10 +1,11 @@
 import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { expect } from '@/test/expect'
+import { sleep } from '@/test/sleep'
 import { within } from '@storybook/testing-library'
 
 async function accordionTest(
 	{ canvasElement, ...data }: PlayAttributes,
-	{ className = null }: ComponentConfig
+	{ className = null }: ComponentConfig = {}
 ) {
 	const accordion = (await within(canvasElement).findByTestId(
 		'accordion'
@@ -16,6 +17,7 @@ async function accordionTest(
 	expect(title).toHaveClass('vv-collapse__summary')
 	expect(accordion.open).toBe(false)
 	expect(title).toBeClicked()
+	await sleep()
 	expect(accordion.open).toBeTruthy()
 	const content = accordion.lastChild as HTMLElement
 	expect(content).toHaveClass('vv-collapse__content')
@@ -24,7 +26,7 @@ async function accordionTest(
 }
 
 async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
-	const accordion = await within(canvasElement).findByTestId('accordion')
+	const accordion = await within(canvasElement).findByTestId('slot')
 	data.args.slotName == 'details' &&
 		expect(accordion.innerHTML).toEqual(data.args.details)
 

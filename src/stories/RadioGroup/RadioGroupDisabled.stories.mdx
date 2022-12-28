@@ -1,10 +1,8 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-
-import { radioGroupTest } from './RadioProperty.test.ts'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './RadioGroup.stories.mdx'
+import { radioGroupTest } from './RadioGroup.test'
 
 <Meta title="Components/RadioGroup/Disabled" component={VvRadioGroup} />
 
@@ -21,9 +19,9 @@ import { Template } from './RadioGroup.stories.mdx'
 		args={{
 			name: 'disabled',
 			options: [
-				{ value: 1, label: 'Mela' },
-				{ value: 2, label: 'Pera' },
-				{ value: 3, label: 'Banana' }
+				{ value: 1, label: 'Option 1' },
+				{ value: 2, label: 'Option 2' },
+				{ value: 3, label: 'Option 3' }
 			],
 			disabled: true,
 			role: 'radiogroup'

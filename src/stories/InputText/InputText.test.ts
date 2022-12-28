@@ -1,6 +1,7 @@
 import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within, userEvent } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
+import { sleep } from '@/test/sleep'
 
 export async function testInputText(
 	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
@@ -26,11 +27,11 @@ export async function testInputText(
 		) {
 			const text = customText || 'Lorem ipsum'
 			userEvent.keyboard(text)
-			if (!data.args.limit && data.args.maxLength) {
-				data.args.maxLength >= text.length
+			if (!data.args.limit && data.args.maxlength) {
+				data.args.maxlength >= text.length
 					? expect(inputText.value).toEqual(text)
 					: expect(inputText.value.length).toEqual(
-							data.args.maxLength
+							data.args.maxlength
 					  )
 			} else if (!data.args.limit) {
 				expect(inputText.value).toEqual(data.args.modelValue || text)
@@ -42,38 +43,37 @@ export async function testInputText(
 		'name',
 		'placeholder',
 		'required',
-		'autofocus',
-		'autocomplete',
-		'disabled',
 		'type',
 		'max',
-		'maxLength',
+		'maxlength',
 		'min',
-		'minLength'
+		'minlength'
 	]
 	baseAttrs.forEach((attr) => {
-		data.args[attr] &&
-			expect(`${inputText[attr]}` || inputText[attr]).toEqual(
-				`${data.args[attr]}` || data.args[attr]
+		if (data.args[attr] !== undefined) {
+			expect(String(inputText.getAttribute(attr))).toEqual(
+				String(data.args[attr])
 			)
+		}
 	})
 	data.args.label &&
-		expect(inputTextWrapperParent.firstChild?.innerText).toEqual(
-			data.args.label
-		)
+		expect(
+			(inputTextWrapperParent.firstChild as HTMLElement)?.innerText
+		).toEqual(data.args.label)
 	data.args.hintLabel &&
-		expect(inputTextWrapperParent.lastChild?.innerText).toEqual(
-			data.args.hintLabel
-		)
+		expect(
+			(inputTextWrapperParent.lastChild as HTMLElement)?.innerText
+		).toEqual(data.args.hintLabel)
 	data.args.modelValue &&
 		expect(inputText.value).toEqual(data.args.modelValue)
 	data.args.readonly && expect(inputText.readOnly).toEqual(data.args.readonly)
-	expect(inputTextWrapperParent).toHaveClass(
-		'vv-input-text',
-		'vv-input-text--dirty'
-	)
+	await sleep()
+	expect(inputTextWrapperParent).toHaveClass('vv-input-text')
+	if (inputText.value) {
+		expect(inputTextWrapperParent).toHaveClass('vv-input-text--dirty')
+	}
 	className && expect(inputTextWrapperParent).toHaveClass(className)
-	expect(inputTextWrapperParent).toHaveNoViolations()
+	await expect(inputTextWrapperParent).toHaveNoViolations()
 }
 
 export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
@@ -82,18 +82,18 @@ export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
 	const limit = document.getElementsByClassName(
 		'vv-input-text__limit'
 	)[0] as HTMLElement
-	if (data.args.maxLength) {
-		while (inputText.value.length < data.args.maxLength)
+	if (data.args.maxlength) {
+		while (inputText.value.length < data.args.maxlength)
 			await userEvent.keyboard(
 				' dolor sit amet, consectetur adipiscing elit'
 			)
 		data.args.limit === true &&
 			expect(limit.innerText).toEqual(
-				`${inputText.value.length}/${data.args.maxLength}`
+				`${inputText.value.length}/${data.args.maxlength}`
 			)
 		data.args.limit === 'countdown' &&
 			expect(limit.innerHTML).toBe(
-				`${data.args.maxLength - inputText.value.length}`
+				`${data.args.maxlength - inputText.value.length}`
 			)
 	}
 }
@@ -128,7 +128,7 @@ export async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
 	iconTest({ canvasElement, ...data }, { customElement: icon })
 	const button = inputTextWrapper.lastElementChild as HTMLButtonElement
 	expect(button).toHaveClass('vv-button')
-	expect(button.innerText).toBe('QUA!')
+	expect(button.innerText).toBe('Here!')
 }
 
 export async function inputNumberTest({

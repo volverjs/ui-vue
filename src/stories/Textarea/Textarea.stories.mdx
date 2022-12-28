@@ -1,11 +1,9 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import { toGroup } from '../utils'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
-import { VvTextareaProps } from '../../components/VvTextarea/VvTextarea'
-import { textareaTest } from './TextareaMain.test.ts'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
+import { VvTextareaProps } from '@/components/VvTextarea'
 
 <Meta title="Components/Textarea" component={VvTextarea} />
 
@@ -17,11 +15,8 @@ export const Template = (args, { argTypes }) => ({
 	},
 	data: () => ({ value: args.modelValue || '' }),
 	template: `
-		<div class="flex flex-col justify-between">
-			<vv-textarea v-bind="args" v-model:modelValue="value" data-testid="textarea"/>
-			<span>Valore: <strong id="value" data-testid="value">{{value}} </strong> </span>
-		</div>
-        `
+		<vv-textarea v-model="value" v-bind="args" data-testId="textarea" />
+		<div>Value: <span data-testId="value">{{value}}</span></div>`
 })
 
 # VvTextarea
@@ -31,9 +26,8 @@ export const Template = (args, { argTypes }) => ({
 <Canvas>
 	<Story
 		name="vv-textarea"
-		play={textareaTest}
 		args={{
-			...ObjectUtilities.propsToObject(VvTextareaProps),
+			...propsToObject(VvTextareaProps),
 			maxlength: null
 		}}
 		argTypes={{

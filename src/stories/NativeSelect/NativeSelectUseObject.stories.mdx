@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
 
 <Meta title="Components/NativeSelect/Props/useObject" />
@@ -32,6 +32,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 	<Story
 		name="useObject"
 		args={{
+			name: 'select',
 			value: '',
 			label: 'label',
 			placeholder: 'placeholder',
@@ -57,5 +58,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="html"
-	code={`<vv-native-select v-model:modelValue="value" :options="options" label="Label 1" use-object />`}
+	code={`<vv-native-select v-model="value" :options="options" label="Label 1" use-object />`}
 />

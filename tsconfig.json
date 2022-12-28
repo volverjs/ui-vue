@@ -7,6 +7,7 @@
 		"src/stories/**/*.test.ts"
 	],
 	"compilerOptions": {
+		"lib": ["esnext", "dom"],
 		"baseUrl": ".",
 		"outDir": "dist",
 		"types": [

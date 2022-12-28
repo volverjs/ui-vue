@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
-import { customKeysTest } from './NativeSelectTest.js'
+import { customKeysTest } from './NativeSelect.test'
 
 <Meta title="Components/NativeSelect/Props/value-key_label-key" />
 
@@ -34,6 +34,7 @@ Options object array with custom `valueKey` ("val") and custom `labelKey` ("titl
 		name="value-key_label-key"
 		play={customKeysTest}
 		args={{
+			name: 'select',
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			value: '',
@@ -61,5 +62,5 @@ Options object array with custom `valueKey` ("val") and custom `labelKey` ("titl
 
 <Source
 	language="jsx"
-	code={`<vv-native-select v-model:modelValue="value" :options="options" value-key="val" label-key="title" />`}
+	code={`<vv-native-select v-model="value" :options="options" value-key="val" label-key="title" />`}
 />

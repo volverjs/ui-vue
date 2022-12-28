@@ -1,42 +1,34 @@
-<template>
-	<Icon
-		v-if="show"
-		:class="iconClass"
-		v-bind="{
-			...$props,
-			provider: currentProvider,
-			icon
-		}" />
-</template>
+<script lang="ts">
+export default {
+	name: 'VvIcon'
+}
+</script>
 
 <script setup lang="ts">
-import type { IVolver } from '../../Volver'
-import { VOLVER_PREFIX } from '../../Volver'
-
-import { inject, toRefs } from 'vue'
-
-import { ref, computed } from 'vue'
+import { inject, toRefs, ref, computed } from 'vue'
 import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
-import { VvIconProps } from './VvIcon'
-
-//Composables
+import { type IVolver, VOLVER_PREFIX } from '@/Volver'
+import { VvIconProps } from '@/components/VvIcon'
 import { useBemModifiers } from '@/composables/useModifiers'
 
-//Props,emits,slots
+// props
 const props = defineProps(VvIconProps)
 
-//Data
+// data
 const show = ref(true)
 const { modifiers } = toRefs(props)
 
-//Inject
+// inject
 const ds = inject<IVolver>(VOLVER_PREFIX)
 
-//Styles & bindings
-const { bemCssClasses: iconClass } = useBemModifiers('vv-icon', {
+// classes
+const { bemCssClasses } = useBemModifiers('vv-icon', {
 	modifiers
 })
 
+/**
+ * Provider name
+ */
 const currentProvider = computed(() => {
 	return props.provider || ds?.provider
 })
@@ -105,7 +97,10 @@ function addIconFromSvg(svg: string) {
 }
 
 if (ds) {
-	if (props.src) {
+	if (
+		props.src &&
+		!iconExists(`@${currentProvider.value}:${props.prefix}:${props.name}`)
+	) {
 		show.value = false
 		ds.fetchIcon(props.src)
 			.then((svg?: string) => {
@@ -122,3 +117,14 @@ if (ds) {
 	}
 }
 </script>
+
+<template>
+	<Icon
+		v-if="show"
+		:class="bemCssClasses"
+		v-bind="{
+			...$props,
+			provider: currentProvider,
+			icon
+		}" />
+</template>

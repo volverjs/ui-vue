@@ -13,9 +13,12 @@ export async function dropdownTest(
 	className && expect(dropdown).toHaveClass(className)
 
 	// options test
-	const dropdownItems = [...dropdown.children]
+	const dropdownItems = dropdown.children
 	const propOptions = data.args.options
-	const value = document.getElementById('value')
+	const value = (await within(canvasElement).findByTestId(
+		'selected'
+	)) as HTMLSpanElement
+
 	if (data.args.labelNoResult && propOptions.length == 0) {
 		const optionLabel = dropdownItems[0].firstChild as HTMLInputElement
 		expect(optionLabel.innerText).toEqual(data.args.labelNoResult)
@@ -51,13 +54,13 @@ export async function dropdownTest(
 				propOptions[index].label || propOptions[index]
 			const propOptionValue =
 				propOptions[index].value || propOptions[index]
-			await expect(optionLabel.innerText).toEqual(propOptionLabel)
+			await expect(optionLabel.innerText.trim()).toEqual(propOptionLabel)
 			await expect(optionRadio.value).toEqual(`${propOptionValue}`)
 
 			// useObject test
 			data.args.useObject &&
 				expect(value?.innerText).toBe(
-					`Value: { "label": "${propOptionLabel}", "value": ${propOptionValue} }`
+					`{ "label": "${propOptionLabel}", "value": ${propOptionValue} }`
 				)
 		}
 
@@ -73,5 +76,5 @@ export async function dropdownTest(
 			expect(checkedOptions).toBeGreaterThan(0)
 		}
 	}
-	expect(dropdown).toHaveNoViolations()
+	await expect(dropdown).toHaveNoViolations()
 }

@@ -1,43 +1,25 @@
-<template>
-	<ul :class="dropdownClasses" role="listbox">
-		<li v-if="!options?.length">
-			<label>
-				{{ labelNoResult }}
-			</label>
-		</li>
-		<li v-for="(option, index) in options" :key="index">
-			<label :for="`dropdown-${index}-${id}`">
-				<input
-					:id="`dropdown-${index}-${id}`"
-					:type="multiple ? 'checkbox' : 'radio'"
-					:value="getValue(option)"
-					:checked="isSelected(option)"
-					:disabled="
-						typeof option === 'object'
-							? option.disabled ?? disabled
-							: disabled
-					"
-					@input="onInput" />{{ getLabel(option) }}
-			</label>
-		</li>
-	</ul>
-</template>
+<script lang="ts">
+export default {
+	name: 'VvDropdown'
+}
+</script>
 
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-import { useBemModifiers } from '../../composables/useModifiers'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvDropdownProps, type Option } from './VvDropdown'
+import { nanoid } from 'nanoid'
+import { useBemModifiers } from '@/composables/useModifiers'
+import { contains, equals, removeFromList } from '@/utils/ObjectUtilities'
+import { VvDropdownProps, type Option } from '@/components/VvDropdown'
 
+// props, emit
 const props = defineProps(VvDropdownProps)
 const emit = defineEmits(['update:modelValue'])
 
 // data
-const id = uuidv4()
+const id = nanoid()
 const { modifiers, disabled } = toRefs(props)
 
-//Styles & css classes modifiers
+// styles
 const { bemCssClasses: dropdownClasses } = useBemModifiers('vv-dropdown', {
 	modifiers,
 	disabled
@@ -47,18 +29,18 @@ const { bemCssClasses: dropdownClasses } = useBemModifiers('vv-dropdown', {
  * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
  * @param {String | Option} option
  */
-function isSelected(option: string | Option) {
+function getChecked(option: string | Option) {
 	if (Array.isArray(props.modelValue)) {
 		// check if contain whole option or option value
 		return (
-			ObjectUtilities.contains(option, props.modelValue) ||
-			ObjectUtilities.contains(getValue(option), props.modelValue)
+			contains(option, props.modelValue) ||
+			contains(getValue(option), props.modelValue)
 		)
 	}
 	// check if modelValue is equal to option or option value
 	return (
-		ObjectUtilities.equals(option, props.modelValue) ||
-		ObjectUtilities.equals(getValue(option), props.modelValue)
+		equals(option, props.modelValue) ||
+		equals(getValue(option), props.modelValue)
 	)
 }
 
@@ -76,6 +58,17 @@ function getValue(option: string | Option) {
  */
 function getLabel(option: string | Option) {
 	return typeof option === 'string' ? option : option[props.labelKey]
+}
+
+/**
+ * Retrieve the disabled state of an option based on prop "disabled" or the disabled attribute
+ * @param {String | Option} option
+ */
+function getDisabled(option: string | Option): boolean {
+	if (typeof option === 'string' || option.disabled === undefined) {
+		return disabled.value
+	}
+	return option.disabled
 }
 
 /**
@@ -104,11 +97,12 @@ function onInput(event: Event) {
 		if (
 			typeof props.maxValues !== 'undefined' &&
 			props.maxValues >= 0 &&
+			Array.isArray(props.modelValue) &&
 			props.modelValue?.length >= props.maxValues
 		) {
 			if (
 				(Array.isArray(props.modelValue) &&
-					!ObjectUtilities.contains(value, props.modelValue)) ||
+					!contains(value, props.modelValue)) ||
 				props.maxValues == 0
 			) {
 				target.checked = false
@@ -117,13 +111,41 @@ function onInput(event: Event) {
 			}
 		}
 		if (Array.isArray(props.modelValue)) {
-			value = ObjectUtilities.contains(value, props.modelValue)
-				? ObjectUtilities.removeFromList(value, props.modelValue)
+			value = contains(value, props.modelValue)
+				? removeFromList(value, props.modelValue)
 				: [...props.modelValue, value]
 		} else {
-			value = [value]
+			value = [value as Option]
 		}
 	}
 	emit('update:modelValue', value)
 }
 </script>
+
+<template>
+	<ul :class="dropdownClasses" role="listbox">
+		<li v-if="!options?.length" role="option">
+			<label>
+				{{ labelNoResult }}
+			</label>
+		</li>
+		<li
+			v-for="(option, index) in options"
+			:key="index"
+			role="option"
+			:aria-selected="getChecked(option)">
+			<label :for="`dropdown-${index}-${id}`">
+				<input
+					:id="`dropdown-${index}-${id}`"
+					:type="multiple ? 'checkbox' : 'radio'"
+					:value="getValue(option)"
+					:checked="getChecked(option)"
+					:disabled="getDisabled(option)"
+					tabindex="-1"
+					aria-hidden="true"
+					@input="onInput" />
+				{{ getLabel(option) }}
+			</label>
+		</li>
+	</ul>
+</template>

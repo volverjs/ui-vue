@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
 import { testInputText } from './InputText.test.ts'
 
@@ -13,7 +13,8 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-text-min-length',
-			minLength: 5,
+			label: 'Input Text Min Length',
+			minlength: 5,
 			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}

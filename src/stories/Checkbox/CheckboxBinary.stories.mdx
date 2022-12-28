@@ -1,0 +1,76 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+import { checkTest, booleanTest, binaryTest } from './Checkbox.test'
+
+<Meta title="Components/Checkbox/Binary" component={VvCheckbox} />
+
+# Binary True / false
+
+<Canvas>
+	<Story
+		name="True/false"
+		play={(ctx) =>
+			checkTest({
+				...ctx,
+				functions: [booleanTest]
+			})
+		}
+		args={{
+			id: 4,
+			label: 'Accept terms and conditions',
+			name: 'ck4',
+			trueValue: true,
+			falseValue: false
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckbox },
+				setup() {
+					return { args }
+				},
+				data() {
+					return {
+						checkValue: false
+					}
+				},
+				template: `<div data-testId="checkbox" :data-testData="checkValue" :key="checkValue">
+						      <vv-checkbox v-model="checkValue" v-bind="args"  />
+							  <div>Selected value: {{checkValue}}</div>
+						   </div>`
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Binary "Yes" / "No"
+
+<Canvas>
+	<Story
+		name="Binary Yes / No"
+		args={{
+			id: 5,
+			label: 'Accept terms and conditions',
+			name: 'ck5',
+			trueValue: 'Yes',
+			falseValue: 'No'
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckbox },
+				setup() {
+					return { args }
+				},
+				data() {
+					return {
+						checkValue: 'No'
+					}
+				},
+				template: `<div :data-testData="checkValue" :key="checkValue">
+						      <vv-checkbox v-model="checkValue" v-bind="args"  />
+							  <div>Selected value: {{checkValue}}</div>
+						   </div>`
+			}
+		}}
+	</Story>
+</Canvas>

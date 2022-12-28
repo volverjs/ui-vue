@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-
-import VvButton from '../../components/VvButton/VvButton.vue'
-import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
-import { buttonGroupTest, classTest } from './ButtonGroupTest.js'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest } from './ButtonGroup.test'
 
 <Meta title="Components/ButtonGroup/Props/action" component={VvButtonGroup} />
 
@@ -60,7 +59,7 @@ A VvButtonGroup with the `action`, `toggle` and `compact` props
 				},
 				template: `
 					<div class="flex">
-						<vv-button-group v-model:modelValue="modelValue" :modifiers="['action', 'toggle', 'compact']" class="mt-22">
+						<vv-button-group v-model="modelValue" :modifiers="['action', 'toggle', 'compact']" class="mt-22">
                             <vv-button name="first" icon="akar-icons:copy" label="First" />
                             <vv-button name="second" icon="akar-icons:pencil" label="Second" />
                             <vv-button name="third" icon="akar-icons:trash-bin" label="Third" />
@@ -75,7 +74,7 @@ A VvButtonGroup with the `action`, `toggle` and `compact` props
 
 <Source
 	language="html"
-	code={`<vv-button-group v-model:modelValue="modelValue" action toggle compact>
+	code={`<vv-button-group v-model="modelValue" action toggle compact>
 	<vv-button name="first" icon="akar-icons:copy" label="First" />
 	<vv-button name="second" icon="akar-icons:pencil" label="Second" />
 	<vv-button name="third" icon="akar-icons:trash-bin" label="Third" />

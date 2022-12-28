@@ -1,10 +1,8 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-
-import { radioOptionsTest, arrayOptionsTest } from './RadioOption.test.ts'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { Template } from './RadioGroup.stories.mdx'
+import { radioOptionsTest, arrayOptionsTest } from './RadioGroup.test'
 
 <Meta title="Components/RadioGroup/Options" component={VvRadioGroup} />
 
@@ -19,9 +17,9 @@ Check group based on list of object list
 		args={{
 			name: 'options',
 			options: [
-				{ value: 1, label: 'Mela' },
-				{ value: 2, label: 'Pera' },
-				{ value: 3, label: 'Banana' }
+				{ value: 1, label: 'Option 1' },
+				{ value: 2, label: 'Option 2' },
+				{ value: 3, label: 'Option 3' }
 			],
 			role: 'radiogroup'
 		}}>
@@ -37,7 +35,7 @@ Check group based on list of object list
 		play={arrayOptionsTest}
 		args={{
 			name: 'options',
-			options: ['Primo', 'Secondo', 'Terzo']
+			options: ['First', 'Second', 'Third']
 		}}>
 		{Template.bind({})}
 	</Story>

@@ -2,9 +2,7 @@ import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { userEvent } from '@storybook/testing-library'
 
-export async function dialogTest(
-	{ ...data }: PlayAttributes = {} as PlayAttributes
-) {
+export async function dialogTest(data: PlayAttributes = {} as PlayAttributes) {
 	const button = document.getElementsByClassName('vv-button')[0]
 	const dialog = document.getElementById(data.args.id)
 
@@ -21,8 +19,8 @@ export async function dialogTest(
 	const dialogContent = dialogWrapper?.children[0] as HTMLDivElement
 	expect(dialogContent).toHaveClass('vv-dialog__content')
 	// slot test
-	expect(dialogContent?.innerText).toEqual('Contenuto di prova')
+	expect(dialogContent?.innerText).toEqual('Lorem ipsum dolor sit amet')
 
 	data.args.autoClose && expect(dialog).toHaveProperty('open', true)
-	expect(dialog).toHaveNoViolations()
+	await expect(dialog).toHaveNoViolations()
 }

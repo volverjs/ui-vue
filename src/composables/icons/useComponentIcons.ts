@@ -1,5 +1,4 @@
-import type { Slot, Ref } from 'vue'
-import { computed } from 'vue'
+import { type Slot, type Ref, computed } from 'vue'
 
 interface ComponentIconProps {
 	icon: Ref<string>
@@ -52,7 +51,7 @@ export function useComponentIcons(
 }
 
 export function useComponentIcon(
-	icon: Ref<string>,
+	icon: Ref<string | object>,
 	iconPosition: Ref<string>,
 	slots: ComponentIconSlots
 ) {

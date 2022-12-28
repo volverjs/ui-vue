@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
 import { testInputText } from './InputText.test.ts'
 
@@ -13,6 +13,7 @@ import { testInputText } from './InputText.test.ts'
 		play={testInputText}
 		args={{
 			name: 'input-text-autocomplete',
+			label: 'Input Text Autocomplete',
 			autocomplete: 'on',
 			'data-testId': 'input-text'
 		}}>

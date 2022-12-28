@@ -1,3 +1,64 @@
+<script lang="ts">
+export default {
+	name: 'VvDialog'
+}
+</script>
+
+<script setup lang="ts">
+import { type DialogHTMLAttributes, computed, ref } from 'vue'
+import { useVModel, onClickOutside } from '@vueuse/core'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import { VvDialogEvents, VvDialogProps } from '@/components/VvDialog'
+
+// props, emit
+const props = defineProps(VvDialogProps)
+const emit = defineEmits(VvDialogEvents)
+
+// data
+const openDialog = useVModel(props, 'modelValue', emit)
+const htmlAttrIsOpen = ref(true)
+
+// template ref
+const modalWrapper = ref(null)
+
+// styles
+const dialogAttrs = computed(() => {
+	const { id } = props
+	return {
+		id,
+		open: htmlAttrIsOpen.value
+	} as DialogHTMLAttributes
+})
+const dialogClass = computed(() => {
+	if (!props.size) {
+		return 'vv-dialog'
+	}
+	return ['vv-dialog', `vv-dialog--${props.size}`]
+})
+
+// transitions
+const transitioName = computed(() => `vv-dialog--${props.transition}`)
+const dialogTransitionHandlers = {
+	'before-enter': () => {
+		htmlAttrIsOpen.value = true
+		emit('open')
+	},
+	'after-leave': () => {
+		htmlAttrIsOpen.value = false
+		emit('close')
+	}
+}
+
+// methods
+onClickOutside(modalWrapper, () => {
+	if (props.autoClose) openDialog.value = false
+})
+
+function closeDialog() {
+	openDialog.value = false
+}
+</script>
+
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
 		<dialog v-show="openDialog" v-bind="dialogAttrs" :class="dialogClass">
@@ -25,67 +86,3 @@
 		</dialog>
 	</Transition>
 </template>
-
-<script setup lang="ts">
-import type { DialogHTMLAttributes } from 'vue'
-
-import { computed, ref } from 'vue'
-import { useVModel, onClickOutside } from '@vueuse/core'
-import { VvDialogEvents, VvDialogProps } from './VvDialog'
-
-//Components
-import VvIcon from '../VvIcon/VvIcon.vue'
-
-//Constants
-import { VV_DIALOG_SIZES } from './constants'
-
-//Props, emits, slots, attrs
-const props = defineProps(VvDialogProps)
-const emit = defineEmits(VvDialogEvents)
-
-//Data
-const openDialog = useVModel(props, 'open', emit)
-const htmlAttrIsOpen = ref(true)
-
-//Template reference
-const modalWrapper = ref(null)
-
-//Style e binding
-const dialogAttrs = computed(() => {
-	const { id } = props
-	return {
-		id,
-		open: htmlAttrIsOpen.value
-	} as DialogHTMLAttributes
-})
-const dialogClass = computed(() => {
-	return {
-		'vv-dialog': true,
-		'vv-dialog--small': props.size === VV_DIALOG_SIZES.small,
-		'vv-dialog--fullscreen': props.size === VV_DIALOG_SIZES.fullscreen
-	}
-})
-
-//Transitions
-const transitioName = computed(() => `vv-dialog--${props.transition}`)
-const dialogTransitionHandlers = {
-	'after-enter': () => {
-		htmlAttrIsOpen.value = true
-		emit('open')
-	},
-	'after-leave': () => {
-		htmlAttrIsOpen.value = false
-		emit('close')
-	}
-}
-
-//Click outside
-onClickOutside(modalWrapper, () => {
-	if (props.autoClose) openDialog.value = false
-})
-
-//Methods
-function closeDialog() {
-	openDialog.value = false
-}
-</script>

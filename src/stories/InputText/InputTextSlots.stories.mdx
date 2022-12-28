@@ -1,27 +1,25 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
-import { slotsTest } from './InputText.test.ts'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 <Meta title="Components/InputText/Slots" component={VvInputText} />
 
 # Slot icons left e right
 
 <Canvas>
-	<Story name="left-right-slots" play={slotsTest}>
+	<Story name="left-right-slots">
 		{() => {
 			return {
 				components: { VvInputText, VvIcon },
 				data: () => ({ text: '' }),
 				template: `
-					<vv-input-text data-testId="input-text" name="r1" v-model:modelValue="text">
+					<vv-input-text name="r1" v-model="text">
 						<template v-slot:icon-left="slotProps">
                             <VvIcon name="add"/>
                         </template>
                         <template v-slot:icon-right>
-                            <button class="vv-button"> QUA! </button>
+                            <button class="vv-button">Here!</button>
                         </template>
 					</vv-input-text>
                     `

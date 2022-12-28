@@ -7,98 +7,125 @@
     "dev": "storybook dev -p 6006",
     "styleguide": "storybook build",
     "build": "npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
+    "hot": "node ./scripts/build.js --hot",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "generate-icons": "ts-node-esm scripts/icons/generateIcons.ts",
+    "generate-icons": "ts-node-esm ./scripts/icons.ts --srcPath=src/assets/icons",
     "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly"
   },
+  "bin": {
+    "generate-icons": "./bin/icons.js"
+  },
   "files": [
+    "bin",
+    "dist",
     "src",
-    "dist"
+    "*.d.ts"
   ],
+  "engines": {
+    "node": ">= 16"
+  },
   "main": "./dist/Volver.umd.js",
   "module": "./dist/Volver.es.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
-    "@iconify/vue": "^4.0.0",
-    "@vueuse/core": "^9.5.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-mdx": "^2.0.5",
-    "jsdom": "^20.0.2",
-    "uuid": "^9.0.0",
-    "vue": "^3.2.42"
+    "@iconify/vue": "^4.0.2",
+    "@vueuse/core": "^9.9.0",
+    "jsdom": "^20.0.3",
+    "nanoid": "^4.0.0",
+    "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.2",
+    "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
-    "@iconify/tools": "^2.1.1",
+    "@iconify/tools": "^2.1.2",
     "@iconify/types": "^2.0.0",
-    "@iconify/utils": "^2.0.1",
-    "@mdx-js/react": "^2.1.5",
+    "@iconify/utils": "^2.0.6",
+    "@mdx-js/react": "^2.2.1",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@storybook/addon-a11y": "^7.0.0-alpha.48",
-    "@storybook/addon-actions": "^7.0.0-alpha.48",
-    "@storybook/addon-backgrounds": "7.0.0-alpha.48",
-    "@storybook/addon-docs": "^7.0.0-alpha.48",
-    "@storybook/addon-essentials": "^7.0.0-alpha.48",
-    "@storybook/addon-interactions": "^7.0.0-alpha.48",
-    "@storybook/addon-links": "^7.0.0-alpha.48",
-    "@storybook/addon-measure": "7.0.0-alpha.48",
-    "@storybook/addon-outline": "7.0.0-alpha.48",
-    "@storybook/addon-storyshots": "^7.0.0-alpha.48",
-    "@storybook/addons": "7.0.0-alpha.48",
-    "@storybook/builder-vite": "7.0.0-alpha.48",
-    "@storybook/channel-postmessage": "7.0.0-alpha.48",
-    "@storybook/channel-websocket": "7.0.0-alpha.48",
-    "@storybook/cli": "^7.0.0-alpha.48",
-    "@storybook/client-api": "7.0.0-alpha.48",
-    "@storybook/client-logger": "7.0.0-alpha.48",
-    "@storybook/core-common": "7.0.0-alpha.48",
-    "@storybook/jest": "^0.0.10",
-    "@storybook/preview-web": "7.0.0-alpha.48",
-    "@storybook/testing-library": "^0.0.14-next.0",
-    "@storybook/vue3": "^7.0.0-alpha.48",
-    "@storybook/vue3-vite": "^7.0.0-alpha.48",
+    "@storybook/addon-a11y": "^7.0.0-beta.16",
+    "@storybook/addon-actions": "^7.0.0-beta.16",
+    "@storybook/addon-backgrounds": "7.0.0-beta.16",
+    "@storybook/addon-docs": "^7.0.0-beta.16",
+    "@storybook/addon-essentials": "^7.0.0-beta.16",
+    "@storybook/addon-interactions": "^7.0.0-beta.16",
+    "@storybook/addon-links": "^7.0.0-beta.16",
+    "@storybook/addon-measure": "7.0.0-beta.16",
+    "@storybook/addon-outline": "7.0.0-beta.16",
+    "@storybook/addon-storyshots": "^7.0.0-beta.16",
+    "@storybook/addons": "7.0.0-beta.16",
+    "@storybook/blocks": "^7.0.0-beta.16",
+    "@storybook/builder-vite": "7.0.0-beta.16",
+    "@storybook/channel-postmessage": "7.0.0-beta.16",
+    "@storybook/channel-websocket": "7.0.0-beta.16",
+    "@storybook/cli": "^7.0.0-beta.16",
+    "@storybook/client-api": "7.0.0-beta.16",
+    "@storybook/client-logger": "7.0.0-beta.16",
+    "@storybook/core-common": "7.0.0-beta.16",
+    "@storybook/jest": "^0.0.11-next.0",
+    "@storybook/preview-web": "7.0.0-beta.16",
+    "@storybook/testing-library": "^0.0.14-next.1",
+    "@storybook/vue3": "^7.0.0-beta.16",
+    "@storybook/vue3-vite": "^7.0.0-beta.16",
     "@types/jest-axe": "^3.5.5",
     "@types/jsdom": "^20.0.1",
-    "@types/node": "18.11.9",
-    "@types/react": "^18.0.25",
-    "@types/uuid": "^8.3.4",
-    "@vitejs/plugin-vue": "^3.2.0",
-    "@volverjs/style": "0.1.2-beta.23",
-    "@vue/compiler-sfc": "^3.2.42",
+    "@types/node": "18.11.18",
+    "@types/react": "^18.0.26",
+    "@types/uuid": "^9.0.0",
+    "@types/yargs": "^17.0.17",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@volverjs/style": "0.1.2-beta.30",
+    "@vue/compiler-sfc": "^3.2.45",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
-    "@vue/test-utils": "^2.2.1",
+    "@vue/test-utils": "^2.2.6",
     "@vue/tsconfig": "^0.1.3",
     "change-case": "^4.1.2",
-    "eslint": "^8.27.0",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-mdx": "^2.0.5",
-    "eslint-plugin-storybook": "^0.6.7",
-    "eslint-plugin-vue": "^9.7.0",
+    "eslint-plugin-mdx": "^2.0.5",
+    "eslint-plugin-storybook": "^0.6.8",
+    "eslint-plugin-vue": "^9.8.0",
     "glob": "^8.0.3",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29.3.1",
     "jest-axe": "^7.0.0",
-    "jsdom": "^20.0.2",
+    "jsdom": "^20.0.3",
     "npm-run-all": "^4.1.5",
-    "preact": "^10.11.2",
-    "prettier": "^2.7.1",
+    "preact": "^10.11.3",
+    "prettier": "^2.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.56.1",
-    "sass-loader": "^13.1.0",
-    "storybook": "^7.0.0-alpha.48",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "storybook": "^7.0.0-beta.16",
     "storybook-addon-markdown-docs": "^1.0.5",
-    "storybook-dark-mode": "^1.1.2",
+    "storybook-dark-mode": "^2.0.4",
     "ts-node": "^10.9.1",
-    "typescript": "~4.8.4",
-    "vite": "^3.2.3",
+    "typescript": "~4.9.4",
+    "unplugin-vue-components": "^0.22.12",
+    "vite": "^4.0.3",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-externalize-deps": "^0.4.0",
-    "vitest": "^0.25.1",
+    "vitest": "^0.26.2",
     "vue-loader": "^17.0.1",
-    "vue-tsc": "^1.0.9",
-    "webpack": "^5.74.0"
+    "vue-tsc": "^1.0.18",
+    "webpack": "^5.75.0",
+    "yargs": "^17.6.2"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "resolvers/unplugin": [
+        "dist/resolvers/unplugin.d.ts"
+      ],
+      "icons": [
+        "dist/icons.d.ts"
+      ]
+    }
   },
   "exports": {
     ".": {
@@ -109,11 +136,17 @@
     "./src/*": "./src/*",
     "./dist/*": "./dist/*",
     "./components": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.es.js",
       "default": "./dist/components/index.umd.js"
     },
+    "./resolvers/unplugin": {
+      "types": "./dist/resolvers/unplugin.d.ts",
+      "import": "./dist/resolvers/unplugin.es.js",
+      "default": "./dist/resolvers/unplugin.umd.js"
+    },
     "./icons": {
+      "types": "./dist/icons.d.ts",
       "import": "./dist/icons.es.js",
       "default": "./dist/icons.umd.js"
     },
@@ -152,15 +185,15 @@
       "import": "./dist/components/VvCard/VvCard.es.js",
       "default": "./dist/components/VvCard/VvCard.umd.js"
     },
-    "./vv-check": {
-      "types": "./dist/components/VvCheck/VvCheck.vue.d.ts",
-      "import": "./dist/components/VvCheck/VvCheck.es.js",
-      "default": "./dist/components/VvCheck/VvCheck.umd.js"
+    "./vv-checkbox": {
+      "types": "./dist/components/VvCheckbox/VvCheckbox.vue.d.ts",
+      "import": "./dist/components/VvCheckbox/VvCheckbox.es.js",
+      "default": "./dist/components/VvCheckbox/VvCheckbox.umd.js"
     },
-    "./vv-check-group": {
-      "types": "./dist/components/VvCheckGroup/VvCheckGroup.vue.d.ts",
-      "import": "./dist/components/VvCheckGroup/VvCheckGroup.es.js",
-      "default": "./dist/components/VvCheckGroup/VvCheckGroup.umd.js"
+    "./vv-checkbox-group": {
+      "types": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.vue.d.ts",
+      "import": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.es.js",
+      "default": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.umd.js"
     },
     "./vv-dialog": {
       "types": "./dist/components/VvDialog/VvDialog.vue.d.ts",

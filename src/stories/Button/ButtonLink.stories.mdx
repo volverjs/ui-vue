@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvButton from '../../components/VvButton/VvButton.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import { testButtonLink } from './Button.test'
 
 <Meta title="Components/Button/Link" />
@@ -104,22 +104,4 @@ Stories of `VvButton` with `link`.
 <Source
 	language="jsx"
 	code={`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`}
-/>
-
-## Router-link
-
-export const Template = () => ({
-	components: { VvButton },
-	template: `<vv-button label="Router link" to="/test" variant="text" />`
-})
-
-<Canvas>
-	<Story name="router-link" args={{}} play={(ctx) => testButtonLink(ctx)}>
-		{RouterLinkStory}
-	</Story>
-</Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-button label="Router link" to="/" variant="text" />`}
 />

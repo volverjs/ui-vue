@@ -1,26 +1,26 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import VvBreadcrumb from '../../components/VvBreadcrumb/VvBreadcrumb.vue'
-import { VvBreadcrumbProps } from '../../components/VvBreadcrumb/VvBreadcrumb'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import VvBreadcrumb from '@/components/VvBreadcrumb/VvBreadcrumb.vue'
+import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 import { Template } from './Breadcrumb.stories.mdx'
-import { breadcrumbTest } from './Breadcrumb.test.ts'
+import { breadcrumbTest } from './Breadcrumb.test'
 
 <Meta
 	title="Components/Breadcrumb/Props/multiline"
 	component={VvBreadcrumb}
 	args={{
-		...ObjectUtilities.propsToObject(VvBreadcrumbProps),
+		...propsToObject(VvBreadcrumbProps),
 		multiline: true,
 		routes: [
 			{
 				label: 'Home',
 				title: 'Home',
-				to: '/'
+				href: '/'
 			},
 			{
 				label: 'Library',
 				title: 'Library',
-				to: '/library'
+				href: '/library'
 			},
 			{
 				label: 'Book 1',
