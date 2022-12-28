@@ -31,6 +31,7 @@ specifiers:
   '@storybook/jest': ^0.0.11-next.0
   '@storybook/preview-web': 7.0.0-beta.16
   '@storybook/testing-library': ^0.0.14-next.1
+  '@storybook/theming': ^7.0.0-beta.16
   '@storybook/vue3': ^7.0.0-beta.16
   '@storybook/vue3-vite': ^7.0.0-beta.16
   '@types/jest-axe': ^3.5.5
@@ -120,6 +121,7 @@ devDependencies:
   '@storybook/jest': 0.0.11-next.0
   '@storybook/preview-web': 7.0.0-beta.16
   '@storybook/testing-library': 0.0.14-next.1
+  '@storybook/theming': 7.0.0-beta.16_biqbaboplfbrettd7655fr4n2y
   '@storybook/vue3': 7.0.0-beta.16_vue@3.2.45
   '@storybook/vue3-vite': 7.0.0-beta.16_nv7h4t7vehje2vhhtxczolsg44
   '@types/jest-axe': 3.5.5
