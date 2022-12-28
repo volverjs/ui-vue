@@ -55,7 +55,7 @@ const getOptionProps = (option: unknown, oIndex: number) => {
 		value: getOptionValue(option)
 	}
 }
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>

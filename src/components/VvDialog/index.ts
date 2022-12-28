@@ -1,4 +1,4 @@
-export const VvDialogEvents = ['open', 'close', 'update:open']
+export const VvDialogEvents = ['open', 'close', 'update:modelValue']
 
 export const VvDialogProps = {
 	id: { type: String, required: true },

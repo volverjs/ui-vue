@@ -3,13 +3,20 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Autocomplete" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Autocomplete"
-		args={{ name: 'input-text-autocomplete', autocomplete: 'on' }}>
+		play={testInputText}
+		args={{
+			name: 'input-text-autocomplete',
+			label: 'Input Text Autocomplete',
+			autocomplete: 'on',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

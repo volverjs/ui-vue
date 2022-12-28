@@ -1,8 +1,8 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
 import { Template } from './Textarea.stories.mdx'
+import { textareaTest } from './Textarea.test'
 
 <Meta title="Components/Textarea/Props/Placeholder" component={VvTextarea} />
 
@@ -13,7 +13,8 @@ import { Template } from './Textarea.stories.mdx'
 <Canvas>
 	<Story
 		name="Placeholder"
-		args={{ name: 'textarea-placeholder', placeholder: 'Prova' }}>
+		play={textareaTest}
+		args={{ name: 'textarea-placeholder', placeholder: 'Test' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

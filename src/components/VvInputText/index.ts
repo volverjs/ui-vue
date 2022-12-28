@@ -5,7 +5,8 @@ import {
 	HintProps,
 	LoadingProps,
 	ModifiersProps,
-	LimitProps
+	LimitProps,
+	InputProps
 } from '@/props'
 
 export const TYPES = {
@@ -29,8 +30,8 @@ export const ICON_POSITIONS = {
 }
 
 export const TYPES_ICON = {
-	PASSWORD_ON: 'eye-on',
-	PASSWORD_OFF: 'eye-off',
+	PASSWORD_SHOW: 'eye-on',
+	PASSWORD_HIDE: 'eye-off',
 	DATE: 'calendar',
 	TIME: 'time',
 	COLOR: 'color',
@@ -52,29 +53,59 @@ export const VvInputTextProps = {
 	...LoadingProps,
 	...ModifiersProps,
 	...LimitProps,
+	...InputProps,
+	/**
+	 * Input value
+	 */
 	modelValue: {
 		type: [String, Number],
-		default: null
+		default: undefined
 	},
+	/**
+	 * Input type
+	 */
 	type: {
 		type: String,
 		default: TYPES.TEXT,
 		validator: (value: string) => Object.values(TYPES).includes(value)
 	},
-	name: { type: String, required: true },
-	autocomplete: { type: String, default: 'off' },
-	autofocus: Boolean,
-	minlength: Number,
-	maxlength: Number,
 	min: [Number, Date],
 	max: [Number, Date],
-	step: Number,
-	label: String,
-	disabled: Boolean,
-	readonly: Boolean,
-	placeholder: String,
+	step: { type: Number, default: 1 },
+	labelStepUp: {
+		type: String,
+		default: 'Increase value'
+	},
+	labelStepDown: {
+		type: String,
+		default: 'Decrease value'
+	},
+	labelShowPassword: {
+		type: String,
+		default: 'Show password'
+	},
+	labelHidePassword: {
+		type: String,
+		default: 'Hide password'
+	},
+	labelClear: {
+		type: String,
+		default: 'Clear'
+	},
+	iconShowPassword: {
+		type: String,
+		default: TYPES_ICON.PASSWORD_SHOW
+	},
+	iconHidePassword: {
+		type: String,
+		default: TYPES_ICON.PASSWORD_HIDE
+	},
+	iconClear: {
+		type: String,
+		default: TYPES_ICON.SEARCH
+	},
 	/**
-	 * Nome dell'icona
+	 * Icon name
 	 * @see DsIcon
 	 */
 	icon: {
@@ -82,7 +113,7 @@ export const VvInputTextProps = {
 		default: ''
 	},
 	/**
-	 * Posizione dell'icona
+	 * Icon position
 	 */
 	iconPosition: {
 		type: String,
@@ -91,14 +122,14 @@ export const VvInputTextProps = {
 		default: ICON_POSITIONS.RIGHT
 	},
 	/**
-	 * True = label flottante
+	 * If true the label will be floating
 	 */
 	floating: Boolean,
 	debounce: [String, Number],
 	/**
-	 * Se true, attiva la possibilità di cancellare il testo nella textarea
+	 * Sequential keyboard navigation
 	 */
-	autoclear: Boolean
+	tabindex: { type: [String, Number], default: 0 }
 }
 
 export type VvInputTextPropsTypes = ExtractPropTypes<typeof VvInputTextProps>

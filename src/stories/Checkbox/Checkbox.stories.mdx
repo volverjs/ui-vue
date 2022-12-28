@@ -1,6 +1,5 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 
 <Meta title="Components/Checkbox" component={VvCheckbox} />
@@ -13,10 +12,8 @@ export const Template = (args, { argTypes }) => ({
 	},
 	data: () => ({ ckValue: null }),
 	template: `
-		<div :data-testData="ckValue" data-testId="checkbox">
-			<vv-checkbox v-bind="args" v-model="ckValue"/>
-			<div>Selected value: {{ckValue}}</div> 
-		</div>
+			<vv-checkbox v-bind="args" v-model="ckValue" :data-testData="ckValue" data-testId="checkbox" />
+			<div>Selected value: <span data-testId="selected">{{ckValue}}</span></div> 
         `
 })
 

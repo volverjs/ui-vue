@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest'
+import { expect } from '@/test/expect'
 import { within } from '@storybook/testing-library'
-import { toHaveNoViolations, axe } from 'jest-axe'
 
 async function accordionGroupTest({ canvasElement }) {
 	const accordionGroup = await within(canvasElement).findByTestId(
@@ -20,7 +19,7 @@ async function accordionGroupTest({ canvasElement }) {
 			expect(content.ariaHidden).toBe('true')
 		}
 	})
-	accessibilityTest(accordionGroup)
+	await expect(accordionGroup).toHaveNoViolations()
 }
 
 async function itemsTest({ canvasElement }) {
@@ -29,23 +28,22 @@ async function itemsTest({ canvasElement }) {
 	)
 	accordionGroup.children[0].click()
 	const selected = await within(canvasElement).findByTestId('selected')
+	expect(selected.innerText).toBe('selected: a-1')
+	await accordionGroup.children[1].click()
+	expect(selected.innerText).toBe('selected: a-2')
+	await expect(accordionGroup).toHaveNoViolations()
+}
+
+async function collapseTest({ canvasElement }) {
+	const accordionGroup = await within(canvasElement).findByTestId(
+		'accordion-group'
+	)
+	accordionGroup.children[0].click()
+	const selected = await within(canvasElement).findByTestId('selected')
 	expect(selected.innerText).toBe('selected: [ "a-1" ]')
 	await accordionGroup.children[1].click()
 	expect(selected.innerText).toBe('selected: [ "a-1", "a-2" ]')
-	accessibilityTest(accordionGroup)
+	await expect(accordionGroup).toHaveNoViolations()
 }
 
-async function accordionTest({ canvasElement }) {
-	const accordion1 = await within(canvasElement).findByTestId('accordion-1')
-	accordion1.firstChild.click()
-	const selected = await within(canvasElement).findByTestId('selected')
-	expect(selected.innerText).toBe('selected: accordion 1')
-	accessibilityTest(accordion1)
-}
-
-async function accessibilityTest(element) {
-	expect.extend(toHaveNoViolations)
-	expect(await axe(element)).toHaveNoViolations()
-}
-
-export { accordionGroupTest, itemsTest, accordionTest }
+export { accordionGroupTest, itemsTest, collapseTest }

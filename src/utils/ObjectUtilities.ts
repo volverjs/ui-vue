@@ -219,27 +219,33 @@ export function isString(value: unknown) {
  */
 // eslint-disable-next-line
 export function propsToObject(props: any) {
-	// eslint-disable-next-line
-	return Object.keys(props).reduce((initValue: any, value: string) => {
-		if (isFunction(props[value])) {
-			// case prop1: String
-			initValue[value] = props[value]()
-		} else if (Array.isArray(props[value])) {
-			// case prop1: [ String, Array ]
-			initValue[value] = props[value][0]()
-		} else if (props[value]?.type) {
+	return Object.keys(props).reduce(
+		(initValue: Record<string, unknown>, value: string) => {
+			if ('default' in props[value]) {
+				initValue[value] = props[value].default
+				return initValue
+			}
+			if (isFunction(props[value])) {
+				// case prop1: String
+				initValue[value] = props[value]()
+				return initValue
+			}
+			if (Array.isArray(props[value])) {
+				// case prop1: [ String, Array ]
+				initValue[value] = props[value][0]()
+				return initValue
+			}
 			// case prop1: { type: ... }
 			if (Array.isArray(props[value].type)) {
-				// case prop1: { type: [ String, Array ] }
-				initValue[value] =
-					props[value]?.default || props[value]?.type[0]()
-			} else {
-				// case prop1: { type: String }
-				initValue[value] = props[value]?.default || props[value]?.type()
+				initValue[value] = props[value]?.type[0]()
+				return initValue
 			}
-		}
-		return initValue
-	}, {})
+			// case prop1: { type: String }
+			initValue[value] = props[value]?.default ?? props[value]?.type()
+			return initValue
+		},
+		{} as Record<string, unknown>
+	)
 }
 
 /**

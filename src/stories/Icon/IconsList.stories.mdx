@@ -1,10 +1,4 @@
-import {
-	Canvas,
-	Meta,
-	Story,
-	IconGallery,
-	IconItem
-} from '@storybook/addon-docs'
+import { Canvas, Meta, Story, IconItem } from '@storybook/addon-docs'
 import IconList from './IconList.vue'
 import IconsNormal from '@/assets/icons/normal.json'
 
@@ -23,13 +17,3 @@ export const Template = (args) => ({
 <Story name="iconography" args={{}}>
 	{Template.bind({})}
 </Story>
-
-<IconGallery>
-	{/* {Object.keys(IconsNormal.icons).map((key) => {
-		return (
-			<IconItem key={key} name={key}>
-				{Template.bind({})}
-			</IconItem>
-		)
-	})} */}
-</IconGallery>

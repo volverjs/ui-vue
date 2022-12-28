@@ -3,13 +3,19 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Label" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Label"
-		args={{ name: 'input-text-label', label: 'Label di prova' }}>
+		play={testInputText}
+		args={{
+			name: 'input-text-label',
+			label: 'Input Text Label',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

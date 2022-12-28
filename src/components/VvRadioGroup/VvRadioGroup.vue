@@ -25,7 +25,7 @@ const emit = defineEmits(VvRadioGroupEvents)
 const slots = useSlots()
 
 // hint
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot } = HintSlotFactory(props, slots)
 
 // data
 const modelValue = useVModel(props, 'modelValue', emit)

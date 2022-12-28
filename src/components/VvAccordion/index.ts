@@ -5,6 +5,10 @@ import { VV_ACCORDION_GROUP } from '@/constants'
 
 export const VvAccordionProps = {
 	/**
+	 * Accordion name
+	 */
+	name: String,
+	/**
 	 * Header title
 	 */
 	title: String,

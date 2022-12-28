@@ -124,12 +124,16 @@ function onInput(event: Event) {
 
 <template>
 	<ul :class="dropdownClasses" role="listbox">
-		<li v-if="!options?.length">
+		<li v-if="!options?.length" role="option">
 			<label>
 				{{ labelNoResult }}
 			</label>
 		</li>
-		<li v-for="(option, index) in options" :key="index">
+		<li
+			v-for="(option, index) in options"
+			:key="index"
+			role="option"
+			:aria-selected="getChecked(option)">
 			<label :for="`dropdown-${index}-${id}`">
 				<input
 					:id="`dropdown-${index}-${id}`"
@@ -137,6 +141,8 @@ function onInput(event: Event) {
 					:value="getValue(option)"
 					:checked="getChecked(option)"
 					:disabled="getDisabled(option)"
+					tabindex="-1"
+					aria-hidden="true"
 					@input="onInput" />
 				{{ getLabel(option) }}
 			</label>

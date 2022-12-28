@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest'
+import { expect } from '@/test/expect'
 import { within } from '@storybook/testing-library'
-import { toHaveNoViolations, axe } from 'jest-axe'
 
 async function iconTest({ canvasElement, functions, ...args }) {
 	const icon = await within(canvasElement).findByTestId('img')
@@ -9,9 +8,7 @@ async function iconTest({ canvasElement, functions, ...args }) {
 			await func({ icon, ...args })
 		})
 	}
-	// Accessibility Test
-	expect.extend(toHaveNoViolations)
-	expect(await axe(icon)).toHaveNoViolations()
+	await expect(icon).toHaveNoViolations()
 }
 
 async function classTest({ icon, classNames = [] }) {

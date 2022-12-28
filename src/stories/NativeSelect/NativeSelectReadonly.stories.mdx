@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
-import { readonlyTest } from './NativeSelectTest.js'
+import { readonlyTest } from './NativeSelect.test'
 
 <Meta title="Components/NativeSelect/Props/readonly" />
 
@@ -10,17 +10,22 @@ import { readonlyTest } from './NativeSelectTest.js'
 Let's define a story for our `readonly` select.
 
 <Canvas>
-	<Story
-		name="readonly"
-		play={readonlyTest}
-		args={{
-			label: 'Lorem Ipsum',
-			placeholder: 'Placeholder',
-			options: ['Option 1', 'Option 2', 'Option 3'],
-			readonly: true,
-			'data-testid': 'native-select'
-		}}>
-		{Template.bind({})}
+	<Story name="readonly" play={readonlyTest}>
+		{() => {
+			return {
+				components: { VvNativeSelect },
+				data() {
+					return {
+						value: 'Option 1',
+						options: ['Option 1', 'Option 2', 'Option 3']
+					}
+				},
+				template: `
+					<vv-native-select data-testid="native-select" placeholder="Select option" name="select" v-model="value" :options="options" label="Readonly" readonly />
+					<div>Value : {{ value }}</div>
+				`
+			}
+		}}
 	</Story>
 </Canvas>
 

@@ -3,17 +3,20 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Autofocus" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Autofocus"
+		play={testInputText}
 		args={{
 			name: 'input-text-autofocus',
-			label: 'Campo in autofocus',
+			label: 'Input Text Autofocus',
 			autofocus: true,
-			type: 'text'
+			type: 'text',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

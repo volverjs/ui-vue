@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
-import { buttonGroupTest, mixClassTest, classTest } from './ButtonGroupTest.js'
+import { buttonGroupTest, mixClassTest, classTest } from './ButtonGroup.test'
 
 <Meta title="Components/ButtonGroup/Props/toggle" component={VvButtonGroup} />
 
@@ -26,7 +25,7 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
 				...ctx,
 				functions: [classTest, mixClassTest],
 				className: 'compact',
-				classToTest: 'active',
+				classToTest: 'pressed',
 				numberOfElements: 1
 			})
 		}>
@@ -39,7 +38,7 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
 						args
 					}
 				},
-				data: () => ({ selected: null }),
+				data: () => ({ selected: '1a' }),
 				template: `
 					<div class="flex flex-row justify-between">
                         <vv-button-group toggle compact @update:modelValue="selected = $event" :modelValue="selected">
@@ -47,7 +46,7 @@ Force VvButtonGroup to work as toggle button. Keep last clicked button as active
                             <vv-button name="2b">Button 2</vv-button>
                             <vv-button name="3c">Button 3</vv-button>
                         </vv-button-group>
-						<strong v-if="selected">Bottone selez: {{selected}}</strong> 
+						<strong v-if="selected">Selected: {{selected}}</strong> 
 					</div>
                     `
 			}
@@ -80,7 +79,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 								<vv-button name="2b">Button 2</vv-button>
 								<vv-button name="3c">Button 3</vv-button>
 							</vv-button-group>
-							<strong v-if="selected">Bottone selez: {{selected}}</strong> 
+							<strong v-if="selected">Selected: {{selected}}</strong> 
 						</div>
 						<div class="flex flex-row justify-between mt-22">
 							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected2 = $event" :model-value="selected2">
@@ -88,7 +87,7 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 								<vv-button name="2b">Button 2</vv-button>
 								<vv-button name="3c">Button 3</vv-button>
 							</vv-button-group>
-							<strong v-if="selected2">Bottone selez: {{selected2}}</strong> 
+							<strong v-if="selected2">Selected: {{selected2}}</strong> 
 						</div>
                     `
 			}
@@ -113,15 +112,15 @@ If VvButton child element has't a name attribute, when VvButton is registered in
 				template: `
 					<div class="flex flex-col">
 						<div class="flex flex-row justify-between">
-							<vv-button-group toggle compact v-bind="args" @update:modelValue="selected = $event" :model-value="selected">
+							<vv-button-group toggle compact v-bind="args" v-model="selected">
 								<vv-button name="1">Button 1</vv-button>
 								<vv-button name="2" v-if="hide2b">Button 2</vv-button>
 								<vv-button name="3">Button 3</vv-button>
 							</vv-button-group>
-							<strong v-if="selected">Bottone selez: {{selected}}</strong> 
+							<strong v-if="selected">Selected: {{selected}}</strong> 
 						</div>
 						<button class="vv-button vv-button--secondary mt-22" @click="hide2b = !hide2b"> 
-							<label> {{hide2b?'Nascondi 2':'Mostra 2'}}</label>
+							<label> {{ hide2b ? 'Hide 2' : 'Show 2' }}</label>
 						</button>
 					</div>
                     `

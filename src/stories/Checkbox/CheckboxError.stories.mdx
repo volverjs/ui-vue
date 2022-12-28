@@ -1,9 +1,8 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
-
 import { Template } from './Checkbox.stories.mdx'
+import { errorTest } from './Checkbox.test'
 
 <Meta title="Components/Checkbox/Error" component={VvCheckbox} />
 
@@ -12,6 +11,7 @@ import { Template } from './Checkbox.stories.mdx'
 <Canvas>
 	<Story
 		name="Error with message"
+		play={errorTest}
 		args={{
 			id: 7,
 			label: 'Accept terms and conditions',
@@ -29,6 +29,7 @@ import { Template } from './Checkbox.stories.mdx'
 <Canvas>
 	<Story
 		name="Error with messages"
+		play={errorTest}
 		args={{
 			id: 8,
 			label: 'Accept terms and conditions',

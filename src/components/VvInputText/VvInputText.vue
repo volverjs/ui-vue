@@ -1,30 +1,27 @@
 <script lang="ts">
 export default {
-	name: 'VvInputText',
-	inheritAttrs: false
+	name: 'VvInputText'
 }
 </script>
 
 <script setup lang="ts">
 import {
 	computed,
-	useAttrs,
 	useSlots,
 	ref,
 	toRefs,
 	onMounted,
 	unref,
-	type HTMLAttributes,
 	type InputHTMLAttributes
 } from 'vue'
 import { nanoid } from 'nanoid'
-import { isEmpty, pickBy } from '@/utils/ObjectUtilities'
+import { isEmpty } from '@/utils/ObjectUtilities'
 import HintSlotFactory from '@/components/common/HintSlot'
 import { useComponentIcon } from '@/composables/icons/useComponentIcons'
 import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
 import { useTextLimit } from '@/composables/textLimit/useTextLimit'
-import { toBem } from '@/composables/useModifiers'
+import { useBemModifiers } from '@/composables/useModifiers'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
 import {
@@ -37,28 +34,28 @@ import {
 const props = defineProps(VvInputTextProps)
 const emit = defineEmits(VvInputTextEvents)
 const slots = useSlots()
-const attrs = useAttrs()
 
 // template refs
 const input = ref()
 
 // data
-const { icon, iconPosition, label, modelValue, autoclear, limit } =
-	toRefs(props)
-const inputTextId = (attrs.id as string) || nanoid()
-const inputTextLabeledBy = `${inputTextId}-label`
-const inputTextDescribedBy = `${inputTextId}-hint`
+const { icon, iconPosition, label, modelValue, limit } = toRefs(props)
+const hasId = computed(() => String(props.id || nanoid()))
+const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 // BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 const inputTextPlaceholder = computed(() =>
 	props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder
 )
 
 // debounce
-const inputTextData = useDebouncedInput(modelValue, emit, props.debounce)
+const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
 
 // password
 const showPassword = ref(false)
 const isPassword = computed(() => props.type === INPUT.TYPES.PASSWORD)
+const onTogglePassword = () => {
+	showPassword.value = !showPassword.value
+}
 
 // time, datetime and date
 const isDateTime = computed(() =>
@@ -69,21 +66,24 @@ const isDateTime = computed(() =>
 
 // number
 const isNumber = computed(() => props.type === INPUT.TYPES.NUMBER)
-function stepUp() {
+const onStepUp = () => {
 	if (!isDisabled.value) {
 		input.value.stepUp()
-		inputTextData.value = unref(input).value
+		localModelValue.value = unref(input).value
 	}
 }
-function stepDown() {
+const onStepDown = () => {
 	if (!isDisabled.value) {
 		input.value.stepDown()
-		inputTextData.value = unref(input).value
+		localModelValue.value = unref(input).value
 	}
 }
 
 // search
 const isSearch = computed(() => props.type === INPUT.TYPES.SEARCH)
+const onClear = () => {
+	localModelValue.value = null
+}
 
 // icons
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
@@ -98,8 +98,6 @@ const hasIcon = computed(() => {
 })
 const defaultRightIcon = computed(() => {
 	switch (props.type) {
-		case INPUT.TYPES.PASSWORD:
-			return { name: INPUT.TYPES_ICON.PASSWORD_OFF }
 		case INPUT.TYPES.COLOR:
 			return { name: INPUT.TYPES_ICON.COLOR }
 		case INPUT.TYPES.DATE:
@@ -107,142 +105,109 @@ const defaultRightIcon = computed(() => {
 			return { name: INPUT.TYPES_ICON.DATE }
 		case INPUT.TYPES.TIME:
 			return { name: INPUT.TYPES_ICON.TIME }
-		case INPUT.TYPES.SEARCH:
-			return { name: INPUT.TYPES_ICON.SEARCH }
 		default:
 			return ''
 	}
 })
 
 // value length
-const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
+const { formattedTextLimitLength } = useTextLimit(localModelValue, {
 	mode: props.limit,
 	upperLimit: props.maxlength || 0
 })
 
 // focus
-const { focused: isFocused } = useComponentFocus(input, emit)
-defineExpose({
-	focus: () => {
-		isFocused.value = true
-	},
-	blur: () => {
-		isFocused.value = false
-	}
-})
+const { focused } = useComponentFocus(input, emit)
 
 // disabled
 const isDisabled = computed(() => props.disabled || props.readonly)
+const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 // dirty
 const isDirty = computed(() => !isEmpty(modelValue))
 
-// styles & bindings
-const hasClass = computed(() => [
-	toBem('vv-input-text', {
-		modifiers: props.modifiers,
-		readonly: props.readonly,
-		valid: props.valid,
-		invalid: props.error,
-		loading: props.loading,
-		iconLeft: hasIconLeft,
-		iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
-		floating: props.floating && !isEmpty(props.label),
-		dirty: isDirty,
-		focus: isFocused
-	}),
-	attrs.class
-])
-
-const getType = () => {
-	if (isPassword.value && showPassword.value) {
-		return INPUT.TYPES.TEXT
+// invalid
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
 	}
-	if (isDateTime.value && !isDirty.value && !isFocused.value) {
-		return INPUT.TYPES.TEXT
+	if (props.valid === true) {
+		return false
 	}
-	return props.type
-}
+	return undefined
+})
 
-const getAriaAttributes = () => {
+// styles
+const { bemCssClasses } = useBemModifiers('vv-input-text', {
+	modifiers: props.modifiers,
+	valid: props.valid,
+	invalid: props.error,
+	loading: props.loading,
+	iconLeft: hasIconLeft,
+	iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
+	floating: props.floating && !isEmpty(props.label),
+	dirty: isDirty,
+	focus: focused
+})
+
+// attrs
+const hasAttrs = computed(() => {
+	const type = (() => {
+		if (isPassword.value && showPassword.value) {
+			return INPUT.TYPES.TEXT
+		}
+		if (isDateTime.value && !isDirty.value && !focused.value) {
+			return INPUT.TYPES.TEXT
+		}
+		return props.type
+	})()
 	return {
-		'aria-invalid': props.error,
-		'aria-valid': !props.valid,
-		'aria-labeledby': inputTextLabeledBy,
-		'aria-describedby': inputTextDescribedBy,
-		'aria-errormessage': inputTextDescribedBy,
-		...pickBy(attrs, (attr: string) => attr.startsWith('aria-'))
-	}
-}
-
-const getDataAttributes = () => {
-	return {
-		...pickBy(attrs, (attr: string) => attr.startsWith('data-'))
-	}
-}
-
-const wrapperProps = computed(
-	() =>
-		({
-			style: attrs.style,
-			class: hasClass.value,
-			...getDataAttributes()
-		} as HTMLAttributes)
-)
-
-const inputProps = computed(() => {
-	return {
-		id: inputTextId,
-		type: getType(),
+		type,
 		placeholder: inputTextPlaceholder.value,
 		name: props.name,
 		autocomplete: props.autocomplete,
-		disabled: props.disabled,
-		readonly: props.readonly,
 		minlength: props.minlength,
 		maxlength: props.maxlength,
 		min: props.min,
 		max: props.max,
-		step: props.step,
-		tabindex: attrs.tabindex ?? props.disabled ? -1 : 0,
-		...getAriaAttributes()
+		step: type === INPUT.TYPES.NUMBER ? props.step : undefined,
+		tabindex: hasTabindex.value,
+		'aria-invalid': isInvalid.value,
+		'aria-describedby':
+			!hasErrors.value && hasHint.value
+				? hasDescribedBy.value
+				: undefined,
+		'aria-errormessage': hasErrors.value ? hasDescribedBy.value : undefined
 	} as InputHTMLAttributes
 })
 
 // slots
-const iconSlotProps = computed(() => {
-	const { modelValue, valid, error } = props
-	return {
-		valid,
-		error,
-		modelValue
-	}
-})
+const iconSlotProps = computed(() => ({
+	valid: props.valid,
+	error: props.error,
+	modelValue: props.modelValue
+}))
 
 // components
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot, hasHint, hasErrors } = HintSlotFactory(props, slots)
 const PasswordInputActions = VvInputTextActionsFactory(
 	INPUT.TYPES.PASSWORD,
 	props
 )
 const NumberInputActions = VvInputTextActionsFactory(INPUT.TYPES.NUMBER, props)
-
-// methods
-function clearInputText() {
-	inputTextData.value = null
-}
+const SearchInputActions = VvInputTextActionsFactory(INPUT.TYPES.SEARCH, props)
 
 // lifecycle
 onMounted(() => {
 	if (props.autofocus) {
-		isFocused.value = true
+		focused.value = true
 	}
 })
 </script>
 
 <template>
-	<div v-bind="wrapperProps">
-		<label v-if="label" :id="inputTextLabeledBy" :for="inputTextId">
+	<div :class="bemCssClasses">
+		<label v-if="label" :for="hasId" class="vv-input-text__label">
 			{{ label }}
 		</label>
 		<div class="vv-input-text__wrapper">
@@ -251,38 +216,32 @@ onMounted(() => {
 				<VvIcon class="vv-input-text__icon-left" v-bind="hasIcon" />
 			</slot>
 			<input
+				:id="hasId"
 				ref="input"
-				v-bind="inputProps"
-				v-model="inputTextData"
+				v-model="localModelValue"
+				v-bind="hasAttrs"
+				:disabled="disabled"
+				:readonly="readonly"
+				:required="required"
 				@keyup="emit('keyup', $event)" />
-			<!-- autoclear text button -->
-			<button
-				v-if="autoclear && textLength > 0"
-				class="vv-button vv-button--ghost"
-				@click="clearInputText">
-				<VvIcon name="clear-field" />
-			</button>
 			<!-- @slot icon-right to replace icon right -->
 			<slot name="icon-right" v-bind="iconSlotProps">
+				<VvIcon
+					v-if="hasIconRight || defaultRightIcon"
+					v-bind="hasIconRight ? hasIcon : defaultRightIcon" />
 				<PasswordInputActions
-					v-if="isPassword"
-					@action-password-on="showPassword = true"
-					@action-password-off="showPassword = false" />
+					v-else-if="isPassword"
+					@toggle-password="onTogglePassword" />
 				<NumberInputActions
 					v-else-if="isNumber"
-					@action-step-up="stepUp"
-					@action-step-down="stepDown" />
-				<VvIcon
-					v-if="isSearch && (isDirty || hasIconRight)"
-					v-bind="isDirty ? defaultRightIcon : hasIcon" />
-				<VvIcon
-					v-else-if="hasIconRight || defaultRightIcon"
-					v-bind="hasIconRight ? hasIcon : defaultRightIcon" />
+					@step-up="onStepUp"
+					@step-down="onStepDown" />
+				<SearchInputActions v-else-if="isSearch" @clear="onClear" />
 			</slot>
 			<span v-if="limit" class="vv-input-text__limit">
 				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
 			</span>
 		</div>
-		<HintSlot :id="inputTextDescribedBy" class="vv-input-text__hint" />
+		<HintSlot :id="hasDescribedBy" class="vv-input-text__hint" />
 	</div>
 </template>

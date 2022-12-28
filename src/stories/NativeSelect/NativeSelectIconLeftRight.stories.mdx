@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
-import { iconTest } from './NativeSelectTest.js'
+import { iconTest } from './NativeSelect.test'
 
 <Meta title="Components/NativeSelect/Props/icon" />
 
@@ -15,19 +15,20 @@ Let's define a story for our `icon-left` and `icon-right` select.
 				components: { VvNativeSelect },
 				data() {
 					return {
-						value1: '',
-						value2: '',
+						value1: undefined,
+						value2: undefined,
 						options: ['Option 1', 'Option 2', 'Option 3']
 					}
 				},
-				template: `<div class="flex gap-32">
+				template: `
+					<div class="flex gap-32">
 						<div class="w-1/2">
-							<vv-native-select data-testid="icon-left" v-model="value1" :options="options" label="Icon left" icon-left="email" />
-							value 1: {{ value1 }}
+							<vv-native-select data-testid="icon-left" placeholder="Select option" name="select-1" v-model="value1" :options="options" label="Icon left" icon-left="email" />
+							Value 1: {{ value1 }}
 						</div>
 						<div class="w-1/2">
-							<vv-native-select data-testid="icon-right" v-model="value2" :options="options" label="Icon right" icon-right="phone" />
-							value 2: {{ value2 }}
+							<vv-native-select data-testid="icon-right" placeholder="Select option" name="select-2" v-model="value2" :options="options" label="Icon right" icon-right="phone" />
+							Value 2: {{ value2 }}
 						</div>
 					</div>`
 			}
@@ -37,7 +38,7 @@ Let's define a story for our `icon-left` and `icon-right` select.
 
 <Source
 	language="html"
-	code={`<vv-native-select v-model="value" :options="options" label="Icon left" icon-left="email" />
-	
-<vv-native-select v-model="value" :options="options" label="Icon right" icon-right="phone" />`}
+	code={`
+	<vv-native-select v-model="value" :options="options" label="Icon left" icon-left="email" />
+	<vv-native-select v-model="value" :options="options" label="Icon right" icon-right="phone" />`}
 />

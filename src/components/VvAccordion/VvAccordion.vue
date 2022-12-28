@@ -21,7 +21,7 @@ const attrs = useAttrs()
 const emit = defineEmits(VvAccordionEvents)
 
 // data
-const accordionName = (attrs?.id as string) || nanoid()
+const accordionName = props.name || (attrs?.id as string) || nanoid()
 const { modifiers, title, content, disabled, collapse, modelValue, isInGroup } =
 	useGroupProps(props, emit)
 const localModelValue = ref(false)

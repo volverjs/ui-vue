@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import { Template } from './Dropdown.stories.mdx'
+import { dropdownTest } from './Dropdown.test.ts'
 
 <Meta title="Components/Dropdown/Props/multiple" />
 
@@ -29,6 +30,7 @@ Let's define a story for our `multiple` dropdown.
 <Canvas>
 	<Story
 		name="multiple"
+		play={dropdownTest}
 		args={{
 			options: [
 				{

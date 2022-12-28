@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
-import { optionsTest } from './NativeSelectTest.js'
+import { optionsTest } from './NativeSelect.test'
 
 <Meta title="Components/NativeSelect/Props/options" />
 
@@ -38,6 +38,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 		name="optionsArray"
 		play={optionsTest}
 		args={{
+			name: 'select-1',
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			value: '',
@@ -53,6 +54,7 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 		name="optionsObject"
 		play={optionsTest}
 		args={{
+			name: 'select-2',
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			value: '',

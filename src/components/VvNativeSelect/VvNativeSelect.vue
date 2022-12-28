@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, toRefs, useSlots } from 'vue'
+import { computed, toRefs, useSlots, type InputHTMLAttributes } from 'vue'
 import { nanoid } from 'nanoid'
 import { isEmpty } from '@/utils/ObjectUtilities'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
@@ -23,7 +23,7 @@ const emit = defineEmits(VvNativeSelectEmits)
 const slots = useSlots()
 
 // hint
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot, hasHint, hasErrors } = HintSlotFactory(props, slots)
 
 // data
 const {
@@ -37,7 +37,29 @@ const {
 	valid
 } = toRefs(props)
 
-const id = computed(() => props.id || nanoid())
+// computed
+const hasId = computed(() => String(props.id || nanoid()))
+const hasDescribedBy = computed(() => `${hasId.value}-hint`)
+
+// dirty
+const isDirty = computed(() => !isEmpty(props.modelValue))
+
+// disabled
+const isDisabled = computed(() => props.disabled || props.readonly)
+const hasTabindex = computed(() => {
+	return isDisabled.value ? -1 : props.tabindex
+})
+
+// invalid
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
+	}
+	if (props.valid === true) {
+		return false
+	}
+	return undefined
+})
 
 // styles
 const { bemCssClasses } = useBemModifiers('vv-select', {
@@ -48,7 +70,21 @@ const { bemCssClasses } = useBemModifiers('vv-select', {
 	iconRight,
 	valid,
 	invalid: error,
-	dirty: computed(() => !isEmpty(props.modelValue))
+	dirty: isDirty
+})
+
+// attrs
+const hasAttrs = computed(() => {
+	return {
+		name: props.name,
+		tabindex: hasTabindex.value,
+		'aria-invalid': isInvalid.value,
+		'aria-describedby':
+			!hasErrors.value && hasHint.value
+				? hasDescribedBy.value
+				: undefined,
+		'aria-errormessage': hasErrors.value ? hasDescribedBy.value : undefined
+	} as InputHTMLAttributes
 })
 
 /**
@@ -78,46 +114,40 @@ function getDisabled(option: string | Option): boolean {
 	return option.disabled
 }
 
-/**
- * Function triggered on select (multple or single mode)
- * @param event on select event (checkbox or radio input)
- */
-function onInput(event: Event) {
-	const target = event.target as HTMLSelectElement
-
-	// Find option object if useObject prop is true
-	const valueObject = props.useObject
-		? props.options?.find(
-				(option) => (option as Option)[props.valueKey] == target.value
-		  )
-		: null
-
-	// use valueObject if exist or the target value
-	const value = valueObject || target.value
-
-	emit('update:modelValue', value)
-}
+const localModelValue = computed({
+	get: () => {
+		return typeof props.modelValue === 'object'
+			? (props.modelValue as Record<string, unknown>)?.[props.valueKey]
+			: props.modelValue
+	},
+	set: (newValue) => {
+		// find option object if useObject prop is true
+		const valueObject = props.useObject
+			? props.options?.find(
+					(option) => (option as Option)[props.valueKey] === newValue
+			  )
+			: undefined
+		// use valueObject if exist or the target value
+		emit('update:modelValue', valueObject ?? newValue)
+	}
+})
 </script>
 
 <template>
 	<div :class="bemCssClasses">
-		<label v-if="label" :for="id">{{ label }}</label>
+		<label v-if="label" :for="hasId">{{ label }}</label>
 		<!-- #region native select -->
 		<div class="vv-select__wrapper">
 			<slot name="icon-left">
 				<vv-icon v-if="iconLeft" :name="iconLeft" />
 			</slot>
 			<select
-				:id="id"
-				:name="name"
-				:value="
-					typeof modelValue === 'object'
-						? (modelValue as Record<string, unknown>)?.[valueKey]
-						: modelValue
-				"
-				:disabled="disabled || readonly"
-				@input="onInput">
-				<option v-if="placeholder" value="" disabled selected>
+				:id="hasId"
+				v-model="localModelValue"
+				v-bind="hasAttrs"
+				:disabled="isDisabled"
+				:required="required">
+				<option v-if="placeholder" :value="undefined" disabled>
 					{{ placeholder }}
 				</option>
 				<option
@@ -133,6 +163,6 @@ function onInput(event: Event) {
 			</slot>
 		</div>
 		<!-- #endregion native select -->
-		<HintSlot class="vv-select__hint" />
+		<HintSlot :id="hasDescribedBy" class="vv-select__hint" />
 	</div>
 </template>

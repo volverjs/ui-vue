@@ -1,9 +1,8 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
-
 import { Template } from './Checkbox.stories.mdx'
+import { disabledTest } from './Checkbox.test'
 
 <Meta
 	title="Components/Checkbox/Disabled"
@@ -18,6 +17,7 @@ import { Template } from './Checkbox.stories.mdx'
 <Canvas>
 	<Story
 		name="Disabled"
+		play={disabledTest}
 		args={{
 			id: 1,
 			label: 'Option 1',

@@ -3,13 +3,21 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
+import { limitTest } from './InputText.test.ts'
 
 <Meta title="Components/InputText/MaxLength" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="MaxLength"
-		args={{ name: 'input-text-min-length', maxlength: 5 }}>
+		play={testInputText}
+		args={{
+			name: 'input-text-min-length',
+			label: 'Input Text Max Length',
+			maxlength: 5,
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -17,7 +25,14 @@ import { Template } from './InputText.stories.mdx'
 <Canvas>
 	<Story
 		name="MaxLength - limit"
-		args={{ name: 'input-text-limit', maxlength: 5, showLimit: true }}>
+		play={limitTest}
+		args={{
+			name: 'input-text-limit',
+			label: 'Input Text Limit',
+			maxlength: 5,
+			limit: true,
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -25,11 +40,13 @@ import { Template } from './InputText.stories.mdx'
 <Canvas>
 	<Story
 		name="MaxLength - countdown"
+		play={limitTest}
 		args={{
 			name: 'input-text-limit-countdown',
+			label: 'Input Text Countdown',
 			maxlength: 5,
-			showLimit: true,
-			showLimitMode: 'countdown'
+			limit: 'countdown',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

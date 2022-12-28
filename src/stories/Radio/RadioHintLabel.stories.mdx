@@ -1,9 +1,8 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
-
 import { Template } from './Radio.stories.mdx'
+import { hintLabelTest } from './Radio.test'
 
 <Meta
 	title="Components/Radio/HintLabel"
@@ -18,6 +17,7 @@ import { Template } from './Radio.stories.mdx'
 <Canvas>
 	<Story
 		name="HintLabel"
+		play={hintLabelTest}
 		args={{
 			label: 'Option 1',
 			hintLabel: 'Lorem ipsum dolor sit amet',

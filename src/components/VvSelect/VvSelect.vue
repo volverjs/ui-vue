@@ -22,7 +22,7 @@ const slots = useSlots()
 const emit = defineEmits(['update:modelValue', 'change:search'])
 
 // hint slot
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot } = HintSlotFactory(props, slots)
 
 // template ref
 const dropdown = ref()
@@ -55,6 +55,14 @@ watch(debouncedSearchText, () =>
 	emit('change:search', debouncedSearchText.value)
 )
 
+// dirty
+const isDirty = computed(() => !isEmpty(props.modelValue))
+
+// tabindex
+const hasTabindex = computed(() => {
+	return disabled.value || readonly.value ? -1 : props.tabindex
+})
+
 // styles
 const { bemCssClasses } = useBemModifiers('vv-select', {
 	modifiers,
@@ -65,12 +73,10 @@ const { bemCssClasses } = useBemModifiers('vv-select', {
 	iconRight,
 	valid,
 	invalid: error,
-	dirty: computed(() => !isEmpty(props.modelValue))
+	dirty: isDirty
 })
 
-// computed
-
-// Check if options are objects
+// check if options are objects
 const isOptionsObjects = computed(() =>
 	props.options?.every((option) => typeof option === 'object')
 )
@@ -166,23 +172,29 @@ function onInput(value: typeof props.modelValue) {
 
 <template>
 	<div v-if="!native" :id="id" :class="bemCssClasses">
-		<label v-if="label" for="select">{{ label }}</label>
+		<label
+			v-if="label"
+			:id="`${id}-label`"
+			:for="searchable && dropdownOpen ? `${id}-input` : undefined"
+			>{{ label }}</label
+		>
 		<details
 			ref="dropdown"
-			role="list"
 			class="vv-select__wrapper"
 			@click="disabled || readonly ? $event.preventDefault() : null"
 			@keyup.esc="dropdown.open = false"
 			@toggle="onToggle">
 			<summary
 				class="vv-select__input"
-				aria-haspopup="listbox"
+				:tabindex="hasTabindex"
 				@keyup.space="searchable ? $event.preventDefault() : null">
 				<!-- #region search input -->
 				<template v-if="searchable && dropdownOpen">
 					<input
+						:id="`${id}-input`"
 						ref="inputSearch"
 						v-model="searchText"
+						role="combobox"
 						:placeholder="searchPlaceholder" />
 				</template>
 				<!-- #endregion search input -->
@@ -193,6 +205,7 @@ function onInput(value: typeof props.modelValue) {
 				<!-- #endregion label of selected value/s -->
 			</summary>
 			<VvDropdown
+				:id="`${id}-dropdown`"
 				v-bind="{
 					...props,
 					options: currentOptions

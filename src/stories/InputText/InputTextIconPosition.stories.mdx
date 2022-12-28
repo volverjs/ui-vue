@@ -3,16 +3,20 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { iconTest } from './InputText.test.ts'
 
 <Meta title="Components/InputText/IconPosition" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Left"
+		play={iconTest}
 		args={{
 			name: 'input-text-icon',
+			label: 'Input Text with Icon Left',
 			icon: 'add',
-			iconPosition: 'left'
+			iconPosition: 'left',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -21,10 +25,13 @@ import { Template } from './InputText.stories.mdx'
 <Canvas>
 	<Story
 		name="Right"
+		play={iconTest}
 		args={{
 			name: 'input-text-icon',
+			label: 'Input Text with Icon Right',
 			icon: 'add',
-			iconPosition: 'right'
+			iconPosition: 'right',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

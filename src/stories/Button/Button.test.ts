@@ -1,15 +1,10 @@
-import type { PlayAttributes } from '@/test/types'
+import type { PlayAttributes, ComponentConfig } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 
-interface ButtonConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-}
-
 export async function testButton(
 	{ canvasElement }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false, className = null }: ButtonConfig = {}
+	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
 	const button = await within(canvasElement).findByRole('button')
 	if (isClickDisabled) {
@@ -21,7 +16,7 @@ export async function testButton(
 	if (className) {
 		expect(button).toHaveClass(className)
 	}
-	await expect(button).toHaveNoViolations()
+	expect(button).toHaveNoViolations()
 }
 
 export async function testButtonWithBadge(playAttributes: PlayAttributes) {
@@ -49,13 +44,14 @@ export async function testButtonWithIconOnly(playAttributes: PlayAttributes) {
 
 export async function testButtonLink(
 	playAttributes: PlayAttributes,
-	{ isClickDisabled = false, className = null }: ButtonConfig = {}
+	{ isClickDisabled = false, className = null }: ComponentConfig = {}
 ) {
 	const button = await within(playAttributes.canvasElement).findByRole(
 		'button'
 	)
 	await testButton(playAttributes, { isClickDisabled, className })
-	expect(button).toHaveProperty('href')
-	expect(button).toHaveProperty('target')
-	await testButton(playAttributes)
+	if (!isClickDisabled) {
+		expect(button).toHaveProperty('href')
+		expect(button).toHaveProperty('target')
+	}
 }

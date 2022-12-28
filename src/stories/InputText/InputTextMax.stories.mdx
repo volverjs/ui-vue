@@ -3,16 +3,20 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Max" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Max - DateTime"
+		play={testInputText}
 		args={{
 			name: 'input-datetime-max',
+			label: 'Input DateTime Max',
 			type: 'date',
-			max: new Date().toISOString().split('T')[0]
+			max: new Date().toISOString().split('T')[0],
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -21,10 +25,13 @@ import { Template } from './InputText.stories.mdx'
 <Canvas>
 	<Story
 		name="Max - Number"
+		play={testInputText}
 		args={{
 			name: 'input-number-max',
+			label: 'Input Number Max',
 			type: 'number',
-			max: 15
+			max: 15,
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

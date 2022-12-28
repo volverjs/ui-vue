@@ -1,9 +1,8 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
-
 import { Template } from './Checkbox.stories.mdx'
+import { checkTest, hintLabelTest } from './Checkbox.test'
 
 <Meta
 	title="Components/Checkbox/HintLabel"
@@ -18,6 +17,12 @@ import { Template } from './Checkbox.stories.mdx'
 <Canvas>
 	<Story
 		name="Hint label"
+		play={(ctx) =>
+			checkTest({
+				...ctx,
+				functions: [hintLabelTest]
+			})
+		}
 		args={{
 			id: 9,
 			label: 'Accept terms and conditions',

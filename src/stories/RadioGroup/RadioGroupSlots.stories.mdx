@@ -1,9 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-
 import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
-
-import { slotsTest } from './RadioSlots.test.ts'
+import { slotsTest } from './RadioGroup.test'
 
 <Meta title="Components/RadioGroup/Slots" component={VvRadioGroup} />
 
@@ -22,17 +20,13 @@ import { slotsTest } from './RadioSlots.test.ts'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model="selected">
-                            <vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
-                            <vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
-                            <vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
-                        </vv-radio-group>
-                        <strong v-if="selected">Selected options: {{selected}} </strong> 
-                    </div>
+				template: `
+					<vv-radio-group v-bind="args" v-model="selected" data-testId="radiogroup">
+						<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong> 
                     `
 			}
 		}}
@@ -56,23 +50,17 @@ import { slotsTest } from './RadioSlots.test.ts'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
-                            </template>
-                            <template v-slot:hint="slotProps">
-                               <div>Hint label</div>
-							   <div>{{slotProps}}</div> 
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Selected options: {{selected}} </strong>
-                    </div>
+				template: `
+					<vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+						<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+						<template #hint="slotProps">
+							<div>Hint label</div>
+							<div>{{slotProps}}</div> 
+						</template>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong>
                     `
 			}
 		}}
@@ -99,22 +87,16 @@ import { slotsTest } from './RadioSlots.test.ts'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
-                            </template>
-                            <template v-slot:valid>
-                                Valid message
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Selected options: {{selected}} </strong>
-                    </div>
+				template: `
+					<vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+						<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+						<template #valid>
+							Valid message
+						</template>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong>
                     `
 			}
 		}}
@@ -141,22 +123,16 @@ import { slotsTest } from './RadioSlots.test.ts'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
-                            </template>
-                            <template v-slot:error>
+				template: `
+                        <vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+							<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+							<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+							<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+                            <template #error>
                                Error message
                             </template>
                         </vv-radio-group>
                         <strong v-if="selected">Selected options: {{selected}} </strong>
-                    </div>
                     `
 			}
 		}}

@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { computed, defineComponent, h } from 'vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 export default defineComponent({
@@ -6,23 +6,32 @@ export default defineComponent({
 		VvIcon
 	},
 	props: {
-		disabled: Boolean,
+		disabled: {
+			type: Boolean,
+			default: false
+		},
+		label: {
+			type: String
+		},
 		mode: {
 			type: String,
 			validator: (v: string) => ['up', 'down'].includes(v),
 			default: 'up'
 		}
 	},
+	emits: ['step-up', 'step-down'],
 	setup(props, { emit }) {
-		function onClick() {
+		const isUp = computed(() => props.mode === 'up')
+
+		const onClick = (e: Event) => {
+			e?.stopPropagation()
 			if (!props.disabled) {
-				emit(
-					props.mode === 'up' ? 'action-step-up' : 'action-step-down'
-				)
+				emit(isUp.value ? 'step-up' : 'step-down')
 			}
 		}
 
 		return {
+			isUp,
 			onClick
 		}
 	},
@@ -30,9 +39,10 @@ export default defineComponent({
 		return h('button', {
 			class: [
 				'vv-input-text__action-chevron',
-				this.mode === 'up' && 'vv-input-text__action-chevron-up'
+				this.isUp && 'vv-input-text__action-chevron-up'
 			],
 			disabled: this.disabled,
+			ariaLabel: this.label,
 			onClick: this.onClick
 		})
 	}

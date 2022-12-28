@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest'
+import { expect } from '@/test/expect'
 import { userEvent, within } from '@storybook/testing-library'
-import { toHaveNoViolations, axe } from 'jest-axe'
 
 async function nativeSelectTest({ canvasElement, ...data }) {
 	const selectParent = await within(canvasElement).findByTestId(
@@ -10,10 +9,15 @@ async function nativeSelectTest({ canvasElement, ...data }) {
 	const select = selectParent.children[1].children[0]
 	expect(select.parentElement).toHaveClass('vv-select__wrapper')
 	userEvent.click(select)
+	data.args.options.forEach((option, index) => {
+		const opt = select[index + 1]
+		opt.selected = true
+		expect(select.value).toBe(JSON.stringify(option.value))
+	})
 	const opt_1 = select[1]
 	opt_1.selected = true
 	expect(select.value).toBe(JSON.stringify(data.args.options[0].value))
-	accessibilityTest(selectParent)
+	await expect(selectParent).toHaveNoViolations()
 }
 
 async function disabledTest({ canvasElement }) {
@@ -21,7 +25,7 @@ async function disabledTest({ canvasElement }) {
 	const select = selectParent.children[1].children[0]
 	expect(select).toBeDisabled()
 	expect(select).toHaveProperty('disabled', true)
-	accessibilityTest(select)
+	await expect(select).toHaveNoViolations()
 }
 
 async function errorTest({ canvasElement, ...data }) {
@@ -32,7 +36,7 @@ async function errorTest({ canvasElement, ...data }) {
 	expect(selectParent).toHaveClass('vv-select--invalid')
 	const errorLabel = selectParent.lastChild
 	expect(errorLabel.innerText).toEqual(data.args.errorLabel)
-	accessibilityTest(selectParent)
+	await expect(selectParent).toHaveNoViolations()
 }
 
 async function hintLabelTest({ canvasElement, ...data }) {
@@ -66,7 +70,8 @@ async function iconTest({ canvasElement }) {
 		'iconify--normal',
 		'iconify--vv'
 	)
-	accessibilityTest(selectParent1, selectParent2)
+	await expect(selectParent1).toHaveNoViolations()
+	await expect(selectParent2).toHaveNoViolations()
 }
 
 async function loadingTest({ canvasElement, ...data }) {
@@ -75,8 +80,9 @@ async function loadingTest({ canvasElement, ...data }) {
 	)
 	expect(data.args.loading).toBe(true)
 	expect(selectParent).toHaveClass('vv-select--loading')
-	accessibilityTest(selectParent)
+	await expect(selectParent).toHaveNoViolations()
 }
+
 async function optionsTest({ canvasElement, ...data }) {
 	const selectWrapperParent = await within(canvasElement).findByTestId(
 		'native-select'
@@ -93,15 +99,14 @@ async function optionsTest({ canvasElement, ...data }) {
 	})
 }
 
-async function readonlyTest({ canvasElement, ...data }) {
+async function readonlyTest({ canvasElement }) {
 	const selectWrapperParent = await within(canvasElement).findByTestId(
 		'native-select'
 	)
-	const select = selectWrapperParent.children[1].children[0]
-	expect(data.args.readonly).toBe(true)
+	const select = selectWrapperParent.getElementsByTagName('select')[0]
 	expect(selectWrapperParent).toHaveClass('vv-select--readonly')
 	expect(select).toHaveProperty('disabled', true)
-	accessibilityTest(selectWrapperParent)
+	await expect(selectWrapperParent).toHaveNoViolations()
 }
 
 async function validTest({ canvasElement, ...data }) {
@@ -112,10 +117,9 @@ async function validTest({ canvasElement, ...data }) {
 	expect(data.args.valid).toBe(true)
 	expect(selectWrapperParent).toHaveClass('vv-select--valid')
 	expect(validLabel).toHaveClass('vv-select__hint')
-	expect(selectWrapperParent).toHaveClass('vv-select vv-select--valid')
 	expect(data.args.validLabel).toEqual(validLabel.innerText)
-	accessibilityTest(selectWrapperParent)
-	accessibilityTest(validLabel)
+	await expect(selectWrapperParent).toHaveNoViolations()
+	await expect(validLabel).toHaveNoViolations()
 }
 
 async function customKeysTest({ canvasElement, ...data }) {
@@ -131,11 +135,6 @@ async function customKeysTest({ canvasElement, ...data }) {
 		expect(select[index + 1].value).toEqual(`${option[valueKey]}`)
 		expect(select[index + 1].innerText).toEqual(`${option[labelKey]}`)
 	})
-}
-
-async function accessibilityTest(element) {
-	expect.extend(toHaveNoViolations)
-	expect(await axe(element)).toHaveNoViolations()
 }
 
 export {

@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
-import { disabledTest } from './NativeSelectTest.js'
+import { disabledTest } from './NativeSelect.test'
 
 <Meta title="Components/NativeSelect/Props/disabled" />
 
@@ -15,15 +15,11 @@ Let's define a story for our `disabled` select.
 				components: { VvNativeSelect },
 				data() {
 					return {
-						value: '',
+						value: undefined,
 						options: ['Option 1', 'Option 2', 'Option 3']
 					}
 				},
-				template:
-					/*html*/
-					`<div class="w-1/2">
-						<vv-native-select data-testId='select' v-model="value" :options="options" placeholder="Placeholder" label="Label 1" disabled />
-					</div>`
+				template: `<vv-native-select data-testId='select' v-model="value" name="select" :options="options" placeholder="Placeholder" label="Label 1" disabled />`
 			}
 		}}
 	</Story>

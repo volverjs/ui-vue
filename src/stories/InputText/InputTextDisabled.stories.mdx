@@ -3,16 +3,24 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Disabled" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Disabled"
+		play={(ctx) => {
+			testInputText(ctx, {
+				isClickDisabled: true
+			})
+		}}
 		args={{
 			name: 'input-text-disabled',
+			label: 'Input Text Disabled',
 			disabled: true,
-			modelValue: 'Prova'
+			modelValue: 'Test',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

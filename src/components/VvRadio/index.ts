@@ -11,7 +11,7 @@ export const VvRadioProps = {
 	/**
 	 * Input id
 	 */
-	id: String,
+	id: [String, Number],
 	/**
 	 * Input name
 	 */
@@ -19,7 +19,7 @@ export const VvRadioProps = {
 	/**
 	 * Input value
 	 */
-	value: null,
+	value: undefined,
 	/**
 	 * Input value
 	 */
@@ -35,7 +35,11 @@ export const VvRadioProps = {
 	/**
 	 * If true, the input will be readonly
 	 */
-	readonly: Boolean
+	readonly: Boolean,
+	/**
+	 * Sequential keyboard navigation
+	 */
+	tabindex: { type: [String, Number], default: 0 }
 }
 
 export const VvRadioEvents = ['click', 'update:modelValue', 'change', 'blur']

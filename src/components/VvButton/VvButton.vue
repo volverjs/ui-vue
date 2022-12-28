@@ -57,11 +57,11 @@ const hasTag = computed(() => {
 })
 
 /**
- * @description The component selecged state by prop or group.
+ * @description The component pressed state by prop or group.
  * @returns {string} The component tag.
  */
-const isSelected = computed(() => {
-	if (!toggle.value) return props.selected
+const isPressed = computed(() => {
+	if (!toggle.value) return props.pressed
 
 	return Array.isArray(modelValue.value)
 		? contains(btnName, modelValue.value)
@@ -75,7 +75,7 @@ const isSelected = computed(() => {
 const { bemCssClasses } = useBemModifiers('vv-button', {
 	modifiers,
 	active: props.active,
-	selected: isSelected,
+	pressed: isPressed,
 	disabled,
 	reverse: computed(() =>
 		[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
@@ -106,7 +106,7 @@ const hasProps = computed(() => {
 	const toReturn = {
 		class: bemCssClasses.value,
 		'aria-label': attrs['aria-label'],
-		'aria-selected': isSelected.value ? true : undefined
+		'aria-pressed': isPressed.value ? true : undefined
 	}
 	switch (hasTag.value) {
 		case ButtonTag.a:

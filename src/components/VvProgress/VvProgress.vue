@@ -12,11 +12,12 @@ import { VvProgressProps } from '@/components/VvProgress'
 // props
 const props = defineProps(VvProgressProps)
 const { value, max, ariaLabel } = toRefs(props)
+const indeterminate = computed(() => props.value === undefined)
 
 // styles
 const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
 	modifiers: props.modifiers,
-	indeterminate: computed(() => props.value === undefined)
+	indeterminate
 })
 </script>
 

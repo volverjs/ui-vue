@@ -3,13 +3,19 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Placeholder" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Placeholder"
-		args={{ name: 'input-text-placeholder', placeholder: 'Prova' }}>
+		play={testInputText}
+		args={{
+			name: 'input-text-placeholder',
+			placeholder: 'Placeholder',
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

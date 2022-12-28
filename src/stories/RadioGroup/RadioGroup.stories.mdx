@@ -1,9 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-
 import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
-
-import { radioGroupTest } from './RadioProperty.test.ts'
+import { radioGroupTest } from './RadioGroup.test'
 
 <Meta title="Components/RadioGroup" component={VvRadioGroup} />
 
@@ -15,15 +13,13 @@ export const Template = (args, { argTypes }) => ({
 	},
 	data: () => ({ selected: args.modelValue || null }),
 	template: `
-		<div class="flex flex-row justify-between">
-            <vv-radio-group role="radiogroup" v-bind="args" v-model="selected">
-                <template v-slot:hint>
-                    <p>Lorem ipsum dolor sit amet</p>
-                </template> 
-            </vv-radio-group>
-            <strong v-if="selected">Selected options: {{selected}} </strong> 
-        </div>
-        `
+		<vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+			<template v-slot:hint>
+				<p>Lorem ipsum dolor sit amet</p>
+			</template> 
+		</vv-radio-group>
+		<strong v-if="selected">Selected options: {{selected}} </strong> 
+    `
 })
 
 # VvRadioGroup
@@ -38,7 +34,7 @@ A group of radios.
 		play={radioGroupTest}
 		args={{
 			name: 'radio',
-			label: 'Prova',
+			label: 'Test',
 			vertical: false,
 			disabled: false,
 			readonly: false,
@@ -55,15 +51,13 @@ A group of radios.
 					return { args }
 				},
 				template: `
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model="selected">
-                            <vv-radio id="radio_opt1" name="opts" value="1">Option 1</vv-radio>
-                            <vv-radio id="radio_opt2" name="opts" value="2">Option 2</vv-radio>
-                            <vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
-                        </vv-radio-group>
-                        <strong v-if="selected">Selected options: {{selected}} </strong> 
-                    </div>
-                    `
+					<vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+						<vv-radio id="radio_opt1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="radio_opt2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong> 
+    			`
 			}
 		}}
 	</Story>

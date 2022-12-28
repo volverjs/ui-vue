@@ -9,11 +9,8 @@ import { Template } from './Progress.stories.mdx'
 Stories of `VvProgress`.
 Let's define a story for our `determinate` progress with `max` and `value`:
 
-<Story name="determinate" args={{ determinate: true, max: '100', value: '25' }}>
+<Story name="determinate" args={{ determinate: true, max: 100, value: 25 }}>
 	{Template.bind({})}
 </Story>
 
-<Source
-	language="html"
-	code={`<vv-progress max="100" value="25" determinate />`}
-/>
+<Source language="html" code={`<vv-progress max="100" value="25" />`} />

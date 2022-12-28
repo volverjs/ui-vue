@@ -1,4 +1,16 @@
 export interface PlayAttributes {
 	canvasElement: HTMLElement
-	args: Record<string, unknown>
+	args: { [key: string]: any }
+	name?: string
+}
+
+interface ComponentConfig {
+	isClickDisabled?: boolean
+	className?: string | string[] | null
+	slotContent?: string | null
+	customText?: string | null
+	customElement?: HTMLElement | HTMLOrSVGElement | null
+	isVertical?: boolean
+	child?: number
+	propName?: string
 }

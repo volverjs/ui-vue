@@ -3,17 +3,24 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/Floating" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="Floating"
+		play={(ctx) => {
+			testInputText(ctx, {
+				className: 'vv-input-text--floating'
+			})
+		}}
 		args={{
 			name: 'input-text-floating',
-			label: 'Label di prova',
+			label: 'Input Text Floating',
 			floating: true,
-			type: 'text'
+			type: 'text',
+			'data-testId': 'input-text'
 		}}>
 		{Template.bind({})}
 	</Story>

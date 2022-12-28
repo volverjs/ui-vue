@@ -1,29 +1,26 @@
 <script lang="ts">
 export default {
-	name: 'VvInputText',
-	inheritAttrs: false
+	name: 'VvInputText'
 }
 </script>
 
 <script setup lang="ts">
 import {
 	computed,
-	useAttrs,
 	useSlots,
 	ref,
 	toRefs,
 	onMounted,
-	type HTMLAttributes,
 	type TextareaHTMLAttributes
 } from 'vue'
 import { nanoid } from 'nanoid'
-import { isEmpty, pickBy } from '@/utils/ObjectUtilities'
+import { isEmpty } from '@/utils/ObjectUtilities'
 import HintSlotFactory from '@/components/common/HintSlot'
 import { useComponentIcon } from '@/composables/icons/useComponentIcons'
 import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
 import { useTextLimit } from '@/composables/textLimit/useTextLimit'
-import { toBem } from '@/composables/useModifiers'
+import { useBemModifiers } from '@/composables/useModifiers'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
 
@@ -31,7 +28,6 @@ import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
 const props = defineProps(VvTextareaProps)
 const emit = defineEmits(VvTextareaEvents)
 const slots = useSlots()
-const attrs = useAttrs()
 
 // template refs
 const input = ref()
@@ -39,16 +35,15 @@ const input = ref()
 // data
 const { icon, iconPosition, label, modelValue, autoclear, limit } =
 	toRefs(props)
-const textAreaId = (attrs.id as string) || nanoid()
-const textAreaLabeledBy = `${textAreaId}-label`
-const textAreaDescribedBy = `${textAreaId}-hint`
+const hasId = computed(() => String(props.id || nanoid()))
+const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 //BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
-const textAreaPlaceholder = computed(() =>
+const hasPlaceholder = computed(() =>
 	props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder
 )
 
 // debounce
-const inputTextData = useDebouncedInput(modelValue, emit, props.debounce)
+const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
 
 // icons
 const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
@@ -60,60 +55,63 @@ const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
 const { focused } = useComponentFocus(input, emit)
 
 // text limit
-const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
+const { textLength, formattedTextLimitLength } = useTextLimit(localModelValue, {
 	mode: props.limit,
 	upperLimit: props.maxlength || 0
 })
 
-// styles
-const textAreaClass = computed(() => {
-	return [
-		toBem('vv-textarea', {
-			modifiers: props.modifiers,
-			readonly: props.readonly,
-			valid: props.valid,
-			invalid: props.error,
-			loading: props.loading,
-			iconLeft: hasIconLeft,
-			iconRight: hasIconRight,
-			floating: props.floating && !isEmpty(props.label),
-			dirty: !isEmpty(modelValue),
-			resizable: props.resizable
-		}),
-		attrs.class
-	]
-})
-const textAreaProps = computed(() => {
-	const dataAttrs = pickBy(attrs, (k: string) => k.startsWith('data-'))
-	return {
-		style: attrs.style,
-		...dataAttrs
-	} as HTMLAttributes
-})
-const htmlTextareaProps = computed(() => {
-	const ariaAttrs = pickBy(attrs, (k: string) => k.startsWith('aria-'))
+// dirty
+const isDirty = computed(() => !isEmpty(modelValue))
 
-	return {
-		id: textAreaId,
-		placeholder: textAreaPlaceholder.value,
-		name: props.name,
-		autocomplete: props.autocomplete,
-		disabled: props.disabled,
-		readonly: props.readonly,
-		minlength: props.minlength,
-		maxlength: props.maxlength,
-		cols: props.cols,
-		rows: props.rows,
-		required: props.required,
-		tabindex: attrs.tabindex,
-		'aria-invalid': props.error,
-		'aria-valid': !props.valid,
-		'aria-labeledby': textAreaLabeledBy,
-		'aria-describedby': textAreaDescribedBy,
-		'aria-errormessage': textAreaDescribedBy,
-		...ariaAttrs
-	} as TextareaHTMLAttributes
+// invalid
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
+	}
+	if (props.valid === true) {
+		return false
+	}
+	return undefined
 })
+
+// hint
+const { HintSlot, hasHint, hasErrors } = HintSlotFactory(props, slots)
+
+// styles
+const { bemCssClasses } = useBemModifiers('vv-textarea', {
+	modifiers: props.modifiers,
+	readonly: props.readonly,
+	valid: props.valid,
+	invalid: props.error,
+	loading: props.loading,
+	iconLeft: hasIconLeft,
+	iconRight: hasIconRight,
+	floating: props.floating && !isEmpty(props.label),
+	dirty: isDirty,
+	resizable: props.resizable
+})
+
+// attrs
+const hasAttrs = computed(
+	() =>
+		({
+			placeholder: hasPlaceholder.value,
+			name: props.name,
+			autocomplete: props.autocomplete,
+			minlength: props.minlength,
+			maxlength: props.maxlength,
+			cols: props.cols,
+			rows: props.rows,
+			'aria-invalid': isInvalid.value,
+			'aria-describedby':
+				!hasErrors.value && hasHint.value
+					? hasDescribedBy.value
+					: undefined,
+			'aria-errormessage': hasErrors.value
+				? hasDescribedBy.value
+				: undefined
+		} as TextareaHTMLAttributes)
+)
 
 // slots props
 const iconSlotProps = computed(() => {
@@ -128,38 +126,40 @@ const iconSlotProps = computed(() => {
 	}
 })
 
-// hint
-const HintSlot = HintSlotFactory(props, slots)
-
 // methods
 function clearTextarea() {
-	inputTextData.value = ''
+	localModelValue.value = ''
 }
 
 // lifecycle
 onMounted(() => {
-	if (props.autofocus) focused.value = true
+	if (props.autofocus) {
+		focused.value = true
+	}
 })
 </script>
 
 <template>
-	<div v-bind="textAreaProps" :class="textAreaClass">
-		<label v-if="label" :id="textAreaLabeledBy" :for="textAreaId">{{
-			label
-		}}</label>
+	<div v-bind="hasAttrs" :class="bemCssClasses">
+		<label v-if="label" :for="hasId" class="vv-textarea__label">
+			{{ label }}
+		</label>
 		<div class="vv-textarea__wrapper">
 			<!-- @slot icon-left to replace icon left -->
 			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
 				<vv-icon class="vv-textarea__icon-left" :name="icon" />
 			</slot>
 			<textarea
+				:id="hasId"
 				ref="input"
-				v-model="inputTextData"
-				v-bind="htmlTextareaProps"
-				@input="emit('input', $event)" />
+				v-model="localModelValue"
+				v-bind="hasAttrs"
+				:disabled="disabled"
+				:readonly="readonly"
+				:required="required" />
 			<!-- autoclear text button -->
 			<button
-				v-if="autoclear && textLength > 0"
+				v-show="autoclear && textLength > 0"
 				class="vv-button vv-button--ghost"
 				@click="clearTextarea">
 				<vv-icon name="clear-field" />
@@ -172,6 +172,6 @@ onMounted(() => {
 				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
 			</span>
 		</div>
-		<HintSlot :id="textAreaDescribedBy" class="vv-textarea__hint" />
+		<HintSlot :id="hasDescribedBy" class="vv-textarea__hint" />
 	</div>
 </template>

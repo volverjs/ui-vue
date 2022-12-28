@@ -90,9 +90,9 @@ export const VvButtonProps = {
 	},
 	active: Boolean,
 	/**
-	 * Button selected mode
+	 * Button pressed mode
 	 */
-	selected: Boolean,
+	pressed: Boolean,
 	/**
 	 * Link rel
 	 */
@@ -120,7 +120,7 @@ export function useGroupProps(props: VvButtonPropsTypes) {
 		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
 
 	// local props
-	const { iconPosition, icon, label, selected } = toRefs(props)
+	const { iconPosition, icon, label, pressed } = toRefs(props)
 
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props)
@@ -139,7 +139,7 @@ export function useGroupProps(props: VvButtonPropsTypes) {
 		group,
 		modifiers,
 		// local props
-		selected,
+		pressed,
 		iconPosition,
 		icon,
 		label

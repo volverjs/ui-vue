@@ -11,7 +11,7 @@ export const VvCheckboxProps = {
 	/**
 	 * Input id
 	 */
-	id: String,
+	id: [String, Number],
 	/**
 	 * Input name
 	 */
@@ -19,7 +19,7 @@ export const VvCheckboxProps = {
 	/**
 	 * Input value
 	 */
-	value: null,
+	value: undefined,
 	/**
 	 * Input value
 	 * @description
@@ -50,7 +50,11 @@ export const VvCheckboxProps = {
 	/**
 	 * If true, the input will be displayed as a switch
 	 */
-	switch: Boolean
+	switch: Boolean,
+	/**
+	 * Sequential keyboard navigation
+	 */
+	tabindex: { type: [String, Number], default: 0 }
 }
 
 export const VvCheckboxEvents = ['click', 'update:modelValue', 'change', 'blur']

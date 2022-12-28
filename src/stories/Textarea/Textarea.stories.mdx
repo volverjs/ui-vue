@@ -14,7 +14,9 @@ export const Template = (args, { argTypes }) => ({
 		return { args }
 	},
 	data: () => ({ value: args.modelValue || '' }),
-	template: `<vv-textarea v-bind="args" v-model="value"/><div v-if="value">Value: {{value}}</div>`
+	template: `
+		<vv-textarea v-model="value" v-bind="args" data-testId="textarea" />
+		<div>Value: <span data-testId="value">{{value}}</span></div>`
 })
 
 # VvTextarea

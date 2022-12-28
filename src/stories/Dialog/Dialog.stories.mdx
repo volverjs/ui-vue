@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvDialog from '@/components/VvDialog/VvDialog.vue'
+import { dialogTest } from './Dialog.test'
 
 <Meta title="Components/Dialog" component={VvDialog} />
 
@@ -16,14 +16,14 @@ export const Template = (args, { argTypes }) => ({
 		<div class="flex flex-column">
 			<button class="vv-button" @click="open=true">Open</button>
             <vv-dialog v-bind="args" v-model="open">
-                Contenuto di prova
+               Lorem ipsum dolor sit amet
             </vv-dialog>
 		</div>
         `
 })
 
 <Canvas>
-	<Story name="Dialog" args={{ id: 'dialog' }}>
+	<Story name="Dialog" args={{ id: 'dialog' }} play={dialogTest}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

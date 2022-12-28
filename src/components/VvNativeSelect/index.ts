@@ -23,11 +23,11 @@ export const VvNativeSelectProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	/**
-	 * Input id
+	 * Select id
 	 */
-	id: String,
+	id: [String, Number],
 	/**
-	 * Input name
+	 * Select name
 	 */
 	name: { type: String, required: true },
 	/**
@@ -35,12 +35,16 @@ export const VvNativeSelectProps = {
 	 */
 	modelValue: {
 		type: [String, Number, Boolean, Object, Array],
-		required: true
+		default: undefined
 	},
 	/**
-	 * Select input label
+	 * Select label
 	 */
 	label: String,
+	/**
+	 * Select required
+	 */
+	required: Boolean,
 	/**
 	 * Select input placeholder
 	 */
@@ -75,7 +79,11 @@ export const VvNativeSelectProps = {
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-native-select--'
 	 */
-	modifiers: [String, Array]
+	modifiers: [String, Array],
+	/**
+	 * Sequential keyboard navigation
+	 */
+	tabindex: { type: [String, Number], default: 0 }
 }
 
 export const VvNativeSelectEmits = ['update:modelValue']

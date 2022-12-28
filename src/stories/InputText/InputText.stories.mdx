@@ -1,6 +1,5 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 
 <Meta title="Components/InputText" component={VvInputText} />
@@ -60,6 +59,13 @@ export const Template = (args, { argTypes }) => ({
 			},
 			iconPosition: {
 				options: [null, 'left', 'right'],
+				control: {
+					type: 'select'
+				},
+				table: { category: 'Attributes' }
+			},
+			limit: {
+				options: [true, false, 'countdown'],
 				control: {
 					type: 'select'
 				},

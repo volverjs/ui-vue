@@ -3,6 +3,7 @@ import { type VvInputTextPropsTypes, TYPES } from '@/components/VvInputText'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VvInputPasswordAction from '@/components/VvInputText/VvInputPasswordAction'
 import VvInputStepAction from '@/components/VvInputText/VvInputStepAction'
+import VvInputClearAction from '@/components/VvInputText/VvInputClearAction'
 
 export default function VvInputTextActionsFactory(
 	type: string,
@@ -13,7 +14,8 @@ export default function VvInputTextActionsFactory(
 		components: {
 			VvIcon,
 			VvInputPasswordAction,
-			VvInputStepAction
+			VvInputStepAction,
+			VvInputClearAction
 		},
 		setup() {
 			const isDisabled = computed(() => {
@@ -21,35 +23,56 @@ export default function VvInputTextActionsFactory(
 			})
 
 			return {
-				isDisabled
+				isDisabled,
+				labelStepUp: parentProps.labelStepUp,
+				labelStepDown: parentProps.labelStepDown,
+				labelShowPassword: parentProps.labelShowPassword,
+				labelHidePassword: parentProps.labelHidePassword,
+				labelClear: parentProps.labelClear,
+				iconShowPassword: parentProps.iconShowPassword,
+				iconHidePassword: parentProps.iconHidePassword
 			}
 		},
 		render() {
-			let _actions = null
+			let actions = null
 			switch (type) {
+				case TYPES.SEARCH: {
+					const { onClear } = this.$attrs
+					actions = [
+						h(VvInputClearAction, {
+							disabled: this.isDisabled,
+							label: this.labelShowPassword,
+							onClear
+						})
+					]
+					break
+				}
 				case TYPES.PASSWORD: {
-					const { onActionPasswordOn, onActionPasswordOff } =
-						this.$attrs
-					_actions = [
+					const { onTogglePassword } = this.$attrs
+					actions = [
 						h(VvInputPasswordAction, {
 							disabled: this.isDisabled,
-							onActionPasswordOn,
-							onActionPasswordOff
+							onTogglePassword,
+							labelShow: this.labelShowPassword,
+							labelHide: this.labelHidePassword,
+							iconShow: this.iconShowPassword,
+							iconHide: this.iconHidePassword
 						})
 					]
 					break
 				}
 				case TYPES.NUMBER: {
-					const { onActionStepUp, onActionStepDown } = this.$attrs
-					_actions = [
+					const { onStepUp, onStepDown } = this.$attrs
+					actions = [
 						h(VvInputStepAction, {
 							mode: 'up',
 							disabled:
 								this.isDisabled ||
 								(parentProps.max !== undefined &&
 									parentProps.modelValue === parentProps.max),
-							onActionStepUp,
-							onActionStepDown
+							label: this.labelStepUp,
+							onStepUp,
+							onStepDown
 						}),
 						h(VvInputStepAction, {
 							mode: 'down',
@@ -57,21 +80,18 @@ export default function VvInputTextActionsFactory(
 								this.isDisabled ||
 								(parentProps.min !== undefined &&
 									parentProps.modelValue === parentProps.min),
-							onActionStepUp,
-							onActionStepDown
+							label: this.labelStepDown,
+							onStepUp,
+							onStepDown
 						})
 					]
 					break
 				}
-				default: {
-					_actions = null
-					break
-				}
 			}
 
-			return Array.isArray(_actions)
-				? h('div', { class: 'vv-input-text__actions-group' }, _actions)
-				: _actions
+			return Array.isArray(actions)
+				? h('div', { class: 'vv-input-text__actions-group' }, actions)
+				: actions
 		}
 	}
 }

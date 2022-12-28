@@ -3,13 +3,20 @@ import { action } from '@storybook/addon-actions'
 
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { testInputText } from './InputText.test.ts'
 
 <Meta title="Components/InputText/MinLength" component={VvInputText} />
 
 <Canvas>
 	<Story
 		name="MinLength"
-		args={{ name: 'input-text-min-length', minlength: 5 }}>
+		play={testInputText}
+		args={{
+			name: 'input-text-min-length',
+			label: 'Input Text Min Length',
+			minlength: 5,
+			'data-testId': 'input-text'
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

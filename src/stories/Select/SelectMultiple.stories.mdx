@@ -49,10 +49,9 @@ Let's define a story for our `multiple` select.
 						]
 					}
 				},
-				template: `<div class="w-1/2">
-						<vv-select v-model="value" :options="options" label="Label 1" multiple />
-						value: {{ value }}
-					</div>`
+				template: `
+					<vv-select v-model="value" :options="options" label="Label 1" multiple placeholder="Select" />
+					<div>Value: {{ value }}</div>`
 			}
 		}}
 	</Story>

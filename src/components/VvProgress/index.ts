@@ -6,7 +6,8 @@ export const VvProgressProps = {
 	 * Progress value
 	 */
 	value: {
-		type: [Number, String]
+		type: [Number, String],
+		default: undefined
 	},
 	/**
 	 * Progress max value

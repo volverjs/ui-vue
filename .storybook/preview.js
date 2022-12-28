@@ -4,7 +4,7 @@ import iconsSimple from '@/assets/icons/simple.json'
 import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
 import { themes } from '@storybook/theming'
-import '@/stories/stories.scss'
+import './style.scss'
 
 setup((app) => {
 	const bodyClasses = document.getElementsByTagName('body')[0].classList

@@ -105,21 +105,3 @@ Stories of `VvButton` with `link`.
 	language="jsx"
 	code={`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`}
 />
-
-## Router-link
-
-export const Template = () => ({
-	components: { VvButton },
-	template: `<vv-button label="Router link" to="/test" variant="text" />`
-})
-
-<Canvas>
-	<Story name="router-link" args={{}} play={(ctx) => testButtonLink(ctx)}>
-		{RouterLinkStory}
-	</Story>
-</Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-button label="Router link" to="/" variant="text" />`}
-/>

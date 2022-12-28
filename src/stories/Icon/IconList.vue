@@ -1,15 +1,14 @@
 <template>
 	<div class="vv-input-text">
-		<label for="search">Search</label>
 		<div class="vv-input-text__wrapper">
-			<input id="search" v-model="search" type="text" />
+			<input v-model="search" type="search" placeholder="Search.." />
 		</div>
 	</div>
-	<div class="flex justify-center gap-16 flex-wrap mt-lg">
+	<div class="grid grid-cols-5 gap-16 mt-lg">
 		<div
 			v-for="iconName in icons"
 			:key="iconName"
-			class="icon-item flex items-center xl:w-1/6 md:w-1/5 sm:w-1/3 xs:w-full">
+			class="flex items-center">
 			<VvIcon :name="iconName" width="25" class="mr-md" />
 			{{ iconName }}
 		</div>

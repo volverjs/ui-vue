@@ -7,36 +7,61 @@ export default defineComponent({
 		VvIcon
 	},
 	props: {
-		disabled: Boolean
+		disabled: {
+			type: Boolean,
+			default: false
+		},
+		labelShow: {
+			type: String,
+			default: 'Show password'
+		},
+		labelHide: {
+			type: String,
+			default: 'Hide password'
+		},
+		iconShow: {
+			type: String,
+			default: TYPES_ICON.PASSWORD_SHOW
+		},
+		iconHide: {
+			type: String,
+			default: TYPES_ICON.PASSWORD_HIDE
+		}
 	},
+	emits: ['toggle-password'],
 	setup(props, { emit }) {
 		const active = ref(false)
 		const activeIcon = computed(() =>
-			active.value ? TYPES_ICON.PASSWORD_OFF : TYPES_ICON.PASSWORD_ON
+			active.value ? props.iconHide : props.iconShow
 		)
 
-		function onClick() {
+		function onClick(e: Event) {
+			e?.stopPropagation()
 			if (!props.disabled) {
 				active.value = !active.value
-				emit(
-					active.value ? 'action-password-on' : 'action-password-off'
-				)
+				emit('toggle-password', active.value)
 			}
 		}
 
 		return {
+			active,
 			activeIcon,
 			onClick
 		}
 	},
 	render() {
-		const icon = h(VvIcon, { name: this.activeIcon })
+		const icon = h(VvIcon, {
+			name: this.activeIcon,
+			class: 'vv-input-text__action-icon'
+		})
 
 		return h(
 			'button',
 			{
 				disabled: this.disabled,
-				class: ['vv-input-text__action'],
+				class: 'vv-input-text__action',
+				ariaLabel: this.active ? this.labelHide : this.labelShow,
+				type: 'button',
 				onClick: this.onClick
 			},
 			icon

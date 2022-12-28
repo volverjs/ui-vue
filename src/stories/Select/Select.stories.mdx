@@ -2,30 +2,31 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvSelect from '@/components/VvSelect/VvSelect.vue'
 import { VvSelectProps } from '@/components/VvSelect'
 import { propsToObject } from '@/utils/ObjectUtilities'
+import { selectTest } from './Select.test'
 
 <Meta
 	title="Components/Select"
 	component={VvSelect}
-	args={{
-		...propsToObject(VvSelectProps),
-		maxValues: -1,
-		label: 'Lorem Ipsum',
-		placeholder: 'Placeholder',
-		options: [
-			{
-				label: 'Option 1',
-				value: 1
-			},
-			{
-				label: 'Option 2',
-				value: 2
-			},
-			{
-				label: 'Option 3',
-				value: 3
-			}
-		]
-	}}
+    args={{
+    	...propsToObject(VvSelectProps),
+    	label: 'Lorem Ipsum',
+    	placeholder: 'Placeholder',
+    	options: [
+    		{
+    			label: 'Option 1',
+    			value: 1
+    		},
+    		{
+    			label: 'Option 2',
+    			value: 2
+    		},
+    		{
+    			label: 'Option 3',
+    			value: 3
+    		}
+    	]
+    }}
+
 />
 
 export const Template = (args) => ({
@@ -35,14 +36,14 @@ export const Template = (args) => ({
 	},
 	data() {
 		return {
-			value: '',
+			value: undefined,
 			optionsString: ['Option 4', 'Option 5', 'Option 6']
 		}
 	},
-	template: `<div class="w-1/2">
-            <vv-select v-bind="args" v-model="value" />
-			value: {{ value }}
-        </div>`
+	template: `
+		<vv-select v-bind="args" v-model="value" data-testId="select" />
+		<div>Selected: {{ value }} </div>
+		`
 })
 
 # VvSelect
@@ -51,5 +52,7 @@ Stories of `VvSelect`.
 Let's define a story for our playground `select`:
 
 <Canvas>
-	<Story name="vv-select">{Template.bind({})}</Story>
+	<Story name="vv-select" play={selectTest}>
+		{Template.bind({})}
+	</Story>
 </Canvas>

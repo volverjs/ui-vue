@@ -2,13 +2,14 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { VvNativeSelectProps } from '@/components/VvNativeSelect'
 import { propsToObject } from '@/utils/ObjectUtilities'
-import { nativeSelectTest } from './NativeSelectTest.js'
+import { nativeSelectTest } from './NativeSelect.test'
 
 <Meta
 	title="Components/NativeSelect"
 	component={VvNativeSelect}
 	args={{
 		...propsToObject(VvNativeSelectProps),
+		name: 'select',
 		label: 'Lorem Ipsum',
 		placeholder: 'Placeholder',
 		options: [
@@ -36,13 +37,12 @@ export const Template = (args) => ({
 	},
 	data() {
 		return {
-			selectValue: ''
+			selectValue: undefined
 		}
 	},
-	template: `<div class="w-1/2">
-            <vv-native-select v-bind="args" v-model="selectValue" />
-			value: {{ selectValue }}
-        </div>`
+	template: `
+		<vv-native-select v-bind="args" v-model="selectValue" />
+		<div>Value: {{ selectValue }}</div>`
 })
 
 # VvNativeSelect

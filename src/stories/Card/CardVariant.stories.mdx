@@ -1,13 +1,14 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
 import VvCard from '@/components/VvCard/VvCard.vue'
+import { defaultCardTest } from './Card.test'
 
 <Meta title="Components/Card/Variant" component={VvCard} />
 
 <Canvas>
 	<Story
 		name="Variant"
+		play={defaultCardTest}
 		args={{
 			variant: 'glass'
 		}}>
@@ -24,9 +25,9 @@ import VvCard from '@/components/VvCard/VvCard.vue'
 						<picture>
 							<img class="aspect-photo block" src="https://source.unsplash.com/featured/300×300/?ocean" alt="Card picture"/>
 						</picture>
-						<vv-card v-bind="args" title="Prova glass" class="absolute inset-32">
+						<vv-card v-bind="args" title="Title" class="absolute inset-32">
 							<template #content>
-								Prova
+								Lorem ipsum dolor sit amet
 							</template>
 						</vv-card>
 					</div>

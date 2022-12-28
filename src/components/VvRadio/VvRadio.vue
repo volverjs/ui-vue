@@ -30,16 +30,30 @@ const { disabled, readonly, modelValue, valid, error } = useGroupProps(
 const input = ref()
 
 // computed
-const isChecked = computed(() => {
-	return Array.isArray(modelValue.value)
+const hasId = computed(() =>
+	props.id !== undefined ? String(props.id) : undefined
+)
+const isDisabled = computed(() => disabled.value || readonly.value)
+const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
+	}
+	if (props.valid === true) {
+		return false
+	}
+	return undefined
+})
+const isChecked = computed(() =>
+	Array.isArray(modelValue.value)
 		? contains(props.value, modelValue.value)
 		: equals(props.value, modelValue.value)
-})
-const hasValue = computed(() => {
-	return ['string', 'number', 'boolean'].includes(typeof props.value)
+)
+const hasValue = computed(() =>
+	['string', 'number', 'boolean'].includes(typeof props.value)
 		? props.value
 		: true
-})
+)
 const localModelValue = computed({
 	get() {
 		return isChecked.value ? hasValue.value : null
@@ -57,39 +71,33 @@ const localModelValue = computed({
 })
 
 // styles
-const { bemCssClasses: bemLabelClasses } = useBemModifiers('vv-radio', {
+const { bemCssClasses } = useBemModifiers('vv-radio', {
 	valid,
-	invalid: error
+	invalid: error,
+	disabled,
+	readonly
 })
-const { bemCssClasses: bemInputClasses } = useBemModifiers(
-	'vv-input-radio__input',
-	{
-		// checked: isChecked,
-		disabled,
-		readonly
-	}
-)
 
 // hint
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
-	<label :class="bemLabelClasses">
+	<label :class="bemCssClasses" :for="hasId">
 		<input
-			:id="id"
+			:id="hasId"
 			ref="input"
 			v-model="localModelValue"
 			type="radio"
+			class="vv-radio__input"
 			:name="name"
-			:class="bemInputClasses"
-			:disabled="disabled || readonly"
-			:value="hasValue" />
+			:disabled="isDisabled"
+			:value="hasValue"
+			:tabindex="hasTabindex"
+			:aria-invalid="isInvalid" />
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<HintSlot
-			class="vv-input-radio__hint"
-			:params="{ value: modelValue }" />
+		<HintSlot class="vv-radio__hint" :params="{ value: modelValue }" />
 	</label>
 </template>

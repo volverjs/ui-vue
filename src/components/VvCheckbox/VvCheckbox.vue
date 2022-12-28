@@ -23,13 +23,26 @@ const slots = useSlots()
 // data
 const { disabled, readonly, valid, error, propsSwitch, modelValue } =
 	useGroupProps(props, emit)
-
 // template ref
 const input = ref()
 
 // computed
-const isBinary = computed(() => {
-	return props.trueValue !== undefined && props.falseValue !== undefined
+const hasId = computed(() =>
+	props.id !== undefined ? String(props.id) : undefined
+)
+const isBinary = computed(
+	() => props.trueValue !== undefined && props.falseValue !== undefined
+)
+const isDisabled = computed(() => disabled.value || readonly.value)
+const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
+const isInvalid = computed(() => {
+	if (props.error === true) {
+		return true
+	}
+	if (props.valid === true) {
+		return false
+	}
+	return undefined
 })
 const isChecked = computed(() => {
 	if (isBinary.value) {
@@ -68,19 +81,13 @@ const localModelValue = computed({
 })
 
 // styles
-const { bemCssClasses: bemlabelClasses } = useBemModifiers('vv-checkbox', {
+const { bemCssClasses } = useBemModifiers('vv-checkbox', {
 	switch: propsSwitch,
 	valid,
 	invalid: error,
 	disabled,
 	readonly
 })
-const { bemCssClasses: bemInputClasses } = useBemModifiers(
-	'vv-input-check__input',
-	{
-		checked: isChecked
-	}
-)
 
 watchEffect(() => {
 	if (isBinary.value && Array.isArray(modelValue.value)) {
@@ -92,26 +99,26 @@ watchEffect(() => {
 })
 
 // hint
-const HintSlot = HintSlotFactory(props, slots)
+const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
-	<label :class="bemlabelClasses" :for="id">
+	<label :class="bemCssClasses" :for="hasId">
 		<input
-			:id="id"
+			:id="hasId"
 			ref="input"
 			v-model="localModelValue"
 			type="checkbox"
+			class="vv-checkbox__input"
 			:name="name"
-			:class="bemInputClasses"
-			:disabled="disabled || readonly"
-			:value="hasValue" />
+			:disabled="isDisabled"
+			:value="hasValue"
+			:tabindex="hasTabindex"
+			:aria-invalid="isInvalid" />
 		<!-- @slot Use this slot for check label -->
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<HintSlot
-			class="vv-input-checkbox__hint"
-			:params="{ value: modelValue }" />
+		<HintSlot class="vv-checkbox__hint" :params="{ value: modelValue }" />
 	</label>
 </template>

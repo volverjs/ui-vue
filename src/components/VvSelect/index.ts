@@ -23,7 +23,7 @@ export const VvSelectProps = {
 	 */
 	modelValue: {
 		type: [String, Number, Boolean, Object, Array],
-		required: true
+		default: undefined
 	},
 	/**
 	 * Select input label
@@ -94,5 +94,9 @@ export const VvSelectProps = {
 	/**
 	 * Icon name of icon in right position
 	 */
-	native: Boolean
+	native: Boolean,
+	tabindex: {
+		type: [Number, String],
+		default: 0
+	}
 }

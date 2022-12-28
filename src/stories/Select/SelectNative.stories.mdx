@@ -15,7 +15,6 @@ Let's define a story for our `native` select.
 		name="native"
 		args={{
 			...propsToObject(VvSelectProps),
-			maxValues: -1,
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			options: [
@@ -32,8 +31,7 @@ Let's define a story for our `native` select.
 					value: 3
 				}
 			],
-			native: true,
-			value: ''
+			native: true
 		}}>
 		{Template.bind()}
 	</Story>

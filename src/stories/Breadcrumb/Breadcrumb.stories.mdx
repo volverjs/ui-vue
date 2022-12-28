@@ -2,6 +2,7 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import { propsToObject } from '@/utils/ObjectUtilities'
 import VvBreadcrumb from '@/components/VvBreadcrumb/VvBreadcrumb.vue'
 import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
+import { breadcrumbTest } from './Breadcrumb.test'
 
 <Meta
 	title="Components/Breadcrumb"
@@ -12,7 +13,7 @@ import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 			{
 				label: 'Home',
 				title: 'Home',
-				href: '/'
+				href: '/home'
 			},
 			{
 				label: 'Library',
@@ -43,5 +44,10 @@ Stories of `VvBreadcrumb`.
 Let's define a story for our playground `breadcrumb`:
 
 <Canvas>
-	<Story name="vv-breadcrumb" args={{}} render={Template.bind()} />
+	<Story
+		name="vv-breadcrumb"
+		play={breadcrumbTest}
+		args={{}}
+		render={Template.bind()}
+	/>
 </Canvas>

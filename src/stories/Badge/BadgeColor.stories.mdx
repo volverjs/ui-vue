@@ -1,7 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
-import testBadgeVariant from './BadgeTest.js'
-import testDangerBadge from './BadgeTest.js'
+import { badgeTest } from './Badge.test'
 
 <Meta title="Components/Badge/Props/color" />
 
@@ -10,7 +9,7 @@ import testDangerBadge from './BadgeTest.js'
 By default color is `primary` and default options are: `black`, `danger`, `success`, `warning`
 
 <Canvas>
-	<Story name="black" play={testBadgeVariant}>
+	<Story name="black" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge },
@@ -21,7 +20,7 @@ By default color is `primary` and default options are: `black`, `danger`, `succe
 </Canvas>
 
 <Canvas>
-	<Story name="danger" play={testBadgeVariant}>
+	<Story name="danger" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge },
@@ -32,7 +31,7 @@ By default color is `primary` and default options are: `black`, `danger`, `succe
 </Canvas>
 
 <Canvas>
-	<Story name="success" play={testBadgeVariant}>
+	<Story name="success" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge },
@@ -43,7 +42,7 @@ By default color is `primary` and default options are: `black`, `danger`, `succe
 </Canvas>
 
 <Canvas>
-	<Story name="warning" play={testBadgeVariant}>
+	<Story name="warning" play={badgeTest}>
 		{() => {
 			return {
 				components: { VvBadge },

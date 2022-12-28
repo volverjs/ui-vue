@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest'
-import { userEvent, within } from '@storybook/testing-library'
-import { toHaveNoViolations, axe } from 'jest-axe'
+import { expect } from '@/test/expect'
+import { within } from '@storybook/testing-library'
 
 async function buttonGroupTest({ canvasElement, functions, ...args }) {
 	const buttonGroup = await within(canvasElement).findByRole('group')
@@ -10,9 +9,7 @@ async function buttonGroupTest({ canvasElement, functions, ...args }) {
 			await func({ buttonGroup, ...args })
 		})
 	}
-	// Accessibility Test
-	expect.extend(toHaveNoViolations)
-	expect(await axe(buttonGroup)).toHaveNoViolations()
+	await expect(buttonGroup).toHaveNoViolations()
 }
 
 async function mixClassTest({
@@ -20,37 +17,18 @@ async function mixClassTest({
 	numberOfElements = null,
 	classToTest = null
 }) {
-	let roundedButtons = 0
+	let conunter = 0
 	const buttons = buttonGroup.children
 
 	for (const button of buttons) {
 		const buttonClassList = [...button.classList]
 
 		if (buttonClassList.includes(`vv-button--${classToTest}`)) {
-			roundedButtons++
+			conunter++
 		}
 	}
-	expect(roundedButtons).toBe(numberOfElements)
+	expect(conunter).toBe(numberOfElements)
 }
-
-expect.extend({
-	async toBeClicked(buttonGroup) {
-		let result = {
-			pass: false,
-			message: `Click event doesn't work`
-		}
-		buttonGroup.addEventListener('click', ({ target }) => {
-			if (target.id == 'btn2') {
-				result = {
-					pass: true,
-					message: `Click event work!`
-				}
-			}
-		})
-		await userEvent.click(buttonGroup.children[1])
-		return result
-	}
-})
 
 async function classTest({ buttonGroup, className = null }) {
 	if (className) {
