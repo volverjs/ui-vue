@@ -9,30 +9,30 @@ specifiers:
   '@iconify/vue': ^4.0.2
   '@mdx-js/react': ^2.2.1
   '@rushstack/eslint-patch': ^1.2.0
-  '@storybook/addon-a11y': 7.0.0-beta.16
-  '@storybook/addon-actions': 7.0.0-beta.16
+  '@storybook/addon-a11y': ^7.0.0-beta.16
+  '@storybook/addon-actions': ^7.0.0-beta.16
   '@storybook/addon-backgrounds': 7.0.0-beta.16
-  '@storybook/addon-docs': 7.0.0-beta.16
-  '@storybook/addon-essentials': 7.0.0-beta.16
-  '@storybook/addon-interactions': 7.0.0-beta.16
-  '@storybook/addon-links': 7.0.0-beta.16
+  '@storybook/addon-docs': ^7.0.0-beta.16
+  '@storybook/addon-essentials': ^7.0.0-beta.16
+  '@storybook/addon-interactions': ^7.0.0-beta.16
+  '@storybook/addon-links': ^7.0.0-beta.16
   '@storybook/addon-measure': 7.0.0-beta.16
   '@storybook/addon-outline': 7.0.0-beta.16
-  '@storybook/addon-storyshots': 7.0.0-beta.16
+  '@storybook/addon-storyshots': ^7.0.0-beta.16
   '@storybook/addons': 7.0.0-beta.16
-  '@storybook/blocks': 7.0.0-beta.16
+  '@storybook/blocks': ^7.0.0-beta.16
   '@storybook/builder-vite': 7.0.0-beta.16
   '@storybook/channel-postmessage': 7.0.0-beta.16
   '@storybook/channel-websocket': 7.0.0-beta.16
-  '@storybook/cli': 7.0.0-beta.16
+  '@storybook/cli': ^7.0.0-beta.16
   '@storybook/client-api': 7.0.0-beta.16
   '@storybook/client-logger': 7.0.0-beta.16
   '@storybook/core-common': 7.0.0-beta.16
-  '@storybook/jest': 0.0.11-next.0
+  '@storybook/jest': ^0.0.11-next.0
   '@storybook/preview-web': 7.0.0-beta.16
-  '@storybook/testing-library': 0.0.14-next.1
-  '@storybook/vue3': 7.0.0-beta.16
-  '@storybook/vue3-vite': 7.0.0-beta.16
+  '@storybook/testing-library': ^0.0.14-next.1
+  '@storybook/vue3': ^7.0.0-beta.16
+  '@storybook/vue3-vite': ^7.0.0-beta.16
   '@types/jest-axe': ^3.5.5
   '@types/jsdom': ^20.0.1
   '@types/node': 18.11.18
@@ -67,7 +67,7 @@ specifiers:
   react-dom: ^18.2.0
   sass: ^1.57.1
   sass-loader: ^13.2.0
-  storybook: 7.0.0-beta.16
+  storybook: ^7.0.0-beta.16
   storybook-addon-markdown-docs: ^1.0.5
   storybook-dark-mode: ^2.0.4
   ts-node: ^10.9.1
@@ -749,7 +749,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.20.2
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.20.7_@babel+core@7.12.9
     dev: true
