@@ -1,14 +1,11 @@
-import { isString } from '@vueuse/core'
 import { computed, unref, type Ref } from 'vue'
+import { isString } from '@vueuse/core'
 
 interface useTextOptions {
 	mode: string | boolean
 	upperLimit: number
 }
 
-/**
- *
- */
 export function useTextLimit(inputText: Ref<string>, options: useTextOptions) {
 	const textLength = computed(() => {
 		const _text = unref(inputText)

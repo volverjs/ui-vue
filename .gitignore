@@ -4,6 +4,7 @@ npm-debug.log*
 node_modules
 .DS_Store
 dist
+bin
 
 # Editor directories and files
 .vscode/*

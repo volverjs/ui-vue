@@ -1,0 +1,152 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+
+import VvCheckboxGroup from '@/components/VvCheckboxGroup/VvCheckboxGroup.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+
+<Meta title="Components/CheckboxGroup/Slots" component={VvCheckboxGroup} />
+
+# Default
+
+<Canvas>
+	<Story
+		name="Default"
+		args={{
+			name: 'story-slot-default'
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckboxGroup, VvCheckbox },
+				data: () => ({ selected: args.modelValue || [] }),
+				setup() {
+					return { args }
+				},
+				template:
+					/**html */
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-checkbox-group v-bind="args" v-model="selected">
+                            <vv-checkbox id="o1" name="opts" value="1">Option 1</vv-checkbox>
+                            <vv-checkbox id="o2" name="opts" value="2">Option 2</vv-checkbox>
+                            <vv-checkbox id="o3" name="opts" value="3">Option 3</vv-checkbox>
+                        </vv-checkbox-group>
+                        <strong v-if="selected">Selected options: {{selected}} </strong> 
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Hint
+
+<Canvas>
+	<Story
+		name="Hint"
+		args={{
+			name: 'story-slot-hint'
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckboxGroup, VvCheckbox },
+				data: () => ({ selected: args.modelValue || [] }),
+				setup() {
+					return { args }
+				},
+				template:
+					/**html */
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-checkbox-group v-bind="args" v-model="selected">
+                            <template v-slot:default>
+                                <vv-checkbox id="o1" name="opts" value="1">Option 1</vv-checkbox>
+                                <vv-checkbox id="o2" name="opts" value="2">Option 2</vv-checkbox>
+                                <vv-checkbox id="o3" name="opts" value="3">Option 3</vv-checkbox>
+                            </template>
+                            <template v-slot:hint="slotProps">
+                                <div>Hint label</div>
+								<div>{{slotProps}}</div> 
+                            </template>
+                        </vv-checkbox-group>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Valid
+
+<Canvas>
+	<Story
+		name="Valid"
+		args={{
+			name: 'story-slot-valid',
+			valid: true
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckboxGroup, VvCheckbox },
+				data: () => ({ selected: args.modelValue || [] }),
+				setup() {
+					return { args }
+				},
+				template:
+					/**html */
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-checkbox-group v-bind="args" v-model="selected">
+                            <template v-slot:default>
+                                <vv-checkbox id="o1" name="opts" value="1">Option 1</vv-checkbox>
+                                <vv-checkbox id="o2" name="opts" value="2">Option 2</vv-checkbox>
+                                <vv-checkbox id="o3" name="opts" value="3">Option 3</vv-checkbox>
+                            </template>
+                            <template v-slot:valid>
+                               Valid message
+                            </template>
+                        </vv-checkbox-group>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>
+
+# Error
+
+<Canvas>
+	<Story
+		name="Error"
+		args={{
+			name: 'story-slot-error',
+			error: true
+		}}>
+		{(args) => {
+			return {
+				components: { VvCheckboxGroup, VvCheckbox },
+				data: () => ({ selected: args.modelValue || [] }),
+				setup() {
+					return { args }
+				},
+				template:
+					/**html */
+					`
+                    <div class="flex flex-row justify-between">
+                        <vv-checkbox-group v-bind="args" v-model="selected">
+                            <template v-slot:default>
+                                <vv-checkbox id="o1" name="opts" value="1">Option 1</vv-checkbox>
+                                <vv-checkbox id="o2" name="opts" value="2">Option 2</vv-checkbox>
+                                <vv-checkbox id="o3" name="opts" value="3">Option 3</vv-checkbox>
+                            </template>
+                            <template v-slot:error>
+                               Error message
+                            </template>
+                        </vv-checkbox-group>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
+                    </div>
+                    `
+			}
+		}}
+	</Story>
+</Canvas>

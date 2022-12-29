@@ -1,9 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-
-import { slotsTest } from './RadioSlotsTest.js'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
+import { slotsTest } from './RadioGroup.test'
 
 <Meta title="Components/RadioGroup/Slots" component={VvRadioGroup} />
 
@@ -22,17 +20,13 @@ import { slotsTest } from './RadioSlotsTest.js'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected">
-                            <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                            <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                            <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong> 
-                    </div>
+				template: `
+					<vv-radio-group v-bind="args" v-model="selected" data-testId="radiogroup">
+						<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong> 
                     `
 			}
 		}}
@@ -44,11 +38,10 @@ import { slotsTest } from './RadioSlotsTest.js'
 <Canvas>
 	<Story
 		name="Hint"
-		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement })
-		}}
+		play={slotsTest}
 		args={{
-			name: 'story-slot-hint'
+			name: 'story-slot-hint',
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {
@@ -57,22 +50,17 @@ import { slotsTest } from './RadioSlotsTest.js'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                            </template>
-                            <template v-slot:hint="slotProps">
-                                <p>Ciao sono lo slot HINT! {{slotProps}}</p> 
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
-                    </div>
+				template: `
+					<vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+						<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+						<template #hint="slotProps">
+							<div>Hint label</div>
+							<div>{{slotProps}}</div> 
+						</template>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong>
                     `
 			}
 		}}
@@ -85,11 +73,12 @@ import { slotsTest } from './RadioSlotsTest.js'
 	<Story
 		name="Valid"
 		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement }, 'valid')
+			slotsTest({ canvasElement }, { className: 'valid' })
 		}}
 		args={{
 			name: 'story-slot-valid',
-			valid: true
+			valid: true,
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {
@@ -98,22 +87,16 @@ import { slotsTest } from './RadioSlotsTest.js'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                            </template>
-                            <template v-slot:valid>
-                                <p>Ciao sono lo slot VALID!</p>
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
-                    </div>
+				template: `
+					<vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+						<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+						<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+						<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+						<template #valid>
+							Valid message
+						</template>
+					</vv-radio-group>
+					<strong v-if="selected">Selected options: {{selected}} </strong>
                     `
 			}
 		}}
@@ -126,11 +109,12 @@ import { slotsTest } from './RadioSlotsTest.js'
 	<Story
 		name="Error"
 		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement }, 'invalid')
+			slotsTest({ canvasElement }, { className: 'invalid' })
 		}}
 		args={{
 			name: 'story-slot-error',
-			error: true
+			error: true,
+			role: 'radiogroup'
 		}}>
 		{(args) => {
 			return {
@@ -139,22 +123,16 @@ import { slotsTest } from './RadioSlotsTest.js'
 				setup() {
 					return { args }
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                            </template>
-                            <template v-slot:error>
-                                <p>Ciao sono lo slot ERROR!</p>
+				template: `
+                        <vv-radio-group v-model="selected" v-bind="args" data-testId="radiogroup">
+							<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+							<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+							<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+                            <template #error>
+                               Error message
                             </template>
                         </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
-                    </div>
+                        <strong v-if="selected">Selected options: {{selected}} </strong>
                     `
 			}
 		}}

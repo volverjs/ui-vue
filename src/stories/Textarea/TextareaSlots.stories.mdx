@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
 import { action } from '@storybook/addon-actions'
-
-import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
+import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { Template } from './Textarea.stories.mdx'
 
 <Meta title="Components/Textarea/Slots" component={VvTextarea} />
@@ -16,14 +15,14 @@ import { Template } from './Textarea.stories.mdx'
 				components: { VvTextarea, VvIcon },
 				data: () => ({ text: '' }),
 				template: `
-					<vv-textarea name="r1" v-model:modelValue="text">
-						<template v-slot:icon-left="slotProps">
+					<vv-textarea name="r1" v-model="text">
+						<template #icon-left="slotProps">
                             <VvIcon name="add"/>
                         </template>
-                        <template v-slot:icon-right>
-                            <button class="vv-button"> QUA! </button>
+                        <template #icon-right>
+                            <button class="vv-button">Here!</button>
                         </template>
-					</vv-input-text>
+					</vv-textarea>
                     `
 			}
 		}}

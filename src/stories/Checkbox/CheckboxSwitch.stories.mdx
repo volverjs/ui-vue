@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { action } from '@storybook/addon-actions'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+import { Template } from './Checkbox.stories.mdx'
+import { switchTest } from './Checkbox.test'
+
+<Meta
+	title="Components/Checkbox/Switch"
+	args={{
+		modelValue: []
+	}}
+	component={VvCheckbox}
+/>
+
+# Switch
+
+<Canvas>
+	<Story
+		name="Switch"
+		play={switchTest}
+		args={{
+			id: 3,
+			label: 'Option 1',
+			name: 'ck3',
+			switch: true,
+			value: { a: 'Option 3' }
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

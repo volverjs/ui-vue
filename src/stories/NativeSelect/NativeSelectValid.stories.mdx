@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvNativeSelect from '../../components/VvNativeSelect/VvNativeSelect.vue'
+import VvNativeSelect from '@/components/VvNativeSelect/VvNativeSelect.vue'
 import { Template } from './NativeSelect.stories.mdx'
+import { validTest } from './NativeSelect.test'
 
 <Meta title="Components/NativeSelect/Props/valid" />
 
@@ -11,12 +12,15 @@ Let's define a story for our `valid` and `valid-label` select.
 <Canvas>
 	<Story
 		name="valid"
+		play={validTest}
 		args={{
+			name: 'select',
 			label: 'Lorem Ipsum',
 			placeholder: 'Placeholder',
 			options: ['Option 1', 'Option 2', 'Option 3'],
 			valid: true,
-			validLabel: 'The field is correct!'
+			validLabel: 'The field is correct!',
+			'data-testid': 'native-select'
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -26,7 +30,7 @@ Let's define a story for our `valid` and `valid-label` select.
 	language="html"
 	code={`
 <vv-select
-	v-model:modelValue="value"
+	v-model="value"
 	:options="options"
 	placeholder="Placeholder"
 	label="Label 1"

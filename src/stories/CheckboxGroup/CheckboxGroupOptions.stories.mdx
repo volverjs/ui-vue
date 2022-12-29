@@ -1,0 +1,40 @@
+import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
+
+import VvCheckboxGroup from '@/components/VvCheckboxGroup/VvCheckboxGroup.vue'
+import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+
+import { Template } from './CheckboxGroup.stories.mdx'
+
+<Meta title="Components/CheckboxGroup/Options" component={VvCheckboxGroup} />
+
+# Options
+
+Check group based on list of object list
+
+<Canvas>
+	<Story
+		name="Options"
+		args={{
+			name: 'story-options',
+			options: [
+				{ value: 1, label: 'Option 1' },
+				{ value: 2, label: 'Option 2' },
+				{ value: 3, label: 'Option 3' }
+			]
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+# Options as Array
+
+<Canvas>
+	<Story
+		name="Options as Array"
+		args={{
+			name: 'story-options-strings',
+			options: ['First', 'Second', 'Third']
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

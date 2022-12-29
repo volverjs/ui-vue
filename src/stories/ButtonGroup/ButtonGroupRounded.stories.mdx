@@ -1,8 +1,7 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-
-import VvButton from '../../components/VvButton/VvButton.vue'
-import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
-import { buttonGroupTest, classTest, mixClassTest } from './ButtonGroupTest.js'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { buttonGroupTest, classTest, mixClassTest } from './ButtonGroup.test'
 
 <Meta title="Components/ButtonGroup/Props/rounded" component={VvButtonGroup} />
 
@@ -26,7 +25,7 @@ A VvButtonGroup with the <strong>rounded</strong> prop will be render with <stro
 			return {
 				components: { VvButton, VvButtonGroup },
 				template: `
-                        <vv-button-group rounded>
+                        <vv-button-group modifiers="rounded">
                             <vv-button>Button 1</vv-button>
                             <vv-button id="btn2">Button 2</vv-button>
                             <vv-button>Button 3</vv-button>

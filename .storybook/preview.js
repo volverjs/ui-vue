@@ -1,19 +1,29 @@
-import '@/stories/stories.scss'
 import { setup } from '@storybook/vue3'
-import DesignSystem from '@/DesignSystem'
+import VolverPlugin from '@/Volver'
 import iconsSimple from '@/assets/icons/simple.json'
 import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
+import { themes } from '@storybook/theming'
+import './style.scss'
 
 import NotifyPlugin from '@/plugins/notify/notify.ts'
 import VvAlert from '@/components/VvAlert/VvAlert.vue'
 import VvToast from '@/components/VvToast/VvToast.vue'
 
-const volver = new DesignSystem({
-	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
-})
 setup((app) => {
-	app.use(volver)
+	const bodyClasses = document.getElementsByTagName('body')[0].classList
+	if (
+		bodyClasses &&
+		!document.getElementById('storybook-docs')?.getAttribute('hidden')
+	) {
+		// inside docs mode, the body class has 'sb-show-main'
+		bodyClasses.remove('theme--dark')
+		bodyClasses.add('theme--light')
+	}
+	bodyClasses.add('theme')
+	app.use(VolverPlugin, {
+		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
+	})
 	app.use(NotifyPlugin, {
 		alert: {
 			component: VvAlert
@@ -33,9 +43,12 @@ export const parameters = {
 			date: /Date$/
 		}
 	},
+	docs: {
+		theme: themes.normal
+	},
 	darkMode: {
-		// Set the initial theme
-		// current: 'light',
+		classTarget: 'body',
+		current: 'light',
 		darkClass: 'theme--dark',
 		lightClass: 'theme--light',
 		stylePreview: true

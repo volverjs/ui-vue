@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
+import VvSelect from '@/components/VvSelect/VvSelect.vue'
 
 <Meta title="Components/Select/Props/options" />
 
@@ -59,11 +59,11 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 				},
 				template: `<div class="flex gap-32">
 						<div class="w-1/2">
-							<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />
+							<vv-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" />
 							value: {{ value }}
 						</div>
 						<div class="w-1/2">
-							<vv-select v-model:modelValue="objectValue" :options="optionsObject" placeholder="Placeholder" label="Label 1" />
+							<vv-select v-model="objectValue" :options="optionsObject" placeholder="Placeholder" label="Label 1" />
 							value: {{ objectValue }}
 						</div>
 					</div>`
@@ -74,5 +74,5 @@ Options object array and default `valueKey` ("value") and `labelKey` ("label"):
 
 <Source
 	language="html"
-	code={`<vv-select v-model:modelValue="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
+	code={`<vv-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
 />

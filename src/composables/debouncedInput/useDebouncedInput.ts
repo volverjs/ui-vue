@@ -1,19 +1,25 @@
-import type { Ref } from 'vue'
-
-import { refDebounced } from '@vueuse/core'
-
-import { watch, ref } from 'vue'
+import { type Ref, computed } from 'vue'
 
 export function useDebouncedInput(
-	inputText: Ref<any> | undefined,
-	debounced: number | undefined,
-	emit: (event: any, ...args: any[]) => void
-): Ref<any> {
-	const _text = ref(inputText?.value)
-	const debouncedInputTextData = refDebounced(
-		_text as Ref<any>,
-		debounced || 0
-	)
-	watch(debouncedInputTextData, (v) => emit('update:modelValue', v))
-	return _text
+	modelValue: Ref | undefined,
+	emit: (event: string, value: unknown) => void,
+	ms: string | number = 0
+): Ref {
+	let timeout: NodeJS.Timeout
+
+	if (typeof ms === 'string') {
+		ms = parseInt(ms)
+	}
+
+	return computed({
+		get: () => modelValue?.value,
+		set: (value) => {
+			if (timeout) {
+				clearTimeout(timeout)
+			}
+			timeout = setTimeout(() => {
+				emit('update:modelValue', value)
+			}, ms as number)
+		}
+	})
 }

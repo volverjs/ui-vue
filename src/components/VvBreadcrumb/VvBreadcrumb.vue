@@ -1,5 +1,22 @@
+<script lang="ts">
+export default {
+	name: 'VvBreadcrumb'
+}
+</script>
+
+<script setup lang="ts">
+import { useBemModifiers } from '@/composables/useModifiers'
+import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
+
+const props = defineProps(VvBreadcrumbProps)
+const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
+	modifiers: props.modifiers,
+	multiline: props.multiline
+})
+</script>
+
 <template>
-	<nav :class="breadcrumbClass" aria-label="breadcrumbs">
+	<nav :class="bemCssClasses" aria-label="breadcrumbs">
 		<ol class="vv-breadcrumb__list">
 			<li
 				v-for="(route, index) in routes"
@@ -25,28 +42,10 @@
 							: undefined
 					"
 					itemprop="item">
-					<!-- <span itemprop="name"> -->
 					{{ route.label }}
-					<!-- </span> -->
 				</component>
 				<meta itemprop="position" :content="`${index + 1}`" />
 			</li>
 		</ol>
 	</nav>
 </template>
-
-<script setup lang="ts">
-import { toRefs } from 'vue'
-import { useBemModifiers } from '../../composables/useModifiers'
-import { VvBreadcrumbProps } from './VvBreadcrumb'
-
-const props = defineProps(VvBreadcrumbProps)
-
-//Data
-const { modifiers, multiline } = toRefs(props)
-
-const { bemCssClasses: breadcrumbClass } = useBemModifiers('vv-breadcrumb', {
-	modifiers,
-	multiline
-})
-</script>

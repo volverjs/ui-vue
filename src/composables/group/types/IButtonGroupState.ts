@@ -18,4 +18,8 @@ export default interface IButtonGroupState extends IGroupState {
 	 * True = gruppo di pulsanti è in modalità TOGGLE (come i radio buttons)
 	 */
 	toggle: Ref<boolean>
+	/**
+	 * add modifiers to buttons
+	 */
+	modifiers: Ref<Array<string> | string | undefined>
 }

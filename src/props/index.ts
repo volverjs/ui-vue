@@ -1,3 +1,5 @@
+import type { PropType } from 'vue'
+
 export const ValidProps = {
 	valid: Boolean,
 	validLabel: [String, Array]
@@ -22,7 +24,7 @@ export const ReadonlyProps = {
 }
 
 export const ModifiersProps = {
-	modifiers: [String, Array]
+	modifiers: [String, Array] as PropType<string | Array<string>>
 }
 
 export const HintProps = {
@@ -61,7 +63,13 @@ export const LimitProps = {
 }
 
 export const InputProps = {
-	id: String,
+	/**
+	 * Input id
+	 */
+	id: [String, Number],
+	/**
+	 * Input name
+	 */
 	name: { type: String, required: true },
 	autocomplete: { type: String, default: 'off' },
 	autofocus: Boolean,
