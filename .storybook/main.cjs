@@ -18,6 +18,9 @@ module.exports = {
 		docsPage: true,
 		autodocs: true
 	},
+	features: {
+		interactionsDebugger: true
+	},
 	async viteFinal(config, { configType }) {
 		if (configType === 'PRODUCTION') {
 			config.base = '/ui-vue/'

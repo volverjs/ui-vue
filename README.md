@@ -5,7 +5,7 @@
 ## @volverjs/ui-vue
 
 `vue` `components` `ui` `design-system` `typography`  
-`input` `button` `text`
+`input` `button`
 
 <br>
 

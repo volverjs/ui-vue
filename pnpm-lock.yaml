@@ -48,6 +48,7 @@ specifiers:
   '@vue/test-utils': ^2.2.6
   '@vue/tsconfig': ^0.1.3
   '@vueuse/core': ^9.9.0
+  chalk: ^5.2.0
   change-case: ^4.1.2
   eslint: ^8.30.0
   eslint-config-prettier: ^8.5.0
@@ -137,6 +138,7 @@ devDependencies:
   '@vue/eslint-config-typescript': 11.0.2_eh2oupyoc3mviptu6zovyv6md4
   '@vue/test-utils': 2.2.6_vue@3.2.45
   '@vue/tsconfig': 0.1.3_@types+node@18.11.18
+  chalk: 5.2.0
   change-case: 4.1.2
   eslint: 8.30.0
   eslint-config-prettier: 8.5.0_eslint@8.30.0
@@ -5181,6 +5183,11 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    dev: true
+
+  /chalk/5.2.0:
+    resolution: {integrity: sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
     dev: true
 
   /change-case/4.1.2:
