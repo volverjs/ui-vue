@@ -6,7 +6,6 @@ module.exports = {
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
-		'@storybook/addon-docs',
 		'storybook-dark-mode'
 	],
 	framework: {
@@ -20,15 +19,5 @@ module.exports = {
 	},
 	features: {
 		interactionsDebugger: true
-	},
-	async viteFinal(config, { configType }) {
-		if (configType === 'PRODUCTION') {
-			config.base = '/ui-vue/'
-		}
-		config.resolve.alias = {
-			...config.resolve.alias,
-			'@': path.resolve(__dirname, '../src')
-		}
-		return config
 	}
 }
