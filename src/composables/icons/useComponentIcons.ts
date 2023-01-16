@@ -51,33 +51,43 @@ export function useComponentIcons(
 }
 
 export function useComponentIcon(
-	icon: Ref<string | object>,
+	icon: Ref<string | object | undefined> | undefined,
 	iconPosition: Ref<string>,
-	slots: ComponentIconSlots
+	slots?: ComponentIconSlots
 ) {
 	const hasIconLeft = computed(
 		() =>
-			!!((icon.value && iconPosition.value === 'left') || slots.iconLeft)
+			!!(
+				(icon?.value && iconPosition.value === 'left') ||
+				slots?.iconLeft
+			)
 	)
 	const hasIconRight = computed(
 		() =>
 			!!(
-				(icon.value && iconPosition.value === 'right') ||
-				slots.iconRight
+				(icon?.value && iconPosition.value === 'right') ||
+				slots?.iconRight
 			)
 	)
 	const hasIconTop = computed(
-		() => !!((icon.value && iconPosition.value === 'top') || slots.iconTop)
+		() =>
+			!!((icon?.value && iconPosition.value === 'top') || slots?.iconTop)
 	)
 	const hasIconBottom = computed(
 		() =>
 			!!(
-				(icon.value && iconPosition.value === 'bottom') ||
-				slots.iconBottom
+				(icon?.value && iconPosition.value === 'bottom') ||
+				slots?.iconBottom
 			)
 	)
-
+	const hasIcon = computed(() => {
+		if (typeof icon?.value === 'string') {
+			return { name: icon?.value }
+		}
+		return icon?.value
+	})
 	return {
+		hasIcon,
 		hasIconLeft,
 		hasIconRight,
 		hasIconTop,

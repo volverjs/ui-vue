@@ -36,9 +36,16 @@ export const parameters = {
 	},
 	darkMode: {
 		classTarget: 'body',
-		current: 'light',
 		darkClass: 'theme--dark',
 		lightClass: 'theme--light',
-		stylePreview: true
+		stylePreview: true,
+		dark: {
+			...themes.dark,
+			brandImage: 'brand-dark.svg'
+		},
+		light: {
+			...themes.normal,
+			brandImage: 'brand.svg'
+		}
 	}
 }

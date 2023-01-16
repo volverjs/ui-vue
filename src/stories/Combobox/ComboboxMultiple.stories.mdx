@@ -1,0 +1,71 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import { defaultTest } from './Combobox.test'
+import { defaultArgs, argTypes } from './Combobox.settings'
+import { Template } from './Combobox.stories.mdx'
+
+<Meta
+	title="Components/Combobox/Multiple"
+	component={VvCombobox}
+    args={defaultArgs}
+	argTypes={argTypes}
+
+/>
+
+<Canvas>
+	<Story
+		name="Default"
+		play={defaultTest}
+		args={{ multiple: true }}
+		argTypes={{
+			multiple: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Max values"
+		play={defaultTest}
+		args={{ multiple: true, maxValues: 2 }}
+		argTypes={{
+			multiple: {
+				control: {
+					disable: true
+				}
+			},
+			maxValues: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Separator"
+		play={defaultTest}
+		args={{ multiple: true, separator: ' | ' }}
+		argTypes={{
+			multiple: {
+				control: {
+					disable: true
+				}
+			},
+			separator: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

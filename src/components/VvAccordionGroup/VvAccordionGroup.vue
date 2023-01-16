@@ -21,12 +21,7 @@ const props = defineProps(VvAccordionGroupProps)
 const emit = defineEmits(VvAccordionGroupEvents)
 
 // data
-const { disabled, collapse, modifiers, items } = toRefs(props)
-const isCollapse = computed(
-	() =>
-		collapse.value &&
-		(props.modelValue === undefined || Array.isArray(props.modelValue))
-)
+const { disabled, collapse, modifiers, itemModifiers, items } = toRefs(props)
 watchEffect(() => {
 	if (typeof props.modelValue === 'string' && collapse.value) {
 		// eslint-disable-next-line
@@ -39,30 +34,38 @@ const localModelValue: Ref<string[]> = ref([])
 const modelValue = computed({
 	get: () => {
 		if (props.modelValue !== undefined) {
-			if (!isCollapse.value) {
+			if (!collapse.value) {
 				return Array.isArray(props.modelValue)
 					? props.modelValue[0]
 					: props.modelValue
 			}
 			return props.modelValue
 		}
-		return !isCollapse.value
+		return !collapse.value
 			? localModelValue.value?.[0]
 			: localModelValue.value
 	},
 	set: (newValue) => {
 		if (props.modelValue !== undefined) {
+			if (
+				(Array.isArray(props.modelValue) || collapse.value) &&
+				!Array.isArray(newValue)
+			) {
+				newValue = [newValue]
+			}
 			return emit('update:modelValue', newValue)
 		}
 		localModelValue.value = Array.isArray(newValue) ? newValue : [newValue]
 	}
 })
 
+// provide
 const accordionGroupState: IAccordionGroupState = {
 	key: VV_ACCORDION_GROUP,
 	modelValue,
 	disabled,
-	collapse: isCollapse
+	collapse,
+	modifiers: itemModifiers
 }
 useProvideGroupState(accordionGroupState)
 
@@ -75,16 +78,14 @@ const { bemCssClasses } = useBemModifiers('vv-accordion-group', {
 
 <template>
 	<div :class="bemCssClasses">
-		<template v-if="props.items?.length > 0">
+		<slot>
 			<vv-accordion
 				v-for="item in items"
 				:key="item.title"
 				v-bind="{
 					name: item.name,
 					title: item.title,
-					content: item.content,
-					disabled: item.disabled,
-					modifiers
+					content: item.content
 				}">
 				<template #header="data">
 					<slot v-bind="data" :name="`header::${item.name}`" />
@@ -93,7 +94,6 @@ const { bemCssClasses } = useBemModifiers('vv-accordion-group', {
 					<slot v-bind="data" :name="`details::${item.name}`" />
 				</template>
 			</vv-accordion>
-		</template>
-		<slot v-else />
+		</slot>
 	</div>
 </template>

@@ -5,8 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useSlots, computed, toRefs } from 'vue'
+import type { Option } from '@/types/generic'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
+import { useSlots, computed, toRefs } from 'vue'
 import { VV_CHECK_GROUP } from '@/constants'
 import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
@@ -26,13 +27,15 @@ const slots = useSlots()
 
 // data
 const modelValue = useVModel(props, 'modelValue', emit)
-const { disabled, readonly, error, valid } = toRefs(props)
+const { disabled, readonly, vertical, valid, invalid } = toRefs(props)
 
 const groupState: IInputGroupState = {
 	key: VV_CHECK_GROUP,
 	modelValue,
 	disabled,
-	readonly
+	readonly,
+	valid,
+	invalid
 }
 useProvideGroupState(groupState)
 
@@ -41,15 +44,17 @@ const { getOptionLabel, getOptionValue } = useOptions(props)
 
 // stypes
 const { bemCssClasses: hasClass } = useBemModifiers('vv-checkbox-group', {
-	horizontal: computed(() => !props.vertical),
+	disabled,
+	readonly,
+	horizontal: computed(() => !vertical.value),
 	valid,
-	invalid: error
+	invalid
 })
 
 // methods
-const getOptionProps = (option: unknown, oIndex: number) => {
+const getOptionProps = (option: string | Option, index: number) => {
 	return {
-		id: `${props.name}_opt${oIndex}`,
+		id: `${props.name}_opt${index}`,
 		name: props.name,
 		label: getOptionLabel(option),
 		value: getOptionValue(option)
@@ -65,9 +70,9 @@ const { HintSlot } = HintSlotFactory(props, slots)
 			<!-- #region options set up -->
 			<template v-if="options.length > 0">
 				<vv-checkbox
-					v-for="(o, oIndex) in options"
-					:key="oIndex"
-					v-bind="getOptionProps(o, oIndex)" />
+					v-for="(option, index) in options"
+					:key="index"
+					v-bind="getOptionProps(option, index)" />
 			</template>
 			<!-- #endregion options set up -->
 			<!-- #region default -->

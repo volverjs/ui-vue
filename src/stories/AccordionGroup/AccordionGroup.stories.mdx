@@ -1,37 +1,40 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Meta, Story, Canvas } from '@storybook/addon-docs'
 import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
-import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
-import { accordionGroupTest } from './AccordionGroup.test'
+import { defaultTest } from './AccordionGroup.test'
+import { defaultArgs, argTypes } from './AccordionGroup.settings'
 
-<Meta title="Components/AccordionGroup" component={VvAccordionGroup} />
+<Meta
+	title="Components/AccordionGroup"
+	component={VvAccordionGroup}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-export const Template = (args) => ({
-	components: { VvAccordionGroup, VvAccordion },
-	data() {
-		return {
-			disabled: false,
-			openedId: '',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
-		}
-	},
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvAccordionGroup },
 	setup() {
 		return { args }
 	},
-	template: `<vv-accordion-group data-testId="accordion-group" v-bind="args" :disabled="disabled" v-model="openedId">
-					<vv-accordion data-testId="accordion-1" title="Details 1" :content="content" />
-					<vv-accordion title="Details 2" :content="content" />
-					<vv-accordion title="Details 3" :content="content" />
-				</vv-accordion-group>`
+	data() {
+		return {
+			selected: null
+		}
+	},
+	template: `<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" />
+				<div class="mt-24">
+					Selected: <span data-testId="value">{{ selected }}</span>
+				</div>`
 })
 
-# VvAccordionGroup
-
-Stories of `VvAccordionGroup`.
-Let's define a story for our playground `accordion-group`:
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
 <Canvas>
-	<Story name="vv-accordion-group" play={accordionGroupTest} args={{}}>
-		{Template.bind({})}
+	<Story name="Collapse" play={defaultTest} args={{ collapse: true }}>
+		{Template.bind()}
 	</Story>
 </Canvas>

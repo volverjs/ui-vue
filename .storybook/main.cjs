@@ -9,13 +9,11 @@ module.exports = {
 		'storybook-dark-mode'
 	],
 	framework: {
-		name: '@storybook/vue3-vite',
-		options: {}
+		name: '@storybook/vue3-vite'
 	},
 	staticDirs: ['./static'],
 	docs: {
-		docsPage: true,
-		autodocs: true
+		disable: true
 	},
 	features: {
 		interactionsDebugger: true

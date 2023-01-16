@@ -1,10 +1,15 @@
 import { expect } from '@storybook/jest'
 import { userEvent } from '@storybook/testing-library'
 import { axe } from 'jest-axe'
+import { sleep } from '@/test/sleep'
 
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
 	namespace jest {
+		// eslint-disable-next-line
+		interface Matchers<R> {
+			toBeChecked: (expected?: HTMLElement) => CustomMatcherResult
+		}
 		// eslint-disable-next-line
 		interface Matchers<R> {
 			toBeClicked: (expected?: HTMLElement) => CustomMatcherResult
@@ -20,6 +25,20 @@ declare global {
 }
 
 expect.extend({
+	async toBeChecked(checkbox: HTMLInputElement) {
+		await checkbox.click()
+		await sleep()
+		if (checkbox.checked) {
+			return {
+				pass: true,
+				message: () => `Checkbox is checked`
+			}
+		}
+		return {
+			pass: false,
+			message: () => `Checkbox is not checked`
+		}
+	},
 	async toBeClicked(element: HTMLElement) {
 		const result = {
 			pass: false,

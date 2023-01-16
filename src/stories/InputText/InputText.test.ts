@@ -1,156 +1,125 @@
-import type { PlayAttributes, ComponentConfig } from '@/test/types'
-import { within, userEvent } from '@storybook/testing-library'
+import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
+import { within, userEvent } from '@storybook/testing-library'
+import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
 
-export async function testInputText(
-	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
-	{
-		isClickDisabled = false,
-		className = null,
-		customText = null
-	}: ComponentConfig = {}
-) {
-	const inputTextWrapperParent = await within(canvasElement).findByTestId(
-		'input-text'
-	)
-	const inputText = document.querySelector('input') as HTMLInputElement
-	if (isClickDisabled) {
-		await expect(inputText).not.toBeClicked()
-	} else {
-		await expect(inputText).toBeClicked()
-		await userEvent.click
-		if (
-			inputText.type == 'text' ||
-			inputText.type == 'password' ||
-			inputText.type == 'search'
-		) {
-			const text = customText || 'Lorem ipsum'
-			userEvent.keyboard(text)
-			if (!data.args.limit && data.args.maxlength) {
-				data.args.maxlength >= text.length
-					? expect(inputText.value).toEqual(text)
-					: expect(inputText.value.length).toEqual(
-							data.args.maxlength
-					  )
-			} else if (!data.args.limit) {
-				expect(inputText.value).toEqual(data.args.modelValue || text)
+const valueByType = (type: InputType) => {
+	switch (type) {
+		case INPUT_TYPES.TEXT:
+		case INPUT_TYPES.PASSWORD:
+		case INPUT_TYPES.SEARCH:
+			return 'Lorem ipsum'
+		case INPUT_TYPES.NUMBER:
+			return '1'
+		case INPUT_TYPES.EMAIL:
+			return 'test@test.com'
+		case INPUT_TYPES.TEL:
+			return '+1234567890'
+		case INPUT_TYPES.URL:
+			return 'https://www.test.com'
+		case INPUT_TYPES.DATE:
+			return new Date().toISOString().split('T')[0]
+		case INPUT_TYPES.TIME:
+			return '12:00'
+		case INPUT_TYPES.COLOR:
+		case INPUT_TYPES.DATETIME_LOCAL:
+		case INPUT_TYPES.MONTH:
+		case INPUT_TYPES.WEEK:
+			return undefined
+	}
+}
+
+export async function defaultTest({ canvasElement, args }: PlayAttributes) {
+	const element = (await within(canvasElement).findByTestId(
+		'element'
+	)) as HTMLElement
+	const value = (await within(canvasElement).findByTestId(
+		'value'
+	)) as HTMLElement
+	const input = element.getElementsByTagName('input')[0]
+	const hint = element.getElementsByClassName('vv-input-text__hint')[0]
+
+	// value
+	if (!args.invalid && !args.disabled && !args.readonly) {
+		const inputValue = valueByType(args.type)
+		if (inputValue) {
+			await expect(input).toBeClicked()
+			await userEvent.keyboard(inputValue)
+			await sleep()
+			if (args.maxlength) {
+				await expect(value.innerHTML).toEqual(
+					inputValue.slice(0, args.maxlength)
+				)
+			} else {
+				await expect(value.innerHTML).toEqual(inputValue)
 			}
 		}
 	}
-	const baseAttrs = [
-		'id',
-		'name',
-		'placeholder',
-		'required',
-		'type',
-		'max',
-		'maxlength',
-		'min',
-		'minlength'
-	]
-	baseAttrs.forEach((attr) => {
-		if (data.args[attr] !== undefined) {
-			expect(String(inputText.getAttribute(attr))).toEqual(
-				String(data.args[attr])
-			)
+
+	// disabled
+	if (args.disabled) {
+		await expect(element).toHaveClass('vv-input-text--disabled')
+		await expect(input).toHaveProperty('disabled')
+		await expect(input).not.toBeClicked()
+	}
+
+	// readonly
+	if (args.readonly) {
+		await expect(element).toHaveClass('vv-input-text--readonly')
+		await expect(input).toHaveProperty('readOnly')
+	}
+
+	// invalid
+	if (args.invalid) {
+		await expect(element).toHaveClass('vv-input-text--invalid')
+		await expect(input).toHaveProperty('ariaInvalid')
+		if (args.invalidLabel) {
+			await expect(hint.innerHTML).toEqual(args.invalidLabel)
 		}
-	})
-	data.args.label &&
-		expect(
-			(inputTextWrapperParent.firstChild as HTMLElement)?.innerText
-		).toEqual(data.args.label)
-	data.args.hintLabel &&
-		expect(
-			(inputTextWrapperParent.lastChild as HTMLElement)?.innerText
-		).toEqual(data.args.hintLabel)
-	data.args.modelValue &&
-		expect(inputText.value).toEqual(data.args.modelValue)
-	data.args.readonly && expect(inputText.readOnly).toEqual(data.args.readonly)
-	await sleep()
-	expect(inputTextWrapperParent).toHaveClass('vv-input-text')
-	if (inputText.value) {
-		expect(inputTextWrapperParent).toHaveClass('vv-input-text--dirty')
 	}
-	className && expect(inputTextWrapperParent).toHaveClass(className)
-	await expect(inputTextWrapperParent).toHaveNoViolations()
-}
 
-export async function limitTest({ canvasElement, ...data }: PlayAttributes) {
-	const inputText = document.querySelector('input') as HTMLInputElement
-	await testInputText({ canvasElement, ...data })
-	const limit = document.getElementsByClassName(
-		'vv-input-text__limit'
-	)[0] as HTMLElement
-	if (data.args.maxlength) {
-		while (inputText.value.length < data.args.maxlength)
-			await userEvent.keyboard(
-				' dolor sit amet, consectetur adipiscing elit'
-			)
-		data.args.limit === true &&
-			expect(limit.innerText).toEqual(
-				`${inputText.value.length}/${data.args.maxlength}`
-			)
-		data.args.limit === 'countdown' &&
-			expect(limit.innerHTML).toBe(
-				`${data.args.maxlength - inputText.value.length}`
-			)
+	// valid
+	if (args.valid) {
+		await expect(element).toHaveClass('vv-input-text--valid')
+		await expect(input).toHaveProperty('ariaInvalid', 'false')
+		if (args.validLabel) {
+			await expect(hint.innerHTML).toEqual(args.validLabel)
+		}
 	}
-}
 
-export async function iconTest(
-	{ canvasElement, ...data }: PlayAttributes,
-	customElement: ComponentConfig
-) {
-	const icon = customElement || document.querySelector('svg')
-	expect(icon.customElement || icon).toHaveClass([
-		'vv-icon',
-		'iconify',
-		'iconify--normal',
-		'iconify--ds'
-	])
-	const inputTextWrapperParent = await within(canvasElement).findByTestId(
-		'input-text'
-	)
-	data.args.iconPosition &&
-		expect(inputTextWrapperParent).toHaveClass(
-			`vv-input-text--icon-${data.args.iconPosition}`
-		)
-	testInputText({ canvasElement, ...data })
-}
-
-export async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
-	const inputTextWrapperParent = await within(canvasElement).findByTestId(
-		'input-text'
-	)
-	const inputTextWrapper = inputTextWrapperParent.children[0]
-	const icon = inputTextWrapper.firstElementChild as HTMLElement
-	iconTest({ canvasElement, ...data }, { customElement: icon })
-	const button = inputTextWrapper.lastElementChild as HTMLButtonElement
-	expect(button).toHaveClass('vv-button')
-	expect(button.innerText).toBe('Here!')
-}
-
-export async function inputNumberTest({
-	canvasElement,
-	...data
-}: PlayAttributes) {
-	const inputText = document.querySelector('input') as HTMLInputElement
-	const actionButtonGroup = document.getElementsByClassName(
-		'vv-input-text__actions-group'
-	)
-	const buttonUp = actionButtonGroup[0].firstElementChild as HTMLButtonElement
-	const buttonDown = actionButtonGroup[0]
-		.lastElementChild as HTMLButtonElement
-	userEvent.click(inputText)
-	for (let i = 1; i < 4; i++) {
-		buttonUp.click()
-		expect(inputText.value).toEqual(`${data.args.step * i}`)
+	//   min / max / minlength / maxlength
+	if (args.min) {
+		await expect(input).toHaveProperty('min', String(args.min))
 	}
-	const inputValue: number = parseFloat(inputText.value)
-	for (let i = inputValue; i > data.args.step; i--) {
-		buttonDown.click()
-		expect(inputText.value).toEqual(`${i - data.args.step}`)
+
+	if (args.max) {
+		await expect(input).toHaveProperty('max', String(args.max))
 	}
-	await testInputText({ canvasElement, ...data })
+
+	if (args.minlength) {
+		await expect(input).toHaveProperty('minLength', args.minlength)
+	}
+
+	if (args.maxlength) {
+		await expect(input).toHaveProperty('maxLength', args.maxlength)
+	}
+
+	// floating
+	if (args.floating) {
+		await expect(element).toHaveClass('vv-input-text--floating')
+	}
+
+	// loading
+	if (args.loading) {
+		await expect(element).toHaveClass('vv-input-text--loading')
+	}
+
+	// hint
+	if (args.hintLabel) {
+		await expect(hint.innerHTML).toEqual(args.hintLabel)
+	}
+
+	// check accessibility
+	await expect(element).toHaveNoViolations()
 }

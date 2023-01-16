@@ -9,6 +9,5 @@ export interface Route {
 
 export const VvBreadcrumbProps = {
 	...ModifiersProps,
-	routes: Array<Route>,
-	multiline: Boolean
+	routes: Array<Route>
 }

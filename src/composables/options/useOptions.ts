@@ -1,25 +1,26 @@
 import { toRefs } from 'vue'
+import type { Option } from '@/types/generic'
 
 // eslint-disable-next-line
 export function useOptions(props: any) {
-	const { options, optionLabel, optionValue } = toRefs(props)
+	const { options, labelKey, valueKey } = toRefs(props)
 
 	// eslint-disable-next-line
-	const getOptionLabel = (o: any) => {
-		if (typeof o !== 'object' && o !== null) return o
+	const getOptionLabel = (option: string | Option) => {
+		if (typeof option !== 'object' && option !== null) return option
 
-		return typeof optionLabel.value === 'function'
-			? optionLabel.value(o)
-			: o[optionLabel.value]
+		return typeof labelKey.value === 'function'
+			? labelKey.value(option)
+			: option[labelKey.value]
 	}
 
 	// eslint-disable-next-line
-	const getOptionValue = (o: any) => {
-		if (typeof o !== 'object' && o !== null) return o
+	const getOptionValue = (option: any) => {
+		if (typeof option !== 'object' && option !== null) return option
 
-		return typeof optionValue.value === 'function'
-			? optionValue.value(o)
-			: o[optionValue.value]
+		return typeof valueKey.value === 'function'
+			? valueKey.value(option)
+			: option[valueKey.value]
 	}
 
 	return {

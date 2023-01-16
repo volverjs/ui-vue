@@ -220,29 +220,32 @@ export function isString(value: unknown) {
 // eslint-disable-next-line
 export function propsToObject(props: any) {
 	return Object.keys(props).reduce(
-		(initValue: Record<string, unknown>, value: string) => {
-			if ('default' in props[value]) {
-				initValue[value] = props[value].default
-				return initValue
+		(accumulator: Record<string, unknown>, key: string) => {
+			if (key === 'modelValue') {
+				return accumulator
 			}
-			if (isFunction(props[value])) {
+			if ('default' in props[key]) {
+				accumulator[key] = props[key].default
+				return accumulator
+			}
+			if (isFunction(props[key])) {
 				// case prop1: String
-				initValue[value] = props[value]()
-				return initValue
+				accumulator[key] = props[key]()
+				return accumulator
 			}
-			if (Array.isArray(props[value])) {
+			if (Array.isArray(props[key])) {
 				// case prop1: [ String, Array ]
-				initValue[value] = props[value][0]()
-				return initValue
+				accumulator[key] = props[key][0]()
+				return accumulator
 			}
 			// case prop1: { type: ... }
-			if (Array.isArray(props[value].type)) {
-				initValue[value] = props[value]?.type[0]()
-				return initValue
+			if (Array.isArray(props[key].type)) {
+				accumulator[key] = props[key]?.type[0]()
+				return accumulator
 			}
 			// case prop1: { type: String }
-			initValue[value] = props[value]?.default ?? props[value]?.type()
-			return initValue
+			accumulator[key] = props[key]?.type()
+			return accumulator
 		},
 		{} as Record<string, unknown>
 	)

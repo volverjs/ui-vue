@@ -83,7 +83,7 @@ const onClick = useToggle(isOpen)
 			:aria-controls="accordionName"
 			:aria-expanded="isOpen"
 			class="vv-collapse__summary">
-			<slot name="header" v-bind="{ open: isOpen }">
+			<slot name="summary" v-bind="{ open: isOpen }">
 				{{ title }}
 			</slot>
 		</summary>

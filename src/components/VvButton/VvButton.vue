@@ -13,18 +13,20 @@ import { useBemModifiers } from '@/composables/useModifiers'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import {
 	ButtonIconPosition,
+	VvButtonEvents,
 	ButtonTag,
 	VvButtonProps,
 	useGroupProps
 } from '@/components/VvButton'
 
-// props, attrs and slots
+// props, attrs, slots and emit
 const props = defineProps(VvButtonProps)
 const attrs = useAttrs()
 const slots = useSlots()
+const emit = defineEmits(VvButtonEvents)
 
 // data
-const btnName = attrs?.name || nanoid()
+const name = (attrs?.name as string) || nanoid()
 const {
 	modifiers,
 	iconPosition,
@@ -33,8 +35,8 @@ const {
 	modelValue,
 	disabled,
 	toggle,
-	isInGroup
-} = useGroupProps(props)
+	unselectable
+} = useGroupProps(props, emit)
 
 // inject Volver
 const ds = inject<IVolver>(VOLVER_PREFIX)
@@ -64,8 +66,8 @@ const isPressed = computed(() => {
 	if (!toggle.value) return props.pressed
 
 	return Array.isArray(modelValue.value)
-		? contains(btnName, modelValue.value)
-		: equals(btnName, modelValue.value)
+		? contains(name, modelValue.value)
+		: equals(name, modelValue.value)
 })
 
 /**
@@ -105,7 +107,6 @@ const hasIconProps = computed(() =>
 const hasProps = computed(() => {
 	const toReturn = {
 		class: bemCssClasses.value,
-		'aria-label': attrs['aria-label'],
 		'aria-pressed': isPressed.value ? true : undefined
 	}
 	switch (hasTag.value) {
@@ -137,21 +138,37 @@ const hasProps = computed(() => {
 /**
  * @description Catch click event in a group.
  */
-function onBtnClick() {
-	// set group modelValue
-	if (isInGroup.value) {
-		modelValue.value = btnName
+const onClick = () => {
+	if (toggle.value) {
+		if (Array.isArray(modelValue.value)) {
+			if (contains(name, modelValue.value)) {
+				if (unselectable.value) {
+					modelValue.value = modelValue.value.filter(
+						(n) => n !== name
+					)
+				}
+				return
+			}
+			modelValue.value.push(name)
+			return
+		}
+		if (equals(name, modelValue.value) && unselectable.value) {
+			modelValue.value = undefined
+			return
+		}
+		modelValue.value = name
 	}
 }
 </script>
 
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component v-bind="hasProps" :is="hasTag" @click.passive="onBtnClick">
-		<!-- @slot default to replace all button content -->
+	<component v-bind="hasProps" :is="hasTag" @click.passive="onClick">
+		<!-- @slot Replace all button content -->
 		<slot>
 			<!-- #region loading -->
 			<template v-if="loading">
+				<!-- @slot Replace all button content on loading -->
 				<slot name="loading">
 					<VvIcon
 						v-if="loadingIcon"
@@ -165,7 +182,7 @@ function onBtnClick() {
 			<!-- #endregion loading -->
 			<!-- #region button -->
 			<template v-else>
-				<!-- @slot before -->
+				<!-- @slot Before label and icon -->
 				<slot name="before" />
 				<!-- #region icon -->
 				<template v-if="icon">
@@ -180,7 +197,7 @@ function onBtnClick() {
 					</slot>
 				</span>
 				<!-- #endregion label  -->
-				<!-- @slot after -->
+				<!-- @slot After label and icon -->
 				<slot name="after" />
 			</template>
 			<!-- #endregion button -->

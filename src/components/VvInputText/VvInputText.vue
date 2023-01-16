@@ -20,14 +20,15 @@ import HintSlotFactory from '@/components/common/HintSlot'
 import { useComponentIcon } from '@/composables/icons/useComponentIcons'
 import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 import { useDebouncedInput } from '@/composables/debouncedInput/useDebouncedInput'
-import { useTextLimit } from '@/composables/textLimit/useTextLimit'
+import { useTextCount } from '@/composables/textCount/useTextCount'
 import { useBemModifiers } from '@/composables/useModifiers'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
 import {
 	VvInputTextEvents,
 	VvInputTextProps,
-	INPUT
+	INPUT_TYPES,
+	TYPES_ICON
 } from '@/components/VvInputText'
 
 // props, emit, slots and attrs
@@ -39,7 +40,16 @@ const slots = useSlots()
 const input = ref()
 
 // data
-const { icon, iconPosition, label, modelValue, limit } = toRefs(props)
+const {
+	icon,
+	iconPosition,
+	label,
+	modelValue,
+	count,
+	valid,
+	invalid,
+	loading
+} = toRefs(props)
 const hasId = computed(() => String(props.id || nanoid()))
 const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 // BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
@@ -50,88 +60,88 @@ const inputTextPlaceholder = computed(() =>
 // debounce
 const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
 
+// focus
+const { focused } = useComponentFocus(input, emit)
+
 // password
 const showPassword = ref(false)
-const isPassword = computed(() => props.type === INPUT.TYPES.PASSWORD)
+const isPassword = computed(() => props.type === INPUT_TYPES.PASSWORD)
 const onTogglePassword = () => {
 	showPassword.value = !showPassword.value
 }
 
 // time, datetime and date
-const isDateTime = computed(() =>
-	[INPUT.TYPES.TIME, INPUT.TYPES.DATETIME_LOCAL, INPUT.TYPES.DATE].includes(
-		props.type
-	)
+const isDateTime = computed(
+	() =>
+		props.type === INPUT_TYPES.TIME ||
+		props.type === INPUT_TYPES.DATETIME_LOCAL ||
+		props.type === INPUT_TYPES.DATE ||
+		props.type === INPUT_TYPES.WEEK ||
+		props.type === INPUT_TYPES.MONTH
 )
 
 // number
-const isNumber = computed(() => props.type === INPUT.TYPES.NUMBER)
+const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
 const onStepUp = () => {
-	if (!isDisabled.value) {
+	if (isClickable.value) {
 		input.value.stepUp()
 		localModelValue.value = unref(input).value
 	}
 }
 const onStepDown = () => {
-	if (!isDisabled.value) {
+	if (isClickable.value) {
 		input.value.stepDown()
 		localModelValue.value = unref(input).value
 	}
 }
 
 // search
-const isSearch = computed(() => props.type === INPUT.TYPES.SEARCH)
+const isSearch = computed(() => props.type === INPUT_TYPES.SEARCH)
 const onClear = () => {
-	localModelValue.value = null
+	localModelValue.value = undefined
 }
 
 // icons
-const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
-	iconLeft: slots['icon-left'],
-	iconRight: slots['icon-right']
-})
-const hasIcon = computed(() => {
-	if (typeof icon.value === 'string') {
-		return { name: icon.value }
-	}
-	return icon.value
-})
+const { hasIconLeft, hasIconRight, hasIcon } = useComponentIcon(
+	icon,
+	iconPosition
+)
 const defaultRightIcon = computed(() => {
 	switch (props.type) {
-		case INPUT.TYPES.COLOR:
-			return { name: INPUT.TYPES_ICON.COLOR }
-		case INPUT.TYPES.DATE:
-		case INPUT.TYPES.DATETIME_LOCAL:
-			return { name: INPUT.TYPES_ICON.DATE }
-		case INPUT.TYPES.TIME:
-			return { name: INPUT.TYPES_ICON.TIME }
+		case INPUT_TYPES.COLOR:
+			return { name: TYPES_ICON.COLOR }
+		case INPUT_TYPES.DATE:
+		case INPUT_TYPES.DATETIME_LOCAL:
+		case INPUT_TYPES.WEEK:
+		case INPUT_TYPES.MONTH:
+			return { name: TYPES_ICON.DATE }
+		case INPUT_TYPES.TIME:
+			return { name: TYPES_ICON.TIME }
 		default:
 			return ''
 	}
 })
 
-// value length
-const { formattedTextLimitLength } = useTextLimit(localModelValue, {
-	mode: props.limit,
-	upperLimit: props.maxlength || 0
+// count
+const { formatted: countFormatted } = useTextCount(localModelValue, {
+	mode: props.count,
+	upperLimit: props.maxlength,
+	lowerLimit: props.minlength
 })
 
-// focus
-const { focused } = useComponentFocus(input, emit)
-
-// disabled
-const isDisabled = computed(() => props.disabled || props.readonly)
-const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
+// tabindex
+const isClickable = computed(() => !props.disabled && !props.readonly)
+const hasTabindex = computed(() => (isClickable.value ? props.tabindex : -1))
 
 // dirty
 const isDirty = computed(() => !isEmpty(modelValue))
 
 // invalid
 const isInvalid = computed(() => {
-	if (props.error === true) {
+	if (invalid.value === true) {
 		return true
 	}
-	if (props.valid === true) {
+	if (valid.value === true) {
 		return false
 	}
 	return undefined
@@ -140,9 +150,11 @@ const isInvalid = computed(() => {
 // styles
 const { bemCssClasses } = useBemModifiers('vv-input-text', {
 	modifiers: props.modifiers,
-	valid: props.valid,
-	invalid: props.error,
-	loading: props.loading,
+	valid,
+	invalid,
+	loading,
+	disabled: props.disabled,
+	readonly: props.readonly,
 	iconLeft: hasIconLeft,
 	iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
 	floating: props.floating && !isEmpty(props.label),
@@ -154,48 +166,88 @@ const { bemCssClasses } = useBemModifiers('vv-input-text', {
 const hasAttrs = computed(() => {
 	const type = (() => {
 		if (isPassword.value && showPassword.value) {
-			return INPUT.TYPES.TEXT
+			return INPUT_TYPES.TEXT
 		}
 		if (isDateTime.value && !isDirty.value && !focused.value) {
-			return INPUT.TYPES.TEXT
+			return INPUT_TYPES.TEXT
 		}
 		return props.type
 	})()
-	return {
+	const toReturn: InputHTMLAttributes = {
 		type,
-		placeholder: inputTextPlaceholder.value,
 		name: props.name,
-		autocomplete: props.autocomplete,
-		minlength: props.minlength,
-		maxlength: props.maxlength,
-		min: props.min,
-		max: props.max,
-		step: type === INPUT.TYPES.NUMBER ? props.step : undefined,
 		tabindex: hasTabindex.value,
+		disabled: props.disabled,
+		readonly: props.readonly,
+		required: props.required,
+		autocomplete: props.autocomplete,
 		'aria-invalid': isInvalid.value,
 		'aria-describedby':
-			!hasErrors.value && hasHint.value
+			!hasInvalid.value && hasHint.value
 				? hasDescribedBy.value
 				: undefined,
-		'aria-errormessage': hasErrors.value ? hasDescribedBy.value : undefined
-	} as InputHTMLAttributes
+		'aria-errormessage': hasInvalid.value ? hasDescribedBy.value : undefined
+	}
+	if (
+		type === INPUT_TYPES.DATE ||
+		type === INPUT_TYPES.MONTH ||
+		type === INPUT_TYPES.WEEK ||
+		type === INPUT_TYPES.TIME ||
+		type === INPUT_TYPES.DATETIME_LOCAL ||
+		type === INPUT_TYPES.NUMBER
+	) {
+		toReturn.step = props.step
+		toReturn.max = String(props.max)
+		toReturn.min = String(props.min)
+	}
+	if (
+		type === INPUT_TYPES.TEXT ||
+		type === INPUT_TYPES.SEARCH ||
+		type === INPUT_TYPES.URL ||
+		type === INPUT_TYPES.TEL ||
+		type === INPUT_TYPES.EMAIL ||
+		type === INPUT_TYPES.PASSWORD ||
+		type === INPUT_TYPES.NUMBER
+	) {
+		toReturn.placeholder = inputTextPlaceholder.value
+	}
+	if (
+		type === INPUT_TYPES.TEXT ||
+		type === INPUT_TYPES.SEARCH ||
+		type === INPUT_TYPES.URL ||
+		type === INPUT_TYPES.TEL ||
+		type === INPUT_TYPES.EMAIL ||
+		type === INPUT_TYPES.PASSWORD
+	) {
+		toReturn.minlength = props.minlength
+		toReturn.maxlength = props.maxlength
+		toReturn.pattern = props.pattern
+	}
+	if (type === INPUT_TYPES.EMAIL) {
+		toReturn.multiple = props.multiple
+	}
+	return toReturn
 })
 
 // slots
-const iconSlotProps = computed(() => ({
+const slotProps = computed(() => ({
 	valid: props.valid,
-	error: props.error,
-	modelValue: props.modelValue
+	invalid: props.invalid,
+	modelValue: props.modelValue,
+	togglePassword: onTogglePassword,
+	stepUp: onStepUp,
+	stepDown: onStepDown,
+	clear: onClear
 }))
 
 // components
-const { HintSlot, hasHint, hasErrors } = HintSlotFactory(props, slots)
+const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
 const PasswordInputActions = VvInputTextActionsFactory(
-	INPUT.TYPES.PASSWORD,
+	INPUT_TYPES.PASSWORD,
 	props
 )
-const NumberInputActions = VvInputTextActionsFactory(INPUT.TYPES.NUMBER, props)
-const SearchInputActions = VvInputTextActionsFactory(INPUT.TYPES.SEARCH, props)
+const NumberInputActions = VvInputTextActionsFactory(INPUT_TYPES.NUMBER, props)
+const SearchInputActions = VvInputTextActionsFactory(INPUT_TYPES.SEARCH, props)
 
 // lifecycle
 onMounted(() => {
@@ -211,21 +263,21 @@ onMounted(() => {
 			{{ label }}
 		</label>
 		<div class="vv-input-text__wrapper">
-			<!-- @slot icon-left to replace icon left -->
-			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
-				<VvIcon class="vv-input-text__icon-left" v-bind="hasIcon" />
+			<!-- @slot Slot to replace left icon -->
+			<slot name="before" v-bind="slotProps">
+				<VvIcon
+					v-if="hasIconLeft"
+					class="vv-input-text__icon-left"
+					v-bind="hasIcon" />
 			</slot>
 			<input
 				:id="hasId"
 				ref="input"
 				v-model="localModelValue"
 				v-bind="hasAttrs"
-				:disabled="disabled"
-				:readonly="readonly"
-				:required="required"
 				@keyup="emit('keyup', $event)" />
-			<!-- @slot icon-right to replace icon right -->
-			<slot name="icon-right" v-bind="iconSlotProps">
+			<!-- @slot Slot to replace right icon -->
+			<slot name="after" v-bind="slotProps">
 				<VvIcon
 					v-if="hasIconRight || defaultRightIcon"
 					v-bind="hasIconRight ? hasIcon : defaultRightIcon" />
@@ -238,8 +290,11 @@ onMounted(() => {
 					@step-down="onStepDown" />
 				<SearchInputActions v-else-if="isSearch" @clear="onClear" />
 			</slot>
-			<span v-if="limit" class="vv-input-text__limit">
-				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
+			<span v-if="count" class="vv-input-text__limit">
+				<!-- @slot Slot to replace count -->
+				<slot name="count" v-bind="slotProps">
+					{{ countFormatted }}
+				</slot>
 			</span>
 		</div>
 		<HintSlot :id="hasDescribedBy" class="vv-input-text__hint" />

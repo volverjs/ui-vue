@@ -7,4 +7,5 @@ import type IGroupState from './IGroupState'
  */
 export default interface IAccordionGroupState extends IGroupState {
 	collapse: Ref<boolean>
+	modifiers: Ref<Array<string> | string | undefined>
 }

@@ -1,0 +1,49 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
+import { Template } from './Textarea.stories.mdx'
+import { defaultTest } from './Textarea.test.ts'
+import { defaultArgs, argTypes } from './Textarea.settings'
+
+<Meta
+	title="Components/Textarea/Icon"
+	component={VvTextarea}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Default"
+		play={defaultTest}
+		args={{
+			icon: 'heart'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Left"
+		play={defaultTest}
+		args={{
+			icon: 'heart',
+			iconPosition: 'left'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Src"
+		play={defaultTest}
+		args={{
+			icon: {
+				name: 'engineering',
+				src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/social/engineering/materialicons/24px.svg'
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

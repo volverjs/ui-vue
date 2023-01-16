@@ -1,43 +1,44 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { Meta, Story } from '@storybook/addon-docs'
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
+import { defaultTest } from './Radio.test'
+import { defaultArgs, argTypes } from './Radio.settings'
+import { Template } from './Radio.stories.mdx'
 
-<Meta title="Components/Radio/Slots" component={VvRadio} />
-
-# Slot default
-
-Slot default define the content of Radio
-
-<Source
-	language="jsx"
-	code={`
-<vv-radio name="option" :value="1">Option 1</vv-radio>
-<vv-radio name="option" :value="2">Option 2</vv-radio>
-<vv-radio name="option" :value="3">Option 3</vv-radio>`}
+<Meta
+	title="Components/Radio/Slots"
+	component={VvRadio}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 <Canvas>
-	<Story name="default">
-		{() => {
-			return {
-				components: { VvRadio },
-				data() {
-					return {
-						option: 1
-					}
-				},
-				template: `
-					<vv-radio v-model="option" name="option" :value="1">
-						Option 1
-					</vv-radio>
-					<vv-radio v-model="option" name="option" :value="2">
-						Option 2
-					</vv-radio>
-					<vv-radio v-model="option" name="option" :value="3">
-						Option 3
-					</vv-radio>
-					<div>Selected: {{ option }}</div>
-                    `
+	<Story
+		name="Default"
+		play={defaultTest}
+		args={{ default: 'Default <em class="italic">slot!</em>' }}
+		argTypes={{
+			default: {
+				control: {
+					disable: true
+				}
 			}
-		}}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{ hint: 'Hint <em class="italic">slot!</em>' }}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>

@@ -1,0 +1,60 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+import { defaultTest } from './InputText.test.ts'
+import { defaultArgs, argTypes } from './InputText.settings'
+
+<Meta
+	title="Components/InputText/MinMax"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Min - Number"
+		play={defaultTest}
+		args={{
+			type: 'number',
+			min: -15
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Max - Number"
+		play={defaultTest}
+		args={{
+			type: 'number',
+			max: 15
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Min - Date"
+		play={defaultTest}
+		args={{
+			type: 'date',
+			min: new Date().toISOString().split('T')[0]
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Max - Date"
+		play={defaultTest}
+		args={{
+			type: 'date',
+			max: new Date().toISOString().split('T')[0]
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

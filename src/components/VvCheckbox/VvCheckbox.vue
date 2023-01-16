@@ -5,8 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, ref, useSlots, watchEffect } from 'vue'
-import { contains, equals, removeFromList } from '@/utils/ObjectUtilities'
+import { computed, ref, useSlots, watchEffect, watch, onMounted } from 'vue'
+import { nanoid } from 'nanoid'
+import { contains, equals } from '@/utils/ObjectUtilities'
 import { useBemModifiers } from '@/composables/useModifiers'
 import {
 	VvCheckboxProps,
@@ -21,36 +22,56 @@ const emit = defineEmits(VvCheckboxEvents)
 const slots = useSlots()
 
 // data
-const { disabled, readonly, valid, error, propsSwitch, modelValue } =
-	useGroupProps(props, emit)
+const {
+	disabled,
+	readonly,
+	valid,
+	invalid,
+	propsSwitch,
+	modelValue,
+	indeterminate,
+	isInGroup
+} = useGroupProps(props, emit)
+const id = computed(() => String(props.id || nanoid()))
+const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
+
 // template ref
 const input = ref()
 
 // computed
-const hasId = computed(() =>
-	props.id !== undefined ? String(props.id) : undefined
-)
 const isBinary = computed(
-	() => props.trueValue !== undefined && props.falseValue !== undefined
+	() => props.uncheckedValue !== undefined && !isInGroup.value
 )
 const isDisabled = computed(() => disabled.value || readonly.value)
-const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 const isInvalid = computed(() => {
-	if (props.error === true) {
+	if (invalid.value === true) {
 		return true
 	}
-	if (props.valid === true) {
+	if (valid.value === true) {
 		return false
 	}
 	return undefined
 })
 const isChecked = computed(() => {
 	if (isBinary.value) {
-		return modelValue.value === props.trueValue
+		return modelValue.value === props.value
 	}
 	return Array.isArray(modelValue.value)
 		? contains(props.value, modelValue.value)
 		: equals(props.value, modelValue.value)
+})
+const isIndeterminated = computed(() => {
+	if (indeterminate.value) {
+		return true
+	}
+	if (
+		!isChecked.value &&
+		isBinary.value &&
+		props.uncheckedValue !== modelValue.value
+	) {
+		return true
+	}
+	return false
 })
 const hasValue = computed(() => {
 	if (isBinary.value) {
@@ -66,16 +87,24 @@ const localModelValue = computed({
 	},
 	set(newValue) {
 		if (isBinary.value) {
-			modelValue.value = newValue ? props.trueValue : props.falseValue
-			return
+			modelValue.value = newValue ? props.value : props.uncheckedValue
+		} else if (Array.isArray(modelValue.value) || isInGroup.value) {
+			const toReturn = new Set(
+				Array.isArray(modelValue.value)
+					? modelValue.value
+					: modelValue.value !== undefined
+					? [modelValue.value]
+					: []
+			)
+			if (newValue) {
+				toReturn.add(props.value)
+			} else {
+				toReturn.delete(props.value)
+			}
+			modelValue.value = [...toReturn]
+		} else {
+			modelValue.value = newValue ? props.value : undefined
 		}
-		if (Array.isArray(modelValue.value)) {
-			modelValue.value = newValue
-				? [...modelValue.value, props.value]
-				: removeFromList(props.value, modelValue.value)
-			return
-		}
-		modelValue.value = newValue ? props.value : null
 		emit('change', newValue)
 	}
 })
@@ -84,9 +113,10 @@ const localModelValue = computed({
 const { bemCssClasses } = useBemModifiers('vv-checkbox', {
 	switch: propsSwitch,
 	valid,
-	invalid: error,
+	invalid,
 	disabled,
-	readonly
+	readonly,
+	indeterminate
 })
 
 watchEffect(() => {
@@ -98,14 +128,31 @@ watchEffect(() => {
 	}
 })
 
+// indeterminate
+watch(
+	() => isIndeterminated.value,
+	(newValue) => {
+		if (newValue) {
+			input.value.indeterminate = true
+		} else {
+			input.value.indeterminate = false
+		}
+	}
+)
+onMounted(() => {
+	if (isIndeterminated.value) {
+		input.value.indeterminate = true
+	}
+})
+
 // hint
 const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
-	<label :class="bemCssClasses" :for="hasId">
+	<label :class="bemCssClasses" :for="id">
 		<input
-			:id="hasId"
+			:id="id"
 			ref="input"
 			v-model="localModelValue"
 			type="checkbox"
@@ -113,7 +160,7 @@ const { HintSlot } = HintSlotFactory(props, slots)
 			:name="name"
 			:disabled="isDisabled"
 			:value="hasValue"
-			:tabindex="hasTabindex"
+			:tabindex="tabindex"
 			:aria-invalid="isInvalid" />
 		<!-- @slot Use this slot for check label -->
 		<slot :value="modelValue">

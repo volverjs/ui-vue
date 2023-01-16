@@ -1,0 +1,60 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvDialog from '@/components/VvDialog/VvDialog.vue'
+import { defaultTest } from './Dialog.test'
+import { defaultArgs, argTypes } from './Dialog.settings'
+import { Template } from './Dialog.stories.mdx'
+
+<Meta
+	title="Components/Dialog/Slots"
+	component={VvDialog}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Default"
+		play={defaultTest}
+		args={{ default: 'Default <em class="italic">slot!</em>' }}
+		argTypes={{
+			default: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Header"
+		play={defaultTest}
+		args={{ header: 'Header <em class="italic">slot!</em>' }}
+		argTypes={{
+			header: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Footer"
+		play={defaultTest}
+		args={{ footer: 'Footer <em class="italic">slot!</em>' }}
+		argTypes={{
+			footer: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

@@ -4,21 +4,16 @@ export const VvButtonGroupProps = {
 	...ModifiersProps,
 	...DisabledProps,
 	/**
-	 * True = show buttons vertically
+	 * String or String[] of css classes (modifiers) that will be provided to each button'
 	 */
-	vertical: { type: Boolean, default: false },
-	/**
-	 * True = no padding between buttons
-	 */
-	compact: { type: Boolean, default: false },
-	/**
-	 * True = il button group si comporterà come un toggle, materrà attivo l'ultimo pulsante cliccato.
-	 */
+	itemModifiers: {
+		type: [String, Array<string>],
+		default: ''
+	},
 	toggle: { type: Boolean, default: false },
-	/**
-	 * Active button (name)
-	 */
-	modelValue: { type: String, default: undefined }
+	multiple: { type: Boolean, default: false },
+	unselectable: { type: Boolean, default: true },
+	modelValue: { type: [String, Array<string>], default: undefined }
 }
 
 export const VvButtonGroupEvents = ['update:modelValue']

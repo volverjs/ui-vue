@@ -31,8 +31,8 @@ interface HintSlotProps {
 	modelValue: null
 	valid: BooleanConstructor
 	validLabel: (StringConstructor | ArrayConstructor)[]
-	error: BooleanConstructor
-	errorLabel: (StringConstructor | ArrayConstructor)[]
+	invalid: BooleanConstructor
+	invalidLabel: (StringConstructor | ArrayConstructor)[]
 }
 
 interface HintSlotPropsWithLoading extends HintSlotProps {
@@ -54,13 +54,13 @@ export function HintSlotFactory(
 ): {
 	HintSlot: Component
 	hasHint: Ref<boolean>
-	hasErrors: Ref<boolean>
+	hasInvalid: Ref<boolean>
 	hasValid: Ref<boolean>
 	hasLoading: Ref<boolean>
 } {
 	// slots
 	const {
-		error: errorSlot,
+		invalid: invalidSlot,
 		valid: validSlot,
 		hint: hintSlot,
 		loading: loadingSlot
@@ -72,8 +72,8 @@ export function HintSlotFactory(
 		modelValue,
 		valid,
 		validLabel,
-		error,
-		errorLabel,
+		invalid,
+		invalidLabel,
 		...otherProps
 	} = toRefs(parentProps)
 
@@ -84,21 +84,21 @@ export function HintSlotFactory(
 		| Ref<string>
 		| undefined
 
-	const hasErrors = computed(() => {
-		if (!error.value) {
+	const hasInvalid = computed(() => {
+		if (!invalid.value) {
 			return false
 		}
-		if (error.value && errorSlot) {
+		if (invalid.value && invalidSlot) {
 			return true
 		}
 		if (
-			errorLabel?.value &&
-			Array.isArray(errorLabel.value) &&
-			errorLabel.value.length > 0
+			invalidLabel?.value &&
+			Array.isArray(invalidLabel.value) &&
+			invalidLabel.value.length > 0
 		) {
 			return true
 		}
-		if (errorLabel?.value && !isEmpty(errorLabel)) {
+		if (invalidLabel?.value && !isEmpty(invalidLabel)) {
 			return true
 		}
 		return false
@@ -121,11 +121,15 @@ export function HintSlotFactory(
 	)
 
 	const isVisible = computed(
-		() => hasHint.value || hasValid || hasErrors.value || hasLoading.value
+		() =>
+			hasHint.value ||
+			hasValid.value ||
+			hasInvalid.value ||
+			hasLoading.value
 	)
 
 	return {
-		hasErrors,
+		hasInvalid,
 		hasHint,
 		hasValid,
 		hasLoading,
@@ -144,17 +148,17 @@ export function HintSlotFactory(
 						modelValue,
 						valid,
 						validLabel,
-						error,
-						errorLabel,
+						invalid,
+						invalidLabel,
 						loading,
 						loadingLabel,
 						...props.params
 					})
 
-					if (error?.value) {
+					if (invalid?.value) {
 						return (
-							errorSlot?.(slotProps) ||
-							joinLines(errorLabel?.value) ||
+							invalidSlot?.(slotProps) ||
+							joinLines(invalidLabel?.value) ||
 							hintLabel?.value
 						)
 					}
@@ -182,7 +186,7 @@ export function HintSlotFactory(
 
 				return {
 					isVisible,
-					hasErrors,
+					hasInvalid,
 					hasValid,
 					hintContent
 				}
@@ -193,7 +197,7 @@ export function HintSlotFactory(
 						'small',
 						{
 							role:
-								this.hasErrors || this.hasValid
+								this.hasInvalid || this.hasValid
 									? 'alert'
 									: undefined
 						},

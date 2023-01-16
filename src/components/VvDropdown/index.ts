@@ -1,36 +1,19 @@
-import type { PropType } from 'vue'
-import { DisabledProps, ModifiersProps } from '@/props'
-
-export interface Option {
-	[key: string]: unknown
-	disabled?: boolean
-}
+import { DisabledProps, ModifiersProps, OptionsProps } from '@/props'
 
 export const VvDropdownProps = {
+	...OptionsProps,
 	...DisabledProps,
 	...ModifiersProps,
 	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
 	modelValue: {
-		type: [String, Number, Boolean, Object, Array],
-		required: true
+		type: [String, Number, Boolean, Object, Array]
 	},
 	/**
 	 * Label of "no results" options
 	 */
-	labelNoResult: { type: String, default: 'No results' },
-	/**
-	 * Select options, can be string[] or object[]
-	 */
-	options: {
-		type: Array as PropType<Array<Option | string>>,
-		required: true
-	},
-	/**
-	 * Use objects as modelValue (object or object[])
-	 */
-	useObject: Boolean,
+	labelNoResults: { type: String, default: 'No results' },
 	/**
 	 * Manage modelValue as string[] or object[]
 	 */
@@ -38,13 +21,5 @@ export const VvDropdownProps = {
 	/**
 	 * The max number of selected values
 	 */
-	maxValues: [Number, String],
-	/**
-	 * Used when options are objects: key to use for option label
-	 */
-	labelKey: { type: String, default: 'label' },
-	/**
-	 * Used when options are objects: key to use for option label
-	 */
-	valueKey: { type: String, default: 'value' }
+	maxValues: [Number, String]
 }

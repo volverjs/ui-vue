@@ -3,6 +3,7 @@ export interface VvAccordionGroupItem {
 	content: string
 	name?: string
 	disabled?: boolean
+	modifiers?: string | string[]
 }
 
 export const VvAccordionGroupProps = {
@@ -20,9 +21,16 @@ export const VvAccordionGroupProps = {
 	 */
 	collapse: Boolean,
 	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
+	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion-group--'
 	 */
 	modifiers: [String, Array],
+	/**
+	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
+	 */
+	itemModifiers: {
+		type: [String, Array<string>],
+		default: ''
+	},
 	/**
 	 * If true, the accordion items will be disabled
 	 */

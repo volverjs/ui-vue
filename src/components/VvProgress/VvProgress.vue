@@ -11,7 +11,7 @@ import { VvProgressProps } from '@/components/VvProgress'
 
 // props
 const props = defineProps(VvProgressProps)
-const { value, max, ariaLabel } = toRefs(props)
+const { value, max, label: ariaLabel } = toRefs(props)
 const indeterminate = computed(() => props.value === undefined)
 
 // styles

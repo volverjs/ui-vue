@@ -1,107 +1,70 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvButton from '@/components/VvButton/VvButton.vue'
-import { testButtonLink } from './Button.test'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { defaultTest } from './Button.test'
+import { Template } from './Button.stories.mdx'
+import { argTypes, defaultArgs } from './Button.settings'
 
-<Meta title="Components/Button/Link" />
-
-# VvButton link
-
-Stories of `VvButton` with `link`.
-
-## Button link text
+<Meta title="Components/Button/Link" args={defaultArgs} argTypes={argTypes} />
 
 <Canvas>
 	<Story
-		name="link-text"
-		play={async (ctx) =>
-			testButtonLink(ctx, {
-				className: 'vv-button--text'
-			})
-		}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Link text" href="https://google.it" target="_blank" modifiers="text" @click="$event.preventDefault()" />`
+		name="Href"
+		args={{
+			icon: 'arrow-right',
+			iconPosition: 'right',
+			label: 'Link button',
+			href: 'https://volverjs.github.io/style',
+			target: '_blank'
+		}}
+		argTypes={{
+			href: {
+				...argTypes.href,
+				control: {
+					disable: true
+				}
+			},
+			target: {
+				...argTypes.target,
+				control: {
+					disable: true
+				}
 			}
 		}}
+		play={defaultTest}>
+		{Template.bind()}
 	</Story>
 </Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-button label="Link text" href="https://google.it" target="_blank" variant="text" />`}
-/>
-
-## Button link text disabled
 
 <Canvas>
 	<Story
-		name="link-text-disabled"
-		play={(ctx) =>
-			testButtonLink(ctx, {
-				isClickDisabled: true,
-				className: 'vv-button--disabled'
-			})
-		}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`
+		name="Href Disabled"
+		args={{
+			icon: 'arrow-right',
+			iconPosition: 'right',
+			label: 'Link button',
+			href: 'https://volverjs.github.io/style',
+			target: '_blank',
+			disabled: true
+		}}
+		argTypes={{
+			href: {
+				...argTypes.href,
+				control: {
+					disable: true
+				}
+			},
+			target: {
+				...argTypes.target,
+				control: {
+					disable: true
+				}
+			},
+			disabled: {
+				control: {
+					disable: true
+				}
 			}
 		}}
+		play={defaultTest}>
+		{Template.bind()}
 	</Story>
 </Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-button label="Link text disabled" href="https://google.it" target="_blank" variant="text" disabled />`}
-/>
-
-## Button link
-
-<Canvas>
-	<Story name="button-link" play={(ctx) => testButtonLink(ctx)}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Button link" href="https://google.it" target="_blank" icon="charm:link-external" icon-position="right" @click="$event.preventDefault()" />`
-			}
-		}}
-	</Story>
-</Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-button
-	label="Button link"
-	href="https://google.it"
-	target="_blank"
-	icon="charm:link-external"
-	icon-position="right"
-/>`}
-/>
-
-## Button link disabled
-
-<Canvas>
-	<Story
-		name="button-link-disabled"
-		play={(ctx) =>
-			testButtonLink(ctx, {
-				isClickDisabled: true,
-				className: 'vv-button--disabled'
-			})
-		}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`
-			}
-		}}
-	</Story>
-</Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-button label="Button link" href="https://google.it" target="_blank" disabled />`}
-/>

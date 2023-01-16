@@ -1,78 +1,97 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { Meta, Story } from '@storybook/addon-docs'
 import VvSelect from '@/components/VvSelect/VvSelect.vue'
+import { Template } from './Select.stories.mdx'
+import { defaultArgs, argTypes } from './Select.settings'
+import { defaultTest } from './Select.test'
 
-<Meta title="Components/Select/Props/options" />
-
-# VvSelect options
-
-Let's define a story for our `options` select.
-
-Options string array:
-
-<Source language="json" code={`[ "Option 4", "Option 5", "Option 6" ]`} />
-
-Options object array and default `valueKey` ("value") and `labelKey` ("label"):
-
-<Source
-	language="json"
-	code={`[
-	{
-		"label": "Option 1",
-		"value": 1
-	},
-	{
-		"label": "Option 2",
-		"value": 2
-	},
-	{
-		"label": "Option 3",
-		"value": 3
-	}
-]`}
+<Meta
+	title="Components/Select/Options"
+	component={VvSelect}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 <Canvas>
-	<Story name="options">
-		{() => {
-			return {
-				components: { VvSelect },
-				data() {
-					return {
-						value: '',
-						objectValue: '',
-						options: ['Option 4', 'Option 5', 'Option 6'],
-						optionsObject: [
-							{
-								label: 'Option 1',
-								value: 1
-							},
-							{
-								label: 'Option 2',
-								value: 2
-							},
-							{
-								label: 'Option 3',
-								value: 3
-							}
-						]
-					}
-				},
-				template: `<div class="flex gap-32">
-						<div class="w-1/2">
-							<vv-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" />
-							value: {{ value }}
-						</div>
-						<div class="w-1/2">
-							<vv-select v-model="objectValue" :options="optionsObject" placeholder="Placeholder" label="Label 1" />
-							value: {{ objectValue }}
-						</div>
-					</div>`
+	<Story
+		name="Array of Objects"
+		play={defaultTest}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true
+				}
 			}
 		}}
+		args={{
+			options: [
+				{ value: 'first', label: 'First' },
+				{ value: 'second', label: 'Second' },
+				{ value: 'third', label: 'Third' }
+			]
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<Source
-	language="html"
-	code={`<vv-select v-model="value" :options="options" placeholder="Placeholder" label="Label 1" />`}
-/>
+<Canvas>
+	<Story
+		name="Option label key"
+		play={defaultTest}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true
+				}
+			}
+		}}
+		args={{
+			labelKey: 'name',
+			options: [
+				{ value: 'first', name: 'First' },
+				{ value: 'second', name: 'Second' },
+				{ value: 'third', name: 'Third' }
+			]
+		}}
+		argTypes={{
+			labelKey: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option value key"
+		play={defaultTest}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true
+				}
+			}
+		}}
+		args={{
+			valueKey: 'id',
+			options: [
+				{ id: 'first', label: 'First' },
+				{ id: 'second', label: 'Second' },
+				{ id: 'third', label: 'Third' }
+			]
+		}}
+		argTypes={{
+			options: {
+				valueKey: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

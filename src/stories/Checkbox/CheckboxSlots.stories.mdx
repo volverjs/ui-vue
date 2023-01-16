@@ -1,69 +1,44 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { Meta, Story } from '@storybook/addon-docs'
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+import { defaultTest } from './Checkbox.test'
+import { defaultArgs, argTypes } from './Checkbox.settings'
+import { Template } from './Checkbox.stories.mdx'
 
-<Meta title="Components/Checkbox/Slots" component={VvCheckbox} />
-
-# Slot default
-
-Slot default define the content of Check
-
-<Source
-	language="jsx"
-	code={`<vv-checkbox name="option" :value="1">Option 1</vv-checkbox>
-<vv-checkbox name="option" :value="2">Option 2</vv-checkbox>
-<vv-checkbox name="option" :value="3">Option 3</vv-checkbox>`}
+<Meta
+	title="Components/Checkbox/Slots"
+	component={VvCheckbox}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
-# Slot default
-
 <Canvas>
-	<Story name="default">
-		{() => {
-			return {
-				components: { VvCheckbox },
-				data() {
-					return {
-						option: [1]
-					}
-				},
-				template: `
-					<vv-checkbox v-model="option" name="option" :value="1">
-						Option 1
-					</vv-checkbox>
-					<vv-checkbox v-model="option" name="option" :value="2">
-						Option 2
-					</vv-checkbox>
-					<vv-checkbox v-model="option" name="option" :value="3">
-						Option 3
-					</vv-checkbox>
-					<div>Selected value: {{option}} </div> 
-                    `
+	<Story
+		name="Default"
+		play={defaultTest}
+		args={{ default: 'Default <em class="italic">slot!</em>' }}
+		argTypes={{
+			default: {
+				control: {
+					disable: true
+				}
 			}
-		}}
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-# Slot hint
-
 <Canvas>
-	<Story name="hint">
-		{() => {
-			return {
-				components: { VvCheckbox },
-				data() {
-					return {
-						option: 1
-					}
-				},
-				template: `
-					<vv-checkbox v-model="option" name="r1" :value="1">
-						My label
-						<template #hint="{value}">
-							Selected value: {{value}}
-						</template>
-					</vv-checkbox>
-                    `
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{ hint: 'Hint <em class="italic">slot!</em>' }}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true
+				}
 			}
-		}}
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>

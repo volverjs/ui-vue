@@ -10,8 +10,7 @@ import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
 const props = defineProps(VvBreadcrumbProps)
 const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
-	modifiers: props.modifiers,
-	multiline: props.multiline
+	modifiers: props.modifiers
 })
 </script>
 
@@ -42,7 +41,9 @@ const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
 							: undefined
 					"
 					itemprop="item">
-					{{ route.label }}
+					<slot name="label" v-bind="{ route, index }">
+						{{ route.label }}
+					</slot>
 				</component>
 				<meta itemprop="position" :content="`${index + 1}`" />
 			</li>

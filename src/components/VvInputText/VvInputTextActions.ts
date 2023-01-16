@@ -1,5 +1,8 @@
 import { type Component, h, computed } from 'vue'
-import { type VvInputTextPropsTypes, TYPES } from '@/components/VvInputText'
+import {
+	type VvInputTextPropsTypes,
+	INPUT_TYPES
+} from '@/components/VvInputText'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VvInputPasswordAction from '@/components/VvInputText/VvInputPasswordAction'
 import VvInputStepAction from '@/components/VvInputText/VvInputStepAction'
@@ -36,7 +39,7 @@ export default function VvInputTextActionsFactory(
 		render() {
 			let actions = null
 			switch (type) {
-				case TYPES.SEARCH: {
+				case INPUT_TYPES.SEARCH: {
 					const { onClear } = this.$attrs
 					actions = [
 						h(VvInputClearAction, {
@@ -47,7 +50,7 @@ export default function VvInputTextActionsFactory(
 					]
 					break
 				}
-				case TYPES.PASSWORD: {
+				case INPUT_TYPES.PASSWORD: {
 					const { onTogglePassword } = this.$attrs
 					actions = [
 						h(VvInputPasswordAction, {
@@ -61,7 +64,7 @@ export default function VvInputTextActionsFactory(
 					]
 					break
 				}
-				case TYPES.NUMBER: {
+				case INPUT_TYPES.NUMBER: {
 					const { onStepUp, onStepDown } = this.$attrs
 					actions = [
 						h(VvInputStepAction, {

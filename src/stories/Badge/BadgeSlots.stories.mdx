@@ -1,0 +1,19 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvBadge from '@/components/VvBadge/VvBadge.vue'
+import { defaultTest } from './Badge.test'
+import { defaultArgs, argTypes } from './Badge.settings'
+import { Template } from './Badge.stories.mdx'
+
+<Meta title="Components/Badge/Slots" component={VvBadge} args={defaultArgs} />
+
+<Canvas>
+	<Story
+		name="Default"
+		args={{ default: 'Default <em class="italic">slot!</em>' }}
+		argTypes={{
+			default: { ...argTypes.default, table: { disable: true } }
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>

@@ -1,29 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Meta, Story } from '@storybook/addon-docs'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-import { VvDropdownProps } from '@/components/VvDropdown'
-import { propsToObject } from '@/utils/ObjectUtilities'
-import { dropdownTest } from './Dropdown.test'
+import { defaultTest } from './Dropdown.test'
+import { defaultArgs, argTypes } from './Dropdown.settings'
 
 <Meta
 	title="Components/Dropdown"
 	component={VvDropdown}
-	args={{
-		...propsToObject(VvDropdownProps),
-		options: [
-			{
-				label: 'Option 1',
-				value: 1
-			},
-			{
-				label: 'Option 2',
-				value: 2
-			},
-			{
-				label: 'Option 3',
-				value: 3
-			}
-		]
-	}}
+	argTypes={argTypes}
+	args={defaultArgs}
 />
 
 export const Template = (args) => ({
@@ -33,22 +17,86 @@ export const Template = (args) => ({
 	},
 	data() {
 		return {
-			value: ''
+			value: undefined
 		}
 	},
 	template: `
-		<vv-dropdown v-bind="args" v-model="value" class="max-w-224 relative" />
-		<div class="mt-24">Selected: <span data-testId="selected">{{ value }}</span></div>
+		<vv-dropdown v-bind="args" v-model="value" class="max-w-224 relative" data-testId="element" />
+		<div class="mt-24">Value: <span data-testId="value">{{ value }}</span></div>
 		`
 })
 
-# VvDropdown
-
-Stories of `VvDropdown`.
-Let's define a story for our playground `dropdown`:
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
 <Canvas>
-	<Story name="vv-dropdown" play={dropdownTest}>
-		{Template.bind({})}
+	<Story
+		name="Disabled"
+		play={defaultTest}
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Multiple"
+		play={defaultTest}
+		args={{ multiple: true }}
+		argTypes={{
+			multiple: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Max values"
+		play={defaultTest}
+		args={{ multiple: true, maxValues: 2 }}
+		argTypes={{
+			multiple: {
+				control: {
+					disable: true
+				}
+			},
+			maxValues: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="No results"
+		play={defaultTest}
+		args={{ options: [] }}
+		argTypes={{
+			options: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>

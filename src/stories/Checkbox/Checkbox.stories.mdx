@@ -1,51 +1,156 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+import { defaultArgs, argTypes } from './Checkbox.settings'
+import { defaultTest } from './Checkbox.test'
 
-<Meta title="Components/Checkbox" component={VvCheckbox} />
+<Meta
+	title="Components/Checkbox"
+	component={VvCheckbox}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-export const Template = (args, { argTypes }) => ({
-	props: Object.keys(argTypes),
+export const Template = (args) => ({
 	components: { VvCheckbox },
 	setup() {
 		return { args }
 	},
-	data: () => ({ ckValue: null }),
+	data: () => ({ inputValue: args.uncheckedValue }),
 	template: `
-			<vv-checkbox v-bind="args" v-model="ckValue" :data-testData="ckValue" data-testId="checkbox" />
-			<div>Selected value: <span data-testId="selected">{{ckValue}}</span></div> 
+			<vv-checkbox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+				<template #default v-if="args.default"><span v-html="args.default"></span></template>
+				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			</vv-checkbox>
+			<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
         `
 })
 
-<Source language="jsx" code={'<vv-checkbox/>'} />
-
 <Canvas>
-	<Story
-		name="vv-checkbox"
-		args={{
-			label: 'Option',
-			name: 'checkbox',
-			disabled: false,
-			switch: false,
-			binary: false,
-			value: 1
-		}}
-		argTypes={{
-			id: {
-				description: 'Input element id',
-				table: { category: 'Attributes' }
-			},
-			name: {
-				description: 'Input element name',
-				table: { category: 'Attributes' }
-			},
-			value: {
-				description: 'Input element',
-				table: { category: 'Attributes' }
-			}
-		}}>
-		{Template.bind({})}
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<ArgsTable story="vv-checkbox" />
+<Canvas>
+	<Story
+		name="Disabled"
+		play={defaultTest}
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Readonly"
+		play={defaultTest}
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Switch"
+		play={defaultTest}
+		args={{ switch: true }}
+		argTypes={{
+			switch: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		play={defaultTest}
+		args={{
+			invalid: true,
+			invalidLabel: 'You must accept terms and conditions',
+			label: 'Accept terms and conditions'
+		}}
+		argTypes={{
+			invalid: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
+		play={defaultTest}
+		args={{
+			valid: true,
+			validLabel: 'Thank you for accepting terms and conditions',
+			label: 'Accept terms and conditions'
+		}}
+		argTypes={{
+			valid: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Indeterminate"
+		play={defaultTest}
+		args={{
+			indeterminate: true
+		}}
+		argTypes={{
+			indeterminate: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{
+			hintLabel: 'Please accept terms and conditions'
+		}}
+		argTypes={{
+			hintLabel: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

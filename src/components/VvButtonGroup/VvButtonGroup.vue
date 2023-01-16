@@ -6,9 +6,8 @@ export default {
 
 <script setup lang="ts">
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-import { ref, toRefs } from 'vue'
+import { toRefs, watchEffect, computed } from 'vue'
 import { VV_BUTTON_GROUP } from '@/constants'
-import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useBemModifiers } from '@/composables/useModifiers'
 import {
@@ -21,28 +20,58 @@ const emit = defineEmits(VvButtonGroupEvents)
 const props = defineProps(VvButtonGroupProps)
 
 // data
-const modelValue = useVModel(props, 'modelValue', emit)
-const { disabled, vertical, compact, toggle, modifiers } = toRefs(props)
-
-// style
-const { bemCssClasses } = useBemModifiers('vv-button-group', {
-	modifiers,
-	vertical,
-	compact
+const { disabled, toggle, modifiers, multiple, unselectable, itemModifiers } =
+	toRefs(props)
+watchEffect(() => {
+	if (typeof props.modelValue === 'string' && multiple.value) {
+		// eslint-disable-next-line
+		console.warn(
+			`[VvButtonGroup]: modelValue is a string but multiple is true.`
+		)
+	}
+})
+const modelValue = computed({
+	get: () => {
+		if (!multiple.value) {
+			return Array.isArray(props.modelValue)
+				? props.modelValue[0]
+				: props.modelValue
+		}
+		return props.modelValue
+	},
+	set: (newValue) => {
+		if (
+			newValue !== undefined &&
+			(Array.isArray(props.modelValue) || multiple.value) &&
+			!Array.isArray(newValue)
+		) {
+			newValue = [newValue]
+		}
+		return emit('update:modelValue', newValue)
+	}
 })
 
+// provide
 const groupState: IButtonGroupState = {
 	key: VV_BUTTON_GROUP,
 	modelValue,
 	disabled,
 	toggle,
-	modifiers: modifiers?.value ? modifiers : ref([])
+	multiple,
+	unselectable,
+	modifiers: itemModifiers
 }
 useProvideGroupState(groupState)
+
+// style
+const { bemCssClasses } = useBemModifiers('vv-button-group', {
+	modifiers
+})
 </script>
 
 <template>
 	<div :class="bemCssClasses" role="group">
+		<!-- @slot Buttons slot -->
 		<slot />
 	</div>
 </template>

@@ -47,12 +47,15 @@ export function useGroupProps(
 		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
 
 	// local props
-	const { modifiers, title, content } = toRefs(props)
+	const { title, content } = toRefs(props)
 
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
 	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
+	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
+		Array<string> | string
+	>
 
 	return {
 		// group props
@@ -61,8 +64,8 @@ export function useGroupProps(
 		isInGroup,
 		group,
 		collapse,
-		// local props
 		modifiers,
+		// local props
 		title,
 		content
 	}

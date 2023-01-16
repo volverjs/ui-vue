@@ -29,7 +29,7 @@ const { bemCssClasses } = useBemModifiers('vv-icon', {
 /**
  * Provider name
  */
-const currentProvider = computed(() => {
+const provider = computed(() => {
 	return props.provider || ds?.provider
 })
 
@@ -37,9 +37,9 @@ const currentProvider = computed(() => {
  * Icon name
  */
 const icon = computed(() => {
-	const _name = props.name || ''
+	const _name = props.name ?? ''
 	// compose Iconify icon name format
-	const iconName = `@${currentProvider.value}:${props.prefix}:${props.name}`
+	const iconName = `@${provider.value}:${props.prefix}:${props.name}`
 
 	// Check first if icon with "name" exist
 	if (iconExists(_name)) {
@@ -51,7 +51,7 @@ const icon = computed(() => {
 		// Check into all collections and set "iconName" data
 		return (
 			ds?.iconsCollections.find((iconsCollection: IconifyJSON) => {
-				const icon = `@${currentProvider.value}:${iconsCollection.prefix}:${_name}`
+				const icon = `@${provider.value}:${iconsCollection.prefix}:${_name}`
 				if (iconExists(icon)) {
 					return icon
 				}
@@ -87,7 +87,7 @@ function addIconFromSvg(svg: string) {
 	const svgContentEl: SVGSVGElement | null = getSvgContent(svg)
 	const svgContent = svgContentEl?.innerHTML.trim() || ''
 	if (svgContentEl && svgContent) {
-		addIcon(`@${currentProvider.value}:${props.prefix}:${props.name}`, {
+		addIcon(`@${provider.value}:${props.prefix}:${props.name}`, {
 			body: svgContent,
 			// Set height and width from svg content
 			height: svgContentEl.viewBox.baseVal.height,
@@ -99,7 +99,7 @@ function addIconFromSvg(svg: string) {
 if (ds) {
 	if (
 		props.src &&
-		!iconExists(`@${currentProvider.value}:${props.prefix}:${props.name}`)
+		!iconExists(`@${provider.value}:${props.prefix}:${props.name}`)
 	) {
 		show.value = false
 		ds.fetchIcon(props.src)
@@ -123,8 +123,15 @@ if (ds) {
 		v-if="show"
 		:class="bemCssClasses"
 		v-bind="{
-			...$props,
-			provider: currentProvider,
+			inline,
+			width,
+			height,
+			horizontalFlip,
+			verticalFlip,
+			flip,
+			rotate,
+			color,
+			onLoad,
 			icon
 		}" />
 </template>

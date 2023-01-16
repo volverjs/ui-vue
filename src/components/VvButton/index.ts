@@ -1,4 +1,10 @@
-import { type PropType, type ExtractPropTypes, toRefs, type Ref } from 'vue'
+import {
+	type Ref,
+	type PropType,
+	type ExtractPropTypes,
+	toRefs,
+	ref
+} from 'vue'
 import { DisabledProps, ModifiersProps } from '@/props'
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
@@ -107,7 +113,13 @@ export const VvButtonProps = {
 		type: String,
 		default: ButtonType.button,
 		validator: (value: string) => value in ButtonType
-	}
+	},
+	toggle: {
+		type: Boolean,
+		default: false
+	},
+	modelValue: String,
+	unselectable: { type: Boolean, default: true }
 }
 
 export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
@@ -115,7 +127,10 @@ export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
 /**
  * Merges local and group props
  */
-export function useGroupProps(props: VvButtonPropsTypes) {
+export function useGroupProps(
+	props: VvButtonPropsTypes,
+	emit: (event: (typeof VvButtonEvents)[number], value: unknown) => void
+) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
 
@@ -123,12 +138,19 @@ export function useGroupProps(props: VvButtonPropsTypes) {
 	const { iconPosition, icon, label, pressed } = toRefs(props)
 
 	// group props
-	const modelValue = getGroupOrLocalRef('modelValue', props)
+	const modelValue = getGroupOrLocalRef('modelValue', props, emit) as Ref<
+		string | Array<string> | undefined
+	>
 	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
+	const unselectable = getGroupOrLocalRef(
+		'unselectable',
+		props
+	) as Ref<boolean>
 	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
 		string[] | string
 	>
+	const multiple = group?.value?.multiple ?? ref(false)
 
 	return {
 		// group props
@@ -138,6 +160,8 @@ export function useGroupProps(props: VvButtonPropsTypes) {
 		isInGroup,
 		group,
 		modifiers,
+		multiple,
+		unselectable,
 		// local props
 		pressed,
 		iconPosition,

@@ -1,37 +1,61 @@
-import type { PlayAttributes, ComponentConfig } from '@/test/types'
+import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 import { within } from '@storybook/testing-library'
 
-async function accordionTest(
-	{ canvasElement, ...data }: PlayAttributes,
-	{ className = null }: ComponentConfig = {}
-) {
-	const accordion = (await within(canvasElement).findByTestId(
-		'accordion'
+export async function defaultTest({ canvasElement, args }: PlayAttributes) {
+	const element = (await within(canvasElement).findByTestId(
+		'element'
 	)) as HTMLDetailsElement
-	expect(accordion).toHaveClass('vv-accordion')
-	className && expect(accordion).toHaveClass(className)
-	const title = accordion.firstChild as HTMLElement
-	expect(title.innerText).toEqual(data.args.title)
-	expect(title).toHaveClass('vv-collapse__summary')
-	expect(accordion.open).toBe(false)
-	expect(title).toBeClicked()
-	await sleep()
-	expect(accordion.open).toBeTruthy()
-	const content = accordion.lastChild as HTMLElement
-	expect(content).toHaveClass('vv-collapse__content')
-	expect(content.innerText).toEqual(data.args.content)
-	expect(accordion).toHaveNoViolations()
+	const summary = element.getElementsByTagName('summary')[0]
+	const content = element.getElementsByClassName(
+		'vv-collapse__content'
+	)[0] as HTMLElement
+
+	const modifiers =
+		!args.modifiers || Array.isArray(args.modifiers)
+			? args.modifiers
+			: [args.modifiers]
+
+	expect(element).toHaveClass('vv-accordion')
+
+	// modifiers
+	if (modifiers) {
+		for (const modifier of modifiers) {
+			expect(element).toHaveClass(`vv-accordion--${modifier}`)
+		}
+	}
+
+	// summary slot / title
+	if (args.summary) {
+		const div = document.createElement('div')
+		div.innerHTML = args.summary
+		expect(summary).toHaveClass('vv-collapse__summary')
+		expect(summary.innerText).toEqual(div.innerText)
+	} else if (args.title) {
+		expect(summary).toHaveClass('vv-collapse__summary')
+		expect(summary.innerText).toEqual(args.title)
+	}
+
+	// open
+	if (!args.disabled) {
+		expect(element.open).toBe(false)
+		expect(element).toBeClicked()
+		await sleep()
+		expect(element.open).toBeTruthy()
+		expect(summary.getAttribute('aria-expanded')).toBe('true')
+		expect(content.getAttribute('aria-hidden')).toBe('false')
+	}
+
+	// details slot / content
+	if (args.details) {
+		const div = document.createElement('div')
+		div.innerHTML = args.details
+		expect(content.innerText).toEqual(div.innerText)
+	} else if (args.content) {
+		expect(content.innerText).toEqual(args.content)
+	}
+
+	// accessibility
+	expect(element).toHaveNoViolations()
 }
-
-async function slotsTest({ canvasElement, ...data }: PlayAttributes) {
-	const accordion = await within(canvasElement).findByTestId('slot')
-	data.args.slotName == 'details' &&
-		expect(accordion.innerHTML).toEqual(data.args.details)
-
-	data.args.slotName == 'header' &&
-		expect(accordion.innerHTML).toEqual(data.args.title)
-}
-
-export { accordionTest, slotsTest }

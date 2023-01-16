@@ -1,29 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import { propsToObject } from '@/utils/ObjectUtilities'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
-import { VvIconProps } from '@/components/VvIcon'
+import { defaultArgs, argTypes } from './Icon.settings'
+import NormalIcons from '@/assets/icons/normal.json'
 
 <Meta
 	title="Components/Icon"
 	component={VvIcon}
-	args={{
-		...propsToObject(VvIconProps),
-		name: 'add-circle'
-	}}
-	argTypes={{
-		mode: {
-			options: ['style', 'bg', 'mask', 'svg'],
-			control: {
-				type: 'select'
-			}
-		},
-		prefix: {
-			options: ['simple', 'normal', 'detailed'],
-			control: {
-				type: 'select'
-			}
-		}
-	}}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args) => ({
@@ -34,40 +18,70 @@ export const Template = (args) => ({
 	template: `<vv-icon v-bind="args" />`
 })
 
-# VvIcon
+<Canvas>
+	<Story
+		name="Default"
+		args={{
+			width: 48
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
-#### VvIcon use <a href="https://iconify.design/" target="_blank">Iconify</a> library and <a href="https://docs.iconify.design/icon-components/vue/" target="_blank">Iconify Vue component</a> under the hood.
+<Canvas>
+	<Story
+		name="Remote"
+		args={{
+			name: 'fingerprint',
+			width: 48,
+			src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/fingerprint/materialicons/24px.svg'
+		}}
+		argTypes={{
+			name: {
+				control: {
+					disable: true
+				}
+			},
+			src: {
+				control: {
+					disable: true
+				}
+			},
+			svg: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
-The UI Vue component library export a function (`createIconifyJsonFiles`) to create the <a href="https://docs.iconify.design/types/iconify-json.html" target="_blank">IconifyJSON</a> objects.
-This function for input params has the source path to the icons folder and the destination path for output json files.
-
-The source path can have subfolders and then SVG icons. In this case the last parent folder name will be the iconify <a href="https://docs.iconify.design/icon-components/vue/#icon" target="_blank">prefix</a> and all the children SVG icons will be the icons `name`.
-The `provider` is `vv` by default. (You can change it during the DesygnSystem instance.)
-
-<div class="flex justify-center py-lg">
-	<img src="iconify-name-structure.png" alt="iconify-name-structure" />
-</div>
-
-Ex: If my SVG icons folder root is structured like:
-
-    assets/icons/
-    			/simple/---.svg
-    			/normal/---.svg
-    			/detailed/---.svg
-
-The `createIconifyJsonFiles('assets/icons', 'assets/icons')` function will generate icons like `@vv:simple:{fileName}` or `@vv:detailed:{fileName}`
-
-In `VvIcon` component props: `name` `provider` and `prefix`, only `name` is required because the provider is `vv` by default and `prefix` is `normal` by default.
-
-So, if there is one or more custom folders with additional icons (ex: `assets/icons/custom/---.svg`) you can use it creating the IconifyJSON file with `createIconifyJsonFiles` function
-and passing it throught the DesignSystem instance like this:
-
-`new Design System({ iconifyCollections: [ myCustomIconifyJSON ] })` and use it with `vv-icon` component like this:
-
-`<vv-icon name="iconName" prefix="custom" />` or `<vv-icon name="custom:{iconName}" />`
-
-To use our playground `vv-icon` use the `Canvas` section
-
-<Story name="vv-icon" args={{}}>
-	{Template.bind({})}
-</Story>
+<Canvas>
+	<Story
+		name="Inline"
+		args={{
+			name: 'bell-2',
+			width: 48,
+			svg: `<svg viewBox="0 0 24 24">${NormalIcons.icons.bell.body}</svg>`
+		}}
+		argTypes={{
+			name: {
+				control: {
+					disable: true
+				}
+			},
+			src: {
+				control: {
+					disable: true
+				}
+			},
+			svg: {
+				control: {
+					disable: true
+				}
+			}
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

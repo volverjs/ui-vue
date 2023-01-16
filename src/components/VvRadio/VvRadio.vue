@@ -6,7 +6,8 @@ export default {
 
 <script setup lang="ts">
 import { computed, ref, useSlots } from 'vue'
-import { contains, equals, removeFromList } from '@/utils/ObjectUtilities'
+import { nanoid } from 'nanoid'
+import { contains, equals } from '@/utils/ObjectUtilities'
 import { useBemModifiers } from '@/composables/useModifiers'
 import {
 	VvRadioProps,
@@ -21,25 +22,23 @@ const emit = defineEmits(VvRadioEvents)
 const slots = useSlots()
 
 // data
-const { disabled, readonly, modelValue, valid, error } = useGroupProps(
+const { disabled, readonly, modelValue, valid, invalid } = useGroupProps(
 	props,
 	emit
 )
+const id = computed(() => String(props.id || nanoid()))
+const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 // template refs
 const input = ref()
 
 // computed
-const hasId = computed(() =>
-	props.id !== undefined ? String(props.id) : undefined
-)
 const isDisabled = computed(() => disabled.value || readonly.value)
-const hasTabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 const isInvalid = computed(() => {
-	if (props.error === true) {
+	if (invalid.value === true) {
 		return true
 	}
-	if (props.valid === true) {
+	if (valid.value === true) {
 		return false
 	}
 	return undefined
@@ -60,12 +59,10 @@ const localModelValue = computed({
 	},
 	set(newValue) {
 		if (Array.isArray(modelValue.value)) {
-			modelValue.value = newValue
-				? [...modelValue.value, props.value]
-				: removeFromList(props.value, modelValue.value)
-			return
+			modelValue.value = [props.value]
+		} else {
+			modelValue.value = props.value
 		}
-		modelValue.value = props.value
 		emit('change', newValue)
 	}
 })
@@ -73,7 +70,7 @@ const localModelValue = computed({
 // styles
 const { bemCssClasses } = useBemModifiers('vv-radio', {
 	valid,
-	invalid: error,
+	invalid,
 	disabled,
 	readonly
 })
@@ -83,9 +80,9 @@ const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
-	<label :class="bemCssClasses" :for="hasId">
+	<label :class="bemCssClasses" :for="id">
 		<input
-			:id="hasId"
+			:id="id"
 			ref="input"
 			v-model="localModelValue"
 			type="radio"
@@ -93,7 +90,7 @@ const { HintSlot } = HintSlotFactory(props, slots)
 			:name="name"
 			:disabled="isDisabled"
 			:value="hasValue"
-			:tabindex="hasTabindex"
+			:tabindex="tabindex"
 			:aria-invalid="isInvalid" />
 		<slot :value="modelValue">
 			{{ label }}

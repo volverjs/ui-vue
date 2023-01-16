@@ -1,80 +1,60 @@
-import type { PlayAttributes, ComponentConfig } from '@/test/types'
-import { within } from '@storybook/testing-library'
+import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
+import { sleep } from '@/test/sleep'
+import { within } from '@storybook/testing-library'
 
-export async function dropdownTest(
-	{ canvasElement, ...data }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false, className = null }: ComponentConfig = {}
-) {
-	const dropdown = await within(canvasElement).findByRole('listbox')
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getOptionValue = (args: any, index: number) => {
+	if (args.options && args.options.length > index) {
+		let value = args.options[index]
+		if (args.valueKey) {
+			if (typeof args.valueKey === 'function') {
+				value = args.valueKey(value)
+			} else if (typeof value === 'object') {
+				value = value[args.valueKey]
+			}
+		} else if (typeof value === 'object') {
+			value = value.value
+		}
+		return value
+	}
+	return undefined
+}
 
-	// class test
-	expect(dropdown).toHaveClass('vv-dropdown')
-	className && expect(dropdown).toHaveClass(className)
-
-	// options test
-	const dropdownItems = dropdown.children
-	const propOptions = data.args.options
+export async function defaultTest({ canvasElement, args }: PlayAttributes) {
+	const element = (await within(canvasElement).findByTestId(
+		'element'
+	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'selected'
-	)) as HTMLSpanElement
+		'value'
+	)) as HTMLElement
+	const label = element.getElementsByTagName('label')[0]
+	const input = label.getElementsByTagName('input')[0]
 
-	if (data.args.labelNoResult && propOptions.length == 0) {
-		const optionLabel = dropdownItems[0].firstChild as HTMLInputElement
-		expect(optionLabel.innerText).toEqual(data.args.labelNoResult)
-	}
-	if (propOptions.length > 0) {
-		let checkedOptions = 0
-
-		// tests all the options
-		for (let index = 0; index < dropdownItems.length; index++) {
-			const option = dropdownItems[index]
-			const optionLabel = option.children[0] as HTMLInputElement
-			const optionRadio = optionLabel.children[0] as HTMLInputElement
-
-			// disabled test
-			isClickDisabled && expect(optionLabel).not.toBeClicked()
-			data.args.disabled && expect(optionRadio).toHaveProperty('disabled')
-
-			// click test
-			isClickDisabled
-				? await expect(optionLabel).not.toBeClicked()
-				: await expect(optionLabel).toBeClicked()
-
-			// radio checked and maxValue test
-			if (!isClickDisabled) {
-				data.args.maxValues && checkedOptions == data.args.maxValues
-					? expect(optionRadio.checked).toBe(false)
-					: expect(optionRadio.checked).toBe(true)
-			}
-			optionRadio.checked && checkedOptions++
-
-			// label and value test
-			const propOptionLabel =
-				propOptions[index].label || propOptions[index]
-			const propOptionValue =
-				propOptions[index].value || propOptions[index]
-			await expect(optionLabel.innerText.trim()).toEqual(propOptionLabel)
-			await expect(optionRadio.value).toEqual(`${propOptionValue}`)
-
-			// useObject test
-			data.args.useObject &&
-				expect(value?.innerText).toBe(
-					`{ "label": "${propOptionLabel}", "value": ${propOptionValue} }`
+	// checked value
+	if (!args.invalid && args.options && args.options.length > 0) {
+		label.addEventListener('click', async () => {
+			await sleep()
+			if (!args.disabled && !args.readonly) {
+				const firstValue = getOptionValue(args, 0)
+				expect(JSON.parse(value.innerHTML)).toEqual(
+					args.multiple ? [firstValue] : firstValue
 				)
-		}
-
-		// multiple test
-		if (data.args.multiple) {
-			let checkedOptions = 0
-			for (let index = 0; index < dropdownItems.length; index++) {
-				const option = dropdownItems[index]
-				const optionLabel = option.children[0] as HTMLInputElement
-				const optionRadio = optionLabel.children[0] as HTMLInputElement
-				optionRadio.checked && checkedOptions++
 			}
-			expect(checkedOptions).toBeGreaterThan(0)
+		})
+		if (args.disabled || args.readonly) {
+			await expect(input).not.toBeChecked()
+		} else {
+			await expect(input).toBeChecked()
 		}
 	}
-	await expect(dropdown).toHaveNoViolations()
+
+	// disabled
+	if (args.disabled) {
+		await expect(input).toHaveProperty('disabled')
+		await expect(input).not.toBeChecked()
+	}
+
+	// check accessibility
+	await expect(element).toHaveNoViolations()
 }

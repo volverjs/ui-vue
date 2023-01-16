@@ -1,15 +1,18 @@
-import type { PlayAttributes, ComponentConfig } from '@/test/types'
+import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 
-export async function breadcrumbTest(
+function linkClick(event: Event) {
+	event.preventDefault()
+}
+
+export async function defaultTest(
 	data: PlayAttributes = {} as PlayAttributes,
-	{ className = null }: ComponentConfig = {}
+	customSlot: false
 ) {
 	const breadcrumb = document.getElementsByClassName('vv-breadcrumb')[0]
 
 	// breadcrumb component class test
 	expect(breadcrumb).toHaveClass('vv-breadcrumb')
-	className && expect(breadcrumb).toHaveClass(className)
 
 	// test every breadcrumb item
 	const navLinks = breadcrumb.children[0].children
@@ -18,7 +21,9 @@ export async function breadcrumbTest(
 		const propRoutes = data.args.routes[index]
 
 		// label and title test
-		expect(link.innerText).toEqual(propRoutes.label)
+		if (!customSlot) {
+			expect(link.innerText).toEqual(propRoutes.label)
+		}
 		expect(link.title).toEqual(propRoutes.title)
 
 		const isNotLastItem = index < navLinks.length - 1
@@ -42,8 +47,4 @@ export async function breadcrumbTest(
 		}
 	})
 	expect(breadcrumb).toHaveNoViolations()
-}
-
-function linkClick(event: Event) {
-	event.preventDefault()
 }

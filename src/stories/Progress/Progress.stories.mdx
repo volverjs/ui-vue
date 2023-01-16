@@ -1,21 +1,13 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Meta, Story } from '@storybook/addon-docs'
 import VvProgress from '@/components/VvProgress/VvProgress.vue'
-import { propsToObject } from '@/utils/ObjectUtilities'
-import { VvProgressProps } from '@/components/VvProgress'
-import { progressTest, indeterminateTest } from './Progress.test'
+import { defaultTest } from './Progress.test'
+import { defaultArgs, argTypes } from './Progress.settings'
 
 <Meta
 	title="Components/Progress"
 	component={VvProgress}
-	args={{
-		...propsToObject(VvProgressProps)
-	}}
-	argTypes={{
-		value: {
-			defaultValue: undefined,
-			control: { type: 'number', min: 0, max: 1, step: 0.1 }
-		}
-	}}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args) => ({
@@ -26,12 +18,10 @@ export const Template = (args) => ({
 	template: `<vv-progress v-bind="args" />`
 })
 
-# VvProgress
+<Story name="Default" play={defaultTest}>
+	{Template.bind()}
+</Story>
 
-Stories of `VvProgress`.
-
-Let's define a story for our playground `progress`:
-
-<Story name="vv-progress" play={indeterminateTest}>
+<Story name="Determinate" play={defaultTest} args={{ max: '100', value: '25' }}>
 	{Template.bind()}
 </Story>

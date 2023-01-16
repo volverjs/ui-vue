@@ -1,52 +1,70 @@
-import type { PlayAttributes, ComponentConfig } from '@/test/types'
+import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
+import { sleep } from '@/test/sleep'
+import { within } from '@storybook/testing-library'
 
-export async function radioTest(
-	data: PlayAttributes = {} as PlayAttributes,
-	{
-		isClickDisabled = false,
-		className = null,
-		slotContent = null
-	}: ComponentConfig = {}
-) {
-	const radio =
-		(document.getElementById(data.args.id) as HTMLInputElement) ||
-		(document.getElementsByClassName(
-			'vv-radio__input'
-		)[0] as HTMLInputElement)
+export async function defaultTest({ canvasElement, args }: PlayAttributes) {
+	const element = (await within(canvasElement).findByTestId(
+		'element'
+	)) as HTMLElement
+	const value = (await within(canvasElement).findByTestId(
+		'value'
+	)) as HTMLElement
+	const input = element.getElementsByTagName('input')[0]
+	const hint = element.getElementsByClassName('vv-radio__hint')[0]
 
-	expect(radio).toHaveClass('vv-radio__input')
-	className && expect(radio).toHaveClass(className)
-
-	if (isClickDisabled) {
-		await expect(radio).not.toBeClicked()
-	} else {
-		await expect(radio).toBeClicked()
-		expect(radio.checked).toBe(true)
-	}
-	data.args.name && expect(radio.name).toEqual(data.args.name)
-	const label = radio.parentElement
-	expect(label).toHaveClass('vv-radio')
-	expect(label?.innerText).toEqual(
-		slotContent ? slotContent : data.args.label
-	)
-	data.args.error && expect(label).toHaveClass('vv-radio--invalid')
-	expect(radio && label).toHaveNoViolations()
-}
-
-export async function hintLabelTest(data: PlayAttributes) {
-	const label = document.getElementsByClassName('vv-radio')[0] as HTMLElement
-	const propLabel: string | string[] =
-		data.args.hintLabel || data.args.errorLabel
-	const hintLabel = label.lastElementChild as HTMLElement
-	expect(hintLabel).toHaveClass('vv-radio__hint')
-	// test hint label based on his type
-	if (typeof propLabel == 'string') {
-		expect(hintLabel.innerText).toEqual(propLabel)
-	}
-	if (Array.isArray(propLabel)) {
-		propLabel.forEach((label) => {
-			expect(hintLabel.innerHTML).toContain(label)
+	// click
+	if (!args.invalid && !args.indeterminate) {
+		element.addEventListener('click', async () => {
+			await sleep()
+			if (!args.disabled && !args.readonly) {
+				expect(value.innerHTML).toEqual(String(args.value))
+			}
 		})
+		if (args.disabled || args.readonly) {
+			await expect(input).not.toBeChecked()
+		} else {
+			await expect(input).toBeChecked()
+		}
 	}
+
+	// disabled
+	if (args.disabled) {
+		await expect(element).toHaveClass('vv-radio--disabled')
+		await expect(input).toHaveProperty('disabled')
+		await expect(input).not.toBeChecked()
+	}
+
+	// readonly
+	if (args.readonly) {
+		await expect(element).toHaveClass('vv-radio--readonly')
+		await expect(input).toHaveProperty('disabled')
+		await expect(input).not.toBeChecked()
+	}
+
+	// invalid
+	if (args.invalid) {
+		await expect(element).toHaveClass('vv-radio--invalid')
+		await expect(input).toHaveProperty('ariaInvalid')
+		if (args.invalidLabel) {
+			await expect(hint.innerHTML).toEqual(args.invalidLabel)
+		}
+	}
+
+	// valid
+	if (args.valid) {
+		await expect(element).toHaveClass('vv-radio--valid')
+		await expect(input).toHaveProperty('ariaInvalid', 'false')
+		if (args.validLabel) {
+			await expect(hint.innerHTML).toEqual(args.validLabel)
+		}
+	}
+
+	// hint
+	if (args.hintLabel) {
+		await expect(hint.innerHTML).toEqual(args.hintLabel)
+	}
+
+	// check accessibility
+	await expect(element).toHaveNoViolations()
 }

@@ -3,3 +3,5 @@ node_modules
 dist
 vendor
 storybook-static
+.vscode
+bin

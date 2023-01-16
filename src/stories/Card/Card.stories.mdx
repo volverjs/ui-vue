@@ -1,25 +1,38 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvCard from '@/components/VvCard/VvCard.vue'
-import { defaultCardTest } from './Card.test'
+import { defaulTest } from './Card.test'
+import { defaultArgs, argTypes } from './Card.settings'
 
-<Meta title="Components/Card" component={VvCard} />
+<Meta
+	title="Components/Card"
+	component={VvCard}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-export const Template = (args, { argTypes }) => ({
-	props: Object.keys(argTypes),
+export const Template = (args) => ({
 	components: { VvCard },
 	setup() {
 		return { args }
 	},
 	template: `
-        <vv-card v-bind="args" title="Card Title">
-            <template #content>Lorem ipsum dolor sit amet</template>
+        <vv-card v-bind="args" data-testId="card">
+			<template #default v-if="args.default"><div v-html="args.default"></div></template>
+			<template #header v-if="args.header"><div v-html="args.header"></div></template>
+			<template #content v-if="args.content"><div v-html="args.content"></div></template>
+			<template #footer v-if="args.footer"><div v-html="args.footer"></div></template>
         </vv-card>
         `
 })
 
 <Canvas>
-	<Story name="vv-card" play={defaultCardTest}>
-		{Template.bind({})}
+	<Story
+		name="Default"
+		play={defaulTest}
+		args={{
+			content:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>

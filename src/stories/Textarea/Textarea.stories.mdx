@@ -1,62 +1,116 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
-import { toGroup } from '../utils'
-import { propsToObject } from '@/utils/ObjectUtilities'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
-import { VvTextareaProps } from '@/components/VvTextarea'
+import { defaultArgs, argTypes } from './Textarea.settings'
+import { defaultTest } from './Textarea.test'
 
-<Meta title="Components/Textarea" component={VvTextarea} />
+<Meta
+	title="Components/Textarea"
+	component={VvTextarea}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-export const Template = (args, { argTypes }) => ({
-	props: Object.keys(argTypes),
+export const Template = (args) => ({
 	components: { VvTextarea },
 	setup() {
 		return { args }
 	},
-	data: () => ({ value: args.modelValue || '' }),
+	data: () => ({ inputValue: undefined }),
 	template: `
-		<vv-textarea v-model="value" v-bind="args" data-testId="textarea" />
-		<div>Value: <span data-testId="value">{{value}}</span></div>`
+		<vv-textarea v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #before v-if="args.before"><div class="pt-sm pl-sm flex" v-html="args.before"></div></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			<template #after v-if="args.after"><div class="pt-sm pr-sm flex" v-html="args.after"></div></template>
+		</vv-textarea>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+        `
 })
 
-# VvTextarea
-
-`VvTextarea` is a multi-line text input element.
-
 <Canvas>
-	<Story
-		name="vv-textarea"
-		args={{
-			...propsToObject(VvTextareaProps),
-			maxlength: null
-		}}
-		argTypes={{
-			...toGroup(
-				['required', 'minlength', 'maxlength'],
-				'Data validation'
-			),
-			...toGroup(
-				[
-					'disabled',
-					'readonly',
-					'valid',
-					'validLabel',
-					'error',
-					'errorLabel',
-					'loading',
-					'loadingLabel'
-				],
-				'State'
-			),
-			...toGroup(['floating'], 'Floating'),
-			...toGroup(['modifiers'], 'Modifiers'),
-			...toGroup(['icon', 'iconPosition'], 'Icon'),
-			...toGroup(['hintLabel'], 'Hint text'),
-			...toGroup(['limit'], 'Text limit count'),
-			...toGroup(['autoclear'], 'Experimental feature')
-		}}>
-		{Template.bind({})}
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<ArgsTable story="vv-textarea" />
+<Canvas>
+	<Story name="Disabled" args={{ disabled: true }} play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story name="Readonly" args={{ readonly: true }} play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
+		args={{
+			valid: true,
+			validLabel: 'The field is valid.',
+			icon: 'check'
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		args={{
+			invalid: true,
+			invalidLabel: 'The field is required.',
+			icon: 'error-2'
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		args={{
+			hintLabel: 'Please enter your name.'
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Loading"
+		args={{
+			loading: true,
+			loadingLabel: 'Loading...'
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Floating"
+		args={{
+			floating: true
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Resizable"
+		args={{
+			resizable: true
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>

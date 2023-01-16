@@ -5,8 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useSlots, computed, toRefs } from 'vue'
+import type { Option } from '@/types/generic'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
+import { useSlots, computed, toRefs } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
 import { useOptions } from '@/composables/options/useOptions'
@@ -24,32 +25,34 @@ const props = defineProps(VvRadioGroupProps)
 const emit = defineEmits(VvRadioGroupEvents)
 const slots = useSlots()
 
-// hint
-const { HintSlot } = HintSlotFactory(props, slots)
-
 // data
 const modelValue = useVModel(props, 'modelValue', emit)
-const { disabled, readonly, vertical, valid, error } = toRefs(props)
+const { disabled, readonly, vertical, valid, invalid } = toRefs(props)
 
 const groupState: IInputGroupState = {
 	key: VV_RADIO_GROUP,
 	modelValue,
 	disabled,
-	readonly
+	readonly,
+	valid,
+	invalid
 }
 useProvideGroupState(groupState)
 
+// options
 const { getOptionLabel, getOptionValue } = useOptions(props)
 
 // styles
 const { bemCssClasses: groupClass } = useBemModifiers('vv-radio-group', {
+	disabled,
+	readonly,
 	horizontal: computed(() => !vertical.value),
 	valid,
-	invalid: error
+	invalid
 })
 
 // methods
-const getOptionProps = (option: unknown, index: number) => {
+const getOptionProps = (option: string | Option, index: number) => {
 	return {
 		id: `${props.name}_opt${index}`,
 		name: props.name,
@@ -57,6 +60,9 @@ const getOptionProps = (option: unknown, index: number) => {
 		value: getOptionValue(option)
 	}
 }
+
+// hint
+const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
@@ -66,9 +72,9 @@ const getOptionProps = (option: unknown, index: number) => {
 			<!-- #region options -->
 			<template v-if="options.length > 0">
 				<vv-radio
-					v-for="(o, oIndex) in options"
-					:key="oIndex"
-					v-bind="getOptionProps(o, oIndex)" />
+					v-for="(option, index) in options"
+					:key="index"
+					v-bind="getOptionProps(option, index)" />
 			</template>
 			<!-- #endregion -->
 			<!-- #region default -->

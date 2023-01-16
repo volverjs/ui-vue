@@ -1,178 +1,155 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
-
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
-import { testInputText } from './InputText.test.ts'
+import { defaultTest } from './InputText.test.ts'
+import { defaultArgs, argTypes } from './InputText.settings'
 
-<Meta title="Components/InputText/Type" component={VvInputText} />
+<Meta
+	title="Components/InputText/Type"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
 	<Story
 		name="Text"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-text',
-			label: 'Text',
-			type: 'text',
-			'data-testId': 'input-text'
+			type: 'text'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Password"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-password',
-			label: 'Password',
-			type: 'password',
-			'data-testId': 'input-text'
+			type: 'password'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Date"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-date',
-			label: 'Date',
-			type: 'date',
-			'data-testId': 'input-text'
+			type: 'date'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="DateTime"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-datetime',
-			label: 'Date Time',
-			type: 'datetime-local',
-			'data-testId': 'input-text'
+			type: 'datetime-local'
 		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Number"
-		play={testInputText}
-		args={{
-			name: 'input-number',
-			label: 'Number',
-			type: 'number',
-			'data-testId': 'input-text'
-		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Time"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-time',
-			label: 'Time',
-			type: 'time',
-			'data-testId': 'input-text'
+			type: 'time'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Month"
+		play={defaultTest}
+		args={{
+			type: 'month'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Week"
+		play={defaultTest}
+		args={{
+			type: 'week'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Number"
+		play={defaultTest}
+		args={{
+			type: 'number'
+		}}>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Email"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-email',
-			label: 'Email',
-			type: 'email',
-			'data-testId': 'input-text'
+			type: 'email'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Tel"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-tel',
-			label: 'Tel',
-			type: 'tel',
-			'data-testId': 'input-text'
+			type: 'tel'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Url"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-url',
-			label: 'Url',
-			type: 'url',
-			'data-testId': 'input-text'
+			type: 'url'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Color"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-color',
-			label: 'Color',
-			type: 'color',
-			'data-testId': 'input-text'
+			type: 'color'
 		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="Search"
-		play={testInputText}
+		play={defaultTest}
 		args={{
-			name: 'input-search',
-			label: 'Search',
-			type: 'search',
-			'data-testId': 'input-text',
-			icon: 'search',
-			iconPosition: 'left'
+			type: 'search'
 		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="File"
-		play={testInputText}
-		args={{
-			name: 'input-file',
-			label: 'File',
-			type: 'file',
-			'data-testId': 'input-text'
-		}}>
-		{Template.bind({})}
+		{Template.bind()}
 	</Story>
 </Canvas>

@@ -1,22 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
-import { badgeTest } from './Badge.test'
+import { defaultTest } from './Badge.test'
+import { defaultArgs, argTypes } from './Badge.settings'
 
 <Meta
 	title="Components/Badge"
 	component={VvBadge}
-	argTypes={{
-		value: {
-			defaultValue: '14',
-			control: { type: 'text' }
-		},
-		modifiers: {
-			options: ['black', 'danger', 'success', 'warning'],
-			control: {
-				type: 'select'
-			}
-		}
-	}}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args, { argTypes }) => ({
@@ -25,14 +16,34 @@ export const Template = (args, { argTypes }) => ({
 	setup() {
 		return { args }
 	},
-	template: `<vv-badge v-bind="args" />`
+	template: `<vv-badge v-bind="args">
+			   		<template #default v-if="args.default"><span v-html="args.default"></span></template>	
+			   </vv-badge>`
 })
 
-# VvBadge
+<Canvas>
+	<Story name="Default" args={{ value: '14' }} play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
-Stories of `VvBadge`.
-Let's define a story for our playground `badge`:
-
-<Story name="vv-badge" args={{}} play={badgeTest}>
-	{Template.bind({})}
-</Story>
+<Canvas>
+	<Story
+		name="Dot"
+		args={{ value: '' }}
+		argTypes={{
+			default: {
+				control: {
+					disable: true
+				}
+			},
+			value: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>

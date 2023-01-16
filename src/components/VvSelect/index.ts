@@ -1,23 +1,59 @@
-import type { PropType } from 'vue'
-import type { Option } from '@/components/VvDropdown'
 import {
 	ValidProps,
-	ErrorProps,
+	InvalidProps,
 	HintProps,
 	LoadingProps,
 	DisabledProps,
 	ReadonlyProps,
-	ModifiersProps
+	ModifiersProps,
+	TabindexProps,
+	OptionsProps,
+	IconProps,
+	IdNameProps
 } from '@/props'
 
 export const VvSelectProps = {
+	...IdNameProps,
+	...TabindexProps,
 	...ValidProps,
-	...ErrorProps,
+	...InvalidProps,
 	...HintProps,
 	...LoadingProps,
 	...DisabledProps,
 	...ReadonlyProps,
 	...ModifiersProps,
+	...OptionsProps,
+	...IconProps,
+	/**
+	 * Global attribute autocomplete
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attr-autocomplete
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
+	 */
+	autocomplete: { type: String, default: 'off' },
+	/**
+	 * Global attribute autofocus
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus
+	 */
+	autofocus: Boolean,
+	/**
+	 * This Boolean attribute indicates that multiple options can be selected in the list.
+	 * If it is not specified, then only one option can be selected at a time.
+	 * When multiple is specified, most browsers will show a scrolling list box instead of a single line dropdown.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attr-multiple
+	 */
+	multiple: Boolean,
+	/**
+	 * A Boolean attribute indicating that an option with a non-empty string value must be selected.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attr-required
+	 */
+	required: Boolean,
+	/**
+	 * If the control is presented as a scrolling list box (e.g. when multiple is specified),
+	 * this attribute represents the number of rows in the list that should be visible at one time.
+	 * Browsers are not required to present a select element as a scrolled list box. The default value is 0.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attr-size
+	 */
+	size: [String, Number],
 	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
@@ -26,77 +62,13 @@ export const VvSelectProps = {
 		default: undefined
 	},
 	/**
-	 * Select input label
+	 * <label> value for the select
 	 */
 	label: String,
 	/**
-	 * Label of "no results" options
+	 * Select placeholder
 	 */
-	labelNoResult: { type: String, default: 'No results' },
-	/**
-	 * Select input placeholder
-	 */
-	placeholder: String,
-	/**
-	 * Use input text to search on options
-	 */
-	searchable: Boolean,
-	/**
-	 * On searchable select is the input search placeholder
-	 */
-	searchPlaceholder: String,
-	/**
-	 * the input search debounce time in ms
-	 */
-	debounceSearch: {
-		type: [Number, String],
-		default: 0
-	},
-	/**
-	 * Select options, can be string[] or object[]
-	 */
-	options: {
-		type: Array as PropType<Array<Option | string>>,
-		required: true
-	},
-	/**
-	 * Use objects as modelValue (object or object[])
-	 */
-	useObject: Boolean,
-	/**
-	 * Manage modelValue as string[] or object[]
-	 */
-	multiple: Boolean,
-	/**
-	 * The max number of selected values
-	 */
-	maxValues: [Number, String],
-	/**
-	 * The select label separator visible to the user
-	 */
-	separator: { type: String, default: ', ' },
-	/**
-	 * Used when options are objects: key to use for option label
-	 */
-	labelKey: { type: String, default: 'label' },
-	/**
-	 * Used when options are objects: key to use for option label
-	 */
-	valueKey: { type: String, default: 'value' },
-	/**
-	 * Icon name of icon in left position
-	 */
-	iconLeft: String,
-	/**
-	 * Icon name of icon in right position
-	 */
-	iconRight: String,
-	/**
-	 * Icon name of icon in right position
-	 */
-	native: Boolean,
-	tabindex: {
-		type: [Number, String],
-		default: 0
-	}
+	placeholder: String
 }
+
+export const VvSelectEmits = ['update:modelValue', 'focus', 'blur']

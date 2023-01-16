@@ -1,0 +1,45 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import { Template } from './Combobox.stories.mdx'
+import { defaultTest } from './Combobox.test.ts'
+import { defaultArgs, argTypes } from './Combobox.settings'
+
+<Meta
+	title="Components/Combobox/Slots"
+	component={VvCombobox}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Before"
+		play={defaultTest}
+		args={{
+			before: '<div class="vv-badge vv-badge--sm uppercase">Before</vv-badge>'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="After"
+		play={defaultTest}
+		args={{
+			after: '<div class="vv-badge vv-badge--sm uppercase">After</vv-badge>'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{
+			hint: 'Hint <em class="italic">slot!</em>'
+		}}>
+		{Template.bind()}
+	</Story>
+</Canvas>

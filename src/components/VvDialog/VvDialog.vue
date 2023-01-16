@@ -15,7 +15,7 @@ const props = defineProps(VvDialogProps)
 const emit = defineEmits(VvDialogEvents)
 
 // data
-const openDialog = useVModel(props, 'modelValue', emit)
+const show = useVModel(props, 'modelValue', emit)
 const htmlAttrIsOpen = ref(true)
 
 // template ref
@@ -51,19 +51,22 @@ const dialogTransitionHandlers = {
 
 // methods
 onClickOutside(modalWrapper, () => {
-	if (props.autoClose) openDialog.value = false
+	if (props.autoClose) {
+		show.value = false
+	}
 })
 
 function closeDialog() {
-	openDialog.value = false
+	show.value = false
 }
 </script>
 
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
-		<dialog v-show="openDialog" v-bind="dialogAttrs" :class="dialogClass">
+		<dialog v-show="show" v-bind="dialogAttrs" :class="dialogClass">
 			<article ref="modalWrapper" class="vv-dialog__wrapper">
 				<header v-if="$slots.header || title" class="vv-dialog__header">
+					<!-- @slot Header slot -->
 					<slot name="header">
 						{{ title }}
 						<button
@@ -76,10 +79,11 @@ function closeDialog() {
 					</slot>
 				</header>
 				<div class="vv-dialog__content">
-					<!-- @slot default -->
+					<!-- @slot Content slot -->
 					<slot />
 				</div>
 				<footer v-if="$slots.footer" class="vv-dialog__footer">
+					<!-- @slot Footer slot -->
 					<slot name="footer" />
 				</footer>
 			</article>
