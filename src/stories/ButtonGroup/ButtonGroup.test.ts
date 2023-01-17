@@ -3,13 +3,13 @@ import { expect } from '@/test/expect'
 import { within } from '@storybook/testing-library'
 
 export async function defaultTest(
-	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes
+	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
 	const buttonGroup = (await within(canvasElement).findByTestId(
-		'button-group'
+		'button-group',
 	)) as HTMLElement
 	const firstButton = (await within(canvasElement).findByTestId(
-		'first-button'
+		'first-button',
 	)) as HTMLElement
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)

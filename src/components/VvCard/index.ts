@@ -1,4 +1,4 @@
 export const VvCardProps = {
 	title: String,
-	modifiers: [String, Array]
+	modifiers: [String, Array],
 }

@@ -161,7 +161,7 @@ export function isEmpty(
 		| number
 		| unknown[]
 		| object
-		| Ref
+		| Ref,
 ) {
 	return ((value) =>
 		value === null ||
@@ -181,10 +181,10 @@ export function isEmpty(
  */
 export function pickBy(
 	value: Record<string, unknown>,
-	predicate: (k: string) => boolean
+	predicate: (k: string) => boolean,
 ) {
 	return Object.fromEntries(
-		Object.entries(value).filter(([key]) => predicate(key))
+		Object.entries(value).filter(([key]) => predicate(key)),
 	)
 }
 
@@ -247,7 +247,7 @@ export function propsToObject(props: any) {
 			accumulator[key] = props[key]?.type()
 			return accumulator
 		},
-		{} as Record<string, unknown>
+		{} as Record<string, unknown>,
 	)
 }
 
@@ -261,7 +261,7 @@ export function propsToObject(props: any) {
 export function filterArray<T = Record<string, unknown>>(
 	list: T[],
 	filter: T[] | string[],
-	key: string
+	key: string,
 ): T[] {
 	return list.filter((el) => {
 		return filter.some((f) => {
@@ -276,7 +276,7 @@ export function kebabCase(value: string) {
 	if (value) {
 		return value
 			.match(
-				/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g
+				/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g,
 			)
 			?.join('-')
 			?.toLowerCase()

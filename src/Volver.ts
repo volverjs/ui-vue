@@ -4,7 +4,7 @@ import {
 	addAPIProvider,
 	type IconifyIcon,
 	type IconifyJSON,
-	type PartialIconifyAPIConfig
+	type PartialIconifyAPIConfig,
 } from '@iconify/vue'
 import type { App, Plugin } from 'vue'
 
@@ -58,7 +58,7 @@ export interface IVolver extends IVolverParams {
 	 */
 	addAPIProvider(
 		provider: string,
-		customConfig: PartialIconifyAPIConfig
+		customConfig: PartialIconifyAPIConfig,
 	): boolean
 	/**
 	 * Current provider
@@ -80,7 +80,7 @@ export class Volver implements IVolver {
 		fetchWithCredentials = false,
 		fetchOptions = {},
 		iconsCollections = [],
-		nuxt = false
+		nuxt = false,
 	}: IVolverParams = {}) {
 		if (fetchWithCredentials) {
 			fetchOptions = { ...fetchOptions, credentials: 'include' }
@@ -106,14 +106,14 @@ export class Volver implements IVolver {
 
 	addAPIProvider(
 		provider: string,
-		customConfig: PartialIconifyAPIConfig
+		customConfig: PartialIconifyAPIConfig,
 	): boolean {
 		return addAPIProvider(provider, customConfig)
 	}
 
 	fetchIcon(
 		src: string,
-		options: RequestInit = { cache: 'force-cache' }
+		options: RequestInit = { cache: 'force-cache' },
 	): Promise<string | undefined> {
 		return new Promise((resolve, reject) => {
 			fetch(src, { ...this.fetchOptions, ...options })
@@ -137,7 +137,7 @@ const VolverPlugin: Plugin = {
 		app.config.globalProperties.$ds = volver
 
 		app.provide(VOLVER_PREFIX, volver)
-	}
+	},
 }
 
 export default VolverPlugin

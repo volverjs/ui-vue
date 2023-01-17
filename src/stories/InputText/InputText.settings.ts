@@ -11,7 +11,7 @@ export const defaultArgs = {
 	min: undefined,
 	max: undefined,
 	minlength: undefined,
-	maxlength: undefined
+	maxlength: undefined,
 }
 
 export const argTypes = {
@@ -31,54 +31,54 @@ export const argTypes = {
 			'text',
 			'time',
 			'url',
-			'week'
+			'week',
 		],
 		control: {
-			type: 'select'
+			type: 'select',
 		},
 		table: {
 			defaultValue: {
-				summary: 'text'
-			}
-		}
+				summary: 'text',
+			},
+		},
 	},
 	min: {
 		description:
 			'Minimum value. Available for input types: date, month, week, time, datetime-local, number, range.',
 		type: ['number', 'string'],
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	max: {
 		description:
 			'Maximum value. Available for input types: date, month, week, time, datetime-local, number, range.',
 		type: ['number', 'string'],
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	step: {
 		description:
 			'Incremental values that are valid. Available for input types: date, month, week, time, datetime-local and number.',
 		type: {
-			summary: 'number'
+			summary: 'number',
 		},
 		table: {
 			defaultValue: {
-				summary: 1
-			}
-		}
+				summary: 1,
+			},
+		},
 	},
 	pattern: {
 		description:
 			'Pattern the value must match to be valid. Available for input types: text, search, url, tel, email and password.',
 		type: {
-			summary: 'regex'
+			summary: 'regex',
 		},
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	multiple: {
 		type: 'boolean',
@@ -86,136 +86,136 @@ export const argTypes = {
 			'Whether to allow multiple values. Available for input type email.',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	iconShowPassword: {
 		description: 'VvIcon name for show password button',
 		options: ['', ...Object.keys(normal.icons)],
 		control: {
-			type: 'select'
+			type: 'select',
 		},
 		table: {
 			defaultValue: {
-				summary: 'eye-on'
-			}
-		}
+				summary: 'eye-on',
+			},
+		},
 	},
 	iconHidePassword: {
 		description: 'VvIcon name for hide password button',
 		options: ['', ...Object.keys(normal.icons)],
 		control: {
-			type: 'select'
+			type: 'select',
 		},
 		table: {
 			defaultValue: {
-				summary: 'eye-off'
-			}
-		}
+				summary: 'eye-off',
+			},
+		},
 	},
 	iconClear: {
 		description: 'VvIcon name for clear button',
 		options: ['', ...Object.keys(normal.icons)],
 		control: {
-			type: 'select'
+			type: 'select',
 		},
 		table: {
 			defaultValue: {
-				summary: 'close'
-			}
-		}
+				summary: 'close',
+			},
+		},
 	},
 	labelStepUp: {
 		description: 'Label for step up button',
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'Increase value'
-			}
-		}
+				summary: 'Increase value',
+			},
+		},
 	},
 	labelStepDown: {
 		description: 'Label for step down button',
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'Decrease value'
-			}
-		}
+				summary: 'Decrease value',
+			},
+		},
 	},
 	labelShowPassword: {
 		description: 'Label for show password button',
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'Show password'
-			}
-		}
+				summary: 'Show password',
+			},
+		},
 	},
 	labelHidePassword: {
 		description: 'Label for hide password button',
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'Hide password'
-			}
-		}
+				summary: 'Hide password',
+			},
+		},
 	},
 	labelClear: {
 		description: 'Label for clear button',
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'Clear'
-			}
-		}
+				summary: 'Clear',
+			},
+		},
 	},
 	before: {
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
+				summary: 'html',
+			},
+		},
 	},
 	after: {
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
-	}
+				summary: 'html',
+			},
+		},
+	},
 }

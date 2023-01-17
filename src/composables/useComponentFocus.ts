@@ -3,7 +3,7 @@ import { useFocus, type MaybeElement, type MaybeElementRef } from '@vueuse/core'
 
 export function useComponentFocus(
 	inputTemplateRef: MaybeElementRef<MaybeElement>,
-	emit: (event: 'focus' | 'blur', value: unknown) => void
+	emit: (event: 'focus' | 'blur', value: unknown) => void,
 ) {
 	const { focused } = useFocus(inputTemplateRef)
 
@@ -12,6 +12,6 @@ export function useComponentFocus(
 	})
 
 	return {
-		focused
+		focused,
 	}
 }

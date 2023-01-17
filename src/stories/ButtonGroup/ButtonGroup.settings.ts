@@ -5,24 +5,24 @@ import { argTypes as buttonArgTypes } from '../Button/Button.settings'
 
 export const defaultArgs = {
 	...propsToObject(VvButtonGroupProps),
-	modifiers: []
+	modifiers: [],
 }
 
 export const argTypes = {
 	modelValue: {
 		table: {
-			disable: true
-		}
+			disable: true,
+		},
 	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: ['compact', 'vertical', 'block']
+		options: ['compact', 'vertical', 'block'],
 	},
 	itemModifiers: {
 		options: buttonArgTypes.modifiers.options,
 		control: {
-			type: 'check'
-		}
+			type: 'check',
+		},
 	},
-	...DefaultSlotArgTypes
+	...DefaultSlotArgTypes,
 }

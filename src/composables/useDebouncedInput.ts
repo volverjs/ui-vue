@@ -3,7 +3,7 @@ import { type Ref, computed } from 'vue'
 export function useDebouncedInput(
 	modelValue: Ref | undefined,
 	emit: (event: string, value: unknown) => void,
-	ms: string | number = 0
+	ms: string | number = 0,
 ): Ref {
 	let timeout: NodeJS.Timeout
 
@@ -20,6 +20,6 @@ export function useDebouncedInput(
 			timeout = setTimeout(() => {
 				emit('update:modelValue', value)
 			}, ms as number)
-		}
+		},
 	})
 }

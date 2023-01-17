@@ -6,7 +6,7 @@ import { isEmpty } from '@/utils/ObjectUtilities'
  * Injects a group state
  */
 export function useInjectedGroupState<TGroup extends IGroupState>(
-	groupKey: string
+	groupKey: string,
 ) {
 	// Get group state
 	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
@@ -20,7 +20,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	function getGroupOrLocalRef<T extends object>(
 		propName: keyof TGroup,
 		props: T,
-		emit?: (event: string, ...args: unknown[]) => void
+		emit?: (event: string, ...args: unknown[]) => void,
 	) {
 		if (group?.value) {
 			const groupPropValue = unref(group.value)[propName] as Ref<unknown>
@@ -30,7 +30,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 				},
 				set(value) {
 					groupPropValue.value = value
-				}
+				},
 			})
 		}
 		const propRef = toRef(props, propName as keyof T)
@@ -40,13 +40,13 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 			},
 			set(value) {
 				if (emit) emit(`update:${propName as string}`, value)
-			}
+			},
 		})
 	}
 
 	return {
 		group,
 		isInGroup,
-		getGroupOrLocalRef
+		getGroupOrLocalRef,
 	}
 }

@@ -21,7 +21,7 @@ export const VvAccordionProps = {
 	 */
 	modelValue: {
 		type: Boolean,
-		default: undefined
+		default: undefined,
 	},
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
@@ -30,7 +30,7 @@ export const VvAccordionProps = {
 	/**
 	 * If true, the accordion will be disabled
 	 */
-	disabled: Boolean
+	disabled: Boolean,
 }
 
 export const VvAccordionEvents = ['update:modelValue']
@@ -41,7 +41,7 @@ export type VvAccordionPropsTypes = ExtractPropTypes<typeof VvAccordionProps>
  */
 export function useGroupProps(
 	props: VvAccordionPropsTypes,
-	emit: (event: string, value: unknown) => void
+	emit: (event: string, value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
@@ -67,6 +67,6 @@ export function useGroupProps(
 		modifiers,
 		// local props
 		title,
-		content
+		content,
 	}
 }

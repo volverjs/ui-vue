@@ -18,7 +18,7 @@ setup((app) => {
 	}
 	bodyClasses.add('theme')
 	app.use(VolverPlugin, {
-		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
+		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed],
 	})
 })
 
@@ -28,11 +28,11 @@ export const parameters = {
 		expanded: true,
 		matchers: {
 			color: /(background|color)$/i,
-			date: /Date$/
-		}
+			date: /Date$/,
+		},
 	},
 	docs: {
-		theme: themes.normal
+		theme: themes.normal,
 	},
 	darkMode: {
 		classTarget: 'body',
@@ -41,11 +41,11 @@ export const parameters = {
 		stylePreview: true,
 		dark: {
 			...themes.dark,
-			brandImage: 'brand-dark.svg'
+			brandImage: 'brand-dark.svg',
 		},
 		light: {
 			...themes.normal,
-			brandImage: 'brand.svg'
-		}
-	}
+			brandImage: 'brand.svg',
+		},
+	},
 }

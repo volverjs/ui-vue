@@ -5,11 +5,11 @@ import { within } from '@storybook/testing-library'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const firstChild = element.children[0] as HTMLDetailsElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 
 	const modifiers =
@@ -33,7 +33,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		await sleep()
 		expect(firstChild.open).toBeTruthy()
 		if (args.collapse) {
-			expect(JSON.stringify(JSON.parse(value.innerText))).toBe(JSON.stringify([args.items[0].name]))
+			expect(JSON.stringify(JSON.parse(value.innerText))).toBe(
+				JSON.stringify([args.items[0].name]),
+			)
 		} else {
 			expect(value.innerText).toBe(args.items[0].name)
 		}

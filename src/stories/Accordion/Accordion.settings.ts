@@ -1,7 +1,7 @@
 import {
 	DefaultSlotArgTypes,
 	DisabledArgTypes,
-	ModifiersArgTypes
+	ModifiersArgTypes,
 } from '@/stories/argTypes'
 
 export const defaultArgs = {
@@ -9,38 +9,38 @@ export const defaultArgs = {
 	content:
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 	modifiers: [],
-	disabled: false
+	disabled: false,
 }
 
 export const argTypes = {
 	summary: {
 		description: 'The title slot',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
+				summary: 'html',
+			},
+		},
 	},
 	details: {
 		description: 'The content slot',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
+				summary: 'html',
+			},
+		},
 	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: ['marker-right', 'bordered']
+		options: ['marker-right', 'bordered'],
 	},
 	...DisabledArgTypes,
-	...DefaultSlotArgTypes
+	...DefaultSlotArgTypes,
 }

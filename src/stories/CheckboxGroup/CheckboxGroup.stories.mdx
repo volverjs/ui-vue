@@ -22,7 +22,7 @@ export const Template = (args) => ({
 				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
             </vv-checkbox-group>
             <div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-        `
+        `,
 })
 
 <Canvas>
@@ -39,10 +39,11 @@ export const Template = (args) => ({
 		argTypes={{
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -55,10 +56,11 @@ export const Template = (args) => ({
 		argTypes={{
 			readonly: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -71,10 +73,11 @@ export const Template = (args) => ({
 		argTypes={{
 			vertical: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -87,10 +90,11 @@ export const Template = (args) => ({
 		argTypes={{
 			invalid: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -103,10 +107,11 @@ export const Template = (args) => ({
 		argTypes={{
 			valid: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -119,10 +124,11 @@ export const Template = (args) => ({
 		argTypes={{
 			hint: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

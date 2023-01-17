@@ -14,7 +14,7 @@ export const INPUT_TYPES = {
 	TIME: 'time',
 	DATETIME_LOCAL: 'datetime-local',
 	MONTH: 'month',
-	WEEK: 'week'
+	WEEK: 'week',
 } as const
 export type InputType = ValueOf<typeof INPUT_TYPES>
 
@@ -24,7 +24,7 @@ export const TYPES_ICON = {
 	DATE: 'calendar',
 	TIME: 'time',
 	COLOR: 'color',
-	SEARCH: 'close'
+	SEARCH: 'close',
 } as const
 
 export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
@@ -44,7 +44,7 @@ export const VvInputTextProps = {
 		type: String as PropType<InputType>,
 		default: INPUT_TYPES.TEXT,
 		validator: (value: InputType) =>
-			Object.values(INPUT_TYPES).includes(value)
+			Object.values(INPUT_TYPES).includes(value),
 	},
 	/**
 	 * Minimum value
@@ -82,7 +82,7 @@ export const VvInputTextProps = {
 	 */
 	iconShowPassword: {
 		type: String,
-		default: TYPES_ICON.PASSWORD_SHOW
+		default: TYPES_ICON.PASSWORD_SHOW,
 	},
 	/**
 	 * VvIcon name for hide password button
@@ -90,7 +90,7 @@ export const VvInputTextProps = {
 	 */
 	iconHidePassword: {
 		type: String,
-		default: TYPES_ICON.PASSWORD_HIDE
+		default: TYPES_ICON.PASSWORD_HIDE,
 	},
 	/**
 	 * VvIcon name for clear button
@@ -98,43 +98,43 @@ export const VvInputTextProps = {
 	 */
 	iconClear: {
 		type: String,
-		default: TYPES_ICON.SEARCH
+		default: TYPES_ICON.SEARCH,
 	},
 	/**
 	 * Label for step up button
 	 */
 	labelStepUp: {
 		type: String,
-		default: 'Increase value'
+		default: 'Increase value',
 	},
 	/**
 	 * Label for step down button
 	 */
 	labelStepDown: {
 		type: String,
-		default: 'Decrease value'
+		default: 'Decrease value',
 	},
 	/**
 	 * Label for show password button
 	 */
 	labelShowPassword: {
 		type: String,
-		default: 'Show password'
+		default: 'Show password',
 	},
 	/**
 	 * Label for hide password button
 	 */
 	labelHidePassword: {
 		type: String,
-		default: 'Hide password'
+		default: 'Hide password',
 	},
 	/**
 	 * Label for clear button
 	 */
 	labelClear: {
 		type: String,
-		default: 'Clear'
-	}
+		default: 'Clear',
+	},
 }
 
 export type VvInputTextPropsTypes = ExtractPropTypes<typeof VvInputTextProps>

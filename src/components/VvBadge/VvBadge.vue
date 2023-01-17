@@ -1,17 +1,17 @@
 <script lang="ts">
-export default {
-	name: 'VvBadge'
-}
+	export default {
+		name: 'VvBadge',
+	}
 </script>
 
 <script setup lang="ts">
-import { useBemModifiers } from '@/composables/useModifiers'
-import { VvBadgeProps } from '@/components/VvBadge'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvBadgeProps } from '@/components/VvBadge'
 
-const props = defineProps(VvBadgeProps)
-const { bemCssClasses } = useBemModifiers('vv-badge', {
-	modifiers: props.modifiers
-})
+	const props = defineProps(VvBadgeProps)
+	const { bemCssClasses } = useBemModifiers('vv-badge', {
+		modifiers: props.modifiers,
+	})
 </script>
 
 <template>

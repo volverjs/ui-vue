@@ -8,7 +8,7 @@ export const VvDropdownProps = {
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
 	modelValue: {
-		type: [String, Number, Boolean, Object, Array]
+		type: [String, Number, Boolean, Object, Array],
 	},
 	/**
 	 * Label of "no results" options
@@ -21,5 +21,5 @@ export const VvDropdownProps = {
 	/**
 	 * The max number of selected values
 	 */
-	maxValues: [Number, String]
+	maxValues: [Number, String],
 }

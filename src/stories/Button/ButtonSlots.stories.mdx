@@ -13,13 +13,14 @@ import { argTypes, defaultArgs } from './Button.settings'
 		argTypes={{
 			default: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
 		args={{
-			default: 'Default <em class="italic">slot!</em>'
-		}}>
+			default: 'Default <em class="italic">slot!</em>',
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -29,15 +30,16 @@ import { argTypes, defaultArgs } from './Button.settings'
 		name="Before"
 		play={defaultTest}
 		args={{
-			label: 'Before slot'
+			label: 'Before slot',
 		}}
 		argTypes={{
 			before: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{(args) => {
 			return {
 				setup() {
@@ -48,7 +50,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 							<template #before>
 								<vv-badge value="12" modifiers="danger" />
 							</template>
-						</vv-button>`
+						</vv-button>`,
 			}
 		}}
 	</Story>
@@ -59,15 +61,16 @@ import { argTypes, defaultArgs } from './Button.settings'
 		name="After"
 		play={defaultTest}
 		args={{
-			label: 'After slot'
+			label: 'After slot',
 		}}
 		argTypes={{
 			after: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{(args) => {
 			return {
 				setup() {
@@ -78,7 +81,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 							<template #after>
 								<vv-badge value="12" modifiers="danger" />
 							</template>
-						</vv-button>`
+						</vv-button>`,
 			}
 		}}
 	</Story>
@@ -88,8 +91,9 @@ import { argTypes, defaultArgs } from './Button.settings'
 	<Story
 		name="Label"
 		args={{
-			icon: 'add'
-		}}>
+			icon: 'add',
+		}}
+	>
 		{(args) => {
 			return {
 				components: { VvButton },
@@ -100,7 +104,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 							<template #label>
 								Label <em class="italic">slot!</em>
 							</template>
-						</vv-button>`
+						</vv-button>`,
 			}
 		}}
 	</Story>

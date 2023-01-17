@@ -5,68 +5,68 @@ import { ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
 	...propsToObject(VvIconProps),
-	name: 'add-circle'
+	name: 'add-circle',
 }
 
 export const argTypes = {
 	name: {
 		options: Object.keys(normal.icons),
 		control: {
-			type: 'select'
-		}
+			type: 'select',
+		},
 	},
 	mode: {
 		options: ['style', 'bg', 'mask', 'svg'],
 		control: {
-			type: 'select'
-		}
+			type: 'select',
+		},
 	},
 	src: {
 		description: 'Url remote SVG icon',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			type: {
-				summary: 'url'
-			}
-		}
+				summary: 'url',
+			},
+		},
 	},
 	svg: {
 		description: 'Svg icon string',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			type: {
-				summary: 'xml'
-			}
-		}
+				summary: 'xml',
+			},
+		},
 	},
 	prefix: {
 		options: ['simple', 'normal', 'detailed'],
 		control: {
-			type: 'select'
+			type: 'select',
 		},
 		table: {
 			defaultValue: {
-				summary: 'normal'
-			}
-		}
+				summary: 'normal',
+			},
+		},
 	},
 	flip: {
 		options: ['', 'vertical', 'horizontal'],
 		control: {
-			type: 'radio'
-		}
+			type: 'radio',
+		},
 	},
 	onLoad: {
 		description: 'A callback that is called when icon data has been loaded',
 		table: {
 			type: {
-				summary: 'function'
-			}
-		}
+				summary: 'function',
+			},
+		},
 	},
-	...ModifiersArgTypes
+	...ModifiersArgTypes,
 }

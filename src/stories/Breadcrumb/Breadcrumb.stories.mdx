@@ -17,7 +17,7 @@ export const Template = (args) => ({
 	},
 	template: `<div class="bg-surface p-lg">
 			     <vv-breadcrumb v-bind="args" />
-			   </div>`
+			   </div>`,
 })
 
 <Canvas>
@@ -34,14 +34,14 @@ export const Template = (args) => ({
 		name="Multiline"
 		play={defaultTest}
 		args={{
-			modifiers: 'multiline'
+			modifiers: 'multiline',
 		}}
 		argTypes={{
 			modifiers: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
 		render={Template.bind()}
 	/>

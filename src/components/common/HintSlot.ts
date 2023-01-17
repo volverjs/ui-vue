@@ -5,7 +5,7 @@ import {
 	type Ref,
 	computed,
 	toRefs,
-	h
+	h,
 } from 'vue'
 import { toReactive } from '@vueuse/core'
 import { isString, resolveFieldData, isEmpty } from '@/utils/ObjectUtilities'
@@ -50,7 +50,7 @@ export function HintSlotFactory(
 	parentProps: Readonly<
 		ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>
 	>,
-	parentSlots: Slots
+	parentSlots: Slots,
 ): {
 	HintSlot: Component
 	hasHint: Ref<boolean>
@@ -63,7 +63,7 @@ export function HintSlotFactory(
 		invalid: invalidSlot,
 		valid: validSlot,
 		hint: hintSlot,
-		loading: loadingSlot
+		loading: loadingSlot,
 	} = parentSlots
 
 	// props
@@ -105,11 +105,11 @@ export function HintSlotFactory(
 	})
 
 	const hasHint = computed(
-		() => !!((hintLabel && hintLabel.value) || hintSlot)
+		() => !!((hintLabel && hintLabel.value) || hintSlot),
 	)
 
 	const hasValid = computed(
-		() => !!((validLabel && validLabel.value) || validSlot)
+		() => !!((validLabel && validLabel.value) || validSlot),
 	)
 
 	const hasLoading = computed(
@@ -117,7 +117,7 @@ export function HintSlotFactory(
 			!!(
 				(loading?.value && loadingSlot) ||
 				(loading?.value && loadingLabel?.value)
-			)
+			),
 	)
 
 	const isVisible = computed(
@@ -125,7 +125,7 @@ export function HintSlotFactory(
 			hasHint.value ||
 			hasValid.value ||
 			hasInvalid.value ||
-			hasLoading.value
+			hasLoading.value,
 	)
 
 	return {
@@ -138,8 +138,8 @@ export function HintSlotFactory(
 			props: {
 				params: {
 					type: Object,
-					default: () => ({})
-				}
+					default: () => ({}),
+				},
 			},
 			setup(props) {
 				const hintContent = computed(() => {
@@ -152,7 +152,7 @@ export function HintSlotFactory(
 						invalidLabel,
 						loading,
 						loadingLabel,
-						...props.params
+						...props.params,
 					})
 
 					if (invalid?.value) {
@@ -188,7 +188,7 @@ export function HintSlotFactory(
 					isVisible,
 					hasInvalid,
 					hasValid,
-					hintContent
+					hintContent,
 				}
 			},
 			render() {
@@ -199,13 +199,13 @@ export function HintSlotFactory(
 							role:
 								this.hasInvalid || this.hasValid
 									? 'alert'
-									: undefined
+									: undefined,
 						},
-						this.hintContent
+						this.hintContent,
 					)
 				}
-			}
-		}
+			},
+		},
 	}
 }
 

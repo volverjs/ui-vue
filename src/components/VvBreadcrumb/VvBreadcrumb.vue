@@ -1,17 +1,17 @@
 <script lang="ts">
-export default {
-	name: 'VvBreadcrumb'
-}
+	export default {
+		name: 'VvBreadcrumb',
+	}
 </script>
 
 <script setup lang="ts">
-import { useBemModifiers } from '@/composables/useModifiers'
-import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
-const props = defineProps(VvBreadcrumbProps)
-const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
-	modifiers: props.modifiers
-})
+	const props = defineProps(VvBreadcrumbProps)
+	const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
+		modifiers: props.modifiers,
+	})
 </script>
 
 <template>
@@ -23,24 +23,26 @@ const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
 				:class="{
 					'vv-breadcrumb__item': index < Number(routes?.length) - 1,
 					'vv-breadcrumb__item-active':
-						index === Number(routes?.length) - 1
+						index === Number(routes?.length) - 1,
 				}"
 				itemprop="itemListElement"
 				itemtype="https://schema.org/ListItem"
-				itemscope>
+				itemscope
+			>
 				<component
 					:is="route.to ? 'router-link' : route.href ? 'a' : 'span'"
 					v-bind="route"
 					:class="{
 						'vv-breadcrumb__link':
-							index < Number(routes?.length) - 1
+							index < Number(routes?.length) - 1,
 					}"
 					:aria-current="
 						index === Number(routes?.length) - 1
 							? 'page'
 							: undefined
 					"
-					itemprop="item">
+					itemprop="item"
+				>
 					<slot name="label" v-bind="{ route, index }">
 						{{ route.label }}
 					</slot>

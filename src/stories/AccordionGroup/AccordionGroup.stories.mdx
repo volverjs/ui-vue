@@ -18,13 +18,13 @@ export const Template = (args, { argTypes }) => ({
 	},
 	data() {
 		return {
-			selected: null
+			selected: null,
 		}
 	},
 	template: `<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" />
 				<div class="mt-24">
 					Selected: <span data-testId="value">{{ selected }}</span>
-				</div>`
+				</div>`,
 })
 
 <Canvas>

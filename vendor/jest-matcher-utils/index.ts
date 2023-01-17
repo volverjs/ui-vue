@@ -15,12 +15,12 @@ import {
 	DiffOptions as ImportDiffOptions,
 	diff as diffDefault,
 	diffStringsRaw,
-	diffStringsUnified
+	diffStringsUnified,
 } from 'jest-diff'
 import { getType, isPrimitive } from 'jest-get-type'
 import {
 	format as prettyFormat,
-	plugins as prettyFormatPlugins
+	plugins as prettyFormatPlugins,
 } from 'pretty-format'
 import Replaceable from './Replaceable'
 import deepCyclicCopyReplaceable from './deepCyclicCopyReplaceable'
@@ -31,7 +31,7 @@ const {
 	DOMElement,
 	Immutable,
 	ReactElement,
-	ReactTestComponent
+	ReactTestComponent,
 } = prettyFormatPlugins
 
 const PLUGINS = [
@@ -40,7 +40,7 @@ const PLUGINS = [
 	DOMElement,
 	DOMCollection,
 	Immutable,
-	AsymmetricMatcher
+	AsymmetricMatcher,
 ]
 
 type MatcherHintColor = (arg: string) => string // subset of Chalk type
@@ -81,7 +81,7 @@ const NUMBERS = [
 	'ten',
 	'eleven',
 	'twelve',
-	'thirteen'
+	'thirteen',
 ]
 
 export const SUGGEST_TO_CONTAIN_EQUAL = ''
@@ -89,7 +89,7 @@ export const SUGGEST_TO_CONTAIN_EQUAL = ''
 export const stringify = (
 	object: unknown,
 	maxDepth = 10,
-	maxWidth = 10
+	maxWidth = 10,
 ): string => {
 	const MAX_LENGTH = 10000
 	let result
@@ -99,7 +99,7 @@ export const stringify = (
 			maxDepth,
 			maxWidth,
 			min: true,
-			plugins: PLUGINS
+			plugins: PLUGINS,
 		})
 	} catch {
 		result = prettyFormat(object, {
@@ -107,7 +107,7 @@ export const stringify = (
 			maxDepth,
 			maxWidth,
 			min: true,
-			plugins: PLUGINS
+			plugins: PLUGINS,
 		})
 	}
 
@@ -136,7 +136,7 @@ export const printExpected = (value: unknown): string =>
 export function printWithType<T>(
 	name: string,
 	value: T,
-	print: (value: T) => string
+	print: (value: T) => string,
 ): string {
 	const type = getType(value)
 	const hasType =
@@ -150,7 +150,7 @@ export function printWithType<T>(
 export const ensureNoExpected = (
 	expected: unknown,
 	matcherName: string,
-	options?: MatcherHintOptions
+	options?: MatcherHintOptions,
 ): void => {
 	if (typeof expected !== 'undefined') {
 		// Prepend maybe not only for backward compatibility.
@@ -161,8 +161,8 @@ export const ensureNoExpected = (
 				// Because expected is omitted in hint above,
 				// expected is black instead of green in message below.
 				'this matcher must not have an expected argument',
-				printWithType('Expected', expected, printExpected)
-			)
+				printWithType('Expected', expected, printExpected),
+			),
 		)
 	}
 }
@@ -173,7 +173,7 @@ export const ensureNoExpected = (
 export const ensureActualIsNumber = (
 	actual: unknown,
 	matcherName: string,
-	options?: MatcherHintOptions
+	options?: MatcherHintOptions,
 ): void => {
 	if (typeof actual !== 'number' && typeof actual !== 'bigint') {
 		// Prepend maybe not only for backward compatibility.
@@ -182,10 +182,10 @@ export const ensureActualIsNumber = (
 			matcherErrorMessage(
 				matcherHint(matcherString, undefined, undefined, options),
 				`${RECEIVED_COLOR(
-					'received'
+					'received',
 				)} value must be a number or bigint`,
-				printWithType('Received', actual, printReceived)
-			)
+				printWithType('Received', actual, printReceived),
+			),
 		)
 	}
 }
@@ -196,7 +196,7 @@ export const ensureActualIsNumber = (
 export const ensureExpectedIsNumber = (
 	expected: unknown,
 	matcherName: string,
-	options?: MatcherHintOptions
+	options?: MatcherHintOptions,
 ): void => {
 	if (typeof expected !== 'number' && typeof expected !== 'bigint') {
 		// Prepend maybe not only for backward compatibility.
@@ -205,10 +205,10 @@ export const ensureExpectedIsNumber = (
 			matcherErrorMessage(
 				matcherHint(matcherString, undefined, undefined, options),
 				`${EXPECTED_COLOR(
-					'expected'
+					'expected',
 				)} value must be a number or bigint`,
-				printWithType('Expected', expected, printExpected)
-			)
+				printWithType('Expected', expected, printExpected),
+			),
 		)
 	}
 }
@@ -220,7 +220,7 @@ export const ensureNumbers = (
 	actual: unknown,
 	expected: unknown,
 	matcherName: string,
-	options?: MatcherHintOptions
+	options?: MatcherHintOptions,
 ): void => {
 	ensureActualIsNumber(actual, matcherName, options)
 	ensureExpectedIsNumber(expected, matcherName, options)
@@ -229,7 +229,7 @@ export const ensureNumbers = (
 export const ensureExpectedIsNonNegativeInteger = (
 	expected: unknown,
 	matcherName: string,
-	options?: MatcherHintOptions
+	options?: MatcherHintOptions,
 ): void => {
 	if (
 		typeof expected !== 'number' ||
@@ -242,10 +242,10 @@ export const ensureExpectedIsNonNegativeInteger = (
 			matcherErrorMessage(
 				matcherHint(matcherString, undefined, undefined, options),
 				`${EXPECTED_COLOR(
-					'expected'
+					'expected',
 				)} value must be a non-negative integer`,
-				printWithType('Expected', expected, printExpected)
-			)
+				printWithType('Expected', expected, printExpected),
+			),
 		)
 	}
 }
@@ -258,7 +258,7 @@ export const ensureExpectedIsNonNegativeInteger = (
 const getCommonAndChangedSubstrings = (
 	diffs: Array<Diff>,
 	op: number,
-	hasCommonDiff: boolean
+	hasCommonDiff: boolean,
 ): string =>
 	diffs.reduce(
 		(reduced: string, diff: Diff): string =>
@@ -270,7 +270,7 @@ const getCommonAndChangedSubstrings = (
 				: hasCommonDiff
 				? INVERTED_COLOR(diff[1])
 				: diff[1]),
-		''
+		'',
 	)
 
 const isLineDiffable = (expected: unknown, received: unknown): boolean => {
@@ -323,7 +323,7 @@ export const printDiffOrStringify = (
 	received: unknown,
 	expectedLabel: string,
 	receivedLabel: string,
-	expand: boolean // CLI options: true if `--expand` or false if `--no-expand`
+	expand: boolean, // CLI options: true if `--expand` or false if `--no-expand`
 ): string => {
 	if (
 		typeof expected === 'string' &&
@@ -340,7 +340,7 @@ export const printDiffOrStringify = (
 				bAnnotation: receivedLabel,
 				emptyFirstOrLastLinePlaceholder: '↵', // U+21B5
 				expand,
-				includeChangeCounts: true
+				includeChangeCounts: true,
 			})
 		}
 
@@ -351,12 +351,20 @@ export const printDiffOrStringify = (
 		const expectedLine =
 			printLabel(expectedLabel) +
 			printExpected(
-				getCommonAndChangedSubstrings(diffs, DIFF_DELETE, hasCommonDiff)
+				getCommonAndChangedSubstrings(
+					diffs,
+					DIFF_DELETE,
+					hasCommonDiff,
+				),
 			)
 		const receivedLine =
 			printLabel(receivedLabel) +
 			printReceived(
-				getCommonAndChangedSubstrings(diffs, DIFF_INSERT, hasCommonDiff)
+				getCommonAndChangedSubstrings(
+					diffs,
+					DIFF_INSERT,
+					hasCommonDiff,
+				),
 			)
 
 		return `${expectedLine}\n${receivedLine}`
@@ -369,7 +377,7 @@ export const printDiffOrStringify = (
 			aAnnotation: expectedLabel,
 			bAnnotation: receivedLabel,
 			expand,
-			includeChangeCounts: true
+			includeChangeCounts: true,
 		})
 
 		if (
@@ -412,13 +420,13 @@ export function replaceMatchedToAsymmetricMatcher(
 	replacedExpected: unknown,
 	replacedReceived: unknown,
 	expectedCycles: Array<unknown>,
-	receivedCycles: Array<unknown>
+	receivedCycles: Array<unknown>,
 ): { replacedExpected: unknown; replacedReceived: unknown } {
 	return _replaceMatchedToAsymmetricMatcher(
 		deepCyclicCopyReplaceable(replacedExpected),
 		deepCyclicCopyReplaceable(replacedReceived),
 		expectedCycles,
-		receivedCycles
+		receivedCycles,
 	)
 }
 
@@ -426,7 +434,7 @@ function _replaceMatchedToAsymmetricMatcher(
 	replacedExpected: unknown,
 	replacedReceived: unknown,
 	expectedCycles: Array<unknown>,
-	receivedCycles: Array<unknown>
+	receivedCycles: Array<unknown>,
 ) {
 	if (!Replaceable.isReplaceable(replacedExpected, replacedReceived)) {
 		return { replacedExpected, replacedReceived }
@@ -460,7 +468,7 @@ function _replaceMatchedToAsymmetricMatcher(
 				expectedValue,
 				receivedValue,
 				expectedCycles,
-				receivedCycles
+				receivedCycles,
 			)
 			expectedReplaceable.set(key, replaced.replacedExpected)
 			receivedReplaceable.set(key, replaced.replacedReceived)
@@ -469,7 +477,7 @@ function _replaceMatchedToAsymmetricMatcher(
 
 	return {
 		replacedExpected: expectedReplaceable.object,
-		replacedReceived: receivedReplaceable.object
+		replacedReceived: receivedReplaceable.object,
 	}
 }
 
@@ -485,7 +493,7 @@ function isAsymmetricMatcher(data: any): data is AsymmetricMatcher {
 export const diff = (
 	a: unknown,
 	b: unknown,
-	options?: DiffOptions
+	options?: DiffOptions,
 ): string | null => (shouldPrintDiff(a, b) ? diffDefault(a, b, options) : null)
 
 export const pluralize = (word: string, count: number): string =>
@@ -501,7 +509,7 @@ type PrintLabel = (string: string) => string
 export const getLabelPrinter = (...strings: Array<string>): PrintLabel => {
 	const maxLength = strings.reduce(
 		(max, string) => (string.length > max ? string.length : max),
-		0
+		0,
 	)
 	return (string: string): string =>
 		`${string}: ${' '.repeat(maxLength - string.length)}`
@@ -510,7 +518,7 @@ export const getLabelPrinter = (...strings: Array<string>): PrintLabel => {
 export const matcherErrorMessage = (
 	hint: string, // assertion returned from call to matcherHint
 	generic: string, // condition which correct value must fulfill
-	specific?: string // incorrect value returned from call to printWithType
+	specific?: string, // incorrect value returned from call to printWithType
 ): string =>
 	`${hint}\n\n${'Matcher error'}: ${generic}${
 		typeof specific === 'string' ? `\n\n${specific}` : ''
@@ -523,7 +531,7 @@ export const matcherHint = (
 	matcherName: string,
 	received = 'received',
 	expected = 'expected',
-	options: MatcherHintOptions = {}
+	options: MatcherHintOptions = {},
 ): string => {
 	const {
 		comment = '',
@@ -533,7 +541,7 @@ export const matcherHint = (
 		promise = '',
 		receivedColor = RECEIVED_COLOR,
 		secondArgument = '',
-		secondArgumentColor = EXPECTED_COLOR
+		secondArgumentColor = EXPECTED_COLOR,
 	} = options
 	let hint = ''
 	let dimString = 'expect' // concatenate adjacent dim substrings

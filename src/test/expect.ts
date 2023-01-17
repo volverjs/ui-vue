@@ -18,7 +18,7 @@ declare global {
 		interface Matchers<R> {
 			toHaveClass: (
 				className: string | string[],
-				expected?: HTMLElement
+				expected?: HTMLElement,
 			) => CustomMatcherResult
 		}
 	}
@@ -31,18 +31,18 @@ expect.extend({
 		if (checkbox.checked) {
 			return {
 				pass: true,
-				message: () => `Checkbox is checked`
+				message: () => `Checkbox is checked`,
 			}
 		}
 		return {
 			pass: false,
-			message: () => `Checkbox is not checked`
+			message: () => `Checkbox is not checked`,
 		}
 	},
 	async toBeClicked(element: HTMLElement) {
 		const result = {
 			pass: false,
-			message: () => "Click event don't works"
+			message: () => "Click event don't works",
 		}
 		element.addEventListener('click', () => {
 			result.pass = true
@@ -55,19 +55,19 @@ expect.extend({
 		const results = await axe(element)
 		return {
 			pass: results.violations.length === 0,
-			message: () => 'Element has violations'
+			message: () => 'Element has violations',
 		}
 	},
 	async toHaveClass(element: HTMLElement, className: string | string[]) {
 		const classes = !Array.isArray(className) ? [className] : className
 		return {
 			pass: classes.every((cssClass) =>
-				element.classList.contains(cssClass)
+				element.classList.contains(cssClass),
 			),
 			message: () =>
-				`One of these classes doesn't exist: ${classes.join(', ')}`
+				`One of these classes doesn't exist: ${classes.join(', ')}`,
 		}
-	}
+	},
 })
 
 export { expect }

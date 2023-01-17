@@ -22,7 +22,7 @@ export const Template = (args) => ({
 			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
 		</vv-radio>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-	`
+	`,
 })
 
 <Canvas>
@@ -39,10 +39,11 @@ export const Template = (args) => ({
 		argTypes={{
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -55,10 +56,11 @@ export const Template = (args) => ({
 		argTypes={{
 			readonly: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -70,15 +72,16 @@ export const Template = (args) => ({
 		args={{
 			invalid: true,
 			invalidLabel: 'You must accept terms and conditions',
-			label: 'Accept terms and conditions'
+			label: 'Accept terms and conditions',
 		}}
 		argTypes={{
 			invalid: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -90,15 +93,16 @@ export const Template = (args) => ({
 		args={{
 			valid: true,
 			validLabel: 'Thank you for accepting terms and conditions',
-			label: 'Accept terms and conditions'
+			label: 'Accept terms and conditions',
 		}}
 		argTypes={{
 			valid: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -108,15 +112,16 @@ export const Template = (args) => ({
 		name="Hint"
 		play={defaultTest}
 		args={{
-			hintLabel: 'Please accept terms and conditions'
+			hintLabel: 'Please accept terms and conditions',
 		}}
 		argTypes={{
 			hintLabel: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

@@ -3,7 +3,7 @@ import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 
 export async function defaultTest(
-	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes
+	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
 	const element = await within(canvasElement).findByRole('button')
 

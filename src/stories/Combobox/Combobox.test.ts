@@ -6,19 +6,19 @@ import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 	const dropdown = element.getElementsByClassName(
-		'vv-dropdown'
+		'vv-dropdown',
 	)[0] as HTMLElement
 	const dropdownFirstItem = dropdown.getElementsByTagName(
-		'label'
+		'label',
 	)[0] as HTMLElement
 	const dropdownSecondItem = dropdown.getElementsByTagName(
-		'label'
+		'label',
 	)[1] as HTMLElement
 	const hint = element.getElementsByClassName('vv-select__hint')[0]
 
@@ -57,7 +57,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 			if (args.multiple) {
 				await expect(JSON.parse(value.innerHTML)).toEqual([
 					firstValue,
-					secondValue
+					secondValue,
 				])
 			} else {
 				await expect(value.innerHTML).toEqual(secondValue)

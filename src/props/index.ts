@@ -3,42 +3,42 @@ import type { Option } from '@/types/generic'
 
 export const ValidProps = {
 	valid: Boolean,
-	validLabel: [String, Array]
+	validLabel: [String, Array],
 }
 
 export const InvalidProps = {
 	invalid: Boolean,
-	invalidLabel: [String, Array]
+	invalidLabel: [String, Array],
 }
 
 export const LoadingProps = {
 	loading: Boolean,
-	loadingLabel: String
+	loadingLabel: String,
 }
 
 export const DisabledProps = {
 	/**
 	 * Whether the form control is disabled
 	 */
-	disabled: Boolean
+	disabled: Boolean,
 }
 
 export const ReadonlyProps = {
 	/**
 	 * The value is not editable
 	 */
-	readonly: Boolean
+	readonly: Boolean,
 }
 
 export const ModifiersProps = {
 	/**
 	 * Component BEM modifiers
 	 */
-	modifiers: [String, Array] as PropType<string | Array<string>>
+	modifiers: [String, Array] as PropType<string | Array<string>>,
 }
 
 export const HintProps = {
-	hintLabel: { type: String, default: '' }
+	hintLabel: { type: String, default: '' },
 }
 
 export const OptionsProps = {
@@ -47,7 +47,7 @@ export const OptionsProps = {
 	 */
 	options: {
 		type: Array as PropType<Array<Option | string>>,
-		default: () => []
+		default: () => [],
 	},
 	/**
 	 * Used when options are objects: key to use for option label
@@ -56,7 +56,7 @@ export const OptionsProps = {
 	/**
 	 * Used when options are objects: key to use for option label
 	 */
-	valueKey: { type: [String, Function], default: 'value' }
+	valueKey: { type: [String, Function], default: 'value' },
 }
 
 export const CountProps = {
@@ -67,20 +67,20 @@ export const CountProps = {
 		type: [Boolean, String],
 		default: false,
 		validator: (value: string) =>
-			[true, false, 'limit', 'countdown'].includes(value)
-	}
+			[true, false, 'limit', 'countdown'].includes(value),
+	},
 }
 
 export const DebounceProps = {
 	/**
 	 * Milliseconds to wait before emitting the input event
 	 */
-	debounce: [Number, String]
+	debounce: [Number, String],
 }
 
 export const ICON_POSITIONS = {
 	LEFT: 'left',
-	RIGHT: 'right'
+	RIGHT: 'right',
 } as const
 export type IconPosition = ValueOf<typeof ICON_POSITIONS>
 
@@ -97,8 +97,8 @@ export const IconProps = {
 		type: String as PropType<IconPosition>,
 		validation: (value: IconPosition) =>
 			Object.values(ICON_POSITIONS).includes(value),
-		default: ICON_POSITIONS.RIGHT
-	}
+		default: ICON_POSITIONS.RIGHT,
+	},
 }
 
 export const TabindexProps = {
@@ -106,7 +106,7 @@ export const TabindexProps = {
 	 * Global attribute tabindex
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
 	 */
-	tabindex: { type: [String, Number], default: 0 }
+	tabindex: { type: [String, Number], default: 0 },
 }
 
 export const IdNameProps = {
@@ -120,7 +120,7 @@ export const IdNameProps = {
 	 * Name of the form control. Submitted with the form as part of a name/value pair
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name
 	 */
-	name: { type: String, required: true }
+	name: { type: String, required: true },
 }
 
 export const InputTextareaProps = {
@@ -182,7 +182,7 @@ export const InputTextareaProps = {
 	/**
 	 * If true the label will be floating
 	 */
-	floating: Boolean
+	floating: Boolean,
 }
 
 export const CheckboxRadioProps = {
@@ -205,7 +205,7 @@ export const CheckboxRadioProps = {
 	/**
 	 * <label> for input
 	 */
-	label: String
+	label: String,
 }
 
 export const CheckboxRadioGroupProps = {
@@ -230,5 +230,5 @@ export const CheckboxRadioGroupProps = {
 	/**
 	 * If true, the group will be displayed in a vertical column
 	 */
-	vertical: Boolean
+	vertical: Boolean,
 }

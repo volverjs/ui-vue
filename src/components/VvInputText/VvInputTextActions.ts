@@ -1,7 +1,7 @@
 import { type Component, h, computed } from 'vue'
 import {
 	type VvInputTextPropsTypes,
-	INPUT_TYPES
+	INPUT_TYPES,
 } from '@/components/VvInputText'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VvInputPasswordAction from '@/components/VvInputText/VvInputPasswordAction'
@@ -10,7 +10,7 @@ import VvInputClearAction from '@/components/VvInputText/VvInputClearAction'
 
 export default function VvInputTextActionsFactory(
 	type: string,
-	parentProps: VvInputTextPropsTypes
+	parentProps: VvInputTextPropsTypes,
 ): Component {
 	return {
 		name: 'VvInputTextActions',
@@ -18,7 +18,7 @@ export default function VvInputTextActionsFactory(
 			VvIcon,
 			VvInputPasswordAction,
 			VvInputStepAction,
-			VvInputClearAction
+			VvInputClearAction,
 		},
 		setup() {
 			const isDisabled = computed(() => {
@@ -33,7 +33,7 @@ export default function VvInputTextActionsFactory(
 				labelHidePassword: parentProps.labelHidePassword,
 				labelClear: parentProps.labelClear,
 				iconShowPassword: parentProps.iconShowPassword,
-				iconHidePassword: parentProps.iconHidePassword
+				iconHidePassword: parentProps.iconHidePassword,
 			}
 		},
 		render() {
@@ -45,8 +45,8 @@ export default function VvInputTextActionsFactory(
 						h(VvInputClearAction, {
 							disabled: this.isDisabled,
 							label: this.labelShowPassword,
-							onClear
-						})
+							onClear,
+						}),
 					]
 					break
 				}
@@ -59,8 +59,8 @@ export default function VvInputTextActionsFactory(
 							labelShow: this.labelShowPassword,
 							labelHide: this.labelHidePassword,
 							iconShow: this.iconShowPassword,
-							iconHide: this.iconHidePassword
-						})
+							iconHide: this.iconHidePassword,
+						}),
 					]
 					break
 				}
@@ -75,7 +75,7 @@ export default function VvInputTextActionsFactory(
 									parentProps.modelValue === parentProps.max),
 							label: this.labelStepUp,
 							onStepUp,
-							onStepDown
+							onStepDown,
 						}),
 						h(VvInputStepAction, {
 							mode: 'down',
@@ -85,8 +85,8 @@ export default function VvInputTextActionsFactory(
 									parentProps.modelValue === parentProps.min),
 							label: this.labelStepDown,
 							onStepUp,
-							onStepDown
-						})
+							onStepDown,
+						}),
 					]
 					break
 				}
@@ -95,6 +95,6 @@ export default function VvInputTextActionsFactory(
 			return Array.isArray(actions)
 				? h('div', { class: 'vv-input-text__actions-group' }, actions)
 				: actions
-		}
+		},
 	}
 }

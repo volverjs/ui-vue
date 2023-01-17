@@ -9,16 +9,17 @@ import { argTypes, defaultArgs } from './Button.settings'
 	<Story
 		name="Default"
 		args={{
-			toggle: true
+			toggle: true,
 		}}
 		argTypes={{
 			toggle: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -28,21 +29,22 @@ import { argTypes, defaultArgs } from './Button.settings'
 		name="Unselectable"
 		args={{
 			toggle: true,
-			unselectable: false
+			unselectable: false,
 		}}
 		argTypes={{
 			toggle: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			unselectable: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

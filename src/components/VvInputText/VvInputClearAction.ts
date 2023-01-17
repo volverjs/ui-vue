@@ -3,21 +3,21 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 export default defineComponent({
 	components: {
-		VvIcon
+		VvIcon,
 	},
 	props: {
 		disabled: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		label: {
 			type: String,
-			default: 'Clear'
+			default: 'Clear',
 		},
 		icon: {
 			type: String,
-			default: 'close'
-		}
+			default: 'close',
+		},
 	},
 	emits: ['clear'],
 	setup(props, { emit }) {
@@ -29,13 +29,13 @@ export default defineComponent({
 		}
 
 		return {
-			onClick
+			onClick,
 		}
 	},
 	render() {
 		const icon = h(VvIcon, {
 			name: this.icon,
-			class: 'vv-input-text__action-icon'
+			class: 'vv-input-text__action-icon',
 		})
 
 		return h(
@@ -45,9 +45,9 @@ export default defineComponent({
 				class: 'vv-input-text__action',
 				ariaLabel: this.label,
 				type: 'button',
-				onClick: this.onClick
+				onClick: this.onClick,
 			},
-			icon
+			icon,
 		)
-	}
+	},
 })

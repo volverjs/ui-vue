@@ -9,7 +9,7 @@ import {
 	TabindexProps,
 	OptionsProps,
 	IconProps,
-	IdNameProps
+	IdNameProps,
 } from '@/props'
 
 export const VvSelectProps = {
@@ -59,7 +59,7 @@ export const VvSelectProps = {
 	 */
 	modelValue: {
 		type: [String, Number, Boolean, Object, Array],
-		default: undefined
+		default: undefined,
 	},
 	/**
 	 * <label> value for the select
@@ -68,7 +68,7 @@ export const VvSelectProps = {
 	/**
 	 * Select placeholder
 	 */
-	placeholder: String
+	placeholder: String,
 }
 
 export const VvSelectEmits = ['update:modelValue', 'focus', 'blur']

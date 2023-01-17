@@ -6,7 +6,7 @@ export function useTextCount(
 		mode?: string | boolean
 		upperLimit?: number
 		lowerLimit?: number
-	}
+	},
 ) {
 	const length = computed(() => {
 		return (unref(text) ?? '').length
@@ -52,6 +52,6 @@ export function useTextCount(
 	return {
 		length,
 		gap,
-		formatted
+		formatted,
 	}
 }

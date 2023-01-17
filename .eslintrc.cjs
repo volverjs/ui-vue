@@ -9,7 +9,7 @@ module.exports = {
 		'plugin:vue/vue3-recommended',
 		'@vue/typescript/recommended',
 		'plugin:storybook/recommended',
-		'prettier'
+		'prettier',
 	],
 	plugins: ['eslint-plugin-prettier'],
 	rules: {
@@ -19,12 +19,12 @@ module.exports = {
 		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 		'vue/multi-word-component-names': 'off',
 		'no-unused-vars': 'off',
-		'sort-imports': 'off'
+		'sort-imports': 'off',
 	},
 	overrides: [
 		{
 			files: '*.mdx',
-			extends: 'plugin:mdx/recommended'
-		}
-	]
+			extends: 'plugin:mdx/recommended',
+		},
+	],
 }

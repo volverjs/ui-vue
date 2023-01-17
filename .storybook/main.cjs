@@ -6,16 +6,16 @@ module.exports = {
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
-		'storybook-dark-mode'
+		'storybook-dark-mode',
 	],
 	framework: {
-		name: '@storybook/vue3-vite'
+		name: '@storybook/vue3-vite',
 	},
 	staticDirs: ['./static'],
 	docs: {
-		disable: true
+		disable: true,
 	},
 	features: {
-		interactionsDebugger: true
-	}
+		interactionsDebugger: true,
+	},
 }

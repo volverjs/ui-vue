@@ -8,12 +8,12 @@ export const VvButtonGroupProps = {
 	 */
 	itemModifiers: {
 		type: [String, Array<string>],
-		default: ''
+		default: '',
 	},
 	toggle: { type: Boolean, default: false },
 	multiple: { type: Boolean, default: false },
 	unselectable: { type: Boolean, default: true },
-	modelValue: { type: [String, Array<string>], default: undefined }
+	modelValue: { type: [String, Array<string>], default: undefined },
 }
 
 export const VvButtonGroupEvents = ['update:modelValue']

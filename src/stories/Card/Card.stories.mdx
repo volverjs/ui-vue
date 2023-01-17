@@ -22,7 +22,7 @@ export const Template = (args) => ({
 			<template #content v-if="args.content"><div v-html="args.content"></div></template>
 			<template #footer v-if="args.footer"><div v-html="args.footer"></div></template>
         </vv-card>
-        `
+        `,
 })
 
 <Canvas>
@@ -31,8 +31,9 @@ export const Template = (args) => ({
 		play={defaulTest}
 		args={{
 			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
-		}}>
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

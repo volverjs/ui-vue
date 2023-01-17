@@ -9,16 +9,16 @@ export default ({ mode }: { mode: string }) => {
 		build: {
 			lib: {
 				name: '@volverjs/ui-vue',
-				entry: path.resolve(__dirname, 'src/index.ts')
+				entry: path.resolve(__dirname, 'src/index.ts'),
 			},
 			rollupOptions: {
 				external: ['vue'],
 				output: {
 					globals: {
-						vue: 'Vue'
-					}
-				}
-			}
+						vue: 'Vue',
+					},
+				},
+			},
 		},
 		base: mode === 'development' ? './' : '/ui-vue/',
 		plugins: [vue(), ESLint()],
@@ -33,13 +33,13 @@ export default ({ mode }: { mode: string }) => {
 				 */
 				'jest-matcher-utils': path.resolve(
 					__dirname,
-					'./vendor/jest-matcher-utils/index.ts'
-				)
-			}
+					'./vendor/jest-matcher-utils/index.ts',
+				),
+			},
 		},
 		optimizeDeps: {
 			exclude: ['@volverjs/style'],
-			force: true
-		}
+			force: true,
+		},
 	})
 }

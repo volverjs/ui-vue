@@ -18,7 +18,7 @@ export const Template = (args, { argTypes }) => ({
 	},
 	template: `<vv-badge v-bind="args">
 			   		<template #default v-if="args.default"><span v-html="args.default"></span></template>	
-			   </vv-badge>`
+			   </vv-badge>`,
 })
 
 <Canvas>
@@ -34,16 +34,17 @@ export const Template = (args, { argTypes }) => ({
 		argTypes={{
 			default: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			value: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

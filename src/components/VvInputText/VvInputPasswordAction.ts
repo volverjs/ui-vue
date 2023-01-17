@@ -4,35 +4,35 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 export default defineComponent({
 	components: {
-		VvIcon
+		VvIcon,
 	},
 	props: {
 		disabled: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		labelShow: {
 			type: String,
-			default: 'Show password'
+			default: 'Show password',
 		},
 		labelHide: {
 			type: String,
-			default: 'Hide password'
+			default: 'Hide password',
 		},
 		iconShow: {
 			type: String,
-			default: TYPES_ICON.PASSWORD_SHOW
+			default: TYPES_ICON.PASSWORD_SHOW,
 		},
 		iconHide: {
 			type: String,
-			default: TYPES_ICON.PASSWORD_HIDE
-		}
+			default: TYPES_ICON.PASSWORD_HIDE,
+		},
 	},
 	emits: ['toggle-password'],
 	setup(props, { emit }) {
 		const active = ref(false)
 		const activeIcon = computed(() =>
-			active.value ? props.iconHide : props.iconShow
+			active.value ? props.iconHide : props.iconShow,
 		)
 
 		function onClick(e: Event) {
@@ -46,13 +46,13 @@ export default defineComponent({
 		return {
 			active,
 			activeIcon,
-			onClick
+			onClick,
 		}
 	},
 	render() {
 		const icon = h(VvIcon, {
 			name: this.activeIcon,
-			class: 'vv-input-text__action-icon'
+			class: 'vv-input-text__action-icon',
 		})
 
 		return h(
@@ -62,9 +62,9 @@ export default defineComponent({
 				class: 'vv-input-text__action',
 				ariaLabel: this.active ? this.labelHide : this.labelShow,
 				type: 'button',
-				onClick: this.onClick
+				onClick: this.onClick,
 			},
-			icon
+			icon,
 		)
-	}
+	},
 })

@@ -8,14 +8,14 @@ import {
 	ModifiersProps,
 	OptionsProps,
 	IconProps,
-	TabindexProps
+	TabindexProps,
 } from '@/props'
 
 export const VvComboboxEvents = [
 	'update:modelValue',
 	'change:search',
 	'focus',
-	'blur'
+	'blur',
 ]
 
 export const VvComboboxProps = {
@@ -34,7 +34,7 @@ export const VvComboboxProps = {
 	 */
 	modelValue: {
 		type: [String, Number, Boolean, Object, Array],
-		default: undefined
+		default: undefined,
 	},
 	/**
 	 * Select input label
@@ -61,7 +61,7 @@ export const VvComboboxProps = {
 	 */
 	debounceSearch: {
 		type: [Number, String],
-		default: 0
+		default: 0,
 	},
 	/**
 	 * Manage modelValue as string[] or object[]
@@ -78,5 +78,5 @@ export const VvComboboxProps = {
 	/**
 	 * Show native select
 	 */
-	native: Boolean
+	native: Boolean,
 }

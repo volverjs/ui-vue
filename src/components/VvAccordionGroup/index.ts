@@ -29,12 +29,12 @@ export const VvAccordionGroupProps = {
 	 */
 	itemModifiers: {
 		type: [String, Array<string>],
-		default: ''
+		default: '',
 	},
 	/**
 	 * If true, the accordion items will be disabled
 	 */
-	disabled: Boolean
+	disabled: Boolean,
 }
 
 export const VvAccordionGroupEvents = ['update:modelValue']

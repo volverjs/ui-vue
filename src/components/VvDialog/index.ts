@@ -6,5 +6,5 @@ export const VvDialogProps = {
 	modelValue: Boolean,
 	transition: { type: String, default: 'fade-block' },
 	size: String,
-	autoClose: { type: Boolean, default: true }
+	autoClose: { type: Boolean, default: true },
 }

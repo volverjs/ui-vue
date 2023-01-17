@@ -40,16 +40,16 @@ export function useBemModifiers(prefix: string, modifiers: IBemModifiers) {
 								return {
 									...accVariant,
 									[`${prefix}--${kebabCase(currentVariant)}`]:
-										true
+										true,
 								}
 							},
-							{}
-						)
+							{},
+						),
 					}
 				} else {
 					return {
 						...acc,
-						[`${prefix}--${kebabCase(item)}`]: _modifier
+						[`${prefix}--${kebabCase(item)}`]: _modifier,
 					}
 				}
 			}, baseCssClass) || {}
@@ -57,7 +57,7 @@ export function useBemModifiers(prefix: string, modifiers: IBemModifiers) {
 	})
 
 	return {
-		bemCssClasses
+		bemCssClasses,
 	}
 }
 
@@ -81,16 +81,16 @@ export function toBem(prefix: string, modifiers: IBemModifiers) {
 							return {
 								...accVariant,
 								[`${prefix}--${kebabCase(currentVariant)}`]:
-									true
+									true,
 							}
 						},
-						{}
-					)
+						{},
+					),
 				}
 			} else {
 				return {
 					...acc,
-					[`${prefix}--${kebabCase(k)}`]: _modifier
+					[`${prefix}--${kebabCase(k)}`]: _modifier,
 				}
 			}
 		}, baseCssClass) || {}

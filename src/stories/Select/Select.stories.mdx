@@ -17,7 +17,7 @@ export const Template = (args) => ({
 	},
 	data() {
 		return {
-			inputValue: undefined
+			inputValue: undefined,
 		}
 	},
 	template: `
@@ -27,7 +27,7 @@ export const Template = (args) => ({
 			<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
 		</vv-select>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-	`
+	`,
 })
 
 <Canvas>
@@ -44,10 +44,11 @@ export const Template = (args) => ({
 		argTypes={{
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -60,10 +61,11 @@ export const Template = (args) => ({
 		argTypes={{
 			readonly: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -76,10 +78,11 @@ export const Template = (args) => ({
 		argTypes={{
 			valid: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -92,10 +95,11 @@ export const Template = (args) => ({
 		argTypes={{
 			invalid: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -108,10 +112,11 @@ export const Template = (args) => ({
 		argTypes={{
 			hint: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -121,9 +126,10 @@ export const Template = (args) => ({
 		name="Loading"
 		args={{
 			loading: true,
-			loadingLabel: 'Loading...'
+			loadingLabel: 'Loading...',
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

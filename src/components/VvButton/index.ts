@@ -3,7 +3,7 @@ import {
 	type PropType,
 	type ExtractPropTypes,
 	toRefs,
-	ref
+	ref,
 } from 'vue'
 import { DisabledProps, ModifiersProps } from '@/props'
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
@@ -14,27 +14,27 @@ export enum ButtonIconPosition {
 	left = 'left',
 	right = 'right',
 	top = 'top',
-	bottom = 'bottom'
+	bottom = 'bottom',
 }
 
 export enum ButtonType {
 	button = 'button',
 	submit = 'submit',
-	reset = 'reset'
+	reset = 'reset',
 }
 
 export enum ButtonTag {
 	nuxtLink = 'nuxt-link',
 	routerLink = 'router-link',
 	a = 'a',
-	button = 'button'
+	button = 'button',
 }
 
 export enum ButtonTarget {
 	_blank = '_blank',
 	_self = '_self',
 	_parent = '_parent',
-	_top = '_top'
+	_top = '_top',
 }
 
 export const VvButtonEvents = ['update:modelValue']
@@ -47,7 +47,7 @@ export const VvButtonProps = {
 	 */
 	icon: {
 		type: [String, Object],
-		default: ''
+		default: '',
 	},
 	/**
 	 * Button icon position
@@ -55,7 +55,7 @@ export const VvButtonProps = {
 	iconPosition: {
 		type: String as PropType<ButtonIconPosition>,
 		default: ButtonIconPosition.left,
-		validator: (value: string) => value in ButtonIconPosition
+		validator: (value: string) => value in ButtonIconPosition,
 	},
 	/**
 	 * Button label
@@ -74,14 +74,14 @@ export const VvButtonProps = {
 	 */
 	loadingLabel: {
 		type: String,
-		default: 'Loading...'
+		default: 'Loading...',
 	},
 	/**
 	 * The router-link/nuxt-link property, if it is defined the button is rendered as a ruouter-link or nuxt-link.
 	 * @see Documentation of [router-link](https://router.vuejs.org/api/#router-link) and [nuxt-link](https://nuxtjs.org/api/components-nuxt-link/)
 	 */
 	to: {
-		type: [String, Object]
+		type: [String, Object],
 	},
 	/**
 	 * Link href
@@ -92,7 +92,7 @@ export const VvButtonProps = {
 	 */
 	target: {
 		type: String as PropType<ButtonTarget>,
-		validator: (value: string) => value in ButtonTarget
+		validator: (value: string) => value in ButtonTarget,
 	},
 	active: Boolean,
 	/**
@@ -104,7 +104,7 @@ export const VvButtonProps = {
 	 */
 	rel: {
 		type: String,
-		default: 'noopener noreferrer'
+		default: 'noopener noreferrer',
 	},
 	/**
 	 * Button type
@@ -112,14 +112,14 @@ export const VvButtonProps = {
 	type: {
 		type: String,
 		default: ButtonType.button,
-		validator: (value: string) => value in ButtonType
+		validator: (value: string) => value in ButtonType,
 	},
 	toggle: {
 		type: Boolean,
-		default: false
+		default: false,
 	},
 	modelValue: String,
-	unselectable: { type: Boolean, default: true }
+	unselectable: { type: Boolean, default: true },
 }
 
 export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
@@ -129,7 +129,7 @@ export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
  */
 export function useGroupProps(
 	props: VvButtonPropsTypes,
-	emit: (event: (typeof VvButtonEvents)[number], value: unknown) => void
+	emit: (event: (typeof VvButtonEvents)[number], value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
@@ -145,7 +145,7 @@ export function useGroupProps(
 	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
 	const unselectable = getGroupOrLocalRef(
 		'unselectable',
-		props
+		props,
 	) as Ref<boolean>
 	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
 		string[] | string
@@ -166,6 +166,6 @@ export function useGroupProps(
 		pressed,
 		iconPosition,
 		icon,
-		label
+		label,
 	}
 }

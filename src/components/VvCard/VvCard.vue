@@ -1,20 +1,20 @@
 <script lang="ts">
-export default {
-	name: 'VvCard'
-}
+	export default {
+		name: 'VvCard',
+	}
 </script>
 
 <script setup lang="ts">
-import { useBemModifiers } from '@/composables/useModifiers'
-import { VvCardProps } from '@/components/VvCard'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvCardProps } from '@/components/VvCard'
 
-// props and attrs
-const props = defineProps(VvCardProps)
+	// props and attrs
+	const props = defineProps(VvCardProps)
 
-// styles
-const { bemCssClasses } = useBemModifiers('vv-card', {
-	modifiers: props.modifiers
-})
+	// styles
+	const { bemCssClasses } = useBemModifiers('vv-card', {
+		modifiers: props.modifiers,
+	})
 </script>
 
 <template>

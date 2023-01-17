@@ -6,10 +6,10 @@ import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 	const label = element.getElementsByTagName('label')[0]
 	const input = label.getElementsByTagName('input')[0]
@@ -21,7 +21,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 			if (!args.disabled && !args.readonly) {
 				const firstValue = getOptionValue(args, 0)
 				expect(JSON.parse(value.innerHTML)).toEqual(
-					args.multiple ? [firstValue] : firstValue
+					args.multiple ? [firstValue] : firstValue,
 				)
 			}
 		})

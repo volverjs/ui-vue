@@ -1,7 +1,7 @@
 import {
 	DefaultSlotArgTypes,
 	DisabledArgTypes,
-	ModifiersArgTypes
+	ModifiersArgTypes,
 } from '@/stories/argTypes'
 
 export const defaultArgs = {
@@ -12,44 +12,44 @@ export const defaultArgs = {
 			name: 'a-1',
 			title: 'Details 1',
 			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 		},
 		{
 			name: 'a-2',
 			title: 'Details 2',
 			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 		},
 		{
 			name: 'a-3',
 			title: 'Details 3',
 			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
-		}
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
+		},
 	],
 	modifiers: [],
-	itemModifiers: []
+	itemModifiers: [],
 }
 
 export const argTypes = {
 	'`details::${item.name}`': {
 		table: {
-			disable: true
-		}
+			disable: true,
+		},
 	},
 	'`header::${item.name}`': {
 		table: {
-			disable: true
-		}
+			disable: true,
+		},
 	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: ['compact', 'bordered']
+		options: ['compact', 'bordered'],
 	},
 	itemModifiers: {
 		control: 'check',
-		options: ['marker-right', 'bordered']
+		options: ['marker-right', 'bordered'],
 	},
 	...DisabledArgTypes,
-	...DefaultSlotArgTypes
+	...DefaultSlotArgTypes,
 }

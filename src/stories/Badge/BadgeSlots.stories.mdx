@@ -11,9 +11,10 @@ import { Template } from './Badge.stories.mdx'
 		name="Default"
 		args={{ default: 'Default <em class="italic">slot!</em>' }}
 		argTypes={{
-			default: { ...argTypes.default, table: { disable: true } }
+			default: { ...argTypes.default, table: { disable: true } },
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

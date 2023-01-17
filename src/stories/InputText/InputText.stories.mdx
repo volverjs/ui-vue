@@ -23,7 +23,7 @@ export const Template = (args) => ({
 			<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
 		</vv-input-text>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-        `
+        `,
 })
 
 <Canvas>
@@ -39,11 +39,12 @@ export const Template = (args) => ({
 		argTypes={{
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -55,11 +56,12 @@ export const Template = (args) => ({
 		argTypes={{
 			readonly: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -70,16 +72,17 @@ export const Template = (args) => ({
 		args={{
 			valid: true,
 			validLabel: 'The field is valid.',
-			icon: 'check'
+			icon: 'check',
 		}}
 		argTypes={{
 			valid: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -90,16 +93,17 @@ export const Template = (args) => ({
 		args={{
 			invalid: true,
 			invalidLabel: 'The field is required.',
-			icon: 'error-2'
+			icon: 'error-2',
 		}}
 		argTypes={{
 			invalid: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -108,16 +112,17 @@ export const Template = (args) => ({
 	<Story
 		name="Hint"
 		args={{
-			hintLabel: 'Please enter your name.'
+			hintLabel: 'Please enter your name.',
 		}}
 		argTypes={{
 			hintLabel: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -127,16 +132,17 @@ export const Template = (args) => ({
 		name="Loading"
 		args={{
 			loading: true,
-			loadingLabel: 'Loading...'
+			loadingLabel: 'Loading...',
 		}}
 		argTypes={{
 			loading: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -145,16 +151,17 @@ export const Template = (args) => ({
 	<Story
 		name="Floating"
 		args={{
-			floating: true
+			floating: true,
 		}}
 		argTypes={{
 			floating: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

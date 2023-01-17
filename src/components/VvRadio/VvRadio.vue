@@ -1,82 +1,82 @@
 <script lang="ts">
-export default {
-	name: 'VvRadio'
-}
+	export default {
+		name: 'VvRadio',
+	}
 </script>
 
 <script setup lang="ts">
-import { computed, ref, useSlots } from 'vue'
-import { nanoid } from 'nanoid'
-import { contains, equals } from '@/utils/ObjectUtilities'
-import { useBemModifiers } from '@/composables/useModifiers'
-import {
-	VvRadioProps,
-	VvRadioEvents,
-	useGroupProps
-} from '@/components/VvRadio'
-import { HintSlotFactory } from '@/components/common/HintSlot'
+	import { computed, ref, useSlots } from 'vue'
+	import { nanoid } from 'nanoid'
+	import { contains, equals } from '@/utils/ObjectUtilities'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import {
+		VvRadioProps,
+		VvRadioEvents,
+		useGroupProps,
+	} from '@/components/VvRadio'
+	import { HintSlotFactory } from '@/components/common/HintSlot'
 
-// props, emit and slots
-const props = defineProps(VvRadioProps)
-const emit = defineEmits(VvRadioEvents)
-const slots = useSlots()
+	// props, emit and slots
+	const props = defineProps(VvRadioProps)
+	const emit = defineEmits(VvRadioEvents)
+	const slots = useSlots()
 
-// data
-const { disabled, readonly, modelValue, valid, invalid } = useGroupProps(
-	props,
-	emit
-)
-const id = computed(() => String(props.id || nanoid()))
-const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
+	// data
+	const { disabled, readonly, modelValue, valid, invalid } = useGroupProps(
+		props,
+		emit,
+	)
+	const id = computed(() => String(props.id || nanoid()))
+	const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
-// template refs
-const input = ref()
+	// template refs
+	const input = ref()
 
-// computed
-const isDisabled = computed(() => disabled.value || readonly.value)
-const isInvalid = computed(() => {
-	if (invalid.value === true) {
-		return true
-	}
-	if (valid.value === true) {
-		return false
-	}
-	return undefined
-})
-const isChecked = computed(() =>
-	Array.isArray(modelValue.value)
-		? contains(props.value, modelValue.value)
-		: equals(props.value, modelValue.value)
-)
-const hasValue = computed(() =>
-	['string', 'number', 'boolean'].includes(typeof props.value)
-		? props.value
-		: true
-)
-const localModelValue = computed({
-	get() {
-		return isChecked.value ? hasValue.value : null
-	},
-	set(newValue) {
-		if (Array.isArray(modelValue.value)) {
-			modelValue.value = [props.value]
-		} else {
-			modelValue.value = props.value
+	// computed
+	const isDisabled = computed(() => disabled.value || readonly.value)
+	const isInvalid = computed(() => {
+		if (invalid.value === true) {
+			return true
 		}
-		emit('change', newValue)
-	}
-})
+		if (valid.value === true) {
+			return false
+		}
+		return undefined
+	})
+	const isChecked = computed(() =>
+		Array.isArray(modelValue.value)
+			? contains(props.value, modelValue.value)
+			: equals(props.value, modelValue.value),
+	)
+	const hasValue = computed(() =>
+		['string', 'number', 'boolean'].includes(typeof props.value)
+			? props.value
+			: true,
+	)
+	const localModelValue = computed({
+		get() {
+			return isChecked.value ? hasValue.value : null
+		},
+		set(newValue) {
+			if (Array.isArray(modelValue.value)) {
+				modelValue.value = [props.value]
+			} else {
+				modelValue.value = props.value
+			}
+			emit('change', newValue)
+		},
+	})
 
-// styles
-const { bemCssClasses } = useBemModifiers('vv-radio', {
-	valid,
-	invalid,
-	disabled,
-	readonly
-})
+	// styles
+	const { bemCssClasses } = useBemModifiers('vv-radio', {
+		valid,
+		invalid,
+		disabled,
+		readonly,
+	})
 
-// hint
-const { HintSlot } = HintSlotFactory(props, slots)
+	// hint
+	const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
@@ -91,7 +91,8 @@ const { HintSlot } = HintSlotFactory(props, slots)
 			:disabled="isDisabled"
 			:value="hasValue"
 			:tabindex="tabindex"
-			:aria-invalid="isInvalid" />
+			:aria-invalid="isInvalid"
+		/>
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>

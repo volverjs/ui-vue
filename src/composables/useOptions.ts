@@ -26,6 +26,6 @@ export function useOptions(props: any) {
 	return {
 		options,
 		getOptionLabel,
-		getOptionValue
+		getOptionValue,
 	}
 }

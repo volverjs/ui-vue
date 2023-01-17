@@ -3,13 +3,13 @@ import { InputTextareaProps } from '@/props'
 
 export const WRAP = {
 	hard: 'hard',
-	soft: 'soft'
+	soft: 'soft',
 }
 
 export const SPELLCHECK = {
 	true: true,
 	false: false,
-	default: 'default'
+	default: 'default',
 }
 
 export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
@@ -44,7 +44,7 @@ export const VvTextareaProps = {
 	/**
 	 * If true, the textarea will be resizable
 	 */
-	resizable: Boolean
+	resizable: Boolean,
 }
 
 export type VvTextareaPropsTypes = ExtractPropTypes<typeof VvTextareaProps>

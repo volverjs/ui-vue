@@ -5,11 +5,11 @@ import { within } from '@storybook/testing-library'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLDetailsElement
 	const summary = element.getElementsByTagName('summary')[0]
 	const content = element.getElementsByClassName(
-		'vv-collapse__content'
+		'vv-collapse__content',
 	)[0] as HTMLElement
 
 	const modifiers =

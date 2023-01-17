@@ -4,7 +4,7 @@ import { within } from '@storybook/testing-library'
 
 export async function defaulTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'card'
+		'card',
 	)) as HTMLElement
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)

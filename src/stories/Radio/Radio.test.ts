@@ -5,10 +5,10 @@ import { within } from '@storybook/testing-library'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 	const input = element.getElementsByTagName('input')[0]
 	const hint = element.getElementsByClassName('vv-radio__hint')[0]

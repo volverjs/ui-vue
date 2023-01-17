@@ -1,6 +1,6 @@
 import type {
 	ComponentResolver,
-	SideEffectsInfo
+	SideEffectsInfo,
 } from 'unplugin-vue-components/types'
 
 function kebabCase(str: string, options?: { condense: boolean }) {
@@ -59,7 +59,7 @@ const getStyleName = function (kebabName: string) {
 export function VolverResolver({
 	prefix = VOLVER_PREFIX,
 	importStyle,
-	customStylePath
+	customStylePath,
 }: VolverResolverOptions = {}): ComponentResolver {
 	return {
 		type: 'component',
@@ -74,7 +74,7 @@ export function VolverResolver({
 			const sideEffects: SideEffectsInfo = []
 			const kebabName = kebabCase(name).replace(
 				`${prefix}-`,
-				`${VOLVER_PREFIX}-`
+				`${VOLVER_PREFIX}-`,
 			)
 
 			if (importStyle) {
@@ -89,15 +89,15 @@ export function VolverResolver({
 					sideEffects.push(
 						`@volverjs/style/${
 							importStyle === 'scss' ? 'scss/' : ''
-						}components/${styleName}`
+						}components/${styleName}`,
 					)
 				}
 			}
 
 			return {
 				from: `@volverjs/ui-vue/${kebabName}`,
-				sideEffects
+				sideEffects,
 			}
-		}
+		},
 	}
 }

@@ -11,7 +11,7 @@ export const VvProgressProps = {
 	 */
 	value: {
 		type: [Number, String],
-		default: undefined
+		default: undefined,
 	},
 	/**
 	 * Progress max
@@ -20,13 +20,13 @@ export const VvProgressProps = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#attr-max
 	 */
 	max: {
-		type: [Number, String]
+		type: [Number, String],
 	},
 	/**
 	 * Progress aria-label
 	 */
 	label: {
 		type: String,
-		required: true
-	}
+		required: true,
+	},
 }

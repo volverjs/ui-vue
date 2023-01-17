@@ -18,16 +18,17 @@ import { Template } from './Card.stories.mdx'
 		argTypes={{
 			default: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{(args) => {
 			return {
 				components: { VvCard },
 				setup() {
 					return {
-						args
+						args,
 					}
 				},
 				template: `
@@ -36,7 +37,7 @@ import { Template } from './Card.stories.mdx'
 							<img class="aspect-photo h-300" src="https://unsplash.it/300" alt="Card picture"/>
 						</picture>
 					</vv-card>
-					`
+					`,
 			}
 		}}
 	</Story>
@@ -47,15 +48,16 @@ import { Template } from './Card.stories.mdx'
 		name="Header"
 		play={defaulTest}
 		args={{
-			header: 'Header <em class="italic">slot!</em>'
+			header: 'Header <em class="italic">slot!</em>',
 		}}
 		argTypes={{
 			header: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -67,10 +69,11 @@ import { Template } from './Card.stories.mdx'
 		argTypes={{
 			content: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -80,15 +83,16 @@ import { Template } from './Card.stories.mdx'
 		name="Footer"
 		play={defaulTest}
 		args={{
-			footer: 'Footer <em class="italic">slot!</em>'
+			footer: 'Footer <em class="italic">slot!</em>',
 		}}
 		argTypes={{
 			footer: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

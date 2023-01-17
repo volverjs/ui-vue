@@ -16,7 +16,7 @@ const minify = hot ? false : undefined
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 packageJson.exports = {
 	'./src/*': './src/*',
-	'./dist/*': './dist/*'
+	'./dist/*': './dist/*',
 }
 
 const baseConfig = {
@@ -24,16 +24,16 @@ const baseConfig = {
 	configFile: false,
 	resolve: {
 		alias: {
-			'@': fileURLToPath(new URL('../src', import.meta.url))
-		}
-	}
+			'@': fileURLToPath(new URL('../src', import.meta.url)),
+		},
+	},
 }
 
 // build library
 packageJson.exports['.'] = {
 	types: './dist/index.d.ts',
 	import: './dist/index.es.js',
-	default: './dist/index.umd.js'
+	default: './dist/index.umd.js',
 }
 build({
 	...baseConfig,
@@ -44,16 +44,16 @@ build({
 		lib: {
 			name: 'volver',
 			entry: './src/index.ts',
-			fileName: (format) => `index.${format}.js`
-		}
-	}
+			fileName: (format) => `index.${format}.js`,
+		},
+	},
 })
 
 // build components library
 packageJson.exports['./components'] = {
 	types: './dist/components/index.d.ts',
 	import: './dist/components/index.es.js',
-	default: './dist/components/index.umd.js'
+	default: './dist/components/index.umd.js',
 }
 build({
 	...baseConfig,
@@ -64,16 +64,16 @@ build({
 		lib: {
 			name: 'components',
 			entry: './src/components/index.ts',
-			fileName: (format) => `components/index.${format}.js`
-		}
-	}
+			fileName: (format) => `components/index.${format}.js`,
+		},
+	},
 })
 
 // build resolvers
 packageJson.exports['./resolvers/unplugin'] = {
 	types: './dist/resolvers/unplugin.d.ts',
 	import: './dist/resolvers/unplugin.es.js',
-	default: './dist/resolvers/unplugin.umd.js'
+	default: './dist/resolvers/unplugin.umd.js',
 }
 build({
 	...baseConfig,
@@ -84,16 +84,16 @@ build({
 		lib: {
 			name: 'components',
 			entry: './src/resolvers/unplugin.ts',
-			fileName: (format) => `resolvers/unplugin.${format}.js`
-		}
-	}
+			fileName: (format) => `resolvers/unplugin.${format}.js`,
+		},
+	},
 })
 
 // build icons
 packageJson.exports[`./icons`] = {
 	types: './dist/icons.d.ts',
 	import: './dist/icons.es.js',
-	default: './dist/icons.umd.js'
+	default: './dist/icons.umd.js',
 }
 build({
 	configFile: false,
@@ -104,9 +104,9 @@ build({
 		lib: {
 			name: 'icons',
 			entry: './src/icons.ts',
-			fileName: (format) => `icons.${format}.js`
-		}
-	}
+			fileName: (format) => `icons.${format}.js`,
+		},
+	},
 })
 build({
 	configFile: false,
@@ -119,9 +119,9 @@ build({
 		lib: {
 			name: 'generate-icons',
 			entry: './scripts/icons.ts',
-			fileName: (format) => `generate-icons.${format}.js`
-		}
-	}
+			fileName: (format) => `generate-icons.${format}.js`,
+		},
+	},
 })
 
 // build components
@@ -132,7 +132,7 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 		const name = splittedExportName.pop()
 		return {
 			name,
-			entry
+			entry,
 		}
 	})
 
@@ -144,7 +144,7 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 			packageJson.exports[`./${paramCaseName}`] = {
 				types: `./dist/${subPath}.vue.d.ts`,
 				import: `./dist/${subPath}.es.js`,
-				default: `./dist/${subPath}.umd.js`
+				default: `./dist/${subPath}.umd.js`,
 			}
 
 			return build({
@@ -155,12 +155,12 @@ glob('./src/components/**/!(_*).vue', async (err, files) => {
 					lib: {
 						name,
 						entry,
-						fileName: (format) => `${subPath}.${format}.js`
+						fileName: (format) => `${subPath}.${format}.js`,
 					},
-					emptyOutDir: false
-				}
+					emptyOutDir: false,
+				},
 			})
-		})
+		}),
 	)
 
 	// sort exports

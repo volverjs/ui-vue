@@ -19,17 +19,18 @@ import { defaultTest } from './Dropdown.test'
 			options: {
 				...argTypes.options,
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
 		args={{
 			options: [
 				{ value: 'first', label: 'First' },
 				{ value: 'second', label: 'Second' },
-				{ value: 'third', label: 'Third' }
-			]
-		}}>
+				{ value: 'third', label: 'Third' },
+			],
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -43,22 +44,23 @@ import { defaultTest } from './Dropdown.test'
 			options: [
 				{ value: 'first', name: 'First' },
 				{ value: 'second', name: 'Second' },
-				{ value: 'third', name: 'Third' }
-			]
+				{ value: 'third', name: 'Third' },
+			],
 		}}
 		argTypes={{
 			options: {
 				...argTypes.options,
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			labelKey: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -72,22 +74,23 @@ import { defaultTest } from './Dropdown.test'
 			options: [
 				{ id: 'first', label: 'First' },
 				{ id: 'second', label: 'Second' },
-				{ id: 'third', label: 'Third' }
-			]
+				{ id: 'third', label: 'Third' },
+			],
 		}}
 		argTypes={{
 			options: {
 				...argTypes.options,
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			valueKey: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

@@ -1,24 +1,24 @@
 <script lang="ts">
-export default {
-	name: 'VvProgress'
-}
+	export default {
+		name: 'VvProgress',
+	}
 </script>
 
 <script setup lang="ts">
-import { computed, toRefs } from 'vue'
-import { useBemModifiers } from '@/composables/useModifiers'
-import { VvProgressProps } from '@/components/VvProgress'
+	import { computed, toRefs } from 'vue'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvProgressProps } from '@/components/VvProgress'
 
-// props
-const props = defineProps(VvProgressProps)
-const { value, max, label: ariaLabel } = toRefs(props)
-const indeterminate = computed(() => props.value === undefined)
+	// props
+	const props = defineProps(VvProgressProps)
+	const { value, max, label: ariaLabel } = toRefs(props)
+	const indeterminate = computed(() => props.value === undefined)
 
-// styles
-const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
-	modifiers: props.modifiers,
-	indeterminate
-})
+	// styles
+	const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
+		modifiers: props.modifiers,
+		indeterminate,
+	})
 </script>
 
 <template>
@@ -28,6 +28,7 @@ const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
 			class: hasClass,
 			ariaLabel,
 			max,
-			value
-		}" />
+			value,
+		}"
+	/>
 </template>

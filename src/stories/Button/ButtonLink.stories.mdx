@@ -13,23 +13,24 @@ import { argTypes, defaultArgs } from './Button.settings'
 			iconPosition: 'right',
 			label: 'Link button',
 			href: 'https://volverjs.github.io/style',
-			target: '_blank'
+			target: '_blank',
 		}}
 		argTypes={{
 			href: {
 				...argTypes.href,
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			target: {
 				...argTypes.target,
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -43,28 +44,29 @@ import { argTypes, defaultArgs } from './Button.settings'
 			label: 'Link button',
 			href: 'https://volverjs.github.io/style',
 			target: '_blank',
-			disabled: true
+			disabled: true,
 		}}
 		argTypes={{
 			href: {
 				...argTypes.href,
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			target: {
 				...argTypes.target,
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

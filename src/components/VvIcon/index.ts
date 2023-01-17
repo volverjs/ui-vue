@@ -4,7 +4,7 @@ import type { IconifyRenderMode } from '@iconify/vue'
 export enum PREFIX {
 	simple = 'simple',
 	normal = 'normal',
-	detailed = 'detailed'
+	detailed = 'detailed',
 }
 
 export const VvIconProps = {
@@ -16,13 +16,13 @@ export const VvIconProps = {
 	 * Width
 	 */
 	width: {
-		type: [String, Number]
+		type: [String, Number],
 	},
 	/**
 	 * Height
 	 */
 	height: {
-		type: [String, Number]
+		type: [String, Number],
 	},
 	/**
 	 * Icon name
@@ -31,7 +31,7 @@ export const VvIconProps = {
 	 */
 	name: {
 		type: String,
-		required: true
+		required: true,
 	},
 	/**
 	 * By default 'vv'
@@ -39,7 +39,7 @@ export const VvIconProps = {
 	 * Icon provider: https://docs.iconify.design/api/providers.html#provider-in-icon-name
 	 */
 	provider: {
-		type: String
+		type: String,
 	},
 	/**
 	 * The name of icon set.
@@ -47,7 +47,7 @@ export const VvIconProps = {
 	 */
 	prefix: {
 		type: String as PropType<PREFIX>,
-		default: 'normal'
+		default: 'normal',
 	},
 	/**
 	 * Url remote SVG icon
@@ -98,6 +98,6 @@ export const VvIconProps = {
 	 * @values string | Array<string>
 	 */
 	modifiers: {
-		type: [String, Array] as PropType<string | string[]>
-	}
+		type: [String, Array] as PropType<string | string[]>,
+	},
 }

@@ -7,7 +7,7 @@ import {
 	cleanupSVG,
 	runSVGO,
 	parseColors,
-	isEmptyColor
+	isEmptyColor,
 } from '@iconify/tools'
 import path from 'path'
 import { validateIconSet } from '@iconify/utils'
@@ -31,7 +31,7 @@ interface IFilesMap {
 function getAllFiles(
 	dirPath: string,
 	objectFiles: IFilesMap = {},
-	prefix = 'iconify'
+	prefix = 'iconify',
 ) {
 	const files = fileSystem.readdirSync(dirPath)
 
@@ -59,7 +59,7 @@ function getAllFiles(
 async function generateIcons(
 	prefix: string,
 	files: string[],
-	destPath: string
+	destPath: string,
 ) {
 	// Create empty icon set
 	const iconSet = blankIconSet(prefix)
@@ -67,7 +67,7 @@ async function generateIcons(
 	for (const file of files) {
 		// Read icon, create SVG instance
 		const content = await fileSystem.promises.readFile(file, {
-			encoding: 'utf-8'
+			encoding: 'utf-8',
 		})
 		const svg = new SVG(content)
 		// Clean up icon code
@@ -79,7 +79,7 @@ async function generateIcons(
 			defaultColor: 'currentColor',
 			callback: (attr, colorStr, color) => {
 				return !color || isEmptyColor(color) ? colorStr : 'currentColor'
-			}
+			},
 		})
 
 		// Optimise
@@ -109,14 +109,16 @@ async function generateIcons(
 		validateIconSet(iconifyJson)
 	} catch (error) {
 		throw new Error(
-			`Icon set is not valid: ${(error as { message?: string })?.message}`
+			`Icon set is not valid: ${
+				(error as { message?: string })?.message
+			}`,
 		)
 	}
 
 	// Write IconifyJSON into file.json
 	fileSystem.writeFileSync(
 		`${destPath}/${iconifyJson.prefix}.json`,
-		JSON.stringify(iconifyJson)
+		JSON.stringify(iconifyJson),
 	)
 }
 
@@ -150,7 +152,7 @@ const destPath = argv.destPath || srcPath
 if (!srcPath || !destPath) {
 	// eslint-disable-next-line no-console
 	console.error(
-		'Please specify the srcPath and destPath with --srcPath and --destPath'
+		'Please specify the srcPath and destPath with --srcPath and --destPath',
 	)
 	process.exit()
 }

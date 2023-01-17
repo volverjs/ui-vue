@@ -9,34 +9,34 @@ export const defaultArgs = {
 	options: [
 		{
 			label: 'Option 1',
-			value: 1
+			value: 1,
 		},
 		{
 			label: 'Option 2',
-			value: 2
+			value: 2,
 		},
 		{
 			label: 'Option 3',
-			value: 3
-		}
-	]
+			value: 3,
+		},
+	],
 }
 
 export const argTypes = {
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: ['place-top']
+		options: ['place-top'],
 	},
 	...OptionsArgTypes,
 	labelNoResults: {
 		control: { type: 'text' },
 		table: {
 			defaultValue: {
-				summary: 'No results'
-			}
-		}
+				summary: 'No results',
+			},
+		},
 	},
 	maxValues: {
-		control: { type: 'number' }
-	}
+		control: { type: 'number' },
+	},
 }

@@ -6,10 +6,10 @@ import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 	const radio = element.getElementsByClassName('vv-radio')[0]
 	const input = radio.getElementsByTagName('input')[0]

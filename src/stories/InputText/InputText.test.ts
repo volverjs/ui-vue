@@ -32,10 +32,10 @@ const valueByType = (type: InputType) => {
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 	const input = element.getElementsByTagName('input')[0]
 	const hint = element.getElementsByClassName('vv-input-text__hint')[0]
@@ -49,7 +49,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 			await sleep()
 			if (args.maxlength) {
 				await expect(value.innerHTML).toEqual(
-					inputValue.slice(0, args.maxlength)
+					inputValue.slice(0, args.maxlength),
 				)
 			} else {
 				await expect(value.innerHTML).toEqual(inputValue)

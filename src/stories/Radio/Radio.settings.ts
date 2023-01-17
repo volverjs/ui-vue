@@ -9,7 +9,7 @@ export const defaultArgs = {
 	readonly: false,
 	invalid: false,
 	valid: false,
-	indeterminate: false
+	indeterminate: false,
 }
 
 export const argTypes = CheckboxRadioArgTypes

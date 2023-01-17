@@ -15,15 +15,16 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template: `<vv-icon v-bind="args" />`
+	template: `<vv-icon v-bind="args" />`,
 })
 
 <Canvas>
 	<Story
 		name="Default"
 		args={{
-			width: 48
-		}}>
+			width: 48,
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -34,25 +35,26 @@ export const Template = (args) => ({
 		args={{
 			name: 'fingerprint',
 			width: 48,
-			src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/fingerprint/materialicons/24px.svg'
+			src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/fingerprint/materialicons/24px.svg',
 		}}
 		argTypes={{
 			name: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			src: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			svg: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -63,25 +65,26 @@ export const Template = (args) => ({
 		args={{
 			name: 'bell-2',
 			width: 48,
-			svg: `<svg viewBox="0 0 24 24">${NormalIcons.icons.bell.body}</svg>`
+			svg: `<svg viewBox="0 0 24 24">${NormalIcons.icons.bell.body}</svg>`,
 		}}
 		argTypes={{
 			name: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			src: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			svg: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

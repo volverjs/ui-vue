@@ -6,19 +6,19 @@ export const ValidArgTypes = {
 		description: 'Valid state',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	validLabel: {
 		type: {
-			summary: ['string', 'string[]']
+			summary: ['string', 'string[]'],
 		},
 		description: 'Valid hint label',
 		control: {
-			type: 'text'
-		}
-	}
+			type: 'text',
+		},
+	},
 }
 
 export const InvalidArgTypes = {
@@ -27,19 +27,19 @@ export const InvalidArgTypes = {
 		description: 'Invalid state',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	invalidLabel: {
 		type: {
-			summary: ['string', 'string[]']
+			summary: ['string', 'string[]'],
 		},
 		description: 'Invalid hint label',
 		control: {
-			type: 'text'
-		}
-	}
+			type: 'text',
+		},
+	},
 }
 
 export const LoadingArgTypes = {
@@ -48,19 +48,19 @@ export const LoadingArgTypes = {
 		description: 'Loading state',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	loadingLabel: {
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		description: 'Loading label',
 		control: {
-			type: 'text'
-		}
-	}
+			type: 'text',
+		},
+	},
 }
 
 export const DisabledArgTypes = {
@@ -69,10 +69,10 @@ export const DisabledArgTypes = {
 		description: 'Whether the form control is disabled',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
-	}
+				summary: false,
+			},
+		},
+	},
 }
 
 export const ReadonlyArgTypes = {
@@ -81,23 +81,23 @@ export const ReadonlyArgTypes = {
 		description: 'The value is not editable',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
-	}
+				summary: false,
+			},
+		},
+	},
 }
 
 export const ModifiersArgTypes = {
 	modifiers: {
 		type: {
-			summary: ['string', 'string[]']
+			summary: ['string', 'string[]'],
 		},
 		description: 'Component BEM modifiers',
 		options: [],
 		control: {
-			type: 'check'
-		}
-	}
+			type: 'check',
+		},
+	},
 }
 
 export const IconArgTypes = {
@@ -105,59 +105,59 @@ export const IconArgTypes = {
 		description: 'VvIcon name or props',
 		options: ['', ...Object.keys(normal.icons)],
 		control: {
-			type: 'select'
-		}
+			type: 'select',
+		},
 	},
 	iconPosition: {
 		description: 'VvIcon position',
 		options: ['', 'left', 'right'],
 		control: {
-			type: 'select'
+			type: 'select',
 		},
 		table: {
-			defaultValue: { summary: 'right' }
-		}
-	}
+			defaultValue: { summary: 'right' },
+		},
+	},
 }
 
 export const OptionsArgTypes = {
 	options: {
 		type: {
-			summary: ['string[]', 'object[]']
+			summary: ['string[]', 'object[]'],
 		},
 		description: 'List of options',
 		control: {
-			type: 'array'
-		}
+			type: 'array',
+		},
 	},
 	labelKey: {
 		type: {
-			summary: ['string', 'function']
+			summary: ['string', 'function'],
 		},
 		description: 'Key of label in option object',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'label'
-			}
-		}
+				summary: 'label',
+			},
+		},
 	},
 	valueKey: {
 		type: {
-			summary: ['string', 'function']
+			summary: ['string', 'function'],
 		},
 		description: 'Key of value in option object',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'value'
-			}
-		}
-	}
+				summary: 'value',
+			},
+		},
+	},
 }
 
 export const CountArgTypes = {
@@ -165,18 +165,18 @@ export const CountArgTypes = {
 		description: 'Show character limit',
 		options: [true, false, 'limit', 'countdown'],
 		control: {
-			type: 'radio'
+			type: 'radio',
 		},
 		table: {
 			category: null,
 			defaultValue: {
-				summary: false
+				summary: false,
 			},
 			type: {
-				summary: ['boolean', 'string']
-			}
-		}
-	}
+				summary: ['boolean', 'string'],
+			},
+		},
+	},
 }
 
 export const DebounceArgTypes = {
@@ -184,50 +184,50 @@ export const DebounceArgTypes = {
 		type: 'number',
 		description: 'Debounce milliseconds',
 		control: {
-			type: 'number'
-		}
-	}
+			type: 'number',
+		},
+	},
 }
 
 export const DefaultSlotArgTypes = {
 	default: {
 		description: 'The default slot',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
-	}
+				summary: 'html',
+			},
+		},
+	},
 }
 
 export const HintArgTypes = {
 	hintLabel: {
 		description: 'Hint label',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			type: {
-				summary: 'string'
-			}
-		}
+				summary: 'string',
+			},
+		},
 	},
 	hint: {
 		description: 'The hint slot',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
-	}
+				summary: 'html',
+			},
+		},
+	},
 }
 
 export const TabindexArgTypes = {
@@ -235,41 +235,41 @@ export const TabindexArgTypes = {
 		type: 'number',
 		description: 'Global attribute tabindex',
 		control: {
-			type: 'number'
+			type: 'number',
 		},
 		table: {
 			defaultValue: {
-				summary: 0
-			}
-		}
-	}
+				summary: 0,
+			},
+		},
+	},
 }
 
 export const IdNameArgTypes = {
 	id: {
 		type: {
-			summary: ['string', 'number']
+			summary: ['string', 'number'],
 		},
 		description: 'Global attribute id.',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'nanoid'
-			}
-		}
+				summary: 'nanoid',
+			},
+		},
 	},
 	name: {
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		description:
 			'Name of the form control. Submitted with the form as part of a name/value pair.',
 		control: {
-			type: 'text'
-		}
-	}
+			type: 'text',
+		},
+	},
 }
 
 export const InputTextareaArgTypes = {
@@ -290,47 +290,47 @@ export const InputTextareaArgTypes = {
 		description: 'Global attribute autofocus.',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	autocomplete: {
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		description: 'Hint for for autofill feature.',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			defaultValue: {
-				summary: 'off'
-			}
-		}
+				summary: 'off',
+			},
+		},
 	},
 	minlength: {
 		type: 'number',
 		description:
 			'Minimum length (number of characters) of value. Available for input types: text, search, url, tel, email, password.',
 		control: {
-			type: 'number'
-		}
+			type: 'number',
+		},
 	},
 	maxlength: {
 		type: 'number',
 		description:
 			'Maximum length (number of characters) of value. Available for input types: text, search, url, tel, email, password, number.',
 		control: {
-			type: 'number'
-		}
+			type: 'number',
+		},
 	},
 	placeholder: {
 		type: 'string',
 		description:
 			'Text that appears in the form control when it has no value set. Available for input types: text, search, url, tel, email, password, number.',
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	required: {
 		type: 'boolean',
@@ -338,26 +338,26 @@ export const InputTextareaArgTypes = {
 			'A value is required or must be check for the form to be submittable. Available for all input types except color.',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	label: {
 		type: 'string',
 		description: 'Input label',
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	floating: {
 		type: 'boolean',
 		description: 'If true the label will be floating',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
-	}
+				summary: false,
+			},
+		},
+	},
 }
 
 export const CheckboxRadioArgTypes = {
@@ -372,16 +372,16 @@ export const CheckboxRadioArgTypes = {
 		type: 'string',
 		description: 'Input label',
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	value: {
 		type: ['string', 'number', 'boolean'],
 		description: 'Input value',
 		control: {
-			type: 'text'
-		}
-	}
+			type: 'text',
+		},
+	},
 }
 
 export const CheckboxRadioGroupArgTypes = {
@@ -395,18 +395,18 @@ export const CheckboxRadioGroupArgTypes = {
 		type: 'string',
 		description: 'Input label',
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	name: {
 		type: {
-			summary: 'string'
+			summary: 'string',
 		},
 		description:
 			'Name of the form control. Submitted with the form as part of a name/value pair.',
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	vertical: {
 		type: 'boolean',
@@ -414,20 +414,20 @@ export const CheckboxRadioGroupArgTypes = {
 			'If true the options will be displayed vertically instead of horizontally',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	default: {
 		description: 'Default slot for the options',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
-	}
+				summary: 'html',
+			},
+		},
+	},
 }

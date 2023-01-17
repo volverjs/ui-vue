@@ -15,7 +15,7 @@ export type VvRadioPropsType = ExtractPropTypes<typeof VvRadioProps>
  */
 export function useGroupProps(
 	props: VvRadioPropsType,
-	emit: (event: (typeof VvRadioEvents)[number], value: unknown) => void
+	emit: (event: (typeof VvRadioEvents)[number], value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_RADIO_GROUP)
@@ -35,6 +35,6 @@ export function useGroupProps(
 		readonly,
 		disabled,
 		valid,
-		invalid
+		invalid,
 	}
 }

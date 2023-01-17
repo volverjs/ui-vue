@@ -18,10 +18,11 @@ import { defaultArgs, argTypes } from './Breadcrumb.settings'
 		argTypes={{
 			label: {
 				table: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{(args) => {
 			return {
 				setup() {
@@ -35,7 +36,7 @@ import { defaultArgs, argTypes } from './Breadcrumb.settings'
                         <template v-else>{{ route.label }}</template>
                     </template>
                 </VvBreadcrumb>
-            `
+            `,
 			}
 		}}
 	</Story>

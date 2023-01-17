@@ -12,7 +12,7 @@ const supportTypes = ['map', 'array', 'object']
 type ReplaceableForEachCallBack = (
 	value: unknown,
 	key: unknown,
-	object: unknown
+	object: unknown,
 ) => void
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -39,7 +39,7 @@ export default class Replaceable {
 			const descriptors = Object.getOwnPropertyDescriptors(this.object)
 			;[
 				...Object.keys(descriptors),
-				...Object.getOwnPropertySymbols(descriptors)
+				...Object.getOwnPropertySymbols(descriptors),
 			]
 				//@ts-expect-error because typescript do not support symbol key in object
 				//https://github.com/microsoft/TypeScript/issues/1863

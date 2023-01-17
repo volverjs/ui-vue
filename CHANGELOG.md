@@ -6,23 +6,23 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
--   `VvAccordion` component;
--   `VvAccordionGroup` component;
--   `VvBadge` component;
--   `VvBreadcrumb` component;
--   `VvButton` component;
--   `VvButtonGroup` component;
--   `VvCard` component;
--   `VvCheckbox` component;
--   `VvCheckboxGroup` component;
--   `VvCombobox` component;
--   `VvDialog` component;
--   `VvDropdown` component;
--   `VvIcon` component;
--   `VvInputText` component;
--   `VvProgress` component;
--   `VvRadio` component;
--   `VvRadioGroup` component;
--   `VvSelect` component;
--   `VvTextarea` component;
--   `VvRadioGroup` component.
+- `VvAccordion` component;
+- `VvAccordionGroup` component;
+- `VvBadge` component;
+- `VvBreadcrumb` component;
+- `VvButton` component;
+- `VvButtonGroup` component;
+- `VvCard` component;
+- `VvCheckbox` component;
+- `VvCheckboxGroup` component;
+- `VvCombobox` component;
+- `VvDialog` component;
+- `VvDropdown` component;
+- `VvIcon` component;
+- `VvInputText` component;
+- `VvProgress` component;
+- `VvRadio` component;
+- `VvRadioGroup` component;
+- `VvSelect` component;
+- `VvTextarea` component;
+- `VvRadioGroup` component.

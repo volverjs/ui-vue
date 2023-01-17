@@ -21,7 +21,7 @@ const builtInObject: Array<unknown> = [
 	Uint16Array,
 	Uint32Array,
 	Uint8Array,
-	Uint8ClampedArray
+	Uint8ClampedArray,
 ]
 
 if (typeof Buffer !== 'undefined') {
@@ -36,7 +36,7 @@ const isMap = (value: any): value is Map<unknown, unknown> =>
 
 export default function deepCyclicCopyReplaceable<T>(
 	value: T,
-	cycles: WeakMap<any, any> = new WeakMap()
+	cycles: WeakMap<any, any> = new WeakMap(),
 ): T {
 	if (typeof value !== 'object' || value === null) {
 		return value
@@ -65,7 +65,7 @@ function deepCyclicCopyObject<T>(object: T, cycles: WeakMap<any, unknown>): T {
 
 	const newDescriptors = [
 		...Object.keys(descriptors),
-		...Object.getOwnPropertySymbols(descriptors)
+		...Object.getOwnPropertySymbols(descriptors),
 	].reduce(
 		//@ts-expect-error because typescript do not support symbol key in object
 		//https://github.com/microsoft/TypeScript/issues/1863
@@ -79,13 +79,13 @@ function deepCyclicCopyObject<T>(object: T, cycles: WeakMap<any, unknown>): T {
 					// this accesses the value or getter, depending. We just care about the value anyways, and this allows us to not mess with accessors
 					// it has the side effect of invoking the getter here though, rather than copying it over
 					(object as Record<string | symbol, unknown>)[key],
-					cycles
+					cycles,
 				),
-				writable: true
+				writable: true,
 			}
 			return newDescriptors
 		},
-		{}
+		{},
 	)
 	//@ts-expect-error because typescript do not support symbol key in object
 	//https://github.com/microsoft/TypeScript/issues/1863
@@ -94,10 +94,10 @@ function deepCyclicCopyObject<T>(object: T, cycles: WeakMap<any, unknown>): T {
 
 function deepCyclicCopyArray<T>(
 	array: Array<T>,
-	cycles: WeakMap<any, unknown>
+	cycles: WeakMap<any, unknown>,
 ): T {
 	const newArray = new (Object.getPrototypeOf(array).constructor)(
-		array.length
+		array.length,
 	)
 	const length = array.length
 
@@ -112,7 +112,7 @@ function deepCyclicCopyArray<T>(
 
 function deepCyclicCopyMap<T>(
 	map: Map<unknown, unknown>,
-	cycles: WeakMap<any, unknown>
+	cycles: WeakMap<any, unknown>,
 ): T {
 	const newMap = new Map()
 

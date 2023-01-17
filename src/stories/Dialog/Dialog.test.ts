@@ -5,13 +5,13 @@ import { within } from '@storybook/testing-library'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest(
-	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes
+	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLDialogElement
 	const button = (await within(canvasElement).findByTestId(
-		'button'
+		'button',
 	)) as HTMLButtonElement
 
 	// hidden
@@ -32,30 +32,30 @@ export async function defaultTest(
 	// default slot
 	if (args.default) {
 		const defaultSlot = element.getElementsByClassName(
-			'vv-dialog__content'
+			'vv-dialog__content',
 		)[0].firstElementChild as HTMLElement
 		await expect(
-			defaultSlot.innerHTML.replace(/<!--(.*?)-->/g, '')
+			defaultSlot.innerHTML.replace(/<!--(.*?)-->/g, ''),
 		).toEqual(args.default)
 	}
 
 	// header slot
 	if (args.header) {
 		const headerSlot = element.getElementsByClassName(
-			'vv-dialog__header'
+			'vv-dialog__header',
 		)[0].firstElementChild as HTMLElement
 		await expect(headerSlot.innerHTML.replace(/<!--(.*?)-->/g, '')).toEqual(
-			args.header
+			args.header,
 		)
 	}
 
 	// footer slot
 	if (args.footer) {
 		const headerSlot = element.getElementsByClassName(
-			'vv-dialog__footer'
+			'vv-dialog__footer',
 		)[0].firstElementChild as HTMLElement
 		await expect(headerSlot.innerHTML.replace(/<!--(.*?)-->/g, '')).toEqual(
-			args.footer
+			args.footer,
 		)
 	}
 

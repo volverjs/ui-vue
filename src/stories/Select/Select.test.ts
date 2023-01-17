@@ -6,13 +6,13 @@ import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
-		'element'
+		'element',
 	)) as HTMLElement
 	const value = (await within(canvasElement).findByTestId(
-		'value'
+		'value',
 	)) as HTMLElement
 	const select = element.getElementsByTagName(
-		'select'
+		'select',
 	)[0] as HTMLSelectElement
 	const hint = element.getElementsByClassName('vv-select__hint')[0]
 

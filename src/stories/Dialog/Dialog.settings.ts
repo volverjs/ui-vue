@@ -6,40 +6,40 @@ export const defaultArgs = {
 	transition: 'fade-block',
 	size: 'standard',
 	autoClose: false,
-	default: 'Default slot content'
+	default: 'Default slot content',
 }
 
 export const argTypes = {
 	title: { control: 'text' },
 	transition: {
 		control: 'radio',
-		options: ['fade-block', 'fade-inline', 'scale']
+		options: ['fade-block', 'fade-inline', 'scale'],
 	},
 	size: {
 		control: 'radio',
-		options: ['standard', 'small', 'fullscreen']
+		options: ['standard', 'small', 'fullscreen'],
 	},
 	...DefaultSlotArgTypes,
 	header: {
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
+				summary: 'html',
+			},
+		},
 	},
 	footer: {
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
-	}
+				summary: 'html',
+			},
+		},
+	},
 }

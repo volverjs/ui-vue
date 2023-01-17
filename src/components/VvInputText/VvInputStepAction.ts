@@ -3,21 +3,21 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 export default defineComponent({
 	components: {
-		VvIcon
+		VvIcon,
 	},
 	props: {
 		disabled: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		label: {
-			type: String
+			type: String,
 		},
 		mode: {
 			type: String,
 			validator: (v: string) => ['up', 'down'].includes(v),
-			default: 'up'
-		}
+			default: 'up',
+		},
 	},
 	emits: ['step-up', 'step-down'],
 	setup(props, { emit }) {
@@ -32,18 +32,18 @@ export default defineComponent({
 
 		return {
 			isUp,
-			onClick
+			onClick,
 		}
 	},
 	render() {
 		return h('button', {
 			class: [
 				'vv-input-text__action-chevron',
-				this.isUp && 'vv-input-text__action-chevron-up'
+				this.isUp && 'vv-input-text__action-chevron-up',
 			],
 			disabled: this.disabled,
 			ariaLabel: this.label,
-			onClick: this.onClick
+			onClick: this.onClick,
 		})
-	}
+	},
 })

@@ -4,7 +4,7 @@ VvIcon use [Iconify](https://iconify.design/) library and [Iconify Vue Component
 
 ## Props
 
-`VvIcon` provide `name`, `provider` and `prefix` props. 
+`VvIcon` provide `name`, `provider` and `prefix` props.
 Only `name` is required because the default provider is `vv` and the default `prefix` is `normal`.
 
 ## Custom icons
@@ -21,7 +21,7 @@ The `api-provider` is `@vv` by default, you can change it in plugin options.
 
 ![iconify name structure](../../../.storybook/static/iconify-name-structure.png)
 
-Ex: If my SVG icons folder root is structured like:
+For example, if you have the following folders:
 
 ```
 assets/icons/simple/*.svg
@@ -29,8 +29,14 @@ assets/icons/normal/*.svg
 assets/icons/detailed/*.svg
 ```
 
-The script `generate-icons --srcPath=assets/icons` will generate icons like `@vv:simple:{fileName}`, `@vv:normal:{fileName}` and `@vv:detailed:{fileName}`.
+The script `generate-icons --srcPath=assets/icons` will generate three json files: `simple.json`, `normal.json` and `detailed.json`.
+Each file contains the icons with the `@vv` provider and the prefix `simple`, `normal` and `detailed` respectively.
 
+```
+@vv:simple:{fileName}
+@vv:normal:{fileName}
+@vv:detailed:{fileName}
+```
 
 ### Example
 
@@ -41,9 +47,10 @@ Launch the script `generate-icons --srcPath=assets/icons/custom` to generate the
 import customIcons from '@/assets/icons/custom.json'
 
 app.use(VolverPlugin, {
-	iconsCollections: [customIcons]
+  iconsCollections: [customIcons]
 })
 ```
+
 Now you can use the icons in your templates with the `prefix` prop.
 
 ```html

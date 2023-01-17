@@ -10,20 +10,21 @@ import { argTypes, defaultArgs } from './Button.settings'
 		name="Active"
 		args={{
 			active: true,
-			label: 'Active button'
+			label: 'Active button',
 		}}
 		argTypes={{
 			active: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
 		play={async (ctx) => {
 			defaultTest(ctx, {
-				className: 'vv-button--active'
+				className: 'vv-button--active',
 			})
-		}}>
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -34,20 +35,21 @@ import { argTypes, defaultArgs } from './Button.settings'
 		args={{
 			pressed: true,
 			label: 'Pressed button',
-			modifiers: 'action-quiet'
+			modifiers: 'action-quiet',
 		}}
 		argTypes={{
 			pressed: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
 		play={async (ctx) => {
 			defaultTest(ctx, {
-				className: 'vv-button--pressed'
+				className: 'vv-button--pressed',
 			})
-		}}>
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -57,16 +59,17 @@ import { argTypes, defaultArgs } from './Button.settings'
 		name="Disabled"
 		args={{
 			disabled: true,
-			label: 'Disabled button'
+			label: 'Disabled button',
 		}}
 		argTypes={{
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
+					disable: true,
+				},
+			},
 		}}
-		play={defaultTest}>
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

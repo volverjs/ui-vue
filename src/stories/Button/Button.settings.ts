@@ -2,7 +2,7 @@ import {
 	DefaultSlotArgTypes,
 	ModifiersArgTypes,
 	DisabledArgTypes,
-	LoadingArgTypes
+	LoadingArgTypes,
 } from '@/stories/argTypes'
 import normal from '@/assets/icons/normal.json'
 
@@ -17,7 +17,7 @@ export const defaultArgs = {
 	disabled: false,
 	rel: 'noopener noreferrer',
 	iconPosition: 'left',
-	icon: undefined
+	icon: undefined,
 }
 
 export const argTypes = {
@@ -35,45 +35,45 @@ export const argTypes = {
 			'static-dark',
 			'full-bleed',
 			'block',
-			'rounded'
-		]
+			'rounded',
+		],
 	},
 	icon: {
 		options: ['', ...Object.keys(normal.icons)],
 		control: {
-			type: 'select'
-		}
+			type: 'select',
+		},
 	},
 	iconPosition: {
 		options: ['left', 'right', 'top', 'bottom'],
 		control: {
-			type: 'radio'
+			type: 'radio',
 		},
 		table: {
-			defaultValue: { summary: 'left' }
-		}
+			defaultValue: { summary: 'left' },
+		},
 	},
 	label: {
 		table: {
 			category: '',
-			type: ''
+			type: '',
 		},
 		description: 'The label of the button',
-		control: { type: 'text' }
+		control: { type: 'text' },
 	},
 	toggle: {
 		description: 'Whether the button is toggleable',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: false }
-		}
+			defaultValue: { summary: false },
+		},
 	},
 	unselectable: {
 		description: 'Whether the button is unselectable',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: true }
-		}
+			defaultValue: { summary: true },
+		},
 	},
 	...LoadingArgTypes,
 	...DisabledArgTypes,
@@ -81,70 +81,70 @@ export const argTypes = {
 		description: 'Whether the button is pressed',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: false }
-		}
+			defaultValue: { summary: false },
+		},
 	},
 	active: {
 		description: 'Whether the button is active',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: false }
-		}
+			defaultValue: { summary: false },
+		},
 	},
 	rel: {
 		description: 'The rel attribute of the button',
 		control: { type: 'text' },
 		table: {
-			defaultValue: { summary: 'noopener noreferrer' }
-		}
+			defaultValue: { summary: 'noopener noreferrer' },
+		},
 	},
 	type: {
 		options: ['button', 'submit', 'reset'],
 		control: {
-			type: 'radio'
+			type: 'radio',
 		},
 		table: {
-			defaultValue: { summary: 'button' }
-		}
+			defaultValue: { summary: 'button' },
+		},
 	},
 	href: {
 		description: 'The href attribute',
-		control: { type: 'text' }
+		control: { type: 'text' },
 	},
 	target: {
 		options: ['', '_blank', '_self', '_parent', '_top'],
 		description: 'The target attribute',
 		control: {
-			type: 'select'
-		}
+			type: 'select',
+		},
 	},
 	to: {
 		description: 'The router link / nuxt link settings',
-		control: { type: 'object' }
+		control: { type: 'object' },
 	},
 	...DefaultSlotArgTypes,
 	before: {
 		description: 'Before label slot',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
+				summary: 'html',
+			},
+		},
 	},
 	after: {
 		description: 'After label slot',
 		control: {
-			type: 'text'
+			type: 'text',
 		},
 		table: {
 			category: 'Slots',
 			type: {
-				summary: 'html'
-			}
-		}
-	}
+				summary: 'html',
+			},
+		},
+	},
 }

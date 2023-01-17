@@ -9,7 +9,7 @@ export const defaultArgs = {
 	vertical: false,
 	invalid: false,
 	valid: false,
-	tabindex: 0
+	tabindex: 0,
 }
 
 export const argTypes = CheckboxRadioGroupArgTypes

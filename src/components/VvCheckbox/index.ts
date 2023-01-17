@@ -17,7 +17,7 @@ export const VvCheckboxProps = {
 	/**
 	 * If true, the input will be displayed as a switch
 	 */
-	switch: Boolean
+	switch: Boolean,
 }
 
 export const VvCheckboxEvents = ['click', 'update:modelValue', 'change', 'blur']
@@ -29,7 +29,7 @@ export type VvCheckboxPropsTypes = ExtractPropTypes<typeof VvCheckboxProps>
  */
 export function useGroupProps(
 	props: VvCheckboxPropsTypes,
-	emit: (event: (typeof VvCheckboxEvents)[number], value: unknown) => void
+	emit: (event: (typeof VvCheckboxEvents)[number], value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_CHECK_GROUP)
@@ -55,6 +55,6 @@ export function useGroupProps(
 		readonly,
 		disabled,
 		valid,
-		invalid
+		invalid,
 	}
 }

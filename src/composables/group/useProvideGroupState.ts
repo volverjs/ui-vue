@@ -6,16 +6,16 @@ import type IGroupState from '@/composables/group/types/IGroupState'
  * @param {IGroupState} groupState the group state with all group options
  */
 export function useProvideGroupState<TGroup extends IGroupState>(
-	groupState: TGroup
+	groupState: TGroup,
 ) {
 	if (
 		Object.keys(groupState).some(
-			(k) => k !== 'key' && !isRef(groupState[k])
+			(k) => k !== 'key' && !isRef(groupState[k]),
 		)
 	)
 		throw Error("One or more groupState props aren't ref.")
 	provide(
 		groupState.key,
-		computed(() => groupState)
+		computed(() => groupState),
 	)
 }

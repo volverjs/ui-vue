@@ -17,13 +17,13 @@ export const Template = (args) => ({
 	},
 	data() {
 		return {
-			value: undefined
+			value: undefined,
 		}
 	},
 	template: `
 		<vv-dropdown v-bind="args" v-model="value" class="max-w-224 relative" data-testId="element" />
 		<div class="mt-24">Value: <span data-testId="value">{{ value }}</span></div>
-		`
+	`,
 })
 
 <Canvas>
@@ -40,10 +40,11 @@ export const Template = (args) => ({
 		argTypes={{
 			disabled: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -56,10 +57,11 @@ export const Template = (args) => ({
 		argTypes={{
 			multiple: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -72,15 +74,16 @@ export const Template = (args) => ({
 		argTypes={{
 			multiple: {
 				control: {
-					disable: true
-				}
+					disable: true,
+				},
 			},
 			maxValues: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -93,10 +96,11 @@ export const Template = (args) => ({
 		argTypes={{
 			options: {
 				control: {
-					disable: true
-				}
-			}
-		}}>
+					disable: true,
+				},
+			},
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

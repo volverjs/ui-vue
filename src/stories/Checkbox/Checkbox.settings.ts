@@ -11,7 +11,7 @@ export const defaultArgs = {
 	invalid: false,
 	valid: false,
 	indeterminate: false,
-	uncheckedValue: undefined
+	uncheckedValue: undefined,
 }
 
 export const argTypes = {
@@ -21,23 +21,23 @@ export const argTypes = {
 		description: 'If true, the input will be indeterminated',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
+				summary: false,
+			},
+		},
 	},
 	uncheckedValue: {
 		description: 'Value associated with the unchecked state.',
 		control: {
-			type: 'text'
-		}
+			type: 'text',
+		},
 	},
 	switch: {
 		type: 'boolean',
 		description: 'If true, the input will be displayed as a switch.',
 		table: {
 			defaultValue: {
-				summary: false
-			}
-		}
-	}
+				summary: false,
+			},
+		},
+	},
 }
