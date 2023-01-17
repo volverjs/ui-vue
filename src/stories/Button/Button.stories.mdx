@@ -1,67 +1,33 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvButton from '../../components/VvButton/VvButton.vue'
-import { within, userEvent } from '@storybook/testing-library'
-import { axe, toHaveNoViolations } from 'jest-axe'
-import { expect } from '@storybook/jest'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import { defaultTest } from './Button.test'
+import { argTypes, defaultArgs } from './Button.settings'
 
 <Meta
 	title="Components/Button"
 	component={VvButton}
-	argTypes={{
-		onClick: { action: 'clicked' },
-		variant: {
-			control: {
-				type: 'select',
-				options: [
-					null,
-					'primary',
-					'secondary',
-					'danger',
-					'ghost',
-					'text',
-					'static-light',
-					'static-dark'
-				]
-			}
-		},
-		label: {
-			defaultValue: 'Test',
-			control: { type: 'text' }
-		},
-		loading: {
-			control: { type: 'boolean' }
-		},
-		disabled: {
-			control: { type: 'boolean' }
-		}
-	}}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args) => ({
 	components: { VvButton },
-	setup() {
-		function onClick() {
-			console.log('onClick')
-		}
-		return { args, onClick }
+	data() {
+		return { value: undefined }
 	},
-	template:
-		/*html*/
-		`<vv-button v-bind="args" @click="onClick" />`
+	setup() {
+		return { args }
+	},
+	template: `<vv-button v-bind="args" v-model="value" name="my-button">
+					<template #before v-if="args.before"><div v-html="args.before"></div></template>
+					<template #default v-if="args.default"><div v-html="args.default"></div></template>
+					<template #after v-if="args.after"><div v-html="args.after"></div></template>
+			   </vv-button>
+			   <div v-if="args.toggle" class="mt-md">Value: {{ value }}</div>`,
 })
 
-# VvButton
-
-Stories of `VvButton`.
-Let's define a story for our playground `button`:
-
-<Story
-	name="vv-button"
-	args={{}}
-	play={async ({ args, canvasElement }) => {
-		const canvas = within(canvasElement)
-		await userEvent.click(canvas.getByRole('button'))
-		await expect.extend(toHaveNoViolations)
-	}}>
-	{Template.bind({})}
-</Story>
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>

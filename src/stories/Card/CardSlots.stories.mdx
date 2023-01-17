@@ -1,0 +1,98 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvCard from '@/components/VvCard/VvCard.vue'
+import { defaulTest } from './Card.test'
+import { defaultArgs, argTypes } from './Card.settings'
+import { Template } from './Card.stories.mdx'
+
+<Meta
+	title="Components/Card/Slots"
+	component={VvCard}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Default"
+		play={defaulTest}
+		argTypes={{
+			default: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{(args) => {
+			return {
+				components: { VvCard },
+				setup() {
+					return {
+						args,
+					}
+				},
+				template: `
+					<vv-card v-bind="args" class="max-w-max" data-testId="card">
+						<picture>
+							<img class="aspect-photo h-300" src="https://unsplash.it/300" alt="Card picture"/>
+						</picture>
+					</vv-card>
+					`,
+			}
+		}}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Header"
+		play={defaulTest}
+		args={{
+			header: 'Header <em class="italic">slot!</em>',
+		}}
+		argTypes={{
+			header: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Content"
+		play={defaulTest}
+		argTypes={{
+			content: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Footer"
+		play={defaulTest}
+		args={{
+			footer: 'Footer <em class="italic">slot!</em>',
+		}}
+		argTypes={{
+			footer: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

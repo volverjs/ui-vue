@@ -1,35 +1,37 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { defaultArgs, argTypes } from './ButtonGroup.settings'
+import { defaultTest } from './ButtonGroup.test'
 
-import VvButton from '../../components/VvButton/VvButton.vue'
-import VvButtonGroup from '../../components/VvButtonGroup/VvButtonGroup.vue'
-
-<Meta title="Components/ButtonGroup" component={VvButtonGroup} />
+<Meta
+	title="Components/ButtonGroup"
+	component={VvButtonGroup}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
 	components: { VvButton, VvButtonGroup },
+	data() {
+		return { value: undefined }
+	},
 	setup() {
 		return { args }
 	},
-	template:
-		/*html*/
-		`
-        <vv-button-group v-bind="args">
-            <vv-button name="1a">Button 1</vv-button>
+	template: `
+        <vv-button-group v-bind="args" v-model="value" data-testId="button-group">
+            <vv-button name="1a" data-testId="first-button">Button 1</vv-button>
             <vv-button name="2b">Button 2</vv-button>
             <vv-button name="3c">Button 3</vv-button>
         </vv-button-group>
-        `
+		<div v-if="args.toggle" class="mt-md">Value: {{ value }}</div>
+        `,
 })
 
-# VvButtonGroup
-
-A button group is a grouping of buttons whose actions are related to each other.
-
-<Source language="jsx" code={'<vv-button></vv-button>'} />
-
 <Canvas>
-	<Story name="vv-button-group" args={{ vertical: false, compact: false }}>
-		{Template.bind({})}
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
 	</Story>
 </Canvas>

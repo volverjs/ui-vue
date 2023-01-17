@@ -1,40 +1,50 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvBadge from '../../components/VvBadge/VvBadge.vue'
-import testBadgeVariant from './BadgeTest.js'
-import testDangerBadge from './BadgeTest.js'
+import VvBadge from '@/components/VvBadge/VvBadge.vue'
+import { defaultTest } from './Badge.test'
+import { defaultArgs, argTypes } from './Badge.settings'
 
 <Meta
 	title="Components/Badge"
 	component={VvBadge}
-	argTypes={{
-		value: {
-			defaultValue: '14',
-			control: { type: 'text' }
-		},
-		color: {
-			control: {
-				type: 'select',
-				options: ['', 'black', 'danger', 'success', 'warning']
-			}
-		}
-	}}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvBadge },
 	setup() {
 		return { args }
 	},
-	template:
-		/*html*/
-		`<vv-badge v-bind="args" />`
+	template: `<vv-badge v-bind="args">
+			   		<template #default v-if="args.default"><span v-html="args.default"></span></template>	
+			   </vv-badge>`,
 })
 
-# VvBadge
+<Canvas>
+	<Story name="Default" args={{ value: '14' }} play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
-Stories of `VvBadge`.
-Let's define a story for our playground `badge`:
-
-<Story name="vv-badge" args={{}}>
-	{Template.bind({})}
-</Story>
+<Canvas>
+	<Story
+		name="Dot"
+		args={{ value: '' }}
+		argTypes={{
+			default: {
+				control: {
+					disable: true,
+				},
+			},
+			value: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

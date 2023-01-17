@@ -1,15 +1,182 @@
+<script lang="ts">
+	export default {
+		name: 'VvButton',
+	}
+</script>
+
+<script setup lang="ts">
+	import { inject, useAttrs, useSlots, computed } from 'vue'
+	import { nanoid } from 'nanoid'
+	import { contains, equals } from '@/utils/ObjectUtilities'
+	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import VvIcon from '@/components/VvIcon/VvIcon.vue'
+	import {
+		ButtonIconPosition,
+		VvButtonEvents,
+		ButtonTag,
+		VvButtonProps,
+		useGroupProps,
+	} from '@/components/VvButton'
+
+	// props, attrs, slots and emit
+	const props = defineProps(VvButtonProps)
+	const attrs = useAttrs()
+	const slots = useSlots()
+	const emit = defineEmits(VvButtonEvents)
+
+	// data
+	const name = (attrs?.name as string) || nanoid()
+	const {
+		modifiers,
+		iconPosition,
+		icon,
+		label,
+		modelValue,
+		disabled,
+		toggle,
+		unselectable,
+	} = useGroupProps(props, emit)
+
+	// inject Volver
+	const ds = inject<IVolver>(VOLVER_PREFIX)
+
+	/**
+	 * @description The tag defined by props.
+	 * @returns {string} The tag.
+	 */
+	const hasTag = computed(() => {
+		switch (true) {
+			case disabled.value:
+				return ButtonTag.button
+			case props.to !== undefined:
+				return ds?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
+			case props.href !== undefined:
+				return ButtonTag.a
+			default:
+				return ButtonTag.button
+		}
+	})
+
+	/**
+	 * @description The component pressed state by prop or group.
+	 * @returns {string} The component tag.
+	 */
+	const isPressed = computed(() => {
+		if (!toggle.value) return props.pressed
+
+		return Array.isArray(modelValue.value)
+			? contains(name, modelValue.value)
+			: equals(name, modelValue.value)
+	})
+
+	/**
+	 * @description Define component classes with BEM style.
+	 * @returns {Array} The component classes.
+	 */
+	const { bemCssClasses } = useBemModifiers('vv-button', {
+		modifiers,
+		active: props.active,
+		pressed: isPressed,
+		disabled,
+		reverse: computed(() =>
+			[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
+				iconPosition.value,
+			),
+		),
+		column: computed(() =>
+			[ButtonIconPosition.top, ButtonIconPosition.bottom].includes(
+				iconPosition.value,
+			),
+		),
+		iconOnly: computed(
+			() => icon?.value && !label?.value && !slots['default'],
+		),
+	})
+
+	/**
+	 * @description Define icon attributes.
+	 * @returns {Object} The icon attributes.
+	 */
+	const hasIconProps = computed(() =>
+		typeof icon?.value === 'string' ? { name: icon?.value } : icon?.value,
+	)
+
+	/**
+	 * @description Define component attributes.
+	 * @returns {Object} The component attributes.
+	 */
+	const hasProps = computed(() => {
+		const toReturn = {
+			class: bemCssClasses.value,
+			'aria-pressed': isPressed.value ? true : undefined,
+		}
+		switch (hasTag.value) {
+			case ButtonTag.a:
+				return {
+					...toReturn,
+					role: 'button',
+					href: props.href,
+					target: props.target,
+					rel: props.rel,
+				}
+			case ButtonTag.routerLink:
+			case ButtonTag.nuxtLink:
+				return {
+					...toReturn,
+					role: 'button',
+					to: props.to,
+					target: props.target,
+				}
+			default:
+				return {
+					...toReturn,
+					type: props.type,
+					disabled: disabled.value,
+				}
+		}
+	})
+
+	/**
+	 * @description Catch click event in a group.
+	 */
+	const onClick = () => {
+		if (toggle.value) {
+			if (Array.isArray(modelValue.value)) {
+				if (contains(name, modelValue.value)) {
+					if (unselectable.value) {
+						modelValue.value = modelValue.value.filter(
+							(n) => n !== name,
+						)
+					}
+					return
+				}
+				modelValue.value.push(name)
+				return
+			}
+			if (equals(name, modelValue.value) && unselectable.value) {
+				modelValue.value = undefined
+				return
+			}
+			modelValue.value = name
+		}
+	}
+</script>
+
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component v-bind="properties" :is="isComponent" @click.passive="onClick">
-		<!-- @slot default to replace all button content -->
+	<component v-bind="hasProps" :is="hasTag" @click.passive="onClick">
+		<!-- @slot Replace all button content -->
 		<slot>
 			<!-- #region loading -->
 			<template v-if="loading">
+				<!-- @slot Replace all button content on loading -->
 				<slot name="loading">
-					<vv-icon
+					<VvIcon
 						v-if="loadingIcon"
 						class="vv-button__loading-icon"
-						:name="loadingIcon" />
+						:name="loadingIcon"
+					/>
 					<span v-if="loadingLabel" class="vv-button__label">
 						{{ loadingLabel }}
 					</span>
@@ -18,11 +185,11 @@
 			<!-- #endregion loading -->
 			<!-- #region button -->
 			<template v-else>
-				<!-- @slot before -->
+				<!-- @slot Before label and icon -->
 				<slot name="before" />
 				<!-- #region icon -->
 				<template v-if="icon">
-					<vv-icon class="vv-button__icon" :name="icon" />
+					<VvIcon class="vv-button__icon" v-bind="hasIconProps" />
 				</template>
 				<!-- #endregion icon -->
 				<!-- #region label  -->
@@ -33,7 +200,7 @@
 					</slot>
 				</span>
 				<!-- #endregion label  -->
-				<!-- @slot after -->
+				<!-- @slot After label and icon -->
 				<slot name="after" />
 			</template>
 			<!-- #endregion button -->
@@ -41,230 +208,3 @@
 	</component>
 	<!-- #endregion component: button | a | router-link | nuxt-link -->
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, type PropType } from 'vue'
-import { ButtonIconPosition, ButtonTag, ButtonTarget } from './VvButton'
-import VvIcon from '../VvIcon/VvIcon.vue'
-
-import { v4 as uuidv4 } from 'uuid'
-import { useGroupOrLocalState } from '../../composables/group/useGroupOrLocalState'
-import { VV_BUTTON_GROUP } from '../../constants'
-import { ButtonGroupState } from '../../composables/group/models'
-import type { IButtonGroupOptions } from '../../composables/group/types'
-
-export default defineComponent({
-	components: { VvIcon },
-	props: {
-		/**
-		 * Button icon
-		 */
-		icon: String,
-		/**
-		 * Button icon position
-		 */
-		iconPosition: {
-			type: String as PropType<ButtonIconPosition>,
-			default: ButtonIconPosition.left,
-			validator: (value: string) => value in ButtonIconPosition
-		},
-		/**
-		 * Button label
-		 */
-		label: String,
-		/**
-		 * Loading status
-		 */
-		loading: Boolean,
-		/**
-		 * Loading icon
-		 */
-		loadingIcon: { type: String, default: 'eos-icons:bubble-loading' },
-		/**
-		 * Loading label
-		 */
-		loadingLabel: {
-			type: String,
-			default: 'Loading...'
-		},
-		/**
-		 * The variant of the button
-		 * @values
-		 * @defaultvalue default
-		 */
-		variant: {
-			type: String
-		},
-		/**
-		 * The router-link/nuxt-link property, if it is defined the button is rendered as a ruouter-link or nuxt-link.
-		 * @see Documentation of [router-link](https://router.vuejs.org/api/#router-link) and [nuxt-link](https://nuxtjs.org/api/components-nuxt-link/)
-		 */
-		to: {
-			type: [String, Object]
-		},
-		/**
-		 * Link href
-		 */
-		href: String,
-		/**
-		 * Link target
-		 */
-		target: {
-			type: String as PropType<ButtonTarget>,
-			validator: (value: string) => value in ButtonTarget
-		},
-		/**
-		 * Create block level button that span the full width of a parent.
-		 */
-		block: Boolean,
-		/**
-		 * Button active state.
-		 */
-		active: Boolean,
-		/**
-		 * Button rounded.
-		 */
-		rounded: Boolean,
-		/**
-		 * Button disabled
-		 */
-		disabled: Boolean,
-		/**
-		 *
-		 */
-		fullBleed: Boolean
-	},
-	emits: ['update:modelValue'],
-	setup(props, { attrs, emit }) {
-		const btnName = attrs?.name || uuidv4()
-		// #region group
-		// Define reactive props
-		const buttonGroupOptions: IButtonGroupOptions = {
-			modelValue: btnName,
-			disabled: props.disabled
-		}
-		// Create groupState instance
-		const groupState = new ButtonGroupState(buttonGroupOptions)
-		// Use group composable to inject the provided group
-		const {
-			group,
-			modelValue,
-			isInGroup,
-			isDisabled,
-			isToggleEnabled,
-			checkIsSelected
-		} = useGroupOrLocalState(VV_BUTTON_GROUP, groupState)
-
-		return {
-			group,
-			isInGroup,
-			isSelected: computed(
-				() => isToggleEnabled.value && checkIsSelected(btnName)
-			),
-			isDisabled,
-			onClick() {
-				modelValue.value = btnName
-				emit('update:modelValue', modelValue.value)
-			}
-		}
-		// #endregion button-group logic
-	},
-	data() {
-		return {
-			buttonTags: ButtonTag,
-			iconPositions: ButtonIconPosition
-		}
-	},
-	computed: {
-		/**
-		 * Compute component properties
-		 */
-		properties() {
-			return {
-				...this.linkProps,
-				'aria-label': this.label || this.$attrs['aria-label'],
-				'aria-disabled': this.isDisabled,
-				role: 'button',
-				class: this.hasClass,
-				to: this.to
-			}
-		},
-		/**
-		 * Compute link props (target, href)
-		 */
-		linkProps() {
-			const isLink = this.isComponent === this.buttonTags.a
-			let toReturn = {}
-			if (isLink) {
-				toReturn = this.isDisabled
-					? {
-							href: 'javascript:;'
-					  }
-					: {
-							target: this.target,
-							href: this.href
-					  }
-			}
-			return toReturn
-		},
-		/**
-		 * @description Select the tag type in based on the props before.
-		 * @returns {string} The type of component
-		 */
-		isComponent() {
-			switch (true) {
-				case this.isDisabled:
-					return ButtonTag.button
-				case this.to !== undefined:
-					return '$nuxt' in this
-						? ButtonTag.nuxtLink
-						: ButtonTag.routerLink
-				case this.href !== undefined:
-					return ButtonTag.a
-				default:
-					return ButtonTag.button
-			}
-		},
-		/**
-		 * @description Define css classes.
-		 * @returns {string} The classes
-		 */
-		hasClass(): Array<string | object> {
-			return [
-				'vv-button',
-				this.hasVariant,
-				this.hasIconPosition,
-				{
-					'vv-button--active': this.active || this.isSelected,
-					'vv-button--block': this.block,
-					'vv-button--rounded': this.rounded,
-					'vv-button--full-bleed': this.fullBleed,
-					'vv-button--disabled': this.isDisabled
-				}
-			]
-		},
-		/**
-		 * @description Returns icon position.
-		 * @returns {string} The class
-		 */
-		hasIconPosition() {
-			return {
-				'vv-button--reverse':
-					this.iconPosition === this.iconPositions.right,
-				'vv-button--column vv-button--reverse':
-					this.iconPosition === this.iconPositions.bottom,
-				'vv-button--column':
-					this.iconPosition === this.iconPositions.top,
-				'vv-button--icon-only': this.icon && !this.label
-			}
-		},
-		/**
-		 * @description Returns button variants.
-		 * @returns {string} The class
-		 */
-		hasVariant() {
-			return this.variant ? `vv-button--${this.variant}` : ''
-		}
-	}
-})
-</script>

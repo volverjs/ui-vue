@@ -1,31 +1,78 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
-
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { defaultTest } from './InputText.test.ts'
+import { defaultArgs, argTypes } from './InputText.settings'
 
-<Meta title="Components/InputText/IconPosition" component={VvInputText} />
+<Meta
+	title="Components/InputText/Icon"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
 	<Story
-		name="Left"
+		name="Default"
 		args={{
-			name: 'input-text-icon',
-			icon: 'add',
-			iconPosition: 'left'
-		}}>
-		{Template.bind({})}
+			icon: 'heart',
+		}}
+		argTypes={{
+			icon: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
-		name="Right"
+		name="Left"
 		args={{
-			name: 'input-text-icon',
-			icon: 'add',
-			iconPosition: 'right'
-		}}>
-		{Template.bind({})}
+			icon: 'heart',
+			iconPosition: 'left',
+		}}
+		argTypes={{
+			icon: {
+				control: {
+					disable: true,
+				},
+			},
+			iconPosition: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Src"
+		args={{
+			icon: {
+				name: 'engineering',
+				src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/social/engineering/materialicons/24px.svg',
+			},
+		}}
+		argTypes={{
+			icon: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

@@ -1,6 +1,87 @@
+<script lang="ts">
+	export default {
+		name: 'VvAccordionGroup',
+	}
+</script>
+
+<script setup lang="ts">
+	import { type Ref, computed, ref, toRefs, watchEffect } from 'vue'
+	import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
+	import { VV_ACCORDION_GROUP } from '@/constants'
+	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+	import {
+		VvAccordionGroupProps,
+		VvAccordionGroupEvents,
+	} from '@/components/VvAccordionGroup/'
+
+	// props and emit
+	const props = defineProps(VvAccordionGroupProps)
+	const emit = defineEmits(VvAccordionGroupEvents)
+
+	// data
+	const { disabled, collapse, modifiers, itemModifiers, items } =
+		toRefs(props)
+	watchEffect(() => {
+		if (typeof props.modelValue === 'string' && collapse.value) {
+			// eslint-disable-next-line
+			console.warn(
+				`[VvAccordionGroup]: modelValue is a string but collapse is true.`,
+			)
+		}
+	})
+	const localModelValue: Ref<string[]> = ref([])
+	const modelValue = computed({
+		get: () => {
+			if (props.modelValue !== undefined) {
+				if (!collapse.value) {
+					return Array.isArray(props.modelValue)
+						? props.modelValue[0]
+						: props.modelValue
+				}
+				return props.modelValue
+			}
+			return !collapse.value
+				? localModelValue.value?.[0]
+				: localModelValue.value
+		},
+		set: (newValue) => {
+			if (props.modelValue !== undefined) {
+				if (
+					(Array.isArray(props.modelValue) || collapse.value) &&
+					!Array.isArray(newValue)
+				) {
+					newValue = [newValue]
+				}
+				return emit('update:modelValue', newValue)
+			}
+			localModelValue.value = Array.isArray(newValue)
+				? newValue
+				: [newValue]
+		},
+	})
+
+	// provide
+	const accordionGroupState: IAccordionGroupState = {
+		key: VV_ACCORDION_GROUP,
+		modelValue,
+		disabled,
+		collapse,
+		modifiers: itemModifiers,
+	}
+	useProvideGroupState(accordionGroupState)
+
+	// styles
+	const { bemCssClasses } = useBemModifiers('vv-accordion-group', {
+		modifiers,
+		disabled,
+	})
+</script>
+
 <template>
-	<div :class="hasClass">
-		<template v-if="props.items?.length > 0">
+	<div :class="bemCssClasses">
+		<slot>
 			<vv-accordion
 				v-for="item in items"
 				:key="item.title"
@@ -8,85 +89,15 @@
 					name: item.name,
 					title: item.title,
 					content: item.content,
-					...props
-				}" />
-		</template>
-		<slot v-else />
+				}"
+			>
+				<template #header="data">
+					<slot v-bind="data" :name="`header::${item.name}`" />
+				</template>
+				<template #details="data">
+					<slot v-bind="data" :name="`details::${item.name}`" />
+				</template>
+			</vv-accordion>
+		</slot>
 	</div>
 </template>
-
-<script setup lang="ts">
-import { computed, type ComputedRef } from 'vue'
-import { useModifiers } from '../../composables/useModifiers'
-import { AccordionGroupState } from '../../composables/group/models'
-import type { IAccordionGroupOptions } from '../../composables/group/types'
-import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
-import { useProvideGroupState } from '../../composables/group/useGroup'
-
-interface VvAccordionGroupProps {
-	/**
-	 * VModel
-	 */
-	modelValue?: string | string[]
-	/**
-	 * Change icon position to right side
-	 */
-	iconRight?: boolean
-	/**
-	 * Add border to accordion item
-	 */
-	bordered?: boolean
-	/**
-	 * Accordion items
-	 */
-	items?: Array<{
-		name?: string
-		title: string
-		content: string
-	}>
-	/**
-	 * If true, close others accordion when an item is open
-	 */
-	accordion?: boolean
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
-	 */
-	modifiers?: string | string[]
-	disabled?: boolean
-}
-
-// Define component props, attributes and events emitted
-const props = withDefaults(defineProps<VvAccordionGroupProps>(), {
-	items: () => []
-})
-const emit = defineEmits(['update:modelValue'])
-
-// Get computed string with all css classes (modifiers) with 'vv-accordion-group' prefix
-const hasModifiers: ComputedRef<string> = useModifiers(
-	'vv-accordion-group',
-	props.modifiers
-)
-
-// #region group
-// Define group options
-const accordionGroupOptions: IAccordionGroupOptions = {
-	disabled: props.disabled ?? false,
-	modelValue: props.modelValue || null,
-	bordered: props.bordered,
-	iconRight: props.iconRight,
-	accordion: props.accordion
-}
-// Create groupState instance
-const accordionGroupState = new AccordionGroupState(accordionGroupOptions)
-// Use group composable to provide the group state to children
-useProvideGroupState(accordionGroupState, emit)
-// #endregion group
-
-const hasClass = computed(() => [
-	'vv-accordion-group',
-	hasModifiers.value,
-	{
-		'vv-accordion-group--disabled': props.disabled
-	}
-])
-</script>

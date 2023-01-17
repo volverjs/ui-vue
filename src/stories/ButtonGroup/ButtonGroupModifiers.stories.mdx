@@ -1,0 +1,52 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { Template } from './ButtonGroup.stories.mdx'
+import { defaultArgs, argTypes } from './ButtonGroup.settings'
+import { defaultTest } from './ButtonGroup.test'
+
+<Meta
+	title="Components/ButtonGroup/Modifiers"
+	component={VvButtonGroup}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Compact"
+		args={{ modifiers: 'compact' }}
+		play={defaultTest}
+		argTypes={{
+			modifiers: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story name="Vertical" args={{ modifiers: 'vertical' }} play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Block"
+		args={{ modifiers: 'block' }}
+		play={defaultTest}
+		argTypes={{
+			modifiers: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

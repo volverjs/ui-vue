@@ -1,65 +1,83 @@
+<script lang="ts">
+	export default {
+		name: 'VvButtonGroup',
+	}
+</script>
+
+<script setup lang="ts">
+	import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
+	import { toRefs, watchEffect, computed } from 'vue'
+	import { VV_BUTTON_GROUP } from '@/constants'
+	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import {
+		VvButtonGroupProps,
+		VvButtonGroupEvents,
+	} from '@/components/VvButtonGroup'
+
+	// emit and props
+	const emit = defineEmits(VvButtonGroupEvents)
+	const props = defineProps(VvButtonGroupProps)
+
+	// data
+	const {
+		disabled,
+		toggle,
+		modifiers,
+		multiple,
+		unselectable,
+		itemModifiers,
+	} = toRefs(props)
+	watchEffect(() => {
+		if (typeof props.modelValue === 'string' && multiple.value) {
+			// eslint-disable-next-line
+			console.warn(
+				`[VvButtonGroup]: modelValue is a string but multiple is true.`,
+			)
+		}
+	})
+	const modelValue = computed({
+		get: () => {
+			if (!multiple.value) {
+				return Array.isArray(props.modelValue)
+					? props.modelValue[0]
+					: props.modelValue
+			}
+			return props.modelValue
+		},
+		set: (newValue) => {
+			if (
+				newValue !== undefined &&
+				(Array.isArray(props.modelValue) || multiple.value) &&
+				!Array.isArray(newValue)
+			) {
+				newValue = [newValue]
+			}
+			return emit('update:modelValue', newValue)
+		},
+	})
+
+	// provide
+	const groupState: IButtonGroupState = {
+		key: VV_BUTTON_GROUP,
+		modelValue,
+		disabled,
+		toggle,
+		multiple,
+		unselectable,
+		modifiers: itemModifiers,
+	}
+	useProvideGroupState(groupState)
+
+	// style
+	const { bemCssClasses } = useBemModifiers('vv-button-group', {
+		modifiers,
+	})
+</script>
+
 <template>
-	<div :class="btnGroupClass" role="group">
+	<div :class="bemCssClasses" role="group">
+		<!-- @slot Buttons slot -->
 		<slot />
 	</div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useProvideGroupState } from '../../composables/group/useGroup'
-import { ButtonGroupState } from '../../composables/group/models'
-import type { IButtonGroupOptions } from '../../composables/group/types'
-
-const emit = defineEmits(['update:modelValue'])
-const props = defineProps({
-	disabled: { type: Boolean, default: false },
-	/**
-	 * True = show buttons vertically
-	 */
-	vertical: { type: Boolean, default: false },
-	/**
-	 * True = no padding between buttons
-	 */
-	compact: { type: Boolean, default: false },
-	/**
-	 * True = il button group si comporterà come un toggle, materrà attivo l'ultimo pulsante cliccato.
-	 */
-	toggle: { type: Boolean, default: false },
-	/**
-	 * True = display as block
-	 */
-	block: { type: Boolean, default: false },
-	/**
-	 * True = display btn-broup as rounded (first and last child .vv-button)
-	 */
-	rounded: { type: Boolean, default: false },
-	/**
-	 * Active button (name)
-	 */
-	modelValue: { type: String, default: undefined }
-})
-
-//Computed
-const btnGroupClass = computed(() => {
-	return {
-		'vv-button-group': true,
-		'vv-button-group--vertical': props.vertical,
-		'vv-button-group--compact': props.compact,
-		'vv-button-group--block': props.block,
-		'vv-button-group--rounded': props.rounded
-	}
-})
-
-// #region group
-// Define reactive props
-const buttonGroupOptions: IButtonGroupOptions = {
-	disabled: props.disabled,
-	modelValue: props.modelValue,
-	toggle: props.toggle
-}
-// Create groupState instance
-const groupState = new ButtonGroupState(buttonGroupOptions)
-// Use group composable to provide the group state to children
-useProvideGroupState(groupState, emit)
-// #endregion group
-</script>

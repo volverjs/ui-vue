@@ -1,0 +1,110 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+import { defaultTest } from './InputText.test.ts'
+import { defaultArgs, argTypes } from './InputText.settings'
+
+<Meta
+	title="Components/InputText/Length"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Maxlength"
+		args={{
+			maxlength: 5,
+		}}
+		argTypes={{
+			maxlength: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Minlength"
+		args={{
+			minlength: 5,
+		}}
+		argTypes={{
+			minlength: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Count"
+		args={{
+			count: true,
+			minlength: 100,
+		}}
+		argTypes={{
+			count: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Limit"
+		args={{
+			count: 'limit',
+			maxlength: 100,
+		}}
+		argTypes={{
+			count: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Countdown"
+		args={{
+			count: 'countdown',
+			maxlength: 100,
+		}}
+		argTypes={{
+			count: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

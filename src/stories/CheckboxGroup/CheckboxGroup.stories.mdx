@@ -1,0 +1,134 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvCheckboxGroup from '@/components/VvCheckboxGroup/VvCheckboxGroup.vue'
+import { defaultArgs, argTypes } from './CheckboxGroup.settings'
+import { defaultTest } from './CheckboxGroup.test'
+
+<Meta
+	title="Components/CheckboxGroup"
+	component={VvCheckboxGroup}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+export const Template = (args) => ({
+	components: { VvCheckboxGroup },
+	setup() {
+		return { args }
+	},
+	data: () => ({ inputValue: undefined }),
+	template: `
+            <vv-checkbox-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+                <template #default v-if="args.default"><span v-html="args.default"></span></template>
+				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+            </vv-checkbox-group>
+            <div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+        `,
+})
+
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Disabled"
+		play={defaultTest}
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Readonly"
+		play={defaultTest}
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Vertical"
+		play={defaultTest}
+		args={{ vertical: true }}
+		argTypes={{
+			vertical: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		play={defaultTest}
+		args={{ invalid: true, invalidLabel: 'This field is required.' }}
+		argTypes={{
+			invalid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
+		play={defaultTest}
+		args={{ valid: true, validLabel: 'Selected response is valid.' }}
+		argTypes={{
+			valid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{ hintLabel: 'Please fill the input above.' }}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

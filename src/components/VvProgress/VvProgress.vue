@@ -1,61 +1,34 @@
-<template>
-	<progress v-bind="properties" />
-</template>
-
 <script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-	props: {
-		/**
-		 * Progress value
-		 */
-		value: {
-			type: Number
-		},
-		/**
-		 * Progress max value
-		 */
-		max: {
-			type: Number
-		},
-		/**
-		 * Progress label
-		 */
-		ariaLabel: {
-			type: String,
-			default: 'progress-bar'
-		},
-		/**
-		 * Indeterminate attribute
-		 */
-		indeterminate: Boolean
-	},
-	computed: {
-		/**
-		 * Compute component properties
-		 */
-		properties() {
-			return {
-				'aria-label': this.ariaLabel,
-				role: 'progressbar',
-				class: this.hasClass,
-				value: this.value,
-				max: this.max
-			}
-		},
-		/**
-		 * @description Define css classes.
-		 * @returns {string} The classes
-		 */
-		hasClass(): Array<string | object> {
-			return [
-				'vv-progress',
-				{
-					'vv-progress--indeterminate': this.indeterminate
-				}
-			]
-		}
+	export default {
+		name: 'VvProgress',
 	}
-})
 </script>
+
+<script setup lang="ts">
+	import { computed, toRefs } from 'vue'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvProgressProps } from '@/components/VvProgress'
+
+	// props
+	const props = defineProps(VvProgressProps)
+	const { value, max, label: ariaLabel } = toRefs(props)
+	const indeterminate = computed(() => props.value === undefined)
+
+	// styles
+	const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
+		modifiers: props.modifiers,
+		indeterminate,
+	})
+</script>
+
+<template>
+	<progress
+		role="progressbar"
+		v-bind="{
+			class: hasClass,
+			ariaLabel,
+			max,
+			value,
+		}"
+	/>
+</template>

@@ -1,14 +1,21 @@
-<template>
-	<span class="vv-badge" :class="hasClass" role="status">{{ value }}</span>
-</template>
+<script lang="ts">
+	export default {
+		name: 'VvBadge',
+	}
+</script>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvBadgeProps } from '@/components/VvBadge'
 
-const props = defineProps<{
-	value?: string | number
-	color?: string
-}>()
-
-const hasClass = computed(() => (props.color ? `vv-badge--${props.color}` : ''))
+	const props = defineProps(VvBadgeProps)
+	const { bemCssClasses } = useBemModifiers('vv-badge', {
+		modifiers: props.modifiers,
+	})
 </script>
+
+<template>
+	<span :class="bemCssClasses" role="status">
+		<slot>{{ value }}</slot>
+	</span>
+</template>

@@ -1,96 +1,167 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import { defaultArgs, argTypes } from './InputText.settings'
+import { defaultTest } from './InputText.test'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+<Meta
+	title="Components/InputText"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-<Meta title="Components/InputText" component={VvInputText} />
-
-export const Template = (args, { argTypes }) => ({
-	props: Object.keys(argTypes),
+export const Template = (args) => ({
 	components: { VvInputText },
 	setup() {
 		return { args }
 	},
-	data: () => ({ value: args.modelValue || '' }),
-	template:
-		/*html*/
-		`
-		<div class="flex flex-col justify-between">
-			<vv-input-text v-bind="args" v-model:modelValue="value"/>
-			<strong v-if="value">Valore: {{value}} </strong> 
-		</div>
-        `
+	data: () => ({ inputValue: undefined }),
+	template: `
+		<vv-input-text v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #before v-if="args.before"><div class="pl-sm flex" v-html="args.before"></div></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
+		</vv-input-text>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+        `,
 })
 
 <Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
 	<Story
-		name="vv-input-text"
+		name="Disabled"
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Readonly"
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
 		args={{
-			text: 'text',
-			id: 'vv-input-text',
-			name: 'vv-input-text',
-			placeholder: 'Prova input',
-			label: 'Campo di prova',
-			hintLabel: 'Hint label text',
-			autocomplete: 'off',
-			disabled: false,
-			readonly: false,
-			valid: false,
-			error: false,
-			loading: false,
-			loadingLabel: 'Ciao sono il loading',
-			icon: '',
-			iconPosition: null,
-			floating: false,
-			min: null,
-			max: null,
-			minlength: null,
-			maxlength: null
+			valid: true,
+			validLabel: 'The field is valid.',
+			icon: 'check',
 		}}
 		argTypes={{
-			id: {
-				description: 'Id input element.',
-				table: { category: 'Attributes' }
-			},
-			name: {
-				description: 'Nome input element',
-				table: { category: 'Attributes' }
-			},
-			placeholder: {
-				description: 'Placeholder input',
-				table: { category: 'Attributes' }
-			},
-			iconPosition: {
+			valid: {
 				control: {
-					type: 'select',
-					options: [null, 'left', 'right']
+					disable: true,
 				},
-				table: { category: 'Attributes' }
 			},
-			type: {
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		args={{
+			invalid: true,
+			invalidLabel: 'The field is required.',
+			icon: 'error-2',
+		}}
+		argTypes={{
+			invalid: {
 				control: {
-					type: 'select',
-					options: ['text', 'password', 'date', 'datetime-local']
+					disable: true,
 				},
-				table: { category: 'Attributes' }
 			},
-			minlength: {
-				description: 'Lunghezza minima testo',
-				table: { category: 'Attributes' }
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		args={{
+			hintLabel: 'Please enter your name.',
+		}}
+		argTypes={{
+			hintLabel: {
+				control: {
+					disable: true,
+				},
 			},
-			maxlength: {
-				description: 'Lunghezza massima testo',
-				table: { category: 'Attributes' }
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Loading"
+		args={{
+			loading: true,
+			loadingLabel: 'Loading...',
+		}}
+		argTypes={{
+			loading: {
+				control: {
+					disable: true,
+				},
 			},
-			min: {
-				description: 'Valore minimo',
-				table: { category: 'Attributes' }
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Floating"
+		args={{
+			floating: true,
+		}}
+		argTypes={{
+			floating: {
+				control: {
+					disable: true,
+				},
 			},
-			max: {
-				description: 'Valore massimo',
-				table: { category: 'Attributes' }
-			}
-		}}>
-		{Template.bind({})}
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

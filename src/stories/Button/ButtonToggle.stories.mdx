@@ -1,0 +1,50 @@
+import { Meta, Story } from '@storybook/addon-docs'
+import { Template } from './Button.stories.mdx'
+import { defaultTest } from './Button.test'
+import { argTypes, defaultArgs } from './Button.settings'
+
+<Meta title="Components/Button/Toggle" args={defaultArgs} argTypes={argTypes} />
+
+<Canvas>
+	<Story
+		name="Default"
+		args={{
+			toggle: true,
+		}}
+		argTypes={{
+			toggle: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Unselectable"
+		args={{
+			toggle: true,
+			unselectable: false,
+		}}
+		argTypes={{
+			toggle: {
+				control: {
+					disable: true,
+				},
+			},
+			unselectable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

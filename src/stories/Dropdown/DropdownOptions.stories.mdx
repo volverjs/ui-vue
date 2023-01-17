@@ -1,0 +1,96 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import { Template } from './Dropdown.stories.mdx'
+import { defaultArgs, argTypes } from './Dropdown.settings'
+import { defaultTest } from './Dropdown.test'
+
+<Meta
+	title="Components/Dropdown/Options"
+	component={VvDropdown}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+<Canvas>
+	<Story
+		name="Array of Objects"
+		play={defaultTest}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		args={{
+			options: [
+				{ value: 'first', label: 'First' },
+				{ value: 'second', label: 'Second' },
+				{ value: 'third', label: 'Third' },
+			],
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option label key"
+		play={defaultTest}
+		args={{
+			labelKey: 'name',
+			options: [
+				{ value: 'first', name: 'First' },
+				{ value: 'second', name: 'Second' },
+				{ value: 'third', name: 'Third' },
+			],
+		}}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
+				},
+			},
+			labelKey: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option value key"
+		play={defaultTest}
+		args={{
+			valueKey: 'id',
+			options: [
+				{ id: 'first', label: 'First' },
+				{ id: 'second', label: 'Second' },
+				{ id: 'third', label: 'Third' },
+			],
+		}}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
+				},
+			},
+			valueKey: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

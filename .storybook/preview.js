@@ -1,27 +1,25 @@
-import '../src/stories/stories.scss'
-import addons from '@storybook/addons'
-import { app } from '@storybook/vue3'
-import DesignSystem from '../src/DesignSystem'
-import iconsSimple from '../src/assets/icons/simple.json'
-import iconsNormal from '../src/assets/icons/normal.json'
-import iconsDetailed from '../src/assets/icons/detailed.json'
+import { setup } from '@storybook/vue3'
+import VolverPlugin from '@/Volver'
+import iconsSimple from '@/assets/icons/simple.json'
+import iconsNormal from '@/assets/icons/normal.json'
+import iconsDetailed from '@/assets/icons/detailed.json'
+import { themes } from '@storybook/theming'
+import './style.scss'
 
-const volver = new DesignSystem({
-	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
-})
-app.use(volver)
-
-// get an instance to the communication channel for the manager and preview
-const channel = addons.getChannel()
-// switch body class for story
-channel.on('updateGlobals', ({ globals }) => {
-	// Intercept storybook global background changes to toggle css class "theme-dark"
-	const isDark = globals?.backgrounds?.value === '#333333'
-	if (isDark) {
-		document.querySelector('html').classList.add('theme-dark')
-	} else {
-		document.querySelector('html').classList.remove('theme-dark')
+setup((app) => {
+	const bodyClasses = document.getElementsByTagName('body')[0].classList
+	if (
+		bodyClasses &&
+		!document.getElementById('storybook-docs')?.getAttribute('hidden')
+	) {
+		// inside docs mode, the body class has 'sb-show-main'
+		bodyClasses.remove('theme--dark')
+		bodyClasses.add('theme--light')
 	}
+	bodyClasses.add('theme')
+	app.use(VolverPlugin, {
+		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed],
+	})
 })
 
 export const parameters = {
@@ -30,7 +28,24 @@ export const parameters = {
 		expanded: true,
 		matchers: {
 			color: /(background|color)$/i,
-			date: /Date$/
-		}
-	}
+			date: /Date$/,
+		},
+	},
+	docs: {
+		theme: themes.normal,
+	},
+	darkMode: {
+		classTarget: 'body',
+		darkClass: 'theme--dark',
+		lightClass: 'theme--light',
+		stylePreview: true,
+		dark: {
+			...themes.dark,
+			brandImage: 'brand-dark.svg',
+		},
+		light: {
+			...themes.normal,
+			brandImage: 'brand.svg',
+		},
+	},
 }
