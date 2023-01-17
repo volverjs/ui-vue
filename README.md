@@ -1,11 +1,10 @@
 <div align="center">
   
-[![volverjs](https://raw.githubusercontent.com/volverjs/style/main/src/assets/volverjs.svg)](https://github.com/volverjs)
+[![volverjs](.storybook/static/volverjs-beta.svg)](https://volverjs.github.io/ui-vue)
 
 ## @volverjs/ui-vue
 
-`vue` `components` `ui` `design-system` `typography`  
-`input` `button`
+`vue` `components` `ui` `design-system` `typography` `component-library` `input` `button` `accordion` `badge` `combobox` `breadcrumb` `dialog` 
 
 <br>
 
@@ -13,79 +12,113 @@
 
 <br>
 
-[![24/Consulting](https://raw.githubusercontent.com/volverjs/style/main/src/assets/24consulting.svg)](https://24consulting.it)
+[![24/Consulting](.storybook/static/24consulting.svg)](https://24consulting.it)
 
 <br>
 
 </div>
 
+
 ## Install
+`@volverjs/ui-vue` is closely linked to [`@volverjs/style`](https://volverjs.github.io/style/) and is neeeded to style components.
 
+```bash
+# pnpm
+pnpm add @volverjs/style @volverjs/ui-vue
+
+# yarn
+yarn add @volverjs/style @volverjs/ui-vue
+
+# npm 
+npm install @volverjs/style @volverjs/ui-vue --save
 ```
-$ npm i @volverjs/ui-vue
-```
-
-## Style
-
-#### @volverjs/ui-vue is closely linked to [@volverjs/style](https://volverjs.github.io/style/) and is neeeded to style components
 
 <br />
 
-## Basic usage
+## Usage
+
+Install the plugin in your `main.ts` file.
 
 ```typescript
-import iconsDetailed from '@volverjs/ui-vue/src/assets/icons/detailed.json'
-import iconsNormal from '@volverjs/ui-vue/src/assets/icons/normal.json'
-import iconsSimple from '@volverjs/ui-vue/src/assets/icons/simple.json'
-import { VolverPlugin } from '@volverjs/ui-vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 
+// import @volverjs/ui-vue plugin
+import { VolverPlugin } from '@volverjs/ui-vue'
+// import @volverjs/ui-vue icons collections
+import iconsCollections from '@volverjs/ui-vue/icons'
+/* 
+ * import @volverjs/style reset and props
+ * for scss support you can import the scss files
+ * import '@volverjs/style/scss/reset' 
+ * import '@volverjs/style/scss/props'
+ */
+import '@volverjs/style/reset'
+import '@volverjs/style/props'
+
+const app = createApp(App).mount('#app');
+
+// install the plugin
 app.use(VolverPlugin, {
-	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
+	iconsCollections
 })
 ```
 
-Constructor parameters:
+Than you can import components and use them in your templates.
 
-```typescript
-interface IVolverParams {
-	/**
-	 * If true set "fetchOptions" with credentials: 'include'
+```html
+<script setup lang="ts">
+	import { VvButton } from '@volverjs/ui-vue'
+	/* 
+	 * import the component style
+	 * for scss support you can import the scss file
+	 * import '@volverjs/style/scss/vv-button' 
 	 */
-	fetchWithCredentials?: boolean
-	/**
-	 * Optional fetch params
-	 */
-	fetchOptions?: RequestInit
-	/**
-	 * Array of https://docs.iconify.design/types/iconify-json.html
-	 * This collections will be added during plugin install
-	 */
-	iconsCollections?: IconifyJSON[]
-}
+	import '@volverjs/style/vv-button'
+</script>
+
+<template>
+  <VvButton label="Button" />
+</template>
 ```
 
-Volver definition
+## Icons Collections
+
+`@volverjs/ui-vue` comes with a set of icons with different levels of details. You can use them by importing `@volverjs/ui-vue/icons`.
+
+To learn more about icons collections, check [icons documentation](src/components/VvIcon/README.md).
+
+## Unplugin Resolver 
+
+You can use `@volverjs/ui-vue` with [`unplugin-vue-components`](https://github.com/antfu/unplugin-vue-components) to automatically import components and styles.
 
 ```typescript
-interface IVolver extends IVolverParams {
-	/**
-	 * @param {String} src Icon source path (url)
-	 * @param {RequestInit} options
-	 * @returns {Promise<string | undefined>} String SVG if exist
-	 */
-	fetchIcon(src: string, options?: RequestInit): Promise<string | undefined>
-	/**
-	 * Add iconify collection to library https://docs.iconify.design/icon-components/vue/add-collection.html
-	 * @param {IconifyJSON} collection
-	 * @param {String} providerName Optional provider name
-	 */
-	addCollection(collection: IconifyJSON, providerName?: string): boolean
-	/**
-	 * Add icon to collection https://docs.iconify.design/icon-components/vue/add-icon.html
-	 * @param {String} name
-	 * @param {IconifyIcon} data
-	 * @returns {Boolean} true on success, false if something is wrong with data
-	 */
-	addIcon(name: string, data: IconifyIcon): boolean
-}
+// vite.config.ts
+import { defineConfig } from 'vite'
+import Components from 'unplugin-vue-components/vite'
+import { VolverResolver } from '@volverjs/ui-vue/resolvers/unplugin'
+
+export default defineConfig({
+	// ...
+	plugins: [
+		// ...
+		Components({
+			resolvers: [
+				VolverResolver(
+					{
+						// enable/disable import of style
+						// default: false
+						importStyle: 'css' // or 'scss'
+					}
+				)
+			]
+		})
+	]
+})
 ```
+
+## Documentation
+To learn more about `@volverjs/ui-vue`, check [its documentation](https://volverjs.github.io/ui-vue).
+
+## License
+[MIT](http://opensource.org/licenses/MIT)

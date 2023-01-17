@@ -14,10 +14,17 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Maxlength"
-		play={defaultTest}
 		args={{
 			maxlength: 5
-		}}>
+		}}
+		argTypes={{
+			maxlength: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -25,10 +32,17 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Minlength"
-		play={defaultTest}
 		args={{
 			minlength: 5
-		}}>
+		}}
+		argTypes={{
+			minlength: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -36,11 +50,18 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Count"
-		play={defaultTest}
 		args={{
 			count: true,
 			minlength: 100
-		}}>
+		}}
+		argTypes={{
+			count: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -48,11 +69,18 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Limit"
-		play={defaultTest}
 		args={{
 			count: 'limit',
 			maxlength: 100
-		}}>
+		}}
+		argTypes={{
+			count: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -60,11 +88,18 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Countdown"
-		play={defaultTest}
 		args={{
 			count: 'countdown',
 			maxlength: 100
-		}}>
+		}}
+		argTypes={{
+			count: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>

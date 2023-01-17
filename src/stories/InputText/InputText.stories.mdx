@@ -33,13 +33,33 @@ export const Template = (args) => ({
 </Canvas>
 
 <Canvas>
-	<Story name="Disabled" args={{ disabled: true }} play={defaultTest}>
+	<Story
+		name="Disabled"
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Readonly" args={{ readonly: true }} play={defaultTest}>
+	<Story
+		name="Readonly"
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -51,6 +71,13 @@ export const Template = (args) => ({
 			valid: true,
 			validLabel: 'The field is valid.',
 			icon: 'check'
+		}}
+		argTypes={{
+			valid: {
+				control: {
+					disable: true
+				}
+			}
 		}}
 		play={defaultTest}>
 		{Template.bind()}
@@ -65,6 +92,13 @@ export const Template = (args) => ({
 			invalidLabel: 'The field is required.',
 			icon: 'error-2'
 		}}
+		argTypes={{
+			invalid: {
+				control: {
+					disable: true
+				}
+			}
+		}}
 		play={defaultTest}>
 		{Template.bind()}
 	</Story>
@@ -75,6 +109,13 @@ export const Template = (args) => ({
 		name="Hint"
 		args={{
 			hintLabel: 'Please enter your name.'
+		}}
+		argTypes={{
+			hintLabel: {
+				control: {
+					disable: true
+				}
+			}
 		}}
 		play={defaultTest}>
 		{Template.bind()}
@@ -88,6 +129,13 @@ export const Template = (args) => ({
 			loading: true,
 			loadingLabel: 'Loading...'
 		}}
+		argTypes={{
+			loading: {
+				control: {
+					disable: true
+				}
+			}
+		}}
 		play={defaultTest}>
 		{Template.bind()}
 	</Story>
@@ -98,6 +146,13 @@ export const Template = (args) => ({
 		name="Floating"
 		args={{
 			floating: true
+		}}
+		argTypes={{
+			floating: {
+				control: {
+					disable: true
+				}
+			}
 		}}
 		play={defaultTest}>
 		{Template.bind()}

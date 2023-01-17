@@ -8,7 +8,7 @@ export default {
 import { toRefs } from 'vue'
 import { nanoid } from 'nanoid'
 import { useBemModifiers } from '@/composables/useModifiers'
-import { useOptions } from '@/composables/options/useOptions'
+import { useOptions } from '@/composables/useOptions'
 import { contains, equals, removeFromList } from '@/utils/ObjectUtilities'
 import { VvDropdownProps } from '@/components/VvDropdown'
 import type { Option } from '@/types/generic'

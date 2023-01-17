@@ -33,7 +33,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		await sleep()
 		expect(firstChild.open).toBeTruthy()
 		if (args.collapse) {
-			expect(JSON.parse(value.innerText)).toBe([args.items[0].name])
+			expect(JSON.stringify(JSON.parse(value.innerText))).toBe(JSON.stringify([args.items[0].name]))
 		} else {
 			expect(value.innerText).toBe(args.items[0].name)
 		}

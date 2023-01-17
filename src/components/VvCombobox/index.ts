@@ -11,7 +11,12 @@ import {
 	TabindexProps
 } from '@/props'
 
-export const VvComboboxEvents = ['update:modelValue', 'change:search']
+export const VvComboboxEvents = [
+	'update:modelValue',
+	'change:search',
+	'focus',
+	'blur'
+]
 
 export const VvComboboxProps = {
 	...TabindexProps,

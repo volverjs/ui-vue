@@ -14,11 +14,23 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="Min - Number"
-		play={defaultTest}
 		args={{
 			type: 'number',
 			min: -15
-		}}>
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true
+				}
+			},
+			min: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -26,11 +38,23 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="Max - Number"
-		play={defaultTest}
 		args={{
 			type: 'number',
 			max: 15
-		}}>
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true
+				}
+			},
+			max: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -38,11 +62,23 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="Min - Date"
-		play={defaultTest}
 		args={{
 			type: 'date',
 			min: new Date().toISOString().split('T')[0]
-		}}>
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true
+				}
+			},
+			min: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -50,11 +86,23 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="Max - Date"
-		play={defaultTest}
 		args={{
 			type: 'date',
 			max: new Date().toISOString().split('T')[0]
-		}}>
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true
+				}
+			},
+			max: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>

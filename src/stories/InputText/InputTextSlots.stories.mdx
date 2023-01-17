@@ -14,10 +14,17 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="Before"
-		play={defaultTest}
 		args={{
 			before: '<div class="vv-badge vv-badge--sm uppercase">Before</vv-badge>'
-		}}>
+		}}
+		argTypes={{
+			before: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -25,10 +32,17 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="After"
-		play={defaultTest}
 		args={{
 			after: '<div class="vv-badge vv-badge--sm uppercase">After</vv-badge>'
-		}}>
+		}}
+		argTypes={{
+			after: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -36,10 +50,17 @@ import { defaultArgs, argTypes } from './InputText.settings'
 <Canvas>
 	<Story
 		name="Hint"
-		play={defaultTest}
 		args={{
 			hint: 'Hint <em class="italic">slot!</em>'
-		}}>
+		}}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>

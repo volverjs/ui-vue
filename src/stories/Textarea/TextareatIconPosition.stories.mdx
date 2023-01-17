@@ -14,10 +14,17 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Default"
-		play={defaultTest}
 		args={{
 			icon: 'heart'
-		}}>
+		}}
+		argTypes={{
+			icon: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -25,11 +32,23 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Left"
-		play={defaultTest}
 		args={{
 			icon: 'heart',
 			iconPosition: 'left'
-		}}>
+		}}
+		argTypes={{
+			icon: {
+				control: {
+					disable: true
+				}
+			},
+			iconPosition: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>
@@ -37,13 +56,20 @@ import { defaultArgs, argTypes } from './Textarea.settings'
 <Canvas>
 	<Story
 		name="Src"
-		play={defaultTest}
 		args={{
 			icon: {
 				name: 'engineering',
 				src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/social/engineering/materialicons/24px.svg'
 			}
-		}}>
+		}}
+		argTypes={{
+			icon: {
+				control: {
+					disable: true
+				}
+			}
+		}}
+		play={defaultTest}>
 		{Template.bind()}
 	</Story>
 </Canvas>

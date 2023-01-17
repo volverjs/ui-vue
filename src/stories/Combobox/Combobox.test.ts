@@ -2,24 +2,7 @@ import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { within } from '@storybook/testing-library'
 import { sleep } from '@/test/sleep'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getOptionValue = (args: any, index: number) => {
-	if (args.options && args.options.length > index) {
-		let value = args.options[index]
-		if (args.valueKey) {
-			if (typeof args.valueKey === 'function') {
-				value = args.valueKey(value)
-			} else if (typeof value === 'object') {
-				value = value[args.valueKey]
-			}
-		} else if (typeof value === 'object') {
-			value = value.value
-		}
-		return value
-	}
-	return undefined
-}
+import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
@@ -100,7 +83,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// loading
 	if (args.loading) {
-		await expect(element).toHaveClass('vv-input-text--loading')
+		await expect(element).toHaveClass('vv-select--loading')
 	}
 
 	// hint

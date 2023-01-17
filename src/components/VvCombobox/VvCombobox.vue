@@ -7,15 +7,16 @@ export default {
 <script setup lang="ts">
 import { computed, ref, toRefs, useSlots, watch } from 'vue'
 import { nanoid } from 'nanoid'
-import { onClickOutside, refDebounced, useFocus } from '@vueuse/core'
+import { onClickOutside, refDebounced } from '@vueuse/core'
 import { isEmpty } from '@/utils/ObjectUtilities'
 import { useBemModifiers } from '@/composables/useModifiers'
-import { useComponentIcon } from '@/composables/icons/useComponentIcons'
-import HintSlotFactory from '@/components/common/HintSlot'
+import { useComponentIcon } from '@/composables/useComponentIcons'
+import { useOptions } from '@/composables/useOptions'
+import { useComponentFocus } from '@/composables/useComponentFocus'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import HintSlotFactory from '@/components/common/HintSlot'
 import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
-import { useOptions } from '@/composables/options/useOptions'
 
 // props, emit and slots
 const props = defineProps(VvComboboxProps)
@@ -29,8 +30,8 @@ const { HintSlot } = HintSlotFactory(props, slots)
 const dropdown = ref()
 const inputSearch = ref()
 
-// focus state
-useFocus(inputSearch, { initialValue: true })
+// focus
+const { focused } = useComponentFocus(dropdown, emit)
 
 // data
 const id = nanoid()
@@ -80,7 +81,8 @@ const { bemCssClasses } = useBemModifiers('vv-select', {
 	iconRight: hasIconRight,
 	valid,
 	invalid,
-	dirty: isDirty
+	dirty: isDirty,
+	focus: focused
 })
 
 // current options, filtered or prop options

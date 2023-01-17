@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import type IGroupState from './IGroupState'
 
 /**
- * Stato condiviso per un gruppo di pulsanti
+ * State shared in a group of buttons
  */
 export default interface IButtonGroupState extends IGroupState {
 	modelValue: Ref<string | Array<string> | undefined>

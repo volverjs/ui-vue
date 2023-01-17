@@ -9,13 +9,13 @@ import type { Option } from '@/types/generic'
 import { computed, toRefs, useSlots, ref, type SelectHTMLAttributes } from 'vue'
 import { nanoid } from 'nanoid'
 import { isEmpty } from '@/utils/ObjectUtilities'
+import { useBemModifiers } from '@/composables/useModifiers'
+import { useComponentIcon } from '@/composables/useComponentIcons'
+import { useOptions } from '@/composables/useOptions'
+import { useComponentFocus } from '@/composables/useComponentFocus'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import HintSlotFactory from '@/components/common/HintSlot'
-import { useBemModifiers } from '@/composables/useModifiers'
 import { VvSelectProps, VvSelectEmits } from '@/components/VvSelect'
-import { useComponentIcon } from '@/composables/icons/useComponentIcons'
-import { useOptions } from '@/composables/options/useOptions'
-import { useComponentFocus } from '@/composables/focus/useComponentFocus'
 
 // props, emit and slots
 const props = defineProps(VvSelectProps)
