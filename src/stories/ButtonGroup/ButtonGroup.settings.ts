@@ -1,4 +1,8 @@
-import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
+import {
+	DefaultSlotArgTypes,
+	ModifiersArgTypes,
+	UnselectableArgTypes,
+} from '@/stories/argTypes'
 import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvButtonGroupProps } from '@/components/VvButtonGroup'
 import { argTypes as buttonArgTypes } from '../Button/Button.settings'
@@ -24,5 +28,6 @@ export const argTypes = {
 			type: 'check',
 		},
 	},
+	...UnselectableArgTypes,
 	...DefaultSlotArgTypes,
 }

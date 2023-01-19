@@ -17,9 +17,9 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	/**
 	 * Get a group or local property
 	 */
-	function getGroupOrLocalRef<T extends object>(
+	function getGroupOrLocalRef<PropsType extends object>(
 		propName: keyof TGroup,
-		props: T,
+		props: PropsType,
 		emit?: (event: string, ...args: unknown[]) => void,
 	) {
 		if (group?.value) {
@@ -33,7 +33,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 				},
 			})
 		}
-		const propRef = toRef(props, propName as keyof T)
+		const propRef = toRef(props, propName as keyof PropsType)
 		return computed({
 			get() {
 				return propRef.value

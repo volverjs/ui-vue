@@ -15,6 +15,7 @@
 	import { useComponentFocus } from '@/composables/useComponentFocus'
 	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
+	import VvSelect from '@/components/VvSelect/VvSelect.vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
 
@@ -34,7 +35,7 @@
 	const { focused } = useComponentFocus(dropdown, emit)
 
 	// data
-	const id = nanoid()
+	const hasId = computed(() => String(props.id || nanoid()))
 	const searchText = ref('')
 	const debouncedSearchText = refDebounced(
 		searchText,
@@ -50,6 +51,7 @@
 		loading,
 		valid,
 		invalid,
+		floating,
 	} = toRefs(props)
 
 	// emit on change search text
@@ -83,6 +85,7 @@
 		invalid,
 		dirty: isDirty,
 		focus: focused,
+		floating,
 	})
 
 	// current options, filtered or prop options
@@ -119,7 +122,7 @@
 
 	const hasLabel = computed(() => {
 		return selectedOptions.value
-			.map((option) => getOptionValue(option))
+			.map((option) => getOptionLabel(option))
 			.join(props.separator)
 	})
 
@@ -147,6 +150,7 @@
 	}
 
 	const dropdownProps = computed(() => ({
+		name: props.name,
 		options: hasOptions.value,
 		labelKey: props.labelKey,
 		valueKey: props.valueKey,
@@ -155,17 +159,46 @@
 		multiple: props.multiple,
 		maxValues: props.maxValues,
 		modelValue: props.modelValue,
+		unselectable: props.unselectable,
+	}))
+
+	const selectProps = computed(() => ({
+		id: hasId.value,
+		name: props.name,
+		tabindex: hasTabindex.value,
+		valid: valid.value,
+		validLabel: props.validLabel,
+		invalid: invalid.value,
+		invalidLabel: props.invalidLabel,
+		hintLabel: props.hintLabel,
+		loading: loading.value,
+		loadingLabel: props.loadingLabel,
+		disabled: disabled.value,
+		readonly: readonly.value,
+		modifiers: props.modifiers,
+		options: hasOptions.value,
+		labelKey: props.labelKey,
+		valueKey: props.valueKey,
+		icon: props.icon,
+		iconPosition: props.iconPosition,
+		floating: props.floating,
+		unselectable: props.unselectable,
+		multiple: props.multiple,
+		label: props.label,
+		placeholder: props.placeholder,
+		modelValue: props.modelValue,
 	}))
 </script>
 
 <template>
-	<div v-if="!native" :id="id" :class="bemCssClasses">
+	<div v-if="!native" :id="hasId" :class="bemCssClasses">
 		<label
 			v-if="label"
-			:id="`${id}-label`"
-			:for="searchable && dropdownOpen ? `${id}-input` : undefined"
-			>{{ label }}</label
+			:id="`${hasId}-label`"
+			:for="searchable && dropdownOpen ? `${hasId}-input` : undefined"
 		>
+			{{ label }}
+		</label>
 		<details
 			ref="dropdown"
 			class="vv-select__wrapper"
@@ -189,7 +222,7 @@
 				<!-- #region search input -->
 				<template v-if="searchable && dropdownOpen">
 					<input
-						:id="`${id}-input`"
+						:id="`${hasId}-input`"
 						ref="inputSearch"
 						v-model="searchText"
 						role="combobox"
@@ -213,15 +246,16 @@
 			</summary>
 			<!-- @slot Slot to replace right icon -->
 			<VvDropdown
-				:id="`${id}-dropdown`"
+				:id="`${hasId}-dropdown`"
 				v-bind="dropdownProps"
 				@update:model-value="onInput"
 			/>
 		</details>
 		<HintSlot class="vv-select__hint" />
 	</div>
-	<!-- <VvSelect
+	<VvSelect
 		v-else
-		v-bind="props"
-		@update:model-value="emit('update:modelValue', $event)" /> -->
+		v-bind="selectProps"
+		@update:model-value="emit('update:modelValue', $event)"
+	/>
 </template>

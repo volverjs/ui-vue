@@ -11,5 +11,5 @@ export default interface IButtonGroupState extends IGroupState {
 	toggle: Ref<boolean>
 	multiple: Ref<boolean>
 	unselectable: Ref<boolean>
-	modifiers: Ref<string | Array<string> | undefined>
+	itemModifiers?: Ref<string | Array<string> | undefined>
 }

@@ -73,6 +73,23 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
+		name="Unselectable"
+		play={defaultTest}
+		args={{ unselectable: false }}
+		argTypes={{
+			unselectable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
 		name="Valid"
 		play={defaultTest}
 		args={{ valid: true, validLabel: 'Selected response is valid.' }}
@@ -142,6 +159,40 @@ export const Template = (args) => ({
 		args={{ searchable: true, searchPlaceholder: 'Search...' }}
 		argTypes={{
 			searchable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Floating"
+		play={defaultTest}
+		args={{ floating: true }}
+		argTypes={{
+			floating: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Native"
+		play={defaultTest}
+		args={{ native: true }}
+		argTypes={{
+			native: {
 				control: {
 					disable: true,
 				},

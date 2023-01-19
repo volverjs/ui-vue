@@ -10,10 +10,11 @@
 		useSlots,
 		ref,
 		toRefs,
-		onMounted,
 		unref,
+		watch,
 		type InputHTMLAttributes,
 	} from 'vue'
+	import { useElementVisibility } from '@vueuse/core'
 	import { nanoid } from 'nanoid'
 	import { isEmpty } from '@/utils/ObjectUtilities'
 	import HintSlotFactory from '@/components/common/HintSlot'
@@ -62,6 +63,14 @@
 
 	// focus
 	const { focused } = useComponentFocus(input, emit)
+
+	// visibility
+	const isVisible = useElementVisibility(input)
+	watch(isVisible, (newValue) => {
+		if (newValue && props.autofocus) {
+			focused.value = true
+		}
+	})
 
 	// password
 	const showPassword = ref(false)
@@ -258,13 +267,6 @@
 		INPUT_TYPES.SEARCH,
 		props,
 	)
-
-	// lifecycle
-	onMounted(() => {
-		if (props.autofocus) {
-			focused.value = true
-		}
-	})
 </script>
 
 <template>

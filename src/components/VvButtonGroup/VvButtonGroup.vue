@@ -65,7 +65,7 @@
 		toggle,
 		multiple,
 		unselectable,
-		modifiers: itemModifiers,
+		itemModifiers,
 	}
 	useProvideGroupState(groupState)
 

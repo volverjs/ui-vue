@@ -38,17 +38,23 @@ export interface VolverResolverOptions {
 const STYLE_EXCLUDE = ['vv-icon']
 const VOLVER_PREFIX = 'vv'
 
-const getStyleName = function (kebabName: string) {
+const getStyleNames = function (kebabName: string) {
 	if (STYLE_EXCLUDE.includes(kebabName)) {
 		return undefined
 	}
-	if (kebabName === 'vv-native-select') {
-		return 'vv-select'
+	if (kebabName === 'vv-combobox') {
+		return ['vv-select', 'vv-dropdown']
 	}
 	if (kebabName === 'vv-accordion-group') {
-		return 'vv-accordion'
+		return ['vv-accordion-group', 'vv-accordion']
 	}
-	return kebabName
+	if (kebabName === 'vv-checkbox-group') {
+		return ['vv-checkbox-group', 'vv-checkbox']
+	}
+	if (kebabName === 'vv-radio-group') {
+		return ['vv-radio-group', 'vv-radio']
+	}
+	return [kebabName]
 }
 
 /**
@@ -83,17 +89,20 @@ export function VolverResolver({
 					sideEffects.push(customStylePath)
 				}
 
-				const styleName = getStyleName(kebabName)
-				if (styleName) {
-					// import component
-					sideEffects.push(
-						`@volverjs/style/${
-							importStyle === 'scss' ? 'scss/' : ''
-						}components/${styleName}`,
-					)
+				// import component style
+				const styleNames = getStyleNames(kebabName)
+				if (styleNames) {
+					styleNames.forEach((name) => {
+						sideEffects.push(
+							`@volverjs/style/${
+								importStyle === 'scss' ? 'scss/' : ''
+							}components/${name}`,
+						)
+					})
 				}
 			}
 
+			// import component
 			return {
 				from: `@volverjs/ui-vue/${kebabName}`,
 				sideEffects,

@@ -10,7 +10,7 @@
 		useSlots,
 		ref,
 		toRefs,
-		onMounted,
+		watch,
 		type TextareaHTMLAttributes,
 	} from 'vue'
 	import { nanoid } from 'nanoid'
@@ -23,6 +23,7 @@
 	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
+	import { useElementVisibility } from '@vueuse/core'
 
 	// props, emit and slots
 	const props = defineProps(VvTextareaProps)
@@ -61,6 +62,14 @@
 
 	// focus
 	const { focused } = useComponentFocus(textarea, emit)
+
+	// visibility
+	const isVisible = useElementVisibility(textarea)
+	watch(isVisible, (newValue) => {
+		if (newValue && props.autofocus) {
+			focused.value = true
+		}
+	})
 
 	// count
 	const { formatted: countFormatted } = useTextCount(localModelValue, {
@@ -151,13 +160,6 @@
 	const onClear = () => {
 		localModelValue.value = undefined
 	}
-
-	// lifecycle
-	onMounted(() => {
-		if (props.autofocus) {
-			focused.value = true
-		}
-	})
 </script>
 
 <template>
