@@ -20,7 +20,7 @@ export const Template = (args) => ({
 			value: undefined,
 		}
 	},
-	template: `
+	template: /*html*/`
 		<vv-dropdown v-bind="args" v-model="value" class="max-w-224 relative" data-testId="element" />
 		<div class="mt-24">Value: <span data-testId="value">{{ value }}</span></div>
 	`,

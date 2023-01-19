@@ -15,7 +15,7 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template: `
+	template: /*html*/`
         <vv-card v-bind="args" data-testId="card">
 			<template #default v-if="args.default"><div v-html="args.default"></div></template>
 			<template #header v-if="args.header"><div v-html="args.header"></div></template>

@@ -21,7 +21,7 @@ export const Template = (args) => ({
 			this.open = !this.open
 		},
 	},
-	template: `
+	template: /*html*/`
 		<vv-dialog v-bind="args" v-model="open" data-testId="element">
 			<template #header v-if="args.header"><div v-html="args.header"></div></template>
 			<template #default v-if="args.default"><div v-html="args.default"></div></template>

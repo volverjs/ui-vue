@@ -42,7 +42,7 @@ import { defaultArgs, argTypes } from './AccordionGroup.settings'
 							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 					}
 				},
-				template: `<vv-accordion-group data-testId="element" v-bind="args" v-model="selected">
+				template: /*html*/`<vv-accordion-group data-testId="element" v-bind="args" v-model="selected">
 							<vv-accordion name="a-1" data-testId="a-1" title="Details 1" :content="content" />
 							<vv-accordion name="a-2" title="Details 2" :content="content" />
 							<vv-accordion name="a-3" title="Details 3" :content="content" />

@@ -16,7 +16,7 @@ export const Template = (args) => ({
 		return { args }
 	},
 	data: () => ({ inputValue: undefined }),
-	template: `
+	template: /*html*/`
             <vv-radio-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
                 <template #default v-if="args.default"><span v-html="args.default"></span></template>
 				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>

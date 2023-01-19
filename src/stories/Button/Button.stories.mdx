@@ -18,7 +18,7 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template: `<vv-button v-bind="args" v-model="value" name="my-button">
+	template: /*html*/`<vv-button v-bind="args" v-model="value" name="my-button">
 					<template #before v-if="args.before"><div v-html="args.before"></div></template>
 					<template #default v-if="args.default"><div v-html="args.default"></div></template>
 					<template #after v-if="args.after"><div v-html="args.after"></div></template>
