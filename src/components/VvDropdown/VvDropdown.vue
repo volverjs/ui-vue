@@ -5,7 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { toRefs } from 'vue'
+	import { computed, toRefs } from 'vue'
 	import { nanoid } from 'nanoid'
 	import { useBemModifiers } from '@/composables/useModifiers'
 	import { useOptions } from '@/composables/useOptions'
@@ -18,7 +18,7 @@
 	const emit = defineEmits(['update:modelValue'])
 
 	// data
-	const id = nanoid()
+	const hasId = computed(() => String(props.id || nanoid()))
 	const { modifiers, disabled } = toRefs(props)
 
 	// options
@@ -69,7 +69,7 @@
 			return
 		}
 
-		let toReturn: string | string[] | Option | Option[] = value
+		let toReturn: string | string[] | Option | Option[] | undefined = value
 		// Check multiple prop, override value with array and remove or add the value
 		if (props.multiple) {
 			// check maxValues prop and block check new values
@@ -90,13 +90,15 @@
 			} else {
 				toReturn = [value as Option]
 			}
+		} else if (props.unselectable && value === props.modelValue) {
+			toReturn = undefined
 		}
 		emit('update:modelValue', toReturn)
 	}
 </script>
 
 <template>
-	<ul :class="dropdownClasses" role="listbox">
+	<ul :id="hasId" :class="dropdownClasses" role="listbox">
 		<li v-if="!options?.length" role="option">
 			<label>
 				{{ labelNoResults }}
@@ -109,15 +111,16 @@
 			:aria-selected="getChecked(option)"
 		>
 			<label
-				:for="`dropdown-${index}-${id}`"
+				:for="`dropdown-${index}-${hasId}`"
 				@click.prevent="onInput(getOptionValue(option))"
 			>
 				<input
-					:id="`dropdown-${index}-${id}`"
+					:id="`dropdown-${index}-${hasId}`"
 					:type="multiple ? 'checkbox' : 'radio'"
 					:value="getOptionValue(option)"
 					:checked="getChecked(option)"
 					:disabled="getDisabled(option)"
+					:name="name"
 					tabindex="-1"
 					aria-hidden="true"
 				/>

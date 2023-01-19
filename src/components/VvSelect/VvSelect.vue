@@ -11,6 +11,7 @@
 		toRefs,
 		useSlots,
 		ref,
+		watch,
 		type SelectHTMLAttributes,
 	} from 'vue'
 	import { nanoid } from 'nanoid'
@@ -22,6 +23,7 @@
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import { VvSelectProps, VvSelectEmits } from '@/components/VvSelect'
+	import { useElementVisibility } from '@vueuse/core'
 
 	// props, emit and slots
 	const props = defineProps(VvSelectProps)
@@ -44,6 +46,8 @@
 		iconPosition,
 		invalid,
 		valid,
+		floating,
+		multiple,
 	} = toRefs(props)
 
 	// computed
@@ -52,6 +56,14 @@
 
 	// focus
 	const { focused } = useComponentFocus(select, emit)
+
+	// visibility
+	const isVisible = useElementVisibility(select)
+	watch(isVisible, (newValue) => {
+		if (newValue && props.autofocus) {
+			focused.value = true
+		}
+	})
 
 	// icons
 	const { hasIcon, hasIconLeft, hasIconRight } = useComponentIcon(
@@ -91,6 +103,8 @@
 		iconRight: hasIconRight,
 		dirty: isDirty,
 		focus: focused,
+		floating,
+		multiple,
 	})
 
 	// attrs
@@ -132,6 +146,9 @@
 			return props.modelValue
 		},
 		set: (newValue) => {
+			if (Array.isArray(newValue)) {
+				newValue = newValue.filter((item) => item !== undefined)
+			}
 			emit('update:modelValue', newValue)
 		},
 	})
@@ -151,7 +168,12 @@
 				v-model="localModelValue"
 				v-bind="hasAttrs"
 			>
-				<option v-if="placeholder" :value="undefined" disabled>
+				<option
+					v-if="placeholder"
+					:value="undefined"
+					:disabled="!unselectable"
+					:hidden="!unselectable"
+				>
 					{{ placeholder }}
 				</option>
 				<option

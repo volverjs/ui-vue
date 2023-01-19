@@ -10,10 +10,16 @@ import {
 	OptionsProps,
 	IconProps,
 	IdNameProps,
+	FloatingProps,
+	UnselectableProps,
+	AutofocusProps,
+	AutocompleteProps,
 } from '@/props'
 
 export const VvSelectProps = {
 	...IdNameProps,
+	...AutofocusProps,
+	...AutocompleteProps,
 	...TabindexProps,
 	...ValidProps,
 	...InvalidProps,
@@ -24,17 +30,8 @@ export const VvSelectProps = {
 	...ModifiersProps,
 	...OptionsProps,
 	...IconProps,
-	/**
-	 * Global attribute autocomplete
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attr-autocomplete
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
-	 */
-	autocomplete: { type: String, default: 'off' },
-	/**
-	 * Global attribute autofocus
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus
-	 */
-	autofocus: Boolean,
+	...FloatingProps,
+	...UnselectableProps,
 	/**
 	 * This Boolean attribute indicates that multiple options can be selected in the list.
 	 * If it is not specified, then only one option can be selected at a time.

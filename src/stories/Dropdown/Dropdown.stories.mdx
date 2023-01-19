@@ -68,6 +68,23 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
+		name="Unselectable"
+		play={defaultTest}
+		args={{ unselectable: false }}
+		argTypes={{
+			unselectable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
 		name="Max values"
 		play={defaultTest}
 		args={{ multiple: true, maxValues: 2 }}

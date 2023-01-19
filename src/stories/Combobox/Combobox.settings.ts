@@ -9,12 +9,15 @@ import {
 	OptionsArgTypes,
 	IconArgTypes,
 	TabindexArgTypes,
+	FloatingArgTypes,
+	UnselectableArgTypes,
 } from '@/stories/argTypes'
 import { VvComboboxProps } from '@/components/VvCombobox'
 import { propsToObject } from '@/utils/ObjectUtilities'
 
 export const defaultArgs = {
 	...propsToObject(VvComboboxProps),
+	name: 'vv-combobox',
 	maxValues: undefined,
 	options: ['Option 1', 'Option 2', 'Option 3'],
 	placeholder: 'Select an option',
@@ -31,6 +34,8 @@ export const argTypes = {
 	...ModifiersArgTypes,
 	...OptionsArgTypes,
 	...IconArgTypes,
+	...FloatingArgTypes,
+	...UnselectableArgTypes,
 	multiple: {
 		type: 'boolean',
 		description:

@@ -3,6 +3,7 @@ import {
 	ModifiersArgTypes,
 	DisabledArgTypes,
 	LoadingArgTypes,
+	UnselectableArgTypes,
 } from '@/stories/argTypes'
 import normal from '@/assets/icons/normal.json'
 
@@ -68,13 +69,7 @@ export const argTypes = {
 			defaultValue: { summary: false },
 		},
 	},
-	unselectable: {
-		description: 'Whether the button is unselectable',
-		control: { type: 'boolean' },
-		table: {
-			defaultValue: { summary: true },
-		},
-	},
+	...UnselectableArgTypes,
 	...LoadingArgTypes,
 	...DisabledArgTypes,
 	pressed: {

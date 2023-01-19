@@ -272,19 +272,31 @@ export const IdNameArgTypes = {
 	},
 }
 
-export const InputTextareaArgTypes = {
-	...IdNameArgTypes,
-	...TabindexArgTypes,
-	...DisabledArgTypes,
-	...ReadonlyArgTypes,
-	...ValidArgTypes,
-	...InvalidArgTypes,
-	...HintArgTypes,
-	...LoadingArgTypes,
-	...ModifiersArgTypes,
-	...CountArgTypes,
-	...DebounceArgTypes,
-	...IconArgTypes,
+export const UnselectableArgTypes = {
+	unselectable: {
+		type: 'boolean',
+		description: 'If true the field will be unselectable',
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+		},
+	},
+}
+
+export const FloatingArgTypes = {
+	floating: {
+		type: 'boolean',
+		description: 'If true the label will be floating',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+}
+
+export const AutofocusArgTypes = {
 	autofocus: {
 		type: 'boolean',
 		description: 'Global attribute autofocus.',
@@ -294,6 +306,9 @@ export const InputTextareaArgTypes = {
 			},
 		},
 	},
+}
+
+export const AutocompleteArgTypes = {
 	autocomplete: {
 		type: {
 			summary: 'string',
@@ -308,6 +323,24 @@ export const InputTextareaArgTypes = {
 			},
 		},
 	},
+}
+
+export const InputTextareaArgTypes = {
+	...IdNameArgTypes,
+	...AutofocusArgTypes,
+	...AutocompleteArgTypes,
+	...TabindexArgTypes,
+	...DisabledArgTypes,
+	...ReadonlyArgTypes,
+	...ValidArgTypes,
+	...InvalidArgTypes,
+	...HintArgTypes,
+	...LoadingArgTypes,
+	...ModifiersArgTypes,
+	...CountArgTypes,
+	...DebounceArgTypes,
+	...IconArgTypes,
+	...FloatingArgTypes,
 	minlength: {
 		type: 'number',
 		description:
@@ -347,15 +380,6 @@ export const InputTextareaArgTypes = {
 		description: 'Input label',
 		control: {
 			type: 'text',
-		},
-	},
-	floating: {
-		type: 'boolean',
-		description: 'If true the label will be floating',
-		table: {
-			defaultValue: {
-				summary: false,
-			},
 		},
 	},
 }

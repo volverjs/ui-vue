@@ -1,6 +1,12 @@
-import { DisabledProps, ModifiersProps, OptionsProps } from '@/props'
+import {
+	DisabledProps,
+	IdNameProps,
+	ModifiersProps,
+	OptionsProps,
+} from '@/props'
 
 export const VvDropdownProps = {
+	...IdNameProps,
 	...OptionsProps,
 	...DisabledProps,
 	...ModifiersProps,
@@ -22,4 +28,8 @@ export const VvDropdownProps = {
 	 * The max number of selected values
 	 */
 	maxValues: [Number, String],
+	/**
+	 * If true the input will be unselectable
+	 */
+	unselectable: { type: Boolean, default: true },
 }

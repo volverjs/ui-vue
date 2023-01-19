@@ -9,6 +9,9 @@ import {
 	OptionsProps,
 	IconProps,
 	TabindexProps,
+	FloatingProps,
+	UnselectableProps,
+	IdNameProps,
 } from '@/props'
 
 export const VvComboboxEvents = [
@@ -19,6 +22,7 @@ export const VvComboboxEvents = [
 ]
 
 export const VvComboboxProps = {
+	...IdNameProps,
 	...TabindexProps,
 	...ValidProps,
 	...InvalidProps,
@@ -29,6 +33,8 @@ export const VvComboboxProps = {
 	...ModifiersProps,
 	...OptionsProps,
 	...IconProps,
+	...FloatingProps,
+	...UnselectableProps,
 	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */

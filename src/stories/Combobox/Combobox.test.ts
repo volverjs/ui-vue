@@ -3,8 +3,15 @@ import { expect } from '@/test/expect'
 import { within } from '@storybook/testing-library'
 import { sleep } from '@/test/sleep'
 import { getOptionValue } from '@/test/options'
+import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
+	// native
+	if (args.native) {
+		await selectDefaultTest({ canvasElement, args })
+		return
+	}
+
 	const element = (await within(canvasElement).findByTestId(
 		'element',
 	)) as HTMLElement

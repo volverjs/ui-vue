@@ -109,6 +109,20 @@ export const TabindexProps = {
 	tabindex: { type: [String, Number], default: 0 },
 }
 
+export const FloatingProps = {
+	/**
+	 * If true the label will be floating
+	 */
+	floating: Boolean,
+}
+
+export const UnselectableProps = {
+	/**
+	 * If true the input will be unselectable
+	 */
+	unselectable: { type: Boolean, default: true },
+}
+
 export const IdNameProps = {
 	/**
 	 * Global attribute id
@@ -123,8 +137,26 @@ export const IdNameProps = {
 	name: { type: String, required: true },
 }
 
+export const AutofocusProps = {
+	/**
+	 * Global attribute autofocus
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus
+	 */
+	autofocus: Boolean,
+}
+
+export const AutocompleteProps = {
+	/**
+	 * Global attribute autocomplete
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
+	 */
+	autocomplete: { type: String, default: 'off' },
+}
+
 export const InputTextareaProps = {
 	...IdNameProps,
+	...AutofocusProps,
+	...AutocompleteProps,
 	...TabindexProps,
 	...DisabledProps,
 	...ReadonlyProps,
@@ -136,17 +168,7 @@ export const InputTextareaProps = {
 	...CountProps,
 	...DebounceProps,
 	...IconProps,
-	/**
-	 * Global attribute autofocus
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus
-	 */
-	autofocus: Boolean,
-	/**
-	 * Input / Textarea autocomplete
-	 * Hint for for autofill feature
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#autocomplete
-	 */
-	autocomplete: { type: String, default: 'off' },
+	...FloatingProps,
 	/**
 	 * Input / Textarea minlength
 	 * Minimum length (number of characters) of value
@@ -179,10 +201,6 @@ export const InputTextareaProps = {
 	 * <label> value for the Input / Textarea
 	 */
 	label: String,
-	/**
-	 * If true the label will be floating
-	 */
-	floating: Boolean,
 }
 
 export const CheckboxRadioProps = {

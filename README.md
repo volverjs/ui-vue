@@ -117,6 +117,23 @@ export default defineConfig({
 })
 ```
 
+## Roadmap
+
+The following features are planned for the next releases:
+
+- [ ] `VvAvatar` component;
+- [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
+- [ ] Loaders with `VvLoader` and `VvSkeleton`;
+- [ ] `VvTooltip` component;
+- [ ] Redesign `VvCombobox` for better accessibility;
+- [ ] Rewrite `VvDropdown` component and get it applicable to any element;
+- [ ] Menus, navigation and tabs with `VvNav`;
+- [ ] Input masks for `VvInputText` component;
+- [ ] `VvTable` component with sort, filters, pagination and cell editing;
+- [ ] Multiple uploads, image crop and file previews with `VvInputFile`;
+- [ ] Carousel and galleries with `VvCarousel` component;
+- [ ] Calendar and date picker with `VvCalendar` component.
+
 ## Documentation
 
 To learn more about `@volverjs/ui-vue`, check [its documentation](https://volverjs.github.io/ui-vue).

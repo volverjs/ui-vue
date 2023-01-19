@@ -1,6 +1,14 @@
-import { ModifiersArgTypes, OptionsArgTypes } from '@/stories/argTypes'
+import { VvDropdownProps } from '@/components/VvDropdown'
+import { propsToObject } from '@/utils/ObjectUtilities'
+import {
+	ModifiersArgTypes,
+	OptionsArgTypes,
+	UnselectableArgTypes,
+} from '@/stories/argTypes'
 
 export const defaultArgs = {
+	...propsToObject(VvDropdownProps),
+	name: 'vv-dropdown',
 	disabled: false,
 	valueObject: false,
 	multiple: false,
@@ -39,4 +47,5 @@ export const argTypes = {
 	maxValues: {
 		control: { type: 'number' },
 	},
+	...UnselectableArgTypes,
 }

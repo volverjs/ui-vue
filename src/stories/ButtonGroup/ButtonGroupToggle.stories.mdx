@@ -12,7 +12,18 @@ import { defaultTest } from './ButtonGroup.test'
 />
 
 <Canvas>
-	<Story name="Default" play={defaultTest}>
+	<Story
+		name="Default"
+		args={{ toggle: true }}
+		argTypes={{
+			toggle: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

@@ -4,8 +4,9 @@ import {
 	type ExtractPropTypes,
 	toRefs,
 	ref,
+	computed,
 } from 'vue'
-import { DisabledProps, ModifiersProps } from '@/props'
+import { DisabledProps, ModifiersProps, UnselectableProps } from '@/props'
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
 import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_BUTTON_GROUP } from '@/constants'
@@ -42,6 +43,7 @@ export const VvButtonEvents = ['update:modelValue']
 export const VvButtonProps = {
 	...ModifiersProps,
 	...DisabledProps,
+	...UnselectableProps,
 	/**
 	 * Button icon
 	 */
@@ -119,7 +121,6 @@ export const VvButtonProps = {
 		default: false,
 	},
 	modelValue: String,
-	unselectable: { type: Boolean, default: true },
 }
 
 export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
@@ -135,7 +136,13 @@ export function useGroupProps(
 		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
 
 	// local props
-	const { iconPosition, icon, label, pressed } = toRefs(props)
+	const {
+		iconPosition,
+		icon,
+		label,
+		pressed,
+		modifiers: localModifiers,
+	} = toRefs(props)
 
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit) as Ref<
@@ -147,22 +154,33 @@ export function useGroupProps(
 		'unselectable',
 		props,
 	) as Ref<boolean>
-	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
-		string[] | string
-	>
 	const multiple = group?.value?.multiple ?? ref(false)
+
+	const modifiers = computed(() => {
+		const localValue = localModifiers?.value
+			? Array.isArray(localModifiers.value)
+				? localModifiers.value
+				: [localModifiers.value]
+			: []
+		const groupValue = group?.value.itemModifiers?.value
+			? Array.isArray(group.value.itemModifiers.value)
+				? group.value.itemModifiers.value
+				: [group.value.itemModifiers.value]
+			: []
+		return [...localValue, ...groupValue]
+	})
 
 	return {
 		// group props
+		group,
+		isInGroup,
 		modelValue,
 		disabled,
 		toggle,
-		isInGroup,
-		group,
-		modifiers,
-		multiple,
 		unselectable,
+		multiple,
 		// local props
+		modifiers,
 		pressed,
 		iconPosition,
 		icon,

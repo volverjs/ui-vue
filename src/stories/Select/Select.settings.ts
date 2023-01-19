@@ -10,18 +10,25 @@ import {
 	IconArgTypes,
 	TabindexArgTypes,
 	IdNameArgTypes,
+	FloatingArgTypes,
+	UnselectableArgTypes,
+	AutofocusArgTypes,
+	AutocompleteArgTypes,
 } from '@/stories/argTypes'
 import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvSelectProps } from '@/components/VvSelect'
 
 export const defaultArgs = {
 	...propsToObject(VvSelectProps),
+	name: 'vv-select',
 	options: ['Option 1', 'Option 2', 'Option 3'],
 	placeholder: 'Select an option',
 	label: 'Select label',
 }
 export const argTypes = {
 	...IdNameArgTypes,
+	...AutofocusArgTypes,
+	...AutocompleteArgTypes,
 	...TabindexArgTypes,
 	...ValidArgTypes,
 	...InvalidArgTypes,
@@ -32,29 +39,8 @@ export const argTypes = {
 	...ModifiersArgTypes,
 	...OptionsArgTypes,
 	...IconArgTypes,
-	autocomplete: {
-		type: {
-			summary: 'string',
-		},
-		description: 'Hint for for autofill feature.',
-		control: {
-			type: 'text',
-		},
-		table: {
-			defaultValue: {
-				summary: 'off',
-			},
-		},
-	},
-	autofocus: {
-		type: 'boolean',
-		description: 'Global attribute autofocus.',
-		table: {
-			defaultValue: {
-				summary: false,
-			},
-		},
-	},
+	...FloatingArgTypes,
+	...UnselectableArgTypes,
 	multiple: {
 		type: 'boolean',
 		description:

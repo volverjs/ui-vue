@@ -33,7 +33,7 @@ export function useTextCount(
 			return ''
 		}
 
-		if (options?.mode === 'limit') {
+		if (options?.mode === 'limit' && options?.upperLimit) {
 			return `${length.value} / ${
 				options.lowerLimit ? `${options.lowerLimit}-` : ''
 			}${options.upperLimit}`
