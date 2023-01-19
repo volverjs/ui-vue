@@ -1,162 +1,67 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
+import { Meta, Story } from '@storybook/addon-docs'
+import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import VvRadio from '@/components/VvRadio/VvRadio.vue'
+import { defaultArgs, argTypes } from './RadioGroup.settings'
+import { defaultTest } from './RadioGroup.test'
 
-import VvRadioGroup from '../../components/VvRadioGroup/VvRadioGroup.vue'
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
+<Meta
+	title="Components/RadioGroup/Slots"
+	component={VvRadioGroup}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-import { slotsTest } from './RadioSlotsTest.js'
-
-<Meta title="Components/RadioGroup/Slots" component={VvRadioGroup} />
-
-# Default
+export const Template = (args) => ({
+	components: { VvRadioGroup, VvRadio },
+	setup() {
+		return { args }
+	},
+	data: () => ({ inputValue: undefined }),
+	template: /*html*/`
+           <vv-radio-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+				<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+				<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+				<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			</vv-radio-group>
+			<div>Value: <span data-testId="value">{{inputValue}}</span></div>
+        `,
+})
 
 <Canvas>
 	<Story
 		name="Default"
-		args={{
-			name: 'story-slot-default'
-		}}>
-		{(args) => {
-			return {
-				components: { VvRadioGroup, VvRadio },
-				data: () => ({ selected: args.modelValue || null }),
-				setup() {
-					return { args }
+		play={defaultTest}
+		argTypes={{
+			options: {
+				control: {
+					disable: true,
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected">
-                            <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                            <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                            <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong> 
-                    </div>
-                    `
-			}
+			},
+			default: {
+				control: {
+					disable: true,
+				},
+			},
 		}}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
-
-# Hint
 
 <Canvas>
 	<Story
 		name="Hint"
-		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement })
-		}}
-		args={{
-			name: 'story-slot-hint'
-		}}>
-		{(args) => {
-			return {
-				components: { VvRadioGroup, VvRadio },
-				data: () => ({ selected: args.modelValue || null }),
-				setup() {
-					return { args }
+		play={defaultTest}
+		args={{ hint: 'Hint <em class="italic">slot!</em>' }}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true,
 				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                            </template>
-                            <template v-slot:hint="slotProps">
-                                <p>Ciao sono lo slot HINT! {{slotProps}}</p> 
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
-                    </div>
-                    `
-			}
+			},
 		}}
-	</Story>
-</Canvas>
-
-# Valid
-
-<Canvas>
-	<Story
-		name="Valid"
-		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement }, 'valid')
-		}}
-		args={{
-			name: 'story-slot-valid',
-			valid: true
-		}}>
-		{(args) => {
-			return {
-				components: { VvRadioGroup, VvRadio },
-				data: () => ({ selected: args.modelValue || null }),
-				setup() {
-					return { args }
-				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                            </template>
-                            <template v-slot:valid>
-                                <p>Ciao sono lo slot VALID!</p>
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
-                    </div>
-                    `
-			}
-		}}
-	</Story>
-</Canvas>
-
-# Error
-
-<Canvas>
-	<Story
-		name="Error"
-		play={async ({ canvasElement }) => {
-			slotsTest({ canvasElement }, 'invalid')
-		}}
-		args={{
-			name: 'story-slot-error',
-			error: true
-		}}>
-		{(args) => {
-			return {
-				components: { VvRadioGroup, VvRadio },
-				data: () => ({ selected: args.modelValue || null }),
-				setup() {
-					return { args }
-				},
-				template:
-					/**html */
-					`
-                    <div class="flex flex-row justify-between">
-                        <vv-radio-group v-bind="args" v-model:modelValue="selected" role="radiogroup">
-                            <template v-slot:default>
-                                <vv-radio id="o1" name="opts" value="1">Opt 1</vv-radio>
-                                <vv-radio id="o2" name="opts" value="2">Opt 2</vv-radio>
-                                <vv-radio id="o3" name="opts" value="3">Opt 3</vv-radio>
-                            </template>
-                            <template v-slot:error>
-                                <p>Ciao sono lo slot ERROR!</p>
-                            </template>
-                        </vv-radio-group>
-                        <strong v-if="selected">Opzione selezionato: {{selected}} </strong>
-                    </div>
-                    `
-			}
-		}}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

@@ -1,66 +1,186 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
+import { defaultArgs, argTypes } from './Textarea.settings'
+import { defaultTest } from './Textarea.test'
 
-import { toGroup } from '../utils'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import VvTextarea from '../../components/VvTextarea/VvTextarea.vue'
-import { VvTextareaProps } from '../../components/VvTextarea/VvTextarea'
+<Meta
+	title="Components/Textarea"
+	component={VvTextarea}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
-<Meta title="Components/Textarea" component={VvTextarea} />
-
-export const Template = (args, { argTypes }) => ({
-	props: Object.keys(argTypes),
+export const Template = (args) => ({
 	components: { VvTextarea },
 	setup() {
 		return { args }
 	},
-	data: () => ({ value: args.modelValue || '' }),
-	template: `
-		<div class="flex flex-col justify-between">
-			<vv-textarea v-bind="args" v-model:modelValue="value"/>
-			<strong v-if="value">Valore: {{value}} </strong> 
-		</div>
-        `
+	data: () => ({ inputValue: undefined }),
+	template: /*html*/`
+		<vv-textarea v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #before v-if="args.before"><div class="pt-sm pl-sm flex" v-html="args.before"></div></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			<template #after v-if="args.after"><div class="pt-sm pr-sm flex" v-html="args.after"></div></template>
+		</vv-textarea>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+        `,
 })
 
-# VvTextarea
-
-`VvTextarea` is a multi-line text input element.
-
 <Canvas>
-	<Story
-		name="vv-textarea"
-		args={{
-			...ObjectUtilities.propsToObject(VvTextareaProps),
-			maxlength: null
-		}}
-		argTypes={{
-			...toGroup(
-				['required', 'minlength', 'maxlength'],
-				'Data validation'
-			),
-			...toGroup(
-				[
-					'disabled',
-					'readonly',
-					'valid',
-					'validLabel',
-					'error',
-					'errorLabel',
-					'loading',
-					'loadingLabel'
-				],
-				'State'
-			),
-			...toGroup(['floating'], 'Floating'),
-			...toGroup(['modifiers'], 'Modifiers'),
-			...toGroup(['icon', 'iconPosition'], 'Icon'),
-			...toGroup(['hintLabel'], 'Hint text'),
-			...toGroup(['limit'], 'Text limit count'),
-			...toGroup(['autoclear'], 'Experimental feature')
-		}}>
-		{Template.bind({})}
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<ArgsTable story="vv-textarea" />
+<Canvas>
+	<Story
+		name="Disabled"
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Readonly"
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
+		args={{
+			valid: true,
+			validLabel: 'The field is valid.',
+			icon: 'check',
+		}}
+		argTypes={{
+			valid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		args={{
+			invalid: true,
+			invalidLabel: 'The field is required.',
+			icon: 'error-2',
+		}}
+		argTypes={{
+			invalid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		args={{
+			hintLabel: 'Please enter your name.',
+		}}
+		argTypes={{
+			hintLabel: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Loading"
+		args={{
+			loading: true,
+			loadingLabel: 'Loading...',
+		}}
+		argTypes={{
+			laoding: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Floating"
+		args={{
+			floating: true,
+		}}
+		argTypes={{
+			floating: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Resizable"
+		args={{
+			resizable: true,
+		}}
+		argTypes={{
+			resizable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

@@ -1,42 +1,98 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvCard from '@/components/VvCard/VvCard.vue'
+import { defaulTest } from './Card.test'
+import { defaultArgs, argTypes } from './Card.settings'
+import { Template } from './Card.stories.mdx'
 
-import VvCard from '../../components/VvCard/VvCard.vue'
-
-<Meta title="Components/Card/Slots" component={VvCard} />
+<Meta
+	title="Components/Card/Slots"
+	component={VvCard}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
-	<Story name="Slots">
+	<Story
+		name="Default"
+		play={defaulTest}
+		argTypes={{
+			default: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
 		{(args) => {
 			return {
 				components: { VvCard },
 				setup() {
 					return {
-						args
+						args,
 					}
 				},
-				template: `
-					<vv-card v-bind="args" class="absolute inset-32">
-						<template #header>
-							Header
-						</template>
+				template: /*html*/`
+					<vv-card v-bind="args" class="max-w-max" data-testId="card">
 						<picture>
-							<img class="vv-card__picture aspect-photo" src="https://source.unsplash.com/featured/300×300/?ocean" alt="Card picture" style="height: 150px"/>
+							<img class="aspect-photo h-300" src="https://unsplash.it/300" alt="Card picture"/>
 						</picture>
-						<template #content>
-							Prova
-						</template>
-						<template #footer>
-							<div class="flex items-center">
-								<span>Lorem ipsum dolor</span>
-								<button class="vv-button vv-button--action-quiet ml-auto" type="button">
-									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--akar-icons" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="akar-icons:heart"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 3C4.239 3 2 5.216 2 7.95c0 2.207.875 7.445 9.488 12.74a.985.985 0 0 0 1.024 0C21.125 15.395 22 10.157 22 7.95C22 5.216 19.761 3 17 3s-5 3-5 3s-2.239-3-5-3Z"></path></svg>
-								</button>
-							</div>
-						</template>
 					</vv-card>
-					`
+					`,
 			}
 		}}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Header"
+		play={defaulTest}
+		args={{
+			header: 'Header <em class="italic">slot!</em>',
+		}}
+		argTypes={{
+			header: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Content"
+		play={defaulTest}
+		argTypes={{
+			content: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Footer"
+		play={defaulTest}
+		args={{
+			footer: 'Footer <em class="italic">slot!</em>',
+		}}
+		argTypes={{
+			footer: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

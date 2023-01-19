@@ -1,81 +1,108 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvButton from '../../components/VvButton/VvButton.vue'
-import { testButton } from './Button.test'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Template } from './Button.stories.mdx'
+import { defaultTest } from './Button.test'
+import { argTypes, defaultArgs } from './Button.settings'
 
-<Meta title="Components/Button/Props/loading" />
-
-# VvButton loading
-
-Stories of `VvButton` with `loading`.
-
-## Loading
-
-Let's define a story for our `loading` button.
-
-<Canvas>
-	<Story
-		name="loading"
-		play={async (ctx) => {
-			testButton(ctx, {
-				isClickDisabled: true
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Loading" loading />`
-			}
-		}}
-	</Story>
-</Canvas>
-
-<Source language="jsx" code={'<vv-button loading />'} />
-
-## Loading icon
-
-Let's define a story for `loading-icon`
-
-<Canvas>
-	<Story
-		name="loading-icon"
-		play={async (ctx) => {
-			testButton(ctx, {
-				isClickDisabled: true
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button loading-icon="reload" loading />`
-			}
-		}}
-	</Story>
-</Canvas>
-
-<Source language="jsx" code={'<vv-button loading-icon="reload" loading />'} />
-
-## Loading label
-
-Let's define a story for `loading-label`
-
-<Canvas>
-	<Story
-		name="loading-label"
-		play={async (ctx) => {
-			testButton(ctx, {
-				isClickDisabled: true
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button loading-label="Caricamento..." loading />`
-			}
-		}}
-	</Story>
-</Canvas>
-
-<Source
-	language="jsx"
-	code={'<vv-button loading-label="Caricamento..." loading />'}
+<Meta
+	title="Components/Button/Loading"
+	args={defaultArgs}
+	argTypes={argTypes}
 />
+
+<Canvas>
+	<Story
+		name="Default"
+		args={{
+			loading: true,
+		}}
+		argTypes={{
+			loadingLabel: {
+				...argTypes.loadingLabel,
+				control: {
+					disable: true,
+				},
+			},
+			loadingIcon: {
+				...argTypes.loadingIcon,
+				control: {
+					disable: true,
+				},
+			},
+			loading: {
+				...argTypes.loading,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Icon"
+		args={{
+			loadingIcon: 'reload',
+			loading: true,
+		}}
+		argTypes={{
+			loadingLabel: {
+				...argTypes.loadingLabel,
+				control: {
+					disable: true,
+				},
+			},
+			loadingIcon: {
+				...argTypes.loadingIcon,
+				control: {
+					disable: true,
+				},
+			},
+			loading: {
+				...argTypes.loading,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Label"
+		args={{
+			loadingLabel: 'Reloading...',
+			loading: true,
+		}}
+		argTypes={{
+			loadingLabel: {
+				...argTypes.loadingLabel,
+				control: {
+					disable: true,
+				},
+			},
+			loadingIcon: {
+				...argTypes.loadingIcon,
+				control: {
+					disable: true,
+				},
+			},
+			loading: {
+				...argTypes.loading,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

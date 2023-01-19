@@ -1,5 +1,5 @@
 import { computed, unref, type Ref } from 'vue'
-import ObjectUtilities from '@/utils/ObjectUtilities'
+import { kebabCase } from '@/utils/ObjectUtilities'
 
 interface IBemModifiers {
 	[key: string]:
@@ -23,34 +23,33 @@ export function useBemModifiers(prefix: string, modifiers: IBemModifiers) {
 
 	const bemCssClasses = computed(() => {
 		return (
-			Object.keys(modifiers).reduce((acc, k) => {
-				const _modifier = unref(modifiers[k] as Ref<any>) || false
+			Object.keys(modifiers).reduce((acc, item) => {
+				const _modifier =
+					unref(modifiers[item] as Ref<string | string[]>) || false
 
 				if (!_modifier) return acc
 
-				if (k === 'modifiers') {
+				if (item === 'modifiers') {
 					const _reduceModifiers = Array.isArray(_modifier)
 						? _modifier
-						: [_modifier]
+						: _modifier.split(' ')
 					return {
 						...acc,
 						..._reduceModifiers.reduce(
 							(accVariant: object, currentVariant: string) => {
 								return {
 									...accVariant,
-									[`${prefix}--${ObjectUtilities.kebabCase(
-										currentVariant
-									)}`]: true
+									[`${prefix}--${kebabCase(currentVariant)}`]:
+										true,
 								}
 							},
-							{}
-						)
+							{},
+						),
 					}
 				} else {
 					return {
 						...acc,
-						[`${prefix}--${ObjectUtilities.kebabCase(k)}`]:
-							_modifier
+						[`${prefix}--${kebabCase(item)}`]: _modifier,
 					}
 				}
 			}, baseCssClass) || {}
@@ -58,7 +57,7 @@ export function useBemModifiers(prefix: string, modifiers: IBemModifiers) {
 	})
 
 	return {
-		bemCssClasses
+		bemCssClasses,
 	}
 }
 
@@ -67,7 +66,7 @@ export function toBem(prefix: string, modifiers: IBemModifiers) {
 
 	return (
 		Object.keys(modifiers).reduce((acc, k) => {
-			const _modifier = unref(modifiers[k] as Ref<any>) || false
+			const _modifier = unref(modifiers[k] as Ref<unknown>) || false
 
 			if (!_modifier) return acc
 
@@ -81,18 +80,17 @@ export function toBem(prefix: string, modifiers: IBemModifiers) {
 						(accVariant: object, currentVariant: string) => {
 							return {
 								...accVariant,
-								[`${prefix}--${ObjectUtilities.kebabCase(
-									currentVariant
-								)}`]: true
+								[`${prefix}--${kebabCase(currentVariant)}`]:
+									true,
 							}
 						},
-						{}
-					)
+						{},
+					),
 				}
 			} else {
 				return {
 					...acc,
-					[`${prefix}--${ObjectUtilities.kebabCase(k)}`]: _modifier
+					[`${prefix}--${kebabCase(k)}`]: _modifier,
 				}
 			}
 		}, baseCssClass) || {}

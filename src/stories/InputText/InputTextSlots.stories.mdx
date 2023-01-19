@@ -1,30 +1,69 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import { Template } from './InputText.stories.mdx'
+import { defaultTest } from './InputText.test.ts'
+import { defaultArgs, argTypes } from './InputText.settings'
 
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
-
-<Meta title="Components/InputText/Slots" component={VvInputText} />
-
-# Slot icons left e right
+<Meta
+	title="Components/InputText/Slots"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
-	<Story name="left-right-slots">
-		{() => {
-			return {
-				components: { VvInputText, VvIcon },
-				data: () => ({ text: '' }),
-				template: `
-					<vv-input-text name="r1" v-model:modelValue="text">
-						<template v-slot:icon-left="slotProps">
-                            <VvIcon name="add"/>
-                        </template>
-                        <template v-slot:icon-right>
-                            <button class="vv-button"> QUA! </button>
-                        </template>
-					</vv-input-text>
-                    `
-			}
+	<Story
+		name="Before"
+		args={{
+			before: '<div class="vv-badge vv-badge--sm uppercase">Before</vv-badge>',
 		}}
+		argTypes={{
+			before: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="After"
+		args={{
+			after: '<div class="vv-badge vv-badge--sm uppercase">After</vv-badge>',
+		}}
+		argTypes={{
+			after: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		args={{
+			hint: 'Hint <em class="italic">slot!</em>',
+		}}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

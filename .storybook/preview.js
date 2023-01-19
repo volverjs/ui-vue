@@ -1,15 +1,25 @@
-import '@/stories/stories.scss'
 import { setup } from '@storybook/vue3'
-import DesignSystem from '@/DesignSystem'
+import VolverPlugin from '@/Volver'
 import iconsSimple from '@/assets/icons/simple.json'
 import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
+import { themes } from '@storybook/theming'
+import './style.scss'
 
-const volver = new DesignSystem({
-	iconsCollections: [iconsSimple, iconsNormal, iconsDetailed]
-})
 setup((app) => {
-	app.use(volver)
+	const bodyClasses = document.getElementsByTagName('body')[0].classList
+	if (
+		bodyClasses &&
+		!document.getElementById('storybook-docs')?.getAttribute('hidden')
+	) {
+		// inside docs mode, the body class has 'sb-show-main'
+		bodyClasses.remove('theme--dark')
+		bodyClasses.add('theme--light')
+	}
+	bodyClasses.add('theme')
+	app.use(VolverPlugin, {
+		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed],
+	})
 })
 
 export const parameters = {
@@ -18,14 +28,24 @@ export const parameters = {
 		expanded: true,
 		matchers: {
 			color: /(background|color)$/i,
-			date: /Date$/
-		}
+			date: /Date$/,
+		},
+	},
+	docs: {
+		theme: themes.normal,
 	},
 	darkMode: {
-		// Set the initial theme
-		// current: 'light',
+		classTarget: 'body',
 		darkClass: 'theme--dark',
 		lightClass: 'theme--light',
-		stylePreview: true
-	}
+		stylePreview: true,
+		dark: {
+			...themes.dark,
+			brandImage: 'brand-dark.svg',
+		},
+		light: {
+			...themes.normal,
+			brandImage: 'brand.svg',
+		},
+	},
 }

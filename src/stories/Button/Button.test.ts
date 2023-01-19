@@ -2,56 +2,45 @@ import type { PlayAttributes } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 
-interface ButtonConfig {
-	isClickDisabled?: boolean
-	className?: string | string[] | null
-}
-
-export async function testButton(
-	{ canvasElement }: PlayAttributes = {} as PlayAttributes,
-	{ isClickDisabled = false, className = null }: ButtonConfig = {}
+export async function defaultTest(
+	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
-	const button = await within(canvasElement).findByRole('button')
-	if (isClickDisabled) {
-		await expect(button).not.toBeClicked()
+	const element = await within(canvasElement).findByRole('button')
+
+	const modifiers =
+		!args.modifiers || Array.isArray(args.modifiers)
+			? args.modifiers
+			: [args.modifiers]
+
+	expect(element).toHaveClass('vv-button')
+
+	// icon
+	if (args.icon) {
+		expect(element.innerHTML).toContain('vv-icon')
+	}
+
+	// modifiers
+	if (modifiers) {
+		for (const modifier of modifiers) {
+			expect(element).toHaveClass(`vv-button--${modifier}`)
+		}
+	}
+
+	// disabled
+	if (args.disabled) {
+		await expect(element).not.toBeClicked()
 	} else {
-		await expect(button).toBeClicked()
+		await expect(element).toBeClicked()
+
+		// link
+		if (args.href) {
+			expect(element).toHaveProperty('href')
+		}
+		if (args.target) {
+			expect(element).toHaveProperty('target')
+		}
 	}
-	expect(button).toHaveClass('vv-button')
-	if (className) {
-		expect(button).toHaveClass(className)
-	}
-	await expect(button).toHaveNoViolations()
-}
 
-export async function testButtonWithBadge({ canvasElement }: PlayAttributes) {
-	const button = await within(canvasElement).findByRole('button')
-	expect(button.innerHTML).toContain('vv-badge')
-	await testButton({ canvasElement })
-}
-
-export async function testButtonWithIconLeft({
-	canvasElement
-}: PlayAttributes) {
-	const button = await within(canvasElement).findByRole('button')
-	expect(button.innerHTML).toContain('vv-icon')
-	await testButton({ canvasElement })
-}
-export async function testButtonWithIconOnly({
-	canvasElement
-}: PlayAttributes) {
-	const button = await within(canvasElement).findByRole('button')
-	expect(button.classList).toContain('vv-button--icon-only')
-	await testButton({ canvasElement })
-}
-
-export async function testButtonLink(
-	{ canvasElement }: PlayAttributes,
-	{ isClickDisabled = false, className = null }: ButtonConfig = {}
-) {
-	const button = await within(canvasElement).findByRole('button')
-	await testButton({ canvasElement }, { isClickDisabled, className })
-	expect(button).toHaveProperty('href')
-	expect(button).toHaveProperty('target')
-	await testButton({ canvasElement })
+	// accessibility
+	expect(element).toHaveNoViolations()
 }

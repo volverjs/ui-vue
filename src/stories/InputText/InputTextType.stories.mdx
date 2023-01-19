@@ -1,81 +1,259 @@
-import { Canvas, Meta, Story, Source, ArgsTable } from '@storybook/addon-docs'
-import { action } from '@storybook/addon-actions'
-
-import VvInputText from '../../components/VvInputText/VvInputText.vue'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Template } from './InputText.stories.mdx'
+import { defaultTest } from './InputText.test.ts'
+import { defaultArgs, argTypes } from './InputText.settings'
 
-<Meta title="Components/InputText/Type" component={VvInputText} />
+<Meta
+	title="Components/InputText/Type"
+	component={VvInputText}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
-	<Story name="Text" args={{ name: 'input-text', type: 'text' }}>
-		{Template.bind({})}
+	<Story
+		name="Text"
+		args={{
+			type: 'text',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Password" args={{ name: 'input-password', type: 'password' }}>
-		{Template.bind({})}
+	<Story
+		name="Password"
+		args={{
+			type: 'password',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Date" args={{ name: 'input-date', type: 'date' }}>
-		{Template.bind({})}
+	<Story
+		name="Date"
+		args={{
+			type: 'date',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
 		name="DateTime"
-		args={{ name: 'input-datetime', type: 'datetime-local' }}>
-		{Template.bind({})}
+		args={{
+			type: 'datetime-local',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Number" args={{ name: 'input-number', type: 'number' }}>
-		{Template.bind({})}
+	<Story
+		name="Time"
+		args={{
+			type: 'time',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Time" args={{ name: 'input-time', type: 'time' }}>
-		{Template.bind({})}
+	<Story
+		name="Month"
+		args={{
+			type: 'month',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Email" args={{ name: 'input-email', type: 'email' }}>
-		{Template.bind({})}
+	<Story
+		name="Week"
+		args={{
+			type: 'week',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Tel" args={{ name: 'input-tel', type: 'tel' }}>
-		{Template.bind({})}
+	<Story
+		name="Number"
+		args={{
+			type: 'number',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Url" args={{ name: 'input-url', type: 'url' }}>
-		{Template.bind({})}
+	<Story
+		name="Email"
+		args={{
+			type: 'email',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Color" args={{ name: 'input-color', type: 'color' }}>
-		{Template.bind({})}
+	<Story
+		name="Tel"
+		args={{
+			type: 'tel',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="Search" args={{ name: 'input-search', type: 'search' }}>
-		{Template.bind({})}
+	<Story
+		name="Url"
+		args={{
+			type: 'url',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
 <Canvas>
-	<Story name="File" args={{ name: 'input-file', type: 'file' }}>
-		{Template.bind({})}
+	<Story
+		name="Color"
+		args={{
+			type: 'color',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Search"
+		args={{
+			type: 'search',
+		}}
+		argTypes={{
+			type: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

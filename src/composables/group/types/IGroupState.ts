@@ -1,12 +1,10 @@
 import type { Ref } from 'vue'
 
 /**
- * Stato condiviso per un gruppo di elementi
+ * State shared for a group of elements
  */
 export default interface IGroupState {
-	[key: string]: Ref<any> | symbol
-	/**
-	 * Chiave usata per il provide del gruppo
-	 */
-	key: symbol
+	[itemKey: string]: Ref<unknown> | string | undefined
+	// The key of the group
+	key: string
 }

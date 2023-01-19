@@ -1,84 +1,252 @@
+import type { PropType } from 'vue'
+import type { Option } from '@/types/generic'
+
 export const ValidProps = {
 	valid: Boolean,
-	validLabel: [String, Array]
+	validLabel: [String, Array],
 }
 
-export const ErrorProps = {
-	error: Boolean,
-	errorLabel: [String, Array]
+export const InvalidProps = {
+	invalid: Boolean,
+	invalidLabel: [String, Array],
 }
 
 export const LoadingProps = {
 	loading: Boolean,
-	loadingLabel: String
+	loadingLabel: String,
 }
 
 export const DisabledProps = {
-	disabled: Boolean
+	/**
+	 * Whether the form control is disabled
+	 */
+	disabled: Boolean,
 }
 
 export const ReadonlyProps = {
-	readonly: Boolean
+	/**
+	 * The value is not editable
+	 */
+	readonly: Boolean,
 }
 
 export const ModifiersProps = {
-	modifiers: [String, Array]
+	/**
+	 * Component BEM modifiers
+	 */
+	modifiers: [String, Array] as PropType<string | Array<string>>,
 }
 
 export const HintProps = {
-	hintLabel: { type: String, default: '' }
+	hintLabel: { type: String, default: '' },
 }
 
 export const OptionsProps = {
 	/**
-	 * Lista delle radio options
+	 * List of options, can be string[] or object[]
 	 */
-	options: { type: Array, default: () => [] },
+	options: {
+		type: Array as PropType<Array<Option | string>>,
+		default: () => [],
+	},
 	/**
-	 * Se options è un array di oggetti, optionLabel = nome del campo da utilizzare come label oppure una funzione per ricavare la label
+	 * Used when options are objects: key to use for option label
 	 */
-	optionLabel: { type: [String, Function], default: () => 'label' },
+	labelKey: { type: [String, Function], default: 'label' },
 	/**
-	 * Se options è un array di oggetti, optionValue = nome del campo da utilizzare come value oppure una funzione per ricavare il value
+	 * Used when options are objects: key to use for option label
 	 */
-	optionValue: { type: [String, Function], default: () => 'value' }
+	valueKey: { type: [String, Function], default: 'value' },
 }
 
-export const LimitProps = {
+export const CountProps = {
 	/**
-	 * Conteggio caratteri
-	 * @description
-	 * Se false, non mostrare il conteggio caratteri
-	 * Se true, mostra quanti caratteri ho digitato sin ora e qualì'è la maxlength.
-	 * Se true e maxlength > 0, mostra quanti caratteri ho digitato sin ora e qualì'è la maxlength.
-	 * Se "countdown", mostra quanti caratteri mancano per raggiungere la maxlength.
+	 * Show character limit
 	 */
-	limit: {
+	count: {
 		type: [Boolean, String],
 		default: false,
-		validator: (value: string) => [true, false, 'countdown'].includes(value)
-	}
-}
-
-export const InputProps = {
-	id: String,
-	name: { type: String, required: true },
-	autocomplete: { type: String, default: 'off' },
-	autofocus: Boolean,
-	minlength: Number,
-	maxlength: Number,
-	label: String,
-	placeholder: String,
-	required: Boolean,
-	disabled: Boolean,
-	readonly: Boolean
+		validator: (value: string) =>
+			[true, false, 'limit', 'countdown'].includes(value),
+	},
 }
 
 export const DebounceProps = {
 	/**
-	 * Debounce time (millisecondi)
-	 * @descrition
-	 * Tempo che deve passare dall'ultima battuta prima che modelValue venga aggiornato.
+	 * Milliseconds to wait before emitting the input event
 	 */
-	debounce: Number
+	debounce: [Number, String],
+}
+
+export const ICON_POSITIONS = {
+	LEFT: 'left',
+	RIGHT: 'right',
+} as const
+export type IconPosition = ValueOf<typeof ICON_POSITIONS>
+
+export const IconProps = {
+	/**
+	 * VvIcon name or props
+	 * @see VVIcon
+	 */
+	icon: { type: [String, Object] },
+	/**
+	 * VvIcon position
+	 */
+	iconPosition: {
+		type: String as PropType<IconPosition>,
+		validation: (value: IconPosition) =>
+			Object.values(ICON_POSITIONS).includes(value),
+		default: ICON_POSITIONS.RIGHT,
+	},
+}
+
+export const TabindexProps = {
+	/**
+	 * Global attribute tabindex
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+	 */
+	tabindex: { type: [String, Number], default: 0 },
+}
+
+export const FloatingProps = {
+	/**
+	 * If true the label will be floating
+	 */
+	floating: Boolean,
+}
+
+export const UnselectableProps = {
+	/**
+	 * If true the input will be unselectable
+	 */
+	unselectable: { type: Boolean, default: true },
+}
+
+export const IdNameProps = {
+	/**
+	 * Global attribute id
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id
+	 */
+	id: [String, Number],
+	/**
+	 * Input / Textarea name
+	 * Name of the form control. Submitted with the form as part of a name/value pair
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name
+	 */
+	name: { type: String, required: true },
+}
+
+export const AutofocusProps = {
+	/**
+	 * Global attribute autofocus
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus
+	 */
+	autofocus: Boolean,
+}
+
+export const AutocompleteProps = {
+	/**
+	 * Global attribute autocomplete
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
+	 */
+	autocomplete: { type: String, default: 'off' },
+}
+
+export const InputTextareaProps = {
+	...IdNameProps,
+	...AutofocusProps,
+	...AutocompleteProps,
+	...TabindexProps,
+	...DisabledProps,
+	...ReadonlyProps,
+	...ValidProps,
+	...InvalidProps,
+	...HintProps,
+	...LoadingProps,
+	...ModifiersProps,
+	...CountProps,
+	...DebounceProps,
+	...IconProps,
+	...FloatingProps,
+	/**
+	 * Input / Textarea minlength
+	 * Minimum length (number of characters) of value
+	 * Available for input types: text, search, url, tel, email, password
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#minlength
+	 */
+	minlength: Number,
+	/**
+	 * Input / Textarea maxlength
+	 * Maximum length (number of characters) of value
+	 * Available for input types: text, search, url, tel, email, password
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#maxlength
+	 */
+	maxlength: Number,
+	/**
+	 * Input / Textarea placeholder
+	 * Text that appears in the form control when it has no value set
+	 * Available for input types: text, search, url, tel, email, password, number
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#placeholder
+	 */
+	placeholder: String,
+	/**
+	 * Input / Textarea required
+	 * A value is required or must be check for the form to be submittable
+	 * Available for all input types except color
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#required
+	 */
+	required: Boolean,
+	/**
+	 * <label> value for the Input / Textarea
+	 */
+	label: String,
+}
+
+export const CheckboxRadioProps = {
+	...IdNameProps,
+	...TabindexProps,
+	...ValidProps,
+	...InvalidProps,
+	...HintProps,
+	...DisabledProps,
+	...ReadonlyProps,
+	/**
+	 * Input value
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
+	 */
+	value: [String, Number, Boolean],
+	/**
+	 * Input value
+	 */
+	modelValue: [Object, Number, Boolean, String],
+	/**
+	 * <label> for input
+	 */
+	label: String,
+}
+
+export const CheckboxRadioGroupProps = {
+	...ValidProps,
+	...InvalidProps,
+	...OptionsProps,
+	...HintProps,
+	...DisabledProps,
+	...ReadonlyProps,
+	/**
+	 * Input value
+	 */
+	modelValue: [String, Array],
+	/**
+	 * Input label
+	 */
+	label: String,
+	/**
+	 * Input name
+	 */
+	name: { type: String, required: true },
+	/**
+	 * If true, the group will be displayed in a vertical column
+	 */
+	vertical: Boolean,
 }

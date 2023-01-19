@@ -1,43 +1,153 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvButton from '../../components/VvButton/VvButton.vue'
-import { testButtonWithIconLeft, testButtonWithIconOnly } from './Button.test'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { defaultTest } from './Button.test'
+import { Template } from './Button.stories.mdx'
+import { argTypes, defaultArgs } from './Button.settings'
 
-<Meta title="Components/Button/Props/icon" />
-
-# VvButton icon
-
-Stories of `VvButton` with `icon`.
-
-## Icon and text
-
-Let's define a story for our text `icon` button.
+<Meta title="Components/Button/Icon" args={defaultArgs} argTypes={argTypes} />
 
 <Canvas>
-	<Story name="icon-left" play={testButtonWithIconLeft}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Like" icon="heart" />`
-			}
+	<Story
+		name="Top"
+		args={{
+			icon: 'add',
+			iconPosition: 'top',
+			label: 'Button with top icon',
+			modifiers: 'ghost',
 		}}
+		argTypes={{
+			iconPosition: {
+				...argTypes.iconPosition,
+				control: {
+					disable: true,
+				},
+			},
+			icon: {
+				...argTypes.icon,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<Source language="jsx" code={'<vv-button label="Icon left" icon="heart" />'} />
-
-## Icon only
-
-Let's define a story for our `icon` only button.
-
 <Canvas>
-	<Story name="icon-only" play={testButtonWithIconOnly}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button icon="heart" rounded />`
-			}
+	<Story
+		name="Right"
+		args={{
+			icon: 'add',
+			iconPosition: 'right',
+			label: 'Button with right icon',
 		}}
+		argTypes={{
+			iconPosition: {
+				...argTypes.iconPosition,
+				control: {
+					disable: true,
+				},
+			},
+			icon: {
+				...argTypes.icon,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<Source language="jsx" code={'<vv-button icon="heart" rounded />'} />
+<Canvas>
+	<Story
+		name="Bottom"
+		args={{
+			icon: 'add',
+			iconPosition: 'bottom',
+			label: 'Button with bottom icon',
+			modifiers: 'ghost',
+		}}
+		argTypes={{
+			iconPosition: {
+				...argTypes.iconPosition,
+				control: {
+					disable: true,
+				},
+			},
+			icon: {
+				...argTypes.icon,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Left"
+		args={{
+			icon: 'add',
+			label: 'Button with left icon',
+		}}
+		argTypes={{
+			iconPosition: {
+				...argTypes.iconPosition,
+				control: {
+					disable: true,
+				},
+			},
+			icon: {
+				...argTypes.icon,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="No label"
+		args={{
+			icon: 'add',
+			label: '',
+			ariaLabel: 'Add new item',
+			modifiers: 'rounded',
+		}}
+		argTypes={{
+			iconPosition: {
+				...argTypes.iconPosition,
+				control: {
+					disable: true,
+				},
+			},
+			icon: {
+				...argTypes.icon,
+				control: {
+					disable: true,
+				},
+			},
+			label: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

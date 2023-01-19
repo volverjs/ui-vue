@@ -1,180 +1,257 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvButton from '../../components/VvButton/VvButton.vue'
-import { testButton } from './Button.test'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import { Template } from './Button.stories.mdx'
+import { defaultTest } from './Button.test'
+import { argTypes, defaultArgs } from './Button.settings'
 
-<Meta title="Components/Button/Props/modifiers" />
-
-# VvButton modifiers
-
-Stories of `VvButton` `modifiers`.
-
-## Default
-
-Let's define a story for our `default` button:
-
-<Canvas>
-	<Story name="default" play={testButton}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Default" data-testid="button" />`
-			}
-		}}
-	</Story>
-</Canvas>
-
-<Source language="jsx" code={'<vv-button label="Default" />'} />
-
-## Primary
-
-Let's define a story for our `primary` button:
+<Meta
+	title="Components/Button/Modifiers"
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
 	<Story
-		name="primary"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: ['vv-button--primary']
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Primary" modifiers="primary" />`
-			}
+		name="Primary"
+		args={{ label: 'Primary', modifiers: 'primary' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
 		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-## Secondary
-
-Let's define a story for our `secondary` button:
-
 <Canvas>
 	<Story
-		name="secondary"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: 'vv-button--secondary'
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Secondary" modifiers="secondary" />`
-			}
+		name="Secondary"
+		args={{ label: 'Secondary', modifiers: 'secondary' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
 		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-## Danger
-
-Let's define a story for our `danger` button:
-
 <Canvas>
 	<Story
-		name="danger"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: 'vv-button--danger'
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Danger" modifiers="danger" />`
-			}
+		name="Danger"
+		args={{ label: 'Danger', modifiers: 'danger' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
 		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-## Ghost
-
-Let's define a story for our `ghost` button:
-
 <Canvas>
 	<Story
-		name="ghost"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: 'vv-button--ghost'
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Ghost" modifiers="ghost" />`
-			}
+		name="Ghost"
+		args={{ label: 'Ghost', modifiers: 'ghost' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
 		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-## Text
-
-Let's define a story for our `text` button:
-
 <Canvas>
 	<Story
-		name="text"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: 'vv-button--text'
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Text" modifiers="text" />`
-			}
+		name="Link"
+		args={{ label: 'Link', modifiers: 'link' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
 		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-## Static Light
-
-Let's define a story for our `static-light` button:
-
 <Canvas>
 	<Story
-		name="static-light"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: 'vv-button--static-light'
-			})
-		}}>
-		{() => {
+		name="Static light"
+		args={{ label: 'Static light', modifiers: 'static-light' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{(args) => {
 			return {
 				components: { VvButton },
 				backgrounds: {
-					default: 'dark'
+					default: 'dark',
 				},
-				template: `
-					<div class="bg-black p-16">
-						<vv-button label="Static Light" modifiers="static-light" />
-					</div>
-					`
+				setup() {
+					return { args }
+				},
+				template: /*html*/`
+				<div class="bg-black p-md">
+					<vv-button v-bind="args" />
+				</div>
+				`,
 			}
 		}}
 	</Story>
 </Canvas>
 
-## Static Dark
-
-Let's define a story for our `static-dark` button:
+<Canvas>
+	<Story
+		name="Static dark"
+		args={{ label: 'Static dark', modifiers: 'static-dark' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{(args) => {
+			return {
+				components: { VvButton },
+				backgrounds: {
+					default: 'dark',
+				},
+				setup() {
+					return { args }
+				},
+				template: /*html*/`
+				<div class="bg-white p-md">
+					<vv-button v-bind="args" />
+				</div>
+				`,
+			}
+		}}
+	</Story>
+</Canvas>
 
 <Canvas>
 	<Story
-		name="static-dark"
-		play={async (ctx) => {
-			testButton(ctx, {
-				className: 'vv-button--static-dark'
-			})
-		}}>
-		{() => {
-			return {
-				components: { VvButton },
-				template: `<vv-button label="Static Dark" modifiers="static-dark" />`
-			}
+		name="Block"
+		args={{ label: 'Block', modifiers: 'block' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
 		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Rounded"
+		args={{ label: 'Rounded', modifiers: 'rounded' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Full bleed"
+		args={{ label: 'Full bleed', modifiers: 'full-bleed' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Action"
+		args={{ label: 'Action', modifiers: 'action' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Action quiet"
+		args={{ label: 'Action quiet', modifiers: 'action-quiet' }}
+		argTypes={{
+			modifiers: {
+				...argTypes.modifiers,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>

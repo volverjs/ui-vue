@@ -1,185 +1,199 @@
-<template>
-	<div v-bind="textAreaProps" :class="textAreaClass">
-		<label v-if="label" :id="textAreaLabeledBy" :for="textAreaId">{{
-			label
-		}}</label>
-		<div class="vv-textarea__wrapper">
-			<!-- @slot icon-left to replace icon left -->
-			<slot v-if="hasIconLeft" name="icon-left" v-bind="iconSlotProps">
-				<vv-icon class="vv-textarea__icon-left" :name="icon" />
-			</slot>
-			<textarea
-				ref="input"
-				v-model="inputTextData"
-				v-bind="htmlTextareaProps"
-				@input="emit('input', $event)" />
-			<!-- autoclear text button -->
-			<button
-				v-if="autoclear && textLength > 0"
-				class="vv-button vv-button--ghost"
-				@click="clearTextarea">
-				<vv-icon name="clear-field" />
-			</button>
-			<!-- @slot icon-right to replace icon right -->
-			<slot v-if="hasIconRight" name="icon-right" v-bind="iconSlotProps">
-				<vv-icon :name="icon" />
-			</slot>
-			<span v-if="limit" class="vv-textarea__limit">
-				<slot name="limit"> {{ formattedTextLimitLength }} </slot>
-			</span>
-		</div>
-		<HintSlot :id="textAreaDescribedBy" class="vv-textarea__hint" />
-	</div>
-</template>
+<script lang="ts">
+	export default {
+		name: 'VvTextarea',
+	}
+</script>
 
 <script setup lang="ts">
-import {
-	computed,
-	useAttrs,
-	useSlots,
-	ref,
-	toRefs,
-	onMounted,
-	type HTMLAttributes,
-	type TextareaHTMLAttributes
-} from 'vue'
-import ObjectUtilities from '../../utils/ObjectUtilities'
-import { VvTextareaProps, VvTextareaEvents } from './VvTextarea'
+	import {
+		computed,
+		useSlots,
+		ref,
+		toRefs,
+		watch,
+		type TextareaHTMLAttributes,
+	} from 'vue'
+	import { nanoid } from 'nanoid'
+	import { isEmpty } from '@/utils/ObjectUtilities'
+	import HintSlotFactory from '@/components/common/HintSlot'
+	import { useComponentIcon } from '@/composables/useComponentIcons'
+	import { useComponentFocus } from '@/composables/useComponentFocus'
+	import { useDebouncedInput } from '@/composables/useDebouncedInput'
+	import { useTextCount } from '@/composables/useTextCount'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import VvIcon from '@/components/VvIcon/VvIcon.vue'
+	import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
+	import { useElementVisibility } from '@vueuse/core'
 
-//Componenti
-import VvIcon from '../../components/VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
+	// props, emit and slots
+	const props = defineProps(VvTextareaProps)
+	const emit = defineEmits(VvTextareaEvents)
+	const slots = useSlots()
 
-//Composables
-import { useComponentIcon } from '../../composables/icons/useComponentIcons'
-import { useComponentFocus } from '../../composables/focus/useComponentFocus'
-import { useDebouncedInput } from '../../composables/debouncedInput/useDebouncedInput'
-import { useTextLimit } from '../../composables/textLimit/useTextLimit'
-import { toBem } from '@/composables/useModifiers'
+	// template refs
+	const textarea = ref()
 
-//Props, Emits, Slots e Attrs
-const props = defineProps(VvTextareaProps)
-const emit = defineEmits(VvTextareaEvents)
-const slots = useSlots()
-const attrs = useAttrs()
-
-//Template References
-const input = ref()
-
-//Data
-const { icon, iconPosition, label, modelValue, autoclear, limit } =
-	toRefs(props)
-const textAreaId = props.id || props.name
-const textAreaLabeledBy = `${props.name}-label`
-const textAreaDescribedBy = `${props.name}-hint`
-//BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
-const textAreaPlaceholder = computed(() =>
-	props.floating && ObjectUtilities.isEmpty(props.placeholder)
-		? ' '
-		: props.placeholder
-)
-
-//Debounce input
-const inputTextData = useDebouncedInput(modelValue, props.debounce, emit)
-
-//Gestione ICONE
-const { hasIconLeft, hasIconRight } = useComponentIcon(icon, iconPosition, {
-	iconLeft: slots['icon-left'],
-	iconRight: slots['icon-right']
-})
-
-//Input FOCUS
-const { focused } = useComponentFocus(input, emit)
-
-//Conteggio battute
-const { textLength, formattedTextLimitLength } = useTextLimit(inputTextData, {
-	mode: props.limit,
-	upperLimit: props.maxlength || 0
-})
-
-//Styles & Bindings
-const textAreaClass = computed(() => {
-	return [
-		toBem('vv-textarea', {
-			modifiers: props.modifiers,
-			readonly: props.readonly,
-			valid: props.valid,
-			invalid: props.error,
-			loading: props.loading,
-			iconLeft: hasIconLeft,
-			iconRight: hasIconRight,
-			floating: props.floating && ObjectUtilities.isNotEmpty(props.label),
-			dirty: ObjectUtilities.isNotEmpty(modelValue?.value),
-			resizable: props.resizable
-		}),
-		attrs.class
-	]
-})
-const textAreaProps = computed(() => {
-	const dataAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('data-')
-	)
-	return {
-		style: attrs.style,
-		...dataAttrs
-	} as HTMLAttributes
-})
-const htmlTextareaProps = computed(() => {
-	const ariaAttrs = ObjectUtilities.pickBy(attrs, (k: string) =>
-		k.startsWith('aria-')
+	// data
+	const {
+		icon,
+		iconPosition,
+		label,
+		modelValue,
+		count,
+		valid,
+		invalid,
+		loading,
+	} = toRefs(props)
+	const hasId = computed(() => String(props.id || nanoid()))
+	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
+	// BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
+	const hasPlaceholder = computed(() =>
+		props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder,
 	)
 
-	return {
-		id: textAreaId,
-		placeholder: textAreaPlaceholder.value,
-		name: props.name,
-		autocomplete: props.autocomplete,
+	// debounce
+	const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
+
+	// icons
+	const { hasIcon, hasIconLeft, hasIconRight } = useComponentIcon(
+		icon,
+		iconPosition,
+	)
+
+	// focus
+	const { focused } = useComponentFocus(textarea, emit)
+
+	// visibility
+	const isVisible = useElementVisibility(textarea)
+	watch(isVisible, (newValue) => {
+		if (newValue && props.autofocus) {
+			focused.value = true
+		}
+	})
+
+	// count
+	const { formatted: countFormatted } = useTextCount(localModelValue, {
+		mode: props.count,
+		upperLimit: props.maxlength,
+		lowerLimit: props.minlength,
+	})
+
+	// tabindex
+	const isClickable = computed(() => !props.disabled && !props.readonly)
+	const hasTabindex = computed(() =>
+		isClickable.value ? props.tabindex : -1,
+	)
+
+	// dirty
+	const isDirty = computed(() => !isEmpty(modelValue))
+
+	// invalid
+	const isInvalid = computed(() => {
+		if (props.invalid === true) {
+			return true
+		}
+		if (props.valid === true) {
+			return false
+		}
+		return undefined
+	})
+
+	// hint
+	const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
+
+	// styles
+	const { bemCssClasses } = useBemModifiers('vv-textarea', {
+		modifiers: props.modifiers,
+		valid: valid,
+		invalid: invalid,
+		loading,
 		disabled: props.disabled,
 		readonly: props.readonly,
-		minlength: props.minlength,
+		iconLeft: hasIconLeft,
+		iconRight: hasIconRight,
+		floating: props.floating && !isEmpty(props.label),
+		dirty: isDirty,
+		focused: focused,
+		resizable: props.resizable,
+	})
+
+	// attrs
+	const hasAttrs = computed(
+		() =>
+			({
+				name: props.name,
+				placeholder: hasPlaceholder.value,
+				tabindex: hasTabindex.value,
+				disabled: props.disabled,
+				readonly: props.readonly,
+				required: props.required,
+				autocomplete: props.autocomplete,
+				minlength: props.minlength,
+				maxlength: props.maxlength,
+				cols: props.cols,
+				rows: props.rows,
+				wrap: props.wrap,
+				spellcheck: props.spellcheck,
+				'aria-invalid': isInvalid.value,
+				'aria-describedby':
+					!hasInvalid.value && hasHint.value
+						? hasDescribedBy.value
+						: undefined,
+				'aria-errormessage': hasInvalid.value
+					? hasDescribedBy.value
+					: undefined,
+			} as TextareaHTMLAttributes),
+	)
+
+	// slots props
+	const slotProps = computed(() => ({
+		valid: props.valid,
+		invalid: props.invalid,
+		modelValue: props.modelValue,
+		hintLabel: props.hintLabel,
 		maxlength: props.maxlength,
-		cols: props.cols,
-		rows: props.rows,
-		required: props.required,
-		tabindex: attrs.tabindex,
-		'aria-invalid': props.error,
-		'aria-valid': !props.valid,
-		'aria-labeledby': textAreaLabeledBy,
-		'aria-describedby': textAreaDescribedBy,
-		'aria-errormessage': textAreaDescribedBy,
-		...ariaAttrs
-	} as TextareaHTMLAttributes
-})
+		minlength: props.minlength,
+		clear: onClear,
+	}))
 
-//Slot props
-const iconSlotProps = computed(() => {
-	const { modelValue, valid, error, maxlength, hintLabel } = props
-	return {
-		valid,
-		error,
-		modelValue,
-		hintLabel,
-		maxlength,
-		textLength
+	// methods
+	const onClear = () => {
+		localModelValue.value = undefined
 	}
-})
-
-//Hint
-const HintSlot = HintSlotFactory(props, slots)
-
-//methods
-function clearTextarea() {
-	inputTextData.value = ''
-}
-
-onMounted(() => {
-	if (props.autofocus) focused.value = true
-	console.log('Focused', focused.value)
-})
 </script>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false
-}
-</script>
+<template>
+	<div :class="bemCssClasses">
+		<label v-if="label" :for="hasId" class="vv-textarea__label">
+			{{ label }}
+		</label>
+		<div class="vv-textarea__wrapper">
+			<!-- @slot Slot to replace left icon -->
+			<slot name="before" v-bind="slotProps">
+				<VvIcon
+					v-if="hasIconLeft"
+					class="vv-textarea__icon-left"
+					v-bind="hasIcon"
+				/>
+			</slot>
+			<textarea
+				:id="hasId"
+				ref="textarea"
+				v-model="localModelValue"
+				v-bind="hasAttrs"
+				@keyup="emit('keyup', $event)"
+			/>
+			<slot name="after" v-bind="slotProps">
+				<VvIcon v-if="hasIconRight" v-bind="hasIcon" />
+			</slot>
+			<!-- @slot Slot to replace right icon -->
+			<span v-if="count" class="vv-textarea__limit">
+				<!-- @slot Slot to replace count -->
+				<slot name="count" v-bind="slotProps">
+					{{ countFormatted }}
+				</slot>
+			</span>
+		</div>
+		<HintSlot :id="hasDescribedBy" class="vv-textarea__hint" />
+	</div>
+</template>

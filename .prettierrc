@@ -3,7 +3,24 @@
 	"useTabs": true,
 	"tabWidth": 4,
 	"singleQuote": true,
-	"trailingComma": "none",
-	"bracketSameLine": true,
-	"vueIndentScriptAndStyle": false
+	"trailingComma": "all",
+	"bracketSameLine": false,
+	"vueIndentScriptAndStyle": true,
+	"overrides": [
+		{
+			"files": "*.md",
+			"options": {
+				"trailingComma": "none",
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		},
+		{
+			"files": "*.json",
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
+	]
 }

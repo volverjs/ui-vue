@@ -1,80 +1,87 @@
+<script lang="ts">
+	export default {
+		name: 'VvRadioGroup',
+	}
+</script>
+
+<script setup lang="ts">
+	import type { Option } from '@/types/generic'
+	import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
+	import { useSlots, computed, toRefs } from 'vue'
+	import { useVModel } from '@vueuse/core'
+	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
+	import { useOptions } from '@/composables/useOptions'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VV_RADIO_GROUP } from '@/constants'
+	import { HintSlotFactory } from '@/components/common/HintSlot'
+	import VvRadio from '@/components/VvRadio/VvRadio.vue'
+	import {
+		VvRadioGroupProps,
+		VvRadioGroupEvents,
+	} from '@/components/VvRadioGroup'
+
+	// props, emit and slots
+	const props = defineProps(VvRadioGroupProps)
+	const emit = defineEmits(VvRadioGroupEvents)
+	const slots = useSlots()
+
+	// data
+	const modelValue = useVModel(props, 'modelValue', emit)
+	const { disabled, readonly, vertical, valid, invalid } = toRefs(props)
+
+	const groupState: IInputGroupState = {
+		key: VV_RADIO_GROUP,
+		modelValue,
+		disabled,
+		readonly,
+		valid,
+		invalid,
+	}
+	useProvideGroupState(groupState)
+
+	// options
+	const { getOptionLabel, getOptionValue } = useOptions(props)
+
+	// styles
+	const { bemCssClasses: groupClass } = useBemModifiers('vv-radio-group', {
+		disabled,
+		readonly,
+		horizontal: computed(() => !vertical.value),
+		valid,
+		invalid,
+	})
+
+	// methods
+	const getOptionProps = (option: string | Option, index: number) => {
+		return {
+			id: `${props.name}_opt${index}`,
+			name: props.name,
+			label: getOptionLabel(option),
+			value: getOptionValue(option),
+		}
+	}
+
+	// hint
+	const { HintSlot } = HintSlotFactory(props, slots)
+</script>
+
 <template>
 	<fieldset :class="groupClass">
 		<legend v-if="label" v-text="label" />
-		<div class="vv-input-radio-group__wrapper">
-			<!-- #region options set up -->
+		<div class="vv-radio-group__wrapper">
+			<!-- #region options -->
 			<template v-if="options.length > 0">
 				<vv-radio
-					v-for="(o, oIndex) in options"
-					:key="oIndex"
-					v-bind="getOptionProps(o, oIndex)" />
+					v-for="(option, index) in options"
+					:key="index"
+					v-bind="getOptionProps(option, index)"
+				/>
 			</template>
-			<!-- #endregion options set up -->
+			<!-- #endregion -->
 			<!-- #region default -->
 			<slot v-else />
-			<!-- #endregion default -->
+			<!-- #endregion -->
 		</div>
-		<!-- @slot error,valid,hint,loading vanno vanno qua -->
-		<HintSlot class="vv-input-radio-group__hint" />
+		<HintSlot class="vv-radio-group__hint" />
 	</fieldset>
 </template>
-
-<script setup lang="ts">
-import { useSlots, computed, toRefs } from 'vue'
-import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-import { VvRadioGroupProps, VvRadioGroupEvents } from './VvRadioGroup'
-
-//Composables
-import { useVModel } from '@vueuse/core'
-import { useProvideGroupState } from '../../composables/group/useProvideGroupState'
-import { useOptions } from '../../composables/options/useOptions'
-import { useBemModifiers } from '@/composables/useModifiers'
-
-//Constants
-import { VV_RADIO_GROUP } from '../../constants'
-
-//Components
-import VvRadio from '../../components/VvRadio/VvRadio.vue'
-import { HintSlotFactory } from '../common/HintSlot'
-
-//Props, Emits, Slots e Attrs
-const emit = defineEmits(VvRadioGroupEvents)
-const props = defineProps(VvRadioGroupProps)
-const slots = useSlots()
-
-//Data
-const modelValue = useVModel(props, 'modelValue', emit)
-const { disabled, readonly, vertical, valid, error } = toRefs(props)
-
-// #region group
-const groupState: IInputGroupState = {
-	key: VV_RADIO_GROUP,
-	modelValue,
-	disabled,
-	readonly
-}
-useProvideGroupState(groupState)
-// #endregion group
-
-//OPTIONS
-const { getOptionLabel, getOptionValue } = useOptions(props)
-
-//Styles & Bindings
-const { bemCssClasses: groupClass } = useBemModifiers('vv-input-radio-group', {
-	horizontal: computed(() => !vertical.value),
-	valid,
-	invalid: error
-})
-
-//Methods
-function getOptionProps(option: any, oIndex: number) {
-	return {
-		id: `${props.name}_opt${oIndex}`,
-		name: props.name,
-		label: getOptionLabel(option),
-		value: getOptionValue(option)
-	}
-}
-
-const HintSlot = HintSlotFactory(props, slots)
-</script>

@@ -1,76 +1,96 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvDropdown from '../../components/VvDropdown/VvDropdown.vue'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import { Template } from './Dropdown.stories.mdx'
+import { defaultArgs, argTypes } from './Dropdown.settings'
+import { defaultTest } from './Dropdown.test'
 
-<Meta title="Components/Dropdown/Props/options" />
-
-# VvDropdown options
-
-Let's define a story for our `options` dropdown.
-
-Options string array:
-
-<Source language="json" code={`[ "Option 4", "Option 5", "Option 6" ]`} />
-
-Options object array and default `valueKey` ("value") and `labelKey` ("label"):
-
-<Source
-	language="json"
-	code={`[
-	{
-		"label": "Option 1",
-		"value": 1
-	},
-	{
-		"label": "Option 2",
-		"value": 2
-	},
-	{
-		"label": "Option 3",
-		"value": 3
-	}
-]`}
+<Meta
+	title="Components/Dropdown/Options"
+	component={VvDropdown}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 <Canvas>
-	<Story name="options">
-		{() => {
-			return {
-				components: { VvDropdown },
-				data() {
-					return {
-						value: '',
-						objectValue: '',
-						options: ['Option 4', 'Option 5', 'Option 6'],
-						optionsObject: [
-							{
-								label: 'Option 1',
-								value: 1
-							},
-							{
-								label: 'Option 2',
-								value: 2
-							},
-							{
-								label: 'Option 3',
-								value: 3
-							}
-						]
-					}
+	<Story
+		name="Array of Objects"
+		play={defaultTest}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
 				},
-				template: `<div class="h-100 mb-xl">
-						<vv-dropdown v-model:modelValue="value" :options="options" class="w-1/2 ml-lg" />
-						<div class="flex justify-end">Value: {{ value }}</div>
-					</div>
-					<div class="h-100 pt-lg">
-						<vv-dropdown v-model:modelValue="objectValue" :options="optionsObject" class="w-1/2 ml-lg" />
-						<div class="flex justify-end">Value: {{ objectValue }}</div>
-					</div>`
-			}
+			},
 		}}
+		args={{
+			options: [
+				{ value: 'first', label: 'First' },
+				{ value: 'second', label: 'Second' },
+				{ value: 'third', label: 'Third' },
+			],
+		}}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<Source
-	language="html"
-	code={`<vv-dropdown v-model:modelValue="value" :options="options" />`}
-/>
+<Canvas>
+	<Story
+		name="Option label key"
+		play={defaultTest}
+		args={{
+			labelKey: 'name',
+			options: [
+				{ value: 'first', name: 'First' },
+				{ value: 'second', name: 'Second' },
+				{ value: 'third', name: 'Third' },
+			],
+		}}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
+				},
+			},
+			labelKey: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option value key"
+		play={defaultTest}
+		args={{
+			valueKey: 'id',
+			options: [
+				{ id: 'first', label: 'First' },
+				{ id: 'second', label: 'Second' },
+				{ id: 'third', label: 'Third' },
+			],
+		}}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
+				},
+			},
+			valueKey: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

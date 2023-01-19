@@ -1,31 +1,13 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
-import VvSelect from '../../components/VvSelect/VvSelect.vue'
-import { VvSelectProps } from '../../components/VvSelect/VvSelect'
-import ObjectUtilities from '../../utils/ObjectUtilities'
+import VvSelect from '@/components/VvSelect/VvSelect.vue'
+import { defaultTest } from './Select.test'
+import { defaultArgs, argTypes } from './Select.settings'
 
 <Meta
 	title="Components/Select"
 	component={VvSelect}
-	args={{
-		...ObjectUtilities.propsToObject(VvSelectProps),
-		maxValues: -1,
-		label: 'Lorem Ipsum',
-		placeholder: 'Placeholder',
-		options: [
-			{
-				label: 'Option 1',
-				value: 1
-			},
-			{
-				label: 'Option 2',
-				value: 2
-			},
-			{
-				label: 'Option 3',
-				value: 3
-			}
-		]
-	}}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args) => ({
@@ -35,21 +17,179 @@ export const Template = (args) => ({
 	},
 	data() {
 		return {
-			value: '',
-			optionsString: ['Option 4', 'Option 5', 'Option 6']
+			inputValue: undefined,
 		}
 	},
-	template: `<div class="w-1/2">
-            <vv-select v-bind="args" v-model:modelValue="value" />
-			value: {{ value }}
-        </div>`
+	template: /*html*/`
+		<vv-select v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #before v-if="args.before"><div class="pl-sm flex" v-html="args.before"></div></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
+		</vv-select>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+	`,
 })
 
-# VvSelect
-
-Stories of `VvSelect`.
-Let's define a story for our playground `select`:
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
 
 <Canvas>
-	<Story name="vv-select">{Template.bind({})}</Story>
+	<Story
+		name="Disabled"
+		play={defaultTest}
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Readonly"
+		play={defaultTest}
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Multiple"
+		play={defaultTest}
+		args={{ multiple: true }}
+		argTypes={{
+			multiple: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Unselectable"
+		play={defaultTest}
+		args={{ unselectable: false }}
+		argTypes={{
+			unselectable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
+		play={defaultTest}
+		args={{ valid: true, validLabel: 'Selected response is valid.' }}
+		argTypes={{
+			valid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		play={defaultTest}
+		args={{ invalid: true, invalidLabel: 'This field is required.' }}
+		argTypes={{
+			invalid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{ hintLabel: 'Please fill the input above.' }}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Loading"
+		args={{
+			loading: true,
+			loadingLabel: 'Loading...',
+		}}
+		argTypes={{
+			loading: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Floating"
+		args={{
+			floating: true,
+		}}
+		argTypes={{
+			floating: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
 </Canvas>

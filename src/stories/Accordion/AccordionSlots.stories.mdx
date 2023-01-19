@@ -1,82 +1,58 @@
-import { Canvas, Meta, Story, Source } from '@storybook/addon-docs'
-import VvAccordion from '../../components/VvAccordion/VvAccordion.vue'
-import { slotsTest } from './accordionTest.js'
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Template } from './Accordion.stories.mdx'
+import { defaultTest } from './Accordion.test'
+import { defaultArgs, argTypes } from './Accordion.settings'
 
-<Meta title="Components/Accordion/Slots" />
-
-# VvAccordion slots
-
-Stories of `VvAccordion` with `slot`.
-
-## Slot header
-
-Let's define a story for our accordion with `header` slot.
+<Meta
+	title="Components/Accordion/Slots"
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
 
 <Canvas>
-	<Story name="slot-header" play={slotsTest}>
-		{() => {
-			return {
-				components: { VvAccordion },
-				data() {
-					return {
-						title: 'Slot title',
-						content:
-							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
-					}
-				},
-				template: `<div class="w-1/2">
-						<vv-accordion :content="content"  bordered icon-right>
-							<template #header>
-								<p data-testId="slot" class="text-word-3">{{ title }}</p>
-							</template>
-						</vv-accordion>
-					</div>`
-			}
+	<Story
+		name="Summary"
+		play={defaultTest}
+		args={{
+			summary: `<strong data-testId="slot" class="font-bold text-brand">Custom Summary</strong>`,
 		}}
+		argTypes={{
+			title: {
+				control: {
+					disable: true,
+				},
+			},
+			details: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
 
-<Source
-	language="jsx"
-	code={`<vv-accordion :content="content" bordered icon-right>
-	<template #header>
-		<p class="text-word-3">Slot title</p>
-	</template>
-</vv-accordion>`}
-/>
-
-## Slot details
-
-Let's define a story for our accordion with `details` slot.
-
 <Canvas>
-	<Story name="slot-details" play={slotsTest}>
-		{() => {
-			return {
-				components: { VvAccordion },
-				data() {
-					return {
-						details:
-							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.'
-					}
-				},
-				template: `<div class="w-1/2">
-						<vv-accordion title="Slot details" bordered icon-right>
-							<template #details>
-								<p data-testId="slot" class='font-light text-word-3'>{{ details }}</p>
-							</template>
-						</vv-accordion>
-					</div>`
-			}
+	<Story
+		name="Details"
+		play={defaultTest}
+		args={{
+			details: `<strong data-testId="slot" class="font-bold text-brand">Custom Details</strong>`,
 		}}
+		argTypes={{
+			content: {
+				control: {
+					disable: true,
+				},
+			},
+			summary: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
 	</Story>
 </Canvas>
-
-<Source
-	language="jsx"
-	code={`<vv-accordion title="Slot details" bordered icon-right>
-	<template #details>
-		<p class='font-light text-word-3'>{{ details }}</p>
-	</template>
-</vv-accordion>`}
-/>

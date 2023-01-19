@@ -1,0 +1,204 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import { defaultTest } from './Combobox.test'
+import { defaultArgs, argTypes } from './Combobox.settings'
+
+<Meta
+	title="Components/Combobox"
+	component={VvCombobox}
+    args={defaultArgs}
+	argTypes={argTypes}
+
+/>
+
+export const Template = (args) => ({
+	components: { VvCombobox },
+	setup() {
+		return { args }
+	},
+	data() {
+		return {
+			inputValue: undefined,
+		}
+	},
+	template: /*html*/`
+		<vv-combobox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #before v-if="args.before"><div class="pr-sm flex" v-html="args.before"></div></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+			<template #after v-if="args.after"><div class="pl-sm flex" v-html="args.after"></div></template>
+		</vv-combobox>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+		`,
+})
+
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Disabled"
+		play={defaultTest}
+		args={{ disabled: true }}
+		argTypes={{
+			disabled: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Readonly"
+		play={defaultTest}
+		args={{ readonly: true }}
+		argTypes={{
+			readonly: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Unselectable"
+		play={defaultTest}
+		args={{ unselectable: false }}
+		argTypes={{
+			unselectable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Valid"
+		play={defaultTest}
+		args={{ valid: true, validLabel: 'Selected response is valid.' }}
+		argTypes={{
+			valid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Invalid"
+		play={defaultTest}
+		args={{ invalid: true, invalidLabel: 'This field is required.' }}
+		argTypes={{
+			invalid: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Hint"
+		play={defaultTest}
+		args={{ hintLabel: 'Please fill the input above.' }}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Loading"
+		args={{
+			loading: true,
+			loadingLabel: 'Loading...',
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Searchable"
+		play={defaultTest}
+		args={{ searchable: true, searchPlaceholder: 'Search...' }}
+		argTypes={{
+			searchable: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Floating"
+		play={defaultTest}
+		args={{ floating: true }}
+		argTypes={{
+			floating: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Native"
+		play={defaultTest}
+		args={{ native: true }}
+		argTypes={{
+			native: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

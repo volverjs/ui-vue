@@ -1,0 +1,56 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+import { defaultTest } from './AccordionGroup.test'
+import { defaultArgs, argTypes } from './AccordionGroup.settings'
+
+<Meta
+	title="Components/AccordionGroup/Slots"
+	component={VvAccordionGroup}
+	args={defaultArgs}
+/>
+
+<Canvas>
+	<Story
+		name="Default"
+		play={defaultTest}
+		argTypes={{
+			items: {
+				...argTypes.items,
+				control: {
+					disable: true,
+				},
+			},
+			default: {
+				...argTypes.items,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+	>
+		{(args) => {
+			return {
+				components: { VvAccordionGroup, VvAccordion },
+				setup() {
+					return { args }
+				},
+				data() {
+					return {
+						selected: '',
+						content:
+							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
+					}
+				},
+				template: /*html*/`<vv-accordion-group data-testId="element" v-bind="args" v-model="selected">
+							<vv-accordion name="a-1" data-testId="a-1" title="Details 1" :content="content" />
+							<vv-accordion name="a-2" title="Details 2" :content="content" />
+							<vv-accordion name="a-3" title="Details 3" :content="content" />
+						</vv-accordion-group>
+						<div class="mt-24"  >
+							Selected: <span data-testId="value">{{ selected }}</span>
+						</div>`,
+			}
+		}}
+	</Story>
+</Canvas>
