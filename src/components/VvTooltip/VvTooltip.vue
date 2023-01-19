@@ -1,21 +1,18 @@
 <template>
-	<div :class="[tooltipClass, `vv-tooltip--${props.position}`]">
+	<span :class="[tooltipClass, `vv-tooltip--${props.position}`]" role="tooltip" inert>
 		<slot />
-		<span inert role="tooltip" class="vv-tooltip__content"
-			><slot name="tooltip"
-		/></span>
-	</div>
+	</span>
 </template>
 
 <script setup lang="ts">
 import { useBemModifiers } from '@/composables/useModifiers'
 import { toRefs } from 'vue'
-import { VvTooltipProps } from './VvTooltip'
+import { VvTooltipProps } from '@/components/VvTooltip'
 
 const props = defineProps(VvTooltipProps)
 const { modifiers } = toRefs(props)
 
-//Styles & bindings
+// styles
 const { bemCssClasses: tooltipClass } = useBemModifiers('vv-tooltip', {
 	modifiers
 })
