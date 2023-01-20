@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBemModifiers } from '@/composables/useModifiers'
-import { toRefs } from 'vue'
 import { VvTooltipProps } from '@/components/VvTooltip'
 
 const props = defineProps(VvTooltipProps)

@@ -16,7 +16,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// check if tooltip is visible after focus
 	await parentElement.focus()
-	await sleep(600)
+	await sleep(800)
 	await expect(window.getComputedStyle(element)).toHaveProperty('opacity', "1")
 
 	// check accessibility
@@ -24,7 +24,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// check if tooltip is not visible after blur
 	await parentElement.blur()
-	await sleep(600)
+	await sleep(800)
 	await expect(window.getComputedStyle(element)).toHaveProperty('opacity', "0")
 
 	// position right

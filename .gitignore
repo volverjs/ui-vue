@@ -11,3 +11,7 @@ bin
 !.vscode/extensions.json
 
 storybook-static
+
+# auto-import vite unplugin
+.eslintrc-auto-import.json
+auto-imports.d.ts

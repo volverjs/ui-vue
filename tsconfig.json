@@ -15,7 +15,8 @@
 			"vite/client",
 			"@iconify/types",
 			"@types/jsdom",
-			"@types/uuid"
+			"@types/uuid",
+			"./auto-imports"
 		],
 		"paths": {
 			"@/*": ["./src/*"]
