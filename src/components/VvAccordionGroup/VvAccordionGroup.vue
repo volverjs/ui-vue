@@ -5,11 +5,9 @@
 </script>
 
 <script setup lang="ts">
-	import { type Ref, computed, ref, toRefs, watchEffect } from 'vue'
+	import type { Ref } from 'vue'
 	import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
 	import { VV_ACCORDION_GROUP } from '@/constants'
-	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 	import {
 		VvAccordionGroupProps,

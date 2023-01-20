@@ -1,14 +1,6 @@
-import {
-	type Ref,
-	type PropType,
-	type ExtractPropTypes,
-	toRefs,
-	ref,
-	computed,
-} from 'vue'
-import { DisabledProps, ModifiersProps, UnselectableProps } from '@/props'
+import type { Ref, PropType, ExtractPropTypes } from 'vue'
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
+import { DisabledProps, ModifiersProps, UnselectableProps } from '@/props'
 import { VV_BUTTON_GROUP } from '@/constants'
 
 export enum ButtonIconPosition {

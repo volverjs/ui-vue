@@ -1,4 +1,3 @@
-import { toRefs } from 'vue'
 import type { Option } from '@/types/generic'
 
 // eslint-disable-next-line

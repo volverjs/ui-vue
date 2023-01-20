@@ -1,4 +1,3 @@
-import { defineComponent, ref, computed, h } from 'vue'
 import { TYPES_ICON } from '@/components/VvInputText'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 

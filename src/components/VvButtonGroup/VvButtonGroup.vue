@@ -6,10 +6,7 @@
 
 <script setup lang="ts">
 	import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-	import { toRefs, watchEffect, computed } from 'vue'
 	import { VV_BUTTON_GROUP } from '@/constants'
-	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import {
 		VvButtonGroupProps,
 		VvButtonGroupEvents,

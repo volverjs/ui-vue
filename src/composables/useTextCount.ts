@@ -1,4 +1,4 @@
-import { computed, unref, type Ref } from 'vue'
+import type { Ref } from 'vue'
 
 export function useTextCount(
 	text: Ref<string | undefined | null> | string,

@@ -7,12 +7,7 @@
 <script setup lang="ts">
 	import type { Option } from '@/types/generic'
 	import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-	import { useSlots, computed, toRefs } from 'vue'
 	import { VV_CHECK_GROUP } from '@/constants'
-	import { useVModel } from '@vueuse/core'
-	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
-	import { useOptions } from '@/composables/useOptions'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
 	import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 	import {

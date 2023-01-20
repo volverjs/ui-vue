@@ -1,5 +1,4 @@
 import { VvDropdownProps } from '@/components/VvDropdown'
-import { propsToObject } from '@/utils/ObjectUtilities'
 import {
 	ModifiersArgTypes,
 	OptionsArgTypes,

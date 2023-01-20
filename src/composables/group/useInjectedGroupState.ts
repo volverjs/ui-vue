@@ -1,6 +1,5 @@
-import { type Ref, toRef, unref, inject, computed } from 'vue'
+import type { Ref } from 'vue'
 import type IGroupState from '@/composables/group/types/IGroupState'
-import { isEmpty } from '@/utils/ObjectUtilities'
 
 /**
  * Injects a group state

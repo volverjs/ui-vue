@@ -5,24 +5,9 @@
 </script>
 
 <script setup lang="ts">
-	import {
-		computed,
-		useSlots,
-		ref,
-		toRefs,
-		unref,
-		watch,
-		type InputHTMLAttributes,
-	} from 'vue'
-	import { useElementVisibility } from '@vueuse/core'
+	import type { InputHTMLAttributes } from 'vue'
 	import { nanoid } from 'nanoid'
-	import { isEmpty } from '@/utils/ObjectUtilities'
 	import HintSlotFactory from '@/components/common/HintSlot'
-	import { useComponentIcon } from '@/composables/useComponentIcons'
-	import { useComponentFocus } from '@/composables/useComponentFocus'
-	import { useDebouncedInput } from '@/composables/useDebouncedInput'
-	import { useTextCount } from '@/composables/useTextCount'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
 	import {

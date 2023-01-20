@@ -1,4 +1,4 @@
-import { type Slot, type Ref, computed } from 'vue'
+import type { Slot, Ref } from 'vue'
 
 interface ComponentIconProps {
 	icon: Ref<string>

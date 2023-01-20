@@ -1,4 +1,4 @@
-import { type Ref, computed } from 'vue'
+import type { Ref } from 'vue'
 
 export function useDebouncedInput(
 	modelValue: Ref | undefined,

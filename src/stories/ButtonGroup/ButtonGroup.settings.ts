@@ -3,7 +3,6 @@ import {
 	ModifiersArgTypes,
 	UnselectableArgTypes,
 } from '@/stories/argTypes'
-import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvButtonGroupProps } from '@/components/VvButtonGroup'
 import { argTypes as buttonArgTypes } from '../Button/Button.settings'
 

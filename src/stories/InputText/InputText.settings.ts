@@ -1,7 +1,6 @@
 import { InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvInputTextProps } from '@/components/VvInputText'
 import normal from '@/assets/icons/normal.json'
-import { propsToObject } from '@/utils/ObjectUtilities'
 
 export const defaultArgs = {
 	...propsToObject(VvInputTextProps),

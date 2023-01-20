@@ -5,8 +5,6 @@
 </script>
 
 <script setup lang="ts">
-	import { computed, toRefs } from 'vue'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import { VvProgressProps } from '@/components/VvProgress'
 
 	// props

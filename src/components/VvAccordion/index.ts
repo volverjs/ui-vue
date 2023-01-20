@@ -1,6 +1,5 @@
-import { type ExtractPropTypes, toRefs, type Ref } from 'vue'
+import type { ExtractPropTypes, Ref } from 'vue'
 import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_ACCORDION_GROUP } from '@/constants'
 
 export const VvAccordionProps = {

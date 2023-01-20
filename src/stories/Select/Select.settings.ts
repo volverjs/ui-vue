@@ -15,7 +15,6 @@ import {
 	AutofocusArgTypes,
 	AutocompleteArgTypes,
 } from '@/stories/argTypes'
-import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvSelectProps } from '@/components/VvSelect'
 
 export const defaultArgs = {

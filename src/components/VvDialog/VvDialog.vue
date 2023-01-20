@@ -5,8 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { type DialogHTMLAttributes, computed, ref } from 'vue'
-	import { useVModel, onClickOutside } from '@vueuse/core'
+	import type { DialogHTMLAttributes } from 'vue'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import { VvDialogEvents, VvDialogProps } from '@/components/VvDialog'
 

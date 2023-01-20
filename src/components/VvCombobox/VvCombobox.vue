@@ -5,14 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { computed, ref, toRefs, useSlots, watch } from 'vue'
 	import { nanoid } from 'nanoid'
-	import { onClickOutside, refDebounced } from '@vueuse/core'
-	import { isEmpty } from '@/utils/ObjectUtilities'
-	import { useBemModifiers } from '@/composables/useModifiers'
-	import { useComponentIcon } from '@/composables/useComponentIcons'
-	import { useOptions } from '@/composables/useOptions'
-	import { useComponentFocus } from '@/composables/useComponentFocus'
 	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import VvSelect from '@/components/VvSelect/VvSelect.vue'

@@ -1,4 +1,4 @@
-import { unref, type Ref } from 'vue'
+import type { Ref } from 'vue'
 
 /**
  * Compare objects, primitives, array, dates, regexp

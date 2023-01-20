@@ -1,5 +1,4 @@
 import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
-import { propsToObject } from '@/utils/ObjectUtilities'
 
 export const defaultArgs = {
 	...propsToObject(VvBreadcrumbProps),

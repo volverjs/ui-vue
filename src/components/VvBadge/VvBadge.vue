@@ -5,7 +5,6 @@
 </script>
 
 <script setup lang="ts">
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import { VvBadgeProps } from '@/components/VvBadge'
 
 	const props = defineProps(VvBadgeProps)

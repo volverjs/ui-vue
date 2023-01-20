@@ -13,7 +13,6 @@ import {
 	UnselectableArgTypes,
 } from '@/stories/argTypes'
 import { VvComboboxProps } from '@/components/VvCombobox'
-import { propsToObject } from '@/utils/ObjectUtilities'
 
 export const defaultArgs = {
 	...propsToObject(VvComboboxProps),

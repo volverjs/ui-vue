@@ -5,7 +5,6 @@
 </script>
 
 <script setup lang="ts">
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import { VvCardProps } from '@/components/VvCard'
 
 	// props and attrs

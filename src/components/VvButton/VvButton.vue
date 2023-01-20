@@ -5,11 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import { inject, useAttrs, useSlots, computed } from 'vue'
 	import { nanoid } from 'nanoid'
-	import { contains, equals } from '@/utils/ObjectUtilities'
 	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import {
 		ButtonIconPosition,

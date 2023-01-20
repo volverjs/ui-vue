@@ -1,4 +1,3 @@
-import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvTooltipProps } from '@/components/VvTooltip'
 import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 

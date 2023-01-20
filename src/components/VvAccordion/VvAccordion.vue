@@ -5,10 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { computed, useAttrs, ref } from 'vue'
-	import { useToggle } from '@vueuse/core'
 	import { nanoid } from 'nanoid'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import {
 		VvAccordionEvents,
 		VvAccordionProps,

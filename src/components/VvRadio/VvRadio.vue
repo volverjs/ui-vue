@@ -5,10 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { computed, ref, useSlots } from 'vue'
 	import { nanoid } from 'nanoid'
-	import { contains, equals } from '@/utils/ObjectUtilities'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import {
 		VvRadioProps,
 		VvRadioEvents,

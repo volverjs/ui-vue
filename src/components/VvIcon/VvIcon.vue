@@ -5,11 +5,9 @@
 </script>
 
 <script setup lang="ts">
-	import { inject, toRefs, ref, computed } from 'vue'
 	import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
 	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
 	import { VvIconProps } from '@/components/VvIcon'
-	import { useBemModifiers } from '@/composables/useModifiers'
 
 	// props
 	const props = defineProps(VvIconProps)

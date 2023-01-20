@@ -32,10 +32,7 @@ export default ({ mode }: { mode: string }) => {
 				// by default it only scan one level of modules under the directory
 				dirs: [
 					'./src/composables/**',
-					'./src/utils/',
-					// './hooks',
-					// './composables/**', // all nested modules
-					// ...
+					'./src/utils/'
 				],
 				dts: true,
 				eslintrc: {

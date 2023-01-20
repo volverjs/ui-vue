@@ -1,7 +1,6 @@
 import type { ExtractPropTypes, Ref } from 'vue'
 import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
 import { CheckboxRadioProps } from '@/props'
-import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
 import { VV_RADIO_GROUP } from '@/constants'
 
 export const VvRadioProps = CheckboxRadioProps
