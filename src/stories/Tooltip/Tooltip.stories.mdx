@@ -1,0 +1,98 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import VvTooltip from '@/components/VvTooltip/VvTooltip.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import { defaultArgs, argTypes } from './Tooltip.settings'
+import { defaultTest } from './Tooltip.test'
+
+<Meta
+	title="Components/Tooltip"
+	component={ VvTooltip }
+	args={ defaultArgs }
+	argTypes={ argTypes }
+/>
+
+export const Template = (args) => ({
+	components: { VvTooltip, VvButton },
+	setup() {
+		return { args }
+	},
+	template:
+		/* html */`
+		<div class="max-w-full flex justify-center m-xl">
+			<vv-button >Hover me
+				<vv-tooltip v-bind="args" data-testId="element">
+					<template #default v-if="args.default"><div v-html="args.default"></div></template>
+				</vv-tooltip>
+			</vv-button>
+		</div>`
+})
+
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Top"
+		play={defaultTest}
+		args={{ position: 'top' }}
+		argTypes={{
+			position: {
+				control: {
+					disable: true,
+				}
+			},
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Bottom"
+		play={defaultTest}
+		args={{ position: 'bottom' }}
+		argTypes={{
+			position: {
+				control: {
+					disable: true,
+				}
+			},
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Right"
+		play={defaultTest}
+		args={{ position: 'right' }}
+		argTypes={{
+			position: {
+				control: {
+					disable: true,
+				}
+			},
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Left"
+		play={defaultTest}
+		args={{ position: 'left' }}
+		argTypes={{
+			position: {
+				control: {
+					disable: true,
+				}
+			},
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
