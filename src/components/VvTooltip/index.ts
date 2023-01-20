@@ -10,6 +10,10 @@ export enum TooltipPosition {
 
 export const VvTooltipProps = {
 	...ModifiersProps,
+	/**
+	 * Define the tooltip position
+	 * @default TooltipPosition.bottom
+	 */
 	position: {
 		type: String as PropType<TooltipPosition>,
 		default: TooltipPosition.bottom

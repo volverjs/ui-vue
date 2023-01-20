@@ -14,12 +14,18 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		throw new Error('Default slot is required!')
 	}
 
-	// await parentElement.focus()
-	// sleep()
+	// check if tooltip is visible after focus
+	await parentElement.focus()
+	await sleep(600)
+	await expect(window.getComputedStyle(element)).toHaveProperty('opacity', "1")
 
-	// await userEvent.hover(parentElement)
-	// sleep()
-	// await expect(element.style).toHaveProperty('opacity', 1)
+	// check accessibility
+	await expect(element).toHaveNoViolations()
+
+	// check if tooltip is not visible after blur
+	await parentElement.blur()
+	await sleep(600)
+	await expect(window.getComputedStyle(element)).toHaveProperty('opacity', "0")
 
 	// position right
 	if (args.position === 'right') {
@@ -40,7 +46,4 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	if (args.position === 'bottom') {
 		await expect(element).toHaveClass('vv-tooltip--bottom')
 	}
-
-	// check accessibility
-	await expect(element).toHaveNoViolations()
 }
