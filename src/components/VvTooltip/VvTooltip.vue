@@ -11,7 +11,7 @@ const { bemCssClasses: tooltipClass } = useBemModifiers('vv-tooltip', {
 </script>
 
 <template>
-	<span :class="[tooltipClass, `vv-tooltip--${props.position}`]" role="tooltip" inert>
+	<span :class="[tooltipClass, `vv-tooltip--${position}`]" role="tooltip" inert>
 		<slot />
 	</span>
 </template>

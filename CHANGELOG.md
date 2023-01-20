@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2023-01-20
+
+### Added
+
+- `VvTooltip` vv-tooltip component, test, stories;
+- `VvAvatar` vv-avatar component, test, stories;
+- library version
+
+### Update
+
+- libraries, composables and utils auto-load
+
 ## [0.0.2] - 2023-01-18
 
 ### Added
