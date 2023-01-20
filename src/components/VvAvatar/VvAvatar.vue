@@ -22,7 +22,7 @@ const hasClass = computed(() => {
 </script>
 
 <template>
-	<span :class="hasClass" :style="hasStyle" :role="imgSrc ? undefined : 'img'">
+	<span :class="hasClass" :style="hasStyle" :role="imgSrc ? undefined : 'img'" :aria-label="imgSrc ? undefined : 'avatar'">
 		<slot>
 			<img v-if="imgSrc" :src="imgSrc" alt="avatar" />
 		</slot>
