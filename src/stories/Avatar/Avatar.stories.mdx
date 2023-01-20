@@ -52,11 +52,11 @@ export const Template = (args) => ({
 		play={defaultTest}
 		args={{ imgSrc: 'https://i.pravatar.cc/300' }}
 		argTypes={{
-			default: {
-				imgSrc: {
+			imgSrc: {
+				control: {
 					disable: true,
 				}
-			},
+			}
 		}}>
 		{Template.bind({})}
 	</Story>
@@ -64,9 +64,64 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
-		name="Size"
+		name="Small"
 		play={defaultTest}
-		args={{ size: 'lg' }}>
+		args={{ size: undefined }}
+		argTypes={{
+			size: {
+				control: {
+					disable: true,
+				}
+			}
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Medium"
+		play={defaultTest}
+		args={{ size: 'md' }}
+		argTypes={{
+			size: {
+				control: {
+					disable: true,
+				}
+			}
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Large"
+		play={defaultTest}
+		args={{ size: 'lg' }}
+		argTypes={{
+			size: {
+				control: {
+					disable: true,
+				}
+			}
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Not rounded"
+		play={defaultTest}
+		args={{ rounded: false, imgSrc: '', default: 'MR' }}
+		argTypes={{
+			rounded: {
+				control: {
+					disable: true,
+				}
+			}
+		}}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
