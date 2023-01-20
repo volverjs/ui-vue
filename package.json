@@ -261,6 +261,11 @@
       "types": "./dist/components/VvTextarea/VvTextarea.vue.d.ts",
       "import": "./dist/components/VvTextarea/VvTextarea.es.js",
       "default": "./dist/components/VvTextarea/VvTextarea.umd.js"
+    },
+    "./vv-tooltip": {
+      "types": "./dist/components/VvTooltip/VvTooltip.vue.d.ts",
+      "import": "./dist/components/VvTooltip/VvTooltip.es.js",
+      "default": "./dist/components/VvTooltip/VvTooltip.umd.js"
     }
   }
 }
