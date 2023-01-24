@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2023-01-24
+
+### Added
+
+- `VvAvatar` component;
+- `VvTooltip` component.
+
+### Fixed
+
+- Redesign `VvCombobox` for better accessibility;
+- Rewrite `VvDropdown` component, now is applicable to any element.
+
 ## [0.0.2] - 2023-01-18
 
 ### Added
@@ -44,4 +56,5 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.1.3]: https://github.com/volverjs/style/compare/v0.0.2...v0.0.3
 [0.1.2]: https://github.com/volverjs/style/compare/v0.0.1...v0.0.2
