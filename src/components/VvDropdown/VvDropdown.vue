@@ -39,14 +39,14 @@
 
 	// template elements
 	const localReferenceEl = ref<HTMLElement | null>(null)
+	const floatingEl: Ref<HTMLElement | null> = ref(null)
+	const arrowEl = ref<HTMLElement | null>(null)
 	const referenceEl = computed({
 		get: () => props.reference ?? localReferenceEl.value,
 		set: (newValue) => {
 			localReferenceEl.value = newValue
 		},
 	})
-	const floatingEl: Ref<null | HTMLElement> = ref(null)
-	const arrowEl = ref<HTMLElement | null>(null)
 
 	// floating ui
 	const middleware = computed(() => {
@@ -167,15 +167,10 @@
 		referenceEl.value = el
 	}
 	watch(expanded, (newValue) => {
-		if (newValue) {
+		if (newValue && props.autofocusFirst) {
 			nextTick(() => {
 				// focus first item
-				const firstItem = floatingEl.value?.querySelector(
-					'li:first-child > *',
-				) as HTMLElement
-				if (firstItem) {
-					firstItem.focus()
-				}
+				focusFirst()
 			})
 		}
 	})
@@ -225,10 +220,13 @@
 		nextTick(() => {
 			// focus first item
 			const firstItem = floatingEl.value?.querySelector(
-				'li:first-child > *',
-			) as HTMLElement
-			if (firstItem) {
-				firstItem.focus()
+				'li:first-child',
+			) as HTMLElement | undefined
+			const firstAction = (firstItem?.firstElementChild ?? firstItem) as
+				| HTMLElement
+				| undefined
+			if (firstAction) {
+				firstAction.focus()
 			}
 		})
 	}
@@ -236,20 +234,28 @@
 		nextTick(() => {
 			// focus first item
 			const lastItem = floatingEl.value?.querySelector(
-				'li:last-child > *',
-			) as HTMLElement
-			if (lastItem) {
-				lastItem.focus()
+				'li:last-child',
+			) as HTMLElement | undefined
+			const lastAction = (lastItem?.firstElementChild ?? lastItem) as
+				| HTMLElement
+				| undefined
+
+			if (lastAction) {
+				lastAction.focus()
 			}
 		})
 	}
 	const focusNext = () => {
 		nextTick(() => {
 			if (focused.value) {
-				const next = document.activeElement?.parentElement
-					?.nextElementSibling?.firstElementChild as HTMLElement
-				if (next) {
-					next.focus()
+				const nextItem = (document.activeElement?.nextElementSibling ??
+					document.activeElement?.parentElement
+						?.nextElementSibling) as HTMLElement | undefined
+				const nextAction = (nextItem?.firstElementChild ?? nextItem) as
+					| HTMLElement
+					| undefined
+				if (nextAction) {
+					nextAction.focus()
 				} else {
 					focusFirst()
 				}
@@ -259,10 +265,15 @@
 	const focusPrev = () => {
 		nextTick(() => {
 			if (focused.value) {
-				const prev = document.activeElement?.parentElement
-					?.previousElementSibling?.firstElementChild as HTMLElement
-				if (prev) {
-					prev.focus()
+				const prevItem = (document.activeElement
+					?.previousElementSibling ??
+					document.activeElement?.parentElement
+						?.previousElementSibling) as HTMLElement | undefined
+				const prevAction = (prevItem?.firstElementChild ?? prevItem) as
+					| HTMLElement
+					| undefined
+				if (prevAction) {
+					prevAction.focus()
 				} else {
 					focusLast()
 				}
@@ -289,11 +300,19 @@
 			focusPrev()
 		}
 	})
+	onKeyStroke([' ', 'Enter'], (e) => {
+		if (expanded.value && focused.value) {
+			e.preventDefault()
+			;(document.activeElement as HTMLElement)?.click()
+		}
+	})
 </script>
 
 <template>
 	<VvDropdownTriggerProvider>
-		<slot v-bind="{ init, show, hide, toggle, aria: referenceAria }" />
+		<slot
+			v-bind="{ init, show, hide, toggle, expanded, aria: referenceAria }"
+		/>
 	</VvDropdownTriggerProvider>
 	<Transition :name="transitionName">
 		<div

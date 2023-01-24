@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(2.286 4.572)"><g transform="translate(-566.893 47.888)" fill="none" stroke-miterlimit="10"><path d="M567.607-41.461a5,5,0,0,1,5-5,5,5,0,0,1,5,5Z" stroke="none"/><path d="M 576.4801635742188 -42.46113586425781 C 576.0349731445312 -44.18438339233398 574.4672241210938 -45.46099853515625 572.6068115234375 -45.46099853515625 C 570.7463989257812 -45.46099853515625 569.1786499023438 -44.18438339233398 568.7334594726562 -42.46113586425781 L 576.4801635742188 -42.46113586425781 M 577.606689453125 -41.46113586425781 L 567.60693359375 -41.46113586425781 C 567.60693359375 -44.22301864624023 569.844970703125 -46.46099853515625 572.6068115234375 -46.46099853515625 C 575.3687744140625 -46.46099853515625 577.606689453125 -44.22301864624023 577.606689453125 -41.46113586425781 Z" stroke="none" fill="#000"/></g><line y1="1" transform="translate(5.714 -1.072)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line x2="15" transform="translate(-1.786 5.928)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line x2="1" y2="1" transform="translate(0.214 -0.072)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line x1="1" y2="1" transform="translate(10.214 -0.072)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(2.286 4.572)">
+        <g transform="translate(-566.893 47.888)" fill="none" stroke-miterlimit="10">
+            <path d="M567.607-41.461a5,5,0,0,1,5-5,5,5,0,0,1,5,5Z" stroke="none" />
+            <path
+                d="M 576.4801635742188 -42.46113586425781 C 576.0349731445312 -44.18438339233398 574.4672241210938 -45.46099853515625 572.6068115234375 -45.46099853515625 C 570.7463989257812 -45.46099853515625 569.1786499023438 -44.18438339233398 568.7334594726562 -42.46113586425781 L 576.4801635742188 -42.46113586425781 M 577.606689453125 -41.46113586425781 L 567.60693359375 -41.46113586425781 C 567.60693359375 -44.22301864624023 569.844970703125 -46.46099853515625 572.6068115234375 -46.46099853515625 C 575.3687744140625 -46.46099853515625 577.606689453125 -44.22301864624023 577.606689453125 -41.46113586425781 Z"
+                stroke="none" fill="#000" />
+        </g>
+        <line y1="1" transform="translate(5.714 -1.072)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+        <line x2="15" transform="translate(-1.786 5.928)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+        <line x2="1" y2="1" transform="translate(0.214 -0.072)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+        <line x1="1" y2="1" transform="translate(10.214 -0.072)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+    </g>
+</svg>

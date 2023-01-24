@@ -1,1 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(2 1.373)"><line x2="16" transform="translate(2 19.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M12.125,4.127v-1h-4v1" transform="translate(-0.125 -1.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line y1="3" transform="translate(10 16.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="1" transform="translate(7 7.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="1" transform="translate(7 11.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="1" transform="translate(12 7.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="1" transform="translate(12 11.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><g transform="translate(3 2.627)" fill="none" stroke="#000" stroke-width="2"><rect width="14" height="18" rx="2" stroke="none"/><rect x="1" y="1" width="12" height="16" rx="1" fill="none"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(2 1.373)">
+        <line x2="16" transform="translate(2 19.627)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <path d="M12.125,4.127v-1h-4v1" transform="translate(-0.125 -1.5)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <line y1="3" transform="translate(10 16.627)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="1" transform="translate(7 7.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+        <line x2="1" transform="translate(7 11.627)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="1" transform="translate(12 7.627)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="1" transform="translate(12 11.627)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <g transform="translate(3 2.627)" fill="none" stroke="#000" stroke-width="2">
+            <rect width="14" height="18" rx="2" stroke="none" />
+            <rect x="1" y="1" width="12" height="16" rx="1" fill="none" />
+        </g>
+    </g>
+</svg>

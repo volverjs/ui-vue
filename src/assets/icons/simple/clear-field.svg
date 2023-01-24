@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17"><g transform="translate(0.5 0.5)"><rect width="16" height="16" fill="#fff" opacity="0"/><circle cx="8" cy="8" r="8" stroke="#000" stroke-width="1"/><g transform="translate(5.333 5.333)"><line y1="6" x2="6" transform="translate(-0.333 -0.334)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line x2="6" y2="6" transform="translate(-0.333 -0.334)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
+    <g transform="translate(0.5 0.5)">
+        <circle cx="8" cy="8" r="8" stroke="#000" stroke-width="1" />
+        <g transform="translate(5.333 5.333)">
+            <line y1="6" x2="6" transform="translate(-0.333 -0.334)" fill="none" stroke="#fff" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <line x2="6" y2="6" transform="translate(-0.333 -0.334)" fill="none" stroke="#fff" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+        </g>
+    </g>
+</svg>

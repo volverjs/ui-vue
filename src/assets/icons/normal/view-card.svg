@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(2 8)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="11" height="9" rx="2" stroke="none"/><rect x="1" y="1" width="9" height="7" rx="1" fill="none"/></g><g transform="translate(15 8)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="7" height="6" rx="2" stroke="none"/><rect x="1" y="1" width="5" height="4" rx="1" fill="none"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(2 8)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+        <rect width="11" height="9" rx="2" stroke="none" />
+        <rect x="1" y="1" width="9" height="7" rx="1" fill="none" />
+    </g>
+    <g transform="translate(15 8)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+        <rect width="7" height="6" rx="2" stroke="none" />
+        <rect x="1" y="1" width="5" height="4" rx="1" fill="none" />
+    </g>
+</svg>

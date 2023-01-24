@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(4 9.333)"><g transform="translate(-563.607 52.128)" fill="none" stroke-miterlimit="10"><path d="M567.607-38.461a8,8,0,0,1,8-8,8,8,0,0,1,8,8Z" stroke="none"/><path d="M 581.2648315429688 -40.46073913574219 C 580.4393920898438 -42.78897857666016 578.2149658203125 -44.46099853515625 575.6073608398438 -44.46099853515625 C 572.9996948242188 -44.46099853515625 570.7752075195312 -42.78897857666016 569.94970703125 -40.46073913574219 L 581.2648315429688 -40.46073913574219 M 583.6075439453125 -38.46073913574219 L 567.6069946289062 -38.46073913574219 C 567.6069946289062 -42.88000869750977 571.1881103515625 -46.46099853515625 575.6073608398438 -46.46099853515625 C 580.026611328125 -46.46099853515625 583.6075439453125 -42.88000869750977 583.6075439453125 -38.46073913574219 Z" stroke="none" fill="#000"/></g><line y1="3" transform="translate(12 -0.334)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line x2="26" transform="translate(-1 12.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line x2="2" y2="2" transform="translate(2 2.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line y1="2" x2="2" transform="translate(20 2.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(4 9.333)">
+        <g transform="translate(-563.607 52.128)" fill="none" stroke-miterlimit="10">
+            <path d="M567.607-38.461a8,8,0,0,1,8-8,8,8,0,0,1,8,8Z" stroke="none" />
+            <path
+                d="M 581.2648315429688 -40.46073913574219 C 580.4393920898438 -42.78897857666016 578.2149658203125 -44.46099853515625 575.6073608398438 -44.46099853515625 C 572.9996948242188 -44.46099853515625 570.7752075195312 -42.78897857666016 569.94970703125 -40.46073913574219 L 581.2648315429688 -40.46073913574219 M 583.6075439453125 -38.46073913574219 L 567.6069946289062 -38.46073913574219 C 567.6069946289062 -42.88000869750977 571.1881103515625 -46.46099853515625 575.6073608398438 -46.46099853515625 C 580.026611328125 -46.46099853515625 583.6075439453125 -42.88000869750977 583.6075439453125 -38.46073913574219 Z"
+                stroke="none" fill="#000" />
+        </g>
+        <line y1="3" transform="translate(12 -0.334)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <line x2="26" transform="translate(-1 12.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <line x2="2" y2="2" transform="translate(2 2.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <line y1="2" x2="2" transform="translate(20 2.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+    </g>
+</svg>

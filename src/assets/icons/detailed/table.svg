@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(-231 -1732.5)"><g transform="translate(233 1738.5)" fill="none" stroke="#000" stroke-width="2"><rect width="28" height="20" rx="2" stroke="none"/><rect x="1" y="1" width="26" height="18" rx="1" fill="none"/></g><line y2="20" transform="translate(242 1738.5)" fill="none" stroke="#000" stroke-width="2"/><line x2="26" transform="translate(234 1745.5)" fill="none" stroke="#000" stroke-width="2"/><line x2="26" transform="translate(234 1751.5)" fill="none" stroke="#000" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(-231 -1732.5)">
+        <g transform="translate(233 1738.5)" fill="none" stroke="#000" stroke-width="2">
+            <rect width="28" height="20" rx="2" stroke="none" />
+            <rect x="1" y="1" width="26" height="18" rx="1" fill="none" />
+        </g>
+        <line y2="20" transform="translate(242 1738.5)" fill="none" stroke="#000" stroke-width="2" />
+        <line x2="26" transform="translate(234 1745.5)" fill="none" stroke="#000" stroke-width="2" />
+        <line x2="26" transform="translate(234 1751.5)" fill="none" stroke="#000" stroke-width="2" />
+    </g>
+</svg>

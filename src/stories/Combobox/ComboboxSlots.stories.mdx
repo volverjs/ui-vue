@@ -1,5 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { Template } from './Combobox.stories.mdx'
 import { defaultTest } from './Combobox.test.ts'
 import { defaultArgs, argTypes } from './Combobox.settings'
@@ -32,6 +33,77 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		}}
 	>
 		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Label"
+		play={defaultTest}
+		args={{
+			multiple: true,
+		}}
+	>
+		{(args) => ({
+			components: { VvCombobox },
+			setup() {
+				return { args }
+			},
+			data() {
+				return {
+					inputValue: undefined,
+				}
+			},
+			template: /*html*/ `
+				<vv-combobox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+					<template #before v-if="args.before"><div class="pl-sm flex" v-html="args.before"></div></template>
+					<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+					<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
+					<template #value="{ selectedOptions }">
+						<div class="flex gap-xs">
+							<div v-for="(option, index) in selectedOptions" :key="index" class="vv-badge vv-badge--sm uppercase">{{option}}</vv-badge>
+						</div>
+					</template>
+				</vv-combobox>
+				<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+			`,
+		})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Option"
+		play={defaultTest}
+		args={{
+			multiple: true,
+		}}
+	>
+		{(args) => ({
+			components: { VvCombobox, VvIcon },
+			setup() {
+				return { args }
+			},
+			data() {
+				return {
+					inputValue: undefined,
+				}
+			},
+			template: /*html*/ `
+				<vv-combobox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+					<template #before v-if="args.before"><div class="pl-sm flex" v-html="args.before"></div></template>
+					<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+					<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
+					<template #option="{ option, selected }">
+						<div class="flex items-center" :class="{ 'bg-brand text-white n-sm p-sm': selected }">
+							<vv-icon :name="selected ? 'check-circle' : 'circle'" class="relative m-0 p-0" />
+							<div class="flex-1 pl-sm">{{ option }}</div>
+						</div>
+					</template>
+				</vv-combobox>
+				<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+			`,
+		})}
 	</Story>
 </Canvas>
 

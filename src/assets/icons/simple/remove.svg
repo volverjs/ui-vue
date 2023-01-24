@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(0.167 8)"><line x2="15" transform="translate(0.333 -0.001)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(0.167 8)">
+        <line x2="15" transform="translate(0.333 -0.001)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+    </g>
+</svg>

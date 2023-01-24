@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(2.4 4.799)"><path d="M-2871.324,225.505v-4h-4" transform="translate(2889.925 -221.306)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M-2875.273,239.905h4v-4" transform="translate(2889.873 -225.703)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M-2892.122,221.558h-4v4" transform="translate(2896.722 -221.358)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M-2896.071,235.958v4h4" transform="translate(2896.67 -225.755)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M-2891.2,234.307h3.877v-1.243h-1.211v-6.757l-2.789.824v1.333l1.494-.461v5.062h-1.371Z" transform="translate(2894.921 -223.106)"/><path d="M-2891.2,234.307h3.877v-1.243h-1.211v-6.757l-2.789.824v1.333l1.494-.461v5.062h-1.371Z" transform="translate(2902.919 -223.106)"/><path d="M-2884.119,229.37h1v-1.463h-1Zm0,3.537h1v-1.464h-1Z" transform="translate(2892.719 -223.205)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(2.4 4.799)">
+        <path d="M-2871.324,225.505v-4h-4" transform="translate(2889.925 -221.306)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <path d="M-2875.273,239.905h4v-4" transform="translate(2889.873 -225.703)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <path d="M-2892.122,221.558h-4v4" transform="translate(2896.722 -221.358)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <path d="M-2896.071,235.958v4h4" transform="translate(2896.67 -225.755)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <path d="M-2891.2,234.307h3.877v-1.243h-1.211v-6.757l-2.789.824v1.333l1.494-.461v5.062h-1.371Z"
+            transform="translate(2894.921 -223.106)" />
+        <path d="M-2891.2,234.307h3.877v-1.243h-1.211v-6.757l-2.789.824v1.333l1.494-.461v5.062h-1.371Z"
+            transform="translate(2902.919 -223.106)" />
+        <path d="M-2884.119,229.37h1v-1.463h-1Zm0,3.537h1v-1.464h-1Z" transform="translate(2892.719 -223.205)" />
+    </g>
+</svg>

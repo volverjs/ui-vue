@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(0.5 0.5)"><path d="M1222.934,8.321a3.643,3.643,0,0,1-2.507,2.507m0-7a3.644,3.644,0,0,1,2.507,2.509m-7,0a3.645,3.645,0,0,1,2.508-2.509m0,7a3.641,3.641,0,0,1-2.509-2.507" transform="translate(-1211.934 0.169)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><path d="M1224.807,8.054c-.481,3.218-1.954,4.146-4.643,4.643m0-13a5.358,5.358,0,0,1,4.643,4.643m-13,0A5.364,5.364,0,0,1,1216.449-.3m0,13a5.227,5.227,0,0,1-4.643-4.643" transform="translate(-1210.807 1.304)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><rect width="3" height="4" rx="1" transform="translate(6 11)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"/><rect width="4" height="3" rx="1.333" transform="translate(11 6)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"/><rect width="4" height="3" rx="1" transform="translate(0 6)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"/><rect width="3" height="4" rx="1" transform="translate(6)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(0.5 0.5)">
+        <path
+            d="M1222.934,8.321a3.643,3.643,0,0,1-2.507,2.507m0-7a3.644,3.644,0,0,1,2.507,2.509m-7,0a3.645,3.645,0,0,1,2.508-2.509m0,7a3.641,3.641,0,0,1-2.509-2.507"
+            transform="translate(-1211.934 0.169)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+        <path
+            d="M1224.807,8.054c-.481,3.218-1.954,4.146-4.643,4.643m0-13a5.358,5.358,0,0,1,4.643,4.643m-13,0A5.364,5.364,0,0,1,1216.449-.3m0,13a5.227,5.227,0,0,1-4.643-4.643"
+            transform="translate(-1210.807 1.304)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+        <rect width="3" height="4" rx="1" transform="translate(6 11)" fill="none" stroke="#000" stroke-miterlimit="10"
+            stroke-width="1" />
+        <rect width="4" height="3" rx="1.333" transform="translate(11 6)" fill="none" stroke="#000"
+            stroke-miterlimit="10" stroke-width="1" />
+        <rect width="4" height="3" rx="1" transform="translate(0 6)" fill="none" stroke="#000" stroke-miterlimit="10"
+            stroke-width="1" />
+        <rect width="3" height="4" rx="1" transform="translate(6)" fill="none" stroke="#000" stroke-miterlimit="10"
+            stroke-width="1" />
+    </g>
+</svg>

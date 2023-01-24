@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(6.667 5.333)"><path d="M17.888-830.507c3.925.769,6.176,2.506,6.176,4.769,0,2.933-5.271,5.231-12,5.231s-12-2.3-12-5.231c0-2.263,2.252-4,6.176-4.769" transform="translate(-2.73 844.173)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M7.451,16.379v-16h10l-4,4,4,4h-10" transform="translate(1.882 -2.713)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><ellipse cx="3" cy="1.5" rx="3" ry="1.5" transform="translate(6.333 16.666)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(6.667 5.333)">
+        <path
+            d="M17.888-830.507c3.925.769,6.176,2.506,6.176,4.769,0,2.933-5.271,5.231-12,5.231s-12-2.3-12-5.231c0-2.263,2.252-4,6.176-4.769"
+            transform="translate(-2.73 844.173)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10"
+            stroke-width="2" />
+        <path d="M7.451,16.379v-16h10l-4,4,4,4h-10" transform="translate(1.882 -2.713)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <ellipse cx="3" cy="1.5" rx="3" ry="1.5" transform="translate(6.333 16.666)" />
+    </g>
+</svg>

@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(0.333 0.334)"><circle cx="8" cy="8" r="8" transform="translate(-0.333 -0.333)"/><line y1="5" transform="translate(7.667 7.166)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line y1="1" transform="translate(7.668 3.166)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001">
+    <g transform="translate(0.333 0.334)">
+        <circle cx="8" cy="8" r="8" transform="translate(-0.333 -0.333)" />
+        <line y1="5" transform="translate(7.667 7.166)" fill="none" stroke="#fff" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+        <line y1="1" transform="translate(7.668 3.166)" fill="none" stroke="#fff" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="1" />
+    </g>
+</svg>

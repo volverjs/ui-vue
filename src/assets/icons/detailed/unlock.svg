@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(5.333 5.334)"><path d="M320.818,13.572l-1.277-1.277a4.48,4.48,0,0,1,0-6.385h0a4.479,4.479,0,0,1,6.386,0L327.2,7.186" transform="translate(-315.537 -5.906)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line y2="4" transform="translate(10.667 13.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><g transform="translate(-1.333 6.667)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="24" height="18" rx="3" stroke="none"/><rect x="1" y="1" width="22" height="16" rx="2" fill="none"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(5.333 5.334)">
+        <path d="M320.818,13.572l-1.277-1.277a4.48,4.48,0,0,1,0-6.385h0a4.479,4.479,0,0,1,6.386,0L327.2,7.186"
+            transform="translate(-315.537 -5.906)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <line y2="4" transform="translate(10.667 13.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <g transform="translate(-1.333 6.667)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <rect width="24" height="18" rx="3" stroke="none" />
+            <rect x="1" y="1" width="22" height="16" rx="2" fill="none" />
+        </g>
+    </g>
+</svg>

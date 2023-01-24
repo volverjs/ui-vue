@@ -118,6 +118,13 @@ export const VvDropdownProps = {
 		default: true,
 	},
 	/**
+	 * Autofocus first item on dropdown open
+	 */
+	autofocusFirst: {
+		type: Boolean,
+		default: true,
+	},
+	/**
 	 * Set dropdown width to the same as the trigger
 	 */
 	triggerWidth: {
