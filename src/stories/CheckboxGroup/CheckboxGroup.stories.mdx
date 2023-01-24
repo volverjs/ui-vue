@@ -16,13 +16,13 @@ export const Template = (args) => ({
 		return { args }
 	},
 	data: () => ({ inputValue: undefined }),
-	template: /*html*/`
-            <vv-checkbox-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-                <template #default v-if="args.default"><span v-html="args.default"></span></template>
-				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-            </vv-checkbox-group>
-            <div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-        `,
+	template: /*html*/ `
+		<vv-checkbox-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #default v-if="args.default"><span v-html="args.default"></span></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+		</vv-checkbox-group>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+	`,
 })
 
 <Canvas>

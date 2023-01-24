@@ -5,12 +5,11 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
-	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import VvSelect from '@/components/VvSelect/VvSelect.vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit and slots
 	const props = defineProps(VvComboboxProps)
@@ -28,7 +27,6 @@
 	const { focused } = useComponentFocus(dropdown, emit)
 
 	// data
-	const hasId = computed(() => String(props.id || nanoid()))
 	const searchText = ref('')
 	const debouncedSearchText = refDebounced(
 		searchText,
@@ -36,6 +34,7 @@
 	)
 	const dropdownOpen = ref(false)
 	const {
+		id,
 		icon,
 		iconPosition,
 		modifiers,
@@ -46,6 +45,7 @@
 		invalid,
 		floating,
 	} = toRefs(props)
+	const hasId = useUniqueId(id)
 
 	// emit on change search text
 	watch(debouncedSearchText, () =>
@@ -238,7 +238,7 @@
 				</slot>
 			</summary>
 			<!-- @slot Slot to replace right icon -->
-			<VvDropdown
+			<VComboboxDropdown
 				:id="`${hasId}-dropdown`"
 				v-bind="dropdownProps"
 				@update:model-value="onInput"

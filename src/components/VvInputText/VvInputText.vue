@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	import type { InputHTMLAttributes } from 'vue'
-	import { nanoid } from 'nanoid'
+	import { isEmpty } from '@/utils/ObjectUtilities'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
@@ -16,6 +16,7 @@
 		INPUT_TYPES,
 		TYPES_ICON,
 	} from '@/components/VvInputText'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit, slots and attrs
 	const props = defineProps(VvInputTextProps)
@@ -27,6 +28,7 @@
 
 	// data
 	const {
+		id,
 		icon,
 		iconPosition,
 		label,
@@ -36,7 +38,7 @@
 		invalid,
 		loading,
 	} = toRefs(props)
-	const hasId = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 	// BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const inputTextPlaceholder = computed(() =>

@@ -5,13 +5,13 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
 	import {
 		VvCheckboxProps,
 		VvCheckboxEvents,
 		useGroupProps,
 	} from '@/components/VvCheckbox'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emits and slots
 	const props = defineProps(VvCheckboxProps)
@@ -20,6 +20,7 @@
 
 	// data
 	const {
+		id,
 		disabled,
 		readonly,
 		valid,
@@ -29,7 +30,7 @@
 		indeterminate,
 		isInGroup,
 	} = useGroupProps(props, emit)
-	const id = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 	// template ref
@@ -147,9 +148,9 @@
 </script>
 
 <template>
-	<label :class="bemCssClasses" :for="id">
+	<label :class="bemCssClasses" :for="hasId">
 		<input
-			:id="id"
+			:id="hasId"
 			ref="input"
 			v-model="localModelValue"
 			type="checkbox"

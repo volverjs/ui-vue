@@ -1,50 +1,187 @@
-import { VvDropdownProps } from '@/components/VvDropdown'
 import {
-	ModifiersArgTypes,
-	OptionsArgTypes,
-	UnselectableArgTypes,
-} from '@/stories/argTypes'
+	VvDropdownProps,
+	DROPDOWN_PLACEMENTS,
+	DROPDOWN_ROLES,
+} from '@/components/VvDropdown'
+import { propsToObject } from '@/utils/ObjectUtilities'
 
 export const defaultArgs = {
 	...propsToObject(VvDropdownProps),
-	name: 'vv-dropdown',
-	disabled: false,
-	valueObject: false,
-	multiple: false,
-	labelKey: 'label',
-	valueKey: 'value',
-	options: [
-		{
-			label: 'Option 1',
-			value: 1,
-		},
-		{
-			label: 'Option 2',
-			value: 2,
-		},
-		{
-			label: 'Option 3',
-			value: 3,
-		},
-	],
 }
 
 export const argTypes = {
-	modifiers: {
-		...ModifiersArgTypes.modifiers,
-		options: ['place-top'],
+	placement: {
+		description: 'Dropdown placement',
+		options: DROPDOWN_PLACEMENTS,
+		control: {
+			type: 'select',
+		},
+		table: {
+			defaultValue: { summary: 'bottom' },
+		},
 	},
-	...OptionsArgTypes,
-	labelNoResults: {
-		control: { type: 'text' },
+	transitionName: {
+		description: 'Dropdown show / hide transition name',
+		control: {
+			type: 'text',
+		},
+	},
+	offset: {
+		description: 'Offset of the dropdown from the trigger',
+		control: {
+			type: 'number',
+		},
 		table: {
 			defaultValue: {
-				summary: 'No results',
+				summary: 0,
+			},
+			type: {
+				summary: ['number', 'string', 'object'],
 			},
 		},
 	},
-	maxValues: {
-		control: { type: 'number' },
+	shift: {
+		description:
+			'Move dropdown to the side if there is no space in the default position',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
 	},
-	...UnselectableArgTypes,
+	flip: {
+		description:
+			'Flip dropdown position if there is no space in the default position',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	autoPlacement: {
+		description: 'Automatically change the position of the dropdown',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	arrow: {
+		description: 'Add arrow to the dropdown',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	role: {
+		description: 'Dropdown role',
+		options: DROPDOWN_ROLES,
+		control: {
+			type: 'select',
+		},
+		table: {
+			defaultValue: { summary: 'menu' },
+		},
+	},
+	autoClose: {
+		description: 'Close dropdown on click outside',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	triggerWidth: {
+		description: 'Set dropdown width to the same as the trigger',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	default: {
+		description: 'The trigger slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	items: {
+		description: 'The dropdown items slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	before: {
+		description: 'The dropdown before slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	after: {
+		description: 'The dropdown after slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
 }

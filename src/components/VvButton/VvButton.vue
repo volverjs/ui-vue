@@ -5,7 +5,6 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
 	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import {
@@ -15,6 +14,11 @@
 		VvButtonProps,
 		useGroupProps,
 	} from '@/components/VvButton'
+	import {
+		useInjectedDropdownAction,
+		useInjectedDropdownTrigger,
+	} from '@/composables/dropdown/useInjectDropdown'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, attrs, slots and emit
 	const props = defineProps(VvButtonProps)
@@ -23,8 +27,8 @@
 	const emit = defineEmits(VvButtonEvents)
 
 	// data
-	const name = (attrs?.name as string) || nanoid()
 	const {
+		id,
 		modifiers,
 		iconPosition,
 		icon,
@@ -34,9 +38,33 @@
 		toggle,
 		unselectable,
 	} = useGroupProps(props, emit)
+	const hasId = useUniqueId(id)
+	const name = computed(() => (attrs?.name as string) || hasId.value)
 
 	// inject Volver
 	const ds = inject<IVolver>(VOLVER_PREFIX)
+
+	// expose el
+	const $el = ref<HTMLElement | null>(null)
+	defineExpose({ $el })
+
+	// drowpdown trigger
+	const {
+		reference: dropdownTriggerReference,
+		bus: dropdownEventBus,
+		aria: dropdownAria,
+	} = useInjectedDropdownTrigger()
+	watch(
+		() => $el.value,
+		(newValue) => {
+			if (dropdownTriggerReference) {
+				dropdownTriggerReference.value = newValue
+			}
+		},
+	)
+
+	// dropdown parent
+	const { role } = useInjectedDropdownAction()
 
 	/**
 	 * @description The tag defined by props.
@@ -63,8 +91,8 @@
 		if (!toggle.value) return props.pressed
 
 		return Array.isArray(modelValue.value)
-			? contains(name, modelValue.value)
-			: equals(name, modelValue.value)
+			? contains(name.value, modelValue.value)
+			: equals(name.value, modelValue.value)
 	})
 
 	/**
@@ -105,14 +133,16 @@
 	 */
 	const hasProps = computed(() => {
 		const toReturn = {
-			class: bemCssClasses.value,
+			...dropdownAria?.value,
 			'aria-pressed': isPressed.value ? true : undefined,
+			class: bemCssClasses.value,
+			role,
 		}
 		switch (hasTag.value) {
 			case ButtonTag.a:
 				return {
 					...toReturn,
-					role: 'button',
+					role: toReturn.role ?? 'button',
 					href: props.href,
 					target: props.target,
 					rel: props.rel,
@@ -121,7 +151,7 @@
 			case ButtonTag.nuxtLink:
 				return {
 					...toReturn,
-					role: 'button',
+					role: toReturn.role ?? 'button',
 					to: props.to,
 					target: props.target,
 				}
@@ -135,34 +165,57 @@
 	})
 
 	/**
-	 * @description Catch click event in a group.
+	 * @description Catch click event
 	 */
-	const onClick = () => {
+	const onClick = (e: Event) => {
+		dropdownEventBus?.emit('click', e)
 		if (toggle.value) {
 			if (Array.isArray(modelValue.value)) {
-				if (contains(name, modelValue.value)) {
+				if (contains(name.value, modelValue.value)) {
 					if (unselectable.value) {
 						modelValue.value = modelValue.value.filter(
-							(n) => n !== name,
+							(n) => n !== name.value,
 						)
 					}
 					return
 				}
-				modelValue.value.push(name)
+				modelValue.value.push(name.value)
 				return
 			}
 			if (equals(name, modelValue.value) && unselectable.value) {
 				modelValue.value = undefined
 				return
 			}
-			modelValue.value = name
+			modelValue.value = name.value
 		}
+	}
+
+	/**
+	 * @description Catch mouseover event
+	 */
+	const onMouseover = (e: Event) => {
+		dropdownEventBus?.emit('mouseover', e)
+	}
+
+	/**
+	 * @description Catch mouseleave event
+	 */
+	const onMouseleave = (e: Event) => {
+		dropdownEventBus?.emit('mouseleave', e)
 	}
 </script>
 
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component v-bind="hasProps" :is="hasTag" @click.passive="onClick">
+	<component
+		v-bind="hasProps"
+		:is="hasTag"
+		:id="hasId"
+		ref="$el"
+		@click.passive="onClick"
+		@mouseover.passive="onMouseover"
+		@mouseleave.passive="onMouseleave"
+	>
 		<!-- @slot Replace all button content -->
 		<slot>
 			<!-- #region loading -->

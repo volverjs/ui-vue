@@ -14,7 +14,7 @@
 	const emit = defineEmits(VvDialogEvents)
 
 	// data
-	const show = useVModel(props, 'modelValue', emit)
+	const isVisible = useVModel(props, 'modelValue', emit)
 	const htmlAttrIsOpen = ref(true)
 
 	// template ref
@@ -51,18 +51,26 @@
 	// methods
 	onClickOutside(modalWrapper, () => {
 		if (props.autoClose) {
-			show.value = false
+			isVisible.value = false
 		}
 	})
 
 	function closeDialog() {
-		show.value = false
+		isVisible.value = false
 	}
+
+	// keyboard
+	onKeyStroke('Escape', (e) => {
+		if (isVisible.value) {
+			e.preventDefault()
+			closeDialog()
+		}
+	})
 </script>
 
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
-		<dialog v-show="show" v-bind="dialogAttrs" :class="dialogClass">
+		<dialog v-show="isVisible" v-bind="dialogAttrs" :class="dialogClass">
 			<article ref="modalWrapper" class="vv-dialog__wrapper">
 				<header v-if="$slots.header || title" class="vv-dialog__header">
 					<!-- @slot Header slot -->
@@ -72,7 +80,7 @@
 							type="button"
 							aria-label="Close"
 							class="vv-dialog__close"
-							@click.prevent="closeDialog"
+							@click.passive="closeDialog"
 						>
 							<vv-icon name="close" />
 						</button>

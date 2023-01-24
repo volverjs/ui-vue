@@ -6,10 +6,11 @@
 
 <script setup lang="ts">
 	import type { TextareaHTMLAttributes } from 'vue'
-	import { nanoid } from 'nanoid'
+	import { isEmpty } from '@/utils/ObjectUtilities'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit and slots
 	const props = defineProps(VvTextareaProps)
@@ -21,6 +22,7 @@
 
 	// data
 	const {
+		id,
 		icon,
 		iconPosition,
 		label,
@@ -30,7 +32,7 @@
 		invalid,
 		loading,
 	} = toRefs(props)
-	const hasId = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 	// BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const hasPlaceholder = computed(() =>

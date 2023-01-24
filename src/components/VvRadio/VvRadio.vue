@@ -5,13 +5,15 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
+	import { contains, equals } from '@/utils/ObjectUtilities'
+	import { useBemModifiers } from '@/composables/useModifiers'
 	import {
 		VvRadioProps,
 		VvRadioEvents,
 		useGroupProps,
 	} from '@/components/VvRadio'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit and slots
 	const props = defineProps(VvRadioProps)
@@ -19,11 +21,9 @@
 	const slots = useSlots()
 
 	// data
-	const { disabled, readonly, modelValue, valid, invalid } = useGroupProps(
-		props,
-		emit,
-	)
-	const id = computed(() => String(props.id || nanoid()))
+	const { id, disabled, readonly, modelValue, valid, invalid } =
+		useGroupProps(props, emit)
+	const hasId = useUniqueId(id)
 	const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 	// template refs
@@ -77,9 +77,9 @@
 </script>
 
 <template>
-	<label :class="bemCssClasses" :for="id">
+	<label :class="bemCssClasses" :for="hasId">
 		<input
-			:id="id"
+			:id="hasId"
 			ref="input"
 			v-model="localModelValue"
 			type="radio"

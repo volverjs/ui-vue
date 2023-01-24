@@ -34,7 +34,7 @@ export function useGroupProps(
 		useInjectedGroupState<IInputGroupState>(VV_CHECK_GROUP)
 
 	// local props
-	const { switch: propsSwitch, indeterminate } = toRefs(props)
+	const { id, switch: propsSwitch, indeterminate } = toRefs(props)
 
 	// global props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
@@ -45,6 +45,7 @@ export function useGroupProps(
 
 	return {
 		// local props
+		id,
 		propsSwitch,
 		indeterminate,
 		// global props

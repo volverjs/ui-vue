@@ -16,6 +16,7 @@ export function useGroupProps(
 	props: VvRadioPropsType,
 	emit: (event: (typeof VvRadioEvents)[number], value: unknown) => void,
 ) {
+	const { id } = toRefs(props)
 	const { group, isInGroup, getGroupOrLocalRef } =
 		useInjectedGroupState<IInputGroupState>(VV_RADIO_GROUP)
 
@@ -27,6 +28,8 @@ export function useGroupProps(
 	const invalid = getGroupOrLocalRef('invalid', props) as Ref<boolean>
 
 	return {
+		// local props
+		id,
 		// global props
 		group,
 		isInGroup,

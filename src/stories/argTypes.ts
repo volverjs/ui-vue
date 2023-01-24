@@ -158,6 +158,20 @@ export const OptionsArgTypes = {
 			},
 		},
 	},
+	disabledKey: {
+		type: {
+			summary: ['string', 'function'],
+		},
+		description: 'Key of disabled in option object',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'disabled',
+			},
+		},
+	},
 }
 
 export const CountArgTypes = {

@@ -7,7 +7,7 @@ import { defaultTest } from './Dropdown.test'
 import { defaultArgs, argTypes } from './Dropdown.settings'
 
 <Meta
-	title="Components/Dropdown"
+	title="Components/Dropdown/Slots"
 	component={VvDropdown}
 	argTypes={argTypes}
 	args={defaultArgs}
@@ -31,7 +31,7 @@ export const Template = (args) => ({
 	},
 	methods: {
 		centerWrapper() {
-			this.$refs.toggle.$el.scrollIntoView({
+			document.getElementById('toggle-button').scrollIntoView({
 				inline: 'center',
 				block: 'center',
 			})
@@ -44,20 +44,24 @@ export const Template = (args) => ({
 		<div class="absolute inset-0 overflow-auto" ref="container">
 			<div style="width: 200%; height: 200%" ref="wrapper" data-testId="wrapper">
 				<vv-dropdown v-model="expanded" v-bind="args">
-					<vv-button ref="toggle" class="absolute top-full left-full -translate-1/2" modifiers="full-bleed" data-testId="trigger">
-						Toggle dropdown
-					</vv-button>
+                    <template #before v-if="args.before"><div v-html="args.before"></div></template>
+                    <template #default="{ init, toggle, aria }">
+                        <button :ref="(e) => init(e)" v-bind="aria" id="toggle-button" class="absolute cursor-pointer bg-info p-lg text-center top-full left-full -translate-1/2" data-testId="trigger" @click="toggle">
+                            Toggle dropdown
+                        </button>
+                    </template>
 					<template #items>
 						<vv-dropdown-item>
-							<vv-button modifiers="link" icon="add" label="Create" class="p-md w-full justify-start" />
+							<vv-button modifiers="link" icon="add" label="Create" class="p-md"  />
 						</vv-dropdown-item>
 						<vv-dropdown-item>
-							<vv-button modifiers="link" icon="edit" label="Update" class="p-md w-full justify-start" />
+							<vv-button modifiers="link" icon="edit" label="Update" class="p-md"  />
 						</vv-dropdown-item>
 						<vv-dropdown-item>
-							<vv-button modifiers="link" icon="trash" label="Delete" class="p-md w-full justify-start" />
+							<vv-button modifiers="link" icon="trash" label="Delete" class="p-md"  />
 						</vv-dropdown-item>
 					</template>
+                    <template #after v-if="args.after"><div v-html="args.after"></div></template>
 				</vv-dropdown>
 			</div>
 		</div>
@@ -72,10 +76,12 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
-		name="Arrow"
-		args={{ arrow: true, offset: 10 }}
+		name="Before"
+		args={{
+			before: '<div class="bg-warning p-xs text-center">Before</div>',
+		}}
 		argTypes={{
-			arrow: {
+			before: {
 				control: {
 					disable: true,
 				},
@@ -89,27 +95,12 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
-		name="Auto placement"
-		args={{ flip: false, autoPlacement: true, arrow: true, offset: 10 }}
-		argTypes={{
-			autoPlacement: {
-				control: {
-					disable: true,
-				},
-			},
+		name="After"
+		args={{
+			after: '<div class="bg-danger text-white p-xs text-center">After</div>',
 		}}
-		play={defaultTest}
-	>
-		{Template.bind()}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Trigger width"
-		args={{ triggerWidth: true }}
 		argTypes={{
-			triggerWidth: {
+			after: {
 				control: {
 					disable: true,
 				},

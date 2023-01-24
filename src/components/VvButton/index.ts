@@ -1,6 +1,11 @@
 import type { Ref, PropType, ExtractPropTypes } from 'vue'
 import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-import { DisabledProps, ModifiersProps, UnselectableProps } from '@/props'
+import {
+	DisabledProps,
+	IdProps,
+	ModifiersProps,
+	UnselectableProps,
+} from '@/props'
 import { VV_BUTTON_GROUP } from '@/constants'
 
 export enum ButtonIconPosition {
@@ -33,6 +38,7 @@ export enum ButtonTarget {
 export const VvButtonEvents = ['update:modelValue']
 
 export const VvButtonProps = {
+	...IdProps,
 	...ModifiersProps,
 	...DisabledProps,
 	...UnselectableProps,
@@ -129,6 +135,7 @@ export function useGroupProps(
 
 	// local props
 	const {
+		id,
 		iconPosition,
 		icon,
 		label,
@@ -172,6 +179,7 @@ export function useGroupProps(
 		unselectable,
 		multiple,
 		// local props
+		id,
 		modifiers,
 		pressed,
 		iconPosition,

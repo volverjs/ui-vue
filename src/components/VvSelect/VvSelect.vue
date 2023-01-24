@@ -5,12 +5,16 @@
 </script>
 
 <script setup lang="ts">
-	import type { Option } from '@/types/generic'
 	import type { SelectHTMLAttributes } from 'vue'
-	import { nanoid } from 'nanoid'
+	import { isEmpty } from '@/utils/ObjectUtilities'
+	import { useBemModifiers } from '@/composables/useModifiers'
+	import { useComponentIcon } from '@/composables/useComponentIcons'
+	import { useOptions } from '@/composables/useOptions'
+	import { useComponentFocus } from '@/composables/useComponentFocus'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import { VvSelectProps, VvSelectEmits } from '@/components/VvSelect'
+	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit and slots
 	const props = defineProps(VvSelectProps)
@@ -25,6 +29,7 @@
 
 	// data
 	const {
+		id,
 		modifiers,
 		disabled,
 		readonly,
@@ -38,7 +43,7 @@
 	} = toRefs(props)
 
 	// computed
-	const hasId = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 
 	// focus
@@ -115,18 +120,8 @@
 		}
 	})
 
-	const { getOptionLabel, getOptionValue } = useOptions(props)
-
-	/**
-	 * Retrieve the disabled state of an option based on prop "disabled" or the disabled attribute
-	 * @param {String | Option} option
-	 */
-	function getDisabled(option: string | Option): boolean {
-		if (typeof option === 'string' || option.disabled === undefined) {
-			return disabled.value
-		}
-		return option.disabled
-	}
+	const { getOptionLabel, getOptionValue, getOptionDisabled } =
+		useOptions(props)
 
 	const localModelValue = computed({
 		get: () => {
@@ -166,7 +161,7 @@
 				<option
 					v-for="(option, index) in options"
 					:key="index"
-					:disabled="getDisabled(option)"
+					:disabled="getOptionDisabled(option)"
 					:value="getOptionValue(option)"
 				>
 					{{ getOptionLabel(option) }}

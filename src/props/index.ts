@@ -57,6 +57,10 @@ export const OptionsProps = {
 	 * Used when options are objects: key to use for option label
 	 */
 	valueKey: { type: [String, Function], default: 'value' },
+	/**
+	 * Used when options are objects: key to use for option disabled
+	 */
+	disabledKey: { type: [String, Function], default: 'disabled' },
 }
 
 export const CountProps = {
@@ -123,12 +127,16 @@ export const UnselectableProps = {
 	unselectable: { type: Boolean, default: true },
 }
 
-export const IdNameProps = {
+export const IdProps = {
 	/**
 	 * Global attribute id
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id
 	 */
 	id: [String, Number],
+}
+
+export const IdNameProps = {
+	...IdProps,
 	/**
 	 * Input / Textarea name
 	 * Name of the form control. Submitted with the form as part of a name/value pair
