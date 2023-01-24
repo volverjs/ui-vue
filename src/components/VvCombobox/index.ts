@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import {
 	ValidProps,
 	InvalidProps,
@@ -9,9 +10,10 @@ import {
 	OptionsProps,
 	IconProps,
 	TabindexProps,
-	FloatingProps,
+	FloatingLabelProps,
 	UnselectableProps,
 	IdNameProps,
+	DropdownProps,
 } from '@/props'
 
 export const VvComboboxEvents = [
@@ -33,8 +35,9 @@ export const VvComboboxProps = {
 	...ModifiersProps,
 	...OptionsProps,
 	...IconProps,
-	...FloatingProps,
+	...FloatingLabelProps,
 	...UnselectableProps,
+	...DropdownProps,
 	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
@@ -85,4 +88,17 @@ export const VvComboboxProps = {
 	 * Show native select
 	 */
 	native: Boolean,
+	/**
+	 * Set dropdown width to the same as the trigger
+	 */
+	triggerWidth: {
+		...DropdownProps.triggerWidth,
+		default: true,
+	},
+	/**
+	 * Dropdown modifiers
+	 */
+	dropdownModifiers: {
+		type: [String, Array] as PropType<string | Array<string>>,
+	},
 }

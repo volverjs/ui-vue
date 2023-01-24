@@ -202,3 +202,26 @@ export const Template = (args) => ({
 		{Template.bind()}
 	</Story>
 </Canvas>
+
+<Canvas>
+	<Story
+		name="Arrow"
+		args={{
+			arrow: true,
+			offset: 10,
+			triggerWidth: false,
+			placement: 'bottom-end',
+			dropdownModifiers: 'full-bleed rounded',
+		}}
+		argTypes={{
+			arrow: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

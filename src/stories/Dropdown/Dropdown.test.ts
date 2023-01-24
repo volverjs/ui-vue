@@ -3,7 +3,7 @@ import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 import { within } from '@storybook/testing-library'
 
-export async function defaultTest({ canvasElement, args }: PlayAttributes) {
+export async function defaultTest({ canvasElement }: PlayAttributes) {
 	const wrapper = (await within(canvasElement).findByTestId(
 		'wrapper',
 	)) as HTMLElement

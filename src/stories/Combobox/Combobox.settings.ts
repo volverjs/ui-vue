@@ -9,8 +9,9 @@ import {
 	OptionsArgTypes,
 	IconArgTypes,
 	TabindexArgTypes,
-	FloatingArgTypes,
+	FloatingLabelArgTypes,
 	UnselectableArgTypes,
+	DropdownArgTypes,
 } from '@/stories/argTypes'
 import { VvComboboxProps } from '@/components/VvCombobox'
 
@@ -33,8 +34,17 @@ export const argTypes = {
 	...ModifiersArgTypes,
 	...OptionsArgTypes,
 	...IconArgTypes,
-	...FloatingArgTypes,
+	...FloatingLabelArgTypes,
 	...UnselectableArgTypes,
+	...DropdownArgTypes,
+	triggerWidth: {
+		...DropdownArgTypes.triggerWidth,
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+		},
+	},
 	multiple: {
 		type: 'boolean',
 		description:
@@ -120,6 +130,50 @@ export const argTypes = {
 		table: {
 			defaultValue: {
 				summary: false,
+			},
+		},
+	},
+	before: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	after: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	value: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	option: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
 			},
 		},
 	},

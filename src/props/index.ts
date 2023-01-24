@@ -1,5 +1,6 @@
 import type { PropType } from 'vue'
 import type { Option } from '@/types/generic'
+import type { flip, autoPlacement, shift, offset } from '@floating-ui/vue'
 
 export const ValidProps = {
 	valid: Boolean,
@@ -113,7 +114,7 @@ export const TabindexProps = {
 	tabindex: { type: [String, Number], default: 0 },
 }
 
-export const FloatingProps = {
+export const FloatingLabelProps = {
 	/**
 	 * If true the label will be floating
 	 */
@@ -133,6 +134,107 @@ export const IdProps = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id
 	 */
 	id: [String, Number],
+}
+
+export const DROPDOWN_PLACEMENTS = [
+	'top',
+	'top-start',
+	'top-end',
+	'bottom',
+	'bottom-start',
+	'bottom-end',
+	'left',
+	'left-start',
+	'left-end',
+	'right',
+	'right-start',
+	'right-end',
+] as const
+
+export type AutoPlacementOptions = Parameters<typeof autoPlacement>[0]
+export type FlipOptions = Parameters<typeof flip>[0]
+export type ShiftOptions = Parameters<typeof shift>[0]
+export type OffsetOptions = Parameters<typeof offset>[0]
+export type DropdownPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
+
+export const DropdownProps = {
+	/**
+	 * Dropdown placement
+	 */
+	placement: {
+		type: String as PropType<DropdownPlacement>,
+		default: 'bottom',
+		validate: (value: string) =>
+			(DROPDOWN_PLACEMENTS as ReadonlyArray<string>).includes(value),
+	},
+	/**
+	 * Dropdown show / hide transition name
+	 */
+	transitionName: {
+		type: String,
+	},
+	/**
+	 * Offset of the dropdown from the trigger
+	 * @see https://floating-ui.com/docs/offset
+	 */
+	offset: {
+		type: [Number, String, Object] as PropType<
+			OffsetOptions | number | string
+		>,
+		default: 0,
+	},
+	/**
+	 * Move dropdown to the side if there is no space in the default position
+	 * @see https://floating-ui.com/docs/shift
+	 */
+	shift: {
+		type: [Boolean, Object] as PropType<ShiftOptions | boolean>,
+		default: false,
+	},
+	/**
+	 * Flip dropdown position if there is no space in the default position
+	 * @see https://floating-ui.com/docs/flip
+	 */
+	flip: {
+		type: [Boolean, Object] as PropType<FlipOptions | boolean>,
+		default: true,
+	},
+	/**
+	 * Automatically change the position of the dropdown
+	 * @see https://floating-ui.com/docs/autoPlacement
+	 */
+	autoPlacement: {
+		type: [Boolean, Object] as PropType<AutoPlacementOptions | boolean>,
+		default: false,
+	},
+	/**
+	 * Add arrow to the dropdown
+	 * @see https://floating-ui.com/docs/arrow
+	 */
+	arrow: {
+		type: Boolean,
+		default: false,
+	},
+	/**
+	 * Close dropdown on click outside
+	 */
+	autoClose: {
+		type: Boolean,
+		default: true,
+	},
+	/**
+	 * Autofocus first item on dropdown open
+	 */
+	autofocusFirst: {
+		type: Boolean,
+		default: true,
+	},
+	/**
+	 * Set dropdown width to the same as the trigger
+	 */
+	triggerWidth: {
+		type: Boolean,
+	},
 }
 
 export const IdNameProps = {
@@ -176,7 +278,7 @@ export const InputTextareaProps = {
 	...CountProps,
 	...DebounceProps,
 	...IconProps,
-	...FloatingProps,
+	...FloatingLabelProps,
 	/**
 	 * Input / Textarea minlength
 	 * Minimum length (number of characters) of value

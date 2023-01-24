@@ -19,6 +19,13 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		args={{
 			before: '<div class="vv-badge vv-badge--sm uppercase">Before</vv-badge>',
 		}}
+		argTypes={{
+			before: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
 	>
 		{Template.bind()}
 	</Story>
@@ -31,6 +38,13 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		args={{
 			after: '<div class="vv-badge vv-badge--sm uppercase">After</vv-badge>',
 		}}
+		argTypes={{
+			after: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
 	>
 		{Template.bind()}
 	</Story>
@@ -38,10 +52,17 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 
 <Canvas>
 	<Story
-		name="Label"
+		name="Value"
 		play={defaultTest}
 		args={{
 			multiple: true,
+		}}
+		argTypes={{
+			value: {
+				control: {
+					disable: true,
+				},
+			},
 		}}
 	>
 		{(args) => ({
@@ -78,6 +99,13 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		args={{
 			multiple: true,
 		}}
+		argTypes={{
+			option: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
 	>
 		{(args) => ({
 			components: { VvCombobox, VvIcon },
@@ -113,6 +141,13 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		play={defaultTest}
 		args={{
 			hint: 'Hint <em class="italic">slot!</em>',
+		}}
+		argTypes={{
+			hint: {
+				control: {
+					disable: true,
+				},
+			},
 		}}
 	>
 		{Template.bind()}

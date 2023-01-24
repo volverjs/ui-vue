@@ -10,7 +10,7 @@ import {
 	IconArgTypes,
 	TabindexArgTypes,
 	IdNameArgTypes,
-	FloatingArgTypes,
+	FloatingLabelArgTypes,
 	UnselectableArgTypes,
 	AutofocusArgTypes,
 	AutocompleteArgTypes,
@@ -38,7 +38,7 @@ export const argTypes = {
 	...ModifiersArgTypes,
 	...OptionsArgTypes,
 	...IconArgTypes,
-	...FloatingArgTypes,
+	...FloatingLabelArgTypes,
 	...UnselectableArgTypes,
 	multiple: {
 		type: 'boolean',

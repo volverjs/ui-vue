@@ -15,7 +15,6 @@
 	import { VvDropdown } from '..'
 	import VvDropdownItem from '../VvDropdown/VvDropdownItem.vue'
 	import type { Option } from '@/types/generic'
-	import exp from 'constants'
 
 	// props, emit and slots
 	const props = defineProps(VvComboboxProps)
@@ -232,6 +231,22 @@
 		modelValue: props.modelValue,
 	}))
 
+	const dropdownProps = computed(() => ({
+		id: hasDropdownId.value,
+		reference: wrapperEl.value,
+		placement: props.placement,
+		transitionName: props.transitionName,
+		offset: props.offset,
+		shift: props.shift,
+		flip: props.flip,
+		autoPlacement: props.autoPlacement,
+		arrow: props.arrow,
+		autoClose: props.autoClose,
+		autofocusFirst: searchable.value ? false : props.autofocusFirst,
+		triggerWidth: props.triggerWidth,
+		modifiers: props.dropdownModifiers,
+	}))
+
 	// computed
 	onKeyStroke([' ', 'Enter'], (e) => {
 		if (!expanded.value && focused.value) {
@@ -252,14 +267,9 @@
 		</label>
 		<div ref="wrapperEl" class="vv-select__wrapper">
 			<VvDropdown
-				:id="hasDropdownId"
 				v-model="expanded"
-				:reference="wrapperEl"
-				:autofocus-first="!searchable"
+				v-bind="dropdownProps"
 				role="listbox"
-				trigger-width
-				auto-close
-				:shift="false"
 			>
 				<template v-if="searchable" #before>
 					<input
@@ -296,6 +306,7 @@
 						:tabindex="hasTabindex"
 						@click.passive="toggleExpanded"
 					>
+						<!-- @slot Slot for value customization -->
 						<slot name="value" v-bind="{ selectedOptions }">
 							{{ hasValue || placeholder }}
 						</slot>
@@ -323,6 +334,7 @@
 						:aria-disabled="getOptionDisabled(option)"
 						@click.passive="onInput(option)"
 					>
+						<!-- @slot Slot for option customization -->
 						<slot
 							name="option"
 							v-bind="{

@@ -17,18 +17,18 @@
 		arrow,
 	} from '@floating-ui/vue'
 	import {
-		type AutoPlacementOptions,
-		type FlipOptions,
-		type ShiftOptions,
-		type OffsetOptions,
-		VvDropdownProps,
-	} from '@/components/VvDropdown'
-	import {
 		useProvideDropdownTrigger,
 		useProvideDropdownItem,
 	} from '@/composables/dropdown/useProvideDropdown'
 	import { useUniqueId } from '@/composables/useUniqueId'
 	import { useBemModifiers } from '@/composables/useModifiers'
+	import { VvDropdownProps } from '.'
+	import type {
+		AutoPlacementOptions,
+		FlipOptions,
+		OffsetOptions,
+		ShiftOptions,
+	} from '@/props'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -129,7 +129,7 @@
 	const arrowPlacement = computed(() => {
 		if (['bottom', 'top'].includes(staticSide.value)) {
 			return {
-				left: `${middlewareData.value.arrow?.x ?? 0}px`,
+				right: `${middlewareData.value.arrow?.x ?? 0}px`,
 				[staticSide.value]: `${
 					-(arrowEl.value?.offsetWidth ?? 0) / 2
 				}px`,
