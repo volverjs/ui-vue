@@ -1,5 +1,6 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import VvBadge from '@/components/VvBadge/VvBadge.vue'
 import { defaultArgs, argTypes } from './Avatar.settings'
 import { defaultTest } from './Avatar.test'
 
@@ -11,7 +12,7 @@ import { defaultTest } from './Avatar.test'
 />
 
 export const Template = (args) => ({
-	components: { VvAvatar },
+	components: { VvAvatar, VvBadge },
 	setup() {
 		return { args }
 	},
@@ -19,18 +20,16 @@ export const Template = (args) => ({
 		/* html */`
 		<div class="m-md">
 			<vv-avatar v-bind="args" data-testId="element">
-				MR
-				<sup class="vv-badge
-							vv-badge--danger
-							vv-badge--rounded">
-					99+
-				</sup>
+				{{ args.default }}
+                <sup>
+                    <vv-badge :modifiers="['danger', 'rounded']">99+</vv-badge>
+                </sup>
 			</vv-avatar>
 		</div>`
 })
 
 <Canvas>
-	<Story name="Badge" play={defaultTest} args={{ cssClass: 'bg-brand', size: 'lg', rounded: false }}>
+	<Story name="Badge" play={defaultTest} args={{ cssClass: 'bg-brand', size: 'lg', rounded: false, default: 'MR' }}>
 		{Template.bind()}
 	</Story>
 </Canvas>

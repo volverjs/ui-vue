@@ -1,0 +1,44 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import { defaultArgs, argTypes } from './Avatar.settings'
+import { defaultTest } from './Avatar.test'
+import { Template } from './Avatar.stories.mdx'
+
+<Meta
+	title="Components/Avatar/Slots"
+	component={ VvAvatar }
+	args={ defaultArgs }
+	argTypes={ argTypes }
+/>
+
+<Canvas>
+	<Story
+		name="Default"
+		play={defaultTest}
+		args={{ default: 'MR' }}
+		argTypes={{
+			default: {
+				control: {
+					disable: true,
+				}
+			},
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Content"
+		play={defaultTest}
+		args={{ content: 'MR' }}
+		argTypes={{
+			content: {
+				control: {
+					disable: true,
+				}
+			},
+		}}>
+		{Template.bind({})}
+	</Story>
+</Canvas>

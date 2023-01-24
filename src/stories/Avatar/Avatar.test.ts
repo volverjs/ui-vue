@@ -12,6 +12,23 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		throw new Error('Default slot or imgSrc is required!')
 	}
 
+	const modifiers =
+		!args.modifiers || Array.isArray(args.modifiers)
+			? args.modifiers
+			: [args.modifiers]
+
+	// modifiers
+	if (modifiers) {
+		for (const modifier of modifiers) {
+			expect(element).toHaveClass(`vv-avatar--${modifier}`)
+		}
+	}
+
+	// check img tag exist
+	if(args.imgSrc) {
+		expect(element).toHaveImgChild('img')
+	}
+
 	// check accessibility
 	await expect(element).toHaveNoViolations()
 }

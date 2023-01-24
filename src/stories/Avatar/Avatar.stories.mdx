@@ -20,6 +20,7 @@ export const Template = (args) => ({
 		<div class="m-md">
 			<vv-avatar v-bind="args" data-testId="element">
 				<template v-if="args.default">{{ args.default }}</template>
+				<template v-if="args.content">{{ args.content }}</template>
 			</vv-avatar>
 		</div>`
 })
@@ -27,22 +28,6 @@ export const Template = (args) => ({
 <Canvas>
 	<Story name="Default" play={defaultTest}>
 		{Template.bind()}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Slot default"
-		play={defaultTest}
-		args={{ default: 'MR' }}
-		argTypes={{
-			default: {
-				control: {
-					disable: true,
-				}
-			},
-		}}>
-		{Template.bind({})}
 	</Story>
 </Canvas>
 
@@ -66,14 +51,7 @@ export const Template = (args) => ({
 	<Story
 		name="Small"
 		play={defaultTest}
-		args={{ size: undefined }}
-		argTypes={{
-			size: {
-				control: {
-					disable: true,
-				}
-			}
-		}}>
+		args={{ modifiers: '' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -82,14 +60,7 @@ export const Template = (args) => ({
 	<Story
 		name="Medium"
 		play={defaultTest}
-		args={{ size: 'md' }}
-		argTypes={{
-			size: {
-				control: {
-					disable: true,
-				}
-			}
-		}}>
+		args={{ modifiers: 'md' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -98,30 +69,16 @@ export const Template = (args) => ({
 	<Story
 		name="Large"
 		play={defaultTest}
-		args={{ size: 'lg' }}
-		argTypes={{
-			size: {
-				control: {
-					disable: true,
-				}
-			}
-		}}>
+		args={{ modifiers: 'lg' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
 
 <Canvas>
 	<Story
-		name="Not rounded"
+		name="Rounded"
 		play={defaultTest}
-		args={{ rounded: false, imgSrc: '', default: 'MR' }}
-		argTypes={{
-			rounded: {
-				control: {
-					disable: true,
-				}
-			}
-		}}>
+		args={{ modifiers: 'rounded', default: 'MR' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>

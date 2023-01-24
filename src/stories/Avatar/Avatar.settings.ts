@@ -3,27 +3,34 @@ import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
 	...propsToObject(VvAvatarProps),
-    rounded: true,
-    imgSrc: "https://i.pravatar.cc/300",
-    size: "md",
-    cssClass: "bg-brand",
+    imgSrc: "https://i.pravatar.cc/300"
 }
 
 export const argTypes = {
-    ...ModifiersArgTypes,
     ...DefaultSlotArgTypes,
-    rounded: {
-        type: {
-			summary: 'boolean',
+    default: {
+		description: 'Content slot',
+		control: {
+			type: 'text',
 		},
-        control: {
-            type: 'boolean',
-        },
-        table: {
-			defaultValue: { summary: 'true' },
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
 		},
-        description: 'Indicates if avatar is rounded or not'
-    },
+	},
+    modifiers: {
+		...ModifiersArgTypes.modifiers,
+		options: [
+			'md',
+			'lg',
+            'rounded',
+            'square',
+            'circle',
+			'brand'
+		],
+	},
     imgSrc: {
         type: {
 			summary: 'string',
@@ -32,33 +39,5 @@ export const argTypes = {
             type: 'text',
         },
         description: 'The image url'
-    },
-    cssClass: {
-        type: {
-			summary: 'string',
-		},
-        control: {
-            type: 'text',
-        },
-        description: 'CSS classes'
-    },
-    color: {
-        type: {
-			summary: 'string',
-		},
-        control: {
-            type: 'text',
-        },
-        description: 'Avatar color if "imgSrc" not exist'
-    },
-    size: {
-        type: {
-			summary: 'string',
-		},
-        control: {
-            type: 'select',
-        },
-        description: 'The tooltip size',
-        options: [undefined, 'md', 'lg']
     }
 }
