@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(0.741 0.742)"><g transform="translate(-0.741 -0.742)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"><circle cx="8" cy="8" r="8" stroke="none"/><circle cx="8" cy="8" r="7.5" fill="none"/></g><line x2="9" transform="translate(2.759 7.258)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(0.741 0.742)">
+        <g transform="translate(-0.741 -0.742)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1">
+            <circle cx="8" cy="8" r="8" stroke="none" />
+            <circle cx="8" cy="8" r="7.5" fill="none" />
+        </g>
+        <line x2="9" transform="translate(2.759 7.258)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="1" />
+    </g>
+</svg>

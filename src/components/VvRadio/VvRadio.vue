@@ -5,7 +5,6 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
 	import {
 		VvRadioProps,
 		VvRadioEvents,
@@ -19,11 +18,9 @@
 	const slots = useSlots()
 
 	// data
-	const { disabled, readonly, modelValue, valid, invalid } = useGroupProps(
-		props,
-		emit,
-	)
-	const id = computed(() => String(props.id || nanoid()))
+	const { id, disabled, readonly, modelValue, valid, invalid } =
+		useGroupProps(props, emit)
+	const hasId = useUniqueId(id)
 	const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 	// template refs
@@ -65,21 +62,26 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-radio', {
-		valid,
-		invalid,
-		disabled,
-		readonly,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers(
+		'vv-radio',
+		modifiers,
+		computed(() => ({
+			valid: valid.value,
+			invalid: invalid.value,
+			disabled: disabled.value,
+			readonly: readonly.value,
+		})),
+	)
 
 	// hint
 	const { HintSlot } = HintSlotFactory(props, slots)
 </script>
 
 <template>
-	<label :class="bemCssClasses" :for="id">
+	<label :class="bemCssClasses" :for="hasId">
 		<input
-			:id="id"
+			:id="hasId"
 			ref="input"
 			v-model="localModelValue"
 			type="radio"

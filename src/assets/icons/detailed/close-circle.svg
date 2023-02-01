@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(1.823 1.823)"><g transform="translate(0.177 0.178)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><circle cx="14" cy="14" r="14" stroke="none"/><circle cx="14" cy="14" r="13" fill="none"/></g><g transform="translate(8.946 8.946)"><line y1="10" x2="10" transform="translate(0.231 0.232)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line x2="10" y2="10" transform="translate(0.231 0.232)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(1.823 1.823)">
+        <g transform="translate(0.177 0.178)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <circle cx="14" cy="14" r="14" stroke="none" />
+            <circle cx="14" cy="14" r="13" fill="none" />
+        </g>
+        <g transform="translate(8.946 8.946)">
+            <line y1="10" x2="10" transform="translate(0.231 0.232)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="2" />
+            <line x2="10" y2="10" transform="translate(0.231 0.232)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="2" />
+        </g>
+    </g>
+</svg>

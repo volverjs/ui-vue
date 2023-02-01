@@ -1,4 +1,4 @@
-import { InputTextareaArgTypes } from '@/stories/argTypes'
+import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvInputTextProps } from '@/components/VvInputText'
 import normal from '@/assets/icons/normal.json'
 
@@ -15,6 +15,7 @@ export const defaultArgs = {
 
 export const argTypes = {
 	...InputTextareaArgTypes,
+	...HintArgTypes,
 	type: {
 		description: 'Type of form control',
 		options: [

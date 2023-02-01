@@ -16,9 +16,10 @@ export const Template = (args, { argTypes }) => ({
 	setup() {
 		return { args }
 	},
-	template: /*html*/`<vv-badge v-bind="args">
-			   		<template #default v-if="args.default"><span v-html="args.default"></span></template>	
-			   </vv-badge>`,
+	template: /*html*/ `
+		<vv-badge v-bind="args">
+			<template #default v-if="args.default"><span v-html="args.default"></span></template>	
+		</vv-badge>`,
 })
 
 <Canvas>

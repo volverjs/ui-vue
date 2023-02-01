@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(2 13.267)"><g transform="translate(0 -3.268)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="16" height="12" rx="2" stroke="none"/><rect x="1" y="1" width="14" height="10" rx="1" fill="none"/></g><g transform="translate(18 0.732)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="10" height="8" rx="2" stroke="none"/><rect x="1" y="1" width="8" height="6" rx="1" fill="none"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(2 13.267)">
+        <g transform="translate(0 -3.268)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <rect width="16" height="12" rx="2" stroke="none" />
+            <rect x="1" y="1" width="14" height="10" rx="1" fill="none" />
+        </g>
+        <g transform="translate(18 0.732)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <rect width="10" height="8" rx="2" stroke="none" />
+            <rect x="1" y="1" width="8" height="6" rx="1" fill="none" />
+        </g>
+    </g>
+</svg>

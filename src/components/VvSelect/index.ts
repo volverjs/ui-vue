@@ -10,7 +10,7 @@ import {
 	OptionsProps,
 	IconProps,
 	IdNameProps,
-	FloatingProps,
+	FloatingLabelProps,
 	UnselectableProps,
 	AutofocusProps,
 	AutocompleteProps,
@@ -30,7 +30,7 @@ export const VvSelectProps = {
 	...ModifiersProps,
 	...OptionsProps,
 	...IconProps,
-	...FloatingProps,
+	...FloatingLabelProps,
 	...UnselectableProps,
 	/**
 	 * This Boolean attribute indicates that multiple options can be selected in the list.

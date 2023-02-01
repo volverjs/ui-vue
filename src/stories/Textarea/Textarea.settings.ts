@@ -1,4 +1,4 @@
-import { InputTextareaArgTypes } from '@/stories/argTypes'
+import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvTextareaProps } from '@/components/VvTextarea'
 
 export const defaultArgs = {
@@ -12,6 +12,7 @@ export const defaultArgs = {
 
 export const argTypes = {
 	...InputTextareaArgTypes,
+	...HintArgTypes,
 	cols: {
 		type: 'number',
 		description:

@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(2 4)"><path d="M1.293,15.278a.986.986,0,0,0-.218.328,1,1,0,0,1,.218-.328" fill="#040405"/><path d="M18,4.228v9.721a.251.251,0,0,1-.052.051H8.228l-2,2H18a2.087,2.087,0,0,0,2-2V4a1.958,1.958,0,0,0-.506-1.266Z" fill="#040405"/><path d="M2,11.743V4.051A.251.251,0,0,1,2.052,4H4.828l2-2h4.566l.21.14L13.046.7,12,0H6L4,2H2A2.087,2.087,0,0,0,0,4v9.743Z" fill="#040405"/><path d="M8.617,5.126A3.487,3.487,0,0,0,6.126,7.617" fill="none" stroke="#040405" stroke-miterlimit="10" stroke-width="2"/><path d="M10.341,11.886a3.486,3.486,0,0,0,2.545-2.545" fill="none" stroke="#040405" stroke-miterlimit="10" stroke-width="2"/></g><line y1="16" x2="16" transform="translate(4 4)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(2 4)">
+        <path d="M1.293,15.278a.986.986,0,0,0-.218.328,1,1,0,0,1,.218-.328" fill="#040405" />
+        <path
+            d="M18,4.228v9.721a.251.251,0,0,1-.052.051H8.228l-2,2H18a2.087,2.087,0,0,0,2-2V4a1.958,1.958,0,0,0-.506-1.266Z"
+            fill="#040405" />
+        <path
+            d="M2,11.743V4.051A.251.251,0,0,1,2.052,4H4.828l2-2h4.566l.21.14L13.046.7,12,0H6L4,2H2A2.087,2.087,0,0,0,0,4v9.743Z"
+            fill="#040405" />
+        <path d="M8.617,5.126A3.487,3.487,0,0,0,6.126,7.617" fill="none" stroke="#040405" stroke-miterlimit="10"
+            stroke-width="2" />
+        <path d="M10.341,11.886a3.486,3.486,0,0,0,2.545-2.545" fill="none" stroke="#040405" stroke-miterlimit="10"
+            stroke-width="2" />
+    </g>
+    <line y1="16" x2="16" transform="translate(4 4)" fill="none" stroke="#000" stroke-linecap="round"
+        stroke-width="2" />
+</svg>

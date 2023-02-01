@@ -42,8 +42,11 @@ const getStyleNames = function (kebabName: string) {
 	if (STYLE_EXCLUDE.includes(kebabName)) {
 		return undefined
 	}
+	if (kebabName === 'vv-dropdown') {
+		return ['vv-dropdown', 'vv-dropdown-action']
+	}
 	if (kebabName === 'vv-combobox') {
-		return ['vv-select', 'vv-dropdown']
+		return ['vv-select', 'vv-dropdown', 'vv-dropdown-action']
 	}
 	if (kebabName === 'vv-accordion-group') {
 		return ['vv-accordion-group', 'vv-accordion']

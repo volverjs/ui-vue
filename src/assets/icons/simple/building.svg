@@ -1,1 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001"><g transform="translate(0 0.001)"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(-2 -2.627)"><line x2="15" transform="translate(2.5 18.127)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M13.125,5.126v-2h-5v2" transform="translate(-0.625)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><line y1="2" transform="translate(10 15.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><path d="M0,0H1" transform="translate(7 7.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><line x2="1" transform="translate(7 10.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><line x2="1" transform="translate(12 7.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><line x2="1" transform="translate(12 10.627)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><g transform="translate(4 4.627)" fill="none" stroke="#000" stroke-width="1"><path d="M2,0h8a2,2,0,0,1,2,2V14a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V2A2,2,0,0,1,2,0Z" stroke="none"/><path d="M2,.5h8A1.5,1.5,0,0,1,11.5,2V13.5a0,0,0,0,1,0,0H.5a0,0,0,0,1,0,0V2A1.5,1.5,0,0,1,2,.5Z" fill="none"/></g></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001">
+    <g transform="translate(0 0.001)">
+        <g transform="translate(-2 -2.627)">
+            <line x2="15" transform="translate(2.5 18.127)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="1" />
+            <path d="M13.125,5.126v-2h-5v2" transform="translate(-0.625)" fill="none" stroke="#000"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <line y1="2" transform="translate(10 15.627)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <path d="M0,0H1" transform="translate(7 7.627)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <line x2="1" transform="translate(7 10.627)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <line x2="1" transform="translate(12 7.627)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <line x2="1" transform="translate(12 10.627)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <g transform="translate(4 4.627)" fill="none" stroke="#000" stroke-width="1">
+                <path d="M2,0h8a2,2,0,0,1,2,2V14a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V2A2,2,0,0,1,2,0Z" stroke="none" />
+                <path d="M2,.5h8A1.5,1.5,0,0,1,11.5,2V13.5a0,0,0,0,1,0,0H.5a0,0,0,0,1,0,0V2A1.5,1.5,0,0,1,2,.5Z"
+                    fill="none" />
+            </g>
+        </g>
+    </g>
+</svg>

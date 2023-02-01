@@ -9,6 +9,6 @@ export { VolverPlugin }
 // Add custom property and extend vue type definition
 declare module 'vue' {
 	interface ComponentCustomProperties {
-		$ds?: typeof Volver.prototype
+		$vv?: typeof Volver.prototype
 	}
 }

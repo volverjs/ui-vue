@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(1.5 4.5)"><g transform="translate(0.5 0.5)" fill="none" stroke="#000" stroke-width="2"><rect width="20" height="14" rx="2" stroke="none"/><rect x="1" y="1" width="18" height="12" rx="1" fill="none"/></g><line y2="13" transform="translate(7.5 0.5)" fill="none" stroke="#000" stroke-width="2"/><line x2="20" transform="translate(0.5 5.5)" fill="none" stroke="#000" stroke-width="2"/><line x2="20" transform="translate(0.5 9.5)" fill="none" stroke="#000" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(1.5 4.5)">
+        <g transform="translate(0.5 0.5)" fill="none" stroke="#000" stroke-width="2">
+            <rect width="20" height="14" rx="2" stroke="none" />
+            <rect x="1" y="1" width="18" height="12" rx="1" fill="none" />
+        </g>
+        <line y2="13" transform="translate(7.5 0.5)" fill="none" stroke="#000" stroke-width="2" />
+        <line x2="20" transform="translate(0.5 5.5)" fill="none" stroke="#000" stroke-width="2" />
+        <line x2="20" transform="translate(0.5 9.5)" fill="none" stroke="#000" stroke-width="2" />
+    </g>
+</svg>

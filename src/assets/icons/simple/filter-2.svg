@@ -1,1 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(3.333 4.666)"><g transform="translate(0 -4)"><line x2="9" transform="translate(-2.833 10.834)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line x2="2" transform="translate(10.167 10.834)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><g transform="translate(5.667 8.334)" fill="none" stroke="#000" stroke-width="1"><circle cx="2.5" cy="2.5" r="2.5" stroke="none"/><circle cx="2.5" cy="2.5" r="2" fill="none"/></g></g><g transform="translate(0 -11)"><line x2="2" transform="translate(-2.833 10.834)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line x2="9" transform="translate(3.167 10.834)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><g transform="translate(-1.333 8.334)" fill="none" stroke="#000" stroke-width="1"><circle cx="2.5" cy="2.5" r="2.5" stroke="none"/><circle cx="2.5" cy="2.5" r="2" fill="none"/></g></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(3.333 4.666)">
+        <g transform="translate(0 -4)">
+            <line x2="9" transform="translate(-2.833 10.834)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <line x2="2" transform="translate(10.167 10.834)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <g transform="translate(5.667 8.334)" fill="none" stroke="#000" stroke-width="1">
+                <circle cx="2.5" cy="2.5" r="2.5" stroke="none" />
+                <circle cx="2.5" cy="2.5" r="2" fill="none" />
+            </g>
+        </g>
+        <g transform="translate(0 -11)">
+            <line x2="2" transform="translate(-2.833 10.834)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <line x2="9" transform="translate(3.167 10.834)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <g transform="translate(-1.333 8.334)" fill="none" stroke="#000" stroke-width="1">
+                <circle cx="2.5" cy="2.5" r="2.5" stroke="none" />
+                <circle cx="2.5" cy="2.5" r="2" fill="none" />
+            </g>
+        </g>
+    </g>
+</svg>

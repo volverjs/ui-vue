@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(4.001 5.332)"><g transform="translate(-2 -3.332)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="28" height="18" rx="3" stroke="none"/><rect x="1" y="1" width="26" height="16" rx="2" fill="none"/></g><line x2="24" transform="translate(-0.001 20.668)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><circle cx="3" cy="3" r="3" transform="translate(3 17.668)"/><path d="M3.106,1.789a1,1,0,0,1,1.789,0L7.276,6.553A1,1,0,0,1,6.382,8H1.618A1,1,0,0,1,.724,6.553Z" transform="translate(16.999 1.668) rotate(90)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(4.001 5.332)">
+        <g transform="translate(-2 -3.332)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <rect width="28" height="18" rx="3" stroke="none" />
+            <rect x="1" y="1" width="26" height="16" rx="2" fill="none" />
+        </g>
+        <line x2="24" transform="translate(-0.001 20.668)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <circle cx="3" cy="3" r="3" transform="translate(3 17.668)" />
+        <path d="M3.106,1.789a1,1,0,0,1,1.789,0L7.276,6.553A1,1,0,0,1,6.382,8H1.618A1,1,0,0,1,.724,6.553Z"
+            transform="translate(16.999 1.668) rotate(90)" />
+    </g>
+</svg>

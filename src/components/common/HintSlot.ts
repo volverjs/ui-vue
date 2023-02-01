@@ -186,10 +186,11 @@ export function HintSlotFactory(
 					return h(
 						'small',
 						{
-							role:
-								this.hasInvalid || this.hasValid
-									? 'alert'
-									: undefined,
+							role: this.hasInvalid
+								? 'alert'
+								: this.hasValid
+								? 'status'
+								: undefined,
 						},
 						this.hintContent,
 					)

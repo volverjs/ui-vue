@@ -12,17 +12,17 @@ export async function defaultTest(
 			? args.modifiers
 			: [args.modifiers]
 
-	expect(element).toHaveClass('vv-button')
+	await expect(element).toHaveClass('vv-button')
 
 	// icon
 	if (args.icon) {
-		expect(element.innerHTML).toContain('vv-icon')
+		await expect(element.innerHTML).toContain('vv-icon')
 	}
 
 	// modifiers
 	if (modifiers) {
 		for (const modifier of modifiers) {
-			expect(element).toHaveClass(`vv-button--${modifier}`)
+			await expect(element).toHaveClass(`vv-button--${modifier}`)
 		}
 	}
 
@@ -34,13 +34,13 @@ export async function defaultTest(
 
 		// link
 		if (args.href) {
-			expect(element).toHaveProperty('href')
+			await expect(element).toHaveProperty('href')
 		}
 		if (args.target) {
-			expect(element).toHaveProperty('target')
+			await expect(element).toHaveProperty('target')
 		}
 	}
 
 	// accessibility
-	expect(element).toHaveNoViolations()
+	await expect(element).toHaveNoViolations()
 }

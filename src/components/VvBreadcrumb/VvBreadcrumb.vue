@@ -9,9 +9,8 @@
 	import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
 	const props = defineProps(VvBreadcrumbProps)
-	const { bemCssClasses } = useBemModifiers('vv-breadcrumb', {
-		modifiers: props.modifiers,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers('vv-breadcrumb', modifiers)
 </script>
 
 <template>
@@ -29,7 +28,7 @@
 				itemtype="https://schema.org/ListItem"
 				itemscope
 			>
-				<component
+				<Component
 					:is="route.to ? 'router-link' : route.href ? 'a' : 'span'"
 					v-bind="route"
 					:class="{
@@ -43,10 +42,11 @@
 					"
 					itemprop="item"
 				>
+					<!-- @slot Slot for label -->
 					<slot name="label" v-bind="{ route, index }">
 						{{ route.label }}
 					</slot>
-				</component>
+				</Component>
 				<meta itemprop="position" :content="`${index + 1}`" />
 			</li>
 		</ol>

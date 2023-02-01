@@ -1,35 +1,37 @@
-import {
-	DisabledProps,
-	IdNameProps,
-	ModifiersProps,
-	OptionsProps,
-} from '@/props'
+import { DropdownProps, IdProps, ModifiersProps } from '@/props'
+import type { PropType } from 'vue'
+
+export const DROPDOWN_ROLES = ['listbox', 'menu'] as const
+export const DROPDOWN_ITEM_ROLES = ['option', 'presentation'] as const
+
+export type DropdownRole = (typeof DROPDOWN_ROLES)[number]
+export type DropdownItemRole = (typeof DROPDOWN_ITEM_ROLES)[number]
 
 export const VvDropdownProps = {
-	...IdNameProps,
-	...OptionsProps,
-	...DisabledProps,
+	...IdProps,
 	...ModifiersProps,
+	...DropdownProps,
 	/**
-	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
+	 * Show / hide dropdown programmatically
 	 */
 	modelValue: {
-		type: [String, Number, Boolean, Object, Array],
+		type: Boolean,
+		default: undefined,
 	},
 	/**
-	 * Label of "no results" options
+	 * Dropdown trigger element
 	 */
-	labelNoResults: { type: String, default: 'No results' },
+	reference: {
+		type: Object as PropType<HTMLElement | null>,
+		default: null,
+	},
 	/**
-	 * Manage modelValue as string[] or object[]
+	 * Dropdown role
 	 */
-	multiple: Boolean,
-	/**
-	 * The max number of selected values
-	 */
-	maxValues: [Number, String],
-	/**
-	 * If true the input will be unselectable
-	 */
-	unselectable: { type: Boolean, default: true },
+	role: {
+		type: String as PropType<DropdownRole>,
+		default: DROPDOWN_ROLES[1],
+		validator: (value: string) =>
+			(DROPDOWN_ROLES as ReadonlyArray<string>).includes(value),
+	},
 }

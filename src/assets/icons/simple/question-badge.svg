@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(0.004 0.005)"><circle cx="8" cy="8" r="8" transform="translate(-0.004 -0.005)"/><path d="M10.943,9.447a3.631,3.631,0,0,1,4.594-2.139,3.5,3.5,0,0,1,2.406,3.3c0,2.331-3.6,3.5-3.6,3.5" transform="translate(-6.447 -4.614)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><line y1="1" transform="translate(7.496 12.496)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(0.004 0.005)">
+        <circle cx="8" cy="8" r="8" transform="translate(-0.004 -0.005)" />
+        <path d="M10.943,9.447a3.631,3.631,0,0,1,4.594-2.139,3.5,3.5,0,0,1,2.406,3.3c0,2.331-3.6,3.5-3.6,3.5"
+            transform="translate(-6.447 -4.614)" fill="none" stroke="#fff" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="1" />
+        <line y1="1" transform="translate(7.496 12.496)" fill="none" stroke="#fff" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="1" />
+    </g>
+</svg>

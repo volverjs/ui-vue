@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 	import type { Option } from '@/types/generic'
-	import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-	import { VV_CHECK_GROUP } from '@/constants'
+	import type { InputGroupState } from '@/types/group'
+	import { INJECTION_KEY_CHECK_GROUP } from '@/constants'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
 	import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 	import {
@@ -22,29 +22,33 @@
 
 	// data
 	const modelValue = useVModel(props, 'modelValue', emit)
-	const { disabled, readonly, vertical, valid, invalid } = toRefs(props)
+	const { disabled, readonly, vertical, valid, invalid, modifiers } =
+		toRefs(props)
 
-	const groupState: IInputGroupState = {
-		key: VV_CHECK_GROUP,
+	useProvideGroupState<InputGroupState>({
+		key: INJECTION_KEY_CHECK_GROUP,
 		modelValue,
 		disabled,
 		readonly,
 		valid,
 		invalid,
-	}
-	useProvideGroupState(groupState)
+	})
 
 	// options
 	const { getOptionLabel, getOptionValue } = useOptions(props)
 
 	// stypes
-	const { bemCssClasses: hasClass } = useBemModifiers('vv-checkbox-group', {
-		disabled,
-		readonly,
-		horizontal: computed(() => !vertical.value),
-		valid,
-		invalid,
-	})
+	const bemCssClasses = useBemModifiers(
+		'vv-checkbox-group',
+		modifiers,
+		computed(() => ({
+			disabled: disabled.value,
+			readonly: readonly.value,
+			horizontal: !vertical.value,
+			valid: valid.value,
+			invalid: invalid.value,
+		})),
+	)
 
 	// methods
 	const getOptionProps = (option: string | Option, index: number) => {
@@ -59,21 +63,19 @@
 </script>
 
 <template>
-	<fieldset :class="hasClass">
+	<fieldset :class="bemCssClasses">
 		<legend v-if="label" v-text="label" />
 		<div class="vv-checkbox-group__wrapper">
 			<!-- #region options set up -->
 			<template v-if="options.length > 0">
-				<vv-checkbox
+				<VvCheckbox
 					v-for="(option, index) in options"
 					:key="index"
 					v-bind="getOptionProps(option, index)"
 				/>
 			</template>
-			<!-- #endregion options set up -->
-			<!-- #region default -->
+			<!-- #endregion -->
 			<slot v-else />
-			<!-- #endregion default -->
 		</div>
 		<HintSlot class="vv-checkbox-group__hint" />
 	</fieldset>

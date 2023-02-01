@@ -9,8 +9,9 @@ import {
 	OptionsArgTypes,
 	IconArgTypes,
 	TabindexArgTypes,
-	FloatingArgTypes,
+	FloatingLabelArgTypes,
 	UnselectableArgTypes,
+	DropdownArgTypes,
 } from '@/stories/argTypes'
 import { VvComboboxProps } from '@/components/VvCombobox'
 
@@ -22,6 +23,7 @@ export const defaultArgs = {
 	placeholder: 'Select an option',
 	label: 'Combobox label',
 }
+
 export const argTypes = {
 	...TabindexArgTypes,
 	...ValidArgTypes,
@@ -33,8 +35,17 @@ export const argTypes = {
 	...ModifiersArgTypes,
 	...OptionsArgTypes,
 	...IconArgTypes,
-	...FloatingArgTypes,
+	...FloatingLabelArgTypes,
 	...UnselectableArgTypes,
+	...DropdownArgTypes,
+	triggerWidth: {
+		...DropdownArgTypes.triggerWidth,
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+		},
+	},
 	multiple: {
 		type: 'boolean',
 		description:
@@ -52,7 +63,7 @@ export const argTypes = {
 			type: 'text',
 		},
 	},
-	labelNoResults: {
+	noResultsLabel: {
 		type: 'string',
 		description: 'Label of "no results" options',
 		control: {
@@ -97,7 +108,9 @@ export const argTypes = {
 	},
 	maxValues: {
 		description: 'Max number of selected values',
-		type: ['number', 'string'],
+		type: {
+			summary: ['string', 'string[]'],
+		},
 		control: {
 			type: 'text',
 		},
@@ -120,6 +133,100 @@ export const argTypes = {
 		table: {
 			defaultValue: {
 				summary: false,
+			},
+		},
+	},
+	badges: {
+		type: 'boolean',
+		description: 'Show badges for selected values',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	badgeModifiers: {
+		type: {
+			summary: ['string', 'string[]'],
+		},
+		description: 'Modifiers for badges',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'action sm',
+			},
+		},
+	},
+	dropdownModifiers: {
+		type: {
+			summary: ['string', 'string[]'],
+		},
+		control: {
+			type: 'text',
+		},
+		description: 'Modifiers for dropdown',
+	},
+	autoOpen: {
+		type: 'boolean',
+		description: 'Open dropdown on focus',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	autoClose: {
+		type: 'boolean',
+		description: 'Close dropdown on select of an option (not multiple)',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	before: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	after: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	value: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	option: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
 			},
 		},
 	},

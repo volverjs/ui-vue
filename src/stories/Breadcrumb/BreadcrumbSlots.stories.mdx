@@ -29,14 +29,14 @@ import { defaultArgs, argTypes } from './Breadcrumb.settings'
 					return { args }
 				},
 				components: { VvBreadcrumb, VvIcon },
-				template: /*html*/`
-                <VvBreadcrumb v-bind="args">
-                    <template #label="{route, index}">
-                        <VvIcon v-if="index === 0" name="home" :aria-label="route.label"  />
-                        <template v-else>{{ route.label }}</template>
-                    </template>
-                </VvBreadcrumb>
-            `,
+				template: /*html*/ `
+					<VvBreadcrumb v-bind="args">
+						<template #label="{route, index}">
+							<VvIcon v-if="index === 0" name="home" :aria-label="route.label"  />
+							<template v-else>{{ route.label }}</template>
+						</template>
+					</VvBreadcrumb>
+            	`,
 			}
 		}}
 	</Story>

@@ -20,14 +20,14 @@ export const Template = (args, { argTypes }) => ({
 	setup() {
 		return { args }
 	},
-	template: /*html*/`
+	template: /*html*/ `
         <vv-button-group v-bind="args" v-model="value" data-testId="button-group">
             <vv-button name="1a" data-testId="first-button">Button 1</vv-button>
             <vv-button name="2b">Button 2</vv-button>
             <vv-button name="3c">Button 3</vv-button>
         </vv-button-group>
 		<div v-if="args.toggle" class="mt-md">Value: {{ value }}</div>
-        `,
+    `,
 })
 
 <Canvas>

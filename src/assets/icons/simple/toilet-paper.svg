@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001"><g transform="translate(0)"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(-0.512 0.154)"><ellipse cx="2.5" cy="6" rx="2.5" ry="6" transform="translate(11.011 0.346)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"/><path d="M17.457,4.814H6.952a1.8,1.8,0,0,0-2,2v13h10v-9.5" transform="translate(-3.946 -4.468)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><line x2="1.5" transform="translate(9.012 10.346)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><line x2="2" transform="translate(5.012 10.346)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><line x2="1.5" transform="translate(1.512 10.346)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><ellipse cx="1" cy="1.5" rx="1" ry="1.5" transform="translate(12.512 4.846)"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001">
+    <g transform="translate(0)">
+        <g transform="translate(-0.512 0.154)">
+            <ellipse cx="2.5" cy="6" rx="2.5" ry="6" transform="translate(11.011 0.346)" fill="none" stroke="#000"
+                stroke-miterlimit="10" stroke-width="1" />
+            <path d="M17.457,4.814H6.952a1.8,1.8,0,0,0-2,2v13h10v-9.5" transform="translate(-3.946 -4.468)" fill="none"
+                stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <line x2="1.5" transform="translate(9.012 10.346)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <line x2="2" transform="translate(5.012 10.346)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <line x2="1.5" transform="translate(1.512 10.346)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <ellipse cx="1" cy="1.5" rx="1" ry="1.5" transform="translate(12.512 4.846)" />
+        </g>
+    </g>
+</svg>

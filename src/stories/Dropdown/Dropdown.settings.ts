@@ -1,50 +1,68 @@
-import { VvDropdownProps } from '@/components/VvDropdown'
-import {
-	ModifiersArgTypes,
-	OptionsArgTypes,
-	UnselectableArgTypes,
-} from '@/stories/argTypes'
+import { DROPDOWN_ROLES, VvDropdownProps } from '@/components/VvDropdown'
+import { DropdownArgTypes } from '../argTypes'
 
 export const defaultArgs = {
 	...propsToObject(VvDropdownProps),
-	name: 'vv-dropdown',
-	disabled: false,
-	valueObject: false,
-	multiple: false,
-	labelKey: 'label',
-	valueKey: 'value',
-	options: [
-		{
-			label: 'Option 1',
-			value: 1,
-		},
-		{
-			label: 'Option 2',
-			value: 2,
-		},
-		{
-			label: 'Option 3',
-			value: 3,
-		},
-	],
 }
 
 export const argTypes = {
-	modifiers: {
-		...ModifiersArgTypes.modifiers,
-		options: ['place-top'],
-	},
-	...OptionsArgTypes,
-	labelNoResults: {
-		control: { type: 'text' },
+	...DropdownArgTypes,
+	role: {
+		description: 'Dropdown role',
+		options: DROPDOWN_ROLES,
+		control: {
+			type: 'select',
+		},
 		table: {
-			defaultValue: {
-				summary: 'No results',
+			defaultValue: { summary: 'menu' },
+		},
+	},
+	default: {
+		description: 'The trigger slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
 			},
 		},
 	},
-	maxValues: {
-		control: { type: 'number' },
+	items: {
+		description: 'The dropdown items slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
 	},
-	...UnselectableArgTypes,
+	before: {
+		description: 'The dropdown before slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	after: {
+		description: 'The dropdown after slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
 }

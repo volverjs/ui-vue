@@ -20,11 +20,11 @@ export const Template = (args) => ({
 			inputValue: undefined,
 		}
 	},
-	template: /*html*/`
+	template: /*html*/ `
 		<vv-select v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-			<template #before v-if="args.before"><div class="pl-sm flex" v-html="args.before"></div></template>
+			<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
+			<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
 		</vv-select>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
 	`,

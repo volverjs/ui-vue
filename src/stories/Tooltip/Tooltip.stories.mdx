@@ -6,9 +6,9 @@ import { defaultTest } from './Tooltip.test'
 
 <Meta
 	title="Components/Tooltip"
-	component={ VvTooltip }
-	args={ defaultArgs }
-	argTypes={ argTypes }
+	component={VvTooltip}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args) => ({
@@ -16,15 +16,14 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template:
-		/* html */`
-		<div class="max-w-full flex justify-center m-xl">
-			<vv-button >Hover me
-				<vv-tooltip v-bind="args" data-testId="element">
-					<template #default v-if="args.default"><div v-html="args.default"></div></template>
-				</vv-tooltip>
-			</vv-button>
-		</div>`
+	template: /* html */ `
+		<vv-button class="fixed left-1/2 top-1/2 -translate-1/2" data-testId="parent">
+			Hover me
+			<vv-tooltip v-bind="args">
+				<template #default v-if="args.default"><div v-html="args.default"></div></template>
+			</vv-tooltip>
+		</vv-button>
+	`,
 })
 
 <Canvas>
@@ -42,9 +41,10 @@ export const Template = (args) => ({
 			position: {
 				control: {
 					disable: true,
-				}
+				},
 			},
-		}}>
+		}}
+	>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -58,9 +58,10 @@ export const Template = (args) => ({
 			position: {
 				control: {
 					disable: true,
-				}
+				},
 			},
-		}}>
+		}}
+	>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -74,9 +75,10 @@ export const Template = (args) => ({
 			position: {
 				control: {
 					disable: true,
-				}
+				},
 			},
-		}}>
+		}}
+	>
 		{Template.bind({})}
 	</Story>
 </Canvas>
@@ -90,9 +92,10 @@ export const Template = (args) => ({
 			position: {
 				control: {
 					disable: true,
-				}
+				},
 			},
-		}}>
+		}}
+	>
 		{Template.bind({})}
 	</Story>
 </Canvas>

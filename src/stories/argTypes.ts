@@ -1,4 +1,5 @@
 import normal from '@/assets/icons/normal.json'
+import { Placement, Position, Side } from '@/constants'
 
 export const ValidArgTypes = {
 	valid: {
@@ -110,12 +111,12 @@ export const IconArgTypes = {
 	},
 	iconPosition: {
 		description: 'VvIcon position',
-		options: ['', 'left', 'right'],
+		options: ['', ...Object.values(Position)],
 		control: {
 			type: 'select',
 		},
 		table: {
-			defaultValue: { summary: 'right' },
+			defaultValue: { summary: Position.before },
 		},
 	},
 }
@@ -155,6 +156,20 @@ export const OptionsArgTypes = {
 		table: {
 			defaultValue: {
 				summary: 'value',
+			},
+		},
+	},
+	disabledKey: {
+		type: {
+			summary: ['string', 'function'],
+		},
+		description: 'Key of disabled in option object',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'disabled',
 			},
 		},
 	},
@@ -272,6 +287,140 @@ export const IdNameArgTypes = {
 	},
 }
 
+export const DropdownArgTypes = {
+	placement: {
+		description: 'Dropdown placement',
+		options: [...Object.values(Placement), ...Object.values(Side)],
+		control: {
+			type: 'select',
+		},
+		table: {
+			defaultValue: { summary: 'bottom' },
+		},
+	},
+	transitionName: {
+		description: 'Dropdown show / hide transition name',
+		control: {
+			type: 'text',
+		},
+	},
+	offset: {
+		description: 'Offset of the dropdown from the trigger',
+		control: {
+			type: 'number',
+		},
+		table: {
+			defaultValue: {
+				summary: 0,
+			},
+			type: {
+				summary: ['number', 'string', 'object'],
+			},
+		},
+	},
+	shift: {
+		description:
+			'Move dropdown to the side if there is no space in the default position',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	flip: {
+		description:
+			'Flip dropdown position if there is no space in the default position',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	size: {
+		description:
+			'Change the size of the dropdown to not overflow the viewport',
+		control: {
+			type: 'object',
+		},
+		table: {
+			defaultValue: {
+				summary: '{ "padding": 10 }',
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	autoPlacement: {
+		description: 'Automatically change the position of the dropdown',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	arrow: {
+		description: 'Add arrow to the dropdown',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	autoClose: {
+		description: 'Close dropdown on click outside',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: true,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	triggerWidth: {
+		description: 'Set dropdown width to the same as the trigger',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+}
+
 export const UnselectableArgTypes = {
 	unselectable: {
 		type: 'boolean',
@@ -284,7 +433,7 @@ export const UnselectableArgTypes = {
 	},
 }
 
-export const FloatingArgTypes = {
+export const FloatingLabelArgTypes = {
 	floating: {
 		type: 'boolean',
 		description: 'If true the label will be floating',
@@ -340,7 +489,7 @@ export const InputTextareaArgTypes = {
 	...CountArgTypes,
 	...DebounceArgTypes,
 	...IconArgTypes,
-	...FloatingArgTypes,
+	...FloatingLabelArgTypes,
 	minlength: {
 		type: 'number',
 		description:

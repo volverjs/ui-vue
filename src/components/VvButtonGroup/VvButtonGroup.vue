@@ -5,8 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-	import { VV_BUTTON_GROUP } from '@/constants'
+	import type { ButtonGroupState } from '@/types/group'
+	import { INJECTION_KEY_BUTTON_GROUP } from '@/constants'
 	import {
 		VvButtonGroupProps,
 		VvButtonGroupEvents,
@@ -55,26 +55,23 @@
 	})
 
 	// provide
-	const groupState: IButtonGroupState = {
-		key: VV_BUTTON_GROUP,
+	useProvideGroupState<ButtonGroupState>({
+		key: INJECTION_KEY_BUTTON_GROUP,
 		modelValue,
 		disabled,
 		toggle,
 		multiple,
 		unselectable,
 		itemModifiers,
-	}
-	useProvideGroupState(groupState)
+	})
 
 	// style
-	const { bemCssClasses } = useBemModifiers('vv-button-group', {
-		modifiers,
-	})
+	const bemCssClasses = useBemModifiers('vv-button-group', modifiers)
 </script>
 
 <template>
 	<div :class="bemCssClasses" role="group">
-		<!-- @slot Buttons slot -->
+		<!-- @slot Default slot -->
 		<slot />
 	</div>
 </template>
