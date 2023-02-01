@@ -1,7 +1,6 @@
-import { type ExtractPropTypes, toRefs, type Ref } from 'vue'
-import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
-import { VV_ACCORDION_GROUP } from '@/constants'
+import type { ExtractPropTypes, Ref } from 'vue'
+import type { AccordionGroupState } from '@/types/group'
+import { INJECTION_KEY_ACCORDION_GROUP } from '@/constants'
 
 export const VvAccordionProps = {
 	/**
@@ -44,7 +43,9 @@ export function useGroupProps(
 	emit: (event: string, value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
-		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
+		useInjectedGroupState<AccordionGroupState>(
+			INJECTION_KEY_ACCORDION_GROUP,
+		)
 
 	// local props
 	const { title, content } = toRefs(props)

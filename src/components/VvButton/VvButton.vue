@@ -5,19 +5,14 @@
 </script>
 
 <script setup lang="ts">
-	import { inject, useAttrs, useSlots, computed } from 'vue'
-	import { nanoid } from 'nanoid'
-	import { contains, equals } from '@/utils/ObjectUtilities'
-	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import {
-		ButtonIconPosition,
 		VvButtonEvents,
 		ButtonTag,
 		VvButtonProps,
 		useGroupProps,
 	} from '@/components/VvButton'
+	import { Side } from '@/constants'
 
 	// props, attrs, slots and emit
 	const props = defineProps(VvButtonProps)
@@ -26,8 +21,8 @@
 	const emit = defineEmits(VvButtonEvents)
 
 	// data
-	const name = (attrs?.name as string) || nanoid()
 	const {
+		id,
 		modifiers,
 		iconPosition,
 		icon,
@@ -37,9 +32,33 @@
 		toggle,
 		unselectable,
 	} = useGroupProps(props, emit)
+	const hasId = useUniqueId(id)
+	const name = computed(() => (attrs?.name as string) || hasId.value)
 
-	// inject Volver
-	const ds = inject<IVolver>(VOLVER_PREFIX)
+	// inject plugin
+	const volver = useVolver()
+
+	// expose el
+	const $el = ref<HTMLElement | null>(null)
+	defineExpose({ $el })
+
+	// drowpdown trigger
+	const {
+		reference: dropdownTriggerReference,
+		bus: dropdownEventBus,
+		aria: dropdownAria,
+	} = useInjectedDropdownTrigger()
+	watch(
+		() => $el.value,
+		(newValue) => {
+			if (dropdownTriggerReference) {
+				dropdownTriggerReference.value = newValue
+			}
+		},
+	)
+
+	// dropdown parent
+	const { role } = useInjectedDropdownAction()
 
 	/**
 	 * @description The tag defined by props.
@@ -50,7 +69,7 @@
 			case disabled.value:
 				return ButtonTag.button
 			case props.to !== undefined:
-				return ds?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
+				return volver?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
 			case props.href !== undefined:
 				return ButtonTag.a
 			default:
@@ -66,33 +85,26 @@
 		if (!toggle.value) return props.pressed
 
 		return Array.isArray(modelValue.value)
-			? contains(name, modelValue.value)
-			: equals(name, modelValue.value)
+			? contains(name.value, modelValue.value)
+			: equals(name.value, modelValue.value)
 	})
 
 	/**
 	 * @description Define component classes with BEM style.
 	 * @returns {Array} The component classes.
 	 */
-	const { bemCssClasses } = useBemModifiers('vv-button', {
+	const bemCssClasses = useBemModifiers(
+		'vv-button',
 		modifiers,
-		active: props.active,
-		pressed: isPressed,
-		disabled,
-		reverse: computed(() =>
-			[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
-				iconPosition.value,
-			),
-		),
-		column: computed(() =>
-			[ButtonIconPosition.top, ButtonIconPosition.bottom].includes(
-				iconPosition.value,
-			),
-		),
-		iconOnly: computed(
-			() => icon?.value && !label?.value && !slots['default'],
-		),
-	})
+		computed(() => ({
+			active: props.active,
+			pressed: isPressed.value,
+			disabled: disabled.value,
+			reverse: [Side.right, Side.bottom].includes(iconPosition.value),
+			column: [Side.top, Side.bottom].includes(iconPosition.value),
+			iconOnly: Boolean(icon?.value && !label?.value && !slots.default),
+		})),
+	)
 
 	/**
 	 * @description Define icon attributes.
@@ -108,14 +120,16 @@
 	 */
 	const hasProps = computed(() => {
 		const toReturn = {
-			class: bemCssClasses.value,
+			...dropdownAria?.value,
 			'aria-pressed': isPressed.value ? true : undefined,
+			class: bemCssClasses.value,
+			role,
 		}
 		switch (hasTag.value) {
 			case ButtonTag.a:
 				return {
 					...toReturn,
-					role: 'button',
+					role: toReturn.role ?? 'button',
 					href: props.href,
 					target: props.target,
 					rel: props.rel,
@@ -124,7 +138,7 @@
 			case ButtonTag.nuxtLink:
 				return {
 					...toReturn,
-					role: 'button',
+					role: toReturn.role ?? 'button',
 					to: props.to,
 					target: props.target,
 				}
@@ -138,39 +152,62 @@
 	})
 
 	/**
-	 * @description Catch click event in a group.
+	 * @description Catch click event
 	 */
-	const onClick = () => {
+	const onClick = (e: Event) => {
+		dropdownEventBus?.emit('click', e)
 		if (toggle.value) {
 			if (Array.isArray(modelValue.value)) {
-				if (contains(name, modelValue.value)) {
+				if (contains(name.value, modelValue.value)) {
 					if (unselectable.value) {
 						modelValue.value = modelValue.value.filter(
-							(n) => n !== name,
+							(n) => n !== name.value,
 						)
 					}
 					return
 				}
-				modelValue.value.push(name)
+				modelValue.value.push(name.value)
 				return
 			}
 			if (equals(name, modelValue.value) && unselectable.value) {
 				modelValue.value = undefined
 				return
 			}
-			modelValue.value = name
+			modelValue.value = name.value
 		}
+	}
+
+	/**
+	 * @description Catch mouseover event
+	 */
+	const onMouseover = (e: Event) => {
+		dropdownEventBus?.emit('mouseover', e)
+	}
+
+	/**
+	 * @description Catch mouseleave event
+	 */
+	const onMouseleave = (e: Event) => {
+		dropdownEventBus?.emit('mouseleave', e)
 	}
 </script>
 
 <template>
 	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component v-bind="hasProps" :is="hasTag" @click.passive="onClick">
-		<!-- @slot Replace all button content -->
+	<component
+		v-bind="hasProps"
+		:is="hasTag"
+		:id="hasId"
+		ref="$el"
+		@click.passive="onClick"
+		@mouseover.passive="onMouseover"
+		@mouseleave.passive="onMouseleave"
+	>
+		<!-- @slot Default slot -->
 		<slot>
 			<!-- #region loading -->
 			<template v-if="loading">
-				<!-- @slot Replace all button content on loading -->
+				<!-- @slot Slot for loading content -->
 				<slot name="loading">
 					<VvIcon
 						v-if="loadingIcon"
@@ -182,29 +219,25 @@
 					</span>
 				</slot>
 			</template>
-			<!-- #endregion loading -->
+			<!-- #endregion -->
 			<!-- #region button -->
 			<template v-else>
 				<!-- @slot Before label and icon -->
 				<slot name="before" />
-				<!-- #region icon -->
 				<template v-if="icon">
 					<VvIcon class="vv-button__icon" v-bind="hasIconProps" />
 				</template>
-				<!-- #endregion icon -->
-				<!-- #region label  -->
 				<span v-if="label" class="vv-button__label">
 					<!-- @slot Use this slot for button label -->
 					<slot name="label">
 						{{ label }}
 					</slot>
 				</span>
-				<!-- #endregion label  -->
 				<!-- @slot After label and icon -->
 				<slot name="after" />
 			</template>
-			<!-- #endregion button -->
+			<!-- #endregion -->
 		</slot>
 	</component>
-	<!-- #endregion component: button | a | router-link | nuxt-link -->
+	<!-- #endregion -->
 </template>

@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(3.656 4.338)"><path d="M22.876,20.716a1,1,0,1,0,1,1h0A1,1,0,0,0,22.876,20.716Z" transform="translate(-8.531 -8.054)" stroke="#000" stroke-width="1"/><line y2="4" transform="translate(0.344 0.662)" fill="#040405" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line y2="4" transform="translate(4.344 0.662)" fill="#040405" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line y2="4" transform="translate(8.344 0.662)" fill="#040405" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><g transform="translate(11.344 -0.338)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="6" height="6" rx="1" stroke="none"/><rect x="1" y="1" width="4" height="4" fill="none"/></g><path d="M22.043,23.216a2.781,2.781,0,0,1-2.912-3.108l.978-4.892h4.033l.978,4.892a2.781,2.781,0,0,1-2.912,3.108Z" transform="translate(-7.781 -6.554)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(3.656 4.338)">
+        <path d="M22.876,20.716a1,1,0,1,0,1,1h0A1,1,0,0,0,22.876,20.716Z" transform="translate(-8.531 -8.054)"
+            stroke="#000" stroke-width="1" />
+        <line y2="4" transform="translate(0.344 0.662)" fill="#040405" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <line y2="4" transform="translate(4.344 0.662)" fill="#040405" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <line y2="4" transform="translate(8.344 0.662)" fill="#040405" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <g transform="translate(11.344 -0.338)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <rect width="6" height="6" rx="1" stroke="none" />
+            <rect x="1" y="1" width="4" height="4" fill="none" />
+        </g>
+        <path
+            d="M22.043,23.216a2.781,2.781,0,0,1-2.912-3.108l.978-4.892h4.033l.978,4.892a2.781,2.781,0,0,1-2.912,3.108Z"
+            transform="translate(-7.781 -6.554)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2" />
+    </g>
+</svg>

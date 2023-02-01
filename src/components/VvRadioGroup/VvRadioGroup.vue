@@ -6,13 +6,8 @@
 
 <script setup lang="ts">
 	import type { Option } from '@/types/generic'
-	import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-	import { useSlots, computed, toRefs } from 'vue'
-	import { useVModel } from '@vueuse/core'
-	import { useProvideGroupState } from '@/composables/group/useProvideGroupState'
-	import { useOptions } from '@/composables/useOptions'
-	import { useBemModifiers } from '@/composables/useModifiers'
-	import { VV_RADIO_GROUP } from '@/constants'
+	import type { InputGroupState } from '@/types/group'
+	import { INJECTION_KEY_RADIO_GROUP } from '@/constants'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
 	import VvRadio from '@/components/VvRadio/VvRadio.vue'
 	import {
@@ -27,29 +22,33 @@
 
 	// data
 	const modelValue = useVModel(props, 'modelValue', emit)
-	const { disabled, readonly, vertical, valid, invalid } = toRefs(props)
+	const { disabled, readonly, vertical, valid, invalid, modifiers } =
+		toRefs(props)
 
-	const groupState: IInputGroupState = {
-		key: VV_RADIO_GROUP,
+	useProvideGroupState<InputGroupState>({
+		key: INJECTION_KEY_RADIO_GROUP,
 		modelValue,
 		disabled,
 		readonly,
 		valid,
 		invalid,
-	}
-	useProvideGroupState(groupState)
+	})
 
 	// options
 	const { getOptionLabel, getOptionValue } = useOptions(props)
 
 	// styles
-	const { bemCssClasses: groupClass } = useBemModifiers('vv-radio-group', {
-		disabled,
-		readonly,
-		horizontal: computed(() => !vertical.value),
-		valid,
-		invalid,
-	})
+	const bemCssClasses = useBemModifiers(
+		'vv-radio-group',
+		modifiers,
+		computed(() => ({
+			disabled: disabled.value,
+			readonly: readonly.value,
+			horizontal: !vertical.value,
+			valid: valid.value,
+			invalid: invalid.value,
+		})),
+	)
 
 	// methods
 	const getOptionProps = (option: string | Option, index: number) => {
@@ -66,12 +65,12 @@
 </script>
 
 <template>
-	<fieldset :class="groupClass">
+	<fieldset :class="bemCssClasses">
 		<legend v-if="label" v-text="label" />
 		<div class="vv-radio-group__wrapper">
 			<!-- #region options -->
 			<template v-if="options.length > 0">
-				<vv-radio
+				<VvRadio
 					v-for="(option, index) in options"
 					:key="index"
 					v-bind="getOptionProps(option, index)"

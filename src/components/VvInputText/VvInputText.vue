@@ -5,24 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import {
-		computed,
-		useSlots,
-		ref,
-		toRefs,
-		unref,
-		watch,
-		type InputHTMLAttributes,
-	} from 'vue'
-	import { useElementVisibility } from '@vueuse/core'
-	import { nanoid } from 'nanoid'
-	import { isEmpty } from '@/utils/ObjectUtilities'
+	import type { InputHTMLAttributes } from 'vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
-	import { useComponentIcon } from '@/composables/useComponentIcons'
-	import { useComponentFocus } from '@/composables/useComponentFocus'
-	import { useDebouncedInput } from '@/composables/useDebouncedInput'
-	import { useTextCount } from '@/composables/useTextCount'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
 	import {
@@ -42,6 +26,7 @@
 
 	// data
 	const {
+		id,
 		icon,
 		iconPosition,
 		label,
@@ -51,7 +36,7 @@
 		invalid,
 		loading,
 	} = toRefs(props)
-	const hasId = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 	// BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const inputTextPlaceholder = computed(() =>
@@ -111,11 +96,11 @@
 	}
 
 	// icons
-	const { hasIconLeft, hasIconRight, hasIcon } = useComponentIcon(
+	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
 		icon,
 		iconPosition,
 	)
-	const defaultRightIcon = computed(() => {
+	const defaultAfterIcon = computed(() => {
 		switch (props.type) {
 			case INPUT_TYPES.COLOR:
 				return { name: TYPES_ICON.COLOR }
@@ -159,19 +144,23 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-input-text', {
-		modifiers: props.modifiers,
-		valid,
-		invalid,
-		loading,
-		disabled: props.disabled,
-		readonly: props.readonly,
-		iconLeft: hasIconLeft,
-		iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
-		floating: props.floating && !isEmpty(props.label),
-		dirty: isDirty,
-		focus: focused,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers(
+		'vv-input-text',
+		modifiers,
+		computed(() => ({
+			valid: valid.value,
+			invalid: invalid.value,
+			loading: loading.value,
+			disabled: props.disabled,
+			readonly: props.readonly,
+			'icon-before': hasIconBefore.value,
+			'icon-after': hasIconAfter.value || !isEmpty(defaultAfterIcon),
+			floating: props.floating && !isEmpty(props.label),
+			dirty: isDirty.value,
+			focus: focused.value,
+		})),
+	)
 
 	// attrs
 	const hasAttrs = computed(() => {
@@ -275,26 +264,28 @@
 			{{ label }}
 		</label>
 		<div class="vv-input-text__wrapper">
-			<!-- @slot Slot to replace left icon -->
-			<slot name="before" v-bind="slotProps">
+			<div v-if="$slots.before" class="vv-input-text__input-before">
+				<!-- @slot Slot before input icon -->
+				<slot name="before" v-bind="slotProps" />
+			</div>
+			<div class="vv-input-text__inner">
 				<VvIcon
-					v-if="hasIconLeft"
-					class="vv-input-text__icon-left"
+					v-if="hasIconBefore"
+					class="vv-input-text__icon"
 					v-bind="hasIcon"
 				/>
-			</slot>
-			<input
-				:id="hasId"
-				ref="input"
-				v-model="localModelValue"
-				v-bind="hasAttrs"
-				@keyup="emit('keyup', $event)"
-			/>
-			<!-- @slot Slot to replace right icon -->
-			<slot name="after" v-bind="slotProps">
+				<input
+					:id="hasId"
+					ref="input"
+					v-model="localModelValue"
+					v-bind="hasAttrs"
+					@keyup="emit('keyup', $event)"
+				/>
+				<!-- @slot Slot to replace right icon -->
 				<VvIcon
-					v-if="hasIconRight || defaultRightIcon"
-					v-bind="hasIconRight ? hasIcon : defaultRightIcon"
+					v-if="hasIconAfter || defaultAfterIcon"
+					class="vv-input-text__icon vv-input-text__icon-after"
+					v-bind="hasIconAfter ? hasIcon : defaultAfterIcon"
 				/>
 				<PasswordInputActions
 					v-else-if="isPassword"
@@ -306,7 +297,12 @@
 					@step-down="onStepDown"
 				/>
 				<SearchInputActions v-else-if="isSearch" @clear="onClear" />
-			</slot>
+			</div>
+			<!-- @slot Slot after input -->
+			<div v-if="$slots.after" class="vv-input-text__input-after">
+				<!-- @slot Slot before input icon -->
+				<slot name="after" v-bind="slotProps" />
+			</div>
 			<span v-if="count" class="vv-input-text__limit">
 				<!-- @slot Slot to replace count -->
 				<slot name="count" v-bind="slotProps">

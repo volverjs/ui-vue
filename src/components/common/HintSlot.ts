@@ -1,14 +1,4 @@
-import {
-	type Component,
-	type ExtractPropTypes,
-	type Slots,
-	type Ref,
-	computed,
-	toRefs,
-	h,
-} from 'vue'
-import { toReactive } from '@vueuse/core'
-import { isString, resolveFieldData, isEmpty } from '@/utils/ObjectUtilities'
+import type { Component, ExtractPropTypes, Slots, Ref } from 'vue'
 
 /**
  * Merge errors from Array<string> to string errors separated from new line (\n)
@@ -196,10 +186,11 @@ export function HintSlotFactory(
 					return h(
 						'small',
 						{
-							role:
-								this.hasInvalid || this.hasValid
-									? 'alert'
-									: undefined,
+							role: this.hasInvalid
+								? 'alert'
+								: this.hasValid
+								? 'status'
+								: undefined,
 						},
 						this.hintContent,
 					)

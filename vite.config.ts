@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import ESLint from 'vite-plugin-eslint'
+import AutoImport from 'unplugin-auto-import/vite'
 import path from 'path'
 
 // https://vitejs.dev/config/
@@ -21,7 +22,24 @@ export default ({ mode }: { mode: string }) => {
 			},
 		},
 		base: mode === 'development' ? './' : '/ui-vue/',
-		plugins: [vue(), ESLint()],
+		plugins: [
+			vue(),
+			ESLint(),
+			AutoImport({
+				// global imports to register
+				imports: ['vue', '@vueuse/core'],
+				// Auto import for module exports under directories
+				// by default it only scan one level of modules under the directory
+				dirs: [
+					'./src/composables/**',
+					'./src/utils/'
+				],
+				dts: true,
+				eslintrc: {
+					enabled: true,
+				},
+			})
+		],
 		resolve: {
 			alias: {
 				'@': path.resolve(__dirname, './src'),

@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(0.267 0.267)"><g transform="translate(0 0)"><line x2="6" y2="6" transform="translate(8.733 8.734)" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><g transform="translate(-0.267 -0.267)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1"><circle cx="5.5" cy="5.5" r="5.5" stroke="none"/><circle cx="5.5" cy="5.5" r="5" fill="none"/></g></g><g transform="translate(2.131 2.129)"><line x2="6" transform="translate(0.103 3.104)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/><line y2="6" transform="translate(3.103 0.104)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(0.267 0.267)">
+        <g transform="translate(0 0)">
+            <line x2="6" y2="6" transform="translate(8.733 8.734)" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <g transform="translate(-0.267 -0.267)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1">
+                <circle cx="5.5" cy="5.5" r="5.5" stroke="none" />
+                <circle cx="5.5" cy="5.5" r="5" fill="none" />
+            </g>
+        </g>
+        <g transform="translate(2.131 2.129)">
+            <line x2="6" transform="translate(0.103 3.104)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+            <line y2="6" transform="translate(3.103 0.104)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-miterlimit="10" stroke-width="1" />
+        </g>
+    </g>
+</svg>

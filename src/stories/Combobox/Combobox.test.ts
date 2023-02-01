@@ -22,10 +22,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		'vv-dropdown',
 	)[0] as HTMLElement
 	const dropdownFirstItem = dropdown.getElementsByTagName(
-		'label',
+		'li',
 	)[0] as HTMLElement
 	const dropdownSecondItem = dropdown.getElementsByTagName(
-		'label',
+		'li',
 	)[1] as HTMLElement
 	const hint = element.getElementsByClassName('vv-select__hint')[0]
 

@@ -1,7 +1,7 @@
+import { ref, watch } from 'vue'
 import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { icons as NormalIcons } from '@/assets/icons/normal.json'
-import { ref, watch } from 'vue'
 import { defaultArgs, argTypes } from './Icon.settings'
 
 <Meta
@@ -22,7 +22,7 @@ export const Template = (args) => ({
 		})
 		return { args, search, icons }
 	},
-	template: `
+	template: /*html*/ `
 		<div class="absolute inset-0 overflow-y-auto p-16">
 			<div class="vv-input-text">
 				<div class="vv-input-text__wrapper">

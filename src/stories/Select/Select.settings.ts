@@ -10,12 +10,11 @@ import {
 	IconArgTypes,
 	TabindexArgTypes,
 	IdNameArgTypes,
-	FloatingArgTypes,
+	FloatingLabelArgTypes,
 	UnselectableArgTypes,
 	AutofocusArgTypes,
 	AutocompleteArgTypes,
 } from '@/stories/argTypes'
-import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvSelectProps } from '@/components/VvSelect'
 
 export const defaultArgs = {
@@ -39,7 +38,7 @@ export const argTypes = {
 	...ModifiersArgTypes,
 	...OptionsArgTypes,
 	...IconArgTypes,
-	...FloatingArgTypes,
+	...FloatingLabelArgTypes,
 	...UnselectableArgTypes,
 	multiple: {
 		type: 'boolean',

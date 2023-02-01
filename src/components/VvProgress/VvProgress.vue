@@ -5,8 +5,6 @@
 </script>
 
 <script setup lang="ts">
-	import { computed, toRefs } from 'vue'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import { VvProgressProps } from '@/components/VvProgress'
 
 	// props
@@ -15,17 +13,19 @@
 	const indeterminate = computed(() => props.value === undefined)
 
 	// styles
-	const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
-		modifiers: props.modifiers,
-		indeterminate,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers(
+		'vv-progress',
+		modifiers,
+		computed(() => ({ indeterminate: indeterminate.value })),
+	)
 </script>
 
 <template>
 	<progress
 		role="progressbar"
 		v-bind="{
-			class: hasClass,
+			class: bemCssClasses,
 			ariaLabel,
 			max,
 			value,

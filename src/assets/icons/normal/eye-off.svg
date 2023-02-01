@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(3.375 3.375)"><g transform="translate(-0.375 2.325)"><path d="M10.5,1.111A10.1,10.1,0,0,0,9.058,1H9.047a9.124,9.124,0,0,0-3.87.8,8.187,8.187,0,0,0-3.25,2.727,7.261,7.261,0,0,0-.9,1.663.448.448,0,0,0,0,.282A7.584,7.584,0,0,0,2.57,9" transform="translate(0 -0.699)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/><path d="M8.353,11.914a10.438,10.438,0,0,0,1.47.111,9.252,9.252,0,0,0,3.919-.8,7.919,7.919,0,0,0,3.226-2.736,6.94,6.94,0,0,0,.865-1.671.456.456,0,0,0,0-.283A8,8,0,0,0,16.25,4.025" transform="translate(-0.854 0.275)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/></g><line y1="16" x2="16" transform="translate(0.625 0.625)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(3.375 3.375)">
+        <g transform="translate(-0.375 2.325)">
+            <path
+                d="M10.5,1.111A10.1,10.1,0,0,0,9.058,1H9.047a9.124,9.124,0,0,0-3.87.8,8.187,8.187,0,0,0-3.25,2.727,7.261,7.261,0,0,0-.9,1.663.448.448,0,0,0,0,.282A7.584,7.584,0,0,0,2.57,9"
+                transform="translate(0 -0.699)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+            <path
+                d="M8.353,11.914a10.438,10.438,0,0,0,1.47.111,9.252,9.252,0,0,0,3.919-.8,7.919,7.919,0,0,0,3.226-2.736,6.94,6.94,0,0,0,.865-1.671.456.456,0,0,0,0-.283A8,8,0,0,0,16.25,4.025"
+                transform="translate(-0.854 0.275)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+        </g>
+        <line y1="16" x2="16" transform="translate(0.625 0.625)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+    </g>
+</svg>

@@ -5,10 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { computed, useAttrs, ref } from 'vue'
-	import { useToggle } from '@vueuse/core'
 	import { nanoid } from 'nanoid'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import {
 		VvAccordionEvents,
 		VvAccordionProps,
@@ -21,7 +18,9 @@
 	const emit = defineEmits(VvAccordionEvents)
 
 	// data
-	const accordionName = props.name || (attrs?.id as string) || nanoid()
+	const accordionName = computed(
+		() => props.name || (attrs?.id as string) || nanoid(),
+	)
 	const {
 		modifiers,
 		title,
@@ -36,9 +35,9 @@
 		get: () => {
 			if (isInGroup.value) {
 				if (collapse.value && Array.isArray(modelValue.value)) {
-					return modelValue.value.includes(accordionName)
+					return modelValue.value.includes(accordionName.value)
 				}
-				return modelValue.value === accordionName
+				return modelValue.value === accordionName.value
 			}
 			// localModelValue is used when the accordion is not in a group
 			if (modelValue.value === undefined) {
@@ -50,15 +49,15 @@
 			if (isInGroup.value) {
 				if (collapse.value && Array.isArray(modelValue.value)) {
 					if (newValue) {
-						modelValue.value.push(accordionName)
+						modelValue.value.push(accordionName.value)
 						return
 					}
 					modelValue.value = modelValue.value.filter(
-						(name: string) => name !== accordionName,
+						(name: string) => name !== accordionName.value,
 					)
 					return
 				}
-				modelValue.value = newValue ? accordionName : null
+				modelValue.value = newValue ? accordionName.value : null
 				return
 			}
 			// localModelValue is used when the accordion is not in a group
@@ -74,10 +73,13 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-accordion', {
+	const bemCssClasses = useBemModifiers(
+		'vv-accordion',
 		modifiers,
-		disabled,
-	})
+		computed(() => ({
+			disabled: disabled.value,
+		})),
+	)
 
 	// methods
 	const onClick = useToggle(isOpen)
@@ -95,11 +97,13 @@
 			:aria-expanded="isOpen"
 			class="vv-collapse__summary"
 		>
+			<!-- @slot Slot for title -->
 			<slot name="summary" v-bind="{ open: isOpen }">
 				{{ title }}
 			</slot>
 		</summary>
 		<div :aria-hidden="!isOpen" class="vv-collapse__content">
+			<!-- @slot Slot for content  -->
 			<slot name="details" v-bind="{ open: isOpen }">
 				{{ content }}
 			</slot>

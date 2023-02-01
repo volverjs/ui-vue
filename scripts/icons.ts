@@ -30,14 +30,14 @@ interface IFilesMap {
  */
 function getAllFiles(
 	dirPath: string,
-	objectFiles: IFilesMap = {},
 	prefix = 'iconify',
+	objectFiles: IFilesMap = {},
 ) {
 	const files = fileSystem.readdirSync(dirPath)
 
 	files.forEach(function (file) {
 		if (fileSystem.statSync(dirPath + '/' + file).isDirectory()) {
-			objectFiles = getAllFiles(dirPath + '/' + file, objectFiles, file)
+			objectFiles = getAllFiles(dirPath + '/' + file, file, objectFiles)
 		} else {
 			if (file.includes('.svg')) {
 				objectFiles[prefix]
@@ -127,8 +127,12 @@ async function generateIcons(
  * @param srcPath
  * @param destPath
  */
-export function createIconifyJsonFiles(srcPath: string, destPath: string) {
-	const objectFiles = getAllFiles(srcPath)
+export function createIconifyJsonFiles(
+	srcPath: string,
+	destPath: string,
+	prefix?: string,
+) {
+	const objectFiles = getAllFiles(srcPath, prefix)
 
 	if (!Object.keys(objectFiles).length) {
 		// eslint-disable-next-line no-console
@@ -145,6 +149,7 @@ export function createIconifyJsonFiles(srcPath: string, destPath: string) {
 const argv = yargs(hideBin(process.argv)).argv as {
 	srcPath?: string
 	destPath?: string
+	prefix?: string
 }
 const srcPath = argv.srcPath
 const destPath = argv.destPath || srcPath
@@ -156,4 +161,4 @@ if (!srcPath || !destPath) {
 	)
 	process.exit()
 }
-createIconifyJsonFiles(srcPath, destPath)
+createIconifyJsonFiles(srcPath, destPath, argv.prefix)

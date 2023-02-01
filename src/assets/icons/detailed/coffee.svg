@@ -1,1 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(5.267 4.333)"><g transform="translate(0.733 6.666)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"><path d="M1,0H17a1,1,0,0,1,1,1V8a8,8,0,0,1-8,8H8A8,8,0,0,1,0,8V1A1,1,0,0,1,1,0Z" stroke="none"/><path d="M1,1H17a0,0,0,0,1,0,0V8a7,7,0,0,1-7,7H8A7,7,0,0,1,1,8V1A0,0,0,0,1,1,1Z" fill="none"/></g><g transform="translate(16.733 14.666) rotate(-90)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"><path d="M0,0H8A0,0,0,0,1,8,0V3A3,3,0,0,1,5,6H3A3,3,0,0,1,0,3V0A0,0,0,0,1,0,0Z" stroke="none"/><path d="M1,1H7A0,0,0,0,1,7,1V3A2,2,0,0,1,5,5H3A2,2,0,0,1,1,3V1A0,0,0,0,1,1,1Z" fill="none"/></g><line x2="22" transform="translate(-1.267 22.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line y1="2" transform="translate(4.733 1.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line y1="2" transform="translate(9.733 1.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line y1="2" transform="translate(14.733 1.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(5.267 4.333)">
+        <g transform="translate(0.733 6.666)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2">
+            <path d="M1,0H17a1,1,0,0,1,1,1V8a8,8,0,0,1-8,8H8A8,8,0,0,1,0,8V1A1,1,0,0,1,1,0Z" stroke="none" />
+            <path d="M1,1H17a0,0,0,0,1,0,0V8a7,7,0,0,1-7,7H8A7,7,0,0,1,1,8V1A0,0,0,0,1,1,1Z" fill="none" />
+        </g>
+        <g transform="translate(16.733 14.666) rotate(-90)" fill="none" stroke="#000" stroke-linejoin="round"
+            stroke-width="2">
+            <path d="M0,0H8A0,0,0,0,1,8,0V3A3,3,0,0,1,5,6H3A3,3,0,0,1,0,3V0A0,0,0,0,1,0,0Z" stroke="none" />
+            <path d="M1,1H7A0,0,0,0,1,7,1V3A2,2,0,0,1,5,5H3A2,2,0,0,1,1,3V1A0,0,0,0,1,1,1Z" fill="none" />
+        </g>
+        <line x2="22" transform="translate(-1.267 22.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <line y1="2" transform="translate(4.733 1.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line y1="2" transform="translate(9.733 1.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line y1="2" transform="translate(14.733 1.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+    </g>
+</svg>

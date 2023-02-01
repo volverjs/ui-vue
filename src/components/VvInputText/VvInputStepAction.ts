@@ -1,4 +1,3 @@
-import { computed, defineComponent, h } from 'vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 
 export default defineComponent({

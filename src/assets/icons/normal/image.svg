@@ -1,1 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(3.375 5.25)"><g transform="translate(18.625 -1.25) rotate(90)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><rect width="16" height="20" rx="2" stroke="none"/><rect x="1" y="1" width="14" height="18" rx="1" fill="none"/></g><path d="M-549.534,84.089l9-9,6,6" transform="translate(552.159 -70.339)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><circle cx="1" cy="1" r="1" transform="translate(3.625 3.75)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M-541.622,78.592l2,2,3-3" transform="translate(550.247 -69.842)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(3.375 5.25)">
+        <g transform="translate(18.625 -1.25) rotate(90)" fill="none" stroke="#000" stroke-miterlimit="10"
+            stroke-width="2">
+            <rect width="16" height="20" rx="2" stroke="none" />
+            <rect x="1" y="1" width="14" height="18" rx="1" fill="none" />
+        </g>
+        <path d="M-549.534,84.089l9-9,6,6" transform="translate(552.159 -70.339)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <circle cx="1" cy="1" r="1" transform="translate(3.625 3.75)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <path d="M-541.622,78.592l2,2,3-3" transform="translate(550.247 -69.842)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+    </g>
+</svg>

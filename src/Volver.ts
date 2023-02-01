@@ -6,11 +6,62 @@ import {
 	type IconifyJSON,
 	type PartialIconifyAPIConfig,
 } from '@iconify/vue'
-import type { App, Plugin } from 'vue'
+import type { App, Component, Plugin } from 'vue'
+import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from '@/constants'
+import directives from '@/directives'
 
-export const VOLVER_PREFIX = 'ds'
+export function useDefaultProps(
+	component: Component,
+	defaults?: Record<string, unknown>,
+	name?: string,
+) {
+	const componentName = name || component.name
 
-interface IVolverParams {
+	if (!componentName) {
+		return component
+	}
+
+	const componentDefaults = defaults?.[componentName] as Record<
+		string,
+		unknown
+	>
+	const props = (component as Record<string, unknown>).props as Record<
+		string,
+		unknown
+	>
+
+	if (!componentDefaults || !props) {
+		return { ...component, name: componentName }
+	}
+
+	return {
+		...component,
+		name: componentName,
+		props: Object.keys(props).reduce((acc, key) => {
+			if (!(key in componentDefaults)) {
+				acc[key] = props[key]
+				return acc
+			}
+			const customDefault = componentDefaults[key]
+			if (typeof props[key] === 'function' || Array.isArray(props[key])) {
+				acc[key] = {
+					type: props[key],
+					default: customDefault,
+				}
+				return acc
+			}
+			acc[key] = {
+				...(props[key] as Record<string, unknown>),
+				default: customDefault,
+			}
+			return acc
+		}, {} as Record<string, unknown>),
+	}
+}
+
+export type DefaultOptions = Record<string, Record<string, unknown>>
+
+export type VolverOptions = {
 	/**
 	 * If true set "fetchOptions" with credentials: 'include'
 	 */
@@ -20,17 +71,35 @@ interface IVolverParams {
 	 */
 	fetchOptions?: RequestInit
 	/**
-	 * Array of https://docs.iconify.design/types/iconify-json.html
-	 * This collections will be added during plugin install
+	 * Array of iconify collections that will be added during plugin install
+	 * @see https://docs.iconify.design/types/iconify-json.html
 	 */
 	iconsCollections?: IconifyJSON[]
 	/**
 	 * Set true inside nuxt
 	 */
 	nuxt?: boolean
+	/**
+	 * Default iconify provider
+	 * @see https://docs.iconify.design/icon-components/vue/add-collection.html
+	 * @default 'vv'
+	 */
+	provider?: string
+	/**
+	 * Components to install
+	 */
+	components?: Record<string, Component>
+	/**
+	 * Alias to install
+	 */
+	aliases?: Record<string, Component>
+	/**
+	 * Default props for components
+	 */
+	defaults?: DefaultOptions
 }
 
-export interface IVolver extends IVolverParams {
+export interface VolverInterface {
 	/**
 	 * @param {String} src Icon source path (url)
 	 * @param {RequestInit} options
@@ -38,13 +107,15 @@ export interface IVolver extends IVolverParams {
 	 */
 	fetchIcon(src: string, options?: RequestInit): Promise<string | undefined>
 	/**
-	 * Add iconify collection to library https://docs.iconify.design/icon-components/vue/add-collection.html
+	 * Add iconify collection to library
+	 * @see https://docs.iconify.design/icon-components/vue/add-collection.html
 	 * @param {IconifyJSON} collection
 	 * @param {String} providerName Optional provider name
 	 */
 	addCollection(collection: IconifyJSON, providerName?: string): boolean
 	/**
-	 * Add icon to collection https://docs.iconify.design/icon-components/vue/add-icon.html
+	 * Add icon to collection
+	 * @see https://docs.iconify.design/icon-components/vue/add-icon.html
 	 * @param {String} name
 	 * @param {IconifyIcon} data
 	 * @returns {Boolean} true on success, false if something is wrong with data
@@ -65,39 +136,56 @@ export interface IVolver extends IVolverParams {
 	 */
 	provider: string
 	/**
-	 * Icon collections
+	 * Array of installed iconify collections
+	 * @see https://docs.iconify.design/types/iconify-json.html
 	 */
 	iconsCollections: IconifyJSON[]
+	/**
+	 * Set true inside nuxt
+	 */
+	nuxt: boolean
 }
 
-export class Volver implements IVolver {
-	fetchOptions: RequestInit
-	iconsCollections: IconifyJSON[]
-	provider: string
-	nuxt: boolean
+export class Volver implements VolverInterface {
+	fetchOptions: RequestInit = {}
+	nuxt = false
+	iconsCollections: IconifyJSON[] = []
+	provider = DEFAULT_ICONIFY_PROVIDER
 
 	constructor({
-		fetchWithCredentials = false,
-		fetchOptions = {},
-		iconsCollections = [],
-		nuxt = false,
-	}: IVolverParams = {}) {
-		if (fetchWithCredentials) {
-			fetchOptions = { ...fetchOptions, credentials: 'include' }
+		fetchWithCredentials,
+		fetchOptions,
+		provider,
+		nuxt,
+		iconsCollections,
+	}: VolverOptions = {}) {
+		// fetch options
+		if (fetchOptions) {
+			this.fetchOptions = fetchOptions
 		}
-		this.provider = VOLVER_PREFIX
-		this.fetchOptions = fetchOptions
-		this.iconsCollections = iconsCollections
-		// Add default icons collection (simple, normal, detailed)
-		// and others custom collections
-		this.iconsCollections.forEach((iconsCollection) => {
-			this.addCollection(iconsCollection, this.provider)
-		})
-		this.nuxt = nuxt
+		// fetch with credentials sugar syntax
+		if (fetchWithCredentials) {
+			this.fetchOptions = { ...this.fetchOptions, credentials: 'include' }
+		}
+		// default iconify provider
+		if (provider) {
+			this.provider = provider
+		}
+		// enable nuxt mode
+		if (nuxt) {
+			this.nuxt = nuxt
+		}
+		// add iconify collections
+		if (iconsCollections && Array.isArray(iconsCollections)) {
+			iconsCollections.forEach((iconsCollection) => {
+				this.addCollection(iconsCollection, this.provider)
+			})
+		}
 	}
 
 	addCollection(collection: IconifyJSON, providerName?: string): boolean {
-		return addCollection(collection, providerName)
+		this.iconsCollections = [...this.iconsCollections, collection]
+		return addCollection(collection, providerName ?? this.provider)
 	}
 
 	addIcon(name: string, data: IconifyIcon): boolean {
@@ -130,13 +218,37 @@ const VolverPlugin: Plugin = {
 	 * @param {App} Vue
 	 * @param {Object} options
 	 */
-	install(app: App, options: IVolverParams) {
+	install(app: App, options: VolverOptions) {
 		const volver = new Volver(options)
 
 		// register global methods
-		app.config.globalProperties.$ds = volver
+		app.config.globalProperties.$vv = volver
 
-		app.provide(VOLVER_PREFIX, volver)
+		if (options.components) {
+			Object.entries(options.components).forEach(([name, component]) => {
+				app.component(
+					name,
+					useDefaultProps(component, options.defaults),
+				)
+			})
+		}
+
+		if (options.aliases) {
+			Object.entries(options.aliases).forEach(([name, component]) => {
+				app.component(
+					name,
+					useDefaultProps(component, options.defaults, name),
+				)
+			})
+		}
+
+		// register directives
+		Object.entries(directives).forEach(([name, directive]) => {
+			app.directive(name, directive)
+		})
+
+		// provide volver to components
+		app.provide(INJECTION_KEY_VOLVER, volver)
 	},
 }
 

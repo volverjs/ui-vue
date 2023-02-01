@@ -1,1 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(2 3.332)"><path d="M-2872.324,224.505v-3h-3" transform="translate(2885.824 -222.339)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M-2875.273,238.905h3v-3" transform="translate(2885.773 -228.736)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M-2893.122,221.558h-3v3" transform="translate(2894.623 -222.392)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M-2896.071,235.958v3h3" transform="translate(2894.572 -228.791)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M-2891.321,231.973h3v-1h-1v-5l-2,1v1l1-.5v3.5h-1Z" transform="translate(2892.322 -224.306)"/><path d="M-2891.321,231.973h3v-1h-1v-5l-2,1v1l1-.5v3.5h-1Z" transform="translate(2899.322 -224.306)"/><path d="M-2884.453,228.574h1v-1h-1Zm0,3h1v-1h-1Z" transform="translate(2889.453 -224.905)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(2 3.332)">
+        <path d="M-2872.324,224.505v-3h-3" transform="translate(2885.824 -222.339)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+        <path d="M-2875.273,238.905h3v-3" transform="translate(2885.773 -228.736)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+        <path d="M-2893.122,221.558h-3v3" transform="translate(2894.623 -222.392)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+        <path d="M-2896.071,235.958v3h3" transform="translate(2894.572 -228.791)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+        <path d="M-2891.321,231.973h3v-1h-1v-5l-2,1v1l1-.5v3.5h-1Z" transform="translate(2892.322 -224.306)" />
+        <path d="M-2891.321,231.973h3v-1h-1v-5l-2,1v1l1-.5v3.5h-1Z" transform="translate(2899.322 -224.306)" />
+        <path d="M-2884.453,228.574h1v-1h-1Zm0,3h1v-1h-1Z" transform="translate(2889.453 -224.905)" />
+    </g>
+</svg>

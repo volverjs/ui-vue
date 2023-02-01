@@ -1,29 +1,30 @@
 {
-	"extends": "@vue/tsconfig/tsconfig.web.json",
-	"include": [
-		"env.d.ts",
-		"src/**/*",
-		"src/**/*.vue",
-		"src/stories/**/*.test.ts"
-	],
-	"compilerOptions": {
-		"lib": ["esnext", "dom"],
-		"baseUrl": ".",
-		"outDir": "dist",
-		"types": [
-			"node",
-			"vite/client",
-			"@iconify/types",
-			"@types/jsdom",
-			"@types/uuid"
-		],
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	},
-	"references": [
-		{
-			"path": "./tsconfig.config.json"
-		}
-	]
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/stories/**/*.test.ts"
+  ],
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    "outDir": "dist",
+    "types": [
+      "node",
+      "vite/client",
+      "@iconify/types",
+      "@types/jsdom",
+      "@floating-ui/vue",
+      "./auto-imports"
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ]
 }

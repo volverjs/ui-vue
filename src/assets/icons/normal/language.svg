@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(3 3)"><g fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"><circle cx="9" cy="9" r="9" stroke="none"/><circle cx="9" cy="9" r="8" fill="none"/></g><line x2="16" transform="translate(1 6)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/><line x2="16" transform="translate(1 12)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/><path d="M0,2S4-1,8-1s8,3,8,3" transform="translate(6 17) rotate(-90)" fill="none" stroke="#000" stroke-width="2"/><path d="M0,0S4,3,8,3s8-3,8-3" transform="translate(10 17) rotate(-90)" fill="none" stroke="#000" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(3 3)">
+        <g fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2">
+            <circle cx="9" cy="9" r="9" stroke="none" />
+            <circle cx="9" cy="9" r="8" fill="none" />
+        </g>
+        <line x2="16" transform="translate(1 6)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+        <line x2="16" transform="translate(1 12)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+        <path d="M0,2S4-1,8-1s8,3,8,3" transform="translate(6 17) rotate(-90)" fill="none" stroke="#000"
+            stroke-width="2" />
+        <path d="M0,0S4,3,8,3s8-3,8-3" transform="translate(10 17) rotate(-90)" fill="none" stroke="#000"
+            stroke-width="2" />
+    </g>
+</svg>

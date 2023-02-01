@@ -1,5 +1,4 @@
-import { watch, unref } from 'vue'
-import { useFocus, type MaybeElement, type MaybeElementRef } from '@vueuse/core'
+import type { MaybeElement, MaybeElementRef } from '@vueuse/core'
 
 export function useComponentFocus(
 	inputTemplateRef: MaybeElementRef<MaybeElement>,

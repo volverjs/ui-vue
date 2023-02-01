@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(4.19 3.441)"><g transform="translate(-0.19 11.559)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"><circle cx="3" cy="3" r="3" stroke="none"/><circle cx="3" cy="3" r="2" fill="none"/></g><g transform="translate(9.81 11.559)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"><circle cx="3" cy="3" r="3" stroke="none"/><circle cx="3" cy="3" r="2" fill="none"/></g><path d="M81.125,8.588l-4-4-4,4" transform="translate(-69.315 -4.029)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line y2="9" transform="translate(7.81 0.559)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M74.091,19.976l3-3,3,3" transform="translate(-69.282 -7.417)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(4.19 3.441)">
+        <g transform="translate(-0.19 11.559)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10"
+            stroke-width="2">
+            <circle cx="3" cy="3" r="3" stroke="none" />
+            <circle cx="3" cy="3" r="2" fill="none" />
+        </g>
+        <g transform="translate(9.81 11.559)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10"
+            stroke-width="2">
+            <circle cx="3" cy="3" r="3" stroke="none" />
+            <circle cx="3" cy="3" r="2" fill="none" />
+        </g>
+        <path d="M81.125,8.588l-4-4-4,4" transform="translate(-69.315 -4.029)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <line y2="9" transform="translate(7.81 0.559)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <path d="M74.091,19.976l3-3,3,3" transform="translate(-69.282 -7.417)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" />
+    </g>
+</svg>

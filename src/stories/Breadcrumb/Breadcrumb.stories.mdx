@@ -15,9 +15,10 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template: `<div class="bg-surface p-lg">
-			     <vv-breadcrumb v-bind="args" />
-			   </div>`,
+	template: /*html*/ `
+		<div class="bg-surface p-lg">
+			<vv-breadcrumb v-bind="args" />
+		</div>`,
 })
 
 <Canvas>

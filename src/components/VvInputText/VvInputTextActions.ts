@@ -1,4 +1,4 @@
-import { type Component, h, computed } from 'vue'
+import type { Component } from 'vue'
 import {
 	type VvInputTextPropsTypes,
 	INPUT_TYPES,

@@ -5,25 +5,10 @@
 </script>
 
 <script setup lang="ts">
-	import {
-		computed,
-		useSlots,
-		ref,
-		toRefs,
-		watch,
-		type TextareaHTMLAttributes,
-	} from 'vue'
-	import { nanoid } from 'nanoid'
-	import { isEmpty } from '@/utils/ObjectUtilities'
+	import type { TextareaHTMLAttributes } from 'vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
-	import { useComponentIcon } from '@/composables/useComponentIcons'
-	import { useComponentFocus } from '@/composables/useComponentFocus'
-	import { useDebouncedInput } from '@/composables/useDebouncedInput'
-	import { useTextCount } from '@/composables/useTextCount'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
-	import { useElementVisibility } from '@vueuse/core'
 
 	// props, emit and slots
 	const props = defineProps(VvTextareaProps)
@@ -35,6 +20,7 @@
 
 	// data
 	const {
+		id,
 		icon,
 		iconPosition,
 		label,
@@ -43,8 +29,9 @@
 		valid,
 		invalid,
 		loading,
+		modifiers,
 	} = toRefs(props)
-	const hasId = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 	// BUG - https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const hasPlaceholder = computed(() =>
@@ -55,7 +42,7 @@
 	const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
 
 	// icons
-	const { hasIcon, hasIconLeft, hasIconRight } = useComponentIcon(
+	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
 		icon,
 		iconPosition,
 	)
@@ -102,20 +89,23 @@
 	const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-textarea', {
-		modifiers: props.modifiers,
-		valid: valid,
-		invalid: invalid,
-		loading,
-		disabled: props.disabled,
-		readonly: props.readonly,
-		iconLeft: hasIconLeft,
-		iconRight: hasIconRight,
-		floating: props.floating && !isEmpty(props.label),
-		dirty: isDirty,
-		focused: focused,
-		resizable: props.resizable,
-	})
+	const bemCssClasses = useBemModifiers(
+		'vv-textarea',
+		modifiers,
+		computed(() => ({
+			valid: valid.value,
+			invalid: invalid.value,
+			loading: loading.value,
+			disabled: props.disabled,
+			readonly: props.readonly,
+			'icon-before': hasIconBefore.value,
+			'icon-after': hasIconAfter.value,
+			floating: props.floating && !isEmpty(props.label),
+			dirty: isDirty.value,
+			focused: focused.value,
+			resizable: props.resizable,
+		})),
+	)
 
 	// attrs
 	const hasAttrs = computed(
@@ -168,25 +158,34 @@
 			{{ label }}
 		</label>
 		<div class="vv-textarea__wrapper">
-			<!-- @slot Slot to replace left icon -->
-			<slot name="before" v-bind="slotProps">
+			<!-- @slot Slot to replace icon before textarea -->
+			<div v-if="$slots.before" class="vv-textarea__input-before">
+				<!-- @slot Slot before input -->
+				<slot name="before" v-bind="slotProps" />
+			</div>
+			<div class="vv-textarea__inner">
 				<VvIcon
-					v-if="hasIconLeft"
-					class="vv-textarea__icon-left"
+					v-if="hasIconBefore"
+					class="vv-textarea__icon"
 					v-bind="hasIcon"
 				/>
-			</slot>
-			<textarea
-				:id="hasId"
-				ref="textarea"
-				v-model="localModelValue"
-				v-bind="hasAttrs"
-				@keyup="emit('keyup', $event)"
-			/>
-			<slot name="after" v-bind="slotProps">
-				<VvIcon v-if="hasIconRight" v-bind="hasIcon" />
-			</slot>
-			<!-- @slot Slot to replace right icon -->
+				<textarea
+					:id="hasId"
+					ref="textarea"
+					v-model="localModelValue"
+					v-bind="hasAttrs"
+					@keyup="emit('keyup', $event)"
+				/>
+				<VvIcon
+					v-if="hasIconAfter"
+					class="vv-textarea__icon vv-textarea__icon-after"
+					v-bind="hasIcon"
+				/>
+			</div>
+			<div v-if="$slots.after" class="vv-textarea__input-after">
+				<!-- @slot Slot after input -->
+				<slot name="after" v-bind="slotProps" />
+			</div>
 			<span v-if="count" class="vv-textarea__limit">
 				<!-- @slot Slot to replace count -->
 				<slot name="count" v-bind="slotProps">

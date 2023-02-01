@@ -1,0 +1,113 @@
+import { ref } from 'vue'
+import { Meta, Story } from '@storybook/addon-docs'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import VvDropdownItem from '@/components/VvDropdown/VvDropdownItem.vue'
+import { defaultTest } from './Dropdown.test'
+import { defaultArgs, argTypes } from './Dropdown.settings'
+
+<Meta
+	title="Components/Dropdown/Slots"
+	component={VvDropdown}
+	argTypes={argTypes}
+	args={defaultArgs}
+/>
+
+export const Template = (args) => ({
+	components: { VvDropdown, VvDropdownItem, VvButton },
+	setup() {
+		const expanded = ref(false)
+		return { args, expanded }
+	},
+	watch: {
+		expanded(newValue) {
+			if (!newValue) {
+				return
+			}
+			setTimeout(() => {
+				this.centerWrapper()
+			}, 300)
+		},
+	},
+	methods: {
+		centerWrapper() {
+			document.getElementById('toggle-button').scrollIntoView({
+				inline: 'center',
+				block: 'center',
+			})
+		},
+	},
+	mounted() {
+		this.centerWrapper()
+	},
+	template: /* html */ `
+		<div class="absolute inset-0 overflow-auto" ref="container">
+			<div style="width: 200%; height: 200%" ref="wrapper" data-testId="wrapper">
+				<vv-dropdown v-model="expanded" v-bind="args">
+                    <template #before v-if="args.before"><div v-html="args.before"></div></template>
+                    <template #default="{ init, toggle, aria }">
+                        <button :ref="(e) => init(e)" v-bind="aria" id="toggle-button" class="absolute cursor-pointer bg-info p-lg text-center top-full left-full -translate-1/2" data-testId="trigger" @click="toggle">
+                            Toggle dropdown
+                        </button>
+                    </template>
+					<template #items>
+						<vv-dropdown-item>
+							<vv-button modifiers="link" icon="add" label="Create" class="p-md"  />
+						</vv-dropdown-item>
+						<vv-dropdown-item>
+							<vv-button modifiers="link" icon="edit" label="Update" class="p-md"  />
+						</vv-dropdown-item>
+						<vv-dropdown-item>
+							<vv-button modifiers="link" icon="trash" label="Delete" class="p-md"  />
+						</vv-dropdown-item>
+					</template>
+                    <template #after v-if="args.after"><div v-html="args.after"></div></template>
+				</vv-dropdown>
+			</div>
+		</div>
+	`,
+})
+
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Before"
+		args={{
+			before: '<div class="bg-warning p-xs text-center">Before</div>',
+		}}
+		argTypes={{
+			before: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="After"
+		args={{
+			after: '<div class="bg-danger text-white p-xs text-center">After</div>',
+		}}
+		argTypes={{
+			after: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

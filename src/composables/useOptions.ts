@@ -1,9 +1,8 @@
-import { toRefs } from 'vue'
 import type { Option } from '@/types/generic'
 
 // eslint-disable-next-line
 export function useOptions(props: any) {
-	const { options, labelKey, valueKey } = toRefs(props)
+	const { options, labelKey, valueKey, disabledKey } = toRefs(props)
 
 	// eslint-disable-next-line
 	const getOptionLabel = (option: string | Option) => {
@@ -14,8 +13,7 @@ export function useOptions(props: any) {
 			: option[labelKey.value]
 	}
 
-	// eslint-disable-next-line
-	const getOptionValue = (option: any) => {
+	const getOptionValue = (option: string | Option) => {
 		if (typeof option !== 'object' && option !== null) return option
 
 		return typeof valueKey.value === 'function'
@@ -23,9 +21,18 @@ export function useOptions(props: any) {
 			: option[valueKey.value]
 	}
 
+	const getOptionDisabled = (option: string | Option) => {
+		if (typeof option !== 'object' && option !== null) return false
+
+		return typeof disabledKey.value === 'function'
+			? disabledKey.value(option)
+			: option[disabledKey.value]
+	}
+
 	return {
 		options,
 		getOptionLabel,
 		getOptionValue,
+		getOptionDisabled,
 	}
 }

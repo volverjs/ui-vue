@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import {
 	ValidProps,
 	InvalidProps,
@@ -9,9 +10,10 @@ import {
 	OptionsProps,
 	IconProps,
 	TabindexProps,
-	FloatingProps,
+	FloatingLabelProps,
 	UnselectableProps,
 	IdNameProps,
+	DropdownProps,
 } from '@/props'
 
 export const VvComboboxEvents = [
@@ -33,8 +35,9 @@ export const VvComboboxProps = {
 	...ModifiersProps,
 	...OptionsProps,
 	...IconProps,
-	...FloatingProps,
+	...FloatingLabelProps,
 	...UnselectableProps,
+	...DropdownProps,
 	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
@@ -47,9 +50,25 @@ export const VvComboboxProps = {
 	 */
 	label: String,
 	/**
-	 * Label of "no results" options
+	 * Label for no search results
 	 */
-	labelNoResults: { type: String, default: 'No results' },
+	noResultsLabel: { type: String, default: 'No results' },
+	/**
+	 * Label for selected option hint
+	 */
+	selectedLabel: { type: String, default: 'Selected' },
+	/**
+	 * Label for deselect button
+	 */
+	deselectLabel: { type: String, default: 'Deselect' },
+	/**
+	 * Label for select option hint
+	 */
+	pressToSelectLabel: { type: String, default: 'Press enter to select' },
+	/**
+	 * Label for deselected option hint
+	 */
+	pressToDeselectLabel: { type: String, default: 'Press enter to remove' },
 	/**
 	 * Select input placeholder
 	 */
@@ -61,7 +80,10 @@ export const VvComboboxProps = {
 	/**
 	 * On searchable select is the input search placeholder
 	 */
-	searchPlaceholder: String,
+	searchPlaceholder: {
+		type: String,
+		default: 'Search...',
+	},
 	/**
 	 * The input search debounce time in ms
 	 */
@@ -85,4 +107,36 @@ export const VvComboboxProps = {
 	 * Show native select
 	 */
 	native: Boolean,
+	/**
+	 * Show badges
+	 */
+	badges: Boolean,
+	/**
+	 * Badge modifiers
+	 */
+	badgeModifiers: {
+		type: [String, Array] as PropType<string | Array<string>>,
+		default: 'action sm',
+	},
+	/**
+	 * Set dropdown width to the same as the trigger
+	 */
+	triggerWidth: {
+		...DropdownProps.triggerWidth,
+		default: true,
+	},
+	/**
+	 * Dropdown modifiers
+	 */
+	dropdownModifiers: {
+		type: [String, Array] as PropType<string | Array<string>>,
+	},
+	/**
+	 * Open dropdown on focus
+	 */
+	autoOpen: Boolean,
+	/**
+	 * Close dropdown on select (not multiple)
+	 */
+	autoClose: Boolean,
 }

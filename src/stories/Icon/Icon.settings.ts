@@ -1,4 +1,3 @@
-import { propsToObject } from '@/utils/ObjectUtilities'
 import { VvIconProps } from '@/components/VvIcon'
 import normal from '@/assets/icons/normal.json'
 import { ModifiersArgTypes } from '@/stories/argTypes'

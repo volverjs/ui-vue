@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.004" viewBox="0 0 16 16.004"><g transform="translate(0 0.002)"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(-948 -1896)"><path d="M22191,24962h-2.5v-2.707l.145-.15,6.5-6.5.063-.064a4.252,4.252,0,1,1,8.289-1.332,4.255,4.255,0,0,1-5.578,4.035l-.066.066-1.5,1.5-.145.15h-1.709v2h-2v1.705l-.143.15-1,1-.143.15Z" transform="translate(-21240 -23050.5)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="1"/><circle cx="1" cy="1" r="1" transform="translate(959 1899)"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.004" viewBox="0 0 16 16.004">
+    <g transform="translate(0 0.002)">
+        <g transform="translate(-948 -1896)">
+            <path
+                d="M22191,24962h-2.5v-2.707l.145-.15,6.5-6.5.063-.064a4.252,4.252,0,1,1,8.289-1.332,4.255,4.255,0,0,1-5.578,4.035l-.066.066-1.5,1.5-.145.15h-1.709v2h-2v1.705l-.143.15-1,1-.143.15Z"
+                transform="translate(-21240 -23050.5)" fill="none" stroke="#000" stroke-linejoin="round"
+                stroke-width="1" />
+            <circle cx="1" cy="1" r="1" transform="translate(959 1899)" />
+        </g>
+    </g>
+</svg>

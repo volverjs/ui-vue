@@ -2,6 +2,7 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { defaultArgs, argTypes } from './InputText.settings'
 import { defaultTest } from './InputText.test'
+import { Position } from '@/constants'
 
 <Meta
 	title="Components/InputText"
@@ -16,14 +17,14 @@ export const Template = (args) => ({
 		return { args }
 	},
 	data: () => ({ inputValue: undefined }),
-	template: `
+	template: /*html*/ `
 		<vv-input-text v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-			<template #before v-if="args.before"><div class="pl-sm flex" v-html="args.before"></div></template>
+			<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
+			<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
 		</vv-input-text>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-        `,
+    `,
 })
 
 <Canvas>
@@ -73,6 +74,7 @@ export const Template = (args) => ({
 			valid: true,
 			validLabel: 'The field is valid.',
 			icon: 'check',
+			iconPosition: Position.after,
 		}}
 		argTypes={{
 			valid: {
@@ -94,6 +96,7 @@ export const Template = (args) => ({
 			invalid: true,
 			invalidLabel: 'The field is required.',
 			icon: 'error-2',
+			iconPosition: Position.after,
 		}}
 		argTypes={{
 			invalid: {

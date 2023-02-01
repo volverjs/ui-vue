@@ -1,22 +1,12 @@
+import type { Ref, PropType, ExtractPropTypes } from 'vue'
+import type { ButtonGroupState } from '@/types/group'
 import {
-	type Ref,
-	type PropType,
-	type ExtractPropTypes,
-	toRefs,
-	ref,
-	computed,
-} from 'vue'
-import { DisabledProps, ModifiersProps, UnselectableProps } from '@/props'
-import type IButtonGroupState from '@/composables/group/types/IButtonGroupState'
-import { useInjectedGroupState } from '@/composables/group/useInjectedGroupState'
-import { VV_BUTTON_GROUP } from '@/constants'
-
-export enum ButtonIconPosition {
-	left = 'left',
-	right = 'right',
-	top = 'top',
-	bottom = 'bottom',
-}
+	DisabledProps,
+	IdProps,
+	ModifiersProps,
+	UnselectableProps,
+} from '@/props'
+import { INJECTION_KEY_BUTTON_GROUP, Side } from '@/constants'
 
 export enum ButtonType {
 	button = 'button',
@@ -41,23 +31,21 @@ export enum ButtonTarget {
 export const VvButtonEvents = ['update:modelValue']
 
 export const VvButtonProps = {
+	...IdProps,
 	...ModifiersProps,
 	...DisabledProps,
 	...UnselectableProps,
 	/**
 	 * Button icon
 	 */
-	icon: {
-		type: [String, Object],
-		default: '',
-	},
+	icon: [String, Object],
 	/**
 	 * Button icon position
 	 */
 	iconPosition: {
-		type: String as PropType<ButtonIconPosition>,
-		default: ButtonIconPosition.left,
-		validator: (value: string) => value in ButtonIconPosition,
+		type: String as PropType<Side>,
+		default: Side.left,
+		validator: (value: Side) => Object.values(Side).includes(value),
 	},
 	/**
 	 * Button label
@@ -94,7 +82,8 @@ export const VvButtonProps = {
 	 */
 	target: {
 		type: String as PropType<ButtonTarget>,
-		validator: (value: string) => value in ButtonTarget,
+		validator: (value: ButtonTarget) =>
+			Object.values(ButtonTarget).includes(value),
 	},
 	active: Boolean,
 	/**
@@ -114,7 +103,8 @@ export const VvButtonProps = {
 	type: {
 		type: String,
 		default: ButtonType.button,
-		validator: (value: string) => value in ButtonType,
+		validator: (value: ButtonType) =>
+			Object.values(ButtonType).includes(value),
 	},
 	toggle: {
 		type: Boolean,
@@ -133,10 +123,11 @@ export function useGroupProps(
 	emit: (event: (typeof VvButtonEvents)[number], value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
-		useInjectedGroupState<IButtonGroupState>(VV_BUTTON_GROUP)
+		useInjectedGroupState<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP)
 
 	// local props
 	const {
+		id,
 		iconPosition,
 		icon,
 		label,
@@ -180,6 +171,7 @@ export function useGroupProps(
 		unselectable,
 		multiple,
 		// local props
+		id,
 		modifiers,
 		pressed,
 		iconPosition,
