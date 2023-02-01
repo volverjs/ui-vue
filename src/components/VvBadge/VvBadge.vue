@@ -8,13 +8,13 @@
 	import { VvBadgeProps } from '@/components/VvBadge'
 
 	const props = defineProps(VvBadgeProps)
-	const { bemCssClasses } = useBemModifiers('vv-badge', {
-		modifiers: props.modifiers,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers('vv-badge', modifiers)
 </script>
 
 <template>
 	<span :class="bemCssClasses" role="status">
+		<!-- @slot Default slot -->
 		<slot>{{ value }}</slot>
 	</span>
 </template>

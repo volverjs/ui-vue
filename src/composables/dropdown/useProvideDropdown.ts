@@ -1,15 +1,15 @@
 import { type Ref, Fragment } from 'vue'
 import mitt from 'mitt'
 import {
-	dropdownTriggerInjectionKey,
-	dropdownItemInjectionKey,
-	dropdownActionInjectionKey,
-} from '@/composables/dropdown/keys'
-import {
 	type DropdownRole,
 	DROPDOWN_ROLES,
 	DROPDOWN_ITEM_ROLES,
 } from '@/components/VvDropdown/'
+import {
+	INJECTION_KEY_DROPDOWN_TRIGGER,
+	INJECTION_KEY_DROPDOWN_ACTION,
+	INJECTION_KEY_DROPDOWN_ITEM,
+} from '@/constants'
 
 /**
  * Share the dropdown reference and the event bus with all its children.
@@ -35,7 +35,7 @@ export function useProvideDropdownTrigger({
 		name: 'VvDropdownTriggerProvider',
 		provide() {
 			return {
-				[dropdownTriggerInjectionKey]: {
+				[INJECTION_KEY_DROPDOWN_TRIGGER]: {
 					reference,
 					id,
 					expanded,
@@ -74,7 +74,7 @@ export function useProvideDropdownItem({
 			? DROPDOWN_ITEM_ROLES[0]
 			: DROPDOWN_ITEM_ROLES[1],
 	)
-	provide(dropdownItemInjectionKey, {
+	provide(INJECTION_KEY_DROPDOWN_ITEM, {
 		role: itemRole,
 		expanded,
 	})
@@ -90,7 +90,7 @@ export function useProvideDropdownAction({
 }: {
 	expanded: Ref<boolean>
 }) {
-	provide(dropdownActionInjectionKey, {
+	provide(INJECTION_KEY_DROPDOWN_ACTION, {
 		role: 'menuitem',
 		expanded,
 	})

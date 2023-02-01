@@ -1,5 +1,4 @@
 import { DROPDOWN_ROLES, VvDropdownProps } from '@/components/VvDropdown'
-import { propsToObject } from '@/utils/ObjectUtilities'
 import { DropdownArgTypes } from '../argTypes'
 
 export const defaultArgs = {

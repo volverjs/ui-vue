@@ -17,7 +17,7 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		name="Before"
 		play={defaultTest}
 		args={{
-			before: '<div class="vv-badge vv-badge--sm uppercase">Before</vv-badge>',
+			before: '<div class="vv-badge vv-badge--sm vv-badge--gray vv-badge--outline uppercase">Before</div>',
 		}}
 		argTypes={{
 			before: {
@@ -36,7 +36,7 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 		name="After"
 		play={defaultTest}
 		args={{
-			after: '<div class="vv-badge vv-badge--sm uppercase">After</vv-badge>',
+			after: '<div class="vv-badge vv-badge--sm vv-badge--gray vv-badge--outline uppercase">After</div>',
 		}}
 		argTypes={{
 			after: {
@@ -81,9 +81,7 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 					<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
 					<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
 					<template #value="{ selectedOptions }">
-						<div class="flex gap-xs">
-							<div v-for="(option, index) in selectedOptions" :key="index" class="vv-badge vv-badge--sm uppercase">{{option}}</vv-badge>
-						</div>
+						<div v-for="(option, index) in selectedOptions" :key="index" class="vv-badge vv-badge--sm vv-badge--rounded vv-badge--outline uppercase">{{option}}</div>
 					</template>
 				</vv-combobox>
 				<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
@@ -123,8 +121,8 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 					<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
 					<template #after v-if="args.after"><div class="pr-sm flex" v-html="args.after"></div></template>
 					<template #option="{ option, selected }">
-						<div class="flex items-center" :class="{ 'bg-brand text-white n-sm p-sm': selected }">
-							<vv-icon :name="selected ? 'check-circle' : 'circle'" class="relative m-0 p-0" />
+						<div class="flex flex-1 items-center">
+							<vv-icon :name="selected ? 'check-circle' : 'circle'" />
 							<div class="flex-1 pl-sm">{{ option }}</div>
 						</div>
 					</template>

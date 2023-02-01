@@ -5,7 +5,7 @@ import { defaultArgs, argTypes } from './Tooltip.settings'
 import { defaultTest } from './Tooltip.test'
 
 <Meta
-	title="Components/Tooltip"
+	title="Components/Tooltip/Directive"
 	component={VvTooltip}
 	args={defaultArgs}
 	argTypes={argTypes}
@@ -17,12 +17,9 @@ export const Template = (args) => ({
 		return { args }
 	},
 	template: /* html */ `
-		<vv-button class="fixed left-1/2 top-1/2 -translate-1/2" data-testId="parent">
-			Hover me
-			<vv-tooltip v-bind="args">
-				<template #default v-if="args.default"><div v-html="args.default"></div></template>
-			</vv-tooltip>
-		</vv-button>
+		<vv-button v-tooltip:[args.position]="args.value" class="fixed left-1/2 top-1/2 -translate-1/2" data-testId="parent">
+            Hover me
+        </vv-button>
 	`,
 })
 

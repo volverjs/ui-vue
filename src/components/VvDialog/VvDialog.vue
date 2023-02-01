@@ -82,7 +82,7 @@
 							class="vv-dialog__close"
 							@click.passive="closeDialog"
 						>
-							<vv-icon name="close" />
+							<VvIcon name="close" />
 						</button>
 					</slot>
 				</header>

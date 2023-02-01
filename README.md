@@ -121,10 +121,11 @@ export default defineConfig({
 
 The following features are planned for the next releases:
 
-- [x] (v0.0.3) `VvAvatar` component;
-- [x] (v0.0.3) `VvTooltip` component;
-- [x] (v0.0.3) Redesign `VvCombobox` for better accessibility;
-- [x] (v0.0.3) Rewrite `VvDropdown` component and get it applicable to any element;
+- [x] (v0.0.3) `VvTooltip` component and `v-tooltip` directive;
+- [x] (v0.0.3) Redesign of `VvCombobox` for better accessibility and more features;
+- [x] (v0.0.3) Rewrite of `VvDropdown` to get it applicable to any element;
+- [ ] `VvAvatar` component;
+- [ ] `VvAvatarGroup` component;
 - [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] Menus, navigation and tabs with `VvNav`;

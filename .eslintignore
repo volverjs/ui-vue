@@ -1,7 +1,7 @@
-.eslintrc.js
 node_modules
-dist
-vendor
-storybook-static
+.eslintrc.js
 .vscode
+dist
+storybook-static
+vendor
 bin

@@ -1,10 +1,11 @@
 import type { ExtractPropTypes, Ref } from 'vue'
-import type { IInputGroupState } from '@/composables/group/types/IInputGroup'
-import { CheckboxRadioProps } from '@/props'
-import { VV_CHECK_GROUP } from '@/constants'
+import type { InputGroupState } from '@/types/group'
+import { CheckboxRadioProps, ModifiersProps } from '@/props'
+import { INJECTION_KEY_CHECK_GROUP } from '@/constants'
 
 export const VvCheckboxProps = {
 	...CheckboxRadioProps,
+	...ModifiersProps,
 	/**
 	 * If true, the input will be indeterminated
 	 */
@@ -31,7 +32,7 @@ export function useGroupProps(
 	emit: (event: (typeof VvCheckboxEvents)[number], value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
-		useInjectedGroupState<IInputGroupState>(VV_CHECK_GROUP)
+		useInjectedGroupState<InputGroupState>(INJECTION_KEY_CHECK_GROUP)
 
 	// local props
 	const { id, switch: propsSwitch, indeterminate } = toRefs(props)

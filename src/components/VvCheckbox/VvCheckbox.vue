@@ -11,7 +11,6 @@
 		useGroupProps,
 	} from '@/components/VvCheckbox'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
-	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emits and slots
 	const props = defineProps(VvCheckboxProps)
@@ -108,14 +107,19 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-checkbox', {
-		switch: propsSwitch,
-		valid,
-		invalid,
-		disabled,
-		readonly,
-		indeterminate,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers(
+		'vv-checkbox',
+		modifiers,
+		computed(() => ({
+			switch: propsSwitch.value,
+			valid: valid.value,
+			invalid: invalid.value,
+			disabled: disabled.value,
+			readonly: readonly.value,
+			indeterminate: indeterminate.value,
+		})),
+	)
 
 	watchEffect(() => {
 		if (isBinary.value && Array.isArray(modelValue.value)) {

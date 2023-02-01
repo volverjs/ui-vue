@@ -1,6 +1,13 @@
 import type { PropType } from 'vue'
 import type { Option } from '@/types/generic'
-import type { flip, autoPlacement, shift, offset } from '@floating-ui/vue'
+import type {
+	AutoPlacementOptions,
+	FlipOptions,
+	OffsetOptions,
+	ShiftOptions,
+	SizeOptions,
+} from '@/types/floating-ui'
+import { Placement, Position, Side } from '@/constants'
 
 export const ValidProps = {
 	valid: Boolean,
@@ -83,12 +90,6 @@ export const DebounceProps = {
 	debounce: [Number, String],
 }
 
-export const ICON_POSITIONS = {
-	LEFT: 'left',
-	RIGHT: 'right',
-} as const
-export type IconPosition = ValueOf<typeof ICON_POSITIONS>
-
 export const IconProps = {
 	/**
 	 * VvIcon name or props
@@ -99,10 +100,10 @@ export const IconProps = {
 	 * VvIcon position
 	 */
 	iconPosition: {
-		type: String as PropType<IconPosition>,
-		validation: (value: IconPosition) =>
-			Object.values(ICON_POSITIONS).includes(value),
-		default: ICON_POSITIONS.RIGHT,
+		type: String as PropType<Position>,
+		default: Position.before,
+		validation: (value: Position) =>
+			Object.values(Position).includes(value),
 	},
 }
 
@@ -136,36 +137,19 @@ export const IdProps = {
 	id: [String, Number],
 }
 
-export const DROPDOWN_PLACEMENTS = [
-	'top',
-	'top-start',
-	'top-end',
-	'bottom',
-	'bottom-start',
-	'bottom-end',
-	'left',
-	'left-start',
-	'left-end',
-	'right',
-	'right-start',
-	'right-end',
-] as const
-
-export type AutoPlacementOptions = Parameters<typeof autoPlacement>[0]
-export type FlipOptions = Parameters<typeof flip>[0]
-export type ShiftOptions = Parameters<typeof shift>[0]
-export type OffsetOptions = Parameters<typeof offset>[0]
-export type DropdownPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
-
 export const DropdownProps = {
 	/**
 	 * Dropdown placement
 	 */
 	placement: {
-		type: String as PropType<DropdownPlacement>,
-		default: 'bottom',
-		validate: (value: string) =>
-			(DROPDOWN_PLACEMENTS as ReadonlyArray<string>).includes(value),
+		type: String as PropType<Side | Placement>,
+		default: Side.bottom,
+		validator: (value: Side & Placement) => {
+			return (
+				Object.values(Side).includes(value) ||
+				Object.values(Placement).includes(value)
+			)
+		},
 	},
 	/**
 	 * Dropdown show / hide transition name
@@ -198,6 +182,14 @@ export const DropdownProps = {
 	flip: {
 		type: [Boolean, Object] as PropType<FlipOptions | boolean>,
 		default: true,
+	},
+	/**
+	 * Size of the dropdown
+	 * @see https://floating-ui.com/docs/size
+	 */
+	size: {
+		type: [Boolean, Object] as PropType<SizeOptions | boolean>,
+		default: () => ({ padding: 10 }),
 	},
 	/**
 	 * Automatically change the position of the dropdown
@@ -321,6 +313,7 @@ export const CheckboxRadioProps = {
 	...HintProps,
 	...DisabledProps,
 	...ReadonlyProps,
+	...ModifiersProps,
 	/**
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
@@ -343,6 +336,7 @@ export const CheckboxRadioGroupProps = {
 	...HintProps,
 	...DisabledProps,
 	...ReadonlyProps,
+	...ModifiersProps,
 	/**
 	 * Input value
 	 */

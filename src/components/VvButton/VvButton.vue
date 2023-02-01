@@ -5,20 +5,14 @@
 </script>
 
 <script setup lang="ts">
-	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import {
-		ButtonIconPosition,
 		VvButtonEvents,
 		ButtonTag,
 		VvButtonProps,
 		useGroupProps,
 	} from '@/components/VvButton'
-	import {
-		useInjectedDropdownAction,
-		useInjectedDropdownTrigger,
-	} from '@/composables/dropdown/useInjectDropdown'
-	import { useUniqueId } from '@/composables/useUniqueId'
+	import { Side } from '@/constants'
 
 	// props, attrs, slots and emit
 	const props = defineProps(VvButtonProps)
@@ -41,8 +35,8 @@
 	const hasId = useUniqueId(id)
 	const name = computed(() => (attrs?.name as string) || hasId.value)
 
-	// inject Volver
-	const ds = inject<IVolver>(VOLVER_PREFIX)
+	// inject plugin
+	const volver = useVolver()
 
 	// expose el
 	const $el = ref<HTMLElement | null>(null)
@@ -75,7 +69,7 @@
 			case disabled.value:
 				return ButtonTag.button
 			case props.to !== undefined:
-				return ds?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
+				return volver?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
 			case props.href !== undefined:
 				return ButtonTag.a
 			default:
@@ -99,25 +93,18 @@
 	 * @description Define component classes with BEM style.
 	 * @returns {Array} The component classes.
 	 */
-	const { bemCssClasses } = useBemModifiers('vv-button', {
+	const bemCssClasses = useBemModifiers(
+		'vv-button',
 		modifiers,
-		active: props.active,
-		pressed: isPressed,
-		disabled,
-		reverse: computed(() =>
-			[ButtonIconPosition.right, ButtonIconPosition.bottom].includes(
-				iconPosition.value,
-			),
-		),
-		column: computed(() =>
-			[ButtonIconPosition.top, ButtonIconPosition.bottom].includes(
-				iconPosition.value,
-			),
-		),
-		iconOnly: computed(
-			() => icon?.value && !label?.value && !slots['default'],
-		),
-	})
+		computed(() => ({
+			active: props.active,
+			pressed: isPressed.value,
+			disabled: disabled.value,
+			reverse: [Side.right, Side.bottom].includes(iconPosition.value),
+			column: [Side.top, Side.bottom].includes(iconPosition.value),
+			iconOnly: Boolean(icon?.value && !label?.value && !slots.default),
+		})),
+	)
 
 	/**
 	 * @description Define icon attributes.
@@ -216,11 +203,11 @@
 		@mouseover.passive="onMouseover"
 		@mouseleave.passive="onMouseleave"
 	>
-		<!-- @slot Replace all button content -->
+		<!-- @slot Default slot -->
 		<slot>
 			<!-- #region loading -->
 			<template v-if="loading">
-				<!-- @slot Replace all button content on loading -->
+				<!-- @slot Slot for loading content -->
 				<slot name="loading">
 					<VvIcon
 						v-if="loadingIcon"
@@ -232,29 +219,25 @@
 					</span>
 				</slot>
 			</template>
-			<!-- #endregion loading -->
+			<!-- #endregion -->
 			<!-- #region button -->
 			<template v-else>
 				<!-- @slot Before label and icon -->
 				<slot name="before" />
-				<!-- #region icon -->
 				<template v-if="icon">
 					<VvIcon class="vv-button__icon" v-bind="hasIconProps" />
 				</template>
-				<!-- #endregion icon -->
-				<!-- #region label  -->
 				<span v-if="label" class="vv-button__label">
 					<!-- @slot Use this slot for button label -->
 					<slot name="label">
 						{{ label }}
 					</slot>
 				</span>
-				<!-- #endregion label  -->
 				<!-- @slot After label and icon -->
 				<slot name="after" />
 			</template>
-			<!-- #endregion button -->
+			<!-- #endregion -->
 		</slot>
 	</component>
-	<!-- #endregion component: button | a | router-link | nuxt-link -->
+	<!-- #endregion -->
 </template>

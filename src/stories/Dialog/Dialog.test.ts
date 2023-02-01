@@ -15,11 +15,11 @@ export async function defaultTest(
 	)) as HTMLButtonElement
 
 	// hidden
-	expect(element?.style.display).toEqual('none')
+	await expect(element?.style.display).toEqual('none')
 
 	// open
 	await userEvent.click(button)
-	expect(element).toHaveProperty('open', true)
+	await expect(element).toHaveProperty('open', true)
 
 	// check accessibility
 	await expect(element).toHaveNoViolations()
@@ -63,7 +63,7 @@ export async function defaultTest(
 	if (args.autoClose) {
 		await userEvent.click(element)
 		await sleep(1000)
-		expect(element).toHaveProperty('open', false)
-		expect(element?.style.display).toEqual('none')
+		await expect(element).toHaveProperty('open', false)
+		await expect(element?.style.display).toEqual('none')
 	}
 }

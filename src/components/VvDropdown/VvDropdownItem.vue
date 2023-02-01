@@ -5,14 +5,19 @@
 </script>
 
 <script setup lang="ts">
-	import { useInjectedDropdownItem } from '@/composables/dropdown/useInjectDropdown'
-	import { useProvideDropdownAction } from '@/composables/dropdown/useProvideDropdown'
-
 	const { role, expanded } = useInjectedDropdownItem()
 	const element = ref(null)
 	useProvideDropdownAction({ expanded })
+	const hovered = useElementHover(element)
 	const { focused } = useFocus(element)
 	const { focused: focusedWithin } = useFocusWithin(element)
+
+	// focus item on hover
+	watch(hovered, (newValue) => {
+		if (newValue) {
+			focused.value = true
+		}
+	})
 </script>
 
 <template>

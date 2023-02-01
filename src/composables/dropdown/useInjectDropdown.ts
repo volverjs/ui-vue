@@ -1,11 +1,11 @@
 import type { Ref } from 'vue'
 import type { Emitter, EventType } from 'mitt'
-import {
-	dropdownTriggerInjectionKey,
-	dropdownItemInjectionKey,
-	dropdownActionInjectionKey,
-} from '@/composables/dropdown/keys'
 import type { DropdownItemRole } from '@/components/VvDropdown/'
+import {
+	INJECTION_KEY_DROPDOWN_TRIGGER,
+	INJECTION_KEY_DROPDOWN_ACTION,
+	INJECTION_KEY_DROPDOWN_ITEM,
+} from '@/constants'
 
 /**
  * Injects dropdown reference and the event bus
@@ -23,7 +23,7 @@ export function useInjectedDropdownTrigger():
 			}>
 	  }
 	| Record<string, never> {
-	return inject(dropdownTriggerInjectionKey, {})
+	return inject(INJECTION_KEY_DROPDOWN_TRIGGER, {})
 }
 
 /**
@@ -35,7 +35,7 @@ export function useInjectedDropdownItem():
 			expanded: Ref<boolean>
 	  }
 	| Record<string, never> {
-	return inject(dropdownItemInjectionKey, {})
+	return inject(INJECTION_KEY_DROPDOWN_ITEM, {})
 }
 
 /**
@@ -47,5 +47,5 @@ export function useInjectedDropdownAction():
 			expanded: Ref<boolean>
 	  }
 	| Record<string, never> {
-	return inject(dropdownActionInjectionKey, {})
+	return inject(INJECTION_KEY_DROPDOWN_ACTION, {})
 }

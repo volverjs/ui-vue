@@ -225,7 +225,10 @@ export function propsToObject(props: any) {
 				return accumulator
 			}
 			if ('default' in props[key]) {
-				accumulator[key] = props[key].default
+				accumulator[key] =
+					typeof props[key].default === 'function'
+						? props[key].default()
+						: props[key].default
 				return accumulator
 			}
 			if (isFunction(props[key])) {

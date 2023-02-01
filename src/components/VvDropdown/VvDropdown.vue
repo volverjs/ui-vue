@@ -15,20 +15,16 @@
 		shift,
 		autoPlacement,
 		arrow,
+		size,
 	} from '@floating-ui/vue'
-	import {
-		useProvideDropdownTrigger,
-		useProvideDropdownItem,
-	} from '@/composables/dropdown/useProvideDropdown'
-	import { useUniqueId } from '@/composables/useUniqueId'
-	import { useBemModifiers } from '@/composables/useModifiers'
-	import { VvDropdownProps } from '.'
+	import { VvDropdownProps } from '@/components/VvDropdown'
 	import type {
 		AutoPlacementOptions,
 		FlipOptions,
 		OffsetOptions,
 		ShiftOptions,
-	} from '@/props'
+		SizeOptions,
+	} from '@/types/floating-ui'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -36,11 +32,14 @@
 	const { id } = toRefs(props)
 	const hasId = useUniqueId(id)
 	const attrs = useAttrs()
+	const maxWidth = ref('auto')
+	const maxHeight = ref('auto')
 
 	// template elements
 	const localReferenceEl = ref<HTMLElement | null>(null)
 	const floatingEl: Ref<HTMLElement | null> = ref(null)
 	const arrowEl = ref<HTMLElement | null>(null)
+	const listEl = ref<HTMLUListElement | null>(null)
 	const referenceEl = computed({
 		get: () => props.reference ?? localReferenceEl.value,
 		set: (newValue) => {
@@ -73,6 +72,33 @@
 				toReturn.push(shift())
 			} else {
 				toReturn.push(shift(props.shift as ShiftOptions))
+			}
+		}
+
+		if (props.size) {
+			const apply = ({
+				availableWidth,
+				availableHeight,
+			}: {
+				availableWidth: number
+				availableHeight: number
+			}) => {
+				maxWidth.value = `${availableWidth}px`
+				maxHeight.value = `${availableHeight}px`
+			}
+			if (typeof props.size === 'boolean') {
+				toReturn.push(
+					size({
+						apply,
+					}),
+				)
+			} else {
+				toReturn.push(
+					size({
+						...(props.size as SizeOptions),
+						apply,
+					}),
+				)
 			}
 		}
 
@@ -109,6 +135,8 @@
 		position: strategy.value,
 		top: `${y.value ?? 0}px`,
 		left: `${x.value ?? 0}px`,
+		maxWidth: maxWidth.value,
+		maxHeight: maxHeight.value,
 		width:
 			props.triggerWidth && referenceEl.value
 				? `${referenceEl.value.offsetWidth}px`
@@ -170,7 +198,12 @@
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {
 				// focus first item
-				focusFirst()
+				const focusableElements = getKeyboardFocusableElements(
+					floatingEl.value,
+				)
+				if (focusableElements.length > 0) {
+					focusableElements[0].focus()
+				}
 			})
 		}
 	})
@@ -209,55 +242,45 @@
 	const { itemRole } = useProvideDropdownItem({ role, expanded })
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-dropdown', {
+	const bemCssClasses = useBemModifiers(
+		'vv-dropdown',
 		modifiers,
-		arrow: props.arrow,
-	})
+		computed(() => ({
+			arrow: props.arrow,
+		})),
+	)
 
 	// focus
 	const { focused } = useFocusWithin(floatingEl)
-	const focusFirst = () => {
-		nextTick(() => {
-			// focus first item
-			const firstItem = floatingEl.value?.querySelector(
-				'li:first-child',
-			) as HTMLElement | undefined
-			const firstAction = (firstItem?.firstElementChild ?? firstItem) as
-				| HTMLElement
-				| undefined
-			if (firstAction) {
-				firstAction.focus()
-			}
-		})
-	}
-	const focusLast = () => {
-		nextTick(() => {
-			// focus first item
-			const lastItem = floatingEl.value?.querySelector(
-				'li:last-child',
-			) as HTMLElement | undefined
-			const lastAction = (lastItem?.firstElementChild ?? lastItem) as
-				| HTMLElement
-				| undefined
-
-			if (lastAction) {
-				lastAction.focus()
-			}
-		})
+	function getKeyboardFocusableElements(element: Element | null) {
+		if (!element) {
+			return []
+		}
+		return [
+			...element.querySelectorAll(
+				'a[href], button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])',
+			),
+		].filter(
+			(el) =>
+				!el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'),
+		) as HTMLElement[]
 	}
 	const focusNext = () => {
 		nextTick(() => {
 			if (focused.value) {
-				const nextItem = (document.activeElement?.nextElementSibling ??
-					document.activeElement?.parentElement
-						?.nextElementSibling) as HTMLElement | undefined
-				const nextAction = (nextItem?.firstElementChild ?? nextItem) as
-					| HTMLElement
-					| undefined
-				if (nextAction) {
-					nextAction.focus()
+				const focusableElements = getKeyboardFocusableElements(
+					floatingEl.value,
+				)
+				if (focusableElements.length === 0 || !document.activeElement) {
+					return
+				}
+				const activeElementIndex = focusableElements.indexOf(
+					document.activeElement as HTMLElement,
+				)
+				if (activeElementIndex < focusableElements.length - 1) {
+					focusableElements[activeElementIndex + 1].focus()
 				} else {
-					focusFirst()
+					focusableElements[0].focus()
 				}
 			}
 		})
@@ -265,17 +288,19 @@
 	const focusPrev = () => {
 		nextTick(() => {
 			if (focused.value) {
-				const prevItem = (document.activeElement
-					?.previousElementSibling ??
-					document.activeElement?.parentElement
-						?.previousElementSibling) as HTMLElement | undefined
-				const prevAction = (prevItem?.firstElementChild ?? prevItem) as
-					| HTMLElement
-					| undefined
-				if (prevAction) {
-					prevAction.focus()
+				const focusableElements = getKeyboardFocusableElements(
+					floatingEl.value,
+				)
+				if (focusableElements.length === 0 || !document.activeElement) {
+					return
+				}
+				const activeElementIndex = focusableElements.indexOf(
+					document.activeElement as HTMLElement,
+				)
+				if (activeElementIndex > 0) {
+					focusableElements[activeElementIndex - 1].focus()
 				} else {
-					focusLast()
+					focusableElements[focusableElements.length - 1].focus()
 				}
 			}
 		})
@@ -303,7 +328,8 @@
 	onKeyStroke([' ', 'Enter'], (e) => {
 		if (expanded.value && focused.value) {
 			e.preventDefault()
-			;(document.activeElement as HTMLElement)?.click()
+			const activeElement = document.activeElement as HTMLElement
+			activeElement.click()
 		}
 	})
 </script>
@@ -331,6 +357,7 @@
 			<ul
 				v-bind="attrs"
 				:id="hasId"
+				ref="listEl"
 				:tabindex="!expanded ? -1 : undefined"
 				:role="role"
 				:aria-labelledby="hasAriaLabelledby"

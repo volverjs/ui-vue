@@ -31,7 +31,7 @@ export const VvDropdownProps = {
 	role: {
 		type: String as PropType<DropdownRole>,
 		default: DROPDOWN_ROLES[1],
-		validate: (value: string) =>
+		validator: (value: string) =>
 			(DROPDOWN_ROLES as ReadonlyArray<string>).includes(value),
 	},
 }

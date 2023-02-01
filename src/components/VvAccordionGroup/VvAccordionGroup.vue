@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
-	import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-	import { VV_ACCORDION_GROUP } from '@/constants'
+	import type { AccordionGroupState } from '@/types/group'
+	import { INJECTION_KEY_ACCORDION_GROUP } from '@/constants'
 	import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 	import {
 		VvAccordionGroupProps,
@@ -61,26 +61,29 @@
 	})
 
 	// provide
-	const accordionGroupState: IAccordionGroupState = {
-		key: VV_ACCORDION_GROUP,
+	useProvideGroupState<AccordionGroupState>({
+		key: INJECTION_KEY_ACCORDION_GROUP,
 		modelValue,
 		disabled,
 		collapse,
 		modifiers: itemModifiers,
-	}
-	useProvideGroupState(accordionGroupState)
+	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-accordion-group', {
+	const bemCssClasses = useBemModifiers(
+		'vv-accordion-group',
 		modifiers,
-		disabled,
-	})
+		computed(() => ({
+			disabled: disabled.value,
+		})),
+	)
 </script>
 
 <template>
 	<div :class="bemCssClasses">
+		<!-- @slot Default slot -->
 		<slot>
-			<vv-accordion
+			<VvAccordion
 				v-for="item in items"
 				:key="item.title"
 				v-bind="{
@@ -90,12 +93,14 @@
 				}"
 			>
 				<template #header="data">
+					<!-- @slot Slot for accordion header -->
 					<slot v-bind="data" :name="`header::${item.name}`" />
 				</template>
 				<template #details="data">
+					<!-- @slot Slot for accordion details -->
 					<slot v-bind="data" :name="`details::${item.name}`" />
 				</template>
-			</vv-accordion>
+			</VvAccordion>
 		</slot>
 	</div>
 </template>

@@ -1,5 +1,5 @@
 import normal from '@/assets/icons/normal.json'
-import { DROPDOWN_PLACEMENTS } from '@/props'
+import { Placement, Position, Side } from '@/constants'
 
 export const ValidArgTypes = {
 	valid: {
@@ -111,12 +111,12 @@ export const IconArgTypes = {
 	},
 	iconPosition: {
 		description: 'VvIcon position',
-		options: ['', 'left', 'right'],
+		options: ['', ...Object.values(Position)],
 		control: {
 			type: 'select',
 		},
 		table: {
-			defaultValue: { summary: 'right' },
+			defaultValue: { summary: Position.before },
 		},
 	},
 }
@@ -290,7 +290,7 @@ export const IdNameArgTypes = {
 export const DropdownArgTypes = {
 	placement: {
 		description: 'Dropdown placement',
-		options: DROPDOWN_PLACEMENTS,
+		options: [...Object.values(Placement), ...Object.values(Side)],
 		control: {
 			type: 'select',
 		},
@@ -342,6 +342,21 @@ export const DropdownArgTypes = {
 		table: {
 			defaultValue: {
 				summary: true,
+			},
+			type: {
+				summary: ['boolean', 'object'],
+			},
+		},
+	},
+	size: {
+		description:
+			'Change the size of the dropdown to not overflow the viewport',
+		control: {
+			type: 'object',
+		},
+		table: {
+			defaultValue: {
+				summary: '{ "padding": 10 }',
 			},
 			type: {
 				summary: ['boolean', 'object'],

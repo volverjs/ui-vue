@@ -73,10 +73,13 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-accordion', {
+	const bemCssClasses = useBemModifiers(
+		'vv-accordion',
 		modifiers,
-		disabled,
-	})
+		computed(() => ({
+			disabled: disabled.value,
+		})),
+	)
 
 	// methods
 	const onClick = useToggle(isOpen)
@@ -94,11 +97,13 @@
 			:aria-expanded="isOpen"
 			class="vv-collapse__summary"
 		>
+			<!-- @slot Slot for title -->
 			<slot name="summary" v-bind="{ open: isOpen }">
 				{{ title }}
 			</slot>
 		</summary>
 		<div :aria-hidden="!isOpen" class="vv-collapse__content">
+			<!-- @slot Slot for content  -->
 			<slot name="details" v-bind="{ open: isOpen }">
 				{{ content }}
 			</slot>

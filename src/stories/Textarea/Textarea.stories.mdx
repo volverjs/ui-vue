@@ -18,9 +18,9 @@ export const Template = (args) => ({
 	data: () => ({ inputValue: undefined }),
 	template: /*html*/ `
 		<vv-textarea v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-			<template #before v-if="args.before"><div class="pt-sm pl-sm flex" v-html="args.before"></div></template>
+			<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
+			<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			<template #after v-if="args.after"><div class="pt-sm pr-sm flex" v-html="args.after"></div></template>
 		</vv-textarea>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
 	`,

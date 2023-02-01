@@ -6,15 +6,9 @@
 
 <script setup lang="ts">
 	import type { SelectHTMLAttributes } from 'vue'
-	import { isEmpty } from '@/utils/ObjectUtilities'
-	import { useBemModifiers } from '@/composables/useModifiers'
-	import { useComponentIcon } from '@/composables/useComponentIcons'
-	import { useOptions } from '@/composables/useOptions'
-	import { useComponentFocus } from '@/composables/useComponentFocus'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import { VvSelectProps, VvSelectEmits } from '@/components/VvSelect'
-	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit and slots
 	const props = defineProps(VvSelectProps)
@@ -58,7 +52,7 @@
 	})
 
 	// icons
-	const { hasIcon, hasIconLeft, hasIconRight } = useComponentIcon(
+	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
 		icon,
 		iconPosition,
 	)
@@ -84,20 +78,23 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-select', {
+	const bemCssClasses = useBemModifiers(
+		'vv-select',
 		modifiers,
-		valid,
-		invalid,
-		loading,
-		disabled,
-		readonly,
-		iconLeft: hasIconLeft,
-		iconRight: hasIconRight,
-		dirty: isDirty,
-		focus: focused,
-		floating,
-		multiple,
-	})
+		computed(() => ({
+			valid: valid.value,
+			invalid: invalid.value,
+			loading: loading.value,
+			disabled: disabled.value,
+			readonly: readonly.value,
+			'icon-before': hasIconBefore.value,
+			'icon-after': hasIconAfter.value,
+			dirty: isDirty.value,
+			focus: focused.value,
+			floating: floating.value,
+			multiple: multiple.value,
+		})),
+	)
 
 	// attrs
 	const hasAttrs: SelectHTMLAttributes = computed(() => {
@@ -120,6 +117,13 @@
 		}
 	})
 
+	// slots
+	const slotProps = computed(() => ({
+		valid: props.valid,
+		invalid: props.invalid,
+		modelValue: props.modelValue,
+	}))
+
 	const { getOptionLabel, getOptionValue, getOptionDisabled } =
 		useOptions(props)
 
@@ -141,35 +145,49 @@
 		<label v-if="label" :for="hasId">{{ label }}</label>
 		<!-- #region native select -->
 		<div class="vv-select__wrapper">
-			<slot name="before">
-				<vv-icon v-if="hasIconLeft" v-bind="hasIcon" />
-			</slot>
-			<select
-				:id="hasId"
-				ref="select"
-				v-model="localModelValue"
-				v-bind="hasAttrs"
-			>
-				<option
-					v-if="placeholder"
-					:value="undefined"
-					:disabled="!unselectable"
-					:hidden="!unselectable"
+			<div v-if="$slots.before" class="vv-select__input-before">
+				<!-- @slot Slot before input -->
+				<slot name="before" v-bind="slotProps" />
+			</div>
+			<div class="vv-select__inner">
+				<VvIcon
+					v-if="hasIconBefore"
+					class="vv-select__icon"
+					v-bind="hasIcon"
+				/>
+				<select
+					:id="hasId"
+					ref="select"
+					v-model="localModelValue"
+					v-bind="hasAttrs"
 				>
-					{{ placeholder }}
-				</option>
-				<option
-					v-for="(option, index) in options"
-					:key="index"
-					:disabled="getOptionDisabled(option)"
-					:value="getOptionValue(option)"
-				>
-					{{ getOptionLabel(option) }}
-				</option>
-			</select>
-			<slot name="after">
-				<vv-icon v-if="hasIconRight" v-bind="hasIcon" />
-			</slot>
+					<option
+						v-if="placeholder"
+						:value="undefined"
+						:disabled="!unselectable"
+						:hidden="!unselectable"
+					>
+						{{ placeholder }}
+					</option>
+					<option
+						v-for="(option, index) in options"
+						:key="index"
+						:disabled="getOptionDisabled(option)"
+						:value="getOptionValue(option)"
+					>
+						{{ getOptionLabel(option) }}
+					</option>
+				</select>
+				<VvIcon
+					v-if="hasIconAfter"
+					class="vv-select__icon vv-select__icon-after"
+					v-bind="hasIcon"
+				/>
+			</div>
+			<div v-if="$slots.after" class="vv-select__input-after">
+				<!-- @slot Slot after input -->
+				<slot name="after" v-bind="slotProps" />
+			</div>
 		</div>
 		<!-- #endregion native select -->
 		<HintSlot :id="hasDescribedBy" class="vv-select__hint" />

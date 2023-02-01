@@ -2,17 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.3] - 2023-01-24
+## [0.0.3] - 2023-02-01
 
 ### Added
 
-- `VvAvatar` component;
-- `VvTooltip` component.
+- `VvTooltip` component and `v-tooltip` directive.
 
 ### Fixed
 
-- Redesign `VvCombobox` for better accessibility;
-- Rewrite `VvDropdown` component, now is applicable to any element.
+- Redesign of `VvCombobox` for better accessibility and more flexibility;
+- Rewrite of `VvDropdown`, now is applicable to any element with `@floating-ui/vue`.
 
 ## [0.0.2] - 2023-01-18
 

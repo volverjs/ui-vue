@@ -13,17 +13,19 @@
 	const indeterminate = computed(() => props.value === undefined)
 
 	// styles
-	const { bemCssClasses: hasClass } = useBemModifiers('vv-progress', {
-		modifiers: props.modifiers,
-		indeterminate,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers(
+		'vv-progress',
+		modifiers,
+		computed(() => ({ indeterminate: indeterminate.value })),
+	)
 </script>
 
 <template>
 	<progress
 		role="progressbar"
 		v-bind="{
-			class: hasClass,
+			class: bemCssClasses,
 			ariaLabel,
 			max,
 			value,

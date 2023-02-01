@@ -5,15 +5,12 @@
 </script>
 
 <script setup lang="ts">
-	import { contains, equals } from '@/utils/ObjectUtilities'
-	import { useBemModifiers } from '@/composables/useModifiers'
 	import {
 		VvRadioProps,
 		VvRadioEvents,
 		useGroupProps,
 	} from '@/components/VvRadio'
 	import { HintSlotFactory } from '@/components/common/HintSlot'
-	import { useUniqueId } from '@/composables/useUniqueId'
 
 	// props, emit and slots
 	const props = defineProps(VvRadioProps)
@@ -65,12 +62,17 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-radio', {
-		valid,
-		invalid,
-		disabled,
-		readonly,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useBemModifiers(
+		'vv-radio',
+		modifiers,
+		computed(() => ({
+			valid: valid.value,
+			invalid: invalid.value,
+			disabled: disabled.value,
+			readonly: readonly.value,
+		})),
+	)
 
 	// hint
 	const { HintSlot } = HintSlotFactory(props, slots)
