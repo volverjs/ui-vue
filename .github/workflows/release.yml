@@ -43,6 +43,8 @@ jobs:
                   name: package
                   path: '*.tgz'
             - name: Build stileguide
+              env:
+                  NODE_OPTIONS: '--max_old_space_size=4096'
               run: pnpm styleguide
             - name: Setup GitHub Pages
               uses: actions/configure-pages@v2
