@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
 import ESLint from 'vite-plugin-eslint'
+import AutoImport from 'unplugin-auto-import/vite'
 import { paramCase } from 'change-case'
 
 // eslint-disable-next-line no-undef
@@ -20,7 +21,22 @@ packageJson.exports = {
 }
 
 const baseConfig = {
-	plugins: [vue(), externalizeDeps(), ESLint()],
+	plugins: [
+		vue(),
+		externalizeDeps(),
+		ESLint(),
+		AutoImport({
+			// global imports to register
+			imports: ['vue', '@vueuse/core'],
+			// Auto import for module exports under directories
+			// by default it only scan one level of modules under the directory
+			dirs: ['./src/composables/**', './src/utils/'],
+			dts: true,
+			eslintrc: {
+				enabled: true,
+			},
+		}),
+	],
 	configFile: false,
 	resolve: {
 		alias: {
@@ -45,26 +61,6 @@ build({
 			name: 'volver',
 			entry: './src/index.ts',
 			fileName: (format) => `index.${format}.js`,
-		},
-	},
-})
-
-// build components library
-packageJson.exports['./components'] = {
-	types: './dist/components/index.d.ts',
-	import: './dist/components/index.es.js',
-	default: './dist/components/index.umd.js',
-}
-build({
-	...baseConfig,
-	build: {
-		watch,
-		minify,
-		emptyOutDir: false,
-		lib: {
-			name: 'components',
-			entry: './src/components/index.ts',
-			fileName: (format) => `components/index.${format}.js`,
 		},
 	},
 })
@@ -124,52 +120,123 @@ build({
 	},
 })
 
-// build components
-glob('./src/components/**/!(_*).vue', async (err, files) => {
-	const sources = files.map((entry) => {
-		const exportName = entry.replace(/.\/src\/|.vue|\/index/gm, '')
-		const splittedExportName = exportName.split('/')
-		const name = splittedExportName.pop()
-		return {
-			name,
-			entry,
-		}
-	})
-
-	// build
-	await Promise.all(
-		sources.map(({ name, entry }) => {
-			const paramCaseName = paramCase(name)
-			const subPath = `components/${name}/${name}`
-			packageJson.exports[`./${paramCaseName}`] = {
-				types: `./dist/${subPath}.vue.d.ts`,
-				import: `./dist/${subPath}.es.js`,
-				default: `./dist/${subPath}.umd.js`,
-			}
-
-			return build({
-				...baseConfig,
-				build: {
-					watch: hot ? {} : undefined,
-					minify: hot ? false : undefined,
-					lib: {
-						name,
-						entry,
-						fileName: (format) => `${subPath}.${format}.js`,
-					},
-					emptyOutDir: false,
-				},
-			})
-		}),
-	)
-
-	// sort exports
-	packageJson.exports = Object.keys(packageJson.exports)
-		.sort((a, b) => (a === '.' ? -1 : b === '.' ? 1 : a > b))
-		.reduce((exports, key) => {
-			exports[key] = packageJson.exports[key]
-			return exports
-		}, {})
-
-	fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2))
+// build directives library
+packageJson.exports['./directives'] = {
+	types: './dist/directives/index.d.ts',
+	import: './dist/directives/index.es.js',
+	default: './dist/directives/index.umd.js',
+}
+build({
+	...baseConfig,
+	build: {
+		watch,
+		minify,
+		emptyOutDir: false,
+		lib: {
+			name: 'directives',
+			entry: './src/directives/index.ts',
+			fileName: (format) => `directives/index.${format}.js`,
+		},
+	},
 })
+
+// build single directives
+const directives = glob.sync('./src/directives/v-!(_*).ts')
+const directivesSources = directives.map((entry) => {
+	const exportName = entry.replace(/.\/src\/|.ts|\/index/gm, '')
+	const splittedExportName = exportName.split('/')
+	const name = splittedExportName.pop()
+	return {
+		name,
+		entry,
+	}
+})
+directivesSources.forEach(({ name, entry }) => {
+	const paramCaseName = paramCase(name)
+	const subPath = `directives/${name}`
+	packageJson.exports[`./${paramCaseName}`] = {
+		types: `./dist/${subPath}.d.ts`,
+		import: `./dist/${subPath}.es.js`,
+		default: `./dist/${subPath}.umd.js`,
+	}
+
+	build({
+		...baseConfig,
+		build: {
+			watch: hot ? {} : undefined,
+			minify: hot ? false : undefined,
+			lib: {
+				name,
+				entry,
+				fileName: (format) => `${subPath}.${format}.js`,
+			},
+			emptyOutDir: false,
+		},
+	})
+})
+
+// build components library
+packageJson.exports['./components'] = {
+	types: './dist/components/index.d.ts',
+	import: './dist/components/index.es.js',
+	default: './dist/components/index.umd.js',
+}
+build({
+	...baseConfig,
+	build: {
+		watch,
+		minify,
+		emptyOutDir: false,
+		lib: {
+			name: 'components',
+			entry: './src/components/index.ts',
+			fileName: (format) => `components/index.${format}.js`,
+		},
+	},
+})
+
+// build single components
+const components = glob.sync('./src/components/**/!(_*).vue')
+const componentsSources = components.map((entry) => {
+	const exportName = entry.replace(/.\/src\/|.vue|\/index/gm, '')
+	const splittedExportName = exportName.split('/')
+	const name = splittedExportName.pop()
+	return {
+		name,
+		entry,
+	}
+})
+componentsSources.forEach(({ name, entry }) => {
+	const paramCaseName = paramCase(name)
+	const subPath = `components/${name}/${name}`
+	packageJson.exports[`./${paramCaseName}`] = {
+		types: `./dist/${subPath}.vue.d.ts`,
+		import: `./dist/${subPath}.es.js`,
+		default: `./dist/${subPath}.umd.js`,
+	}
+
+	build({
+		...baseConfig,
+		build: {
+			watch: hot ? {} : undefined,
+			minify: hot ? false : undefined,
+			lib: {
+				name,
+				entry,
+				fileName: (format) => `${subPath}.${format}.js`,
+			},
+			emptyOutDir: false,
+		},
+	})
+})
+
+// sort exports
+packageJson.exports = Object.keys(packageJson.exports)
+	.sort((a, b) => (a === '.' ? -1 : b === '.' ? 1 : a > b))
+	.reduce((exports, key) => {
+		exports[key] = packageJson.exports[key]
+		return exports
+	}, {})
+
+// update package.json
+fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2))

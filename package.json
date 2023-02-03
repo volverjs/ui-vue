@@ -50,6 +50,7 @@
     "*.d.ts"
   ],
   "dependencies": {
+    "@volverjs/style": "0.1.8",
     "@floating-ui/vue": "^0.2.0",
     "@iconify/tools": "^2.2.2",
     "@iconify/vue": "^4.1.0",
@@ -57,48 +58,48 @@
     "jsdom": "^21.1.0",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",
-    "vue": "^3.2.45"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
     "@iconify/types": "^2.0.0",
     "@iconify/utils": "^2.1.0",
     "@mdx-js/react": "^2.2.1",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@storybook/addon-a11y": "7.0.0-beta.29",
-    "@storybook/addon-actions": "7.0.0-beta.29",
-    "@storybook/addon-docs": "7.0.0-beta.29",
-    "@storybook/addon-essentials": "7.0.0-beta.29",
-    "@storybook/addon-interactions": "7.0.0-beta.29",
-    "@storybook/addon-links": "7.0.0-beta.29",
-    "@storybook/addons": "7.0.0-beta.29",
-    "@storybook/builder-vite": "7.0.0-beta.29",
-    "@storybook/channel-postmessage": "7.0.0-beta.29",
-    "@storybook/channel-websocket": "7.0.0-beta.29",
-    "@storybook/cli": "7.0.0-beta.29",
-    "@storybook/client-api": "7.0.0-beta.29",
-    "@storybook/client-logger": "7.0.0-beta.29",
-    "@storybook/core-common": "7.0.0-beta.29",
-    "@storybook/jest": "^0.0.10",
-    "@storybook/preview-api": "7.0.0-beta.29",
-    "@storybook/preview-web": "7.0.0-beta.29",
-    "@storybook/test-runner": "^0.9.3",
-    "@storybook/testing-library": "^0.0.13",
-    "@storybook/theming": "7.0.0-beta.29",
-    "@storybook/vue3": "7.0.0-beta.29",
-    "@storybook/vue3-vite": "7.0.0-beta.29",
+    "@storybook/addon-a11y": "7.0.0-beta.40",
+    "@storybook/addon-actions": "7.0.0-beta.40",
+    "@storybook/addon-docs": "7.0.0-beta.40",
+    "@storybook/addon-essentials": "7.0.0-beta.40",
+    "@storybook/addon-interactions": "7.0.0-beta.40",
+    "@storybook/addon-links": "7.0.0-beta.40",
+    "@storybook/addons": "7.0.0-beta.40",
+    "@storybook/builder-vite": "7.0.0-beta.40",
+    "@storybook/channel-postmessage": "7.0.0-beta.40",
+    "@storybook/channel-websocket": "7.0.0-beta.40",
+    "@storybook/cli": "7.0.0-beta.40",
+    "@storybook/client-api": "7.0.0-beta.40",
+    "@storybook/client-logger": "7.0.0-beta.40",
+    "@storybook/core-common": "7.0.0-beta.40",
+    "@storybook/jest": "^0.0.11-next.0",
+    "@storybook/preview-api": "7.0.0-beta.40",
+    "@storybook/preview-web": "7.0.0-beta.40",
+    "@storybook/test-runner": "^0.10.0-next.8",
+    "@storybook/testing-library": "^0.0.14-next.1",
+    "@storybook/theming": "7.0.0-beta.40",
+    "@storybook/vue3": "7.0.0-beta.40",
+    "@storybook/vue3-vite": "7.0.0-beta.40",
     "@types/jest-axe": "^3.5.5",
     "@types/jsdom": "^20.0.1",
     "@types/node": "18.11.18",
     "@types/react": "^18.0.27",
     "@types/yargs": "^17.0.22",
     "@vitejs/plugin-vue": "^4.0.0",
-    "@volverjs/style": "0.1.7",
-    "@vue/compiler-sfc": "^3.2.45",
+    "@vue/compiler-sfc": "^3.2.47",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
-    "@vue/test-utils": "^2.2.8",
+    "@vue/test-utils": "^2.2.10",
     "@vue/tsconfig": "^0.1.3",
     "change-case": "^4.1.2",
     "eslint": "^8.33.0",
@@ -121,7 +122,7 @@
     "remark": "^14.0.2",
     "sass": "^1.58.0",
     "sass-loader": "^13.2.0",
-    "storybook": "7.0.0-beta.29",
+    "storybook": "7.0.0-beta.40",
     "storybook-addon-markdown-docs": "^1.0.5",
     "storybook-dark-mode": "^2.0.5",
     "storybook-version": "^0.1.1",
@@ -129,7 +130,7 @@
     "typescript": "~4.9.5",
     "unplugin-auto-import": "^0.13.0",
     "unplugin-vue-components": "^0.23.0",
-    "vite": "^4.0.4",
+    "vite": "^4.1.1",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-externalize-deps": "^0.5.0",
     "vue-loader": "^17.0.1",
@@ -157,11 +158,6 @@
     },
     "./src/*": "./src/*",
     "./dist/*": "./dist/*",
-    "./components": {
-      "types": "./dist/components/index.d.ts",
-      "import": "./dist/components/index.es.js",
-      "default": "./dist/components/index.umd.js"
-    },
     "./resolvers/unplugin": {
       "types": "./dist/resolvers/unplugin.d.ts",
       "import": "./dist/resolvers/unplugin.es.js",
@@ -172,6 +168,21 @@
       "import": "./dist/icons.es.js",
       "default": "./dist/icons.umd.js"
     },
+    "./directives": {
+      "types": "./dist/directives/index.d.ts",
+      "import": "./dist/directives/index.es.js",
+      "default": "./dist/directives/index.umd.js"
+    },
+    "./v-tooltip": {
+      "types": "./dist/directives/v-tooltip.d.ts",
+      "import": "./dist/directives/v-tooltip.es.js",
+      "default": "./dist/directives/v-tooltip.umd.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.es.js",
+      "default": "./dist/components/index.umd.js"
+    },
     "./vv-accordion": {
       "types": "./dist/components/VvAccordion/VvAccordion.vue.d.ts",
       "import": "./dist/components/VvAccordion/VvAccordion.es.js",
@@ -181,6 +192,11 @@
       "types": "./dist/components/VvAccordionGroup/VvAccordionGroup.vue.d.ts",
       "import": "./dist/components/VvAccordionGroup/VvAccordionGroup.es.js",
       "default": "./dist/components/VvAccordionGroup/VvAccordionGroup.umd.js"
+    },
+    "./vv-action": {
+      "types": "./dist/components/VvAction/VvAction.vue.d.ts",
+      "import": "./dist/components/VvAction/VvAction.es.js",
+      "default": "./dist/components/VvAction/VvAction.umd.js"
     },
     "./vv-badge": {
       "types": "./dist/components/VvBadge/VvBadge.vue.d.ts",
@@ -232,10 +248,20 @@
       "import": "./dist/components/VvDropdown/VvDropdown.es.js",
       "default": "./dist/components/VvDropdown/VvDropdown.umd.js"
     },
+    "./vv-dropdown-action": {
+      "types": "./dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts",
+      "import": "./dist/components/VvDropdownAction/VvDropdownAction.es.js",
+      "default": "./dist/components/VvDropdownAction/VvDropdownAction.umd.js"
+    },
     "./vv-dropdown-item": {
       "types": "./dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts",
       "import": "./dist/components/VvDropdownItem/VvDropdownItem.es.js",
       "default": "./dist/components/VvDropdownItem/VvDropdownItem.umd.js"
+    },
+    "./vv-dropdown-option": {
+      "types": "./dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts",
+      "import": "./dist/components/VvDropdownOption/VvDropdownOption.es.js",
+      "default": "./dist/components/VvDropdownOption/VvDropdownOption.umd.js"
     },
     "./vv-icon": {
       "types": "./dist/components/VvIcon/VvIcon.vue.d.ts",

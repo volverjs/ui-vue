@@ -10,15 +10,17 @@ import { argTypes, defaultArgs } from './Button.settings'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	data() {
 		return { value: undefined }
 	},
 	setup() {
 		return { args }
 	},
+	components: { VvButton },
 	template: /*html*/ `
-		<vv-button v-bind="args" v-model="value" name="my-button">
+		<vv-button v-bind="args" v-model="value" name="my-button" data-testId="element">
 			<template #before v-if="args.before"><div v-html="args.before"></div></template>
 			<template #default v-if="args.default"><div v-html="args.default"></div></template>
 			<template #after v-if="args.after"><div v-html="args.after"></div></template>

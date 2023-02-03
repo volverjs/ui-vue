@@ -29,8 +29,9 @@ import { defaultArgs, argTypes } from './AccordionGroup.settings'
 			},
 		}}
 	>
-		{(args) => {
+		{(args, { argTypes }) => {
 			return {
+				props: Object.keys(argTypes),
 				components: { VvAccordionGroup, VvAccordion },
 				setup() {
 					return { args }

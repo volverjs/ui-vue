@@ -5,7 +5,9 @@ import { expect } from '@/test/expect'
 export async function defaultTest(
 	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
-	const element = await within(canvasElement).findByRole('button')
+	const element = (await within(canvasElement).findByTestId(
+		'element',
+	)) as HTMLElement
 
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)

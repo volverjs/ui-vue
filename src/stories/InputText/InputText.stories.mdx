@@ -11,7 +11,8 @@ import { Position } from '@/constants'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvInputText },
 	setup() {
 		return { args }

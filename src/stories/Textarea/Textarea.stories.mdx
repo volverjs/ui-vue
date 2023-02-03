@@ -10,7 +10,8 @@ import { defaultTest } from './Textarea.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvTextarea },
 	setup() {
 		return { args }

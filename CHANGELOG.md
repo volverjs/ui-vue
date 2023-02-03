@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4] - 2023-02-03
+
+### Added
+
+- `VvAction` component for buttons, anchors, RouterLinks and NuxtLinks;
+- `VvDropdownAction` component for dropdown menu items;
+- `VvDropdownOption` component for combobox options;
+- `VvCombobox` no options message and no options slot;
+- `VvCombobox` no search results message and no search results slot;
+- unplugin resolver for directives.
+
+### Fixed
+
+- Build script with auto import;
+- Now @volverjs/style is a dependency.
+
 ## [0.0.3] - 2023-02-01
 
 ### Added
@@ -55,5 +71,6 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.1.4]: https://github.com/volverjs/style/compare/v0.0.3...v0.0.4
 [0.1.3]: https://github.com/volverjs/style/compare/v0.0.2...v0.0.3
 [0.1.2]: https://github.com/volverjs/style/compare/v0.0.1...v0.0.2

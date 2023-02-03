@@ -1,14 +1,12 @@
 import { type Ref, Fragment } from 'vue'
 import mitt from 'mitt'
 import {
-	type DropdownRole,
-	DROPDOWN_ROLES,
-	DROPDOWN_ITEM_ROLES,
-} from '@/components/VvDropdown/'
-import {
 	INJECTION_KEY_DROPDOWN_TRIGGER,
 	INJECTION_KEY_DROPDOWN_ACTION,
 	INJECTION_KEY_DROPDOWN_ITEM,
+	DropdownRole,
+	DropdownItemRole,
+	ActionRoles,
 } from '@/constants'
 
 /**
@@ -70,9 +68,9 @@ export function useProvideDropdownItem({
 	expanded: Ref<boolean>
 }) {
 	const itemRole = computed(() =>
-		role.value === DROPDOWN_ROLES[0]
-			? DROPDOWN_ITEM_ROLES[0]
-			: DROPDOWN_ITEM_ROLES[1],
+		role.value === DropdownRole.listbox
+			? DropdownItemRole.option
+			: DropdownItemRole.presentation,
 	)
 	provide(INJECTION_KEY_DROPDOWN_ITEM, {
 		role: itemRole,
@@ -91,7 +89,7 @@ export function useProvideDropdownAction({
 	expanded: Ref<boolean>
 }) {
 	provide(INJECTION_KEY_DROPDOWN_ACTION, {
-		role: 'menuitem',
+		role: ActionRoles.menuitem,
 		expanded,
 	})
 }

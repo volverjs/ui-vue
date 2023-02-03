@@ -1,0 +1,56 @@
+import { ref } from 'vue'
+import { Meta, Story } from '@storybook/addon-docs'
+import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
+import { defaultTest } from './Dropdown.test'
+import { defaultArgs, argTypes } from './Dropdown.settings'
+
+<Meta
+	title="Components/Dropdown/Multilevel"
+	component={VvDropdown}
+	argTypes={argTypes}
+	args={defaultArgs}
+/>
+
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
+	setup() {
+		const expanded = ref(false)
+		return { args, expanded }
+	},
+	template: /* html */ `
+        <vv-dropdown v-model="expanded" v-bind="args">
+            <vv-button ref="toggle" class="absolute top-1/2 left-1/2 -translate-1/2" modifiers="full-bleed" data-testId="trigger">
+                Toggle dropdown
+            </vv-button>
+            <template #items>
+                <vv-dropdown-action>
+                    <vv-icon name="edit" /> Update
+                </vv-dropdown-action>
+                <vv-dropdown-action>
+                    <vv-icon name="trash" /> Delete
+                </vv-dropdown-action>
+                <vv-dropdown placement="right-start" offset="5" arrow>
+                    <vv-dropdown-action>
+                        <vv-icon name="more-vertical" /> More
+                    </vv-dropdown-action>
+                    <template #items>
+                        <vv-dropdown-action>
+                            <vv-icon name="add" /> Create
+                        </vv-dropdown-action>
+                        <vv-dropdown-action>
+                            <vv-icon name="eye-on" /> Publish
+                        </vv-dropdown-action>
+                    </template>
+                </vv-dropdown>
+            </template>
+        </vv-dropdown>
+	`,
+})
+
+<Canvas>
+	<Story name="Default">{Template.bind()}</Story>
+</Canvas>

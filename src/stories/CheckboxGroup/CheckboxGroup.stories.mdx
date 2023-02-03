@@ -10,7 +10,8 @@ import { defaultTest } from './CheckboxGroup.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvCheckboxGroup },
 	setup() {
 		return { args }

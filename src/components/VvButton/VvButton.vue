@@ -6,9 +6,9 @@
 
 <script setup lang="ts">
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
+	import VvAction from '@/components/VvAction/VvAction.vue'
 	import {
 		VvButtonEvents,
-		ButtonTag,
 		VvButtonProps,
 		useGroupProps,
 	} from '@/components/VvButton'
@@ -35,58 +35,23 @@
 	const hasId = useUniqueId(id)
 	const name = computed(() => (attrs?.name as string) || hasId.value)
 
-	// inject plugin
-	const volver = useVolver()
-
 	// expose el
-	const $el = ref<HTMLElement | null>(null)
+	const element = ref<{ $el: HTMLElement } | null>(null)
+	const $el = computed(() => element.value?.$el)
 	defineExpose({ $el })
-
-	// drowpdown trigger
-	const {
-		reference: dropdownTriggerReference,
-		bus: dropdownEventBus,
-		aria: dropdownAria,
-	} = useInjectedDropdownTrigger()
-	watch(
-		() => $el.value,
-		(newValue) => {
-			if (dropdownTriggerReference) {
-				dropdownTriggerReference.value = newValue
-			}
-		},
-	)
-
-	// dropdown parent
-	const { role } = useInjectedDropdownAction()
-
-	/**
-	 * @description The tag defined by props.
-	 * @returns {string} The tag.
-	 */
-	const hasTag = computed(() => {
-		switch (true) {
-			case disabled.value:
-				return ButtonTag.button
-			case props.to !== undefined:
-				return volver?.nuxt ? ButtonTag.nuxtLink : ButtonTag.routerLink
-			case props.href !== undefined:
-				return ButtonTag.a
-			default:
-				return ButtonTag.button
-		}
-	})
 
 	/**
 	 * @description The component pressed state by prop or group.
 	 * @returns {string} The component tag.
 	 */
-	const isPressed = computed(() => {
-		if (!toggle.value) return props.pressed
-
-		return Array.isArray(modelValue.value)
-			? contains(name.value, modelValue.value)
-			: equals(name.value, modelValue.value)
+	const pressed = computed(() => {
+		if (!toggle.value) {
+			return props.pressed
+		}
+		if (Array.isArray(modelValue.value)) {
+			return contains(name.value, modelValue.value)
+		}
+		return equals(name.value, modelValue.value)
 	})
 
 	/**
@@ -97,12 +62,11 @@
 		'vv-button',
 		modifiers,
 		computed(() => ({
-			active: props.active,
-			pressed: isPressed.value,
-			disabled: disabled.value,
 			reverse: [Side.right, Side.bottom].includes(iconPosition.value),
 			column: [Side.top, Side.bottom].includes(iconPosition.value),
-			iconOnly: Boolean(icon?.value && !label?.value && !slots.default),
+			'icon-only': Boolean(
+				icon?.value && !label?.value && !slots.default,
+			),
 		})),
 	)
 
@@ -115,47 +79,9 @@
 	)
 
 	/**
-	 * @description Define component attributes.
-	 * @returns {Object} The component attributes.
-	 */
-	const hasProps = computed(() => {
-		const toReturn = {
-			...dropdownAria?.value,
-			'aria-pressed': isPressed.value ? true : undefined,
-			class: bemCssClasses.value,
-			role,
-		}
-		switch (hasTag.value) {
-			case ButtonTag.a:
-				return {
-					...toReturn,
-					role: toReturn.role ?? 'button',
-					href: props.href,
-					target: props.target,
-					rel: props.rel,
-				}
-			case ButtonTag.routerLink:
-			case ButtonTag.nuxtLink:
-				return {
-					...toReturn,
-					role: toReturn.role ?? 'button',
-					to: props.to,
-					target: props.target,
-				}
-			default:
-				return {
-					...toReturn,
-					type: props.type,
-					disabled: disabled.value,
-				}
-		}
-	})
-
-	/**
 	 * @description Catch click event
 	 */
-	const onClick = (e: Event) => {
-		dropdownEventBus?.emit('click', e)
+	const onClick = () => {
 		if (toggle.value) {
 			if (Array.isArray(modelValue.value)) {
 				if (contains(name.value, modelValue.value)) {
@@ -169,39 +95,31 @@
 				modelValue.value.push(name.value)
 				return
 			}
-			if (equals(name, modelValue.value) && unselectable.value) {
+			if (equals(name.value, modelValue.value) && unselectable.value) {
 				modelValue.value = undefined
 				return
 			}
 			modelValue.value = name.value
 		}
 	}
-
-	/**
-	 * @description Catch mouseover event
-	 */
-	const onMouseover = (e: Event) => {
-		dropdownEventBus?.emit('mouseover', e)
-	}
-
-	/**
-	 * @description Catch mouseleave event
-	 */
-	const onMouseleave = (e: Event) => {
-		dropdownEventBus?.emit('mouseleave', e)
-	}
 </script>
 
 <template>
-	<!-- #region component: "button" | "a" | "router-link" | "nuxt-link" -->
-	<component
-		v-bind="hasProps"
-		:is="hasTag"
+	<VvAction
+		v-bind="{
+			disabled,
+			pressed,
+			active,
+			type,
+			to,
+			href,
+			target,
+			rel,
+		}"
 		:id="hasId"
-		ref="$el"
-		@click.passive="onClick"
-		@mouseover.passive="onMouseover"
-		@mouseleave.passive="onMouseleave"
+		ref="element"
+		:class="bemCssClasses"
+		@click="onClick"
 	>
 		<!-- @slot Default slot -->
 		<slot>
@@ -238,6 +156,5 @@
 			</template>
 			<!-- #endregion -->
 		</slot>
-	</component>
-	<!-- #endregion -->
+	</VvAction>
 </template>

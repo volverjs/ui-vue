@@ -6,9 +6,8 @@ import {
 	type IconifyJSON,
 	type PartialIconifyAPIConfig,
 } from '@iconify/vue'
-import type { App, Component, Plugin } from 'vue'
+import type { App, Component, Directive, Plugin } from 'vue'
 import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from '@/constants'
-import directives from '@/directives'
 
 export function useDefaultProps(
 	component: Component,
@@ -93,6 +92,10 @@ export type VolverOptions = {
 	 * Alias to install
 	 */
 	aliases?: Record<string, Component>
+	/**
+	 * Directives to install
+	 */
+	directives?: Record<string, Directive>
 	/**
 	 * Default props for components
 	 */
@@ -224,6 +227,7 @@ const VolverPlugin: Plugin = {
 		// register global methods
 		app.config.globalProperties.$vv = volver
 
+		// register components
 		if (options.components) {
 			Object.entries(options.components).forEach(([name, component]) => {
 				app.component(
@@ -233,6 +237,7 @@ const VolverPlugin: Plugin = {
 			})
 		}
 
+		// register aliases
 		if (options.aliases) {
 			Object.entries(options.aliases).forEach(([name, component]) => {
 				app.component(
@@ -243,9 +248,11 @@ const VolverPlugin: Plugin = {
 		}
 
 		// register directives
-		Object.entries(directives).forEach(([name, directive]) => {
-			app.directive(name, directive)
-		})
+		if (options.directives) {
+			Object.entries(options.directives).forEach(([name, directive]) => {
+				app.directive(name, directive)
+			})
+		}
 
 		// provide volver to components
 		app.provide(INJECTION_KEY_VOLVER, volver)

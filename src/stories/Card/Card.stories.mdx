@@ -10,7 +10,8 @@ import { defaultArgs, argTypes } from './Card.settings'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvCard },
 	setup() {
 		return { args }

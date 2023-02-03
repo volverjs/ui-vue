@@ -10,7 +10,8 @@ import NormalIcons from '@/assets/icons/normal.json'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvIcon },
 	setup() {
 		return { args }
