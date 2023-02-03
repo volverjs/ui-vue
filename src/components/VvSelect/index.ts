@@ -14,6 +14,7 @@ import {
 	UnselectableProps,
 	AutofocusProps,
 	AutocompleteProps,
+	LabelProps,
 } from '@/props'
 
 export const VvSelectProps = {
@@ -32,6 +33,7 @@ export const VvSelectProps = {
 	...IconProps,
 	...FloatingLabelProps,
 	...UnselectableProps,
+	...LabelProps,
 	/**
 	 * This Boolean attribute indicates that multiple options can be selected in the list.
 	 * If it is not specified, then only one option can be selected at a time.
@@ -58,10 +60,6 @@ export const VvSelectProps = {
 		type: [String, Number, Boolean, Object, Array],
 		default: undefined,
 	},
-	/**
-	 * <label> value for the select
-	 */
-	label: String,
 	/**
 	 * Select placeholder
 	 */

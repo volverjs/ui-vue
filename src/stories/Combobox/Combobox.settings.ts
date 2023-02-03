@@ -208,6 +208,28 @@ export const argTypes = {
 			},
 		},
 	},
+	'dropdown::before': {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	'dropdown::after': {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
 	value: {
 		control: {
 			type: 'text',
@@ -220,6 +242,28 @@ export const argTypes = {
 		},
 	},
 	option: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	'no-options': {
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	'no-results': {
 		control: {
 			type: 'text',
 		},

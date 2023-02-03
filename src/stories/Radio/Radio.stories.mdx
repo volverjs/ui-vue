@@ -10,7 +10,8 @@ import { defaultTest } from './Radio.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvRadio },
 	setup() {
 		return { args }

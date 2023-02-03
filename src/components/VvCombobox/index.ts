@@ -14,6 +14,7 @@ import {
 	UnselectableProps,
 	IdNameProps,
 	DropdownProps,
+	LabelProps,
 } from '@/props'
 
 export const VvComboboxEvents = [
@@ -38,6 +39,7 @@ export const VvComboboxProps = {
 	...FloatingLabelProps,
 	...UnselectableProps,
 	...DropdownProps,
+	...LabelProps,
 	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
@@ -46,29 +48,29 @@ export const VvComboboxProps = {
 		default: undefined,
 	},
 	/**
-	 * Select input label
-	 */
-	label: String,
-	/**
 	 * Label for no search results
 	 */
 	noResultsLabel: { type: String, default: 'No results' },
 	/**
+	 * Label for no options	available
+	 */
+	noOptionsLabel: { type: String, default: 'No options available' },
+	/**
 	 * Label for selected option hint
 	 */
-	selectedLabel: { type: String, default: 'Selected' },
+	selectedHintLabel: { type: String, default: 'Selected' },
 	/**
-	 * Label for deselect button
+	 * Label for deselect action button
 	 */
-	deselectLabel: { type: String, default: 'Deselect' },
+	deselectActionLabel: { type: String, default: 'Deselect' },
 	/**
 	 * Label for select option hint
 	 */
-	pressToSelectLabel: { type: String, default: 'Press enter to select' },
+	selectHintLabel: { type: String, default: 'Press enter to select' },
 	/**
 	 * Label for deselected option hint
 	 */
-	pressToDeselectLabel: { type: String, default: 'Press enter to remove' },
+	deselectHintLabel: { type: String, default: 'Press enter to remove' },
 	/**
 	 * Select input placeholder
 	 */

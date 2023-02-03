@@ -7,21 +7,77 @@ import type {
 	ShiftOptions,
 	SizeOptions,
 } from '@/types/floating-ui'
-import { Placement, Position, Side } from '@/constants'
+import {
+	Placement,
+	Position,
+	Side,
+	AnchorTarget,
+	ButtonType,
+} from '@/constants'
+
+export const LinkProps = {
+	/**
+	 * The router-link/nuxt-link property, if it is defined the button is rendered as a ruouter-link or nuxt-link.
+	 * @see Documentation of [router-link](https://router.vuejs.org/api/#router-link) and [nuxt-link](https://nuxtjs.org/api/components-nuxt-link/)
+	 */
+	to: {
+		type: [String, Object],
+	},
+	/**
+	 * Anchor href
+	 */
+	href: String,
+	/**
+	 * Anchor target
+	 */
+	target: {
+		type: String as PropType<AnchorTarget>,
+		validator: (value: AnchorTarget) =>
+			Object.values(AnchorTarget).includes(value),
+	},
+	/**
+	 * Anchor rel
+	 */
+	rel: {
+		type: String,
+		default: 'noopener noreferrer',
+	},
+}
 
 export const ValidProps = {
+	/**
+	 * Valid status
+	 */
 	valid: Boolean,
+	/**
+	 * Valid label
+	 */
 	validLabel: [String, Array],
 }
 
 export const InvalidProps = {
+	/**
+	 * Invalid status
+	 */
 	invalid: Boolean,
+	/**
+	 * Invalid label
+	 */
 	invalidLabel: [String, Array],
 }
 
 export const LoadingProps = {
+	/**
+	 * Loading status
+	 */
 	loading: Boolean,
-	loadingLabel: String,
+	/**
+	 * Loading label
+	 */
+	loadingLabel: {
+		type: String,
+		default: 'Loading...',
+	},
 }
 
 export const DisabledProps = {
@@ -29,6 +85,34 @@ export const DisabledProps = {
 	 * Whether the form control is disabled
 	 */
 	disabled: Boolean,
+}
+
+export const SelectedProps = {
+	/**
+	 * Whether the item is selected
+	 */
+	selected: Boolean,
+}
+
+export const ActiveProps = {
+	/**
+	 * Whether the item is active
+	 */
+	active: Boolean,
+}
+
+export const PressedProps = {
+	/**
+	 * Whether the item is pressed
+	 */
+	pressed: Boolean,
+}
+
+export const LabelProps = {
+	/**
+	 * The item label
+	 */
+	label: [String, Number],
 }
 
 export const ReadonlyProps = {
@@ -271,6 +355,7 @@ export const InputTextareaProps = {
 	...DebounceProps,
 	...IconProps,
 	...FloatingLabelProps,
+	...LabelProps,
 	/**
 	 * Input / Textarea minlength
 	 * Minimum length (number of characters) of value
@@ -299,10 +384,6 @@ export const InputTextareaProps = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#required
 	 */
 	required: Boolean,
-	/**
-	 * <label> value for the Input / Textarea
-	 */
-	label: String,
 }
 
 export const CheckboxRadioProps = {
@@ -314,6 +395,7 @@ export const CheckboxRadioProps = {
 	...DisabledProps,
 	...ReadonlyProps,
 	...ModifiersProps,
+	...LabelProps,
 	/**
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
@@ -323,10 +405,6 @@ export const CheckboxRadioProps = {
 	 * Input value
 	 */
 	modelValue: [Object, Number, Boolean, String],
-	/**
-	 * <label> for input
-	 */
-	label: String,
 }
 
 export const CheckboxRadioGroupProps = {
@@ -337,14 +415,11 @@ export const CheckboxRadioGroupProps = {
 	...DisabledProps,
 	...ReadonlyProps,
 	...ModifiersProps,
+	...LabelProps,
 	/**
 	 * Input value
 	 */
 	modelValue: [String, Array],
-	/**
-	 * Input label
-	 */
-	label: String,
 	/**
 	 * Input name
 	 */
@@ -353,4 +428,21 @@ export const CheckboxRadioGroupProps = {
 	 * If true, the group will be displayed in a vertical column
 	 */
 	vertical: Boolean,
+}
+
+export const ActionProps = {
+	...DisabledProps,
+	...LabelProps,
+	...PressedProps,
+	...ActiveProps,
+	...LinkProps,
+	/**
+	 * Button type
+	 */
+	type: {
+		type: String,
+		default: ButtonType.button,
+		validator: (value: ButtonType) =>
+			Object.values(ButtonType).includes(value),
+	},
 }

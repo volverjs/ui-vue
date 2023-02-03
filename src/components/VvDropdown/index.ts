@@ -1,11 +1,6 @@
 import { DropdownProps, IdProps, ModifiersProps } from '@/props'
 import type { PropType } from 'vue'
-
-export const DROPDOWN_ROLES = ['listbox', 'menu'] as const
-export const DROPDOWN_ITEM_ROLES = ['option', 'presentation'] as const
-
-export type DropdownRole = (typeof DROPDOWN_ROLES)[number]
-export type DropdownItemRole = (typeof DROPDOWN_ITEM_ROLES)[number]
+import { DropdownRole } from '@/constants'
 
 export const VvDropdownProps = {
 	...IdProps,
@@ -30,8 +25,8 @@ export const VvDropdownProps = {
 	 */
 	role: {
 		type: String as PropType<DropdownRole>,
-		default: DROPDOWN_ROLES[1],
-		validator: (value: string) =>
-			(DROPDOWN_ROLES as ReadonlyArray<string>).includes(value),
+		default: DropdownRole.menu,
+		validator: (value: DropdownRole) =>
+			Object.values(DropdownRole).includes(value),
 	},
 }

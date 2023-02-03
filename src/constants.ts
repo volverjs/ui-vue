@@ -23,6 +23,42 @@ export enum Position {
 	after = 'after',
 }
 
+export enum ButtonType {
+	button = 'button',
+	submit = 'submit',
+	reset = 'reset',
+}
+
+export enum ActionTag {
+	nuxtLink = 'nuxt-link',
+	routerLink = 'router-link',
+	a = 'a',
+	button = 'button',
+}
+
+export enum ActionRoles {
+	button = 'button',
+	link = 'link',
+	menuitem = 'menuitem',
+}
+
+export enum DropdownRole {
+	listbox = 'listbox',
+	menu = 'menu',
+}
+
+export enum DropdownItemRole {
+	option = 'option',
+	presentation = 'presentation',
+}
+
+export enum AnchorTarget {
+	_blank = '_blank',
+	_self = '_self',
+	_parent = '_parent',
+	_top = '_top',
+}
+
 // volver
 export const INJECTION_KEY_VOLVER = Symbol.for('volver')
 

@@ -10,14 +10,11 @@ export function useBemModifiers(
 			[prefix]: true,
 		}
 		// props modifiers
-		let modifiersArray = unref(modifiers)
+		const modifiersArray =
+			typeof modifiers?.value === 'string'
+				? modifiers.value.split(' ')
+				: modifiers?.value
 		if (modifiersArray) {
-			if (
-				!Array.isArray(modifiersArray) &&
-				typeof modifiersArray === 'string'
-			) {
-				modifiersArray = modifiersArray.split(' ')
-			}
 			if (Array.isArray(modifiersArray)) {
 				modifiersArray.forEach((modifier) => {
 					toReturn[`${prefix}--${modifier}`] = true

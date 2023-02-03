@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { Emitter, EventType } from 'mitt'
-import type { DropdownItemRole } from '@/components/VvDropdown/'
+import type { DropdownItemRole } from '@/constants'
 import {
 	INJECTION_KEY_DROPDOWN_TRIGGER,
 	INJECTION_KEY_DROPDOWN_ACTION,

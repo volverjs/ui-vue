@@ -1,4 +1,5 @@
-import { DROPDOWN_ROLES, VvDropdownProps } from '@/components/VvDropdown'
+import { VvDropdownProps } from '@/components/VvDropdown'
+import { DropdownRole } from '@/constants'
 import { DropdownArgTypes } from '../argTypes'
 
 export const defaultArgs = {
@@ -9,7 +10,7 @@ export const argTypes = {
 	...DropdownArgTypes,
 	role: {
 		description: 'Dropdown role',
-		options: DROPDOWN_ROLES,
+		options: Object.values(DropdownRole),
 		control: {
 			type: 'select',
 		},

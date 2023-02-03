@@ -1,7 +1,7 @@
 <script lang="ts">
 	export default {
 		name: 'VvCombobox',
-		components: { VvDropdown, VvDropdownItem },
+		components: { VvDropdown, VvDropdownOption },
 	}
 </script>
 
@@ -10,11 +10,12 @@
 	import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
 	import VvIcon from '@/components/VvIcon/VvIcon.vue'
 	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-	import VvDropdownItem from '@/components/VvDropdown/VvDropdownItem.vue'
+	import VvDropdownOption from '@/components/VvDropdown/VvDropdownOption.vue'
 	import VvSelect from '@/components/VvSelect/VvSelect.vue'
 	import VvBadge from '@/components/VvBadge/VvBadge.vue'
 	import HintSlotFactory from '@/components/common/HintSlot'
 	import type { Option } from '@/types/generic'
+	import { DropdownRole } from '@/constants'
 
 	// props, emit and slots
 	const props = defineProps(VvComboboxProps)
@@ -327,9 +328,14 @@
 			<VvDropdown
 				v-model="expanded"
 				v-bind="dropdownProps"
-				role="listbox"
+				:role="DropdownRole.listbox"
 			>
-				<template v-if="searchable" #before>
+				<template
+					v-if="searchable || $slots['dropdown::before']"
+					#before
+				>
+					<!-- @slot Slot before dropdown items -->
+					<slot name="dropdown::before" />
 					<input
 						v-if="searchable"
 						v-show="expanded"
@@ -392,7 +398,7 @@
 												!readonly &&
 												!disabled
 											"
-											:aria-label="deselectLabel"
+											:aria-label="deselectActionLabel"
 											@click.stop="onInput(option)"
 										>
 											<VvIcon name="close" />
@@ -416,48 +422,54 @@
 					</div>
 				</template>
 				<template #items>
-					<VvDropdownItem
-						v-for="(option, index) in filteredOptions"
-						:key="index"
-						class="vv-dropdown-action"
-						:tabindex="getOptionDisabled(option) ? -1 : 0"
-						:class="{
-							disabled: getOptionDisabled(option),
-							selected: getOptionSelected(option),
-							'vv-dropdown-action--unselectable':
-								unselectable && getOptionSelected(option),
-						}"
-						:aria-selected="getOptionSelected(option)"
-						:aria-disabled="getOptionDisabled(option)"
-						@click.passive="onInput(option)"
-					>
-						<!-- @slot Slot for option customization -->
-						<slot
-							name="option"
+					<template v-if="filteredOptions.length">
+						<VvDropdownOption
+							v-for="(option, index) in filteredOptions"
 							v-bind="{
-								option,
-								selectedOptions,
-								selected: getOptionSelected(option),
 								disabled: getOptionDisabled(option),
+								selected: getOptionSelected(option),
+								unselectable,
+								deselectHintLabel,
+								selectHintLabel,
+								selectedHintLabel,
 							}"
+							:key="index"
+							class="vv-dropdown-option"
+							@click.passive="onInput(option)"
 						>
-							{{ getOptionLabel(option) }}
-							<span class="vv-dropdown-action__hint">
-								<template v-if="getOptionSelected(option)">
-									{{
-										unselectable
-											? pressToDeselectLabel
-											: selectedLabel
-									}}
-								</template>
-								<template
-									v-else-if="!getOptionDisabled(option)"
-								>
-									{{ pressToSelectLabel }}
-								</template>
-							</span>
+							<!-- @slot Slot for option customization -->
+							<slot
+								name="option"
+								v-bind="{
+									option,
+									selectedOptions,
+									selected: getOptionSelected(option),
+									disabled: getOptionDisabled(option),
+								}"
+							>
+								{{ getOptionLabel(option) }}
+							</slot>
+						</VvDropdownOption>
+					</template>
+					<VvDropdownOption
+						v-else-if="!options.length"
+						modifiers="inert"
+					>
+						<!-- @slot Slot for no options available -->
+						<slot name="no-options">
+							{{ noOptionsLabel }}
 						</slot>
-					</VvDropdownItem>
+					</VvDropdownOption>
+					<VvDropdownOption v-else modifiers="inert">
+						<!-- @slot Slot for no results available -->
+						<slot name="no-results">
+							{{ noResultsLabel }}
+						</slot>
+					</VvDropdownOption>
+				</template>
+				<template v-if="$slots['dropdown::after']" #after>
+					<!-- @slot Slot after dropdown items -->
+					<slot name="dropdown::after" />
 				</template>
 			</VvDropdown>
 		</div>

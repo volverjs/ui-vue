@@ -26,13 +26,13 @@
 
 ```bash
 # pnpm
-pnpm add @volverjs/style @volverjs/ui-vue
+pnpm add @volverjs/ui-vue
 
 # yarn
-yarn add @volverjs/style @volverjs/ui-vue
+yarn add @volverjs/ui-vue
 
 # npm
-npm install @volverjs/style @volverjs/ui-vue --save
+npm install @volverjs/ui-vue --save
 ```
 
 <br />
@@ -42,6 +42,7 @@ npm install @volverjs/style @volverjs/ui-vue --save
 Install the plugin in your `main.ts` file.
 
 ```typescript
+// main.ts
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -50,19 +51,38 @@ import { VolverPlugin } from '@volverjs/ui-vue'
 // import @volverjs/ui-vue icons collections
 import iconsCollections from '@volverjs/ui-vue/icons'
 /*
- * import @volverjs/style reset and props
- * for scss support you can import the scss files
- * import '@volverjs/style/scss/reset'
- * import '@volverjs/style/scss/props'
+ * import @volverjs/style base style with reset and props
+ * for scss support you can import the scss file
+ * import '@volverjs/style/scss/base'
  */
-import '@volverjs/style/reset'
-import '@volverjs/style/props'
+import '@volverjs/style/base'
 
 const app = createApp(App).mount('#app')
 
 // install the plugin
 app.use(VolverPlugin, {
-  iconsCollections
+  iconsCollections,
+  /*
+   * if you want can import components globally
+   * components: { VvButton, VvInputText }
+   */
+  compoments: undefined,
+  /*
+   * if you want can import directives globally
+   * directives: { toolip: VTooltip }
+   */
+  directives: undefined,
+  /*
+   * if you want can create components aliases
+   * aliases: { Btn: VvButton, BtnDanger: VvButton}
+   */
+  aliases: undefined,
+  /*
+   * if you want can change default props
+   * for globally imported components and aliases
+   * defaults: { VvButton: { modifiers: 'secondary', BtnDanger: { modifiers: 'danger' } }
+   */
+  defaults: undefined
 })
 ```
 
@@ -70,6 +90,12 @@ Than you can import components and use them in your templates.
 
 ```html
 <script setup lang="ts">
+  // MyComponent.vue
+  /*
+   * import the component
+   * all components are also available with a dedicated export
+   * import VvButton from '@volverjs/ui-vue/vv-button'
+   */
   import { VvButton } from '@volverjs/ui-vue'
   /*
    * import the component style
@@ -107,9 +133,22 @@ export default defineConfig({
     Components({
       resolvers: [
         VolverResolver({
-          // enable/disable import of style
-          // default: false
-          importStyle: 'css' // or 'scss'
+          /*
+           * enable/disable auto import of components style
+           * also accept 'scss' for scss support
+           * default: false
+           */
+          importStyle: false,
+          /*
+           * enable/disable auto import of directives
+           * default: false
+           */
+          directives: false,
+          /*
+           * Change components prefix
+           * default: 'vv'
+           */
+          prefix: 'vv'
         })
       ]
     })

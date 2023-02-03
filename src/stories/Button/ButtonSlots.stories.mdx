@@ -46,11 +46,12 @@ import { argTypes, defaultArgs } from './Button.settings'
 					return { args }
 				},
 				components: { VvButton, VvBadge },
-				template: /*html*/ `<vv-button v-bind="args">
-							<template #before>
-								<vv-badge value="12" modifiers="danger" />
-							</template>
-						</vv-button>`,
+				template: /*html*/ `
+					<vv-button v-bind="args" data-testId="element">
+						<template #before>
+							<vv-badge value="12" modifiers="danger" />
+						</template>
+					</vv-button>`,
 			}
 		}}
 	</Story>
@@ -78,7 +79,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 				},
 				components: { VvButton, VvBadge },
 				template: /*html*/ `
-					<vv-button v-bind="args">
+					<vv-button v-bind="args" data-testId="element">
 						<template #after>
 							<vv-badge value="12" modifiers="danger" />
 						</template>
@@ -103,7 +104,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 					return { args }
 				},
 				template: /*html*/ `
-					<vv-button v-bind="args">
+					<vv-button v-bind="args" data-testId="element">
 						<template #label>
 							Label <em class="italic">slot!</em>
 						</template>

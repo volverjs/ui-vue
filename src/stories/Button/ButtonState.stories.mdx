@@ -19,11 +19,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 				},
 			},
 		}}
-		play={async (ctx) => {
-			defaultTest(ctx, {
-				className: 'vv-button--active',
-			})
-		}}
+		play={defaultTest}
 	>
 		{Template.bind()}
 	</Story>
@@ -35,7 +31,6 @@ import { argTypes, defaultArgs } from './Button.settings'
 		args={{
 			pressed: true,
 			label: 'Pressed button',
-			modifiers: 'action-quiet',
 		}}
 		argTypes={{
 			pressed: {
@@ -44,11 +39,7 @@ import { argTypes, defaultArgs } from './Button.settings'
 				},
 			},
 		}}
-		play={async (ctx) => {
-			defaultTest(ctx, {
-				className: 'vv-button--pressed',
-			})
-		}}
+		play={defaultTest}
 	>
 		{Template.bind()}
 	</Story>
