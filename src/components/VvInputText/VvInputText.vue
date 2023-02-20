@@ -15,6 +15,7 @@
 		INPUT_TYPES,
 		TYPES_ICON,
 	} from '@/components/VvInputText'
+	import { Mask } from 'maska'
 
 	// props, emit, slots and attrs
 	const props = defineProps(VvInputTextProps)
@@ -22,7 +23,10 @@
 	const slots = useSlots()
 
 	// template refs
-	const input = ref()
+	const inputEl = ref()
+	const innerEl = ref()
+
+	defineExpose({ $inner: innerEl })
 
 	// data
 	const {
@@ -44,15 +48,39 @@
 	)
 
 	// debounce
-	const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
+	const localModelValue = useDebouncedInput(
+		modelValue,
+		emit,
+		props.debounce,
+		{
+			getter: (value) => {
+				if (mask.value) {
+					return mask.value.masked(value ?? '')
+				}
+				return value
+			},
+			setter: (value) => {
+				if (mask.value) {
+					value = mask.value.unmasked(value)
+				}
+				if (props.type === INPUT_TYPES.NUMBER) {
+					return Number(value)
+				}
+				return value
+			},
+		},
+	)
 
 	// focus
-	const { focused } = useComponentFocus(input, emit)
+	const { focused } = useComponentFocus(inputEl, emit)
+	const isFocused = computed(
+		() => focused.value && !props.disabled && !props.readonly,
+	)
 
 	// visibility
-	const isVisible = useElementVisibility(input)
+	const isVisible = useElementVisibility(inputEl)
 	watch(isVisible, (newValue) => {
-		if (newValue && props.autofocus) {
+		if (newValue && props.autofocus && !props.disabled && !props.readonly) {
 			focused.value = true
 		}
 	})
@@ -78,14 +106,14 @@
 	const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
 	const onStepUp = () => {
 		if (isClickable.value) {
-			input.value.stepUp()
-			localModelValue.value = unref(input).value
+			inputEl.value.stepUp()
+			localModelValue.value = unref(inputEl).value
 		}
 	}
 	const onStepDown = () => {
 		if (isClickable.value) {
-			input.value.stepDown()
-			localModelValue.value = unref(input).value
+			inputEl.value.stepDown()
+			localModelValue.value = unref(inputEl).value
 		}
 	}
 
@@ -145,7 +173,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-input-text',
 		modifiers,
 		computed(() => ({
@@ -158,7 +186,8 @@
 			'icon-after': hasIconAfter.value || !isEmpty(defaultAfterIcon),
 			floating: props.floating && !isEmpty(props.label),
 			dirty: isDirty.value,
-			focus: focused.value,
+			focus: isFocused.value,
+			'auto-width': props.autoWidth,
 		})),
 	)
 
@@ -199,8 +228,10 @@
 			type === INPUT_TYPES.NUMBER
 		) {
 			toReturn.step = props.step
-			toReturn.max = String(props.max)
-			toReturn.min = String(props.min)
+			toReturn.max =
+				props.max !== undefined ? String(props.max) : undefined
+			toReturn.min =
+				props.min !== undefined ? String(props.min) : undefined
 		}
 		if (
 			type === INPUT_TYPES.TEXT ||
@@ -256,6 +287,51 @@
 		INPUT_TYPES.SEARCH,
 		props,
 	)
+
+	// mask
+	const mask = ref()
+	watch(
+		[
+			() => props.mask,
+			() => props.type,
+			() => props.maskEager,
+			() => props.maskReversed,
+			() => props.maskTokens,
+			() => props.maskTokensReplace,
+		],
+		([newMask, newType, eager, reversed, tokens, tokensReplace]) => {
+			if (newMask && newType === INPUT_TYPES.TEXT) {
+				mask.value = new Mask({
+					mask: newMask,
+					eager,
+					reversed,
+					tokens,
+					tokensReplace,
+				})
+				return
+			}
+			mask.value = undefined
+		},
+		{ immediate: true },
+	)
+
+	// auto-width
+	const onClickInner = () => {
+		if (isClickable.value) {
+			focused.value = true
+		}
+	}
+	const hasStyle = computed(() => {
+		if (!props.autoWidth) {
+			return undefined
+		}
+		return {
+			width:
+				localModelValue.value !== undefined
+					? `${String(localModelValue.value).length + 1}ch`
+					: undefined,
+		}
+	})
 </script>
 
 <template>
@@ -268,7 +344,11 @@
 				<!-- @slot Slot before input icon -->
 				<slot name="before" v-bind="slotProps" />
 			</div>
-			<div class="vv-input-text__inner">
+			<div
+				ref="innerEl"
+				class="vv-input-text__inner"
+				@click.stop="onClickInner"
+			>
 				<VvIcon
 					v-if="hasIconBefore"
 					class="vv-input-text__icon"
@@ -276,28 +356,41 @@
 				/>
 				<input
 					:id="hasId"
-					ref="input"
+					ref="inputEl"
 					v-model="localModelValue"
 					v-bind="hasAttrs"
+					:style="hasStyle"
 					@keyup="emit('keyup', $event)"
 				/>
-				<!-- @slot Slot to replace right icon -->
-				<VvIcon
-					v-if="hasIconAfter || defaultAfterIcon"
-					class="vv-input-text__icon vv-input-text__icon-after"
-					v-bind="hasIconAfter ? hasIcon : defaultAfterIcon"
-				/>
-				<PasswordInputActions
-					v-else-if="isPassword"
-					@toggle-password="onTogglePassword"
-				/>
-				<NumberInputActions
-					v-else-if="isNumber"
-					@step-up="onStepUp"
-					@step-down="onStepDown"
-				/>
-				<SearchInputActions v-else-if="isSearch" @clear="onClear" />
+				<div
+					v-if="(unit || $slots.unit) && isDirty"
+					class="vv-input-text__unit"
+				>
+					<!-- @slot Slot to replace unit-->
+					<slot name v-bind="slotProps">
+						{{ unit }}
+					</slot>
+				</div>
 			</div>
+			<!-- @slot Slot to replace right icon -->
+			<VvIcon
+				v-if="hasIconAfter || defaultAfterIcon"
+				class="vv-input-text__icon vv-input-text__icon-after"
+				v-bind="hasIconAfter ? hasIcon : defaultAfterIcon"
+			/>
+			<PasswordInputActions
+				v-else-if="isPassword && !hideActions && isClickable"
+				@toggle-password="onTogglePassword"
+			/>
+			<NumberInputActions
+				v-else-if="isNumber && !hideActions && isClickable"
+				@step-up="onStepUp"
+				@step-down="onStepDown"
+			/>
+			<SearchInputActions
+				v-else-if="isSearch && !hideActions && isClickable"
+				@clear="onClear"
+			/>
 			<!-- @slot Slot after input -->
 			<div v-if="$slots.after" class="vv-input-text__input-after">
 				<!-- @slot Slot before input icon -->

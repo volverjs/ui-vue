@@ -219,7 +219,7 @@
 
 	// aria
 	const hasAriaLabelledby = computed(() => {
-		return referenceEl.value?.getAttribute('id') ?? undefined
+		return referenceEl.value?.getAttribute?.('id') ?? undefined
 	})
 	const referenceAria = computed(() => ({
 		'aria-controls': hasId.value,
@@ -242,7 +242,7 @@
 	const { itemRole } = useProvideDropdownItem({ role, expanded })
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-dropdown',
 		modifiers,
 		computed(() => ({

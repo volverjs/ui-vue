@@ -78,7 +78,7 @@
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-select',
 		modifiers,
 		computed(() => ({

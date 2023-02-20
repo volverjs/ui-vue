@@ -5,7 +5,7 @@
 	const { modifiers } = toRefs(props)
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-tooltip',
 		modifiers,
 		computed(() => ({

@@ -196,6 +196,59 @@ export const argTypes = {
 			},
 		},
 	},
+	mask: {
+		description: 'Input mask, only for text type',
+		type: {
+			summary: 'string',
+		},
+		control: {
+			type: 'text',
+		},
+	},
+	maskEager: {
+		description: 'Show mask before typing',
+		type: {
+			summary: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	maskReversed: {
+		description: 'Write typing reverse (ex. for numbers)',
+		type: {
+			summary: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	maskTokens: {
+		description: 'Add mask custom tokens',
+		type: {
+			summary: 'Object',
+		},
+		table: {
+			defaultValue: {
+				summary: 'undefined',
+			},
+		},
+	},
+	maskTokensReplace: {
+		description: 'Replace default tokens',
+		type: {
+			summary: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
 	before: {
 		control: {
 			type: 'text',

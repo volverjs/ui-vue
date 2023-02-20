@@ -35,6 +35,14 @@ export const VvAccordionGroupProps = {
 	 * If true, the accordion items will be disabled
 	 */
 	disabled: Boolean,
+	/**
+	 * If true, the accordion items will be opened by default
+	 */
+	not: Boolean,
+	/**
+	 * Enable local storage persistence
+	 */
+	storeKey: String,
 }
 
 export const VvAccordionGroupEvents = ['update:modelValue']

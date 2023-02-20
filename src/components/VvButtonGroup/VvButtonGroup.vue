@@ -66,7 +66,7 @@
 	})
 
 	// style
-	const bemCssClasses = useBemModifiers('vv-button-group', modifiers)
+	const bemCssClasses = useModifiers('vv-button-group', modifiers)
 </script>
 
 <template>

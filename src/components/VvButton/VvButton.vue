@@ -58,7 +58,7 @@
 	 * @description Define component classes with BEM style.
 	 * @returns {Array} The component classes.
 	 */
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-button',
 		modifiers,
 		computed(() => ({

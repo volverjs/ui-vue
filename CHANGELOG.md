@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2023-02-20
+
+### Added
+
+- `VvAccordionGroup` and `VvAccordion` support for `not` property to invert the state (closed are in v-model and open are not);
+- First test of `useDefaults` composable in `VvCombobox` for globally defined default labels;
+- `VvDropdownOption` hint label (deselect, select, selected, etc.);
+- `VvInputText` mask and unit.
+
+### Fixed
+
+- `VvDropdownAction` label;
+
 ## [0.0.4] - 2023-02-03
 
 ### Added

@@ -12,7 +12,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers('vv-card', modifiers)
+	const bemCssClasses = useModifiers('vv-card', modifiers)
 </script>
 
 <template>

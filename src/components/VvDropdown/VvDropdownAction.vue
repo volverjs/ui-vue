@@ -20,7 +20,7 @@
 	 * @returns {Array} The component classes.
 	 */
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers('vv-dropdown-action', modifiers)
+	const bemCssClasses = useModifiers('vv-dropdown-action', modifiers)
 </script>
 
 <template>
@@ -38,7 +38,9 @@
 			}"
 			:class="bemCssClasses"
 		>
-			<slot />
+			<slot>
+				{{ label }}
+			</slot>
 		</VvAction>
 	</VvDropdownItem>
 </template>

@@ -38,7 +38,7 @@
 	const { getOptionLabel, getOptionValue } = useOptions(props)
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-radio-group',
 		modifiers,
 		computed(() => ({

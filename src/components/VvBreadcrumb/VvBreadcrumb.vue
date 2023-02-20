@@ -5,12 +5,12 @@
 </script>
 
 <script setup lang="ts">
-	import { useBemModifiers } from '@/composables/useModifiers'
+	import { useModifiers } from '@/composables/useModifiers'
 	import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
 	const props = defineProps(VvBreadcrumbProps)
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers('vv-breadcrumb', modifiers)
+	const bemCssClasses = useModifiers('vv-breadcrumb', modifiers)
 </script>
 
 <template>

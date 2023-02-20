@@ -19,7 +19,7 @@
 	const emit = defineEmits(VvAccordionGroupEvents)
 
 	// data
-	const { disabled, collapse, modifiers, itemModifiers, items } =
+	const { disabled, collapse, modifiers, itemModifiers, items, not } =
 		toRefs(props)
 	watchEffect(() => {
 		if (typeof props.modelValue === 'string' && collapse.value) {
@@ -29,7 +29,18 @@
 			)
 		}
 	})
-	const localModelValue: Ref<string[]> = ref([])
+	let localModelValue: Ref<string[]> = ref([])
+	watch(
+		() => props.storeKey,
+		(newKey) => {
+			if (newKey) {
+				localModelValue = useStorage(newKey, localModelValue.value)
+			} else {
+				localModelValue = ref([])
+			}
+		},
+		{ immediate: true },
+	)
 	const modelValue = computed({
 		get: () => {
 			if (props.modelValue !== undefined) {
@@ -67,10 +78,11 @@
 		disabled,
 		collapse,
 		modifiers: itemModifiers,
+		not,
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-accordion-group',
 		modifiers,
 		computed(() => ({

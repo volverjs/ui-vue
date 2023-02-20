@@ -108,7 +108,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-checkbox',
 		modifiers,
 		computed(() => ({

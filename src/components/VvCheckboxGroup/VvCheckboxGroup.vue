@@ -38,7 +38,7 @@
 	const { getOptionLabel, getOptionValue } = useOptions(props)
 
 	// stypes
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-checkbox-group',
 		modifiers,
 		computed(() => ({

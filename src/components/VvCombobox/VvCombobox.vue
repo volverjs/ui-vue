@@ -22,6 +22,13 @@
 	const emit = defineEmits(VvComboboxEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvComboboxProps>(
+		'VvCombobox',
+		VvComboboxProps,
+		props,
+	)
+
 	// hint slot
 	const { HintSlot } = HintSlotFactory(props, slots)
 
@@ -126,7 +133,7 @@
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-select',
 		modifiers,
 		computed(() => ({
@@ -257,12 +264,12 @@
 		name: props.name,
 		tabindex: hasTabindex.value,
 		valid: valid.value,
-		validLabel: props.validLabel,
+		validLabel: propsDefaults.value.validLabel,
 		invalid: invalid.value,
-		invalidLabel: props.invalidLabel,
-		hintLabel: props.hintLabel,
+		invalidLabel: propsDefaults.value.invalidLabel,
+		hintLabel: propsDefaults.value.hintLabel,
 		loading: loading.value,
-		loadingLabel: props.loadingLabel,
+		loadingLabel: propsDefaults.value.loadingLabel,
 		disabled: disabled.value,
 		readonly: readonly.value,
 		modifiers: props.modifiers,
@@ -350,7 +357,7 @@
 						spellcheck="false"
 						type="search"
 						class="vv-dropdown__search"
-						:placeholder="searchPlaceholder"
+						:placeholder="propsDefaults.searchPlaceholder"
 					/>
 				</template>
 				<template #default="{ aria }">
@@ -398,7 +405,9 @@
 												!readonly &&
 												!disabled
 											"
-											:aria-label="deselectActionLabel"
+											:aria-label="
+												propsDefaults.deselectActionLabel
+											"
 											@click.stop="onInput(option)"
 										>
 											<VvIcon name="close" />
@@ -429,9 +438,11 @@
 								disabled: getOptionDisabled(option),
 								selected: getOptionSelected(option),
 								unselectable,
-								deselectHintLabel,
-								selectHintLabel,
-								selectedHintLabel,
+								deselectHintLabel:
+									propsDefaults.deselectHintLabel,
+								selectHintLabel: propsDefaults.selectHintLabel,
+								selectedHintLabel:
+									propsDefaults.selectedHintLabel,
 							}"
 							:key="index"
 							class="vv-dropdown-option"
@@ -457,13 +468,13 @@
 					>
 						<!-- @slot Slot for no options available -->
 						<slot name="no-options">
-							{{ noOptionsLabel }}
+							{{ propsDefaults.noOptionsLabel }}
 						</slot>
 					</VvDropdownOption>
 					<VvDropdownOption v-else modifiers="inert">
 						<!-- @slot Slot for no results available -->
 						<slot name="no-results">
-							{{ noResultsLabel }}
+							{{ propsDefaults.noResultsLabel }}
 						</slot>
 					</VvDropdownOption>
 				</template>

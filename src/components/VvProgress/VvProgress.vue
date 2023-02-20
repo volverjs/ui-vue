@@ -14,7 +14,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-progress',
 		modifiers,
 		computed(() => ({ indeterminate: indeterminate.value })),

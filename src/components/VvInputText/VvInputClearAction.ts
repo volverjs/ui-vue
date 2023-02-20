@@ -34,7 +34,7 @@ export default defineComponent({
 	render() {
 		const icon = h(VvIcon, {
 			name: this.icon,
-			class: 'vv-input-text__action-icon',
+			class: 'vv-input-text__icon',
 		})
 
 		return h(

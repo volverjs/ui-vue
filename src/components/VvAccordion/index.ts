@@ -30,6 +30,10 @@ export const VvAccordionProps = {
 	 * If true, the accordion will be disabled
 	 */
 	disabled: Boolean,
+	/**
+	 * If true, the accordion will be opened by default
+	 */
+	not: Boolean,
 }
 
 export const VvAccordionEvents = ['update:modelValue']
@@ -52,6 +56,7 @@ export function useGroupProps(
 
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
+	const not = getGroupOrLocalRef('not', props) as Ref<boolean>
 	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
 	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
@@ -61,6 +66,7 @@ export function useGroupProps(
 	return {
 		// group props
 		modelValue,
+		not,
 		disabled,
 		isInGroup,
 		group,

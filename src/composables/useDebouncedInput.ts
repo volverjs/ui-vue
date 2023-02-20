@@ -2,8 +2,15 @@ import type { Ref } from 'vue'
 
 export function useDebouncedInput(
 	modelValue: Ref | undefined,
-	emit: (event: string, value: unknown) => void,
+	emit: (event: string, value: string | number) => void,
 	ms: string | number = 0,
+	{
+		getter = (value) => value,
+		setter = (value) => value,
+	}: {
+		getter?: (value: string | number) => string | number
+		setter?: (value: string | number) => string | number
+	} = {},
 ): Ref {
 	let timeout: NodeJS.Timeout
 
@@ -12,13 +19,13 @@ export function useDebouncedInput(
 	}
 
 	return computed({
-		get: () => modelValue?.value,
+		get: () => getter(modelValue?.value),
 		set: (value) => {
 			if (timeout) {
 				clearTimeout(timeout)
 			}
 			timeout = setTimeout(() => {
-				emit('update:modelValue', value)
+				emit('update:modelValue', setter(value))
 			}, ms as number)
 		},
 	})

@@ -6,7 +6,7 @@ import {
 	type IconifyJSON,
 	type PartialIconifyAPIConfig,
 } from '@iconify/vue'
-import type { App, Component, Directive, Plugin } from 'vue'
+import type { App, Component, Directive, Plugin, Ref } from 'vue'
 import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from '@/constants'
 
 export function useDefaultProps(
@@ -83,7 +83,7 @@ export type VolverOptions = {
 	 * @see https://docs.iconify.design/icon-components/vue/add-collection.html
 	 * @default 'vv'
 	 */
-	provider?: string
+	iconsProvider?: string
 	/**
 	 * Components to install
 	 */
@@ -125,19 +125,19 @@ export interface VolverInterface {
 	 */
 	addIcon(name: string, data: IconifyIcon): boolean
 	/**
-	 * Add custom config for provider
+	 * Add custom config for icons provider
 	 * @param {String} provider
 	 * @param {PartialIconifyAPIConfig} customConfig
 	 * @returns {Boolean} true on success, false if something is wrong with data
 	 */
-	addAPIProvider(
+	addIconsAPIProvider(
 		provider: string,
 		customConfig: PartialIconifyAPIConfig,
 	): boolean
 	/**
 	 * Current provider
 	 */
-	provider: string
+	iconsProvider: string
 	/**
 	 * Array of installed iconify collections
 	 * @see https://docs.iconify.design/types/iconify-json.html
@@ -147,55 +147,82 @@ export interface VolverInterface {
 	 * Set true inside nuxt
 	 */
 	nuxt: boolean
+	/**
+	 * Components defaults options
+	 */
+	defaults: Ref<DefaultOptions>
 }
 
 export class Volver implements VolverInterface {
-	fetchOptions: RequestInit = {}
-	nuxt = false
-	iconsCollections: IconifyJSON[] = []
-	provider = DEFAULT_ICONIFY_PROVIDER
+	private _fetchOptions: RequestInit = {}
+	private _iconsCollections: IconifyJSON[] = []
+	private _iconsProvider = DEFAULT_ICONIFY_PROVIDER
+	private _nuxt = false
+	defaults: Ref<DefaultOptions> = ref({})
 
 	constructor({
 		fetchWithCredentials,
 		fetchOptions,
-		provider,
+		iconsProvider,
 		nuxt,
 		iconsCollections,
+		defaults,
 	}: VolverOptions = {}) {
 		// fetch options
 		if (fetchOptions) {
-			this.fetchOptions = fetchOptions
+			this._fetchOptions = fetchOptions
 		}
 		// fetch with credentials sugar syntax
 		if (fetchWithCredentials) {
-			this.fetchOptions = { ...this.fetchOptions, credentials: 'include' }
+			this._fetchOptions = {
+				...this._fetchOptions,
+				credentials: 'include',
+			}
 		}
 		// default iconify provider
-		if (provider) {
-			this.provider = provider
+		if (iconsProvider) {
+			this._iconsProvider = iconsProvider
 		}
 		// enable nuxt mode
 		if (nuxt) {
-			this.nuxt = nuxt
+			this._nuxt = nuxt
 		}
 		// add iconify collections
 		if (iconsCollections && Array.isArray(iconsCollections)) {
 			iconsCollections.forEach((iconsCollection) => {
-				this.addCollection(iconsCollection, this.provider)
+				this.addCollection(iconsCollection, this._iconsProvider)
 			})
+		}
+		if (defaults) {
+			this.defaults.value = defaults
 		}
 	}
 
-	addCollection(collection: IconifyJSON, providerName?: string): boolean {
-		this.iconsCollections = [...this.iconsCollections, collection]
-		return addCollection(collection, providerName ?? this.provider)
+	get nuxt(): boolean {
+		return this._nuxt
+	}
+
+	get iconsProvider(): string {
+		return this._iconsProvider
+	}
+
+	get iconsCollections(): IconifyJSON[] {
+		return this._iconsCollections
+	}
+
+	addCollection(
+		collection: IconifyJSON,
+		providerName: string = this._iconsProvider,
+	): boolean {
+		this._iconsCollections.push(collection)
+		return addCollection(collection, providerName)
 	}
 
 	addIcon(name: string, data: IconifyIcon): boolean {
 		return addIcon(name, data)
 	}
 
-	addAPIProvider(
+	addIconsAPIProvider(
 		provider: string,
 		customConfig: PartialIconifyAPIConfig,
 	): boolean {
@@ -207,7 +234,7 @@ export class Volver implements VolverInterface {
 		options: RequestInit = { cache: 'force-cache' },
 	): Promise<string | undefined> {
 		return new Promise((resolve, reject) => {
-			fetch(src, { ...this.fetchOptions, ...options })
+			fetch(src, { ...this._fetchOptions, ...options })
 				.catch((e) => reject(e))
 				.then((response) => response?.text())
 				.then((svg?: string) => resolve(svg))

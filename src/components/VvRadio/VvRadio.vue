@@ -63,7 +63,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-radio',
 		modifiers,
 		computed(() => ({

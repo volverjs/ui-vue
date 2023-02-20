@@ -89,7 +89,7 @@
 	const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-textarea',
 		modifiers,
 		computed(() => ({

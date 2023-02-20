@@ -39,21 +39,27 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// open
 	if (!args.disabled) {
-		expect(element.open).toBe(false)
-		expect(element).toBeClicked()
+		expect(element.open).toBe(args.not ? true : false)
+		expect(summary).toBeClicked()
 		await sleep()
-		expect(element.open).toBeTruthy()
-		expect(summary.getAttribute('aria-expanded')).toBe('true')
-		expect(content.getAttribute('aria-hidden')).toBe('false')
+		expect(element.open).toBe(args.not ? false : true)
+		expect(summary.getAttribute('aria-expanded')).toBe(
+			args.not ? 'false' : 'true',
+		)
+		expect(content.getAttribute('aria-hidden')).toBe(
+			args.not ? 'true' : 'false',
+		)
 	}
 
-	// details slot / content
-	if (args.details) {
-		const div = document.createElement('div')
-		div.innerHTML = args.details
-		expect(content.innerText).toEqual(div.innerText)
-	} else if (args.content) {
-		expect(content.innerText).toEqual(args.content)
+	// default slot / content
+	if (element.open) {
+		if (args.default) {
+			const div = document.createElement('div')
+			div.innerHTML = args.default
+			expect(content.innerText).toEqual(div.innerText)
+		} else if (args.content) {
+			expect(content.innerText).toEqual(args.content)
+		}
 	}
 
 	// accessibility

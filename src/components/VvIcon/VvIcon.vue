@@ -19,13 +19,13 @@
 
 	// classes
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers('vv-icon', modifiers)
+	const bemCssClasses = useModifiers('vv-icon', modifiers)
 
 	/**
 	 * Provider name
 	 */
 	const provider = computed(() => {
-		return props.provider || volver?.provider
+		return props.provider || volver?.iconsProvider
 	})
 
 	/**
