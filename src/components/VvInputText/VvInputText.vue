@@ -6,16 +6,16 @@
 
 <script setup lang="ts">
 	import type { InputHTMLAttributes } from 'vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
+	import { Mask } from 'maska'
+	import HintSlotFactory from '../common/HintSlot'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 	import {
 		VvInputTextEvents,
 		VvInputTextProps,
 		INPUT_TYPES,
 		TYPES_ICON,
-	} from '@/components/VvInputText'
-	import { Mask } from 'maska'
+	} from '../VvInputText'
 
 	// props, emit, slots and attrs
 	const props = defineProps(VvInputTextProps)

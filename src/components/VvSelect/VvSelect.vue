@@ -6,9 +6,9 @@
 
 <script setup lang="ts">
 	import type { SelectHTMLAttributes } from 'vue'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import { VvSelectProps, VvSelectEmits } from '@/components/VvSelect'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import HintSlotFactory from '../common/HintSlot'
+	import { VvSelectProps, VvSelectEmits } from '.'
 
 	// props, emit and slots
 	const props = defineProps(VvSelectProps)

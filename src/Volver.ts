@@ -7,7 +7,7 @@ import {
 	type PartialIconifyAPIConfig,
 } from '@iconify/vue'
 import type { App, Component, Directive, Plugin, Ref } from 'vue'
-import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from '@/constants'
+import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from './constants'
 
 export function useDefaultProps(
 	component: Component,

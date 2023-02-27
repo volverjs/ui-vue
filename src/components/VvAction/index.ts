@@ -1,4 +1,4 @@
-import { ActionProps } from '@/props'
+import { ActionProps } from '../../props'
 
 export const VvActionEvents = ['click', 'mouseover', 'mouseleave']
 

@@ -5,7 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { VvBadgeProps } from '@/components/VvBadge'
+	import { VvBadgeProps } from '.'
 
 	const props = defineProps(VvBadgeProps)
 	const { modifiers } = toRefs(props)

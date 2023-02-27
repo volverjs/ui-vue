@@ -5,15 +5,12 @@
 </script>
 
 <script setup lang="ts">
-	import type { Option } from '@/types/generic'
-	import type { InputGroupState } from '@/types/group'
-	import { INJECTION_KEY_CHECK_GROUP } from '@/constants'
-	import { HintSlotFactory } from '@/components/common/HintSlot'
-	import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
-	import {
-		VvCheckboxGroupProps,
-		VvCheckboxGroupEvents,
-	} from '@/components/VvCheckboxGroup'
+	import type { Option } from '../../types/generic'
+	import type { InputGroupState } from '../../types/group'
+	import { INJECTION_KEY_CHECK_GROUP } from '../../constants'
+	import { HintSlotFactory } from '../common/HintSlot'
+	import VvCheckbox from '../VvCheckbox/VvCheckbox.vue'
+	import { VvCheckboxGroupProps, VvCheckboxGroupEvents } from '.'
 
 	// props, emit and slots
 	const props = defineProps(VvCheckboxGroupProps)

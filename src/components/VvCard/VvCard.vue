@@ -5,7 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { VvCardProps } from '@/components/VvCard'
+	import { VvCardProps } from '.'
 
 	// props and attrs
 	const props = defineProps(VvCardProps)

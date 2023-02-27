@@ -1,4 +1,4 @@
-import type { Option } from '@/types/generic'
+import type { Option } from '../types/generic'
 
 // eslint-disable-next-line
 export function useOptions(props: any) {

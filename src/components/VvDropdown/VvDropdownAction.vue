@@ -5,9 +5,9 @@
 </script>
 
 <script setup lang="ts">
-	import VvAction from '@/components/VvAction/VvAction.vue'
-	import VvDropdownItem from '@/components/VvDropdown/VvDropdownItem.vue'
-	import { ActionProps, ModifiersProps } from '@/props'
+	import VvAction from '../VvAction/VvAction.vue'
+	import VvDropdownItem from '../VvDropdown/VvDropdownItem.vue'
+	import { ActionProps, ModifiersProps } from '../../props'
 
 	// props
 	const props = defineProps({

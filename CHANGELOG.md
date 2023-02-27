@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - `VvDropdownAction` label;
+- Typescript definitions;
+- Enum in PropType;
+- `autoClose` prop in `VvCombobox` for single choice.
 
 ## [0.0.4] - 2023-02-03
 

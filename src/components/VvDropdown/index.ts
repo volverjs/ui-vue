@@ -1,6 +1,6 @@
-import { DropdownProps, IdProps, ModifiersProps } from '@/props'
 import type { PropType } from 'vue'
-import { DropdownRole } from '@/constants'
+import { DropdownProps, IdProps, ModifiersProps } from '../../props'
+import { DropdownRole } from '../../constants'
 
 export const VvDropdownProps = {
 	...IdProps,
@@ -24,7 +24,7 @@ export const VvDropdownProps = {
 	 * Dropdown role
 	 */
 	role: {
-		type: String as PropType<DropdownRole>,
+		type: String as PropType<`${DropdownRole}`>,
 		default: DropdownRole.menu,
 		validator: (value: DropdownRole) =>
 			Object.values(DropdownRole).includes(value),

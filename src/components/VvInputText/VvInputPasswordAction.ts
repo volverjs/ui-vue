@@ -1,5 +1,5 @@
-import { TYPES_ICON } from '@/components/VvInputText'
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import { TYPES_ICON } from '../VvInputText'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 export default defineComponent({
 	components: {

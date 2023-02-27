@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
-	import { VvIconProps } from '@/components/VvIcon'
+	import { VvIconProps } from '.'
 
 	// props
 	const props = defineProps(VvIconProps)

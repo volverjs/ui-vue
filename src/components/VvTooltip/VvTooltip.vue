@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { VvTooltipProps } from '@/components/VvTooltip'
+	import { VvTooltipProps } from '.'
 
 	const props = defineProps(VvTooltipProps)
 	const { modifiers } = toRefs(props)

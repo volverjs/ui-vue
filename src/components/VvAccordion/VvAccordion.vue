@@ -6,11 +6,7 @@
 
 <script setup lang="ts">
 	import { nanoid } from 'nanoid'
-	import {
-		VvAccordionEvents,
-		VvAccordionProps,
-		useGroupProps,
-	} from '@/components/VvAccordion'
+	import { VvAccordionEvents, VvAccordionProps, useGroupProps } from '.'
 
 	// props, attrs and emit
 	const props = defineProps(VvAccordionProps)

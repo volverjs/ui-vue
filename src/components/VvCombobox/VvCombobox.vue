@@ -7,15 +7,15 @@
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
-	import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-	import VvDropdownOption from '@/components/VvDropdown/VvDropdownOption.vue'
-	import VvSelect from '@/components/VvSelect/VvSelect.vue'
-	import VvBadge from '@/components/VvBadge/VvBadge.vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import type { Option } from '@/types/generic'
-	import { DropdownRole } from '@/constants'
+	import { VvComboboxProps, VvComboboxEvents } from '.'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import VvDropdown from '../VvDropdown/VvDropdown.vue'
+	import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+	import VvSelect from '../VvSelect/VvSelect.vue'
+	import VvBadge from '../VvBadge/VvBadge.vue'
+	import HintSlotFactory from '../common/HintSlot'
+	import type { Option } from '../../types/generic'
+	import { DropdownRole } from '../../constants'
 
 	// props, emit and slots
 	const props = defineProps(VvComboboxProps)
@@ -253,8 +253,13 @@
 			} else {
 				toReturn = [value as Option]
 			}
-		} else if (props.unselectable && value === props.modelValue) {
-			toReturn = undefined
+		} else {
+			if (props.autoClose) {
+				collapse()
+			}
+			if (props.unselectable && value === props.modelValue) {
+				toReturn = undefined
+			}
 		}
 		emit('update:modelValue', toReturn)
 	}

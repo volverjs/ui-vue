@@ -1,5 +1,5 @@
 import type { ExtractPropTypes } from 'vue'
-import { InputTextareaProps } from '@/props'
+import { InputTextareaProps } from '../../props'
 
 export const WRAP = {
 	hard: 'hard',

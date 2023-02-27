@@ -9,7 +9,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	)) as HTMLDetailsElement
 	const summary = element.getElementsByTagName('summary')[0]
 	const content = element.getElementsByClassName(
-		'vv-collapse__content',
+		'vv-accordion__content',
 	)[0] as HTMLElement
 
 	const modifiers =
@@ -30,10 +30,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	if (args.summary) {
 		const div = document.createElement('div')
 		div.innerHTML = args.summary
-		expect(summary).toHaveClass('vv-collapse__summary')
+		expect(summary).toHaveClass('vv-accordion__summary')
 		expect(summary.innerText).toEqual(div.innerText)
 	} else if (args.title) {
-		expect(summary).toHaveClass('vv-collapse__summary')
+		expect(summary).toHaveClass('vv-accordion__summary')
 		expect(summary.innerText).toEqual(args.title)
 	}
 

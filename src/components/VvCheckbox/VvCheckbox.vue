@@ -5,12 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import {
-		VvCheckboxProps,
-		VvCheckboxEvents,
-		useGroupProps,
-	} from '@/components/VvCheckbox'
-	import { HintSlotFactory } from '@/components/common/HintSlot'
+	import { VvCheckboxProps, VvCheckboxEvents, useGroupProps } from '.'
+	import { HintSlotFactory } from '../common/HintSlot'
 
 	// props, emits and slots
 	const props = defineProps(VvCheckboxProps)

@@ -1,4 +1,4 @@
-import tooltip from '@/directives/v-tooltip'
+import tooltip from '../directives/v-tooltip'
 
 export default {
 	tooltip,

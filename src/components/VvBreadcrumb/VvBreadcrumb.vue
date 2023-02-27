@@ -5,8 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import { useModifiers } from '@/composables/useModifiers'
-	import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
+	import { useModifiers } from '../../composables/useModifiers'
+	import { VvBreadcrumbProps } from '.'
 
 	const props = defineProps(VvBreadcrumbProps)
 	const { modifiers } = toRefs(props)

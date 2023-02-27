@@ -4,7 +4,8 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "src/stories/**/*.test.ts"
+    "src/stories/**/*.test.ts",
+    "assets/auto-imports.d.ts"
   ],
   "compilerOptions": {
     "lib": ["esnext", "dom"],

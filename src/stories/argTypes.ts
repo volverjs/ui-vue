@@ -1,5 +1,5 @@
-import normal from '@/assets/icons/normal.json'
-import { Placement, Position, Side } from '@/constants'
+import normal from '../assets/icons/normal.json'
+import { Placement, Position, Side } from '../constants'
 
 export const ValidArgTypes = {
 	valid: {

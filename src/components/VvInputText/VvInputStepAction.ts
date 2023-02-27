@@ -1,4 +1,4 @@
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 export default defineComponent({
 	components: {

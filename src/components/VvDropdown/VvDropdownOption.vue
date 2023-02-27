@@ -5,13 +5,13 @@
 </script>
 
 <script setup lang="ts">
-	import VvDropdownItem from '@/components/VvDropdown/VvDropdownItem.vue'
+	import VvDropdownItem from './VvDropdownItem.vue'
 	import {
 		DisabledProps,
 		ModifiersProps,
 		SelectedProps,
 		UnselectableProps,
-	} from '@/props'
+	} from '../../props'
 
 	// props
 	const props = defineProps({

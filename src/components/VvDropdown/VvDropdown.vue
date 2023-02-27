@@ -17,14 +17,15 @@
 		arrow,
 		size,
 	} from '@floating-ui/vue'
-	import { VvDropdownProps } from '@/components/VvDropdown'
+	import { VvDropdownProps } from '.'
 	import type {
 		AutoPlacementOptions,
 		FlipOptions,
 		OffsetOptions,
 		ShiftOptions,
 		SizeOptions,
-	} from '@/types/floating-ui'
+	} from '../../types/floating-ui'
+	import type { Placement } from '@/constants'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -127,7 +128,7 @@
 		floatingEl,
 		{
 			whileElementsMounted: autoUpdate,
-			placement: props.placement,
+			placement: props.placement as Placement,
 			middleware,
 		},
 	)

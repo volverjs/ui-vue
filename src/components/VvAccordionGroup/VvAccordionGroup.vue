@@ -6,13 +6,10 @@
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
-	import type { AccordionGroupState } from '@/types/group'
-	import { INJECTION_KEY_ACCORDION_GROUP } from '@/constants'
-	import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
-	import {
-		VvAccordionGroupProps,
-		VvAccordionGroupEvents,
-	} from '@/components/VvAccordionGroup/'
+	import type { AccordionGroupState } from '../../types/group'
+	import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
+	import VvAccordion from '../VvAccordion/VvAccordion.vue'
+	import { VvAccordionGroupProps, VvAccordionGroupEvents } from '.'
 
 	// props and emit
 	const props = defineProps(VvAccordionGroupProps)

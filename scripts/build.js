@@ -19,6 +19,9 @@ packageJson.exports = {
 	'./src/*': './src/*',
 	'./dist/*': './dist/*',
 }
+packageJson.typesVersions = {
+	'*': {},
+}
 
 const baseConfig = {
 	plugins: [
@@ -51,6 +54,7 @@ packageJson.exports['.'] = {
 	import: './dist/index.es.js',
 	default: './dist/index.umd.js',
 }
+packageJson.typesVersions['*']['*'] = ['dist/index.d.ts']
 build({
 	...baseConfig,
 	build: {
@@ -71,6 +75,9 @@ packageJson.exports['./resolvers/unplugin'] = {
 	import: './dist/resolvers/unplugin.es.js',
 	default: './dist/resolvers/unplugin.umd.js',
 }
+packageJson.typesVersions['*']['resolvers/unplugin'] = [
+	'dist/resolvers/unplugin.d.ts',
+]
 build({
 	...baseConfig,
 	build: {
@@ -91,6 +98,7 @@ packageJson.exports[`./icons`] = {
 	import: './dist/icons.es.js',
 	default: './dist/icons.umd.js',
 }
+packageJson.typesVersions['*']['icons'] = ['dist/icons.d.ts']
 build({
 	configFile: false,
 	build: {
@@ -126,6 +134,7 @@ packageJson.exports['./directives'] = {
 	import: './dist/directives/index.es.js',
 	default: './dist/directives/index.umd.js',
 }
+packageJson.typesVersions['*']['directives'] = ['dist/directives/index.d.ts']
 build({
 	...baseConfig,
 	build: {
@@ -159,12 +168,13 @@ directivesSources.forEach(({ name, entry }) => {
 		import: `./dist/${subPath}.es.js`,
 		default: `./dist/${subPath}.umd.js`,
 	}
+	packageJson.typesVersions['*'][paramCaseName] = [`dist/${subPath}.d.ts`]
 
 	build({
 		...baseConfig,
 		build: {
 			watch: hot ? {} : undefined,
-			minify: hot ? false : undefined,
+			minify,
 			lib: {
 				name,
 				entry,
@@ -181,6 +191,7 @@ packageJson.exports['./components'] = {
 	import: './dist/components/index.es.js',
 	default: './dist/components/index.umd.js',
 }
+packageJson.typesVersions['*']['components'] = ['dist/components/index.d.ts']
 build({
 	...baseConfig,
 	build: {
@@ -214,12 +225,15 @@ componentsSources.forEach(({ name, entry }) => {
 		import: `./dist/${subPath}.es.js`,
 		default: `./dist/${subPath}.umd.js`,
 	}
+	packageJson.typesVersions['*'][paramCaseName] = [
+		`./dist/${subPath}.vue.d.ts`,
+	]
 
 	build({
 		...baseConfig,
 		build: {
 			watch: hot ? {} : undefined,
-			minify: hot ? false : undefined,
+			minify,
 			lib: {
 				name,
 				entry,

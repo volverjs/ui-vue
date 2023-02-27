@@ -5,7 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { VvProgressProps } from '@/components/VvProgress'
+	import { VvProgressProps } from '.'
 
 	// props
 	const props = defineProps(VvProgressProps)

@@ -1,13 +1,13 @@
 import type { Ref, PropType, ExtractPropTypes } from 'vue'
-import type { ButtonGroupState } from '@/types/group'
+import type { ButtonGroupState } from '../../types/group'
 import {
 	ActionProps,
 	IdProps,
 	LoadingProps,
 	ModifiersProps,
 	UnselectableProps,
-} from '@/props'
-import { INJECTION_KEY_BUTTON_GROUP, Side } from '@/constants'
+} from '../../props'
+import { INJECTION_KEY_BUTTON_GROUP, Side } from '../../constants'
 
 export const VvButtonEvents = ['update:modelValue']
 
@@ -25,7 +25,7 @@ export const VvButtonProps = {
 	 * Button icon position
 	 */
 	iconPosition: {
-		type: String as PropType<Side>,
+		type: String as PropType<`${Side}`>,
 		default: Side.left,
 		validator: (value: Side) => Object.values(Side).includes(value),
 	},

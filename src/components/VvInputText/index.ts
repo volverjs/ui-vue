@@ -1,6 +1,6 @@
 import type { ExtractPropTypes, PropType } from 'vue'
-import { InputTextareaProps } from '@/props'
 import type { MaskTokens } from 'maska'
+import { InputTextareaProps } from '../../props'
 
 export const INPUT_TYPES = {
 	TEXT: 'text',

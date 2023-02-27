@@ -1,4 +1,4 @@
-import type GroupState from '@/types/group'
+import type GroupState from '../../types/group'
 
 /**
  * Share part of the state of the component with all its children.

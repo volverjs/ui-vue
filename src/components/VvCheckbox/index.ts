@@ -1,7 +1,7 @@
 import type { ExtractPropTypes, Ref } from 'vue'
-import type { InputGroupState } from '@/types/group'
-import { CheckboxRadioProps, ModifiersProps } from '@/props'
-import { INJECTION_KEY_CHECK_GROUP } from '@/constants'
+import type { InputGroupState } from '../../types/group'
+import { CheckboxRadioProps, ModifiersProps } from '../../props'
+import { INJECTION_KEY_CHECK_GROUP } from '../../constants'
 
 export const VvCheckboxProps = {
 	...CheckboxRadioProps,

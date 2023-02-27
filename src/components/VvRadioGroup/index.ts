@@ -1,4 +1,4 @@
-import { CheckboxRadioGroupProps } from '@/props'
+import { CheckboxRadioGroupProps } from '../../props'
 
 export const VvRadioGroupProps = CheckboxRadioGroupProps
 

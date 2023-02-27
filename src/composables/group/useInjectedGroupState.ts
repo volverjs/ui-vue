@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type GroupState from '@/types/group'
+import type GroupState from '../../types/group'
 
 /**
  * Injects a group state
