@@ -35,50 +35,7 @@ export const Template = (args) => ({
 	<Story
 		name="Image"
 		play={defaultTest}
-		args={{ imgSrc: 'https://i.pravatar.cc/300' }}
-		argTypes={{
-			imgSrc: {
-				control: {
-					disable: true,
-				}
-			}
-		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Small"
-		play={defaultTest}
-		args={{ modifiers: '' }}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Medium"
-		play={defaultTest}
-		args={{ modifiers: 'md' }}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Large"
-		play={defaultTest}
-		args={{ modifiers: 'lg' }}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Rounded"
-		play={defaultTest}
-		args={{ modifiers: 'rounded', default: 'MR' }}>
+		args={{ imgSrc: 'https://i.pravatar.cc/300' }}>
 		{Template.bind({})}
 	</Story>
 </Canvas>
