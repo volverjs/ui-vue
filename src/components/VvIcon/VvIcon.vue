@@ -6,29 +6,26 @@
 
 <script setup lang="ts">
 	import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
-	import { type IVolver, VOLVER_PREFIX } from '@/Volver'
-	import { VvIconProps } from '@/components/VvIcon'
+	import { VvIconProps } from '.'
 
 	// props
 	const props = defineProps(VvIconProps)
 
 	// data
 	const show = ref(true)
-	const { modifiers } = toRefs(props)
 
-	// inject
-	const ds = inject<IVolver>(VOLVER_PREFIX)
+	// inject plugin
+	const volver = useVolver()
 
 	// classes
-	const { bemCssClasses } = useBemModifiers('vv-icon', {
-		modifiers,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useModifiers('vv-icon', modifiers)
 
 	/**
 	 * Provider name
 	 */
 	const provider = computed(() => {
-		return props.provider || ds?.provider
+		return props.provider || volver?.iconsProvider
 	})
 
 	/**
@@ -48,12 +45,14 @@
 		} else {
 			// Check into all collections and set "iconName" data
 			return (
-				ds?.iconsCollections.find((iconsCollection: IconifyJSON) => {
-					const icon = `@${provider.value}:${iconsCollection.prefix}:${_name}`
-					if (iconExists(icon)) {
-						return icon
-					}
-				}) || _name
+				volver?.iconsCollections.find(
+					(iconsCollection: IconifyJSON) => {
+						const icon = `@${provider.value}:${iconsCollection.prefix}:${_name}`
+						if (iconExists(icon)) {
+							return icon
+						}
+					},
+				) || _name
 			)
 		}
 	})
@@ -94,13 +93,14 @@
 		}
 	}
 
-	if (ds) {
+	if (volver) {
 		if (
 			props.src &&
 			!iconExists(`@${provider.value}:${props.prefix}:${props.name}`)
 		) {
 			show.value = false
-			ds.fetchIcon(props.src)
+			volver
+				.fetchIcon(props.src)
 				.then((svg?: string) => {
 					if (svg) {
 						addIconFromSvg(svg)

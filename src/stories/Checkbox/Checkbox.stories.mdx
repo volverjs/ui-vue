@@ -10,19 +10,20 @@ import { defaultTest } from './Checkbox.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvCheckbox },
 	setup() {
 		return { args }
 	},
 	data: () => ({ inputValue: args.uncheckedValue }),
-	template: /*html*/`
-			<vv-checkbox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-				<template #default v-if="args.default"><span v-html="args.default"></span></template>
-				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			</vv-checkbox>
-			<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-        `,
+	template: /*html*/ `
+		<vv-checkbox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #default v-if="args.default"><span v-html="args.default"></span></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+		</vv-checkbox>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+	`,
 })
 
 <Canvas>

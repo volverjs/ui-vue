@@ -1,97 +1,36 @@
 import type { Ref } from 'vue'
 
-interface IBemModifiers {
-	[key: string]:
-		| Ref<boolean>
-		| Ref<string | unknown[] | undefined>
-		| boolean
-		| string
-		| string[]
-		| undefined
-		| unknown[]
-	modifiers?:
-		| Ref<string | unknown[] | undefined>
-		| undefined
-		| string[]
-		| string
-		| unknown[]
-}
-
-export function useBemModifiers(prefix: string, modifiers: IBemModifiers) {
-	const baseCssClass: object = { [`${prefix}`]: true }
-
-	const bemCssClasses = computed(() => {
-		return (
-			Object.keys(modifiers).reduce((acc, item) => {
-				const _modifier =
-					unref(modifiers[item] as Ref<string | string[]>) || false
-
-				if (!_modifier) return acc
-
-				if (item === 'modifiers') {
-					const _reduceModifiers = Array.isArray(_modifier)
-						? _modifier
-						: _modifier.split(' ')
-					return {
-						...acc,
-						..._reduceModifiers.reduce(
-							(accVariant: object, currentVariant: string) => {
-								return {
-									...accVariant,
-									[`${prefix}--${kebabCase(currentVariant)}`]:
-										true,
-								}
-							},
-							{},
-						),
+export function useModifiers(
+	prefix: string,
+	modifiers?: Ref<string | string[] | unknown | unknown[] | undefined>,
+	others?: Ref<Record<string, boolean>>,
+) {
+	return computed(() => {
+		const toReturn: Record<string, boolean> = {
+			[prefix]: true,
+		}
+		// props modifiers
+		const modifiersArray =
+			typeof modifiers?.value === 'string'
+				? modifiers.value.split(' ')
+				: modifiers?.value
+		if (modifiersArray) {
+			if (Array.isArray(modifiersArray)) {
+				modifiersArray.forEach((modifier) => {
+					if (modifier) {
+						toReturn[`${prefix}--${modifier}`] = true
 					}
-				} else {
-					return {
-						...acc,
-						[`${prefix}--${kebabCase(item)}`]: _modifier,
-					}
-				}
-			}, baseCssClass) || {}
-		)
-	})
-
-	return {
-		bemCssClasses,
-	}
-}
-
-export function toBem(prefix: string, modifiers: IBemModifiers) {
-	const baseCssClass: object = { [`${prefix}`]: true }
-
-	return (
-		Object.keys(modifiers).reduce((acc, k) => {
-			const _modifier = unref(modifiers[k] as Ref<unknown>) || false
-
-			if (!_modifier) return acc
-
-			if (k === 'modifiers') {
-				const _reduceModifiers = Array.isArray(_modifier)
-					? _modifier
-					: [_modifier]
-				return {
-					...acc,
-					..._reduceModifiers.reduce(
-						(accVariant: object, currentVariant: string) => {
-							return {
-								...accVariant,
-								[`${prefix}--${kebabCase(currentVariant)}`]:
-									true,
-							}
-						},
-						{},
-					),
-				}
-			} else {
-				return {
-					...acc,
-					[`${prefix}--${kebabCase(k)}`]: _modifier,
-				}
+				})
 			}
-		}, baseCssClass) || {}
-	)
+		}
+
+		// others modifiers
+		if (others) {
+			Object.keys(others.value).forEach((key) => {
+				toReturn[`${prefix}--${key}`] = unref(others.value[key])
+			})
+		}
+
+		return toReturn
+	})
 }

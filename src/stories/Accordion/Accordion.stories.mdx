@@ -21,17 +21,25 @@ export const Template = (args, { argTypes }) => ({
 	setup() {
 		return { args }
 	},
-	template: /*html*/`<vv-accordion data-testId="element" v-bind="args" v-model="open">
-					<template #summary v-if="args.summary"><div v-html="args.summary"></div></template>
-					<template #details v-if="args.details"><div v-html="args.details"></div></template>
-			   </vv-accordion>
-			   <div class="mt-24">
-					Open: <span data-testId="value">{{ open }}</span>
-			   </div>`,
+	template: /*html*/ `
+		<vv-accordion data-testId="element" v-bind="args" v-model="open">
+			<template #summary v-if="args.summary"><div v-html="args.summary"></div></template>
+			<template #default v-if="args.default"><div v-html="args.default"></div></template>
+		</vv-accordion>
+		<div class="mt-24">
+			{{ args.not ? 'Closed' : 'Opened'}}: <span data-testId="value">{{ open }}</span>
+		</div>
+	`,
 })
 
 <Canvas>
 	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story name="Not" play={defaultTest} args={{ not: true }}>
 		{Template.bind()}
 	</Story>
 </Canvas>

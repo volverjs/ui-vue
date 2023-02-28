@@ -10,13 +10,14 @@ import { defaultTest } from './Radio.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvRadio },
 	setup() {
 		return { args }
 	},
 	data: () => ({ inputValue: undefined }),
-	template: /*html*/`
+	template: /*html*/ `
 		<vv-radio v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
 			<template #default v-if="args.default"><span v-html="args.default"></span></template>
 			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>

@@ -1,5 +1,9 @@
+import { ref } from 'vue'
 import { Meta, Story } from '@storybook/addon-docs'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import { defaultTest } from './Dropdown.test'
 import { defaultArgs, argTypes } from './Dropdown.settings'
 
@@ -10,19 +14,55 @@ import { defaultArgs, argTypes } from './Dropdown.settings'
 	args={defaultArgs}
 />
 
-export const Template = (args) => ({
-	components: { VvDropdown },
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
+	components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
 	setup() {
-		return { args }
+		const expanded = ref(false)
+		return { args, expanded }
 	},
-	data() {
-		return {
-			value: undefined,
-		}
+	watch: {
+		expanded(newValue) {
+			if (!newValue) {
+				return
+			}
+			setTimeout(() => {
+				this.centerWrapper()
+			}, 300)
+		},
 	},
-	template: /*html*/`
-		<vv-dropdown v-bind="args" v-model="value" class="max-w-224 relative" data-testId="element" />
-		<div class="mt-24">Value: <span data-testId="value">{{ value }}</span></div>
+	methods: {
+		centerWrapper() {
+			this.$refs.toggle?.$el?.scrollIntoView({
+				inline: 'center',
+				block: 'center',
+			})
+		},
+	},
+	mounted() {
+		this.centerWrapper()
+	},
+	template: /* html */ `
+		<div class="absolute inset-0 overflow-auto" ref="container">
+			<div style="width: 200%; height: 200%" ref="wrapper" data-testId="wrapper">
+				<vv-dropdown v-model="expanded" v-bind="args">
+					<vv-button ref="toggle" class="absolute top-full left-full -translate-1/2" modifiers="full-bleed" data-testId="trigger">
+						Toggle dropdown
+					</vv-button>
+					<template #items>
+						<vv-dropdown-action>
+							<vv-icon name="add" /> Create
+						</vv-dropdown-action>
+						<vv-dropdown-action>
+							<vv-icon name="edit" /> Update
+						</vv-dropdown-action>
+						<vv-dropdown-action>
+							<vv-icon name="trash" /> Delete
+						</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+		</div>
 	`,
 })
 
@@ -34,16 +74,16 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
-		name="Disabled"
-		play={defaultTest}
-		args={{ disabled: true }}
+		name="Arrow"
+		args={{ arrow: true, offset: 10 }}
 		argTypes={{
-			disabled: {
+			arrow: {
 				control: {
 					disable: true,
 				},
 			},
 		}}
+		play={defaultTest}
 	>
 		{Template.bind()}
 	</Story>
@@ -51,16 +91,16 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
-		name="Multiple"
-		play={defaultTest}
-		args={{ multiple: true }}
+		name="Auto placement"
+		args={{ flip: false, autoPlacement: true, arrow: true, offset: 10 }}
 		argTypes={{
-			multiple: {
+			autoPlacement: {
 				control: {
 					disable: true,
 				},
 			},
 		}}
+		play={defaultTest}
 	>
 		{Template.bind()}
 	</Story>
@@ -68,55 +108,16 @@ export const Template = (args) => ({
 
 <Canvas>
 	<Story
-		name="Unselectable"
-		play={defaultTest}
-		args={{ unselectable: false }}
+		name="Trigger width"
+		args={{ triggerWidth: true }}
 		argTypes={{
-			unselectable: {
+			triggerWidth: {
 				control: {
 					disable: true,
 				},
 			},
 		}}
-	>
-		{Template.bind()}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Max values"
 		play={defaultTest}
-		args={{ multiple: true, maxValues: 2 }}
-		argTypes={{
-			multiple: {
-				control: {
-					disable: true,
-				},
-			},
-			maxValues: {
-				control: {
-					disable: true,
-				},
-			},
-		}}
-	>
-		{Template.bind()}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="No results"
-		play={defaultTest}
-		args={{ options: [] }}
-		argTypes={{
-			options: {
-				control: {
-					disable: true,
-				},
-			},
-		}}
 	>
 		{Template.bind()}
 	</Story>

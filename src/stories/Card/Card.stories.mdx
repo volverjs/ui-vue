@@ -10,19 +10,20 @@ import { defaultArgs, argTypes } from './Card.settings'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvCard },
 	setup() {
 		return { args }
 	},
-	template: /*html*/`
+	template: /*html*/ `
         <vv-card v-bind="args" data-testId="card">
 			<template #default v-if="args.default"><div v-html="args.default"></div></template>
 			<template #header v-if="args.header"><div v-html="args.header"></div></template>
 			<template #content v-if="args.content"><div v-html="args.content"></div></template>
 			<template #footer v-if="args.footer"><div v-html="args.footer"></div></template>
         </vv-card>
-        `,
+    `,
 })
 
 <Canvas>

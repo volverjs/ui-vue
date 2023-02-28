@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(6.333 4)"><g transform="translate(11.335 8)"><path d="M22.482,22.473c4.09-1.922,2.45-9.973,2.45-9.973H17.581s-1.64,8.05,2.45,9.973a2.123,2.123,0,0,0,.539.02h1.411A1.82,1.82,0,0,0,22.482,22.473Z" transform="translate(-16.924 -12.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/><line y2="5" transform="translate(4.332 11)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line x1="6" transform="translate(1.332 16)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g><g transform="translate(-0.336 1)"><path d="M7.542,27.5a1.624,1.624,0,0,1-.869-.4,1.335,1.335,0,0,1-.4-.933c.023-14.091.009-14.667,0-14.667l2-4v-6h3.994v6l2,4c.014.012-.021.576,0,14.667a1.335,1.335,0,0,1-.4.933,1.133,1.133,0,0,1-.933.4Z" transform="translate(-6.273 -3.5)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/><rect width="4" height="8" transform="translate(0.003 11.001)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(6.333 4)">
+        <g transform="translate(11.335 8)">
+            <path
+                d="M22.482,22.473c4.09-1.922,2.45-9.973,2.45-9.973H17.581s-1.64,8.05,2.45,9.973a2.123,2.123,0,0,0,.539.02h1.411A1.82,1.82,0,0,0,22.482,22.473Z"
+                transform="translate(-16.924 -12.5)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" fill-rule="evenodd" />
+            <line y2="5" transform="translate(4.332 11)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" />
+            <line x1="6" transform="translate(1.332 16)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" />
+        </g>
+        <g transform="translate(-0.336 1)">
+            <path
+                d="M7.542,27.5a1.624,1.624,0,0,1-.869-.4,1.335,1.335,0,0,1-.4-.933c.023-14.091.009-14.667,0-14.667l2-4v-6h3.994v6l2,4c.014.012-.021.576,0,14.667a1.335,1.335,0,0,1-.4.933,1.133,1.133,0,0,1-.933.4Z"
+                transform="translate(-6.273 -3.5)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"
+                fill-rule="evenodd" />
+            <rect width="4" height="8" transform="translate(0.003 11.001)" fill="none" stroke="#000"
+                stroke-linejoin="round" stroke-width="2" />
+        </g>
+    </g>
+</svg>

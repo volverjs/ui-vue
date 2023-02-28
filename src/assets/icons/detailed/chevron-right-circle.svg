@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" transform="translate(0 32) rotate(-90)" fill="#fff" opacity="0"/><g transform="translate(12 26) rotate(-90)"><path d="M0,0,10,10,20,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <rect transform="translate(0 32) rotate(-90)" fill="#fff" opacity="0" />
+    <g transform="translate(12 26) rotate(-90)">
+        <path d="M0,0,10,10,20,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="2" />
+    </g>
+</svg>

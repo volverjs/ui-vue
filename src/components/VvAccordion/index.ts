@@ -1,6 +1,6 @@
 import type { ExtractPropTypes, Ref } from 'vue'
-import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-import { VV_ACCORDION_GROUP } from '@/constants'
+import type { AccordionGroupState } from '../../types/group'
+import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 
 export const VvAccordionProps = {
 	/**
@@ -30,6 +30,10 @@ export const VvAccordionProps = {
 	 * If true, the accordion will be disabled
 	 */
 	disabled: Boolean,
+	/**
+	 * If true, the accordion will be opened by default
+	 */
+	not: Boolean,
 }
 
 export const VvAccordionEvents = ['update:modelValue']
@@ -43,13 +47,16 @@ export function useGroupProps(
 	emit: (event: string, value: unknown) => void,
 ) {
 	const { group, isInGroup, getGroupOrLocalRef } =
-		useInjectedGroupState<IAccordionGroupState>(VV_ACCORDION_GROUP)
+		useInjectedGroupState<AccordionGroupState>(
+			INJECTION_KEY_ACCORDION_GROUP,
+		)
 
 	// local props
 	const { title, content } = toRefs(props)
 
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
+	const not = getGroupOrLocalRef('not', props) as Ref<boolean>
 	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
 	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
@@ -59,6 +66,7 @@ export function useGroupProps(
 	return {
 		// group props
 		modelValue,
+		not,
 		disabled,
 		isInGroup,
 		group,

@@ -10,14 +10,16 @@ import { defaultArgs, argTypes } from './Breadcrumb.settings'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvBreadcrumb },
 	setup() {
 		return { args }
 	},
-	template: /*html*/`<div class="bg-surface p-lg">
-			     <vv-breadcrumb v-bind="args" />
-			   </div>`,
+	template: /*html*/ `
+		<div class="bg-surface p-lg">
+			<vv-breadcrumb v-bind="args" />
+		</div>`,
 })
 
 <Canvas>

@@ -1,14 +1,14 @@
 import type { Ref } from 'vue'
-import type IGroupState from '@/composables/group/types/IGroupState'
+import type GroupState from '../../types/group'
 
 /**
  * Injects a group state
  */
-export function useInjectedGroupState<TGroup extends IGroupState>(
-	groupKey: string,
+export function useInjectedGroupState<GroupStateType extends GroupState>(
+	groupKey: string | symbol,
 ) {
 	// Get group state
-	const group = inject<Ref<TGroup> | undefined>(groupKey, undefined)
+	const group = inject<Ref<GroupStateType> | undefined>(groupKey, undefined)
 
 	// Check if component is in group
 	const isInGroup = computed(() => !isEmpty(group))
@@ -17,7 +17,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 	 * Get a group or local property
 	 */
 	function getGroupOrLocalRef<PropsType extends object>(
-		propName: keyof TGroup,
+		propName: keyof GroupStateType,
 		props: PropsType,
 		emit?: (event: string, ...args: unknown[]) => void,
 	) {
@@ -27,7 +27,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 				get() {
 					return groupPropValue?.value
 				},
-				set(value) {
+				set(value: unknown) {
 					groupPropValue.value = value
 				},
 			})
@@ -37,7 +37,7 @@ export function useInjectedGroupState<TGroup extends IGroupState>(
 			get() {
 				return propRef.value
 			},
-			set(value) {
+			set(value: unknown) {
 				if (emit) emit(`update:${propName as string}`, value)
 			},
 		})

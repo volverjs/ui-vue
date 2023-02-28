@@ -6,16 +6,16 @@
 
 <script setup lang="ts">
 	import type { InputHTMLAttributes } from 'vue'
-	import { nanoid } from 'nanoid'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import VvInputTextActionsFactory from '@/components/VvInputText/VvInputTextActions'
+	import { Mask } from 'maska'
+	import HintSlotFactory from '../common/HintSlot'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 	import {
 		VvInputTextEvents,
 		VvInputTextProps,
 		INPUT_TYPES,
 		TYPES_ICON,
-	} from '@/components/VvInputText'
+	} from '../VvInputText'
 
 	// props, emit, slots and attrs
 	const props = defineProps(VvInputTextProps)
@@ -23,10 +23,14 @@
 	const slots = useSlots()
 
 	// template refs
-	const input = ref()
+	const inputEl = ref()
+	const innerEl = ref()
+
+	defineExpose({ $inner: innerEl })
 
 	// data
 	const {
+		id,
 		icon,
 		iconPosition,
 		label,
@@ -36,7 +40,7 @@
 		invalid,
 		loading,
 	} = toRefs(props)
-	const hasId = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
 	// BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const inputTextPlaceholder = computed(() =>
@@ -44,15 +48,39 @@
 	)
 
 	// debounce
-	const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
+	const localModelValue = useDebouncedInput(
+		modelValue,
+		emit,
+		props.debounce,
+		{
+			getter: (value) => {
+				if (mask.value) {
+					return mask.value.masked(value ?? '')
+				}
+				return value
+			},
+			setter: (value) => {
+				if (mask.value) {
+					value = mask.value.unmasked(value)
+				}
+				if (props.type === INPUT_TYPES.NUMBER) {
+					return Number(value)
+				}
+				return value
+			},
+		},
+	)
 
 	// focus
-	const { focused } = useComponentFocus(input, emit)
+	const { focused } = useComponentFocus(inputEl, emit)
+	const isFocused = computed(
+		() => focused.value && !props.disabled && !props.readonly,
+	)
 
 	// visibility
-	const isVisible = useElementVisibility(input)
+	const isVisible = useElementVisibility(inputEl)
 	watch(isVisible, (newValue) => {
-		if (newValue && props.autofocus) {
+		if (newValue && props.autofocus && !props.disabled && !props.readonly) {
 			focused.value = true
 		}
 	})
@@ -78,14 +106,14 @@
 	const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
 	const onStepUp = () => {
 		if (isClickable.value) {
-			input.value.stepUp()
-			localModelValue.value = unref(input).value
+			inputEl.value.stepUp()
+			localModelValue.value = unref(inputEl).value
 		}
 	}
 	const onStepDown = () => {
 		if (isClickable.value) {
-			input.value.stepDown()
-			localModelValue.value = unref(input).value
+			inputEl.value.stepDown()
+			localModelValue.value = unref(inputEl).value
 		}
 	}
 
@@ -96,11 +124,11 @@
 	}
 
 	// icons
-	const { hasIconLeft, hasIconRight, hasIcon } = useComponentIcon(
+	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
 		icon,
 		iconPosition,
 	)
-	const defaultRightIcon = computed(() => {
+	const defaultAfterIcon = computed(() => {
 		switch (props.type) {
 			case INPUT_TYPES.COLOR:
 				return { name: TYPES_ICON.COLOR }
@@ -144,19 +172,24 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-input-text', {
-		modifiers: props.modifiers,
-		valid,
-		invalid,
-		loading,
-		disabled: props.disabled,
-		readonly: props.readonly,
-		iconLeft: hasIconLeft,
-		iconRight: hasIconRight.value || !isEmpty(defaultRightIcon),
-		floating: props.floating && !isEmpty(props.label),
-		dirty: isDirty,
-		focus: focused,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useModifiers(
+		'vv-input-text',
+		modifiers,
+		computed(() => ({
+			valid: valid.value,
+			invalid: invalid.value,
+			loading: loading.value,
+			disabled: props.disabled,
+			readonly: props.readonly,
+			'icon-before': hasIconBefore.value,
+			'icon-after': hasIconAfter.value || !isEmpty(defaultAfterIcon),
+			floating: props.floating && !isEmpty(props.label),
+			dirty: isDirty.value,
+			focus: isFocused.value,
+			'auto-width': props.autoWidth,
+		})),
+	)
 
 	// attrs
 	const hasAttrs = computed(() => {
@@ -195,8 +228,10 @@
 			type === INPUT_TYPES.NUMBER
 		) {
 			toReturn.step = props.step
-			toReturn.max = String(props.max)
-			toReturn.min = String(props.min)
+			toReturn.max =
+				props.max !== undefined ? String(props.max) : undefined
+			toReturn.min =
+				props.min !== undefined ? String(props.min) : undefined
 		}
 		if (
 			type === INPUT_TYPES.TEXT ||
@@ -252,6 +287,51 @@
 		INPUT_TYPES.SEARCH,
 		props,
 	)
+
+	// mask
+	const mask = ref()
+	watch(
+		[
+			() => props.mask,
+			() => props.type,
+			() => props.maskEager,
+			() => props.maskReversed,
+			() => props.maskTokens,
+			() => props.maskTokensReplace,
+		],
+		([newMask, newType, eager, reversed, tokens, tokensReplace]) => {
+			if (newMask && newType === INPUT_TYPES.TEXT) {
+				mask.value = new Mask({
+					mask: newMask,
+					eager,
+					reversed,
+					tokens,
+					tokensReplace,
+				})
+				return
+			}
+			mask.value = undefined
+		},
+		{ immediate: true },
+	)
+
+	// auto-width
+	const onClickInner = () => {
+		if (isClickable.value) {
+			focused.value = true
+		}
+	}
+	const hasStyle = computed(() => {
+		if (!props.autoWidth) {
+			return undefined
+		}
+		return {
+			width:
+				localModelValue.value !== undefined
+					? `${String(localModelValue.value).length + 1}ch`
+					: undefined,
+		}
+	})
 </script>
 
 <template>
@@ -260,38 +340,62 @@
 			{{ label }}
 		</label>
 		<div class="vv-input-text__wrapper">
-			<!-- @slot Slot to replace left icon -->
-			<slot name="before" v-bind="slotProps">
+			<div v-if="$slots.before" class="vv-input-text__input-before">
+				<!-- @slot Slot before input icon -->
+				<slot name="before" v-bind="slotProps" />
+			</div>
+			<div
+				ref="innerEl"
+				class="vv-input-text__inner"
+				@click.stop="onClickInner"
+			>
 				<VvIcon
-					v-if="hasIconLeft"
-					class="vv-input-text__icon-left"
+					v-if="hasIconBefore"
+					class="vv-input-text__icon"
 					v-bind="hasIcon"
 				/>
-			</slot>
-			<input
-				:id="hasId"
-				ref="input"
-				v-model="localModelValue"
-				v-bind="hasAttrs"
-				@keyup="emit('keyup', $event)"
-			/>
+				<input
+					:id="hasId"
+					ref="inputEl"
+					v-model="localModelValue"
+					v-bind="hasAttrs"
+					:style="hasStyle"
+					@keyup="emit('keyup', $event)"
+				/>
+				<div
+					v-if="(unit || $slots.unit) && isDirty"
+					class="vv-input-text__unit"
+				>
+					<!-- @slot Slot to replace unit-->
+					<slot name v-bind="slotProps">
+						{{ unit }}
+					</slot>
+				</div>
+			</div>
 			<!-- @slot Slot to replace right icon -->
-			<slot name="after" v-bind="slotProps">
-				<VvIcon
-					v-if="hasIconRight || defaultRightIcon"
-					v-bind="hasIconRight ? hasIcon : defaultRightIcon"
-				/>
-				<PasswordInputActions
-					v-else-if="isPassword"
-					@toggle-password="onTogglePassword"
-				/>
-				<NumberInputActions
-					v-else-if="isNumber"
-					@step-up="onStepUp"
-					@step-down="onStepDown"
-				/>
-				<SearchInputActions v-else-if="isSearch" @clear="onClear" />
-			</slot>
+			<VvIcon
+				v-if="hasIconAfter || defaultAfterIcon"
+				class="vv-input-text__icon vv-input-text__icon-after"
+				v-bind="hasIconAfter ? hasIcon : defaultAfterIcon"
+			/>
+			<PasswordInputActions
+				v-else-if="isPassword && !hideActions && isClickable"
+				@toggle-password="onTogglePassword"
+			/>
+			<NumberInputActions
+				v-else-if="isNumber && !hideActions && isClickable"
+				@step-up="onStepUp"
+				@step-down="onStepDown"
+			/>
+			<SearchInputActions
+				v-else-if="isSearch && !hideActions && isClickable"
+				@clear="onClear"
+			/>
+			<!-- @slot Slot after input -->
+			<div v-if="$slots.after" class="vv-input-text__input-after">
+				<!-- @slot Slot before input icon -->
+				<slot name="after" v-bind="slotProps" />
+			</div>
 			<span v-if="count" class="vv-input-text__limit">
 				<!-- @slot Slot to replace count -->
 				<slot name="count" v-bind="slotProps">

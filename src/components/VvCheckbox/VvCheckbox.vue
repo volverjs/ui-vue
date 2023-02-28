@@ -5,13 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
-	import {
-		VvCheckboxProps,
-		VvCheckboxEvents,
-		useGroupProps,
-	} from '@/components/VvCheckbox'
-	import { HintSlotFactory } from '@/components/common/HintSlot'
+	import { VvCheckboxProps, VvCheckboxEvents, useGroupProps } from '.'
+	import { HintSlotFactory } from '../common/HintSlot'
 
 	// props, emits and slots
 	const props = defineProps(VvCheckboxProps)
@@ -20,6 +15,7 @@
 
 	// data
 	const {
+		id,
 		disabled,
 		readonly,
 		valid,
@@ -29,7 +25,7 @@
 		indeterminate,
 		isInGroup,
 	} = useGroupProps(props, emit)
-	const id = computed(() => String(props.id || nanoid()))
+	const hasId = useUniqueId(id)
 	const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 	// template ref
@@ -107,14 +103,19 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-checkbox', {
-		switch: propsSwitch,
-		valid,
-		invalid,
-		disabled,
-		readonly,
-		indeterminate,
-	})
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useModifiers(
+		'vv-checkbox',
+		modifiers,
+		computed(() => ({
+			switch: propsSwitch.value,
+			valid: valid.value,
+			invalid: invalid.value,
+			disabled: disabled.value,
+			readonly: readonly.value,
+			indeterminate: indeterminate.value,
+		})),
+	)
 
 	watchEffect(() => {
 		if (isBinary.value && Array.isArray(modelValue.value)) {
@@ -147,9 +148,9 @@
 </script>
 
 <template>
-	<label :class="bemCssClasses" :for="id">
+	<label :class="bemCssClasses" :for="hasId">
 		<input
-			:id="id"
+			:id="hasId"
 			ref="input"
 			v-model="localModelValue"
 			type="checkbox"

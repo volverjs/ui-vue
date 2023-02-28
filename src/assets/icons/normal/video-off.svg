@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#fff" opacity="0"/><g transform="translate(3 6)"><path d="M2,9.242V2H9.243l2-2H1.868A1.8,1.8,0,0,0,0,1.715v8.569a1.584,1.584,0,0,0,.2.758Z" fill="#040405"/><path d="M12,7.727V10H9.727l-2,2h4.4A1.8,1.8,0,0,0,14,10.284V5.727Z" fill="#040405"/><path d="M18.351,2a.642.642,0,0,0-.373.121l-1.3.925L13.238,6.489c.013.01.018.026.031.035L17.978,9.88A.646.646,0,0,0,19,9.356V2.646A.646.646,0,0,0,18.351,2" fill="#040405"/><line y1="16" x2="16" transform="translate(1 -2)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g transform="translate(3 6)">
+        <path d="M2,9.242V2H9.243l2-2H1.868A1.8,1.8,0,0,0,0,1.715v8.569a1.584,1.584,0,0,0,.2.758Z" fill="#040405" />
+        <path d="M12,7.727V10H9.727l-2,2h4.4A1.8,1.8,0,0,0,14,10.284V5.727Z" fill="#040405" />
+        <path
+            d="M18.351,2a.642.642,0,0,0-.373.121l-1.3.925L13.238,6.489c.013.01.018.026.031.035L17.978,9.88A.646.646,0,0,0,19,9.356V2.646A.646.646,0,0,0,18.351,2"
+            fill="#040405" />
+        <line y1="16" x2="16" transform="translate(1 -2)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+    </g>
+</svg>

@@ -10,12 +10,15 @@ import { defaultArgs, argTypes } from './Progress.settings'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvProgress },
 	setup() {
 		return { args }
 	},
-	template: /*html*/`<vv-progress v-bind="args" />`,
+	template: /*html*/ `
+		<vv-progress v-bind="args" />
+	`,
 })
 
 <Story name="Default" play={defaultTest}>

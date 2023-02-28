@@ -14,7 +14,7 @@ export async function defaulTest({ canvasElement, args }: PlayAttributes) {
 	// check modifiers
 	if (modifiers) {
 		for (const modifier of modifiers) {
-			expect(element).toHaveClass(`vv-card--${modifier}`)
+			await expect(element).toHaveClass(`vv-card--${modifier}`)
 		}
 	}
 

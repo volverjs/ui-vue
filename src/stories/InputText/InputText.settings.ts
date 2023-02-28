@@ -1,4 +1,4 @@
-import { InputTextareaArgTypes } from '@/stories/argTypes'
+import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvInputTextProps } from '@/components/VvInputText'
 import normal from '@/assets/icons/normal.json'
 
@@ -15,6 +15,7 @@ export const defaultArgs = {
 
 export const argTypes = {
 	...InputTextareaArgTypes,
+	...HintArgTypes,
 	type: {
 		description: 'Type of form control',
 		options: [
@@ -192,6 +193,59 @@ export const argTypes = {
 		table: {
 			defaultValue: {
 				summary: 'Clear',
+			},
+		},
+	},
+	mask: {
+		description: 'Input mask, only for text type',
+		type: {
+			summary: 'string',
+		},
+		control: {
+			type: 'text',
+		},
+	},
+	maskEager: {
+		description: 'Show mask before typing',
+		type: {
+			summary: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	maskReversed: {
+		description: 'Write typing reverse (ex. for numbers)',
+		type: {
+			summary: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	maskTokens: {
+		description: 'Add mask custom tokens',
+		type: {
+			summary: 'Object',
+		},
+		table: {
+			defaultValue: {
+				summary: 'undefined',
+			},
+		},
+	},
+	maskTokensReplace: {
+		description: 'Replace default tokens',
+		type: {
+			summary: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
 			},
 		},
 	},

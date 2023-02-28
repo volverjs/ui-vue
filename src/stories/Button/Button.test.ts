@@ -5,24 +5,26 @@ import { expect } from '@/test/expect'
 export async function defaultTest(
 	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
-	const element = await within(canvasElement).findByRole('button')
+	const element = (await within(canvasElement).findByTestId(
+		'element',
+	)) as HTMLElement
 
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)
 			? args.modifiers
 			: [args.modifiers]
 
-	expect(element).toHaveClass('vv-button')
+	await expect(element).toHaveClass('vv-button')
 
 	// icon
 	if (args.icon) {
-		expect(element.innerHTML).toContain('vv-icon')
+		await expect(element.innerHTML).toContain('vv-icon')
 	}
 
 	// modifiers
 	if (modifiers) {
 		for (const modifier of modifiers) {
-			expect(element).toHaveClass(`vv-button--${modifier}`)
+			await expect(element).toHaveClass(`vv-button--${modifier}`)
 		}
 	}
 
@@ -34,13 +36,13 @@ export async function defaultTest(
 
 		// link
 		if (args.href) {
-			expect(element).toHaveProperty('href')
+			await expect(element).toHaveProperty('href')
 		}
 		if (args.target) {
-			expect(element).toHaveProperty('target')
+			await expect(element).toHaveProperty('target')
 		}
 	}
 
 	// accessibility
-	expect(element).toHaveNoViolations()
+	await expect(element).toHaveNoViolations()
 }

@@ -7,7 +7,7 @@ module.exports = {
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
 		'storybook-dark-mode',
-		'storybook-version'
+		'storybook-version',
 	],
 	framework: {
 		name: '@storybook/vue3-vite',
@@ -17,6 +17,8 @@ module.exports = {
 		disable: true,
 	},
 	features: {
+		storyStoreV7: false,
 		interactionsDebugger: true,
+		buildStoriesJson: true,
 	},
 }

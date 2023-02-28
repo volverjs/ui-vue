@@ -14,36 +14,50 @@ function kebabCase(str: string, options?: { condense: boolean }) {
 		.toLowerCase()
 }
 
+type ImportStyle = boolean | 'css' | 'scss'
+
 export interface VolverResolverOptions {
 	/**
 	 * import style along with components
-	 *
-	 * @default 'css'
+	 * @default undefined
 	 */
-	importStyle?: boolean | 'css' | 'scss'
+	importStyle?: ImportStyle
 	/**
-	 * import custom style path
-	 *
-	 * @default ''
+	 * enable/disable directives
+	 * @default undefined
 	 */
-	customStylePath?: string
+	directives?: boolean
 	/**
 	 * prefix for components (e.g. 'vv' to resolve Button from VvButton)
 	 *
 	 * @default 'vv'
 	 */
 	prefix?: string
+	/**
+	 * ignore components (kebab-case)
+	 * @default undefined
+	 */
+	ignore?: string[]
 }
 
-const STYLE_EXCLUDE = ['vv-icon']
+const STYLE_EXCLUDE = ['vv-icon', 'vv-action']
 const VOLVER_PREFIX = 'vv'
+const DIRECTIVES = ['v-tooltip']
 
-const getStyleNames = function (kebabName: string) {
+export const getStyleNames = function (kebabName: string) {
 	if (STYLE_EXCLUDE.includes(kebabName)) {
 		return undefined
 	}
+	if (kebabName === 'vv-dropdown') {
+		return ['vv-dropdown', 'vv-dropdown-option', 'vv-dropdown-action']
+	}
 	if (kebabName === 'vv-combobox') {
-		return ['vv-select', 'vv-dropdown']
+		return [
+			'vv-select',
+			'vv-dropdown',
+			'vv-dropdown-option',
+			'vv-dropdown-action',
+		]
 	}
 	if (kebabName === 'vv-accordion-group') {
 		return ['vv-accordion-group', 'vv-accordion']
@@ -54,7 +68,32 @@ const getStyleNames = function (kebabName: string) {
 	if (kebabName === 'vv-radio-group') {
 		return ['vv-radio-group', 'vv-radio']
 	}
+	if (kebabName === 'v-tooltip') {
+		return ['vv-tooltip']
+	}
 	return [kebabName]
+}
+
+const getSideEffects = function (kebabName: string, importStyle?: ImportStyle) {
+	const sideEffects: SideEffectsInfo = []
+
+	if (!importStyle) {
+		return sideEffects
+	}
+
+	// import component style
+	const styleNames = getStyleNames(kebabName)
+	if (styleNames) {
+		styleNames.forEach((name) => {
+			sideEffects.push(
+				`@volverjs/style/${
+					importStyle === 'scss' ? 'scss/' : ''
+				}components/${name}`,
+			)
+		})
+	}
+
+	return sideEffects
 }
 
 /**
@@ -65,48 +104,59 @@ const getStyleNames = function (kebabName: string) {
 export function VolverResolver({
 	prefix = VOLVER_PREFIX,
 	importStyle,
-	customStylePath,
-}: VolverResolverOptions = {}): ComponentResolver {
-	return {
-		type: 'component',
-		resolve: (name: string) => {
-			if (
-				!prefix ||
-				!name.toLowerCase().startsWith(prefix.toLowerCase())
-			) {
-				return
-			}
+	directives,
+	ignore,
+}: VolverResolverOptions = {}): ComponentResolver[] {
+	return [
+		{
+			type: 'component',
+			resolve: (name: string) => {
+				if (
+					!prefix ||
+					!name.toLowerCase().startsWith(prefix.toLowerCase())
+				) {
+					return
+				}
+				const kebabName = kebabCase(name).replace(
+					`${prefix}-`,
+					`${VOLVER_PREFIX}-`,
+				)
 
-			const sideEffects: SideEffectsInfo = []
-			const kebabName = kebabCase(name).replace(
-				`${prefix}-`,
-				`${VOLVER_PREFIX}-`,
-			)
-
-			if (importStyle) {
-				// import custom style
-				if (customStylePath) {
-					sideEffects.push(customStylePath)
+				if (ignore && ignore.includes(kebabName)) {
+					return
 				}
 
-				// import component style
-				const styleNames = getStyleNames(kebabName)
-				if (styleNames) {
-					styleNames.forEach((name) => {
-						sideEffects.push(
-							`@volverjs/style/${
-								importStyle === 'scss' ? 'scss/' : ''
-							}components/${name}`,
-						)
-					})
+				// import component
+				return {
+					from: `@volverjs/ui-vue/${kebabName}`,
+					sideEffects: getSideEffects(kebabName, importStyle),
 				}
-			}
-
-			// import component
-			return {
-				from: `@volverjs/ui-vue/${kebabName}`,
-				sideEffects,
-			}
+			},
 		},
-	}
+		{
+			type: 'directive',
+			resolve: (name: string) => {
+				if (!directives) {
+					return
+				}
+
+				const kebabName = `v-${kebabCase(name)}`
+
+				// filter directive
+				if (!DIRECTIVES.includes(kebabName)) {
+					return
+				}
+
+				if (ignore && ignore.includes(kebabName)) {
+					return
+				}
+
+				// import directive
+				return {
+					from: `@volverjs/ui-vue/${kebabName}`,
+					sideEffects: getSideEffects(kebabName, importStyle),
+				}
+			},
+		},
+	]
 }

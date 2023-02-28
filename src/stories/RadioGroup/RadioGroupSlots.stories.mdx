@@ -11,21 +11,22 @@ import { defaultTest } from './RadioGroup.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvRadioGroup, VvRadio },
 	setup() {
 		return { args }
 	},
 	data: () => ({ inputValue: undefined }),
-	template: /*html*/`
-           <vv-radio-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-				<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
-				<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
-				<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
-				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			</vv-radio-group>
-			<div>Value: <span data-testId="value">{{inputValue}}</span></div>
-        `,
+	template: /*html*/ `
+		<vv-radio-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<vv-radio id="o1" name="opts" value="1">Option 1</vv-radio>
+			<vv-radio id="o2" name="opts" value="2">Option 2</vv-radio>
+			<vv-radio id="o3" name="opts" value="3">Option 3</vv-radio>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+		</vv-radio-group>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div>
+	`,
 })
 
 <Canvas>

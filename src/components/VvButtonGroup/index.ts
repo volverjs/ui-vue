@@ -1,4 +1,4 @@
-import { DisabledProps, ModifiersProps, UnselectableProps } from '@/props'
+import { DisabledProps, ModifiersProps, UnselectableProps } from '../../props'
 
 export const VvButtonGroupProps = {
 	...ModifiersProps,

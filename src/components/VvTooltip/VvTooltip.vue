@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { VvTooltipProps } from '@/components/VvTooltip'
+	import { VvTooltipProps } from '.'
 
-const props = defineProps(VvTooltipProps)
-const { modifiers } = toRefs(props)
+	const props = defineProps(VvTooltipProps)
+	const { modifiers } = toRefs(props)
 
-// styles
-const { bemCssClasses: tooltipClass } = useBemModifiers('vv-tooltip', {
-	modifiers
-})
+	// styles
+	const bemCssClasses = useModifiers(
+		'vv-tooltip',
+		modifiers,
+		computed(() => ({
+			[props.position]: true,
+		})),
+	)
 </script>
 
 <template>
-	<span :class="[tooltipClass, `vv-tooltip--${position}`]" role="tooltip" inert>
-		<slot />
+	<span :class="bemCssClasses" role="tooltip" inert>
+		<slot>
+			{{ value }}
+		</slot>
 	</span>
 </template>

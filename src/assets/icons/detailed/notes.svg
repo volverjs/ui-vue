@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(3 3)"><line x2="16" transform="translate(5 6)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line x2="9" transform="translate(5 12)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><g transform="translate(-1 -1)" fill="none" stroke="#000" stroke-width="2"><rect width="28" height="28" rx="2" stroke="none"/><rect x="1" y="1" width="26" height="26" rx="1" fill="none"/></g><path d="M5.031,28.873c4.543,0,6.857-7,6.857-7l17.143,6.9-24,.1Z" transform="translate(-4.031 -2.873)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(3 3)">
+        <line x2="16" transform="translate(5 6)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <line x2="9" transform="translate(5 12)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <g transform="translate(-1 -1)" fill="none" stroke="#000" stroke-width="2">
+            <rect width="28" height="28" rx="2" stroke="none" />
+            <rect x="1" y="1" width="26" height="26" rx="1" fill="none" />
+        </g>
+        <path d="M5.031,28.873c4.543,0,6.857-7,6.857-7l17.143,6.9-24,.1Z" transform="translate(-4.031 -2.873)"
+            fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+    </g>
+</svg>

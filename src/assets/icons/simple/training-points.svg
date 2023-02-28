@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16.156" height="16.207" viewBox="0 0 16.156 16.207"><g transform="translate(0 0.207)"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(1.333 2)"><g transform="translate(-1.333 2)" fill="none" stroke="#000" stroke-width="1"><circle cx="6" cy="6" r="6" stroke="none"/><circle cx="6" cy="6" r="5.5" fill="none"/></g><g transform="translate(1.667 5)" fill="none" stroke="#000" stroke-width="1"><circle cx="3" cy="3" r="3" stroke="none"/><circle cx="3" cy="3" r="2.5" fill="none"/></g><line y1="5" x2="5" transform="translate(5.167 2.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/><path d="M0,0V2.667L1.5,4,3,2.667V0Z" transform="translate(11.994 -1.5) rotate(45)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="1"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16.156" height="16.207" viewBox="0 0 16.156 16.207">
+    <g transform="translate(0 0.207)">
+        <g transform="translate(1.333 2)">
+            <g transform="translate(-1.333 2)" fill="none" stroke="#000" stroke-width="1">
+                <circle cx="6" cy="6" r="6" stroke="none" />
+                <circle cx="6" cy="6" r="5.5" fill="none" />
+            </g>
+            <g transform="translate(1.667 5)" fill="none" stroke="#000" stroke-width="1">
+                <circle cx="3" cy="3" r="3" stroke="none" />
+                <circle cx="3" cy="3" r="2.5" fill="none" />
+            </g>
+            <line y1="5" x2="5" transform="translate(5.167 2.5)" fill="none" stroke="#000" stroke-linecap="round"
+                stroke-width="1" />
+            <path d="M0,0V2.667L1.5,4,3,2.667V0Z" transform="translate(11.994 -1.5) rotate(45)" fill="none"
+                stroke="#000" stroke-linejoin="round" stroke-width="1" />
+        </g>
+    </g>
+</svg>

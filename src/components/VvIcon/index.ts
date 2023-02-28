@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import type { IconifyRenderMode } from '@iconify/vue'
 
-export enum PREFIX {
+export enum IconPrefix {
 	simple = 'simple',
 	normal = 'normal',
 	detailed = 'detailed',
@@ -46,7 +46,7 @@ export const VvIconProps = {
 	 * Icon default options prefix: simple | normal | detailed
 	 */
 	prefix: {
-		type: String as PropType<PREFIX>,
+		type: String as PropType<`${IconPrefix}` | string>,
 		default: 'normal',
 	},
 	/**

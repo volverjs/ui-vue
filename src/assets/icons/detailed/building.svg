@@ -1,1 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(5.333 3.999)"><line x2="24" transform="translate(-1.333 25.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M12.125,4.127v-1h-4v1" transform="translate(0.542 -4.126)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><line y1="3" transform="translate(10.667 21.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="2" transform="translate(5.667 6.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="2" transform="translate(5.667 10.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="2" transform="translate(5.667 14.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="2" transform="translate(13.667 6.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="2" transform="translate(13.667 10.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><line x2="2" transform="translate(13.667 14.002)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/><g transform="translate(0.667 0.002)" fill="none" stroke="#000" stroke-width="2"><rect width="20" height="26" rx="2" stroke="none"/><rect x="1" y="1" width="18" height="24" rx="1" fill="none"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(5.333 3.999)">
+        <line x2="24" transform="translate(-1.333 25.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" />
+        <path d="M12.125,4.127v-1h-4v1" transform="translate(0.542 -4.126)" fill="none" stroke="#000"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <line y1="3" transform="translate(10.667 21.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="2" transform="translate(5.667 6.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="2" transform="translate(5.667 10.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="2" transform="translate(5.667 14.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="2" transform="translate(13.667 6.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="2" transform="translate(13.667 10.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <line x2="2" transform="translate(13.667 14.002)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-width="2" />
+        <g transform="translate(0.667 0.002)" fill="none" stroke="#000" stroke-width="2">
+            <rect width="20" height="26" rx="2" stroke="none" />
+            <rect x="1" y="1" width="18" height="24" rx="1" fill="none" />
+        </g>
+    </g>
+</svg>

@@ -10,19 +10,20 @@ import { defaultTest } from './RadioGroup.test'
 	argTypes={argTypes}
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvRadioGroup },
 	setup() {
 		return { args }
 	},
 	data: () => ({ inputValue: undefined }),
-	template: /*html*/`
-            <vv-radio-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-                <template #default v-if="args.default"><span v-html="args.default"></span></template>
-				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-            </vv-radio-group>
-            <div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-        `,
+	template: /*html*/ `
+		<vv-radio-group v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<template #default v-if="args.default"><span v-html="args.default"></span></template>
+			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+		</vv-radio-group>
+		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+	`,
 })
 
 <Canvas>

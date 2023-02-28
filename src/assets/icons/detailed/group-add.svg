@@ -1,1 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(2 3)"><line x2="10" transform="translate(17 5)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><line y2="10" transform="translate(22)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><g transform="translate(0 1)"><g transform="translate(1 10)" fill="none" stroke="#000" stroke-width="2"><rect width="10" height="10" rx="5" stroke="none"/><rect x="1" y="1" width="8" height="8" rx="4" fill="none"/></g><path d="M0,0A5,5,0,0,1,5,5a5,5,0,0,1-5,5" transform="translate(1 26) rotate(-90)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/></g><g transform="translate(0 1)"><g transform="translate(12 13)" fill="none" stroke="#000" stroke-width="2"><rect width="8" height="8" rx="4" stroke="none"/><rect x="1" y="1" width="6" height="6" rx="3" fill="none"/></g><path d="M0,0A4,4,0,0,1,4,4,4,4,0,0,1,0,8" transform="translate(12 26) rotate(-90)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(2 3)">
+        <line x2="10" transform="translate(17 5)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+        <line y2="10" transform="translate(22)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10"
+            stroke-width="2" />
+        <g transform="translate(0 1)">
+            <g transform="translate(1 10)" fill="none" stroke="#000" stroke-width="2">
+                <rect width="10" height="10" rx="5" stroke="none" />
+                <rect x="1" y="1" width="8" height="8" rx="4" fill="none" />
+            </g>
+            <path d="M0,0A5,5,0,0,1,5,5a5,5,0,0,1-5,5" transform="translate(1 26) rotate(-90)" fill="none" stroke="#000"
+                stroke-linejoin="round" stroke-width="2" />
+        </g>
+        <g transform="translate(0 1)">
+            <g transform="translate(12 13)" fill="none" stroke="#000" stroke-width="2">
+                <rect width="8" height="8" rx="4" stroke="none" />
+                <rect x="1" y="1" width="6" height="6" rx="3" fill="none" />
+            </g>
+            <path d="M0,0A4,4,0,0,1,4,4,4,4,0,0,1,0,8" transform="translate(12 26) rotate(-90)" fill="none"
+                stroke="#000" stroke-linejoin="round" stroke-width="2" />
+        </g>
+    </g>
+</svg>

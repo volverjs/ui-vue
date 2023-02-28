@@ -6,12 +6,12 @@ import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
 import { themes } from '@storybook/theming'
 import './style.scss'
+import directives from '@/directives'
 
 const fullVersion = packageJson.version
 const fullSplittedVersion = fullVersion.split('-')
-let postfix = null 
-if(fullSplittedVersion.length > 1) {
-	// ex: 'beta.1'
+let postfix = null
+if (fullSplittedVersion.length > 1) {
 	postfix = fullSplittedVersion[1]
 }
 const splittedVersion = fullSplittedVersion[0].split('.')
@@ -25,13 +25,13 @@ setup((app) => {
 		bodyClasses &&
 		!document.getElementById('storybook-docs')?.getAttribute('hidden')
 	) {
-		// inside docs mode, the body class has 'sb-show-main'
 		bodyClasses.remove('theme--dark')
 		bodyClasses.add('theme--light')
 	}
 	bodyClasses.add('theme')
 	app.use(VolverPlugin, {
 		iconsCollections: [iconsSimple, iconsNormal, iconsDetailed],
+		directives,
 	})
 })
 
@@ -51,7 +51,7 @@ export const parameters = {
 		major,
 		minor,
 		patch,
-		postfix
+		postfix,
 	},
 	darkMode: {
 		classTarget: 'body',

@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(1.666 4.334)"><g transform="translate(5.334 -3.334)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="1"><rect width="8" height="5" rx="1" stroke="none"/><rect x="0.5" y="0.5" width="7" height="4" rx="0.5" fill="none"/></g><g transform="translate(5.334 4.666)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="1"><rect width="8" height="5" rx="1" stroke="none"/><rect x="0.5" y="0.5" width="7" height="4" rx="0.5" fill="none"/></g><path d="M812.988,73.812h.944V70.946L812.9,71.2v-.976l2.165-.5v4.091h.835v.909h-2.911Z" transform="translate(-813.565 -73.055)"/><path d="M812.708,80.3a1.333,1.333,0,0,1,.858-1.385l.908-.456a.481.481,0,0,0,.271-.514v-.263c0-.257-.109-.373-.338-.373h-.44c-.231,0-.341.112-.341.373v.533h-.93v-.479a1.2,1.2,0,0,1,1.318-1.384h.341a1.2,1.2,0,0,1,1.317,1.367v.264a1.322,1.322,0,0,1-.857,1.368l-.9.458a.446.446,0,0,0-.279.456v.16H815.7v.926h-2.988Z" transform="translate(-813.362 -71.684)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g transform="translate(1.666 4.334)">
+        <g transform="translate(5.334 -3.334)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="1">
+            <rect width="8" height="5" rx="1" stroke="none" />
+            <rect x="0.5" y="0.5" width="7" height="4" rx="0.5" fill="none" />
+        </g>
+        <g transform="translate(5.334 4.666)" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="1">
+            <rect width="8" height="5" rx="1" stroke="none" />
+            <rect x="0.5" y="0.5" width="7" height="4" rx="0.5" fill="none" />
+        </g>
+        <path d="M812.988,73.812h.944V70.946L812.9,71.2v-.976l2.165-.5v4.091h.835v.909h-2.911Z"
+            transform="translate(-813.565 -73.055)" />
+        <path
+            d="M812.708,80.3a1.333,1.333,0,0,1,.858-1.385l.908-.456a.481.481,0,0,0,.271-.514v-.263c0-.257-.109-.373-.338-.373h-.44c-.231,0-.341.112-.341.373v.533h-.93v-.479a1.2,1.2,0,0,1,1.318-1.384h.341a1.2,1.2,0,0,1,1.317,1.367v.264a1.322,1.322,0,0,1-.857,1.368l-.9.458a.446.446,0,0,0-.279.456v.16H815.7v.926h-2.988Z"
+            transform="translate(-813.362 -71.684)" />
+    </g>
+</svg>

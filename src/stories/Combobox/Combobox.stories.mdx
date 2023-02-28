@@ -11,7 +11,8 @@ import { defaultArgs, argTypes } from './Combobox.settings'
 
 />
 
-export const Template = (args) => ({
+export const Template = (args, { argTypes }) => ({
+	props: Object.keys(argTypes),
 	components: { VvCombobox },
 	setup() {
 		return { args }
@@ -21,14 +22,16 @@ export const Template = (args) => ({
 			inputValue: undefined,
 		}
 	},
-	template: /*html*/`
+	template: /*html*/ `
 		<vv-combobox v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-			<template #before v-if="args.before"><div class="pr-sm flex" v-html="args.before"></div></template>
+			<template #dropdown::before v-if="args['dropdown::before']"><div class="flex" v-html="args['dropdown::before']"></div></template>
+			<template #dropdown::after v-if="args['dropdown::after']"><div class="flex" v-html="args['dropdown::after']"></div></template>
+			<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
+			<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 			<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			<template #after v-if="args.after"><div class="pl-sm flex" v-html="args.after"></div></template>
 		</vv-combobox>
 		<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-		`,
+	`,
 })
 
 <Canvas>
@@ -198,6 +201,123 @@ export const Template = (args) => ({
 				},
 			},
 		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Arrow"
+		args={{
+			arrow: true,
+			offset: 10,
+			triggerWidth: false,
+			placement: 'bottom-end',
+			dropdownModifiers: 'full-bleed rounded',
+		}}
+		argTypes={{
+			arrow: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Badges"
+		args={{
+			badges: true,
+			multiple: true,
+		}}
+		argTypes={{
+			badges: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Auto open"
+		args={{
+			autoOpen: true,
+		}}
+		argTypes={{
+			autoOpen: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Auto close"
+		args={{
+			autoClose: true,
+		}}
+		argTypes={{
+			autoClose: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Size"
+		args={{
+			'dropdown::before':
+				'<div class="bg-brand text-white flex-1 text-center uppercase">Before</div>',
+			'dropdown::after':
+				'<div class="bg-brand text-white flex-1 text-center uppercase">After</div>',
+			options: Array.from({ length: 30 }, (_, i) => ({
+				label: `Option ${i + 1}`,
+				value: String(i + 1),
+			})),
+		}}
+		argTypes={{
+			'dropdown::before': {
+				control: {
+					disable: true,
+				},
+			},
+			'dropdown::after': {
+				control: {
+					disable: true,
+				},
+			},
+			options: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
 	>
 		{Template.bind()}
 	</Story>

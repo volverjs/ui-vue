@@ -1,11 +1,11 @@
-import type IGroupState from '@/composables/group/types/IGroupState'
+import type GroupState from '../../types/group'
 
 /**
  * Share part of the state of the component with all its children.
  * @param {IGroupState} groupState the group state with all group options
  */
-export function useProvideGroupState<TGroup extends IGroupState>(
-	groupState: TGroup,
+export function useProvideGroupState<GroupStateType extends GroupState>(
+	groupState: GroupStateType,
 ) {
 	if (
 		Object.keys(groupState).some(

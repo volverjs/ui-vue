@@ -1,21 +1,18 @@
-import { ModifiersProps } from '@/props'
 import type { PropType } from 'vue'
-
-export enum TooltipPosition {
-	left = 'left',
-	right = 'right',
-	top = 'top',
-	bottom = 'bottom'
-}
+import { Side } from '../../constants'
+import { ModifiersProps } from '../../props'
 
 export const VvTooltipProps = {
 	...ModifiersProps,
 	/**
 	 * Define the tooltip position
-	 * @default TooltipPosition.bottom
+	 * @default Side.bottom
 	 */
 	position: {
-		type: String as PropType<TooltipPosition>,
-		default: TooltipPosition.bottom
-	}
+		type: String as PropType<`${Side}`>,
+		default: Side.bottom,
+	},
+	value: {
+		type: String,
+	},
 }

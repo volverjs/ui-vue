@@ -6,20 +6,17 @@
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
-	import type IAccordionGroupState from '@/composables/group/types/IAccordionGroupState'
-	import { VV_ACCORDION_GROUP } from '@/constants'
-	import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
-	import {
-		VvAccordionGroupProps,
-		VvAccordionGroupEvents,
-	} from '@/components/VvAccordionGroup/'
+	import type { AccordionGroupState } from '../../types/group'
+	import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
+	import VvAccordion from '../VvAccordion/VvAccordion.vue'
+	import { VvAccordionGroupProps, VvAccordionGroupEvents } from '.'
 
 	// props and emit
 	const props = defineProps(VvAccordionGroupProps)
 	const emit = defineEmits(VvAccordionGroupEvents)
 
 	// data
-	const { disabled, collapse, modifiers, itemModifiers, items } =
+	const { disabled, collapse, modifiers, itemModifiers, items, not } =
 		toRefs(props)
 	watchEffect(() => {
 		if (typeof props.modelValue === 'string' && collapse.value) {
@@ -29,7 +26,18 @@
 			)
 		}
 	})
-	const localModelValue: Ref<string[]> = ref([])
+	let localModelValue: Ref<string[]> = ref([])
+	watch(
+		() => props.storeKey,
+		(newKey) => {
+			if (newKey) {
+				localModelValue = useStorage(newKey, localModelValue.value)
+			} else {
+				localModelValue = ref([])
+			}
+		},
+		{ immediate: true },
+	)
 	const modelValue = computed({
 		get: () => {
 			if (props.modelValue !== undefined) {
@@ -61,26 +69,30 @@
 	})
 
 	// provide
-	const accordionGroupState: IAccordionGroupState = {
-		key: VV_ACCORDION_GROUP,
+	useProvideGroupState<AccordionGroupState>({
+		key: INJECTION_KEY_ACCORDION_GROUP,
 		modelValue,
 		disabled,
 		collapse,
 		modifiers: itemModifiers,
-	}
-	useProvideGroupState(accordionGroupState)
+		not,
+	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-accordion-group', {
+	const bemCssClasses = useModifiers(
+		'vv-accordion-group',
 		modifiers,
-		disabled,
-	})
+		computed(() => ({
+			disabled: disabled.value,
+		})),
+	)
 </script>
 
 <template>
 	<div :class="bemCssClasses">
+		<!-- @slot Default slot -->
 		<slot>
-			<vv-accordion
+			<VvAccordion
 				v-for="item in items"
 				:key="item.title"
 				v-bind="{
@@ -90,12 +102,14 @@
 				}"
 			>
 				<template #header="data">
+					<!-- @slot Slot for accordion header -->
 					<slot v-bind="data" :name="`header::${item.name}`" />
 				</template>
 				<template #details="data">
+					<!-- @slot Slot for accordion details -->
 					<slot v-bind="data" :name="`details::${item.name}`" />
 				</template>
-			</vv-accordion>
+			</VvAccordion>
 		</slot>
 	</div>
 </template>

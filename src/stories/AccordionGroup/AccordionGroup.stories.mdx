@@ -21,10 +21,12 @@ export const Template = (args, { argTypes }) => ({
 			selected: null,
 		}
 	},
-	template: /*html*/`<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" />
-				<div class="mt-24">
-					Selected: <span data-testId="value">{{ selected }}</span>
-				</div>`,
+	template: /*html*/ `
+		<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" />
+		<div class="mt-24">
+			{{ args.not ? 'Closed' : 'Opened'}}: <span data-testId="value">{{ selected }}</span>
+		</div>
+	`,
 })
 
 <Canvas>
@@ -34,7 +36,23 @@ export const Template = (args, { argTypes }) => ({
 </Canvas>
 
 <Canvas>
+	<Story name="Not" play={defaultTest} args={{ not: true }}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
 	<Story name="Collapse" play={defaultTest} args={{ collapse: true }}>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Collapse Not"
+		play={defaultTest}
+		args={{ collapse: true, not: true }}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

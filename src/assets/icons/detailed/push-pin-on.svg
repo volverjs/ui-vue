@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#fff" opacity="0"/><g transform="translate(5.333 5.334)"><path d="M30.342,17.819c-3.424-2.88-6.319-2.55-7.566-2.2a1.227,1.227,0,0,1-1.209-.309L15.994,9.739a1.224,1.224,0,0,1-.359-.86l-.007-1.509a.6.6,0,0,0-1.02-.418L6.951,14.608a.6.6,0,0,0,.418,1.02l1.509.007a1.224,1.224,0,0,1,.86.359l5.572,5.572a1.227,1.227,0,0,1,.309,1.209c-.352,1.248-.682,4.142,2.2,7.566a1.235,1.235,0,0,0,1.811.074L30.416,19.63A1.235,1.235,0,0,0,30.342,17.819Z" transform="translate(-8.108 -8.108)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/><line x2="5" y2="5" transform="translate(17.667 17.666)" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g transform="translate(5.333 5.334)">
+        <path
+            d="M30.342,17.819c-3.424-2.88-6.319-2.55-7.566-2.2a1.227,1.227,0,0,1-1.209-.309L15.994,9.739a1.224,1.224,0,0,1-.359-.86l-.007-1.509a.6.6,0,0,0-1.02-.418L6.951,14.608a.6.6,0,0,0,.418,1.02l1.509.007a1.224,1.224,0,0,1,.86.359l5.572,5.572a1.227,1.227,0,0,1,.309,1.209c-.352,1.248-.682,4.142,2.2,7.566a1.235,1.235,0,0,0,1.811.074L30.416,19.63A1.235,1.235,0,0,0,30.342,17.819Z"
+            transform="translate(-8.108 -8.108)" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+        <line x2="5" y2="5" transform="translate(17.667 17.666)" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-miterlimit="10" stroke-width="2" />
+    </g>
+</svg>

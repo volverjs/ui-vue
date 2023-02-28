@@ -4,6 +4,6 @@ import { within } from '@storybook/testing-library'
 
 export async function defaultTest({ canvasElement }: PlayAttributes) {
 	const progress = await within(canvasElement).findByRole('progressbar')
-	expect(progress).toHaveClass('vv-progress')
+	await expect(progress).toHaveClass('vv-progress')
 	await expect(progress).toHaveNoViolations()
 }

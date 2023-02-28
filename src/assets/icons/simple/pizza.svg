@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16.024" height="16" viewBox="0 0 16.024 16"><g transform="translate(0.024)"><rect width="16" height="16" fill="#fff" opacity="0"/><g transform="translate(-0.461 -0.461)"><path d="M14.1,4.869l5.347,15L4.476,14.512S3.407,4.869,14.1,4.869Z" transform="translate(-3.485 -3.908)" fill="rgba(0,0,0,0)" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M6.2,15.023a19.678,19.678,0,0,1,.054-2.608,6.888,6.888,0,0,1,.676-1.409,7,7,0,0,1,.7-1.4,7.217,7.217,0,0,1,1.231-.982,7.113,7.113,0,0,1,1.247-.962,7.311,7.311,0,0,1,1.543-.359A21.912,21.912,0,0,1,14.4,6.918" transform="translate(-3.239 -4.012)" fill="rgba(0,0,0,0)" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/><path d="M7.438,21.09c.33-1.464,2.091-1.417,3.208-.949a2.6,2.6,0,0,1,1.792,2.949" transform="translate(-1.476 -9.128)" fill="rgba(0,0,0,0)" stroke="#000" stroke-width="1"/><path d="M15.73,12.664A1.413,1.413,0,0,0,13.8,14.6a.47.47,0,0,0,.348.228.483.483,0,0,0,.4-.138l.108-.093.608.873L16.6,14.132l-.874-.623.092-.1a.483.483,0,0,0,.138-.4.47.47,0,0,0-.228-.348Z" transform="translate(-5.141 -7.011)"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16.024" height="16" viewBox="0 0 16.024 16">
+    <g transform="translate(0.024)">
+        <g transform="translate(-0.461 -0.461)">
+            <path d="M14.1,4.869l5.347,15L4.476,14.512S3.407,4.869,14.1,4.869Z" transform="translate(-3.485 -3.908)"
+                fill="rgba(0,0,0,0)" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <path
+                d="M6.2,15.023a19.678,19.678,0,0,1,.054-2.608,6.888,6.888,0,0,1,.676-1.409,7,7,0,0,1,.7-1.4,7.217,7.217,0,0,1,1.231-.982,7.113,7.113,0,0,1,1.247-.962,7.311,7.311,0,0,1,1.543-.359A21.912,21.912,0,0,1,14.4,6.918"
+                transform="translate(-3.239 -4.012)" fill="rgba(0,0,0,0)" stroke="#000" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="1" />
+            <path d="M7.438,21.09c.33-1.464,2.091-1.417,3.208-.949a2.6,2.6,0,0,1,1.792,2.949"
+                transform="translate(-1.476 -9.128)" fill="rgba(0,0,0,0)" stroke="#000" stroke-width="1" />
+            <path
+                d="M15.73,12.664A1.413,1.413,0,0,0,13.8,14.6a.47.47,0,0,0,.348.228.483.483,0,0,0,.4-.138l.108-.093.608.873L16.6,14.132l-.874-.623.092-.1a.483.483,0,0,0,.138-.4.47.47,0,0,0-.228-.348Z"
+                transform="translate(-5.141 -7.011)" />
+        </g>
+    </g>
+</svg>

@@ -1,5 +1,6 @@
 import type { ExtractPropTypes, PropType } from 'vue'
-import { InputTextareaProps } from '@/props'
+import type { MaskTokens } from 'maska'
+import { InputTextareaProps } from '../../props'
 
 export const INPUT_TYPES = {
 	TEXT: 'text',
@@ -134,6 +135,66 @@ export const VvInputTextProps = {
 	labelClear: {
 		type: String,
 		default: 'Clear',
+	},
+	/**
+	 * Input mask, only for text type
+	 * @see https://beholdr.github.io/maska/
+	 */
+	mask: {
+		type: String,
+		default: undefined,
+	},
+	/**
+	 * Show mask before typing
+	 * @see https://beholdr.github.io/maska/#/?id=maskinput-options
+	 */
+	maskEager: {
+		type: Boolean,
+		default: false,
+	},
+	/**
+	 * Write values reverse (ex. for numbers)
+	 * @see https://beholdr.github.io/maska/#/?id=maskinput-options
+	 */
+	maskReversed: {
+		type: Boolean,
+		default: false,
+	},
+	/**
+	 * Add mask custom tokens
+	 * @see https://beholdr.github.io/maska/#/?id=custom-tokens
+	 */
+	maskTokens: {
+		type: Object as PropType<MaskTokens>,
+		default: undefined,
+	},
+	/**
+	 * Replace default tokens
+	 * @see https://beholdr.github.io/maska/#/?id=custom-tokens
+	 */
+	maskTokensReplace: {
+		type: Boolean,
+		default: false,
+	},
+	/**
+	 * Adjust input width to content
+	 */
+	autoWidth: {
+		type: Boolean,
+		default: false,
+	},
+	/**
+	 * Hide type number, password and search actions
+	 */
+	hideActions: {
+		type: Boolean,
+		default: false,
+	},
+	/**
+	 * Add unit label to input
+	 */
+	unit: {
+		type: String,
 	},
 }
 

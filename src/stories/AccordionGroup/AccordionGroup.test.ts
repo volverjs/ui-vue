@@ -8,6 +8,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		'element',
 	)) as HTMLElement
 	const firstChild = element.children[0] as HTMLDetailsElement
+	const firstChildSummary = firstChild.getElementsByTagName('summary')[0]
 	const value = (await within(canvasElement).findByTestId(
 		'value',
 	)) as HTMLElement
@@ -28,21 +29,26 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// open
 	if (!args.disabled && args.items && args.items.length > 0) {
-		expect(firstChild.open).toBe(false)
-		expect(firstChild).toBeClicked()
+		expect(firstChild.open).toBe(args.not ? true : false)
+		expect(firstChildSummary).toBeClicked()
 		await sleep()
-		expect(firstChild.open).toBeTruthy()
-		if (args.collapse) {
-			expect(JSON.stringify(JSON.parse(value.innerText))).toBe(
-				JSON.stringify([args.items[0].name]),
-			)
-		} else {
-			expect(value.innerText).toBe(args.items[0].name)
+		expect(firstChild.open).toBe(args.not ? false : true)
+		if (firstChild.open) {
+			if (args.collapse) {
+				expect(JSON.stringify(JSON.parse(value.innerText))).toBe(
+					JSON.stringify([args.items[0].name]),
+				)
+			} else {
+				expect(value.innerText).toBe(args.items[0].name)
+			}
 		}
-		const summary = firstChild.firstChild as HTMLElement
+		expect(firstChildSummary.getAttribute('aria-expanded')).toBe(
+			args.not ? 'false' : 'true',
+		)
 		const content = firstChild.lastChild as HTMLElement
-		expect(summary.getAttribute('aria-expanded')).toBe('true')
-		expect(content.getAttribute('aria-hidden')).toBe('false')
+		expect(content.getAttribute('aria-hidden')).toBe(
+			args.not ? 'true' : 'false',
+		)
 	}
 
 	// accessibility

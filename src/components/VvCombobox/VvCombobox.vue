@@ -1,41 +1,106 @@
 <script lang="ts">
 	export default {
 		name: 'VvCombobox',
+		components: { VvDropdown, VvDropdownOption },
 	}
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
-	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import VvSelect from '@/components/VvSelect/VvSelect.vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
+	import type { Ref } from 'vue'
+	import { VvComboboxProps, VvComboboxEvents } from '.'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import VvDropdown from '../VvDropdown/VvDropdown.vue'
+	import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+	import VvSelect from '../VvSelect/VvSelect.vue'
+	import VvBadge from '../VvBadge/VvBadge.vue'
+	import HintSlotFactory from '../common/HintSlot'
+	import type { Option } from '../../types/generic'
+	import { DropdownRole } from '../../constants'
 
 	// props, emit and slots
 	const props = defineProps(VvComboboxProps)
 	const emit = defineEmits(VvComboboxEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvComboboxProps>(
+		'VvCombobox',
+		VvComboboxProps,
+		props,
+	)
+
 	// hint slot
 	const { HintSlot } = HintSlotFactory(props, slots)
 
 	// template ref
-	const dropdown = ref()
-	const inputSearch = ref()
+	const inputEl: Ref<HTMLElement | null> = ref(null)
+	const inputSearchEl: Ref<HTMLElement | null> = ref(null)
+	const wrapperEl: Ref<HTMLElement | null> = ref(null)
 
 	// focus
-	const { focused } = useComponentFocus(dropdown, emit)
+	const { focused } = useComponentFocus(inputEl, emit)
+	const { focused: focusedWithin } = useFocusWithin(wrapperEl)
 
-	// data
-	const hasId = computed(() => String(props.id || nanoid()))
+	watch(focused, (newValue) => {
+		if (!props.autoOpen) {
+			return
+		}
+		if (newValue && !expanded.value) {
+			expand()
+			return
+		}
+		if (!newValue && expanded.value && !focusedWithin.value) {
+			collapse()
+		}
+	})
+
+	watch(focusedWithin, (newValue) => {
+		if (!focused.value && !newValue && expanded.value) {
+			collapse()
+		}
+	})
+
+	// search
 	const searchText = ref('')
 	const debouncedSearchText = refDebounced(
 		searchText,
 		Number(props.debounceSearch),
 	)
-	const dropdownOpen = ref(false)
+	watch(debouncedSearchText, () =>
+		emit('change:search', debouncedSearchText.value),
+	)
+
+	// expanded
+	const expanded = ref(false)
+	const toggleExpanded = () => {
+		if (props.disabled || props.readonly) return
+		expanded.value = !expanded.value
+	}
+	const expand = () => {
+		if (props.disabled || props.readonly || expanded.value) return
+		expanded.value = true
+	}
+	const collapse = () => {
+		if (props.disabled || props.readonly || !expanded.value) return
+		expanded.value = false
+	}
+	watch(expanded, (newValue) => {
+		if (searchable.value) {
+			nextTick(() => {
+				if (newValue) {
+					if (inputSearchEl.value) {
+						inputSearchEl.value.focus()
+					}
+					return
+				}
+				searchText.value = ''
+			})
+		}
+	})
+
+	// data
 	const {
+		id,
 		icon,
 		iconPosition,
 		modifiers,
@@ -45,15 +110,16 @@
 		valid,
 		invalid,
 		floating,
+		searchable,
 	} = toRefs(props)
-
-	// emit on change search text
-	watch(debouncedSearchText, () =>
-		emit('change:search', debouncedSearchText.value),
-	)
+	const hasId = useUniqueId(id)
+	const hasHintId = computed(() => `${hasId.value}-hint`)
+	const hasDropdownId = computed(() => `${hasId.value}-dropdown`)
+	const hasSearchId = computed(() => `${hasId.value}-search`)
+	const hasLabelId = computed(() => `${hasId.value}-label`)
 
 	// icons
-	const { hasIcon, hasIconLeft, hasIconRight } = useComponentIcon(
+	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
 		icon,
 		iconPosition,
 	)
@@ -67,26 +133,30 @@
 	})
 
 	// styles
-	const { bemCssClasses } = useBemModifiers('vv-select', {
+	const bemCssClasses = useModifiers(
+		'vv-select',
 		modifiers,
-		disabled,
-		loading,
-		readonly,
-		iconLeft: hasIconLeft,
-		iconRight: hasIconRight,
-		valid,
-		invalid,
-		dirty: isDirty,
-		focus: focused,
-		floating,
-	})
+		computed(() => ({
+			disabled: disabled.value,
+			loading: loading.value,
+			readonly: readonly.value,
+			'icon-before': Boolean(hasIconBefore.value),
+			'icon-after': Boolean(hasIconAfter.value),
+			valid: valid.value,
+			invalid: invalid.value,
+			dirty: isDirty.value,
+			focus: focused.value,
+			floating: floating.value,
+		})),
+	)
 
 	// current options, filtered or prop options
 	const hasOptions = computed(() =>
 		props.searchable ? filteredOptions.value : props.options,
 	)
 
-	const { getOptionLabel, getOptionValue } = useOptions(props)
+	const { getOptionLabel, getOptionValue, getOptionDisabled } =
+		useOptions(props)
 
 	// options filtered by search text
 	const filteredOptions = computed(() => {
@@ -96,6 +166,25 @@
 				.includes(debouncedSearchText.value.toLowerCase().trim())
 		})
 	})
+
+	/**
+	 * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
+	 * @param {String | Option} option
+	 */
+	function getOptionSelected(option: string | Option) {
+		if (Array.isArray(props.modelValue)) {
+			// check if contain whole option or option value
+			return (
+				contains(option, props.modelValue) ||
+				contains(getOptionValue(option), props.modelValue)
+			)
+		}
+		// check if modelValue is equal to option or option value
+		return (
+			equals(option, props.modelValue) ||
+			equals(getOptionValue(option), props.modelValue)
+		)
+	}
 
 	/**
 	 * Compute the label to show to the user
@@ -113,59 +202,79 @@
 		)
 	})
 
-	const hasLabel = computed(() => {
+	const hasValue = computed(() => {
 		return selectedOptions.value
 			.map((option) => getOptionLabel(option))
 			.join(props.separator)
 	})
 
-	// close dropdown on click outside
-	onClickOutside(dropdown, () => {
-		dropdown.value.open = false
+	watch(selectedOptions, () => {
+		if (!props.multiple && props.autoClose) {
+			collapse()
+		}
 	})
 
-	// Function triggered on toggle dropdown (open/close)
-	function onToggle(event: Event) {
-		const target = event.target as HTMLDetailsElement
-		dropdownOpen.value = target.open
+	/**
+	 * Function triggered on click on input
+	 */
+	const onClickInput = () => {
+		props.autoOpen ? expand() : toggleExpanded()
 	}
 
 	/**
 	 * Function triggered on input of checkbox or radio (multple or single mode)
 	 * @param event on input event (checkbox or radio input)
 	 */
-	function onInput(value: typeof props.modelValue) {
-		// close dropdown in single mode
-		if (dropdown.value && !props.multiple) {
-			dropdown.value.open = false
+	const onInput = (option: string | Option) => {
+		if (props.disabled || props.readonly) {
+			return
 		}
-		emit('update:modelValue', value)
-	}
 
-	const dropdownProps = computed(() => ({
-		name: props.name,
-		options: hasOptions.value,
-		labelKey: props.labelKey,
-		valueKey: props.valueKey,
-		disabled: props.disabled,
-		labelNoResults: props.labelNoResults,
-		multiple: props.multiple,
-		maxValues: props.maxValues,
-		modelValue: props.modelValue,
-		unselectable: props.unselectable,
-	}))
+		const value = getOptionValue(option)
+
+		let toReturn: string | string[] | Option | Option[] | undefined = value
+		// Check multiple prop, override value with array and remove or add the value
+		if (props.multiple) {
+			// check maxValues prop and block check new values
+			if (Array.isArray(props.modelValue)) {
+				if (
+					props.maxValues !== undefined &&
+					props.maxValues >= 0 &&
+					props.modelValue?.length >= props.maxValues
+				) {
+					if (!contains(value, props.modelValue)) {
+						// maxValues reached
+						return
+					}
+				}
+				toReturn = contains(value, props.modelValue)
+					? removeFromList(value, props.modelValue)
+					: [...props.modelValue, value]
+			} else {
+				toReturn = [value as Option]
+			}
+		} else {
+			if (props.autoClose) {
+				collapse()
+			}
+			if (props.unselectable && value === props.modelValue) {
+				toReturn = undefined
+			}
+		}
+		emit('update:modelValue', toReturn)
+	}
 
 	const selectProps = computed(() => ({
 		id: hasId.value,
 		name: props.name,
 		tabindex: hasTabindex.value,
 		valid: valid.value,
-		validLabel: props.validLabel,
+		validLabel: propsDefaults.value.validLabel,
 		invalid: invalid.value,
-		invalidLabel: props.invalidLabel,
-		hintLabel: props.hintLabel,
+		invalidLabel: propsDefaults.value.invalidLabel,
+		hintLabel: propsDefaults.value.hintLabel,
 		loading: loading.value,
-		loadingLabel: props.loadingLabel,
+		loadingLabel: propsDefaults.value.loadingLabel,
 		disabled: disabled.value,
 		readonly: readonly.value,
 		modifiers: props.modifiers,
@@ -181,70 +290,206 @@
 		placeholder: props.placeholder,
 		modelValue: props.modelValue,
 	}))
+
+	const dropdownProps = computed(() => ({
+		id: hasDropdownId.value,
+		reference: wrapperEl.value,
+		placement: props.placement,
+		transitionName: props.transitionName,
+		offset: props.offset,
+		shift: props.shift,
+		flip: props.flip,
+		autoPlacement: props.autoPlacement,
+		arrow: props.arrow,
+		autoClose: props.autoClose,
+		autofocusFirst: searchable.value ? false : props.autofocusFirst,
+		triggerWidth: props.triggerWidth,
+		modifiers: props.dropdownModifiers,
+	}))
+
+	// slots
+	const slotProps = computed(() => ({
+		valid: props.valid,
+		invalid: props.invalid,
+		modelValue: props.modelValue,
+	}))
+
+	// computed
+	onKeyStroke([' ', 'Enter'], (e) => {
+		if (props.autoOpen) {
+			return
+		}
+		if (!expanded.value && focused.value) {
+			e.preventDefault()
+			e.stopImmediatePropagation()
+			toggleExpanded()
+		}
+	})
 </script>
 
 <template>
 	<div v-if="!native" :id="hasId" :class="bemCssClasses">
 		<label
 			v-if="label"
-			:id="`${hasId}-label`"
-			:for="searchable && dropdownOpen ? `${hasId}-input` : undefined"
+			:id="hasLabelId"
+			:for="searchable ? hasSearchId : undefined"
 		>
 			{{ label }}
 		</label>
-		<details
-			ref="dropdown"
-			class="vv-select__wrapper"
-			@click="disabled || readonly ? $event.preventDefault() : null"
-			@keyup.esc="dropdown.open = false"
-			@toggle="onToggle"
-		>
-			<!-- @slot Slot to replace left icon -->
-			<summary
-				class="vv-select__input"
-				:tabindex="hasTabindex"
-				@keyup.space="searchable ? $event.preventDefault() : null"
-			>
-				<slot name="before">
-					<VvIcon
-						v-if="hasIconLeft"
-						class="vv-select__icon-left"
-						v-bind="hasIcon"
-					/>
-				</slot>
-				<!-- #region search input -->
-				<template v-if="searchable && dropdownOpen">
-					<input
-						:id="`${hasId}-input`"
-						ref="inputSearch"
-						v-model="searchText"
-						role="combobox"
-						type="search"
-						:placeholder="searchPlaceholder"
-					/>
-				</template>
-				<!-- #endregion search input -->
-				<!-- #region label of selected value/s -->
-				<template v-else>
-					{{ hasLabel || placeholder }}
-				</template>
-				<!-- #endregion label of selected value/s -->
-				<slot name="after">
-					<VvIcon
-						v-if="hasIconRight"
-						class="vv-select__icon-right"
-						v-bind="hasIcon"
-					/>
-				</slot>
-			</summary>
-			<!-- @slot Slot to replace right icon -->
+		<div ref="wrapperEl" class="vv-select__wrapper">
 			<VvDropdown
-				:id="`${hasId}-dropdown`"
+				v-model="expanded"
 				v-bind="dropdownProps"
-				@update:model-value="onInput"
-			/>
-		</details>
-		<HintSlot class="vv-select__hint" />
+				:role="DropdownRole.listbox"
+			>
+				<template
+					v-if="searchable || $slots['dropdown::before']"
+					#before
+				>
+					<!-- @slot Slot before dropdown items -->
+					<slot name="dropdown::before" />
+					<input
+						v-if="searchable"
+						v-show="expanded"
+						:id="hasSearchId"
+						ref="inputSearchEl"
+						v-model="searchText"
+						aria-autocomplete="list"
+						:aria-controls="hasDropdownId"
+						:aria-labelledby="hasLabelId"
+						:aria-describedby="hasHintId"
+						autocomplete="off"
+						spellcheck="false"
+						type="search"
+						class="vv-dropdown__search"
+						:placeholder="propsDefaults.searchPlaceholder"
+					/>
+				</template>
+				<template #default="{ aria }">
+					<div v-if="$slots.before" class="vv-select__input-before">
+						<!-- @slot Slot before input -->
+						<slot name="before" v-bind="slotProps" />
+					</div>
+					<div class="vv-select__inner">
+						<VvIcon
+							v-if="hasIconBefore"
+							class="vv-select__icon"
+							v-bind="hasIcon"
+						/>
+						<div
+							ref="inputEl"
+							v-bind="aria"
+							:aria-labelledby="hasLabelId"
+							class="vv-select__input"
+							role="combobox"
+							:tabindex="hasTabindex"
+							@click.passive="onClickInput"
+						>
+							<!-- @slot Slot for value customization -->
+							<slot
+								name="value"
+								v-bind="{ selectedOptions, onInput }"
+							>
+								<template v-if="hasValue">
+									<template v-if="!badges">
+										{{ hasValue }}
+									</template>
+									<VvBadge
+										v-for="(
+											option, index
+										) in selectedOptions"
+										v-else
+										:key="index"
+										:modifiers="badgeModifiers"
+										class="vv-select__badge"
+									>
+										{{ getOptionLabel(option) }}
+										<button
+											v-if="
+												unselectable &&
+												!readonly &&
+												!disabled
+											"
+											:aria-label="
+												propsDefaults.deselectActionLabel
+											"
+											@click.stop="onInput(option)"
+										>
+											<VvIcon name="close" />
+										</button>
+									</VvBadge>
+								</template>
+								<template v-else>
+									{{ placeholder }}
+								</template>
+							</slot>
+						</div>
+						<VvIcon
+							v-if="hasIconAfter"
+							class="vv-select__icon vv-select__icon-after"
+							v-bind="hasIcon"
+						/>
+					</div>
+					<div v-if="$slots.after" class="vv-select__input-after">
+						<!-- @slot Slot after input -->
+						<slot name="after" v-bind="slotProps" />
+					</div>
+				</template>
+				<template #items>
+					<template v-if="filteredOptions.length">
+						<VvDropdownOption
+							v-for="(option, index) in filteredOptions"
+							v-bind="{
+								disabled: getOptionDisabled(option),
+								selected: getOptionSelected(option),
+								unselectable,
+								deselectHintLabel:
+									propsDefaults.deselectHintLabel,
+								selectHintLabel: propsDefaults.selectHintLabel,
+								selectedHintLabel:
+									propsDefaults.selectedHintLabel,
+							}"
+							:key="index"
+							class="vv-dropdown-option"
+							@click.passive="onInput(option)"
+						>
+							<!-- @slot Slot for option customization -->
+							<slot
+								name="option"
+								v-bind="{
+									option,
+									selectedOptions,
+									selected: getOptionSelected(option),
+									disabled: getOptionDisabled(option),
+								}"
+							>
+								{{ getOptionLabel(option) }}
+							</slot>
+						</VvDropdownOption>
+					</template>
+					<VvDropdownOption
+						v-else-if="!options.length"
+						modifiers="inert"
+					>
+						<!-- @slot Slot for no options available -->
+						<slot name="no-options">
+							{{ propsDefaults.noOptionsLabel }}
+						</slot>
+					</VvDropdownOption>
+					<VvDropdownOption v-else modifiers="inert">
+						<!-- @slot Slot for no results available -->
+						<slot name="no-results">
+							{{ propsDefaults.noResultsLabel }}
+						</slot>
+					</VvDropdownOption>
+				</template>
+				<template v-if="$slots['dropdown::after']" #after>
+					<!-- @slot Slot after dropdown items -->
+					<slot name="dropdown::after" />
+				</template>
+			</VvDropdown>
+		</div>
+		<HintSlot :id="hasHintId" class="vv-select__hint" />
 	</div>
 	<VvSelect
 		v-else
