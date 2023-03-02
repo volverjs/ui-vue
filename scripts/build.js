@@ -1,5 +1,5 @@
 import fs from 'fs'
-import glob from 'glob'
+import { globSync } from 'glob'
 import { build } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
@@ -11,7 +11,7 @@ import { paramCase } from 'change-case'
 // eslint-disable-next-line no-undef
 const hot = process.argv.includes('--hot')
 const watch = hot ? {} : undefined
-const minify = hot ? false : undefined
+const minify = hot ? false : 'terser'
 
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
@@ -150,7 +150,7 @@ build({
 })
 
 // build single directives
-const directives = glob.sync('./src/directives/v-!(_*).ts')
+const directives = globSync('./src/directives/v-!(_*).ts')
 const directivesSources = directives.map((entry) => {
 	const exportName = entry.replace(/.\/src\/|.ts|\/index/gm, '')
 	const splittedExportName = exportName.split('/')
@@ -207,7 +207,7 @@ build({
 })
 
 // build single components
-const components = glob.sync('./src/components/**/!(_*).vue')
+const components = globSync('./src/components/**/!(_*).vue')
 const componentsSources = components.map((entry) => {
 	const exportName = entry.replace(/.\/src\/|.vue|\/index/gm, '')
 	const splittedExportName = exportName.split('/')
