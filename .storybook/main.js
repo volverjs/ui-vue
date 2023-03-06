@@ -1,5 +1,4 @@
-const path = require('path')
-module.exports = {
+export default {
 	stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
 	addons: [
 		'@storybook/addon-a11y',
@@ -7,7 +6,6 @@ module.exports = {
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
 		'storybook-dark-mode',
-		'storybook-version',
 	],
 	framework: {
 		name: '@storybook/vue3-vite',
