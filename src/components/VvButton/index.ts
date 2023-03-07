@@ -66,14 +66,12 @@ export function useGroupProps(
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit) as Ref<
 		string | Array<string> | undefined
 	>
-	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
 	const unselectable = getGroupOrLocalRef(
 		'unselectable',
 		props,
 	) as Ref<boolean>
-	const multiple = group?.value?.multiple ?? ref(false)
-
+	const multiple = computed(() => group?.value.multiple.value ?? false)
 	const modifiers = computed(() => {
 		const localValue = localModifiers?.value
 			? Array.isArray(localModifiers.value)
@@ -87,19 +85,22 @@ export function useGroupProps(
 			: []
 		return [...localValue, ...groupValue]
 	})
+	const disabled = computed(() =>
+		Boolean(props.disabled || group?.value?.disabled.value),
+	)
 
 	return {
 		// group props
 		group,
 		isInGroup,
 		modelValue,
-		disabled,
 		toggle,
 		unselectable,
 		multiple,
+		modifiers,
+		disabled,
 		// local props
 		id,
-		modifiers,
 		pressed,
 		iconPosition,
 		icon,

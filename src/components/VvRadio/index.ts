@@ -22,10 +22,14 @@ export function useGroupProps(
 
 	// global props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const readonly = getGroupOrLocalRef('readonly', props) as Ref<boolean>
-	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const valid = getGroupOrLocalRef('valid', props) as Ref<boolean>
 	const invalid = getGroupOrLocalRef('invalid', props) as Ref<boolean>
+	const readonly = computed(() =>
+		Boolean(props.readonly || group?.value?.disabled.value),
+	)
+	const disabled = computed(() =>
+		Boolean(props.disabled || group?.value?.disabled.value),
+	)
 
 	return {
 		// local props
@@ -34,9 +38,9 @@ export function useGroupProps(
 		group,
 		isInGroup,
 		modelValue,
-		readonly,
-		disabled,
 		valid,
 		invalid,
+		readonly,
+		disabled,
 	}
 }

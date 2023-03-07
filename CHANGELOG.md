@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Typescript definitions;
 - Enum in PropType;
 - `autoClose` prop in `VvCombobox` for single choice.
+- `VvAccordionGroup`, `VvButtonGroup` and `VvCheckboxGroup` and `VvRadioGroup` disabled and readonly.
 
 ## [0.0.4] - 2023-02-03
 
