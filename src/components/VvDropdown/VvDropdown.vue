@@ -25,7 +25,6 @@
 		ShiftOptions,
 		SizeOptions,
 	} from '../../types/floating-ui'
-	import type { Placement } from '@/constants'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -128,7 +127,7 @@
 		floatingEl,
 		{
 			whileElementsMounted: autoUpdate,
-			placement: props.placement as Placement,
+			placement: computed(() => props.placement),
 			middleware,
 		},
 	)
