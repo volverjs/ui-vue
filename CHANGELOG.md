@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 - Enum in PropType;
 - `autoClose` prop in `VvCombobox` for single choice.
 - `VvAccordionGroup`, `VvButtonGroup` and `VvCheckboxGroup` and `VvRadioGroup` disabled and readonly.
-- `VvInputText`and `VvTextarea` support for string `minlength`and `maxlength`.
+- `VvInputText` and `VvTextarea` support for string `minlength` and `maxlength`.
 
 ## [0.0.4] - 2023-02-03
 
