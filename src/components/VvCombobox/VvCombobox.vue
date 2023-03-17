@@ -193,7 +193,7 @@
 	const selectedOptions = computed(() => {
 		let selectedValues: Array<typeof props.modelValue> = []
 		if (Array.isArray(props.modelValue)) {
-			selectedValues = props.modelValue
+			selectedValues = props.modelValue as Array<typeof props.modelValue>
 		} else if (props.modelValue) {
 			selectedValues = [props.modelValue]
 		}
@@ -237,10 +237,11 @@
 		if (props.multiple) {
 			// check maxValues prop and block check new values
 			if (Array.isArray(props.modelValue)) {
+				const maxValues = Number(props.maxValues)
 				if (
 					props.maxValues !== undefined &&
-					props.maxValues >= 0 &&
-					props.modelValue?.length >= props.maxValues
+					maxValues >= 0 &&
+					props.modelValue?.length >= maxValues
 				) {
 					if (!contains(value, props.modelValue)) {
 						// maxValues reached
@@ -295,6 +296,7 @@
 		id: hasDropdownId.value,
 		reference: wrapperEl.value,
 		placement: props.placement,
+		strategy: props.strategy,
 		transitionName: props.transitionName,
 		offset: props.offset,
 		shift: props.shift,

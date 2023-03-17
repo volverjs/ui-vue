@@ -4,4 +4,4 @@ import simple from './assets/icons/simple.json'
 
 export default [normal, detailed, simple]
 
-export { normal }
+export { normal, detailed, simple }

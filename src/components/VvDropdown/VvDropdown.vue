@@ -128,6 +128,7 @@
 		{
 			whileElementsMounted: autoUpdate,
 			placement: computed(() => props.placement),
+			strategy: computed(() => props.strategy),
 			middleware,
 		},
 	)
@@ -194,6 +195,7 @@
 	const init = (el: HTMLElement) => {
 		referenceEl.value = el
 	}
+	defineExpose({ toggle, show, hide, init })
 	watch(expanded, (newValue) => {
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {

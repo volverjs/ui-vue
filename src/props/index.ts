@@ -236,6 +236,16 @@ export const DropdownProps = {
 		},
 	},
 	/**
+	 * Dropdown strategy
+	 */
+	strategy: {
+		type: String as PropType<'fixed' | 'absolute'>,
+		default: 'absolute',
+		validator: (value: 'fixed' | 'absolute') => {
+			return ['fixed', 'absolute'].includes(value)
+		},
+	},
+	/**
 	 * Dropdown show / hide transition name
 	 */
 	transitionName: {
@@ -362,14 +372,14 @@ export const InputTextareaProps = {
 	 * Available for input types: text, search, url, tel, email, password
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#minlength
 	 */
-	minlength: Number,
+	minlength: [String, Number],
 	/**
 	 * Input / Textarea maxlength
 	 * Maximum length (number of characters) of value
 	 * Available for input types: text, search, url, tel, email, password
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#maxlength
 	 */
-	maxlength: Number,
+	maxlength: [String, Number],
 	/**
 	 * Input / Textarea placeholder
 	 * Text that appears in the form control when it has no value set
