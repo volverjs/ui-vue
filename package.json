@@ -53,7 +53,7 @@
     "@floating-ui/vue": "^0.2.1",
     "@iconify/tools": "^2.2.6",
     "@iconify/vue": "^4.1.0",
-    "@volverjs/style": "0.1.9-beta.2",
+    "@volverjs/style": "0.1.9-beta.4",
     "@vueuse/core": "^9.13.0",
     "jsdom": "^21.1.1",
     "maska": "^2.1.7",

@@ -37,7 +37,7 @@ specifiers:
   '@types/react': ^18.0.28
   '@types/yargs': ^17.0.23
   '@vitejs/plugin-vue': ^4.1.0
-  '@volverjs/style': 0.1.9-beta.2
+  '@volverjs/style': 0.1.9-beta.4
   '@vue/compiler-sfc': ^3.2.47
   '@vue/eslint-config-prettier': ^7.1.0
   '@vue/eslint-config-typescript': ^11.0.2
@@ -86,7 +86,7 @@ dependencies:
   '@floating-ui/vue': 0.2.1_vue@3.2.47
   '@iconify/tools': 2.2.6
   '@iconify/vue': 4.1.0_vue@3.2.47
-  '@volverjs/style': 0.1.9-beta.2
+  '@volverjs/style': 0.1.9-beta.4
   '@vueuse/core': 9.13.0_vue@3.2.47
   jsdom: 21.1.1
   maska: 2.1.7
@@ -4635,8 +4635,8 @@ packages:
       '@volar/vue-language-core': 1.2.0
     dev: true
 
-  /@volverjs/style/0.1.9-beta.2:
-    resolution: {integrity: sha512-hjXC3ji4dfo4Xt9rq+ty6qp+stspvFph15hwjOEXikjxlfp81vc7hCSvYnDoOvyzZL7wcsGHHjuMoiZrS62P1A==}
+  /@volverjs/style/0.1.9-beta.4:
+    resolution: {integrity: sha512-y+A4sCIO2spQfMxzg/fswsUsb1Li6AfGVZVeQkmevq6A4izU1YRVqYc7Nh2iuFlbfFBaS+d9+np+cLIe39vHHA==}
     engines: {node: '>= 12.x'}
     dev: false
 
