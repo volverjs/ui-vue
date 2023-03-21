@@ -225,9 +225,7 @@ componentsSources.forEach(({ name, entry }) => {
 		import: `./dist/${subPath}.es.js`,
 		default: `./dist/${subPath}.umd.js`,
 	}
-	packageJson.typesVersions['*'][paramCaseName] = [
-		`./dist/${subPath}.vue.d.ts`,
-	]
+	packageJson.typesVersions['*'][paramCaseName] = [`dist/${subPath}.vue.d.ts`]
 
 	build({
 		...baseConfig,
