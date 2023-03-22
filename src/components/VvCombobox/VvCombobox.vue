@@ -30,6 +30,14 @@
 		props,
 	)
 
+	// Grouped options
+	const isGroup = (option: string | Option) => {
+		if (typeof option === 'string') {
+			return false
+		}
+		return option.options && option.options.length > 0
+	}
+
 	// hint slot
 	const { HintSlot } = HintSlotFactory(props, slots)
 
@@ -202,9 +210,21 @@
 		} else if (props.modelValue) {
 			selectedValues = [props.modelValue]
 		}
-		return props.options.filter((option) =>
-			selectedValues.includes(getOptionValue(option)),
-		)
+		const options = props.options.reduce((acc, value) => {
+			if (isGroup(value)) {
+				return [...acc, ...getOptionGrouped(value)]
+			}
+			return [...acc, value]
+		}, [] as Array<Option | string>)
+
+		return options.filter((option) => {
+			if (isGroup(option)) {
+				return getOptionGrouped(option).some((item) =>
+					selectedValues.includes(getOptionValue(item)),
+				)
+			}
+			return selectedValues.includes(getOptionValue(option))
+		})
 	})
 
 	const hasValue = computed(() => {
@@ -332,14 +352,6 @@
 			toggleExpanded()
 		}
 	})
-
-	// Grouped options
-	const isGroup = (option: string | Option) => {
-		if (typeof option === 'string') {
-			return false
-		}
-		return option.options && option.options.length > 0
-	}
 </script>
 
 <template>
