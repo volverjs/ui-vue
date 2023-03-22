@@ -202,6 +202,9 @@
       "vv-dropdown-item": [
         "dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts"
       ],
+      "vv-dropdown-optgroup": [
+        "dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts"
+      ],
       "vv-dropdown-option": [
         "dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts"
       ],
@@ -343,6 +346,11 @@
       "types": "./dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts",
       "import": "./dist/components/VvDropdownItem/VvDropdownItem.es.js",
       "default": "./dist/components/VvDropdownItem/VvDropdownItem.umd.js"
+    },
+    "./vv-dropdown-optgroup": {
+      "types": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts",
+      "import": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.es.js",
+      "default": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.umd.js"
     },
     "./vv-dropdown-option": {
       "types": "./dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts",

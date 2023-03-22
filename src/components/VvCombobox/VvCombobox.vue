@@ -1,7 +1,7 @@
 <script lang="ts">
 	export default {
 		name: 'VvCombobox',
-		components: { VvDropdown, VvDropdownOption },
+		components: { VvDropdown, VvDropdownOption, VvDropdownOptgroup },
 	}
 </script>
 
@@ -11,6 +11,7 @@
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import VvDropdown from '../VvDropdown/VvDropdown.vue'
 	import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+	import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
 	import VvSelect from '../VvSelect/VvSelect.vue'
 	import VvBadge from '../VvBadge/VvBadge.vue'
 	import HintSlotFactory from '../common/HintSlot'
@@ -155,8 +156,12 @@
 		props.searchable ? filteredOptions.value : props.options,
 	)
 
-	const { getOptionLabel, getOptionValue, getOptionDisabled } =
-		useOptions(props)
+	const {
+		getOptionLabel,
+		getOptionValue,
+		getOptionDisabled,
+		getOptionGrouped,
+	} = useOptions(props)
 
 	// options filtered by search text
 	const filteredOptions = computed(() => {
@@ -327,6 +332,14 @@
 			toggleExpanded()
 		}
 	})
+
+	// Grouped options
+	const isGroup = (option: string | Option) => {
+		if (typeof option === 'string') {
+			return false
+		}
+		return option.options && option.options.length > 0
+	}
 </script>
 
 <template>
@@ -439,35 +452,77 @@
 				</template>
 				<template #items>
 					<template v-if="filteredOptions.length">
-						<VvDropdownOption
+						<template
 							v-for="(option, index) in filteredOptions"
-							v-bind="{
-								disabled: getOptionDisabled(option),
-								selected: getOptionSelected(option),
-								unselectable,
-								deselectHintLabel:
-									propsDefaults.deselectHintLabel,
-								selectHintLabel: propsDefaults.selectHintLabel,
-								selectedHintLabel:
-									propsDefaults.selectedHintLabel,
-							}"
 							:key="index"
-							class="vv-dropdown-option"
-							@click.passive="onInput(option)"
 						>
-							<!-- @slot Slot for option customization -->
-							<slot
-								name="option"
+							<template v-if="isGroup(option)">
+								<VvDropdownOptgroup
+									:label="getOptionLabel(option)"
+								/>
+								<VvDropdownOption
+									v-for="(item, i) in getOptionGrouped(
+										option,
+									)"
+									v-bind="{
+										disabled: getOptionDisabled(item),
+										selected: getOptionSelected(item),
+										unselectable,
+										deselectHintLabel:
+											propsDefaults.deselectHintLabel,
+										selectHintLabel:
+											propsDefaults.selectHintLabel,
+										selectedHintLabel:
+											propsDefaults.selectedHintLabel,
+									}"
+									:key="i"
+									class="vv-dropdown-option"
+									@click.passive="onInput(item)"
+								>
+									<!-- @slot Slot for option customization -->
+									<slot
+										name="option"
+										v-bind="{
+											option,
+											selectedOptions,
+											selected: getOptionSelected(item),
+											disabled: getOptionDisabled(item),
+										}"
+									>
+										{{ getOptionLabel(item) }}
+									</slot>
+								</VvDropdownOption>
+							</template>
+							<VvDropdownOption
+								v-else
 								v-bind="{
-									option,
-									selectedOptions,
-									selected: getOptionSelected(option),
 									disabled: getOptionDisabled(option),
+									selected: getOptionSelected(option),
+									unselectable,
+									deselectHintLabel:
+										propsDefaults.deselectHintLabel,
+									selectHintLabel:
+										propsDefaults.selectHintLabel,
+									selectedHintLabel:
+										propsDefaults.selectedHintLabel,
 								}"
+								class="vv-dropdown-option"
+								@click.passive="onInput(option)"
 							>
-								{{ getOptionLabel(option) }}
-							</slot>
-						</VvDropdownOption>
+								<!-- @slot Slot for option customization -->
+								<slot
+									name="option"
+									v-bind="{
+										option,
+										selectedOptions,
+										selected: getOptionSelected(option),
+										disabled: getOptionDisabled(option),
+									}"
+								>
+									{{ getOptionLabel(option) }}
+								</slot>
+							</VvDropdownOption>
+						</template>
 					</template>
 					<VvDropdownOption
 						v-else-if="!options.length"

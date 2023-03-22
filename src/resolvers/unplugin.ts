@@ -54,8 +54,9 @@ export const getStyleNames = function (kebabName: string) {
 	if (kebabName === 'vv-combobox') {
 		return [
 			'vv-select',
-			'vv-dropdown',
 			'vv-dropdown-option',
+			'vv-dropdown-optgroup',
+			'vv-dropdown',
 			'vv-dropdown-action',
 		]
 	}
