@@ -24,7 +24,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		args.options.length > 0
 	) {
 		// select first value
-		const firstValue = getOptionValue(args, 0)
+		const firstValue = getOptionValue(
+			args.options[0].options ? args.options[0] : args,
+			0,
+		)
 		select.value = firstValue
 		select.dispatchEvent(new Event('change'))
 		await sleep()
