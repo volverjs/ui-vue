@@ -4,7 +4,7 @@ on:
     workflow_call:
 
 jobs:
-    storybook-test:
+    storybook:
         timeout-minutes: 60
         runs-on: ubuntu-latest
         steps:
