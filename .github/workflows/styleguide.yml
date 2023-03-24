@@ -18,6 +18,8 @@ jobs:
                   cache: 'pnpm'
             - name: Install dependencies
               run: pnpm install
+            - name: Bump version with release tag name
+              run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
             - name: Build stileguide
               env:
                   NODE_OPTIONS: '--max_old_space_size=4096'
