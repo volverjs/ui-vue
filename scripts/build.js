@@ -11,7 +11,7 @@ import { paramCase } from 'change-case'
 // eslint-disable-next-line no-undef
 const hot = process.argv.includes('--hot')
 const watch = hot ? {} : undefined
-const minify = hot ? false : undefined
+const minify = hot ? false : 'terser'
 
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
@@ -225,9 +225,7 @@ componentsSources.forEach(({ name, entry }) => {
 		import: `./dist/${subPath}.es.js`,
 		default: `./dist/${subPath}.umd.js`,
 	}
-	packageJson.typesVersions['*'][paramCaseName] = [
-		`./dist/${subPath}.vue.d.ts`,
-	]
+	packageJson.typesVersions['*'][paramCaseName] = [`dist/${subPath}.vue.d.ts`]
 
 	build({
 		...baseConfig,

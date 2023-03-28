@@ -57,21 +57,23 @@ export function useGroupProps(
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
 	const not = getGroupOrLocalRef('not', props) as Ref<boolean>
-	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
 	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
 		Array<string> | string
 	>
+	const disabled = computed(() =>
+		Boolean(props.disabled || group?.value?.disabled.value),
+	)
 
 	return {
 		// group props
 		modelValue,
 		not,
-		disabled,
 		isInGroup,
 		group,
 		collapse,
 		modifiers,
+		disabled,
 		// local props
 		title,
 		content,

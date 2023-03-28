@@ -25,7 +25,6 @@
 		ShiftOptions,
 		SizeOptions,
 	} from '../../types/floating-ui'
-	import type { Placement } from '@/constants'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -128,7 +127,8 @@
 		floatingEl,
 		{
 			whileElementsMounted: autoUpdate,
-			placement: props.placement as Placement,
+			placement: computed(() => props.placement),
+			strategy: computed(() => props.strategy),
 			middleware,
 		},
 	)
@@ -195,6 +195,7 @@
 	const init = (el: HTMLElement) => {
 		referenceEl.value = el
 	}
+	defineExpose({ toggle, show, hide, init })
 	watch(expanded, (newValue) => {
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {

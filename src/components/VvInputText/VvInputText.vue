@@ -147,8 +147,8 @@
 	// count
 	const { formatted: countFormatted } = useTextCount(localModelValue, {
 		mode: props.count,
-		upperLimit: props.maxlength,
-		lowerLimit: props.minlength,
+		upperLimit: Number(props.maxlength),
+		lowerLimit: Number(props.minlength),
 	})
 
 	// tabindex

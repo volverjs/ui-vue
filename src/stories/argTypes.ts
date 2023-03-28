@@ -298,6 +298,16 @@ export const DropdownArgTypes = {
 			defaultValue: { summary: 'bottom' },
 		},
 	},
+	strategy: {
+		description: 'Dropdown strategy',
+		options: ['fixed', 'absolute'],
+		control: {
+			type: 'select',
+		},
+		table: {
+			defaultValue: { summary: 'absolute' },
+		},
+	},
 	transitionName: {
 		description: 'Dropdown show / hide transition name',
 		control: {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	export default {
 		name: 'VvCombobox',
-		components: { VvDropdown, VvDropdownOption },
+		components: { VvDropdown, VvDropdownOption, VvDropdownOptgroup },
 	}
 </script>
 
@@ -11,6 +11,7 @@
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import VvDropdown from '../VvDropdown/VvDropdown.vue'
 	import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+	import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
 	import VvSelect from '../VvSelect/VvSelect.vue'
 	import VvBadge from '../VvBadge/VvBadge.vue'
 	import HintSlotFactory from '../common/HintSlot'
@@ -28,6 +29,14 @@
 		VvComboboxProps,
 		props,
 	)
+
+	// Grouped options
+	const isGroup = (option: string | Option) => {
+		if (typeof option === 'string') {
+			return false
+		}
+		return option.options && option.options.length > 0
+	}
 
 	// hint slot
 	const { HintSlot } = HintSlotFactory(props, slots)
@@ -155,8 +164,12 @@
 		props.searchable ? filteredOptions.value : props.options,
 	)
 
-	const { getOptionLabel, getOptionValue, getOptionDisabled } =
-		useOptions(props)
+	const {
+		getOptionLabel,
+		getOptionValue,
+		getOptionDisabled,
+		getOptionGrouped,
+	} = useOptions(props)
 
 	// options filtered by search text
 	const filteredOptions = computed(() => {
@@ -193,13 +206,25 @@
 	const selectedOptions = computed(() => {
 		let selectedValues: Array<typeof props.modelValue> = []
 		if (Array.isArray(props.modelValue)) {
-			selectedValues = props.modelValue
+			selectedValues = props.modelValue as Array<typeof props.modelValue>
 		} else if (props.modelValue) {
 			selectedValues = [props.modelValue]
 		}
-		return props.options.filter((option) =>
-			selectedValues.includes(getOptionValue(option)),
-		)
+		const options = props.options.reduce((acc, value) => {
+			if (isGroup(value)) {
+				return [...acc, ...getOptionGrouped(value)]
+			}
+			return [...acc, value]
+		}, [] as Array<Option | string>)
+
+		return options.filter((option) => {
+			if (isGroup(option)) {
+				return getOptionGrouped(option).some((item) =>
+					selectedValues.includes(getOptionValue(item)),
+				)
+			}
+			return selectedValues.includes(getOptionValue(option))
+		})
 	})
 
 	const hasValue = computed(() => {
@@ -237,10 +262,11 @@
 		if (props.multiple) {
 			// check maxValues prop and block check new values
 			if (Array.isArray(props.modelValue)) {
+				const maxValues = Number(props.maxValues)
 				if (
 					props.maxValues !== undefined &&
-					props.maxValues >= 0 &&
-					props.modelValue?.length >= props.maxValues
+					maxValues >= 0 &&
+					props.modelValue?.length >= maxValues
 				) {
 					if (!contains(value, props.modelValue)) {
 						// maxValues reached
@@ -295,6 +321,7 @@
 		id: hasDropdownId.value,
 		reference: wrapperEl.value,
 		placement: props.placement,
+		strategy: props.strategy,
 		transitionName: props.transitionName,
 		offset: props.offset,
 		shift: props.shift,
@@ -437,35 +464,77 @@
 				</template>
 				<template #items>
 					<template v-if="filteredOptions.length">
-						<VvDropdownOption
+						<template
 							v-for="(option, index) in filteredOptions"
-							v-bind="{
-								disabled: getOptionDisabled(option),
-								selected: getOptionSelected(option),
-								unselectable,
-								deselectHintLabel:
-									propsDefaults.deselectHintLabel,
-								selectHintLabel: propsDefaults.selectHintLabel,
-								selectedHintLabel:
-									propsDefaults.selectedHintLabel,
-							}"
 							:key="index"
-							class="vv-dropdown-option"
-							@click.passive="onInput(option)"
 						>
-							<!-- @slot Slot for option customization -->
-							<slot
-								name="option"
+							<template v-if="isGroup(option)">
+								<VvDropdownOptgroup
+									:label="getOptionLabel(option)"
+								/>
+								<VvDropdownOption
+									v-for="(item, i) in getOptionGrouped(
+										option,
+									)"
+									v-bind="{
+										disabled: getOptionDisabled(item),
+										selected: getOptionSelected(item),
+										unselectable,
+										deselectHintLabel:
+											propsDefaults.deselectHintLabel,
+										selectHintLabel:
+											propsDefaults.selectHintLabel,
+										selectedHintLabel:
+											propsDefaults.selectedHintLabel,
+									}"
+									:key="i"
+									class="vv-dropdown-option"
+									@click.passive="onInput(item)"
+								>
+									<!-- @slot Slot for option customization -->
+									<slot
+										name="option"
+										v-bind="{
+											option,
+											selectedOptions,
+											selected: getOptionSelected(item),
+											disabled: getOptionDisabled(item),
+										}"
+									>
+										{{ getOptionLabel(item) }}
+									</slot>
+								</VvDropdownOption>
+							</template>
+							<VvDropdownOption
+								v-else
 								v-bind="{
-									option,
-									selectedOptions,
-									selected: getOptionSelected(option),
 									disabled: getOptionDisabled(option),
+									selected: getOptionSelected(option),
+									unselectable,
+									deselectHintLabel:
+										propsDefaults.deselectHintLabel,
+									selectHintLabel:
+										propsDefaults.selectHintLabel,
+									selectedHintLabel:
+										propsDefaults.selectedHintLabel,
 								}"
+								class="vv-dropdown-option"
+								@click.passive="onInput(option)"
 							>
-								{{ getOptionLabel(option) }}
-							</slot>
-						</VvDropdownOption>
+								<!-- @slot Slot for option customization -->
+								<slot
+									name="option"
+									v-bind="{
+										option,
+										selectedOptions,
+										selected: getOptionSelected(option),
+										disabled: getOptionDisabled(option),
+									}"
+								>
+									{{ getOptionLabel(option) }}
+								</slot>
+							</VvDropdownOption>
+						</template>
 					</template>
 					<VvDropdownOption
 						v-else-if="!options.length"
