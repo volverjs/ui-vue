@@ -3,12 +3,12 @@ import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
 	...propsToObject(VvAvatarProps),
-    imgSrc: "https://i.pravatar.cc/300"
+	imgSrc: 'https://i.pravatar.cc/300',
 }
 
 export const argTypes = {
-    ...DefaultSlotArgTypes,
-    default: {
+	...DefaultSlotArgTypes,
+	default: {
 		description: 'Content slot',
 		control: {
 			type: 'text',
@@ -20,24 +20,25 @@ export const argTypes = {
 			},
 		},
 	},
-    modifiers: {
+	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: [
-			'md',
+			'rounded',
+			'square',
+			'bordered',
+			'ring',
+			'circle',
 			'lg',
-            'rounded',
-            'square',
-            'circle',
-			'brand'
+			'md',
 		],
 	},
-    imgSrc: {
-        type: {
+	imgSrc: {
+		type: {
 			summary: 'string',
 		},
-        control: {
-            type: 'text',
-        },
-        description: 'The image url'
-    }
+		control: {
+			type: 'text',
+		},
+		description: 'The image url',
+	},
 }

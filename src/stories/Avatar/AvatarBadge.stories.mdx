@@ -6,9 +6,9 @@ import { defaultTest } from './Avatar.test'
 
 <Meta
 	title="Components/Avatar/Badge"
-	component={ VvAvatar }
-	args={ defaultArgs }
-	argTypes={ argTypes }
+	component={VvAvatar}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 export const Template = (args) => ({
@@ -16,8 +16,7 @@ export const Template = (args) => ({
 	setup() {
 		return { args }
 	},
-	template:
-		/* html */`
+	template: /* html */ `
 		<div class="m-md">
 			<vv-avatar v-bind="args" data-testId="element">
 				{{ args.default }}
@@ -25,11 +24,18 @@ export const Template = (args) => ({
                     <vv-badge :modifiers="['danger', 'rounded']">99+</vv-badge>
                 </sup>
 			</vv-avatar>
-		</div>`
+		</div>`,
 })
 
 <Canvas>
-	<Story name="Badge" play={defaultTest} args={{ cssClass: 'bg-brand', size: 'lg', rounded: false, default: 'MR' }}>
+	<Story
+		name="Badge"
+		play={defaultTest}
+		args={{
+			default: 'MR',
+			modifiers: 'lg',
+		}}
+	>
 		{Template.bind()}
 	</Story>
 </Canvas>

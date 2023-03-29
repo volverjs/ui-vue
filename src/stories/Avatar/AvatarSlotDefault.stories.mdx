@@ -6,9 +6,9 @@ import { Template } from './Avatar.stories.mdx'
 
 <Meta
 	title="Components/Avatar/Slots"
-	component={ VvAvatar }
-	args={ defaultArgs }
-	argTypes={ argTypes }
+	component={VvAvatar}
+	args={defaultArgs}
+	argTypes={argTypes}
 />
 
 <Canvas>
@@ -20,25 +20,10 @@ import { Template } from './Avatar.stories.mdx'
 			default: {
 				control: {
 					disable: true,
-				}
+				},
 			},
-		}}>
-		{Template.bind({})}
-	</Story>
-</Canvas>
-
-<Canvas>
-	<Story
-		name="Content"
-		play={defaultTest}
-		args={{ content: 'MR' }}
-		argTypes={{
-			content: {
-				control: {
-					disable: true,
-				}
-			},
-		}}>
+		}}
+	>
 		{Template.bind({})}
 	</Story>
 </Canvas>

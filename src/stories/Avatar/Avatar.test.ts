@@ -25,7 +25,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	}
 
 	// check img tag exist
-	if(args.imgSrc) {
+	if (args.imgSrc && !args.default) {
 		expect(element).toHaveImgChild('img')
 	}
 
