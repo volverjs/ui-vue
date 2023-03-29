@@ -4,7 +4,10 @@ import { sleep } from '@/test/sleep'
 import { within, userEvent } from '@storybook/testing-library'
 import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
 
-const valueByType = (type: InputType) => {
+const valueByType = (type: InputType, mask?: string) => {
+	if (mask) {
+		return '1234567'
+	}
 	switch (type) {
 		case INPUT_TYPES.TEXT:
 		case INPUT_TYPES.PASSWORD:
@@ -42,7 +45,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// value
 	if (!args.invalid && !args.disabled && !args.readonly) {
-		const inputValue = valueByType(args.type)
+		const inputValue = valueByType(args.type, args.mask)
 		if (inputValue) {
 			await expect(input).toBeClicked()
 			await userEvent.keyboard(inputValue)

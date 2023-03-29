@@ -5,14 +5,14 @@
 </script>
 
 <script setup lang="ts">
-	import { VvCardProps } from '@/components/VvCard'
+	import { VvCardProps } from '.'
 
 	// props and attrs
 	const props = defineProps(VvCardProps)
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers('vv-card', modifiers)
+	const bemCssClasses = useModifiers('vv-card', modifiers)
 </script>
 
 <template>

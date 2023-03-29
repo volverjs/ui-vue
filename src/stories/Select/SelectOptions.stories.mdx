@@ -98,3 +98,38 @@ import { defaultTest } from './Select.test'
 		{Template.bind()}
 	</Story>
 </Canvas>
+
+<Canvas>
+	<Story
+		name="Grouped options"
+		play={defaultTest}
+		argTypes={{
+			options: {
+				...argTypes.options,
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		args={{
+			options: [
+				{ 
+					label: 'Group 1',
+					options: [
+						{ value: 'first', label: 'First' },
+						{ value: 'second', label: 'Second' },
+					]
+				},
+				{ 
+					label: 'Group 2',
+					options: [
+						{ value: 'third', label: 'Third' },
+						{ value: 'fourth', label: 'Fourth' },
+					]
+				},
+			],
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

@@ -5,14 +5,10 @@
 </script>
 
 <script setup lang="ts">
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import VvAction from '@/components/VvAction/VvAction.vue'
-	import {
-		VvButtonEvents,
-		VvButtonProps,
-		useGroupProps,
-	} from '@/components/VvButton'
-	import { Side } from '@/constants'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import VvAction from '../VvAction/VvAction.vue'
+	import { VvButtonEvents, VvButtonProps, useGroupProps } from '.'
+	import { Side } from '../../constants'
 
 	// props, attrs, slots and emit
 	const props = defineProps(VvButtonProps)
@@ -58,12 +54,16 @@
 	 * @description Define component classes with BEM style.
 	 * @returns {Array} The component classes.
 	 */
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-button',
 		modifiers,
 		computed(() => ({
-			reverse: [Side.right, Side.bottom].includes(iconPosition.value),
-			column: [Side.top, Side.bottom].includes(iconPosition.value),
+			reverse: [Side.right, Side.bottom].includes(
+				iconPosition.value as Side,
+			),
+			column: [Side.top, Side.bottom].includes(
+				iconPosition.value as Side,
+			),
 			'icon-only': Boolean(
 				icon?.value && !label?.value && !slots.default,
 			),

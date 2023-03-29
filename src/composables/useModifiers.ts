@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 
-export function useBemModifiers(
+export function useModifiers(
 	prefix: string,
 	modifiers?: Ref<string | string[] | unknown | unknown[] | undefined>,
 	others?: Ref<Record<string, boolean>>,
@@ -17,7 +17,9 @@ export function useBemModifiers(
 		if (modifiersArray) {
 			if (Array.isArray(modifiersArray)) {
 				modifiersArray.forEach((modifier) => {
-					toReturn[`${prefix}--${modifier}`] = true
+					if (modifier) {
+						toReturn[`${prefix}--${modifier}`] = true
+					}
 				})
 			}
 		}

@@ -1,4 +1,4 @@
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 export default defineComponent({
 	components: {
@@ -37,11 +37,12 @@ export default defineComponent({
 	render() {
 		return h('button', {
 			class: [
-				'vv-input-text__action-chevron',
+				'vv-input-text__action vv-input-text__action-chevron',
 				this.isUp && 'vv-input-text__action-chevron-up',
 			],
 			disabled: this.disabled,
 			ariaLabel: this.label,
+			type: 'button',
 			onClick: this.onClick,
 		})
 	},

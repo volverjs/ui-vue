@@ -1,4 +1,4 @@
-import { ModifiersProps } from '@/props'
+import { ModifiersProps } from '../../props'
 
 export const VvBadgeProps = {
 	...ModifiersProps,

@@ -6,15 +6,26 @@
 
 <script setup lang="ts">
 	import type { DialogHTMLAttributes } from 'vue'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import { VvDialogEvents, VvDialogProps } from '@/components/VvDialog'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import { VvDialogEvents, VvDialogProps } from '.'
 
-	// props, emit
+	// props and emit
 	const props = defineProps(VvDialogProps)
 	const emit = defineEmits(VvDialogEvents)
 
 	// data
-	const isVisible = useVModel(props, 'modelValue', emit)
+	const localModelValue = ref(false)
+	const modelValue = computed({
+		get() {
+			return props.modelValue ?? localModelValue.value
+		},
+		set(value) {
+			if (props.modelValue === undefined) {
+				localModelValue.value = value
+			}
+			emit('update:modelValue', value)
+		},
+	})
 	const htmlAttrIsOpen = ref(true)
 
 	// template ref
@@ -51,26 +62,32 @@
 	// methods
 	onClickOutside(modalWrapper, () => {
 		if (props.autoClose) {
-			isVisible.value = false
+			modelValue.value = false
 		}
 	})
 
-	function closeDialog() {
-		isVisible.value = false
+	function close() {
+		modelValue.value = false
 	}
+
+	function open() {
+		modelValue.value = true
+	}
+
+	defineExpose({ close, open })
 
 	// keyboard
 	onKeyStroke('Escape', (e) => {
-		if (isVisible.value) {
+		if (modelValue.value) {
 			e.preventDefault()
-			closeDialog()
+			close()
 		}
 	})
 </script>
 
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
-		<dialog v-show="isVisible" v-bind="dialogAttrs" :class="dialogClass">
+		<dialog v-show="modelValue" v-bind="dialogAttrs" :class="dialogClass">
 			<article ref="modalWrapper" class="vv-dialog__wrapper">
 				<header v-if="$slots.header || title" class="vv-dialog__header">
 					<!-- @slot Header slot -->
@@ -80,7 +97,7 @@
 							type="button"
 							aria-label="Close"
 							class="vv-dialog__close"
-							@click.passive="closeDialog"
+							@click.passive="close"
 						>
 							<VvIcon name="close" />
 						</button>

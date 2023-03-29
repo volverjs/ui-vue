@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
-	import { VvIconProps } from '@/components/VvIcon'
+	import { VvIconProps } from '.'
 
 	// props
 	const props = defineProps(VvIconProps)
@@ -19,13 +19,13 @@
 
 	// classes
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers('vv-icon', modifiers)
+	const bemCssClasses = useModifiers('vv-icon', modifiers)
 
 	/**
 	 * Provider name
 	 */
 	const provider = computed(() => {
-		return props.provider || volver?.provider
+		return props.provider || volver?.iconsProvider
 	})
 
 	/**

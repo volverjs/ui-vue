@@ -1,4 +1,4 @@
-import { IdProps } from '@/props'
+import { IdProps } from '../../props'
 
 export const VvDialogEvents = ['open', 'close', 'update:modelValue']
 
@@ -11,7 +11,10 @@ export const VvDialogProps = {
 	/**
 	 * Show / hide dialog programmatically
 	 */
-	modelValue: Boolean,
+	modelValue: {
+		type: Boolean,
+		default: undefined,
+	},
 	/**
 	 * Dialog transition
 	 */

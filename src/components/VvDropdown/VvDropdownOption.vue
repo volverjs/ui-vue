@@ -5,13 +5,13 @@
 </script>
 
 <script setup lang="ts">
-	import VvDropdownItem from '@/components/VvDropdown/VvDropdownItem.vue'
+	import VvDropdownItem from './VvDropdownItem.vue'
 	import {
 		DisabledProps,
 		ModifiersProps,
 		SelectedProps,
 		UnselectableProps,
-	} from '@/props'
+	} from '../../props'
 
 	// props
 	const props = defineProps({
@@ -32,7 +32,7 @@
 
 	// style
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-dropdown-option',
 		modifiers,
 		computed(() => ({
@@ -41,6 +41,18 @@
 			unselectable: props.unselectable && props.selected,
 		})),
 	)
+
+	// hint
+	const hintLabel = computed(() => {
+		if (props.selected) {
+			return props.unselectable
+				? props.deselectHintLabel
+				: props.selectedHintLabel
+		}
+		if (!props.disabled) {
+			return props.selectHintLabel
+		}
+	})
 </script>
 
 <template>
@@ -51,14 +63,9 @@
 		:aria-disabled="disabled"
 	>
 		<slot />
-		<span class="vv-dropdown-option__hint">
+		<span class="vv-dropdown-option__hint" :title="hintLabel">
 			<slot name="hint" v-bind="{ disabled, selected, unselectable }">
-				<template v-if="selected">
-					{{ unselectable ? deselectHintLabel : selectedHintLabel }}
-				</template>
-				<template v-else-if="!disabled">
-					{{ selectHintLabel }}
-				</template>
+				{{ hintLabel }}
 			</slot>
 		</span>
 	</VvDropdownItem>

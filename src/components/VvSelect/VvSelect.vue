@@ -6,9 +6,10 @@
 
 <script setup lang="ts">
 	import type { SelectHTMLAttributes } from 'vue'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import { VvSelectProps, VvSelectEmits } from '@/components/VvSelect'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import HintSlotFactory from '../common/HintSlot'
+	import { VvSelectProps, VvSelectEmits } from '.'
+	import type { Option } from '@/types/generic'
 
 	// props, emit and slots
 	const props = defineProps(VvSelectProps)
@@ -78,7 +79,7 @@
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-select',
 		modifiers,
 		computed(() => ({
@@ -124,8 +125,12 @@
 		modelValue: props.modelValue,
 	}))
 
-	const { getOptionLabel, getOptionValue, getOptionDisabled } =
-		useOptions(props)
+	const {
+		getOptionLabel,
+		getOptionValue,
+		getOptionDisabled,
+		getOptionGrouped,
+	} = useOptions(props)
 
 	const localModelValue = computed({
 		get: () => {
@@ -138,6 +143,12 @@
 			emit('update:modelValue', newValue)
 		},
 	})
+
+	// Grouped options
+	const isGroup = (option: string | Option) => {
+		if (typeof option === 'string') return false
+		return option && option.options && option.options.length > 0
+	}
 </script>
 
 <template>
@@ -169,14 +180,31 @@
 					>
 						{{ placeholder }}
 					</option>
-					<option
-						v-for="(option, index) in options"
-						:key="index"
-						:disabled="getOptionDisabled(option)"
-						:value="getOptionValue(option)"
-					>
-						{{ getOptionLabel(option) }}
-					</option>
+					<template v-for="(option, index) in options">
+						<option
+							v-if="!isGroup(option)"
+							:key="index"
+							:disabled="getOptionDisabled(option)"
+							:value="getOptionValue(option)"
+						>
+							{{ getOptionLabel(option) }}
+						</option>
+						<optgroup
+							v-else
+							:key="`group-${index}`"
+							:disabled="getOptionDisabled(option)"
+							:label="getOptionLabel(option)"
+						>
+							<option
+								v-for="(item, i) in getOptionGrouped(option)"
+								:key="`group-${index}-item-${i}`"
+								:disabled="getOptionDisabled(item)"
+								:value="getOptionValue(item)"
+							>
+								{{ getOptionLabel(item) }}
+							</option>
+						</optgroup>
+					</template>
 				</select>
 				<VvIcon
 					v-if="hasIconAfter"

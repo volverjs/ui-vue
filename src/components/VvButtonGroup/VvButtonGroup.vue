@@ -5,12 +5,9 @@
 </script>
 
 <script setup lang="ts">
-	import type { ButtonGroupState } from '@/types/group'
-	import { INJECTION_KEY_BUTTON_GROUP } from '@/constants'
-	import {
-		VvButtonGroupProps,
-		VvButtonGroupEvents,
-	} from '@/components/VvButtonGroup'
+	import type { ButtonGroupState } from '../../types/group'
+	import { INJECTION_KEY_BUTTON_GROUP } from '../../constants'
+	import { VvButtonGroupProps, VvButtonGroupEvents } from '.'
 
 	// emit and props
 	const emit = defineEmits(VvButtonGroupEvents)
@@ -66,7 +63,7 @@
 	})
 
 	// style
-	const bemCssClasses = useBemModifiers('vv-button-group', modifiers)
+	const bemCssClasses = useModifiers('vv-button-group', modifiers)
 </script>
 
 <template>

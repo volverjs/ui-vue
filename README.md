@@ -96,7 +96,7 @@ Than you can import components and use them in your templates.
    * all components are also available with a dedicated export
    * import VvButton from '@volverjs/ui-vue/vv-button'
    */
-  import { VvButton } from '@volverjs/ui-vue'
+  import { VvButton } from '@volverjs/ui-vue/components'
   /*
    * import the component style
    * for scss support you can import the scss file
@@ -163,12 +163,12 @@ The following features are planned for the next releases:
 - [x] (v0.0.3) `VvTooltip` component and `v-tooltip` directive;
 - [x] (v0.0.3) Redesign of `VvCombobox` for better accessibility and more features;
 - [x] (v0.0.3) Rewrite of `VvDropdown` to get it applicable to any element;
+- [x] (v0.0.5) Input masks for `VvInputText` component;
 - [ ] `VvAvatar` component;
 - [ ] `VvAvatarGroup` component;
 - [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] Menus, navigation and tabs with `VvNav`;
-- [ ] Input masks for `VvInputText` component;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
 - [ ] Multiple uploads, image crop and file previews with `VvInputFile`;
 - [ ] Carousel and galleries with `VvCarousel` component;

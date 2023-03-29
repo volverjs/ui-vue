@@ -6,9 +6,9 @@
 
 <script setup lang="ts">
 	import type { TextareaHTMLAttributes } from 'vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import { VvTextareaProps, VvTextareaEvents } from '@/components/VvTextarea'
+	import HintSlotFactory from '../common/HintSlot'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import { VvTextareaProps, VvTextareaEvents } from '.'
 
 	// props, emit and slots
 	const props = defineProps(VvTextareaProps)
@@ -61,8 +61,8 @@
 	// count
 	const { formatted: countFormatted } = useTextCount(localModelValue, {
 		mode: props.count,
-		upperLimit: props.maxlength,
-		lowerLimit: props.minlength,
+		upperLimit: Number(props.maxlength),
+		lowerLimit: Number(props.minlength),
 	})
 
 	// tabindex
@@ -89,7 +89,7 @@
 	const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-textarea',
 		modifiers,
 		computed(() => ({

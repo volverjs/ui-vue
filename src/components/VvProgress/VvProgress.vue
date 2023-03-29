@@ -5,7 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { VvProgressProps } from '@/components/VvProgress'
+	import { VvProgressProps } from '.'
 
 	// props
 	const props = defineProps(VvProgressProps)
@@ -14,7 +14,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-progress',
 		modifiers,
 		computed(() => ({ indeterminate: indeterminate.value })),

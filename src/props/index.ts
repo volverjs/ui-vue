@@ -1,19 +1,19 @@
 import type { PropType } from 'vue'
-import type { Option } from '@/types/generic'
+import type { Option } from '../types/generic'
 import type {
 	AutoPlacementOptions,
 	FlipOptions,
 	OffsetOptions,
 	ShiftOptions,
 	SizeOptions,
-} from '@/types/floating-ui'
+} from '../types/floating-ui'
 import {
 	Placement,
 	Position,
 	Side,
 	AnchorTarget,
 	ButtonType,
-} from '@/constants'
+} from '../constants'
 
 export const LinkProps = {
 	/**
@@ -31,7 +31,7 @@ export const LinkProps = {
 	 * Anchor target
 	 */
 	target: {
-		type: String as PropType<AnchorTarget>,
+		type: String as PropType<`${AnchorTarget}`>,
 		validator: (value: AnchorTarget) =>
 			Object.values(AnchorTarget).includes(value),
 	},
@@ -184,7 +184,7 @@ export const IconProps = {
 	 * VvIcon position
 	 */
 	iconPosition: {
-		type: String as PropType<Position>,
+		type: String as PropType<`${Position}`>,
 		default: Position.before,
 		validation: (value: Position) =>
 			Object.values(Position).includes(value),
@@ -226,13 +226,23 @@ export const DropdownProps = {
 	 * Dropdown placement
 	 */
 	placement: {
-		type: String as PropType<Side | Placement>,
+		type: String as PropType<`${Side}` | `${Placement}`>,
 		default: Side.bottom,
 		validator: (value: Side & Placement) => {
 			return (
 				Object.values(Side).includes(value) ||
 				Object.values(Placement).includes(value)
 			)
+		},
+	},
+	/**
+	 * Dropdown strategy
+	 */
+	strategy: {
+		type: String as PropType<'fixed' | 'absolute'>,
+		default: 'absolute',
+		validator: (value: 'fixed' | 'absolute') => {
+			return ['fixed', 'absolute'].includes(value)
 		},
 	},
 	/**
@@ -362,14 +372,14 @@ export const InputTextareaProps = {
 	 * Available for input types: text, search, url, tel, email, password
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#minlength
 	 */
-	minlength: Number,
+	minlength: [String, Number],
 	/**
 	 * Input / Textarea maxlength
 	 * Maximum length (number of characters) of value
 	 * Available for input types: text, search, url, tel, email, password
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#maxlength
 	 */
-	maxlength: Number,
+	maxlength: [String, Number],
 	/**
 	 * Input / Textarea placeholder
 	 * Text that appears in the form control when it has no value set
@@ -419,7 +429,7 @@ export const CheckboxRadioGroupProps = {
 	/**
 	 * Input value
 	 */
-	modelValue: [String, Array],
+	modelValue: [String, Array, Boolean, Number, Symbol],
 	/**
 	 * Input name
 	 */
@@ -440,7 +450,7 @@ export const ActionProps = {
 	 * Button type
 	 */
 	type: {
-		type: String,
+		type: String as PropType<`${ButtonType}`>,
 		default: ButtonType.button,
 		validator: (value: ButtonType) =>
 			Object.values(ButtonType).includes(value),

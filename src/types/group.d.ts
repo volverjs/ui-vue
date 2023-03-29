@@ -14,6 +14,9 @@ export default interface GroupState {
  */
 export interface InputGroupState extends GroupState {
 	readonly: Ref<boolean>
+	disabled: Ref<boolean>
+	valid: Ref<boolean>
+	invalid: Ref<boolean>
 }
 
 /**
@@ -33,5 +36,7 @@ export interface ButtonGroupState extends GroupState {
  */
 export interface AccordionGroupState extends GroupState {
 	collapse: Ref<boolean>
+	disabled: Ref<boolean>
 	modifiers: Ref<Array<string> | string | undefined>
+	not: Ref<boolean>
 }

@@ -15,7 +15,7 @@ import {
 	AutofocusProps,
 	AutocompleteProps,
 	LabelProps,
-} from '@/props'
+} from '../../props'
 
 export const VvSelectProps = {
 	...IdNameProps,

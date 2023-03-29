@@ -33,13 +33,18 @@ export interface VolverResolverOptions {
 	 * @default 'vv'
 	 */
 	prefix?: string
+	/**
+	 * ignore components (kebab-case)
+	 * @default undefined
+	 */
+	ignore?: string[]
 }
 
 const STYLE_EXCLUDE = ['vv-icon', 'vv-action']
 const VOLVER_PREFIX = 'vv'
 const DIRECTIVES = ['v-tooltip']
 
-const getStyleNames = function (kebabName: string) {
+export const getStyleNames = function (kebabName: string) {
 	if (STYLE_EXCLUDE.includes(kebabName)) {
 		return undefined
 	}
@@ -49,8 +54,9 @@ const getStyleNames = function (kebabName: string) {
 	if (kebabName === 'vv-combobox') {
 		return [
 			'vv-select',
-			'vv-dropdown',
 			'vv-dropdown-option',
+			'vv-dropdown-optgroup',
+			'vv-dropdown',
 			'vv-dropdown-action',
 		]
 	}
@@ -100,6 +106,7 @@ export function VolverResolver({
 	prefix = VOLVER_PREFIX,
 	importStyle,
 	directives,
+	ignore,
 }: VolverResolverOptions = {}): ComponentResolver[] {
 	return [
 		{
@@ -115,6 +122,10 @@ export function VolverResolver({
 					`${prefix}-`,
 					`${VOLVER_PREFIX}-`,
 				)
+
+				if (ignore && ignore.includes(kebabName)) {
+					return
+				}
 
 				// import component
 				return {
@@ -134,6 +145,10 @@ export function VolverResolver({
 
 				// filter directive
 				if (!DIRECTIVES.includes(kebabName)) {
+					return
+				}
+
+				if (ignore && ignore.includes(kebabName)) {
 					return
 				}
 

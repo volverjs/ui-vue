@@ -1,13 +1,13 @@
 import type { Ref, PropType, ExtractPropTypes } from 'vue'
-import type { ButtonGroupState } from '@/types/group'
+import type { ButtonGroupState } from '../../types/group'
 import {
 	ActionProps,
 	IdProps,
 	LoadingProps,
 	ModifiersProps,
 	UnselectableProps,
-} from '@/props'
-import { INJECTION_KEY_BUTTON_GROUP, Side } from '@/constants'
+} from '../../props'
+import { INJECTION_KEY_BUTTON_GROUP, Side } from '../../constants'
 
 export const VvButtonEvents = ['update:modelValue']
 
@@ -25,7 +25,7 @@ export const VvButtonProps = {
 	 * Button icon position
 	 */
 	iconPosition: {
-		type: String as PropType<Side>,
+		type: String as PropType<`${Side}`>,
 		default: Side.left,
 		validator: (value: Side) => Object.values(Side).includes(value),
 	},
@@ -66,14 +66,12 @@ export function useGroupProps(
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit) as Ref<
 		string | Array<string> | undefined
 	>
-	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
 	const unselectable = getGroupOrLocalRef(
 		'unselectable',
 		props,
 	) as Ref<boolean>
-	const multiple = group?.value?.multiple ?? ref(false)
-
+	const multiple = computed(() => group?.value.multiple.value ?? false)
 	const modifiers = computed(() => {
 		const localValue = localModifiers?.value
 			? Array.isArray(localModifiers.value)
@@ -87,19 +85,22 @@ export function useGroupProps(
 			: []
 		return [...localValue, ...groupValue]
 	})
+	const disabled = computed(() =>
+		Boolean(props.disabled || group?.value?.disabled.value),
+	)
 
 	return {
 		// group props
 		group,
 		isInGroup,
 		modelValue,
-		disabled,
 		toggle,
 		unselectable,
 		multiple,
+		modifiers,
+		disabled,
 		// local props
 		id,
-		modifiers,
 		pressed,
 		iconPosition,
 		icon,

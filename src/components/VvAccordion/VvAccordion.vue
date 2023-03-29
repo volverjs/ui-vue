@@ -6,11 +6,7 @@
 
 <script setup lang="ts">
 	import { nanoid } from 'nanoid'
-	import {
-		VvAccordionEvents,
-		VvAccordionProps,
-		useGroupProps,
-	} from '@/components/VvAccordion'
+	import { VvAccordionEvents, VvAccordionProps, useGroupProps } from '.'
 
 	// props, attrs and emit
 	const props = defineProps(VvAccordionProps)
@@ -29,23 +25,28 @@
 		collapse,
 		modelValue,
 		isInGroup,
+		not,
 	} = useGroupProps(props, emit)
 	const localModelValue = ref(false)
 	const isOpen = computed({
 		get: () => {
+			let toReturn = modelValue.value as boolean
 			if (isInGroup.value) {
 				if (collapse.value && Array.isArray(modelValue.value)) {
-					return modelValue.value.includes(accordionName.value)
+					toReturn = modelValue.value.includes(accordionName.value)
+				} else {
+					toReturn = modelValue.value === accordionName.value
 				}
-				return modelValue.value === accordionName.value
+			} else if (modelValue.value === undefined) {
+				// localModelValue is used when the accordion is not in a group
+				toReturn = localModelValue.value
 			}
-			// localModelValue is used when the accordion is not in a group
-			if (modelValue.value === undefined) {
-				return localModelValue.value
-			}
-			return modelValue.value as boolean
+			return not.value ? !toReturn : toReturn
 		},
 		set: (newValue) => {
+			if (not.value) {
+				newValue = !newValue
+			}
 			if (isInGroup.value) {
 				if (collapse.value && Array.isArray(modelValue.value)) {
 					if (newValue) {
@@ -73,7 +74,7 @@
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-accordion',
 		modifiers,
 		computed(() => ({
@@ -86,25 +87,21 @@
 </script>
 
 <template>
-	<details
-		:id="accordionName"
-		:class="bemCssClasses"
-		:open="isOpen"
-		@click.prevent="onClick()"
-	>
+	<details :id="accordionName" :class="bemCssClasses" :open="isOpen">
 		<summary
 			:aria-controls="accordionName"
 			:aria-expanded="isOpen"
-			class="vv-collapse__summary"
+			class="vv-accordion__summary"
+			@click.prevent="onClick()"
 		>
 			<!-- @slot Slot for title -->
 			<slot name="summary" v-bind="{ open: isOpen }">
 				{{ title }}
 			</slot>
 		</summary>
-		<div :aria-hidden="!isOpen" class="vv-collapse__content">
+		<div :aria-hidden="!isOpen" class="vv-accordion__content">
 			<!-- @slot Slot for content  -->
-			<slot name="details" v-bind="{ open: isOpen }">
+			<slot name="default" v-bind="{ open: isOpen }">
 				{{ content }}
 			</slot>
 		</div>

@@ -5,12 +5,8 @@
 </script>
 
 <script setup lang="ts">
-	import {
-		VvRadioProps,
-		VvRadioEvents,
-		useGroupProps,
-	} from '@/components/VvRadio'
-	import { HintSlotFactory } from '@/components/common/HintSlot'
+	import { VvRadioProps, VvRadioEvents, useGroupProps } from '.'
+	import { HintSlotFactory } from '../common/HintSlot'
 
 	// props, emit and slots
 	const props = defineProps(VvRadioProps)
@@ -63,7 +59,7 @@
 
 	// styles
 	const { modifiers } = toRefs(props)
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-radio',
 		modifiers,
 		computed(() => ({

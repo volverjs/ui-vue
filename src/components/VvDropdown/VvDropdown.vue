@@ -17,14 +17,14 @@
 		arrow,
 		size,
 	} from '@floating-ui/vue'
-	import { VvDropdownProps } from '@/components/VvDropdown'
+	import { VvDropdownProps } from '.'
 	import type {
 		AutoPlacementOptions,
 		FlipOptions,
 		OffsetOptions,
 		ShiftOptions,
 		SizeOptions,
-	} from '@/types/floating-ui'
+	} from '../../types/floating-ui'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -127,7 +127,8 @@
 		floatingEl,
 		{
 			whileElementsMounted: autoUpdate,
-			placement: props.placement,
+			placement: computed(() => props.placement),
+			strategy: computed(() => props.strategy),
 			middleware,
 		},
 	)
@@ -194,6 +195,7 @@
 	const init = (el: HTMLElement) => {
 		referenceEl.value = el
 	}
+	defineExpose({ toggle, show, hide, init })
 	watch(expanded, (newValue) => {
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {
@@ -219,7 +221,7 @@
 
 	// aria
 	const hasAriaLabelledby = computed(() => {
-		return referenceEl.value?.getAttribute('id') ?? undefined
+		return referenceEl.value?.getAttribute?.('id') ?? undefined
 	})
 	const referenceAria = computed(() => ({
 		'aria-controls': hasId.value,
@@ -242,7 +244,7 @@
 	const { itemRole } = useProvideDropdownItem({ role, expanded })
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-dropdown',
 		modifiers,
 		computed(() => ({

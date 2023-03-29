@@ -1,4 +1,4 @@
-import type { Option } from '@/types/generic'
+import type { Option } from '../types/generic'
 
 // eslint-disable-next-line
 export function useOptions(props: any) {
@@ -29,10 +29,16 @@ export function useOptions(props: any) {
 			: option[disabledKey.value]
 	}
 
+	const getOptionGrouped = (option: string | Option) => {
+	if (typeof option !== 'object' && option !== null) return []
+		return option.options || []
+	}
+
 	return {
 		options,
 		getOptionLabel,
 		getOptionValue,
 		getOptionDisabled,
+		getOptionGrouped
 	}
 }

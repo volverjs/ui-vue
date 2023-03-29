@@ -1,11 +1,11 @@
 <script setup lang="ts">
-	import { VvTooltipProps } from '@/components/VvTooltip'
+	import { VvTooltipProps } from '.'
 
 	const props = defineProps(VvTooltipProps)
 	const { modifiers } = toRefs(props)
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-tooltip',
 		modifiers,
 		computed(() => ({

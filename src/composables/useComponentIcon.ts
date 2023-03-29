@@ -1,5 +1,5 @@
-import { Position, Side } from '@/constants'
 import type { Ref } from 'vue'
+import { Position, Side } from '../constants'
 
 export function useComponentIcon(
 	icon: Ref<string | object | undefined> | undefined,

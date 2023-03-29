@@ -15,7 +15,7 @@ import {
 	IdNameProps,
 	DropdownProps,
 	LabelProps,
-} from '@/props'
+} from '../../props'
 
 export const VvComboboxEvents = [
 	'update:modelValue',

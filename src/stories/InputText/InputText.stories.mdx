@@ -169,3 +169,43 @@ export const Template = (args, { argTypes }) => ({
 		{Template.bind()}
 	</Story>
 </Canvas>
+
+<Canvas>
+	<Story
+		name="Mask"
+		args={{
+			mask: '##-###-##',
+		}}
+		argTypes={{
+			mask: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Unit"
+		args={{
+			unit: 'km',
+			autoWidth: true,
+			type: 'number',
+		}}
+		argTypes={{
+			unit: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

@@ -1,7 +1,7 @@
 import type { ExtractPropTypes, Ref } from 'vue'
-import type { InputGroupState } from '@/types/group'
-import { CheckboxRadioProps } from '@/props'
-import { INJECTION_KEY_RADIO_GROUP } from '@/constants'
+import type { InputGroupState } from '../../types/group'
+import { CheckboxRadioProps } from '../../props'
+import { INJECTION_KEY_RADIO_GROUP } from '../../constants'
 
 export const VvRadioProps = CheckboxRadioProps
 
@@ -22,10 +22,14 @@ export function useGroupProps(
 
 	// global props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const readonly = getGroupOrLocalRef('readonly', props) as Ref<boolean>
-	const disabled = getGroupOrLocalRef('disabled', props) as Ref<boolean>
 	const valid = getGroupOrLocalRef('valid', props) as Ref<boolean>
 	const invalid = getGroupOrLocalRef('invalid', props) as Ref<boolean>
+	const readonly = computed(() =>
+		Boolean(props.readonly || group?.value?.readonly.value),
+	)
+	const disabled = computed(() =>
+		Boolean(props.disabled || group?.value?.disabled.value),
+	)
 
 	return {
 		// local props
@@ -34,9 +38,9 @@ export function useGroupProps(
 		group,
 		isInGroup,
 		modelValue,
-		readonly,
-		disabled,
 		valid,
 		invalid,
+		readonly,
+		disabled,
 	}
 }

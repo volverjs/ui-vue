@@ -11,18 +11,18 @@ import { defaultArgs, argTypes } from './Accordion.settings'
 
 <Canvas>
 	<Story
-		name="Summary"
+		name="Default"
 		play={defaultTest}
 		args={{
-			summary: `<strong data-testId="slot" class="font-bold text-brand-darken-1">Custom Summary</strong>`,
+			default: `<strong data-testId="slot" class="font-bold text-brand-darken-1">Custom Details</strong>`,
 		}}
 		argTypes={{
-			title: {
+			content: {
 				control: {
 					disable: true,
 				},
 			},
-			details: {
+			summary: {
 				control: {
 					disable: true,
 				},
@@ -35,18 +35,18 @@ import { defaultArgs, argTypes } from './Accordion.settings'
 
 <Canvas>
 	<Story
-		name="Details"
+		name="Summary"
 		play={defaultTest}
 		args={{
-			details: `<strong data-testId="slot" class="font-bold text-brand-darken-1">Custom Details</strong>`,
+			summary: `<strong data-testId="slot" class="font-bold text-brand-darken-1">Custom Summary</strong>`,
 		}}
 		argTypes={{
-			content: {
+			title: {
 				control: {
 					disable: true,
 				},
 			},
-			summary: {
+			details: {
 				control: {
 					disable: true,
 				},

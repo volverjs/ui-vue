@@ -5,12 +5,12 @@
 </script>
 
 <script setup lang="ts">
-	import { VvActionProps, VvActionEvents } from '@/components/VvAction'
-	import { ActionTag } from '@/constants'
+	import { VvActionProps, VvActionEvents } from '.'
+	import { ActionTag } from '../../constants'
 
-	// props and emits
+	// props and emit
 	const props = defineProps(VvActionProps)
-	const emits = defineEmits(VvActionEvents)
+	const emit = defineEmits(VvActionEvents)
 
 	// inject plugin
 	const volver = useVolver()
@@ -102,7 +102,7 @@
 			return
 		}
 		dropdownEventBus?.emit('click', e)
-		emits('click', e)
+		emit('click', e)
 	}
 
 	/**
@@ -110,7 +110,7 @@
 	 */
 	const onMouseover = (e: Event) => {
 		dropdownEventBus?.emit('mouseover', e)
-		emits('mouseover', e)
+		emit('mouseover', e)
 	}
 
 	/**
@@ -118,7 +118,7 @@
 	 */
 	const onMouseleave = (e: Event) => {
 		dropdownEventBus?.emit('mouseleave', e)
-		emits('mouseleave', e)
+		emit('mouseleave', e)
 	}
 </script>
 

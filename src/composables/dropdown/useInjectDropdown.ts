@@ -1,11 +1,11 @@
 import type { Ref } from 'vue'
 import type { Emitter, EventType } from 'mitt'
-import type { DropdownItemRole } from '@/constants'
 import {
+	type DropdownItemRole,
 	INJECTION_KEY_DROPDOWN_TRIGGER,
 	INJECTION_KEY_DROPDOWN_ACTION,
 	INJECTION_KEY_DROPDOWN_ITEM,
-} from '@/constants'
+} from '../../constants'
 
 /**
  * Injects dropdown reference and the event bus

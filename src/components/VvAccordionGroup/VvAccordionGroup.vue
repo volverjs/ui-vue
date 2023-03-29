@@ -6,20 +6,17 @@
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
-	import type { AccordionGroupState } from '@/types/group'
-	import { INJECTION_KEY_ACCORDION_GROUP } from '@/constants'
-	import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
-	import {
-		VvAccordionGroupProps,
-		VvAccordionGroupEvents,
-	} from '@/components/VvAccordionGroup/'
+	import type { AccordionGroupState } from '../../types/group'
+	import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
+	import VvAccordion from '../VvAccordion/VvAccordion.vue'
+	import { VvAccordionGroupProps, VvAccordionGroupEvents } from '.'
 
 	// props and emit
 	const props = defineProps(VvAccordionGroupProps)
 	const emit = defineEmits(VvAccordionGroupEvents)
 
 	// data
-	const { disabled, collapse, modifiers, itemModifiers, items } =
+	const { disabled, collapse, modifiers, itemModifiers, items, not } =
 		toRefs(props)
 	watchEffect(() => {
 		if (typeof props.modelValue === 'string' && collapse.value) {
@@ -29,7 +26,18 @@
 			)
 		}
 	})
-	const localModelValue: Ref<string[]> = ref([])
+	let localModelValue: Ref<string[]> = ref([])
+	watch(
+		() => props.storeKey,
+		(newKey) => {
+			if (newKey) {
+				localModelValue = useStorage(newKey, localModelValue.value)
+			} else {
+				localModelValue = ref([])
+			}
+		},
+		{ immediate: true },
+	)
 	const modelValue = computed({
 		get: () => {
 			if (props.modelValue !== undefined) {
@@ -67,10 +75,11 @@
 		disabled,
 		collapse,
 		modifiers: itemModifiers,
+		not,
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-accordion-group',
 		modifiers,
 		computed(() => ({

@@ -1,26 +1,42 @@
 <script lang="ts">
 	export default {
 		name: 'VvCombobox',
-		components: { VvDropdown, VvDropdownOption },
+		components: { VvDropdown, VvDropdownOption, VvDropdownOptgroup },
 	}
 </script>
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
-	import { VvComboboxProps, VvComboboxEvents } from '@/components/VvCombobox'
-	import VvIcon from '@/components/VvIcon/VvIcon.vue'
-	import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-	import VvDropdownOption from '@/components/VvDropdown/VvDropdownOption.vue'
-	import VvSelect from '@/components/VvSelect/VvSelect.vue'
-	import VvBadge from '@/components/VvBadge/VvBadge.vue'
-	import HintSlotFactory from '@/components/common/HintSlot'
-	import type { Option } from '@/types/generic'
-	import { DropdownRole } from '@/constants'
+	import { VvComboboxProps, VvComboboxEvents } from '.'
+	import VvIcon from '../VvIcon/VvIcon.vue'
+	import VvDropdown from '../VvDropdown/VvDropdown.vue'
+	import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+	import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
+	import VvSelect from '../VvSelect/VvSelect.vue'
+	import VvBadge from '../VvBadge/VvBadge.vue'
+	import HintSlotFactory from '../common/HintSlot'
+	import type { Option } from '../../types/generic'
+	import { DropdownRole } from '../../constants'
 
 	// props, emit and slots
 	const props = defineProps(VvComboboxProps)
 	const emit = defineEmits(VvComboboxEvents)
 	const slots = useSlots()
+
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvComboboxProps>(
+		'VvCombobox',
+		VvComboboxProps,
+		props,
+	)
+
+	// Grouped options
+	const isGroup = (option: string | Option) => {
+		if (typeof option === 'string') {
+			return false
+		}
+		return option.options && option.options.length > 0
+	}
 
 	// hint slot
 	const { HintSlot } = HintSlotFactory(props, slots)
@@ -126,7 +142,7 @@
 	})
 
 	// styles
-	const bemCssClasses = useBemModifiers(
+	const bemCssClasses = useModifiers(
 		'vv-select',
 		modifiers,
 		computed(() => ({
@@ -148,8 +164,12 @@
 		props.searchable ? filteredOptions.value : props.options,
 	)
 
-	const { getOptionLabel, getOptionValue, getOptionDisabled } =
-		useOptions(props)
+	const {
+		getOptionLabel,
+		getOptionValue,
+		getOptionDisabled,
+		getOptionGrouped,
+	} = useOptions(props)
 
 	// options filtered by search text
 	const filteredOptions = computed(() => {
@@ -186,13 +206,25 @@
 	const selectedOptions = computed(() => {
 		let selectedValues: Array<typeof props.modelValue> = []
 		if (Array.isArray(props.modelValue)) {
-			selectedValues = props.modelValue
+			selectedValues = props.modelValue as Array<typeof props.modelValue>
 		} else if (props.modelValue) {
 			selectedValues = [props.modelValue]
 		}
-		return props.options.filter((option) =>
-			selectedValues.includes(getOptionValue(option)),
-		)
+		const options = props.options.reduce((acc, value) => {
+			if (isGroup(value)) {
+				return [...acc, ...getOptionGrouped(value)]
+			}
+			return [...acc, value]
+		}, [] as Array<Option | string>)
+
+		return options.filter((option) => {
+			if (isGroup(option)) {
+				return getOptionGrouped(option).some((item) =>
+					selectedValues.includes(getOptionValue(item)),
+				)
+			}
+			return selectedValues.includes(getOptionValue(option))
+		})
 	})
 
 	const hasValue = computed(() => {
@@ -230,10 +262,11 @@
 		if (props.multiple) {
 			// check maxValues prop and block check new values
 			if (Array.isArray(props.modelValue)) {
+				const maxValues = Number(props.maxValues)
 				if (
 					props.maxValues !== undefined &&
-					props.maxValues >= 0 &&
-					props.modelValue?.length >= props.maxValues
+					maxValues >= 0 &&
+					props.modelValue?.length >= maxValues
 				) {
 					if (!contains(value, props.modelValue)) {
 						// maxValues reached
@@ -246,8 +279,13 @@
 			} else {
 				toReturn = [value as Option]
 			}
-		} else if (props.unselectable && value === props.modelValue) {
-			toReturn = undefined
+		} else {
+			if (props.autoClose) {
+				collapse()
+			}
+			if (props.unselectable && value === props.modelValue) {
+				toReturn = undefined
+			}
 		}
 		emit('update:modelValue', toReturn)
 	}
@@ -257,12 +295,12 @@
 		name: props.name,
 		tabindex: hasTabindex.value,
 		valid: valid.value,
-		validLabel: props.validLabel,
+		validLabel: propsDefaults.value.validLabel,
 		invalid: invalid.value,
-		invalidLabel: props.invalidLabel,
-		hintLabel: props.hintLabel,
+		invalidLabel: propsDefaults.value.invalidLabel,
+		hintLabel: propsDefaults.value.hintLabel,
 		loading: loading.value,
-		loadingLabel: props.loadingLabel,
+		loadingLabel: propsDefaults.value.loadingLabel,
 		disabled: disabled.value,
 		readonly: readonly.value,
 		modifiers: props.modifiers,
@@ -283,6 +321,7 @@
 		id: hasDropdownId.value,
 		reference: wrapperEl.value,
 		placement: props.placement,
+		strategy: props.strategy,
 		transitionName: props.transitionName,
 		offset: props.offset,
 		shift: props.shift,
@@ -350,7 +389,7 @@
 						spellcheck="false"
 						type="search"
 						class="vv-dropdown__search"
-						:placeholder="searchPlaceholder"
+						:placeholder="propsDefaults.searchPlaceholder"
 					/>
 				</template>
 				<template #default="{ aria }">
@@ -398,7 +437,9 @@
 												!readonly &&
 												!disabled
 											"
-											:aria-label="deselectActionLabel"
+											:aria-label="
+												propsDefaults.deselectActionLabel
+											"
 											@click.stop="onInput(option)"
 										>
 											<VvIcon name="close" />
@@ -423,33 +464,77 @@
 				</template>
 				<template #items>
 					<template v-if="filteredOptions.length">
-						<VvDropdownOption
+						<template
 							v-for="(option, index) in filteredOptions"
-							v-bind="{
-								disabled: getOptionDisabled(option),
-								selected: getOptionSelected(option),
-								unselectable,
-								deselectHintLabel,
-								selectHintLabel,
-								selectedHintLabel,
-							}"
 							:key="index"
-							class="vv-dropdown-option"
-							@click.passive="onInput(option)"
 						>
-							<!-- @slot Slot for option customization -->
-							<slot
-								name="option"
+							<template v-if="isGroup(option)">
+								<VvDropdownOptgroup
+									:label="getOptionLabel(option)"
+								/>
+								<VvDropdownOption
+									v-for="(item, i) in getOptionGrouped(
+										option,
+									)"
+									v-bind="{
+										disabled: getOptionDisabled(item),
+										selected: getOptionSelected(item),
+										unselectable,
+										deselectHintLabel:
+											propsDefaults.deselectHintLabel,
+										selectHintLabel:
+											propsDefaults.selectHintLabel,
+										selectedHintLabel:
+											propsDefaults.selectedHintLabel,
+									}"
+									:key="i"
+									class="vv-dropdown-option"
+									@click.passive="onInput(item)"
+								>
+									<!-- @slot Slot for option customization -->
+									<slot
+										name="option"
+										v-bind="{
+											option,
+											selectedOptions,
+											selected: getOptionSelected(item),
+											disabled: getOptionDisabled(item),
+										}"
+									>
+										{{ getOptionLabel(item) }}
+									</slot>
+								</VvDropdownOption>
+							</template>
+							<VvDropdownOption
+								v-else
 								v-bind="{
-									option,
-									selectedOptions,
-									selected: getOptionSelected(option),
 									disabled: getOptionDisabled(option),
+									selected: getOptionSelected(option),
+									unselectable,
+									deselectHintLabel:
+										propsDefaults.deselectHintLabel,
+									selectHintLabel:
+										propsDefaults.selectHintLabel,
+									selectedHintLabel:
+										propsDefaults.selectedHintLabel,
 								}"
+								class="vv-dropdown-option"
+								@click.passive="onInput(option)"
 							>
-								{{ getOptionLabel(option) }}
-							</slot>
-						</VvDropdownOption>
+								<!-- @slot Slot for option customization -->
+								<slot
+									name="option"
+									v-bind="{
+										option,
+										selectedOptions,
+										selected: getOptionSelected(option),
+										disabled: getOptionDisabled(option),
+									}"
+								>
+									{{ getOptionLabel(option) }}
+								</slot>
+							</VvDropdownOption>
+						</template>
 					</template>
 					<VvDropdownOption
 						v-else-if="!options.length"
@@ -457,13 +542,13 @@
 					>
 						<!-- @slot Slot for no options available -->
 						<slot name="no-options">
-							{{ noOptionsLabel }}
+							{{ propsDefaults.noOptionsLabel }}
 						</slot>
 					</VvDropdownOption>
 					<VvDropdownOption v-else modifiers="inert">
 						<!-- @slot Slot for no results available -->
 						<slot name="no-results">
-							{{ noResultsLabel }}
+							{{ propsDefaults.noResultsLabel }}
 						</slot>
 					</VvDropdownOption>
 				</template>

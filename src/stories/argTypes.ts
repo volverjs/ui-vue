@@ -1,5 +1,5 @@
-import normal from '@/assets/icons/normal.json'
-import { Placement, Position, Side } from '@/constants'
+import normal from '../assets/icons/normal.json'
+import { Placement, Position, Side } from '../constants'
 
 export const ValidArgTypes = {
 	valid: {
@@ -296,6 +296,16 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: { summary: 'bottom' },
+		},
+	},
+	strategy: {
+		description: 'Dropdown strategy',
+		options: ['fixed', 'absolute'],
+		control: {
+			type: 'select',
+		},
+		table: {
+			defaultValue: { summary: 'absolute' },
 		},
 	},
 	transitionName: {

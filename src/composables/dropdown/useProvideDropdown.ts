@@ -7,7 +7,7 @@ import {
 	DropdownRole,
 	DropdownItemRole,
 	ActionRoles,
-} from '@/constants'
+} from '../../constants'
 
 /**
  * Share the dropdown reference and the event bus with all its children.
@@ -64,7 +64,7 @@ export function useProvideDropdownItem({
 	role,
 	expanded,
 }: {
-	role: Ref<DropdownRole>
+	role: Ref<`${DropdownRole}`>
 	expanded: Ref<boolean>
 }) {
 	const itemRole = computed(() =>

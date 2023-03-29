@@ -1,13 +1,14 @@
-# Logs
-npm-debug.log*
-
 node_modules
 .DS_Store
-dist
-bin
+
+# Logs
+npm-debug.log*
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 
+# Project 
 storybook-static
+dist
+bin
