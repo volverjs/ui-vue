@@ -1,0 +1,41 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import VvBadge from '@/components/VvBadge/VvBadge.vue'
+import { defaultArgs, argTypes } from './Avatar.settings'
+import { defaultTest } from './Avatar.test'
+
+<Meta
+	title="Components/Avatar/Badge"
+	component={VvAvatar}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+export const Template = (args) => ({
+	components: { VvAvatar, VvBadge },
+	setup() {
+		return { args }
+	},
+	template: /* html */ `
+		<div class="m-md">
+			<vv-avatar v-bind="args" data-testId="element">
+				{{ args.default }}
+                <sup>
+                    <vv-badge :modifiers="['danger', 'rounded']">99+</vv-badge>
+                </sup>
+			</vv-avatar>
+		</div>`,
+})
+
+<Canvas>
+	<Story
+		name="Badge"
+		play={defaultTest}
+		args={{
+			default: 'MR',
+			modifiers: 'lg',
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
