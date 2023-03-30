@@ -165,7 +165,7 @@ The following features are planned for the next releases:
 - [x] (v0.0.3) Rewrite of `VvDropdown` to get it applicable to any element;
 - [x] (v0.0.5) Input masks for `VvInputText` component;
 - [x] `VvAvatar` component;
-- [ ] `VvAvatarGroup` component;
+- [x] `VvAvatarGroup` component;
 - [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] Menus, navigation and tabs with `VvNav`;
