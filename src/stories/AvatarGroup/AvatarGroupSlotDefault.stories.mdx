@@ -1,5 +1,6 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs'
 import VvAvatarGroup from '@/components/VvAvatarGroup/VvAvatarGroup.vue'
+import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
 import { defaultArgs, argTypes } from './AvatarGroup.settings'
 import { defaultTest } from './AvatarGroup.test'
 import { Template } from './AvatarGroup.stories.mdx'
@@ -11,11 +12,26 @@ import { Template } from './AvatarGroup.stories.mdx'
 	argTypes={argTypes}
 />
 
+export const TemplateSlot = (args) => ({
+	components: { VvAvatarGroup, VvAvatar },
+	setup() {
+		return { args }
+	},
+	template: /* html */ `
+		<div class="m-md">
+			<vv-avatar-group v-bind="args" data-testId="element" modifiers="relaxed">
+				<vv-avatar modifiers="rounded">MR</vv-avatar>
+				<vv-avatar modifiers="rounded accent">PB</vv-avatar>
+				<vv-avatar imgSrc="https://i.pravatar.cc/300" modifiers="rounded" />
+				<vv-avatar modifiers="rounded surface">+3</vv-avatar>
+			</vv-avatar-group>
+		</div>`,
+})
+
 <Canvas>
 	<Story
 		name="Default"
 		play={defaultTest}
-		args={{ default: 'MR' }}
 		argTypes={{
 			default: {
 				control: {
@@ -24,6 +40,6 @@ import { Template } from './AvatarGroup.stories.mdx'
 			},
 		}}
 	>
-		{Template.bind({})}
+		{TemplateSlot.bind({})}
 	</Story>
 </Canvas>

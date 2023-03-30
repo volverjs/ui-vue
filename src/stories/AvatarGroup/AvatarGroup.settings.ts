@@ -28,7 +28,7 @@ export const defaultArgs = {
 export const argTypes = {
 	...DefaultSlotArgTypes,
 	default: {
-		description: 'Content slot',
+		description: 'Default slot',
 		control: {
 			type: 'text',
 		},
@@ -45,15 +45,7 @@ export const argTypes = {
 	},
 	avatarModifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: [
-			'rounded',
-			'square',
-			'bordered',
-			'ring',
-			'circle',
-			'lg',
-			'md',
-		],
+		options: ['rounded', 'square', 'bordered', 'ring', 'lg', 'md'],
 	},
 	toShow: {
 		control: {

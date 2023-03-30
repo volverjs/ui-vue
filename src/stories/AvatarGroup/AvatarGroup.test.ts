@@ -8,8 +8,8 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	)) as HTMLElement
 
 	// slot default
-	if (!args.default && !args.imgSrc) {
-		throw new Error('Default slot or imgSrc is required!')
+	if (!args.default && !args.items && !args.items?.length) {
+		throw new Error('Default slot or items is required!')
 	}
 
 	const modifiers =
@@ -20,13 +20,15 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	// modifiers
 	if (modifiers) {
 		for (const modifier of modifiers) {
-			expect(element).toHaveClass(`vv-avatar--${modifier}`)
+			expect(element).toHaveClass(`vv-avatar-group--${modifier}`)
 		}
 	}
 
-	// check img tag exist
-	if (args.imgSrc && !args.default) {
-		expect(element).toHaveImgChild('img')
+	// check children numbers
+	if (args.items && args.items.length && !args.default) {
+		if ((args.totalItems || args.items.length) > args.toShow) {
+			expect(element.children.length).toEqual(args.toShow + 1)
+		}
 	}
 
 	// check accessibility

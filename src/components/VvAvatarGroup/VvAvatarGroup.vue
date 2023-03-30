@@ -9,8 +9,15 @@
 	// bem css classes
 	const bemCssClasses = useModifiers('vv-avatar-group', modifiers)
 
+	const stringModifiers = computed(() => {
+		if (avatarModifiers?.value && Array.isArray(avatarModifiers?.value)) {
+			return avatarModifiers.value.join(' ')
+		}
+		return avatarModifiers?.value || ''
+	})
+
 	const avatarItems = computed(() => {
-		return items.value.slice(0, toShow.value).map((item) => {
+		return items.value.slice(0, toShow.value).map((item, index) => {
 			let modifiers: string[] = []
 			let itemModifiers: string[] = []
 
@@ -28,7 +35,7 @@
 
 			return {
 				...item,
-				key: item.key || new Date().getTime(),
+				key: item.key || `${index}_${new Date().getTime()}`,
 				modifiers: [...modifiers, ...itemModifiers],
 			}
 		})
@@ -50,7 +57,7 @@
 			</VvAvatar>
 			<VvAvatar
 				v-if="(totalItems || items.length) > toShow"
-				:modifiers="`${avatarModifiers} surface bordered`"
+				:modifiers="`${stringModifiers} surface bordered`"
 				>{{ `+${(totalItems || items.length) - toShow}` }}</VvAvatar
 			>
 		</slot>

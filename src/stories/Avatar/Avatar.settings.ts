@@ -22,15 +22,7 @@ export const argTypes = {
 	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: [
-			'rounded',
-			'square',
-			'bordered',
-			'ring',
-			'circle',
-			'lg',
-			'md',
-		],
+		options: ['rounded', 'square', 'bordered', 'ring', 'lg', 'md'],
 	},
 	imgSrc: {
 		type: {
