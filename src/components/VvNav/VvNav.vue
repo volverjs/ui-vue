@@ -1,16 +1,14 @@
 <script setup lang="ts">
-	import { VvNavProps, type NavItem } from '@/components/VvNav'
+	import { VvNavProps, VvNavEvents, type NavItem } from '@/components/VvNav'
 	import VvAction from '@/components/VvAction/VvAction.vue'
 
 	const props = defineProps(VvNavProps)
-	const emit = defineEmits(['click'])
+	const emit = defineEmits(VvNavEvents)
 	const { modifiers } = toRefs(props)
 	const activeItem: Ref<string | null> = ref(null)
 
 	// bem css classes
 	const bemCssClasses = useModifiers('vv-nav', modifiers)
-
-	const isTabs = computed(() => modifiers?.value?.includes('tabs'))
 
 	/**
 	 * Triggers when the item is clicked.
@@ -28,96 +26,31 @@
 
 <template>
 	<nav :class="bemCssClasses">
-		<ul class="vv-nav__menu" role="menu">
-			<template
-				v-for="(navHeading, headingIndex) in items"
-				:key="`heading_${headingIndex}`"
+		<ul class="vv-nav__menu" role="menu" aria-busy="true">
+			<li
+				v-for="(navItem, index) in items"
+				:key="`nav-item_${index}`"
+				class="vv-nav__item"
+				role="presentation"
 			>
-				<!-- #region sidebar and aside -->
-				<li v-if="!isTabs" class="vv-nav__item" role="presentation">
-					<span
-						v-if="navHeading.title"
-						:id="`sidebar-label-${headingIndex}`"
-						class="vv-nav__heading-label"
-						aria-hidden="true"
-					>
-						{{ navHeading.title }}
-					</span>
-					<ul
-						class="vv-nav__menu"
-						role="menu"
-						:aria-labelledby="`sidebar-label-${headingIndex}`"
-					>
-						<li
-							v-for="(navItem, index) in navHeading.items"
-							:key="`${headingIndex}_${index}`"
-							class="vv-nav__item"
-						>
-							<VvAction
-								v-bind="{
-									disabled: navItem.disabled,
-									to: navItem.to,
-									href: navItem.href,
-									tabindex: index,
-								}"
-								:class="{
-									current:
-										activeItem ==
-										`${headingIndex}_${index}`,
-									disabled: navItem.disabled,
-								}"
-								class="vv-nav__item-label"
-								v-on="navItem.on || {}"
-								@click="
-									onClick(navItem, `${headingIndex}_${index}`)
-								"
-							>
-								{{ navItem.title }}
-							</VvAction>
-						</li>
-					</ul>
-				</li>
-				<!-- #endregion sidebar and aside -->
-				<!-- #region tabs -->
-				<template v-else-if="isTabs">
-					<li
-						v-for="(navItem, index) in navHeading.items"
-						:key="`${headingIndex}_${index}`"
-						class="vv-nav__item"
-					>
-						<VvAction
-							v-bind="{
-								disabled: navItem.disabled,
-								to: navItem.to,
-								href: navItem.href,
-								tabindex: index,
-							}"
-							:class="{
-								current:
-									activeItem == `${headingIndex}_${index}`,
-								disabled: navItem.disabled,
-							}"
-							class="vv-nav__item-label"
-							v-on="navItem.on || {}"
-							@click="
-								onClick(navItem, `${headingIndex}_${index}`)
-							"
-						>
-							{{ navItem.title }}
-						</VvAction>
-					</li>
-				</template>
-				<!-- #endregion tabs -->
-				<li
-					v-if="
-						items.length > 1 &&
-						headingIndex < items.length - 1 &&
-						!isTabs
-					"
-					class="vv-nav__divider"
-					role="separator"
-				></li>
-			</template>
+				<VvAction
+					v-bind="{
+						disabled: navItem.disabled,
+						to: navItem.to,
+						href: navItem.href,
+						tabindex: 0,
+					}"
+					:class="{
+						current: activeItem == `nav-item_${index}`,
+						disabled: navItem.disabled,
+					}"
+					class="vv-nav__item-label"
+					v-on="navItem.on || {}"
+					@click="onClick(navItem, `nav-item_${index}`)"
+				>
+					{{ navItem.title }}
+				</VvAction>
+			</li>
 		</ul>
 	</nav>
 </template>

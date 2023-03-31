@@ -29,29 +29,6 @@ import { Template } from './Nav.stories.mdx'
 		play={defaultTest}
 		args={{
 			modifiers: 'tabs',
-			items: [
-				{
-					items: [
-						{
-							title: 'Item 1',
-							href: 'javascript:void(0)',
-						},
-						{
-							title: 'Item 2',
-							to: 'about',
-						},
-						{
-							title: 'Item 3',
-							to: 'contacts',
-							on: {
-								click: () => {
-									console.log('clicked Item 3')
-								},
-							},
-						},
-					],
-				},
-			],
 		}}
 	>
 		{Template.bind({})}
@@ -64,29 +41,6 @@ import { Template } from './Nav.stories.mdx'
 		play={defaultTest}
 		args={{
 			modifiers: 'tabs full',
-			items: [
-				{
-					items: [
-						{
-							title: 'Item 1',
-							href: 'javascript:void(0)',
-						},
-						{
-							title: 'Item 2',
-							to: 'about',
-						},
-						{
-							title: 'Item 3',
-							to: 'contacts',
-							on: {
-								click: () => {
-									console.log('clicked Item 3')
-								},
-							},
-						},
-					],
-				},
-			],
 		}}
 	>
 		{Template.bind({})}

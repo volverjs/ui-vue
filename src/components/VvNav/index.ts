@@ -1,10 +1,5 @@
 import { ModifiersProps } from '@/props'
 
-export type NavHeading = {
-	title?: string
-	items: Array<NavItem>
-}
-
 export type NavItem = {
 	title?: string
 	to?: string | { [key: string]: unknown }
@@ -16,8 +11,10 @@ export type NavItem = {
 export const VvNavProps = {
 	...ModifiersProps,
 	items: {
-		type: Array<NavHeading>,
+		type: Array<NavItem>,
 		required: true,
 		default: () => [],
 	},
 }
+
+export const VvNavEvents = ['click']
