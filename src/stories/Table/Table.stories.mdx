@@ -1,0 +1,27 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import VvTable from '@/components/VvTable/VvTable.vue'
+import { defaultArgs, argTypes } from './Table.settings'
+
+<Meta
+	title="Components/Table"
+	component={VvTable}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+export const Template = (args) => ({
+	components: { VvTable },
+	setup() {
+		return { args }
+	},
+	template: /* html */ `
+		<div class="m-md">
+			<vv-table v-bind="args" data-testId="element" />
+		</div>`,
+})
+
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>
