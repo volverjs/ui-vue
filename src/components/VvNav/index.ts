@@ -1,7 +1,7 @@
 import { ModifiersProps } from '@/props'
 
 export type NavItem = {
-	title?: string
+	title: string
 	to?: string | { [key: string]: unknown }
 	href?: string
 	disabled?: boolean

@@ -166,9 +166,9 @@ The following features are planned for the next releases:
 - [x] (v0.0.5) Input masks for `VvInputText` component;
 - [x] `VvAvatar` component;
 - [x] `VvAvatarGroup` component;
+- [x] Menus, navigation and tabs with `VvNav`;
 - [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
-- [ ] Menus, navigation and tabs with `VvNav`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
 - [ ] Multiple uploads, image crop and file previews with `VvInputFile`;
 - [ ] Carousel and galleries with `VvCarousel` component;
