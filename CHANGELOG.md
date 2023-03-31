@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - `VvAvatar`
 - `VvAvatarGroup`
 - `VvNav`
+- `VvTab`
 
 ## [0.0.5] - 2023-03-29
 

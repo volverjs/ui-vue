@@ -167,6 +167,7 @@ The following features are planned for the next releases:
 - [x] `VvAvatar` component;
 - [x] `VvAvatarGroup` component;
 - [x] Menus, navigation and tabs with `VvNav`;
+- [x] `VvTab` component;
 - [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
