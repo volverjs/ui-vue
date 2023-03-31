@@ -239,6 +239,9 @@
       "vv-select": [
         "dist/components/VvSelect/VvSelect.vue.d.ts"
       ],
+      "vv-tab": [
+        "dist/components/VvTab/VvTab.vue.d.ts"
+      ],
       "vv-textarea": [
         "dist/components/VvTextarea/VvTextarea.vue.d.ts"
       ],
@@ -419,6 +422,11 @@
       "types": "./dist/components/VvSelect/VvSelect.vue.d.ts",
       "import": "./dist/components/VvSelect/VvSelect.es.js",
       "default": "./dist/components/VvSelect/VvSelect.umd.js"
+    },
+    "./vv-tab": {
+      "types": "./dist/components/VvTab/VvTab.vue.d.ts",
+      "import": "./dist/components/VvTab/VvTab.es.js",
+      "default": "./dist/components/VvTab/VvTab.umd.js"
     },
     "./vv-textarea": {
       "types": "./dist/components/VvTextarea/VvTextarea.vue.d.ts",
