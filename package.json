@@ -167,6 +167,12 @@
       "vv-action": [
         "dist/components/VvAction/VvAction.vue.d.ts"
       ],
+      "vv-avatar": [
+        "dist/components/VvAvatar/VvAvatar.vue.d.ts"
+      ],
+      "vv-avatar-group": [
+        "dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts"
+      ],
       "vv-badge": [
         "dist/components/VvBadge/VvBadge.vue.d.ts"
       ],
@@ -214,6 +220,12 @@
       ],
       "vv-input-text": [
         "dist/components/VvInputText/VvInputText.vue.d.ts"
+      ],
+      "vv-nav": [
+        "dist/components/VvNav/VvNav.vue.d.ts"
+      ],
+      "vv-nav-item-title": [
+        "dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts"
       ],
       "vv-progress": [
         "dist/components/VvProgress/VvProgress.vue.d.ts"
@@ -287,6 +299,16 @@
       "types": "./dist/components/VvAction/VvAction.vue.d.ts",
       "import": "./dist/components/VvAction/VvAction.es.js",
       "default": "./dist/components/VvAction/VvAction.umd.js"
+    },
+    "./vv-avatar": {
+      "types": "./dist/components/VvAvatar/VvAvatar.vue.d.ts",
+      "import": "./dist/components/VvAvatar/VvAvatar.es.js",
+      "default": "./dist/components/VvAvatar/VvAvatar.umd.js"
+    },
+    "./vv-avatar-group": {
+      "types": "./dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts",
+      "import": "./dist/components/VvAvatarGroup/VvAvatarGroup.es.js",
+      "default": "./dist/components/VvAvatarGroup/VvAvatarGroup.umd.js"
     },
     "./vv-badge": {
       "types": "./dist/components/VvBadge/VvBadge.vue.d.ts",
@@ -367,6 +389,16 @@
       "types": "./dist/components/VvInputText/VvInputText.vue.d.ts",
       "import": "./dist/components/VvInputText/VvInputText.es.js",
       "default": "./dist/components/VvInputText/VvInputText.umd.js"
+    },
+    "./vv-nav": {
+      "types": "./dist/components/VvNav/VvNav.vue.d.ts",
+      "import": "./dist/components/VvNav/VvNav.es.js",
+      "default": "./dist/components/VvNav/VvNav.umd.js"
+    },
+    "./vv-nav-item-title": {
+      "types": "./dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts",
+      "import": "./dist/components/VvNavItemTitle/VvNavItemTitle.es.js",
+      "default": "./dist/components/VvNavItemTitle/VvNavItemTitle.umd.js"
     },
     "./vv-progress": {
       "types": "./dist/components/VvProgress/VvProgress.vue.d.ts",

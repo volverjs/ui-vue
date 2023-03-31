@@ -14,7 +14,7 @@
 	 * Triggers when the item is clicked.
 	 * @private
 	 * @event click
-	 * @param [object, number] item, id - the clicked item
+	 * @param [NavItem, number] item, id - the clicked item
 	 */
 	function onClick(item: NavItem, id: string) {
 		if (!item.disabled) {
