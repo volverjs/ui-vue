@@ -45,7 +45,7 @@
 				(Array.isArray(props.modelValue) || multiple.value) &&
 				!Array.isArray(newValue)
 			) {
-				newValue = [newValue]
+				return emit('update:modelValue', [newValue])
 			}
 			return emit('update:modelValue', newValue)
 		},
@@ -59,7 +59,7 @@
 		toggle,
 		multiple,
 		unselectable,
-		itemModifiers,
+		modifiers: itemModifiers,
 	})
 
 	// style

@@ -33,11 +33,34 @@ export const VvButtonProps = {
 	 * Loading icon
 	 */
 	loadingIcon: { type: String, default: 'eos-icons:bubble-loading' },
+	/**
+	 * Enable button toggle
+	 */
 	toggle: {
 		type: Boolean,
 		default: false,
 	},
-	modelValue: String,
+	/**
+	 * Button toggle value
+	 */
+	value: {
+		type: [String, Number, Boolean],
+		default: undefined,
+	},
+	/**
+	 * Value associated with the unchecked state
+	 */
+	uncheckedValue: {
+		type: [String, Number, Boolean],
+		default: undefined,
+	},
+	/**
+	 * Button toggle model value
+	 */
+	modelValue: {
+		type: [String, Number, Boolean],
+		default: undefined,
+	},
 }
 
 export type VvButtonPropsTypes = ExtractPropTypes<typeof VvButtonProps>
@@ -53,18 +76,11 @@ export function useGroupProps(
 		useInjectedGroupState<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP)
 
 	// local props
-	const {
-		id,
-		iconPosition,
-		icon,
-		label,
-		pressed,
-		modifiers: localModifiers,
-	} = toRefs(props)
+	const { id, iconPosition, icon, label, pressed } = toRefs(props)
 
 	// group props
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit) as Ref<
-		string | Array<string> | undefined
+		string | number | boolean | (string | number | boolean)[] | undefined
 	>
 	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
 	const unselectable = getGroupOrLocalRef(
@@ -72,18 +88,25 @@ export function useGroupProps(
 		props,
 	) as Ref<boolean>
 	const multiple = computed(() => group?.value.multiple.value ?? false)
+	// merge local and group modifiers
 	const modifiers = computed(() => {
-		const localValue = localModifiers?.value
-			? Array.isArray(localModifiers.value)
-				? localModifiers.value
-				: localModifiers.value.split(' ')
-			: []
-		const groupValue = group?.value.itemModifiers?.value
-			? Array.isArray(group.value.itemModifiers.value)
-				? group.value.itemModifiers.value
-				: group.value.itemModifiers.value.split(' ')
-			: []
-		return [...localValue, ...groupValue]
+		let localModifiers = props.modifiers
+		let groupModifiers = group?.value.modifiers.value
+
+		const toReturn = new Set<string>()
+		if (localModifiers) {
+			if (!Array.isArray(localModifiers)) {
+				localModifiers = localModifiers.split(' ')
+			}
+			localModifiers.forEach((modifier) => toReturn.add(modifier))
+		}
+		if (groupModifiers) {
+			if (!Array.isArray(groupModifiers)) {
+				groupModifiers = groupModifiers.split(' ')
+			}
+			groupModifiers.forEach((modifier) => toReturn.add(modifier))
+		}
+		return Array.from(toReturn)
 	})
 	const disabled = computed(() =>
 		Boolean(props.disabled || group?.value?.disabled.value),

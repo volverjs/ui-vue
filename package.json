@@ -63,9 +63,9 @@
     "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
     "@iconify/types": "^2.0.0",
     "@iconify/utils": "^2.1.5",
     "@mdx-js/react": "^2.3.0",
@@ -166,6 +166,12 @@
       ],
       "vv-action": [
         "dist/components/VvAction/VvAction.vue.d.ts"
+      ],
+      "vv-avatar": [
+        "dist/components/VvAvatar/VvAvatar.vue.d.ts"
+      ],
+      "vv-avatar-group": [
+        "dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts"
       ],
       "vv-badge": [
         "dist/components/VvBadge/VvBadge.vue.d.ts"
@@ -287,6 +293,16 @@
       "types": "./dist/components/VvAction/VvAction.vue.d.ts",
       "import": "./dist/components/VvAction/VvAction.es.js",
       "default": "./dist/components/VvAction/VvAction.umd.js"
+    },
+    "./vv-avatar": {
+      "types": "./dist/components/VvAvatar/VvAvatar.vue.d.ts",
+      "import": "./dist/components/VvAvatar/VvAvatar.es.js",
+      "default": "./dist/components/VvAvatar/VvAvatar.umd.js"
+    },
+    "./vv-avatar-group": {
+      "types": "./dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts",
+      "import": "./dist/components/VvAvatarGroup/VvAvatarGroup.es.js",
+      "default": "./dist/components/VvAvatarGroup/VvAvatarGroup.umd.js"
     },
     "./vv-badge": {
       "types": "./dist/components/VvBadge/VvBadge.vue.d.ts",

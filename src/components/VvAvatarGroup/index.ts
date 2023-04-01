@@ -13,7 +13,7 @@ export const VvAvatarGroupProps = {
 	 * avatar items
 	 */
 	items: {
-		type: Array<AvatarItem>,
+		type: Array as PropType<AvatarItem[]>,
 		default: () => [],
 		required: true,
 	},
@@ -24,5 +24,5 @@ export const VvAvatarGroupProps = {
 	totalItems: {
 		type: Number,
 	},
-	avatarModifiers: [String, Array] as PropType<string | Array<string>>,
+	avatarModifiers: [String, Array] as PropType<string | string[]>,
 }

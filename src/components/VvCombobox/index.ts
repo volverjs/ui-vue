@@ -117,7 +117,7 @@ export const VvComboboxProps = {
 	 * Badge modifiers
 	 */
 	badgeModifiers: {
-		type: [String, Array] as PropType<string | Array<string>>,
+		type: [String, Array] as PropType<string | string[]>,
 		default: 'action sm',
 	},
 	/**
@@ -131,7 +131,7 @@ export const VvComboboxProps = {
 	 * Dropdown modifiers
 	 */
 	dropdownModifiers: {
-		type: [String, Array] as PropType<string | Array<string>>,
+		type: [String, Array] as PropType<string | string[]>,
 	},
 	/**
 	 * Open dropdown on focus

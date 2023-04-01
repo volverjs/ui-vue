@@ -69,6 +69,24 @@ export const argTypes = {
 			defaultValue: { summary: false },
 		},
 	},
+	value: {
+		description: 'The button value',
+		type: {
+			summary: ['string', 'boolean', 'number'],
+		},
+		table: {
+			defaultValue: { summary: 'undefined' },
+		},
+	},
+	uncheckedValue: {
+		description: 'The button unchecked value',
+		type: {
+			summary: ['string', 'boolean', 'number'],
+		},
+		table: {
+			defaultValue: { summary: 'undefined' },
+		},
+	},
 	...UnselectableArgTypes,
 	...LoadingArgTypes,
 	...DisabledArgTypes,
@@ -89,6 +107,9 @@ export const argTypes = {
 	rel: {
 		description: 'The rel attribute of the button',
 		control: { type: 'text' },
+		type: {
+			summary: 'boolean',
+		},
 		table: {
 			defaultValue: { summary: 'noopener noreferrer' },
 		},

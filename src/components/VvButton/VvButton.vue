@@ -81,25 +81,28 @@
 	/**
 	 * @description Catch click event
 	 */
+	const toggleValue = computed(() => {
+		return props.value !== undefined ? props.value : name.value
+	})
 	const onClick = () => {
 		if (toggle.value) {
 			if (Array.isArray(modelValue.value)) {
-				if (contains(name.value, modelValue.value)) {
+				if (contains(toggleValue.value, modelValue.value)) {
 					if (unselectable.value) {
 						modelValue.value = modelValue.value.filter(
-							(n) => n !== name.value,
+							(n) => n !== toggleValue.value,
 						)
 					}
 					return
 				}
-				modelValue.value.push(name.value)
+				modelValue.value.push(toggleValue.value)
 				return
 			}
-			if (equals(name.value, modelValue.value) && unselectable.value) {
-				modelValue.value = undefined
+			if (toggleValue.value === modelValue.value && unselectable.value) {
+				modelValue.value = props.uncheckedValue
 				return
 			}
-			modelValue.value = name.value
+			modelValue.value = toggleValue.value
 		}
 	}
 </script>
