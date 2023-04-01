@@ -1,0 +1,28 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import VvNav from '@/components/VvNav/VvNav.vue'
+import { defaultArgs, argTypes } from './Nav.settings'
+import { defaultTest } from './Nav.test'
+
+<Meta
+	title="Components/Nav"
+	component={VvNav}
+	args={defaultArgs}
+	argTypes={argTypes}
+/>
+
+export const Template = (args) => ({
+	components: { VvNav },
+	setup() {
+		return { args }
+	},
+	template: /* html */ `
+		<div class="m-md w-1/5">
+			<vv-nav v-bind="args" data-testId="element" />
+		</div>`,
+})
+
+<Canvas>
+	<Story name="Default" play={defaultTest}>
+		{Template.bind()}
+	</Story>
+</Canvas>

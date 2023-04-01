@@ -221,6 +221,12 @@
       "vv-input-text": [
         "dist/components/VvInputText/VvInputText.vue.d.ts"
       ],
+      "vv-nav": [
+        "dist/components/VvNav/VvNav.vue.d.ts"
+      ],
+      "vv-nav-item-title": [
+        "dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts"
+      ],
       "vv-progress": [
         "dist/components/VvProgress/VvProgress.vue.d.ts"
       ],
@@ -232,6 +238,9 @@
       ],
       "vv-select": [
         "dist/components/VvSelect/VvSelect.vue.d.ts"
+      ],
+      "vv-tab": [
+        "dist/components/VvTab/VvTab.vue.d.ts"
       ],
       "vv-textarea": [
         "dist/components/VvTextarea/VvTextarea.vue.d.ts"
@@ -384,6 +393,16 @@
       "import": "./dist/components/VvInputText/VvInputText.es.js",
       "default": "./dist/components/VvInputText/VvInputText.umd.js"
     },
+    "./vv-nav": {
+      "types": "./dist/components/VvNav/VvNav.vue.d.ts",
+      "import": "./dist/components/VvNav/VvNav.es.js",
+      "default": "./dist/components/VvNav/VvNav.umd.js"
+    },
+    "./vv-nav-item-title": {
+      "types": "./dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts",
+      "import": "./dist/components/VvNavItemTitle/VvNavItemTitle.es.js",
+      "default": "./dist/components/VvNavItemTitle/VvNavItemTitle.umd.js"
+    },
     "./vv-progress": {
       "types": "./dist/components/VvProgress/VvProgress.vue.d.ts",
       "import": "./dist/components/VvProgress/VvProgress.es.js",
@@ -403,6 +422,11 @@
       "types": "./dist/components/VvSelect/VvSelect.vue.d.ts",
       "import": "./dist/components/VvSelect/VvSelect.es.js",
       "default": "./dist/components/VvSelect/VvSelect.umd.js"
+    },
+    "./vv-tab": {
+      "types": "./dist/components/VvTab/VvTab.vue.d.ts",
+      "import": "./dist/components/VvTab/VvTab.es.js",
+      "default": "./dist/components/VvTab/VvTab.umd.js"
     },
     "./vv-textarea": {
       "types": "./dist/components/VvTextarea/VvTextarea.vue.d.ts",

@@ -17,7 +17,7 @@
 	})
 
 	const avatarItems = computed(() => {
-		return items.value.slice(0, toShow.value).map((item, index) => {
+		return items.value.slice(0, toShow.value).map((item) => {
 			let modifiers: string[] = []
 			let itemModifiers: string[] = []
 
@@ -35,7 +35,7 @@
 
 			return {
 				...item,
-				key: item.key || `${index}_${new Date().getTime()}`,
+				key: item.key || useUniqueId().value,
 				modifiers: [...modifiers, ...itemModifiers],
 			}
 		})
