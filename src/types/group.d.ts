@@ -24,7 +24,7 @@ export interface InputGroupState extends GroupState {
  */
 export interface ButtonGroupState extends GroupState {
 	modelValue: Ref<
-		string | string[] | number | number[] | boolean | boolean[] | undefined
+		string | number | boolean | (string | number | boolean)[] | undefined
 	>
 	disabled: Ref<boolean>
 	toggle: Ref<boolean>

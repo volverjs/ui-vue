@@ -15,7 +15,11 @@ export const VvButtonGroupProps = {
 	multiple: { type: Boolean, default: false },
 	modelValue: {
 		type: [String, Number, Boolean, Array] as PropType<
-			string | number | boolean | (string | number | boolean)[]
+			| string
+			| number
+			| boolean
+			| (string | number | boolean)[]
+			| undefined
 		>,
 		default: undefined,
 	},
