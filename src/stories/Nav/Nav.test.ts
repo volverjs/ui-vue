@@ -11,6 +11,18 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		throw new Error('No items passed')
 	}
 
+	const modifiers =
+		!args.modifiers || Array.isArray(args.modifiers)
+			? args.modifiers
+			: [args.modifiers]
+
+	// modifiers
+	if (modifiers) {
+		for (const modifier of modifiers) {
+			expect(element).toHaveClass(`vv-nav--${modifier}`)
+		}
+	}
+
 	// check children number the same of items prop
 	expect(element.children?.[0].children.length).toEqual(args.items?.length)
 

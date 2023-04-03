@@ -1,6 +1,7 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs'
 import VvTable from '@/components/VvTable/VvTable.vue'
 import { defaultArgs, argTypes } from './Table.settings'
+import { defaultTest } from './Table.test'
 
 <Meta
 	title="Components/Table"
@@ -15,8 +16,15 @@ export const Template = (args) => ({
 		return { args }
 	},
 	template: /* html */ `
-		<div class="m-md">
-			<vv-table v-bind="args" data-testId="element" />
+		<div class="m-md" style="max-height: 400px; overflow-y: scroll;">
+			<vv-table
+				v-bind="args"
+				data-testId="element"
+				@update:sort="args.sort = $event"
+				@update:order="args.order = $event"
+				@update:limit="args.limit = $event"
+				@update:page="args.page = $event"
+			/>
 		</div>`,
 })
 

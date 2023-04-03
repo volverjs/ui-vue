@@ -1,6 +1,9 @@
 <script setup lang="ts">
 	import { get as dotGet } from 'ts-dot-prop'
 	import { VvTableEmits, VvTableProps } from '@/components/VvTable'
+	import VvIcon from '@/components/VvIcon/VvIcon.vue'
+	import VvButton from '@/components/VvButton/VvButton.vue'
+	import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
 
 	const slots = useSlots()
 
@@ -9,7 +12,7 @@
 	const emit = defineEmits(VvTableEmits)
 
 	const hasTotal = computed(() =>
-		props.total ? Number(props.total) : undefined,
+		props.total ? Number(props.total) : props.data.length,
 	)
 
 	const hasLimit = computed({
@@ -54,7 +57,8 @@
 		return (
 			hasNavAndLimitDisabled.value ||
 			props.nextDisabled ||
-			hasPage.value === hasPageCount.value
+			hasPage.value === hasPageCount.value ||
+			!hasPageCount.value
 		)
 	})
 
@@ -67,6 +71,18 @@
 			hasTotal.value ? item <= hasTotal.value : true,
 		),
 	)
+
+	const currentData = computed(() => {
+		if (
+			hasPage.value &&
+			hasPageCount?.value &&
+			props.data.length > hasLimit.value
+		) {
+			const startIndex = hasPage.value * hasLimit.value - hasLimit.value
+			return props.data.slice(startIndex, hasPage.value * hasLimit.value)
+		}
+		return props.data
+	})
 
 	watch([hasSort, hasOrder, hasLimit], (newValue, oldValue) => {
 		if (oldValue && JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
@@ -130,6 +146,7 @@
 							<button
 								v-else
 								type="button"
+								class="pr-md"
 								@click="onClickSort(column.name)"
 							>
 								{{ column.label }}
@@ -139,12 +156,11 @@
 											? {
 													name:
 														hasOrder === 'asc'
-															? 'arrow-up'
-															: 'arrow-down',
+															? 'order-up'
+															: 'order-down',
 											  }
 											: {
-													prefix: 'scania',
-													name: 'sort',
+													name: 'order-down',
 											  }
 									"
 								/>
@@ -184,7 +200,10 @@
 						</slot>
 						<template v-else-if="!isError">
 							<template v-if="data.length">
-								<tr v-for="(row, index) in data" :key="index">
+								<tr
+									v-for="(row, index) in currentData"
+									:key="index"
+								>
 									<td
 										v-for="{
 											name,
@@ -259,16 +278,17 @@
 				page: hasPage,
 			}"
 		>
-			<div
-				v-if="!hideNavigation"
-				class="mt-auto grid grid-cols-2 md:grid-cols-3 pt-md"
-			>
+			<div v-if="!hideNavigation" class="mt-auto grid grid-cols-2 pt-md">
 				<div class="flex items-center">
-					<label class="text-12">{{ labelItemsShown }}:</label>
+					<label for="items-shown" class="text-12"
+						>{{ labelItemsShown }}:</label
+					>
 					<select
 						v-if="hasLimitSteps.length"
+						id="items-shown"
 						v-model="hasLimit"
 						:disabled="hasNavAndLimitDisabled"
+						name="items-shown"
 						class="sortable-table__limit"
 					>
 						<option
@@ -279,17 +299,9 @@
 							{{ step }}
 						</option>
 					</select>
-					<span v-else class="sortable-table__total">
+					<span v-else id="items-shown" class="sortable-table__total">
 						{{ hasTotal }}
 					</span>
-				</div>
-				<div class="none md:flex justify-center">
-					<VvButton
-						:label="labelNext"
-						:disabled="hasNextDisabled"
-						modifiers="secondary full-bleed"
-						@click.stop="onClickNext()"
-					/>
 				</div>
 				<div class="flex justify-end items-center">
 					<VvButtonGroup>
@@ -332,7 +344,7 @@
 		min-width: 0;
 
 		&__wrapper {
-			border: var(--border) solid var(--color-surface-4);
+			// border: var(--border) solid var(--color-surface-4);
 			border-radius: var(--rounded);
 			background: var(--color-surface);
 			width: 100%;
@@ -341,7 +353,7 @@
 
 		th {
 			&.selected {
-				background: var(--color-gray-lighten-4);
+				background: var(--color-gray-lighten-5);
 			}
 
 			& > button {
