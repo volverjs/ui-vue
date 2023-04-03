@@ -64,9 +64,9 @@
     "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
     "@iconify/types": "^2.0.0",
     "@iconify/utils": "^2.1.5",
     "@mdx-js/react": "^2.3.0",

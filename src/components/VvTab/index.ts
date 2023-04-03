@@ -4,7 +4,7 @@ import type { NavItem } from '../VvNav'
 export const VvTabProps = {
 	...ModifiersProps,
 	items: {
-		type: Array<NavItem>,
+		type: Array as PropType<NavItem[]>,
 		required: true,
 		default: () => [],
 	},

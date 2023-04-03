@@ -2,14 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.6] - 2023-03-XX
+## [0.0.6] - 2023-04-01
 
 ### Added
 
-- `VvAvatar`
-- `VvAvatarGroup`
-- `VvNav`
-- `VvTab`
+- `VvAvatar` component;
+- `VvAvatarGroup` component;
+- `VvNav` component;
+- `VvTab` component;
+- `VvButton` custom `value` and `unncheckedValue` when it's used as `toggle`.
+
+### Fixed
+
+- Some props types issues.
+- `VvButtonGroup` modifiers are now merged with the child modifiers.
 
 ## [0.0.5] - 2023-03-29
 

@@ -1,11 +1,11 @@
 import type { Component, ExtractPropTypes, Slots, Ref } from 'vue'
 
 /**
- * Merge errors from Array<string> to string errors separated from new line (\n)
- * @param {Array<string> | string} errors
+ * Merge errors from string[] to string errors separated from new line (\n)
+ * @param {string[] | string} errors
  * @returns {string}
  */
-function joinLines(errors: Array<string> | string | unknown[] | undefined) {
+function joinLines(errors: string[] | string | unknown[] | undefined) {
 	if (Array.isArray(errors)) {
 		return errors.filter((e) => isString(e)).join(' ')
 	}

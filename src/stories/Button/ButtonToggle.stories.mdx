@@ -26,6 +26,68 @@ import { argTypes, defaultArgs } from './Button.settings'
 
 <Canvas>
 	<Story
+		name="True / False"
+		args={{
+			toggle: true,
+			value: true,
+			uncheckedValue: false,
+		}}
+		argTypes={{
+			toggle: {
+				control: {
+					disable: true,
+				},
+			},
+			value: {
+				control: {
+					disable: true,
+				},
+			},
+			uncheckedValue: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Yes / No"
+		args={{
+			toggle: true,
+			value: 'yes',
+			uncheckedValue: 'no',
+		}}
+		argTypes={{
+			toggle: {
+				control: {
+					disable: true,
+				},
+			},
+			value: {
+				control: {
+					disable: true,
+				},
+			},
+			uncheckedValue: {
+				control: {
+					disable: true,
+				},
+			},
+		}}
+		play={defaultTest}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
 		name="Unselectable"
 		args={{
 			toggle: true,

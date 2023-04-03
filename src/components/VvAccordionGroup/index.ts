@@ -15,7 +15,10 @@ export const VvAccordionGroupProps = {
 	 * Accordion items
 	 * @type VvAccordionGroupItem
 	 */
-	items: { type: Array<VvAccordionGroupItem>, default: () => [] },
+	items: {
+		type: Array as PropType<VvAccordionGroupItem[]>,
+		default: () => [],
+	},
 	/**
 	 * If true, accordion items stay open when another item is opened
 	 */
@@ -23,12 +26,12 @@ export const VvAccordionGroupProps = {
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion-group--'
 	 */
-	modifiers: [String, Array],
+	modifiers: [String, Array] as PropType<string | string[]>,
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
 	 */
 	itemModifiers: {
-		type: [String, Array<string>],
+		type: [String, Array] as PropType<string | string[]>,
 		default: '',
 	},
 	/**

@@ -95,7 +95,7 @@ export const VvIconProps = {
 	svg: String,
 	/**
 	 * Icon modifiers: vv-icon css helper classes, value/s are concatened with prefix 'vv-icon--'
-	 * @values string | Array<string>
+	 * @values string | string[]
 	 */
 	modifiers: {
 		type: [String, Array] as PropType<string | string[]>,

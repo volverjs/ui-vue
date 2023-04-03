@@ -12,7 +12,7 @@ export type NavItem = {
 export const VvNavProps = {
 	...ModifiersProps,
 	items: {
-		type: Array<NavItem>,
+		type: Array as PropType<NavItem[]>,
 		required: true,
 		default: () => [],
 	},
