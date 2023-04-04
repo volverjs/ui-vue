@@ -7,7 +7,7 @@ import { defaultArgs, argTypes } from './Table.settings'
 
 <Canvas>
 	<Story
-		name="Loading"
+		name="loading"
 		play={defaultTest}
 		args={{
 			loading: `<div data-testId="slot" class="font-bold p-lg"> Loading slot... </div>`,
@@ -20,7 +20,7 @@ import { defaultArgs, argTypes } from './Table.settings'
 
 <Canvas>
 	<Story
-		name="Error"
+		name="error"
 		play={defaultTest}
 		args={{
 			error: `<div data-testId="slot" class="font-bold text-danger p-lg"> Error slot! </div>`,
@@ -33,7 +33,7 @@ import { defaultArgs, argTypes } from './Table.settings'
 
 <Canvas>
 	<Story
-		name="Empty"
+		name="empty"
 		play={defaultTest}
 		args={{
 			empty: `<div data-testId="slot" class="font-bold p-lg"> Empty slot: No results found! </div>`,
@@ -74,6 +74,18 @@ import { defaultArgs, argTypes } from './Table.settings'
 		play={defaultTest}
 		args={{
 			caption: `<div data-testId="slot" class="font-bold p-lg"> caption slot </div>`,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="navigation"
+		play={defaultTest}
+		args={{
+			navigation: `<div data-testId="slot" class="font-bold p-lg"> navigation slot </div>`,
 		}}
 	>
 		{Template.bind()}
