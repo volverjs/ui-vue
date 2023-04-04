@@ -33,6 +33,7 @@ export const Template = (args) => ({
 				<template #tfoot v-if="args.tfoot"><div v-html="args.tfoot"></div></template>
 				<template #caption v-if="args.caption"><div v-html="args.caption"></div></template>
 				<template #navigation v-if="args.navigation"><div v-html="args.navigation"></div></template>
+				<template #col::age v-if="args['col::age']"><div v-html="args['col::age']"></div></template>
 			</vv-table>
 		</div>`,
 })

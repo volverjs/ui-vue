@@ -313,10 +313,11 @@
 							@click.stop="onClickPrev()"
 						/>
 						<VvButton
-							:label="hasPage"
+							:label="`${hasPage}/${hasPageCount}`"
 							:disabled="hasNavAndLimitDisabled"
-							modifiers="secondary"
 							:style="{ pointerEvents: 'none' }"
+							class="font-normal"
+							modifiers="secondary"
 							@click.stop="onClickPage(hasPage)"
 						/>
 						<VvButton
@@ -327,9 +328,9 @@
 							@click.stop="onClickNext()"
 						/>
 					</VvButtonGroup>
-					<small v-if="hasPageCount" class="ml-6 text-12">
+					<!-- <small v-if="hasPageCount" class="ml-6 text-12">
 						{{ labelTotalPages }} {{ hasPageCount }}
-					</small>
+					</small> -->
 				</div>
 			</div>
 		</slot>

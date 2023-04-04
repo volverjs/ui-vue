@@ -58,10 +58,10 @@ export const VvTableProps = {
 		type: String,
 		default: 'Prev',
 	},
-	labelTotalPages: {
-		type: String,
-		default: 'Total pages',
-	},
+	// labelTotalPages: {
+	// 	type: String,
+	// 	default: 'Total pages',
+	// },
 	labelItemsShown: {
 		type: String,
 		default: 'Items shown',

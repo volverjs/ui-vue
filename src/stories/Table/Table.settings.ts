@@ -5,19 +5,19 @@ export const defaultArgs = {
 	...propsToObject(VvTableProps),
 	columns: [
 		{
-			name: 'Firstname',
+			name: 'firstname',
 			field: 'firstname',
 			label: 'First name',
 			sortable: true,
 		},
 		{
-			name: 'Lastname',
+			name: 'lastname',
 			field: 'lastname',
 			label: 'Last name',
 			sortable: true,
 		},
 		{
-			name: 'Age',
+			name: 'age',
 			field: 'age',
 			label: 'Age',
 		},
@@ -79,7 +79,7 @@ export const defaultArgs = {
 			age: 38,
 		},
 	],
-	sort: 'Firstname',
+	sort: 'firstname',
 	order: 'asc',
 	limit: 5,
 	limitSteps: [5, 10],

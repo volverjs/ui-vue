@@ -91,3 +91,31 @@ import { defaultArgs, argTypes } from './Table.settings'
 		{Template.bind()}
 	</Story>
 </Canvas>
+
+<Canvas>
+	<Story
+		name="col"
+		play={defaultTest}
+		args={{
+			col: `<div data-testId="slot" class="font-bold p-lg"> Column slot </div>`,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="col::age"
+		play={defaultTest}
+		args={{
+			'col::age': `
+                <div role="status" class="vv-badge" style="height: 40px;">
+                    <div data-testId="slot" class="font-bold p-lg"> Age slot </div>
+                </div>
+            `,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
