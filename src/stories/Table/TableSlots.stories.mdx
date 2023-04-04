@@ -1,0 +1,81 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Template } from './Table.stories.mdx'
+import { defaultTest } from './Table.test'
+import { defaultArgs, argTypes } from './Table.settings'
+
+<Meta title="Components/Table/Slots" args={defaultArgs} argTypes={argTypes} />
+
+<Canvas>
+	<Story
+		name="Loading"
+		play={defaultTest}
+		args={{
+			loading: `<div data-testId="slot" class="font-bold p-lg"> Loading slot... </div>`,
+			isLoading: true,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Error"
+		play={defaultTest}
+		args={{
+			error: `<div data-testId="slot" class="font-bold text-danger p-lg"> Error slot! </div>`,
+			isError: true,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="Empty"
+		play={defaultTest}
+		args={{
+			empty: `<div data-testId="slot" class="font-bold p-lg"> Empty slot: No results found! </div>`,
+			data: [],
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="tbody"
+		play={defaultTest}
+		args={{
+			tbody: `<div data-testId="slot" class="font-bold p-lg"> Tbody slot </div>`,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="tfoot"
+		play={defaultTest}
+		args={{
+			tfoot: `<div data-testId="slot" class="font-bold p-lg"> tfoot slot </div>`,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="caption"
+		play={defaultTest}
+		args={{
+			caption: `<div data-testId="slot" class="font-bold p-lg"> caption slot </div>`,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>

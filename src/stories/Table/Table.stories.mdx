@@ -24,7 +24,16 @@ export const Template = (args) => ({
 				@update:order="args.order = $event"
 				@update:limit="args.limit = $event"
 				@update:page="args.page = $event"
-			/>
+			>
+				<template #tbody v-if="args.tbody"><div v-html="args.tbody"></div></template>
+				<template #loading v-if="args.loading"><div v-html="args.loading"></div></template>
+				<template #col v-if="args.col"><div v-html="args.col"></div></template>
+				<template #empty v-if="args.empty"><div v-html="args.empty"></div></template>
+				<template #error v-if="args.error"><div v-html="args.error"></div></template>
+				<template #tfoot v-if="args.tfoot"><div v-html="args.tfoot"></div></template>
+				<template #caption v-if="args.caption"><div v-html="args.caption"></div></template>
+				<template #navigation v-if="args.navigation"><div v-html="args.navigation"></div></template>
+			</vv-table>
 		</div>`,
 })
 
