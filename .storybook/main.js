@@ -3,7 +3,12 @@ export default {
 	addons: [
 		'@storybook/addon-a11y',
 		'@storybook/addon-links',
-		'@storybook/addon-essentials',
+		{
+			name: '@storybook/addon-essentials',
+			// options: {
+			// 	docs: false,
+			// },
+		},
 		'@storybook/addon-interactions',
 		'storybook-dark-mode',
 		'storybook-version',
@@ -13,7 +18,7 @@ export default {
 	},
 	staticDirs: ['./static'],
 	docs: {
-		disable: true,
+		// autodocs: false,
 	},
 	features: {
 		storyStoreV7: false,
