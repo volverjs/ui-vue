@@ -354,12 +354,13 @@
 
 		th,
 		td {
-			padding: 1rem 1rem;
+			padding: var(--spacing-16);
 		}
 
 		th {
 			&.selected {
-				background: var(--color-gray-lighten-5);
+				background: var(--color-surface-2);
+				color: var(--color-word);
 			}
 
 			& > button {
