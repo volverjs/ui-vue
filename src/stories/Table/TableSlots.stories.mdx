@@ -97,7 +97,7 @@ import { defaultArgs, argTypes } from './Table.settings'
 		name="col"
 		play={defaultTest}
 		args={{
-			col: `<div data-testId="slot" class="font-bold p-lg"> Column slot </div>`,
+			col: `<div data-testId="slot" class="font-bold p-lg h-20"> Column slot </div>`,
 		}}
 	>
 		{Template.bind()}
@@ -106,14 +106,32 @@ import { defaultArgs, argTypes } from './Table.settings'
 
 <Canvas>
 	<Story
-		name="col::age"
+		name="col::{field}"
 		play={defaultTest}
 		args={{
 			'col::age': `
-                <div role="status" class="vv-badge" style="height: 40px;">
+                <div role="status" class="vv-badge h-20">
                     <div data-testId="slot" class="font-bold p-lg"> Age slot </div>
                 </div>
             `,
+		}}
+	>
+		{Template.bind()}
+	</Story>
+</Canvas>
+
+<Canvas>
+	<Story
+		name="skeleton::{field}"
+		play={defaultTest}
+		args={{
+			'skeleton::age': `
+                <div class="vv-skeleton flex ml-md">
+                    <div class="vv-skeleton__item rounded-lg w-20"></div>
+                    <div class="vv-skeleton__item rounded-lg w-20"></div>
+                </div>
+            `,
+			isLoading: true,
 		}}
 	>
 		{Template.bind()}

@@ -352,6 +352,11 @@
 			overflow: auto;
 		}
 
+		th,
+		td {
+			padding: 1rem 1rem;
+		}
+
 		th {
 			&.selected {
 				background: var(--color-gray-lighten-5);
