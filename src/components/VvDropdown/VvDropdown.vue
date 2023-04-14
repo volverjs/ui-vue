@@ -28,7 +28,13 @@
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
-	const emit = defineEmits(['update:modelValue'])
+	const emit = defineEmits([
+		'update:modelValue',
+		'beforeExpand',
+		'beforeCollapse',
+		'afterExpand',
+		'afterCollapse',
+	])
 	const { id } = toRefs(props)
 	const hasId = useUniqueId(id)
 	const attrs = useAttrs()
@@ -334,6 +340,12 @@
 			activeElement.click()
 		}
 	})
+	const onTransitionBeforeEnter = () => {
+		emit(expanded.value ? 'beforeExpand' : 'beforeCollapse')
+	}
+	const onTransitionAfterLeave = () => {
+		emit(expanded.value ? 'afterExpand' : 'afterCollapse')
+	}
 </script>
 
 <template>
@@ -342,7 +354,13 @@
 			v-bind="{ init, show, hide, toggle, expanded, aria: referenceAria }"
 		/>
 	</VvDropdownTriggerProvider>
-	<Transition :name="transitionName">
+	<Transition
+		:name="transitionName"
+		v-on="{
+			beforeEnter: onTransitionBeforeEnter,
+			onAfterLeave: onTransitionAfterLeave,
+		}"
+	>
 		<div
 			v-show="expanded"
 			ref="floatingEl"

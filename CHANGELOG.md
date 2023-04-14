@@ -14,8 +14,9 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Some props types issues.
-- `VvButtonGroup` modifiers are now merged with the child modifiers.
+- Some props types issues;
+- `VvButtonGroup` modifiers are now merged with the child modifiers;
+- `VvInputText`, `VvTextarea`, `VvSelect`, `VvCombobox`, `VvCheckbox` and `VvRadio` hint slots.
 
 ### Upgrade
 

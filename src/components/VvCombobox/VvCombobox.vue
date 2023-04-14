@@ -39,7 +39,12 @@
 	}
 
 	// hint slot
-	const { HintSlot } = HintSlotFactory(props, slots)
+	const {
+		HintSlot,
+		hasHintLabelOrSlot,
+		hasInvalidLabelOrSlot,
+		hintSlotScope,
+	} = HintSlotFactory(props, slots)
 
 	// template ref
 	const inputEl: Ref<HTMLElement | null> = ref(null)
@@ -93,19 +98,18 @@
 		if (props.disabled || props.readonly || !expanded.value) return
 		expanded.value = false
 	}
-	watch(expanded, (newValue) => {
+	const onAfterExpand = () => {
 		if (searchable.value) {
-			nextTick(() => {
-				if (newValue) {
-					if (inputSearchEl.value) {
-						inputSearchEl.value.focus()
-					}
-					return
-				}
-				searchText.value = ''
-			})
+			if (inputSearchEl.value) {
+				inputSearchEl.value.focus()
+			}
 		}
-	})
+	}
+	const onAfterCollapse = () => {
+		if (searchable.value) {
+			searchText.value = ''
+		}
+	}
 
 	// data
 	const {
@@ -368,6 +372,8 @@
 				v-model="expanded"
 				v-bind="dropdownProps"
 				:role="DropdownRole.listbox"
+				@after-expand="onAfterExpand"
+				@after-collapse="onAfterCollapse"
 			>
 				<template
 					v-if="searchable || $slots['dropdown::before']"
@@ -383,8 +389,6 @@
 						v-model="searchText"
 						aria-autocomplete="list"
 						:aria-controls="hasDropdownId"
-						:aria-labelledby="hasLabelId"
-						:aria-describedby="hasHintId"
 						autocomplete="off"
 						spellcheck="false"
 						type="search"
@@ -406,9 +410,16 @@
 						<div
 							ref="inputEl"
 							v-bind="aria"
-							:aria-labelledby="hasLabelId"
 							class="vv-select__input"
 							role="combobox"
+							:aria-expanded="expanded"
+							:aria-labelledby="hasLabelId"
+							:aria-describedby="
+								hasHintLabelOrSlot ? hasHintId : undefined
+							"
+							:aria-errormessage="
+								hasInvalidLabelOrSlot ? hasHintId : undefined
+							"
 							:tabindex="hasTabindex"
 							@click.passive="onClickInput"
 						>
@@ -558,7 +569,20 @@
 				</template>
 			</VvDropdown>
 		</div>
-		<HintSlot :id="hasHintId" class="vv-select__hint" />
+		<HintSlot :id="hasHintId" class="vv-select__hint">
+			<template v-if="$slots.hint" #hint>
+				<slot name="hint" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.loading" #loading>
+				<slot name="loading" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.valid" #valid>
+				<slot name="valid" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.invalid" #invalid>
+				<slot name="invalid" v-bind="hintSlotScope" />
+			</template>
+		</HintSlot>
 	</div>
 	<VvSelect
 		v-else

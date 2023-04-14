@@ -5,12 +5,14 @@ export function useOptions(props: any) {
 	const { options, labelKey, valueKey, disabledKey } = toRefs(props)
 
 	// eslint-disable-next-line
-	const getOptionLabel = (option: string | Option) => {
+	const getOptionLabel = (option: string | Option): string => {
 		if (typeof option !== 'object' && option !== null) return option
 
-		return typeof labelKey.value === 'function'
-			? labelKey.value(option)
-			: option[labelKey.value]
+		return String(
+			typeof labelKey.value === 'function'
+				? labelKey.value(option)
+				: option[labelKey.value],
+		)
 	}
 
 	const getOptionValue = (option: string | Option) => {
@@ -21,7 +23,7 @@ export function useOptions(props: any) {
 			: option[valueKey.value]
 	}
 
-	const getOptionDisabled = (option: string | Option) => {
+	const getOptionDisabled = (option: string | Option): boolean => {
 		if (typeof option !== 'object' && option !== null) return false
 
 		return typeof disabledKey.value === 'function'
@@ -30,7 +32,7 @@ export function useOptions(props: any) {
 	}
 
 	const getOptionGrouped = (option: string | Option) => {
-	if (typeof option !== 'object' && option !== null) return []
+		if (typeof option !== 'object' && option !== null) return []
 		return option.options || []
 	}
 
@@ -39,6 +41,6 @@ export function useOptions(props: any) {
 		getOptionLabel,
 		getOptionValue,
 		getOptionDisabled,
-		getOptionGrouped
+		getOptionGrouped,
 	}
 }

@@ -41,7 +41,7 @@
 		loading,
 	} = toRefs(props)
 	const hasId = useUniqueId(id)
-	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
+	const hasHintId = computed(() => `${hasId.value}-hint`)
 	// BUG: https://www.samanthaming.com/tidbits/88-css-placeholder-shown/
 	const inputTextPlaceholder = computed(() =>
 		props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder,
@@ -211,12 +211,11 @@
 			required: props.required,
 			autocomplete: props.autocomplete,
 			'aria-invalid': isInvalid.value,
-			'aria-describedby':
-				!hasInvalid.value && hasHint.value
-					? hasDescribedBy.value
-					: undefined,
-			'aria-errormessage': hasInvalid.value
-				? hasDescribedBy.value
+			'aria-describedby': hasHintLabelOrSlot.value
+				? hasHintId.value
+				: undefined,
+			'aria-errormessage': hasInvalidLabelOrSlot.value
+				? hasHintId.value
 				: undefined,
 		}
 		if (
@@ -274,7 +273,12 @@
 	}))
 
 	// components
-	const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
+	const {
+		HintSlot,
+		hasHintLabelOrSlot,
+		hasInvalidLabelOrSlot,
+		hintSlotScope,
+	} = HintSlotFactory(props, slots)
 	const PasswordInputActions = VvInputTextActionsFactory(
 		INPUT_TYPES.PASSWORD,
 		props,
@@ -403,6 +407,19 @@
 				</slot>
 			</span>
 		</div>
-		<HintSlot :id="hasDescribedBy" class="vv-input-text__hint" />
+		<HintSlot :id="hasHintId" class="vv-input-text__hint">
+			<template v-if="$slots.hint" #hint>
+				<slot name="hint" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.loading" #loading>
+				<slot name="loading" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.valid" #valid>
+				<slot name="valid" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.invalid" #invalid>
+				<slot name="invalid" v-bind="hintSlotScope" />
+			</template>
+		</HintSlot>
 	</div>
 </template>
