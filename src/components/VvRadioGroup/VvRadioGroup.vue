@@ -58,7 +58,7 @@
 	}
 
 	// hint
-	const { HintSlot } = HintSlotFactory(props, slots)
+	const { HintSlot, hintSlotScope } = HintSlotFactory(props, slots)
 </script>
 
 <template>
@@ -78,6 +78,19 @@
 			<slot v-else />
 			<!-- #endregion -->
 		</div>
-		<HintSlot class="vv-radio-group__hint" />
+		<HintSlot class="vv-radio-group__hint">
+			<template v-if="$slots.hint" #hint>
+				<slot name="hint" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.loading" #loading>
+				<slot name="loading" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.valid" #valid>
+				<slot name="valid" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.invalid" #invalid>
+				<slot name="invalid" v-bind="hintSlotScope" />
+			</template>
+		</HintSlot>
 	</fieldset>
 </template>

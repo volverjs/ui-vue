@@ -5,11 +5,18 @@
 </script>
 
 <script setup lang="ts">
-	import { Icon, addIcon, iconExists, type IconifyJSON } from '@iconify/vue'
+	import { Icon, addIcon, iconExists } from '@iconify/vue'
 	import { VvIconProps } from '.'
 
 	// props
 	const props = defineProps(VvIconProps)
+
+	const hasRotate = computed(() => {
+		if (typeof props.rotate === 'string') {
+			return parseFloat(props.rotate)
+		}
+		return props.rotate
+	})
 
 	// data
 	const show = ref(true)
@@ -21,49 +28,43 @@
 	const { modifiers } = toRefs(props)
 	const bemCssClasses = useModifiers('vv-icon', modifiers)
 
-	/**
-	 * Provider name
-	 */
+	// provider name
 	const provider = computed(() => {
 		return props.provider || volver?.iconsProvider
 	})
 
-	/**
-	 * Icon name
-	 */
+	// icon name
 	const icon = computed(() => {
-		const _name = props.name ?? ''
+		const name = props.name ?? ''
 		// compose Iconify icon name format
-		const iconName = `@${provider.value}:${props.prefix}:${props.name}`
+		const iconName = `@${provider.value}:${props.prefix}:${name}`
 
-		// Check first if icon with "name" exist
-		if (iconExists(_name)) {
-			return _name
-		} else if (iconExists(iconName)) {
-			// Check and return composed icon name if exist
+		// Check if icon with prefix and provider exist
+		if (iconExists(iconName)) {
 			return iconName
-		} else {
-			// Check into all collections and set "iconName" data
-			return (
-				volver?.iconsCollections.find(
-					(iconsCollection: IconifyJSON) => {
-						const icon = `@${provider.value}:${iconsCollection.prefix}:${_name}`
-						if (iconExists(icon)) {
-							return icon
-						}
-					},
-				) || _name
-			)
 		}
+
+		// Check if icon exist into any collection
+		const iconsCollection = volver?.iconsCollections.find(
+			(iconsCollection) => {
+				const icon = `@${provider.value}:${iconsCollection.prefix}:${name}`
+				return iconExists(icon)
+			},
+		)
+		if (iconsCollection) {
+			return `@${provider.value}:${iconsCollection.prefix}:${name}`
+		}
+
+		return name
 	})
 
 	/**
 	 * Get SVG content from SVG string
 	 * @param {string} svg
-	 * @return {SVGSVGElement | null} https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement
+	 * @return {SVGSVGElement | undefined} https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement
 	 */
-	function getSvgContent(svg: string): SVGSVGElement | null {
-		let dom = null
+	function getSvgContent(svg: string): SVGSVGElement | undefined {
+		let dom
 		if (typeof window === 'undefined') {
 			// SSR
 			// eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
@@ -81,7 +82,7 @@
 	 * @param {string} svg
 	 */
 	function addIconFromSvg(svg: string) {
-		const svgContentEl: SVGSVGElement | null = getSvgContent(svg)
+		const svgContentEl = getSvgContent(svg)
 		const svgContent = svgContentEl?.innerHTML.trim() || ''
 		if (svgContentEl && svgContent) {
 			addIcon(`@${provider.value}:${props.prefix}:${props.name}`, {
@@ -108,11 +109,13 @@
 					}
 				})
 				.catch((e) => {
-					throw new Error(`During fetch icon: ${e?.message}`)
+					throw new Error(`Error during fetch icon: ${e?.message}`)
 				})
-		} else if (props.svg) {
-			addIconFromSvg(props.svg)
 		}
+	}
+
+	if (props.svg) {
+		addIconFromSvg(props.svg)
 	}
 </script>
 
@@ -127,7 +130,7 @@
 			horizontalFlip,
 			verticalFlip,
 			flip,
-			rotate,
+			rotate: hasRotate,
 			color,
 			onLoad,
 			icon,

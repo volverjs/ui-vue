@@ -406,6 +406,7 @@ export const CheckboxRadioProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	...LabelProps,
+	...LoadingProps,
 	/**
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
@@ -426,6 +427,7 @@ export const CheckboxRadioGroupProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	...LabelProps,
+	...LoadingProps,
 	/**
 	 * Input value
 	 */
