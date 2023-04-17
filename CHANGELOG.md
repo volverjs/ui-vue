@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 - Some props types issues;
 - `VvButtonGroup` modifiers are now merged with the child modifiers;
+- `VvDialog` now uses `showModal()` and `close()` dialog functions;
 - `VvInputText`, `VvTextarea`, `VvSelect`, `VvCombobox`, `VvCheckbox` and `VvRadio` hint slots.
 
 ### Upgrade
