@@ -1,8 +1,4 @@
-import {
-	DefaultSlotArgTypes,
-	DisabledArgTypes,
-	ModifiersArgTypes,
-} from '@/stories/argTypes'
+import { DisabledArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
 	title: 'Lorem Ipsum',
@@ -10,6 +6,7 @@ export const defaultArgs = {
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 	modifiers: [],
 	disabled: false,
+	not: false,
 }
 
 export const argTypes = {
@@ -25,7 +22,7 @@ export const argTypes = {
 			},
 		},
 	},
-	details: {
+	default: {
 		description: 'The content slot',
 		control: {
 			type: 'text',
@@ -37,10 +34,24 @@ export const argTypes = {
 			},
 		},
 	},
+	title: {
+		description: 'The accordion title',
+	},
+	content: {
+		description: 'The accordion content',
+	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: ['marker-right', 'bordered'],
 	},
+	not: {
+		description: 'Inverts the accordion state',
+		control: 'boolean',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
 	...DisabledArgTypes,
-	...DefaultSlotArgTypes,
 }
