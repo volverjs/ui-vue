@@ -90,9 +90,9 @@ export const ReadonlyArgTypes = {
 
 export const ModifiersArgTypes = {
 	modifiers: {
-		type: {
+		/* type: {
 			summary: ['string', 'string[]'],
-		},
+		}, */
 		description: 'Component BEM modifiers',
 		options: [],
 		control: {
