@@ -47,7 +47,6 @@ export const argTypes = {
 		},
 	},
 	multiple: {
-		type: 'boolean',
 		description:
 			' This Boolean attribute indicates that multiple options can be selected in the list.',
 		table: {
@@ -57,14 +56,12 @@ export const argTypes = {
 		},
 	},
 	label: {
-		type: 'string',
 		description: '<label> value for the combobox',
 		control: {
 			type: 'text',
 		},
 	},
 	noResultsLabel: {
-		type: 'string',
 		description: 'Label of "no results" options',
 		control: {
 			type: 'text',
@@ -76,14 +73,12 @@ export const argTypes = {
 		},
 	},
 	placeholder: {
-		type: 'string',
 		description: 'Text that appears when it has no value set.',
 		control: {
 			type: 'text',
 		},
 	},
 	searchable: {
-		type: 'boolean',
 		description: 'Enable search in options',
 		table: {
 			defaultValue: {
@@ -92,7 +87,6 @@ export const argTypes = {
 		},
 	},
 	searchPlaceholder: {
-		type: 'string',
 		description:
 			'Text that appears in the in the search input when it has no value set..',
 		control: {
@@ -100,7 +94,6 @@ export const argTypes = {
 		},
 	},
 	debounceSearch: {
-		type: 'number',
 		description: 'Debounce milliseconds for search',
 		control: {
 			type: 'number',
@@ -108,15 +101,12 @@ export const argTypes = {
 	},
 	maxValues: {
 		description: 'Max number of selected values',
-		type: {
-			summary: ['string', 'string[]'],
-		},
+
 		control: {
 			type: 'text',
 		},
 	},
 	separator: {
-		type: 'string',
 		description: 'Separator of selected values',
 		control: {
 			type: 'text',
@@ -128,7 +118,6 @@ export const argTypes = {
 		},
 	},
 	native: {
-		type: 'boolean',
 		description: 'Show native select',
 		table: {
 			defaultValue: {
@@ -137,7 +126,6 @@ export const argTypes = {
 		},
 	},
 	badges: {
-		type: 'boolean',
 		description: 'Show badges for selected values',
 		table: {
 			defaultValue: {
@@ -146,9 +134,6 @@ export const argTypes = {
 		},
 	},
 	badgeModifiers: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		description: 'Modifiers for badges',
 		control: {
 			type: 'text',
@@ -160,16 +145,12 @@ export const argTypes = {
 		},
 	},
 	dropdownModifiers: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		control: {
 			type: 'text',
 		},
 		description: 'Modifiers for dropdown',
 	},
 	autoOpen: {
-		type: 'boolean',
 		description: 'Open dropdown on focus',
 		table: {
 			defaultValue: {
@@ -178,7 +159,6 @@ export const argTypes = {
 		},
 	},
 	autoClose: {
-		type: 'boolean',
 		description: 'Close dropdown on select of an option (not multiple)',
 		table: {
 			defaultValue: {
