@@ -91,6 +91,9 @@ export const IconArgTypes = {
 		control: {
 			type: 'select',
 		},
+		table: {
+			defaultValue: { summary: 'add' },
+		},
 	},
 	iconPosition: {
 		description: 'VvIcon position',
@@ -106,18 +109,12 @@ export const IconArgTypes = {
 
 export const OptionsArgTypes = {
 	options: {
-		type: {
-			summary: ['string[]', 'object[]'],
-		},
 		description: 'List of options',
 		control: {
 			type: 'array',
 		},
 	},
 	labelKey: {
-		type: {
-			summary: ['string', 'function'],
-		},
 		description: 'Key of label in option object',
 		control: {
 			type: 'text',
@@ -129,9 +126,6 @@ export const OptionsArgTypes = {
 		},
 	},
 	valueKey: {
-		type: {
-			summary: ['string', 'function'],
-		},
 		description: 'Key of value in option object',
 		control: {
 			type: 'text',
@@ -143,9 +137,6 @@ export const OptionsArgTypes = {
 		},
 	},
 	disabledKey: {
-		type: {
-			summary: ['string', 'function'],
-		},
 		description: 'Key of disabled in option object',
 		control: {
 			type: 'text',
