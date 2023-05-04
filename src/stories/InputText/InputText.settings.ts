@@ -45,7 +45,6 @@ export const argTypes = {
 	min: {
 		description:
 			'Minimum value. Available for input types: date, month, week, time, datetime-local, number, range.',
-		type: ['number', 'string'],
 		control: {
 			type: 'text',
 		},
@@ -53,7 +52,6 @@ export const argTypes = {
 	max: {
 		description:
 			'Maximum value. Available for input types: date, month, week, time, datetime-local, number, range.',
-		type: ['number', 'string'],
 		control: {
 			type: 'text',
 		},
@@ -61,9 +59,6 @@ export const argTypes = {
 	step: {
 		description:
 			'Incremental values that are valid. Available for input types: date, month, week, time, datetime-local and number.',
-		type: {
-			summary: 'number',
-		},
 		table: {
 			defaultValue: {
 				summary: 1,
@@ -73,15 +68,11 @@ export const argTypes = {
 	pattern: {
 		description:
 			'Pattern the value must match to be valid. Available for input types: text, search, url, tel, email and password.',
-		type: {
-			summary: 'regex',
-		},
 		control: {
 			type: 'text',
 		},
 	},
 	multiple: {
-		type: 'boolean',
 		description:
 			'Whether to allow multiple values. Available for input type email.',
 		table: {
@@ -128,9 +119,6 @@ export const argTypes = {
 	},
 	labelStepUp: {
 		description: 'Label for step up button',
-		type: {
-			summary: 'string',
-		},
 		control: {
 			type: 'text',
 		},
@@ -142,9 +130,6 @@ export const argTypes = {
 	},
 	labelStepDown: {
 		description: 'Label for step down button',
-		type: {
-			summary: 'string',
-		},
 		control: {
 			type: 'text',
 		},
@@ -156,9 +141,6 @@ export const argTypes = {
 	},
 	labelShowPassword: {
 		description: 'Label for show password button',
-		type: {
-			summary: 'string',
-		},
 		control: {
 			type: 'text',
 		},
@@ -170,9 +152,7 @@ export const argTypes = {
 	},
 	labelHidePassword: {
 		description: 'Label for hide password button',
-		type: {
-			summary: 'string',
-		},
+
 		control: {
 			type: 'text',
 		},
@@ -184,9 +164,7 @@ export const argTypes = {
 	},
 	labelClear: {
 		description: 'Label for clear button',
-		type: {
-			summary: 'string',
-		},
+
 		control: {
 			type: 'text',
 		},
@@ -198,18 +176,13 @@ export const argTypes = {
 	},
 	mask: {
 		description: 'Input mask, only for text type',
-		type: {
-			summary: 'string',
-		},
+
 		control: {
 			type: 'text',
 		},
 	},
 	maskEager: {
 		description: 'Show mask before typing',
-		type: {
-			summary: 'boolean',
-		},
 		table: {
 			defaultValue: {
 				summary: false,
@@ -218,9 +191,6 @@ export const argTypes = {
 	},
 	maskReversed: {
 		description: 'Write typing reverse (ex. for numbers)',
-		type: {
-			summary: 'boolean',
-		},
 		table: {
 			defaultValue: {
 				summary: false,
@@ -229,9 +199,6 @@ export const argTypes = {
 	},
 	maskTokens: {
 		description: 'Add mask custom tokens',
-		type: {
-			summary: 'Object',
-		},
 		table: {
 			defaultValue: {
 				summary: 'undefined',
@@ -240,9 +207,6 @@ export const argTypes = {
 	},
 	maskTokensReplace: {
 		description: 'Replace default tokens',
-		type: {
-			summary: 'boolean',
-		},
 		table: {
 			defaultValue: {
 				summary: false,
