@@ -507,14 +507,12 @@ export const CheckboxRadioArgTypes = {
 	...DisabledArgTypes,
 	...ReadonlyArgTypes,
 	label: {
-		type: 'string',
 		description: 'Input label',
 		control: {
 			type: 'text',
 		},
 	},
 	value: {
-		type: ['string', 'number', 'boolean'],
 		description: 'Input value',
 		control: {
 			type: 'text',
