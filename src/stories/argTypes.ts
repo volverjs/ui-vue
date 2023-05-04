@@ -530,16 +530,12 @@ export const CheckboxRadioGroupArgTypes = {
 	...DisabledArgTypes,
 	...ReadonlyArgTypes,
 	label: {
-		type: 'string',
 		description: 'Input label',
 		control: {
 			type: 'text',
 		},
 	},
 	name: {
-		type: {
-			summary: 'string',
-		},
 		description:
 			'Name of the form control. Submitted with the form as part of a name/value pair.',
 		control: {
@@ -547,7 +543,6 @@ export const CheckboxRadioGroupArgTypes = {
 		},
 	},
 	vertical: {
-		type: 'boolean',
 		description:
 			'If true the options will be displayed vertically instead of horizontally',
 		table: {
