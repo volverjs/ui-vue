@@ -7,7 +7,7 @@ function linkClick(event: Event) {
 
 export async function defaultTest(
 	data: PlayAttributes = {} as PlayAttributes,
-	customSlot: false,
+	customSlot: boolean,
 ) {
 	const breadcrumb = document.getElementsByClassName('vv-breadcrumb')[0]
 
