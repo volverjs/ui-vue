@@ -54,7 +54,8 @@ export const LoadingArgTypes = {
 
 export const DisabledArgTypes = {
 	disabled: {
-		description: 'Whether the form control is disabled',
+		control: 'boolean',
+		description: 'Whether the component is disabled',
 		table: {
 			defaultValue: {
 				summary: false,

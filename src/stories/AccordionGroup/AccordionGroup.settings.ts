@@ -42,11 +42,33 @@ export const argTypes = {
 			disable: true,
 		},
 	},
+	items: {
+		description: 'Accordion group items',
+	},
+	collapse: {
+		description: 'Enables accordion group collapse',
+		control: 'boolean',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
+	not: {
+		description: 'Inverts the accordion group state',
+		control: 'boolean',
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+		},
+	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: ['compact', 'bordered'],
 	},
 	itemModifiers: {
+		description: 'Accordion items BEM modifiers',
 		control: 'check',
 		options: ['marker-right', 'bordered'],
 	},
