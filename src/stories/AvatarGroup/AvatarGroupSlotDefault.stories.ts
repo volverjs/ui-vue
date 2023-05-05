@@ -1,23 +1,32 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import VvAvatarGroup from '@/components/VvAvatarGroup/VvAvatarGroup.vue'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
 import { defaultArgs, argTypes } from './AvatarGroup.settings'
 import { defaultTest } from './AvatarGroup.test'
-import { Template } from './AvatarGroup.stories.mdx'
 
-<Meta
-	title="Components/AvatarGroup/Slots"
-	component={VvAvatarGroup}
-	args={defaultArgs}
-	argTypes={argTypes}
-/>
+const meta: Meta<typeof VvAvatarGroup> = {
+	title: 'Components/AvatarGroup/Slots',
+	component: VvAvatarGroup,
+	args: defaultArgs,
+	argTypes,
+	tags: ['autodocs'],
+}
 
-export const TemplateSlot = (args) => ({
-	components: { VvAvatarGroup, VvAvatar },
-	setup() {
-		return { args }
+export default meta
+
+type Story = StoryObj<typeof VvAvatarGroup>
+
+export const Default: Story = {
+	args: {
+		...defaultArgs,
 	},
-	template: /* html */ `
+	render: (args) => ({
+		components: { VvAvatarGroup, VvAvatar },
+		setup() {
+			return { args }
+		},
+
+		template: /* html */ `
 		<div class="m-md">
 			<vv-avatar-group v-bind="args" data-testId="element" modifiers="relaxed">
 				<vv-avatar modifiers="rounded">MR</vv-avatar>
@@ -26,20 +35,6 @@ export const TemplateSlot = (args) => ({
 				<vv-avatar modifiers="rounded surface">+3</vv-avatar>
 			</vv-avatar-group>
 		</div>`,
-})
-
-<Canvas>
-	<Story
-		name="Default"
-		play={defaultTest}
-		argTypes={{
-			default: {
-				control: {
-					disable: true,
-				},
-			},
-		}}
-	>
-		{TemplateSlot.bind({})}
-	</Story>
-</Canvas>
+	}),
+	play: defaultTest,
+}
