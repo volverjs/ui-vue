@@ -8,7 +8,6 @@ const meta: Meta<typeof VvTextarea> = {
 	component: VvTextarea,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

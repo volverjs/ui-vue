@@ -8,7 +8,6 @@ const meta: Meta<typeof VvCard> = {
 	component: VvCard,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

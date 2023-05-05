@@ -8,7 +8,6 @@ const meta: Meta<typeof VvCheckbox> = {
 	component: VvCheckbox,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

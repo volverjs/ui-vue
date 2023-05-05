@@ -9,7 +9,6 @@ const meta: Meta<typeof VvBreadcrumb> = {
 	component: VvBreadcrumb,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

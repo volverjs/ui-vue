@@ -8,7 +8,6 @@ const meta: Meta<typeof VvCombobox> = {
 	component: VvCombobox,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

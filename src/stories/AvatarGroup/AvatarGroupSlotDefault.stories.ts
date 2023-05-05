@@ -9,7 +9,6 @@ const meta: Meta<typeof VvAvatarGroup> = {
 	component: VvAvatarGroup,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

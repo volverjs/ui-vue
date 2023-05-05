@@ -8,7 +8,6 @@ const meta: Meta<typeof VvBadge> = {
 	component: VvBadge,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

@@ -8,7 +8,6 @@ const meta: Meta<typeof VvDialog> = {
 	component: VvDialog,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

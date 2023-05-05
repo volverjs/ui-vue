@@ -9,7 +9,6 @@ const meta: Meta<typeof VvRadioGroup> = {
 	component: VvRadioGroup,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

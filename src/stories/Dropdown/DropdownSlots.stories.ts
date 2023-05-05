@@ -11,7 +11,6 @@ const meta: Meta<typeof VvDropdown> = {
 	component: VvDropdown,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

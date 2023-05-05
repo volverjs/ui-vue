@@ -5,11 +5,10 @@ import { defaultArgs, argTypes } from './Tooltip.settings'
 import { defaultTest } from './Tooltip.test'
 
 const meta: Meta<typeof VvTooltip> = {
-	title: 'Components/Tooltip/Directives',
+	title: 'Directives/Tooltip',
 	component: VvTooltip,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

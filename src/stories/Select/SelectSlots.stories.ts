@@ -8,7 +8,6 @@ const meta: Meta<typeof VvSelect> = {
 	component: VvSelect,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

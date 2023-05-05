@@ -9,7 +9,6 @@ const meta: Meta<typeof VvCheckboxGroup> = {
 	component: VvCheckboxGroup,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta

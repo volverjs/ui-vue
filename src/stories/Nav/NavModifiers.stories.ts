@@ -8,7 +8,6 @@ const meta: Meta<typeof VvNav> = {
 	component: VvNav,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta
