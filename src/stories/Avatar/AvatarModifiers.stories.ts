@@ -4,7 +4,7 @@ import { defaultArgs, argTypes } from './Avatar.settings'
 import { defaultTest } from '../Avatar/Avatar.test'
 
 const meta: Meta<typeof VvAvatar> = {
-	title: 'Components/AvatarTs/Modifiers',
+	title: 'Components/Avatar/Modifiers',
 	component: VvAvatar,
 	args: defaultArgs,
 	argTypes,

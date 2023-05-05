@@ -1,10 +1,11 @@
+// Replace vue3 with vue if you are using Storybook for Vue 2
 import type { Meta, StoryObj } from '@storybook/vue3'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import VvBadge from '@/components/VvBadge/VvBadge.vue'
 import { defaultArgs, argTypes } from './Avatar.settings'
-import { defaultTest } from '../Avatar/Avatar.test'
 
 const meta: Meta<typeof VvAvatar> = {
-	title: 'Components/AvatarTs/Slots',
+	title: 'Components/Avatar/Badge',
 	component: VvAvatar,
 	args: defaultArgs,
 	argTypes,
@@ -14,21 +15,22 @@ export default meta
 
 type Story = StoryObj<typeof VvAvatar>
 
-export const Default: Story = {
+export const Badge: Story = {
 	args: {
-		...defaultArgs,
-		default: 'MR',
+		modifiers: 'lg',
 	},
 	render: (args) => ({
-		components: { VvAvatar },
+		components: { VvAvatar, VvBadge },
 		setup() {
 			return { args }
 		},
 		template: /* html */ `
 			<vv-avatar v-bind="args" data-testId="element">
-				<template v-if="args.default"> {{ args.default }} </template>
+				MR
+                <sup>
+                    <vv-badge modifiers="danger rounded">99+</vv-badge>
+                </sup>
 			</vv-avatar>
     `,
 	}),
-	play: defaultTest,
 }

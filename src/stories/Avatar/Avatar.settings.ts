@@ -1,12 +1,13 @@
 import { VvAvatarProps } from '@/components/VvAvatar'
-import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
+import { DefaultSlotArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/types'
 
 export const defaultArgs = {
 	...propsToObject(VvAvatarProps),
 	imgSrc: 'https://i.pravatar.cc/300',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	...DefaultSlotArgTypes,
 	default: {
 		description: 'Content slot',
@@ -21,13 +22,13 @@ export const argTypes = {
 		},
 	},
 	modifiers: {
-		...ModifiersArgTypes.modifiers,
+		description: 'Component BEM modifiers',
+		control: {
+			type: 'check',
+		},
 		options: ['rounded', 'square', 'bordered', 'ring', 'lg', 'md'],
 	},
 	imgSrc: {
-		type: {
-			summary: 'string',
-		},
 		control: {
 			type: 'text',
 		},
