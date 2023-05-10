@@ -1,4 +1,6 @@
+import { ModifiersProps } from '@/props'
+
 export const VvCardProps = {
+	...ModifiersProps,
 	title: String,
-	modifiers: [String, Array] as PropType<string | string[]>,
 }

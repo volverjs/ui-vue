@@ -302,11 +302,11 @@ export const DropdownProps = {
 		default: false,
 	},
 	/**
-	 * Close dropdown on click outside
+	 * Keep open dropdown on click outside
 	 */
-	autoClose: {
+	keepOpen: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 	/**
 	 * Autofocus first item on dropdown open

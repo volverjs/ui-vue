@@ -42,10 +42,10 @@ export const Default: Story = {
 	play: defaultTest,
 }
 
-export const AutoClose: Story = {
+export const KeepOpen: Story = {
 	...Default,
 	args: {
 		...defaultArgs,
-		autoClose: true,
+		keepOpen: true,
 	},
 }

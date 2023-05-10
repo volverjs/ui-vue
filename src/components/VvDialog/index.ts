@@ -24,7 +24,7 @@ export const VvDialogProps = {
 	 */
 	size: String,
 	/**
-	 * Close dialog on click outside
+	 * Keep open dialog on click outside
 	 */
-	autoClose: { type: Boolean, default: true },
+	keepOpen: { type: Boolean, default: false },
 }

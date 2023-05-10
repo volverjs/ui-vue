@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
-import { Default } from './Button.stories'
+import { Default as DefaultStory } from './Button.stories'
 import { argTypes, defaultArgs } from './Button.settings'
 
 const meta: Meta<typeof VvButton> = {
@@ -15,18 +15,18 @@ export default meta
 
 type Story = StoryObj<typeof VvButton>
 
-export const DefaultSlot: Story = {
-	...Default,
+export const Default: Story = {
+	...DefaultStory,
 	args: {
-		...Default.args,
+		...DefaultStory.args,
 		default: 'Default <em class="italic">slot!</em>',
 	},
 }
 
 export const Before: Story = {
-	...Default,
+	...DefaultStory,
 	args: {
-		...Default.args,
+		...DefaultStory.args,
 		label: 'Before slot',
 	},
 	render: (args) => ({
@@ -45,9 +45,9 @@ export const Before: Story = {
 }
 
 export const After: Story = {
-	...Default,
+	...DefaultStory,
 	args: {
-		...Default.args,
+		...DefaultStory.args,
 		label: 'After slot',
 	},
 	render: (args) => ({
@@ -66,9 +66,9 @@ export const After: Story = {
 }
 
 export const Label: Story = {
-	...Default,
+	...DefaultStory,
 	args: {
-		...Default.args,
+		...DefaultStory.args,
 		icon: 'add',
 	},
 	render: (args) => ({

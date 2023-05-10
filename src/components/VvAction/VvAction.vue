@@ -67,7 +67,7 @@
 		const toReturn = {
 			...dropdownAria?.value,
 			'aria-pressed': pressed.value ? true : undefined,
-			role,
+			role: role?.value,
 		}
 		switch (hasTag.value) {
 			case ActionTag.a:

@@ -5,7 +5,7 @@ export const defaultArgs = {
 	title: 'Dialog Title',
 	transition: 'fade-block',
 	size: 'standard',
-	autoClose: false,
+	keepOpen: false,
 	default: 'Default slot content',
 }
 

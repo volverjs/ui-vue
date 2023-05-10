@@ -92,9 +92,6 @@ export const IconArgTypes = {
 		control: {
 			type: 'select',
 		},
-		table: {
-			defaultValue: { summary: 'add' },
-		},
 	},
 	iconPosition: {
 		description: 'VvIcon position',
@@ -368,14 +365,14 @@ export const DropdownArgTypes = {
 			},
 		},
 	},
-	autoClose: {
-		description: 'Close dropdown on click outside',
+	keepOpen: {
+		description: 'Keep open dropdown on click outside',
 		control: {
 			type: 'boolean',
 		},
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: false,
 			},
 			type: {
 				summary: 'boolean',

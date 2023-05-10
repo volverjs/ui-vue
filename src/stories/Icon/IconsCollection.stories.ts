@@ -9,7 +9,6 @@ const meta: Meta<typeof VvIcon> = {
 	component: VvIcon,
 	args: defaultArgs,
 	argTypes,
-	tags: ['autodocs'],
 }
 
 export default meta
@@ -19,18 +18,18 @@ type Story = StoryObj<typeof VvIcon>
 export const Default: Story = {
 	args: {
 		...defaultArgs,
-		width: 24
+		width: 24,
 	},
 	render: (args) => ({
 		components: { VvIcon },
 		setup() {
 			const allIcons = Object.keys(NormalIcons)
-		const icons = ref(allIcons)
-		const search = ref('')
-		watch(search, (newValue) => {
-			icons.value = allIcons.filter((icon) => icon.includes(newValue))
-		})
-		return { args, search, icons }
+			const icons = ref(allIcons)
+			const search = ref('')
+			watch(search, (newValue) => {
+				icons.value = allIcons.filter((icon) => icon.includes(newValue))
+			})
+			return { args, search, icons }
 		},
 		template: /*html*/ `
 			<div class="absolute inset-0 overflow-y-auto p-16">

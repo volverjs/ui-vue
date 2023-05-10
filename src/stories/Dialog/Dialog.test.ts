@@ -59,8 +59,8 @@ export async function defaultTest(
 		)
 	}
 
-	// auto close
-	if (args.autoClose) {
+	// keep open
+	if (!args.keepOpen) {
 		await userEvent.click(element)
 		await sleep(1000)
 		await expect(element).toHaveProperty('open', false)

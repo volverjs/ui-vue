@@ -218,7 +218,7 @@
 	onClickOutside(
 		floatingEl,
 		() => {
-			if (props.autoClose) {
+			if (!props.keepOpen) {
 				expanded.value = false
 			}
 		},

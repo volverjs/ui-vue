@@ -158,8 +158,8 @@ export const argTypes = {
 			},
 		},
 	},
-	autoClose: {
-		description: 'Close dropdown on select of an option (not multiple)',
+	keepOpen: {
+		description: 'Keep open dropdown on signle select',
 		table: {
 			defaultValue: {
 				summary: false,

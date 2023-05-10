@@ -51,24 +51,26 @@ export const Default: Story = {
 			this.centerWrapper()
 		},
 		template: /* html */ `
-			<div class="absolute inset-0 overflow-auto" ref="container">
-				<div style="width: 200%; height: 200%" ref="wrapper" data-testId="wrapper">
-					<vv-dropdown v-model="expanded" v-bind="args">
-						<vv-button ref="toggle" class="absolute top-full left-full -translate-1/2" modifiers="full-bleed" data-testId="trigger">
-							Toggle dropdown
-						</vv-button>
-						<template #items>
-							<vv-dropdown-action>
-								<vv-icon name="add" /> Create
-							</vv-dropdown-action>
-							<vv-dropdown-action>
-								<vv-icon name="edit" /> Update
-							</vv-dropdown-action>
-							<vv-dropdown-action>
-								<vv-icon name="trash" /> Delete
-							</vv-dropdown-action>
-						</template>
-					</vv-dropdown>
+			<div style="min-height: 200px">
+				<div class="absolute inset-0 overflow-auto" ref="container">
+					<div style="width: 200%; height: 200%" ref="wrapper" data-testId="wrapper">
+						<vv-dropdown v-model="expanded" v-bind="args">
+							<vv-button ref="toggle" class="absolute top-full left-full -translate-1/2" modifiers="full-bleed" data-testId="trigger">
+								Toggle dropdown
+							</vv-button>
+							<template #items>
+								<vv-dropdown-action>
+									<vv-icon name="add" /> Create
+								</vv-dropdown-action>
+								<vv-dropdown-action>
+									<vv-icon name="edit" /> Update
+								</vv-dropdown-action>
+								<vv-dropdown-action>
+									<vv-icon name="trash" /> Delete
+								</vv-dropdown-action>
+							</template>
+						</vv-dropdown>
+					</div>
 				</div>
 			</div>
 		`,

@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.6] - 2023-04-04
+## [0.0.6] - 2023-05-10
 
 ### Added
 
-- `VvAvatar` component;
+- `VvAvatar` and `VvAvatarGroup` component;
 - `VvAvatarGroup` component;
 - `VvNav` component;
 - `VvTab` component;
@@ -18,6 +18,10 @@ All notable changes to this project will be documented in this file.
 - `VvButtonGroup` modifiers are now merged with the child modifiers;
 - `VvDialog` now uses `showModal()` and `close()` dialog functions;
 - `VvInputText`, `VvTextarea`, `VvSelect`, `VvCombobox`, `VvCheckbox` and `VvRadio` hint slots.
+
+### Changed
+
+- `autoClose:true` is now `keepOpen` for `VvCombobox`, `VvDropdown` and `VvDialog`.
 
 ### Upgrade
 

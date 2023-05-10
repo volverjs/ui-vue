@@ -61,13 +61,16 @@ export const getStyleNames = function (kebabName: string) {
 		]
 	}
 	if (kebabName === 'vv-accordion-group') {
-		return ['vv-accordion-group', 'vv-accordion']
+		return ['vv-accordion', 'vv-accordion-group']
 	}
 	if (kebabName === 'vv-checkbox-group') {
-		return ['vv-checkbox-group', 'vv-checkbox']
+		return ['vv-checkbox', 'vv-checkbox-group']
 	}
 	if (kebabName === 'vv-radio-group') {
-		return ['vv-radio-group', 'vv-radio']
+		return ['vv-radio', 'vv-radio-group']
+	}
+	if (kebabName === 'vv-alert-group') {
+		return ['vv-alert', 'vv-alert-group']
 	}
 	if (kebabName === 'v-tooltip') {
 		return ['vv-tooltip']

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
 import { defaultArgs, argTypes } from './Badge.settings'
-import { Default } from './Badge.stories'
+import { Default as DefaultStory } from './Badge.stories'
 
 const meta: Meta<typeof VvBadge> = {
 	title: 'Components/Badge/Slots',
@@ -14,10 +14,10 @@ export default meta
 
 type Story = StoryObj<typeof VvBadge>
 
-export const DefaultSlot: Story = {
-	...Default,
+export const Default: Story = {
+	...DefaultStory,
 	args: {
-		...Default.args,
+		...DefaultStory.args,
 		default: 'Default <em class="italic">slot!</em>',
 	},
 }
