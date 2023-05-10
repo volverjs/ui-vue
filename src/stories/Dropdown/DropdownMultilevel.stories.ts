@@ -8,10 +8,10 @@ import { defaultTest } from './Dropdown.test'
 import { defaultArgs, argTypes } from './Dropdown.settings'
 
 const meta: Meta<typeof VvDropdown> = {
-    title: 'Components/Dropdown/Multilevel',
-    component: VvDropdown,
-    args: defaultArgs,
-    argTypes,
+	title: 'Components/Dropdown/Multilevel',
+	component: VvDropdown,
+	args: defaultArgs,
+	argTypes,
 }
 
 export default meta
@@ -19,17 +19,17 @@ export default meta
 type Story = StoryObj<typeof VvDropdown>
 
 export const Default: Story = {
-    args: {
-        ...defaultArgs,
-    },
-    render: (args) => ({
-        components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
-        setup() {
-            const expanded = ref(false)
-            return { expanded, args }
-        },
-        template: /* html */ `
-            <vv-dropdown v-model="expanded" v-bind="args">
+	args: {
+		...defaultArgs,
+	},
+	render: (args) => ({
+		components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
+		setup() {
+			const expanded = ref(false)
+			return { expanded, args }
+		},
+		template: /* html */ `
+            <vv-dropdown v-model="expanded" v-bind="args" data-testId="wrapper">
                 <vv-button ref="toggle" class="absolute top-1/2 left-1/2 -translate-1/2" modifiers="full-bleed" data-testId="trigger">
                     Toggle dropdown
                 </vv-button>
@@ -56,7 +56,6 @@ export const Default: Story = {
                 </template>
             </vv-dropdown>
         `,
-    }),
-    play: defaultTest,
+	}),
+	play: defaultTest,
 }
-

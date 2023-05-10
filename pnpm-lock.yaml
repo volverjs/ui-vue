@@ -11,8 +11,8 @@ dependencies:
     specifier: 4.1.1
     version: 4.1.1(vue@3.2.47)
   '@volverjs/style':
-    specifier: 0.1.9-beta.7
-    version: link:../style
+    specifier: 0.1.9-beta.9
+    version: 0.1.9-beta.9
   '@vueuse/core':
     specifier: ^10.1.2
     version: 10.1.2(vue@3.2.47)
@@ -4643,6 +4643,11 @@ packages:
       '@volar/vue-language-core': 1.6.4
       typescript: 5.0.4
     dev: true
+
+  /@volverjs/style@0.1.9-beta.9:
+    resolution: {integrity: sha512-5pSj6orNY0NxvJLEnu67FT+5PchcQQ10Jr7u5yB/eSq3nOO/+gX1kADR0caBVrpqZ7nmY2SnBhua6FaKpHQBXQ==}
+    engines: {node: '>= 12.x'}
+    dev: false
 
   /@vue/compiler-core@3.2.47:
     resolution: {integrity: sha512-p4D7FDnQb7+YJmO2iPEv0SQNeNzcbHdGByJDsT4lynf63AFkOTFN07HsiRSvjGo0QrxR/o3d0hUyNCUnBU2Tig==}
