@@ -70,7 +70,7 @@
     "@iconify/utils": "^2.1.5",
     "@mdx-js/react": "^2.3.0",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@storybook/addon-a11y": "7.0.5",
+    "@storybook/addon-a11y": "7.0.10",
     "@storybook/addon-actions": "7.0.5",
     "@storybook/addon-docs": "7.0.5",
     "@storybook/addon-essentials": "7.0.5",
