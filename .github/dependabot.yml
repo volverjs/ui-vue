@@ -6,9 +6,7 @@ updates:
       directory: '/'
       schedule:
           interval: 'daily'
-          time: '17:24'
+          time: '09:00'
           timezone: 'Europe/Rome'
-      # Specify labels for npm pull requests
-      labels:
-          - 'npm'
-          - 'dependencies'
+    # Disable all pull requests for npm dependencies
+    #   open-pull-requests-limit: 0

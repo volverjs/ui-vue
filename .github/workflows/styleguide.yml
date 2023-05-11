@@ -17,7 +17,7 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'pnpm'
             - name: Install dependencies
-              run: pnpm install
+              run: pnpm install --no-frozen-lockfile
             - name: Bump version with release tag name
               run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
             - name: Build stileguide
