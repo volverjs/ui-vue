@@ -1,7 +1,5 @@
 import type { Meta } from '@storybook/vue3'
 import VvAlert from '@/components/VvAlert/VvAlert.vue'
-import VvButton from '@/components/VvButton/VvButton.vue'
-import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
 import { defaultArgs, argTypes } from './AlertGroup.settings'
 import { Default as DefaultStory, type Story } from './AlertGroup.stories'
 
@@ -19,19 +17,21 @@ export const Default: Story = {
 	args: {
 		...defaultArgs,
 		modifiers: ['notification'],
-	},
-	render: (args) => ({
-		components: { VvAlert, VvAlertGroup },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-            <vv-alert-group v-bind="args" data-testId="element">
-                <vv-alert title="Success!" content="This is an success message." modifiers="success" />
-                <vv-alert title="Accent!" content="This is an accent message." modifiers="accent" />
-            </vv-alert-group>
+		default: /* html */ `
+			<div class="vv-alert vv-alert--success" role="alert" aria-labelledby="Els38gSOH_Op3SFpzekW--title" style="--alert-duration:0ms;">
+				<div class="vv-alert__header">
+					<strong id="Els38gSOH_Op3SFpzekW--title" class="vv-alert__title">Success!</strong>
+				</div>
+				<div class="vv-alert__content">This is an success message.</div>
+			</div>
+			<div class="vv-alert vv-alert--accent mt-xs" role="alert" aria-labelledby="nkas44ZTfhbt5OEJYL06N-title" style="--alert-duration:0ms;">
+				<div class="vv-alert__header">
+					<strong id="nkas44ZTfhbt5OEJYL06N-title" class="vv-alert__title">Accent!</strong>
+				</div>
+				<div class="vv-alert__content">This is an accent message.</div>
+			</div>
 		`,
-	}),
+	},
 }
 
 export const Before: Story = {
@@ -39,22 +39,15 @@ export const Before: Story = {
 	args: {
 		...defaultArgs,
 		modifiers: ['notification'],
-	},
-	render: (args) => ({
-		components: { VvButton, VvAlertGroup },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-            <vv-alert-group v-bind="args" data-testId="element">
-                <template #before>
-                    <div class="flex justify-center">
-                        <vv-button label="Clear All" icon="close" modifiers="action-quiet" />
-                    </div>
-                </template>
-            </vv-alert-group>
+		before: /* html */ `
+			<div class="flex justify-center">
+				<button type="button" class="vv-button vv-button--action-quiet" id="y_Cl2wtJ8JJpDo-t6za2i">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="vv-icon vv-button__icon iconify iconify--normal iconify--vv" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M6 18 18 6M6 6l12 12"></path></svg>
+					<span class="vv-button__label">Clear All</span>
+				</button>
+			</div>
 		`,
-	}),
+	},
 }
 
 export const After: Story = {
@@ -62,20 +55,13 @@ export const After: Story = {
 	args: {
 		...defaultArgs,
 		modifiers: ['notification'],
-	},
-	render: (args) => ({
-		components: { VvButton, VvAlertGroup },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-            <vv-alert-group v-bind="args" data-testId="element">
-                <template #after>
-                    <div class="flex justify-center">
-                        <vv-button label="Clear All" icon="close" modifiers="action-quiet" />
-                    </div>
-                </template>
-            </vv-alert-group>
+		after: /* html */ `
+			<div class="flex justify-center">
+				<button type="button" class="vv-button vv-button--action-quiet" id="y_Cl2wtJ8JJpDo-t6za2i">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="vv-icon vv-button__icon iconify iconify--normal iconify--vv" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M6 18 18 6M6 6l12 12"></path></svg>
+					<span class="vv-button__label">Clear All</span>
+				</button>
+			</div>
 		`,
-	}),
+	},
 }

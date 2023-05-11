@@ -58,6 +58,14 @@ export const useVvAlertGroup = (
 ) => {
 	const bus = useProvideAlertGroup({ name: computed(() => props.name) })
 
+	// check props block and inline coexist
+	if ((props.block && !props.inline) || (!props.block && props.inline)) {
+		// eslint-disable-next-line
+		console.warn(
+			`[VvAlertGroup]: block and inline props must coexist at the same time.`,
+		)
+	}
+
 	// props
 	const hasClass = computed(() => {
 		const toReturn: (string | Record<string, boolean>)[] = [

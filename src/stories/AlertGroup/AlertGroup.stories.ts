@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
-// import { defaultTest } from './AlertGroup.test'
+import { defaultTest } from './AlertGroup.test'
 import { defaultArgs, argTypes } from './AlertGroup.settings'
 
 const meta: Meta<typeof VvAlertGroup> = {
@@ -17,7 +17,7 @@ export type Story = StoryObj<typeof VvAlertGroup>
 
 export const Default: Story = {
 	args: defaultArgs,
-	// play: defaultTest,
+	play: defaultTest,
 	render: (args) => ({
 		components: { VvAlertGroup },
 		setup() {

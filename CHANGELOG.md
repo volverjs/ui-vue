@@ -2,15 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.6] - 2023-05-10
+## [0.0.6] - 2023-05-11
 
 ### Added
 
-- `VvAvatar` and `VvAvatarGroup` component;
-- `VvAvatarGroup` component;
-- `VvNav` component;
-- `VvTab` component;
-- `VvButton` custom `value` and `unncheckedValue` when it's used as `toggle`.
+- `VvAvatar` and `VvAvatarGroup` components and test;
+- `VvNav` component and test;
+- `VvTab` component and test;
+- `VvButton` custom `value` and `unncheckedValue` when it's used as `toggle`;
+- `VvAlert` and `VvAlertGroup` components and test.
 
 ### Fixed
 
@@ -25,7 +25,18 @@ All notable changes to this project will be documented in this file.
 
 ### Upgrade
 
-- `storybook@7.0.0-beta.40` to `storybook@7.0.2` stable version
+- dev dependencies:
+
+  - `storybook@7.0.0-beta.40` to `storybook@7.0.10` stable version
+  - `eslint-plugin-vue`to `v9.12.0`
+  - `glob` to `v7.2.3`
+  - `terser` to `v5.17.3`
+  - `@vitejs/plugin-vue` to `v4.2.2`
+  - `@vue/compiler-sfc` to `v3.3.1`
+
+- dependencies:
+  - `@volverjs/style` to `v0.1.9`
+  - `vue` to `v3.3.1`
 
 ## [0.0.5] - 2023-03-29
 
@@ -116,6 +127,7 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.6]: https://github.com/volverjs/style/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/volverjs/style/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/volverjs/style/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/volverjs/style/compare/v0.0.2...v0.0.3

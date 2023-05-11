@@ -1,7 +1,5 @@
 import type { Meta } from '@storybook/vue3'
 import VvAlert from '@/components/VvAlert/VvAlert.vue'
-import VvButton from '@/components/VvButton/VvButton.vue'
-import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
 import { defaultArgs, argTypes } from './Alert.settings'
 import { Default as DefaultStory, type Story } from './Alert.stories'
 
@@ -19,19 +17,11 @@ export const Default: Story = {
 	args: {
 		...defaultArgs,
 		modifiers: ['notification'],
-	},
-	render: (args) => ({
-		components: { VvAlert },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-			<vv-alert v-bind="args" data-testId="element" >
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-				<div class="mt-sm">Default <em class="italic">slot!</em></div>
-			</vv-alert>
+		default: /*html*/ `
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			<div class="mt-sm">Default <em class="italic">slot!</em></div>
 		`,
-	}),
+	},
 }
 
 export const Header: Story = {
@@ -47,20 +37,10 @@ export const TitleBefore: Story = {
 	args: {
 		...defaultArgs,
 		modifiers: ['notification'],
-	},
-	render: (args) => ({
-		components: { VvAlert },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-			<vv-alert v-bind="args" data-testId="element" >
-				<template #title::before>
-                    <small class="text-smaller flex-1">10 minutes ago</small>
-				</template>
-			</vv-alert>
+		'title::before': /*html*/ `
+			<small class="text-smaller flex-1">10 minutes ago</small>
 		`,
-	}),
+	},
 }
 
 export const TitleAfter: Story = {
@@ -68,20 +48,10 @@ export const TitleAfter: Story = {
 	args: {
 		...defaultArgs,
 		modifiers: ['notification'],
-	},
-	render: (args) => ({
-		components: { VvAlert },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-			<vv-alert v-bind="args" data-testId="element" >
-				<template #title::after>
-                    <small class="text-smaller ml-auto">10 minutes ago</small>
-				</template>
-			</vv-alert>
+		'title::after': /*html*/ `
+			<small class="text-smaller ml-auto">10 minutes ago</small>
 		`,
-	}),
+	},
 }
 
 export const Footer: Story = {
@@ -90,21 +60,15 @@ export const Footer: Story = {
 		...defaultArgs,
 		modifiers: ['notification'],
 		role: 'alertdialog',
-	},
-	render: (args) => ({
-		components: { VvAlert, VvButton, VvButtonGroup },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
-			<vv-alert v-bind="args" data-testId="element" >
-				<template #footer>
-                    <vv-button-group>
-						<vv-button modifiers="action" label="Save" />
-						<vv-button modifiers="action-quiet" label="Cancel" />
-					</vv-button-group>
-				</template>
-			</vv-alert>
+		footer: /*html*/ `
+			<div class="vv-button-group" role="group">
+				<button type="button" class="vv-button vv-button--action" id="c1RmyuK7IURatQsTHcP42">
+					<span class="vv-button__label">Save</span>
+				</button>
+				<button type="button" class="vv-button vv-button--action-quiet" id="i2YcewpfM6ZKrhx1dHDe5">
+					<span class="vv-button__label">Cancel</span>
+				</button>
+			</div>
 		`,
-	}),
+	},
 }
