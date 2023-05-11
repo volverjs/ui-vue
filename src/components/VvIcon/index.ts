@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { IconifyRenderMode } from '@iconify/vue'
+import type { IconifyIconOnLoad, IconifyRenderMode } from '@iconify/vue'
 
 export enum IconPrefix {
 	simple = 'simple',
@@ -88,14 +88,14 @@ export const VvIconProps = {
 	/**
 	 * A callback that is called when icon data has been loaded
 	 */
-	onLoad: Function,
+	onLoad: Function as PropType<IconifyIconOnLoad>,
 	/**
 	 * SVG icon string
 	 */
 	svg: String,
 	/**
 	 * Icon modifiers: vv-icon css helper classes, value/s are concatened with prefix 'vv-icon--'
-	 * @values string | Array<string>
+	 * @values string | string[]
 	 */
 	modifiers: {
 		type: [String, Array] as PropType<string | string[]>,

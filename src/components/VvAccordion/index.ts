@@ -25,7 +25,7 @@ export const VvAccordionProps = {
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
 	 */
-	modifiers: [String, Array],
+	modifiers: [String, Array] as PropType<string | string[]>,
 	/**
 	 * If true, the accordion will be disabled
 	 */
@@ -58,12 +58,29 @@ export function useGroupProps(
 	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
 	const not = getGroupOrLocalRef('not', props) as Ref<boolean>
 	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
-	const modifiers = getGroupOrLocalRef('modifiers', props) as Ref<
-		Array<string> | string
-	>
 	const disabled = computed(() =>
 		Boolean(props.disabled || group?.value?.disabled.value),
 	)
+	// merge local and group modifiers
+	const modifiers = computed(() => {
+		let localModifiers = props.modifiers
+		let groupModifiers = group?.value.modifiers.value
+
+		const toReturn = new Set<string>()
+		if (localModifiers) {
+			if (!Array.isArray(localModifiers)) {
+				localModifiers = localModifiers.split(' ')
+			}
+			localModifiers.forEach((modifier) => toReturn.add(modifier))
+		}
+		if (groupModifiers) {
+			if (!Array.isArray(groupModifiers)) {
+				groupModifiers = groupModifiers.split(' ')
+			}
+			groupModifiers.forEach((modifier) => toReturn.add(modifier))
+		}
+		return Array.from(toReturn)
+	})
 
 	return {
 		// group props

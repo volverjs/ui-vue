@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2023-04-04
+
+### Added
+
+- `VvAvatar` component;
+- `VvAvatarGroup` component;
+- `VvNav` component;
+- `VvTab` component;
+- `VvButton` custom `value` and `unncheckedValue` when it's used as `toggle`.
+
+### Fixed
+
+- Some props types issues;
+- `VvButtonGroup` modifiers are now merged with the child modifiers;
+- `VvDialog` now uses `showModal()` and `close()` dialog functions;
+- `VvInputText`, `VvTextarea`, `VvSelect`, `VvCombobox`, `VvCheckbox` and `VvRadio` hint slots.
+
+### Upgrade
+
+- `storybook@7.0.0-beta.40` to `storybook@7.0.2` stable version
+
 ## [0.0.5] - 2023-03-29
 
 ### Added

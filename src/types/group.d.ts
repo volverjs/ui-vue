@@ -23,12 +23,14 @@ export interface InputGroupState extends GroupState {
  * State shared in a group of buttons
  */
 export interface ButtonGroupState extends GroupState {
-	modelValue: Ref<string | Array<string> | undefined>
+	modelValue: Ref<
+		string | number | boolean | (string | number | boolean)[] | undefined
+	>
 	disabled: Ref<boolean>
 	toggle: Ref<boolean>
 	multiple: Ref<boolean>
 	unselectable: Ref<boolean>
-	itemModifiers?: Ref<string | Array<string> | undefined>
+	modifiers: Ref<string | string[] | undefined>
 }
 
 /**
@@ -37,6 +39,6 @@ export interface ButtonGroupState extends GroupState {
 export interface AccordionGroupState extends GroupState {
 	collapse: Ref<boolean>
 	disabled: Ref<boolean>
-	modifiers: Ref<Array<string> | string | undefined>
+	modifiers: Ref<string[] | string | undefined>
 	not: Ref<boolean>
 }

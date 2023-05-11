@@ -1,0 +1,14 @@
+# Set update schedule for npm packages
+
+version: 2
+updates:
+    - package-ecosystem: 'npm'
+      directory: '/'
+      schedule:
+          interval: 'daily'
+          time: '17:24'
+          timezone: 'Europe/Rome'
+      # Specify labels for npm pull requests
+      labels:
+          - 'npm'
+          - 'dependencies'

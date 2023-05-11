@@ -506,7 +506,7 @@ export const pluralize = (word: string, count: number): string =>
 
 type PrintLabel = (string: string) => string
 
-export const getLabelPrinter = (...strings: Array<string>): PrintLabel => {
+export const getLabelPrinter = (...strings: string[]): PrintLabel => {
 	const maxLength = strings.reduce(
 		(max, string) => (string.length > max ? string.length : max),
 		0,

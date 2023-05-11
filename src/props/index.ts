@@ -126,7 +126,7 @@ export const ModifiersProps = {
 	/**
 	 * Component BEM modifiers
 	 */
-	modifiers: [String, Array] as PropType<string | Array<string>>,
+	modifiers: [String, Array] as PropType<string | string[]>,
 }
 
 export const HintProps = {
@@ -138,7 +138,7 @@ export const OptionsProps = {
 	 * List of options, can be string[] or object[]
 	 */
 	options: {
-		type: Array as PropType<Array<Option | string>>,
+		type: Array as PropType<(Option | string)[]>,
 		default: () => [],
 	},
 	/**
@@ -406,6 +406,7 @@ export const CheckboxRadioProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	...LabelProps,
+	...LoadingProps,
 	/**
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
@@ -426,6 +427,7 @@ export const CheckboxRadioGroupProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	...LabelProps,
+	...LoadingProps,
 	/**
 	 * Input value
 	 */

@@ -21,6 +21,13 @@ declare global {
 				expected?: HTMLElement,
 			) => CustomMatcherResult
 		}
+		// eslint-disable-next-line
+		interface Matchers<R> {
+			toHaveImgChild: (
+				imgTag: string,
+				expected?: HTMLElement,
+			) => CustomMatcherResult
+		}
 	}
 }
 
@@ -66,6 +73,14 @@ expect.extend({
 			),
 			message: () =>
 				`One of these classes doesn't exist: ${classes.join(', ')}`,
+		}
+	},
+	async toHaveImgChild(element: HTMLElement, imgTag: string) {
+		const img = element.getElementsByTagName(imgTag)
+		return {
+			pass: img.length === 1,
+			message: () =>
+				`${imgTag} not exist!`,
 		}
 	},
 })

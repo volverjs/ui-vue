@@ -20,7 +20,12 @@
 	const select = ref()
 
 	// hint
-	const { HintSlot, hasHint, hasInvalid } = HintSlotFactory(props, slots)
+	const {
+		HintSlot,
+		hasHintLabelOrSlot,
+		hasInvalidLabelOrSlot,
+		hintSlotScope,
+	} = HintSlotFactory(props, slots)
 
 	// data
 	const {
@@ -39,7 +44,7 @@
 
 	// computed
 	const hasId = useUniqueId(id)
-	const hasDescribedBy = computed(() => `${hasId.value}-hint`)
+	const hasHintId = computed(() => `${hasId.value}-hint`)
 
 	// focus
 	const { focused } = useComponentFocus(select, emit)
@@ -108,12 +113,11 @@
 			autocomplete: props.autocomplete,
 			multiple: props.multiple,
 			'aria-invalid': isInvalid.value,
-			'aria-describedby':
-				!hasInvalid.value && hasHint.value
-					? hasDescribedBy.value
-					: undefined,
-			'aria-errormessage': hasInvalid.value
-				? hasDescribedBy.value
+			'aria-describedby': hasHintLabelOrSlot.value
+				? hasHintId.value
+				: undefined,
+			'aria-errormessage': hasInvalidLabelOrSlot.value
+				? hasHintId.value
 				: undefined,
 		}
 	})
@@ -218,6 +222,19 @@
 			</div>
 		</div>
 		<!-- #endregion native select -->
-		<HintSlot :id="hasDescribedBy" class="vv-select__hint" />
+		<HintSlot :id="hasHintId" class="vv-select__hint">
+			<template v-if="$slots.hint" #hint>
+				<slot name="hint" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.loading" #loading>
+				<slot name="loading" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.valid" #valid>
+				<slot name="valid" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.invalid" #invalid>
+				<slot name="invalid" v-bind="hintSlotScope" />
+			</template>
+		</HintSlot>
 	</div>
 </template>

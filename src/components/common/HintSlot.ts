@@ -1,202 +1,161 @@
-import type { Component, ExtractPropTypes, Slots, Ref } from 'vue'
+import type { ExtractPropTypes, Slots } from 'vue'
 
 /**
- * Merge errors from Array<string> to string errors separated from new line (\n)
- * @param {Array<string> | string} errors
+ * Merge array of string
+ * @param {string[] | string} items
  * @returns {string}
  */
-function joinLines(errors: Array<string> | string | unknown[] | undefined) {
-	if (Array.isArray(errors)) {
-		return errors.filter((e) => isString(e)).join(' ')
+function joinLines(items: string[] | string | unknown[] | undefined) {
+	if (Array.isArray(items)) {
+		return items.filter((item) => isString(item)).join(' ')
 	}
-	return errors
+	return items
 }
 
-interface HintSlotProps {
-	hintLabel: {
-		type: StringConstructor
-		default: ''
-		required: true
-	}
-	modelValue: null
-	valid: BooleanConstructor
-	validLabel: (StringConstructor | ArrayConstructor)[]
-	invalid: BooleanConstructor
-	invalidLabel: (StringConstructor | ArrayConstructor)[]
-}
-
-interface HintSlotPropsWithLoading extends HintSlotProps {
-	loading: BooleanConstructor
-	loadingLabel: StringConstructor
-}
+export type HintSlotProps = Readonly<
+	ExtractPropTypes<{
+		hintLabel: {
+			type: StringConstructor
+			default: ''
+			required: true
+		}
+		modelValue: null
+		valid: BooleanConstructor
+		validLabel: (StringConstructor | ArrayConstructor)[]
+		invalid: BooleanConstructor
+		invalidLabel: (StringConstructor | ArrayConstructor)[]
+		loading: BooleanConstructor
+		loadingLabel: StringConstructor
+	}>
+>
 
 /**
  * Return a vue component (HintSlot) to render and manage hint, errors, valid, loading state and messages
- * @param {Readonly<ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>>} parentProps vue props
+ * @param {HintSlotProps} parentProps vue props
  * @param {Slots} parentSlots vue slots
  * @returns {Component} vue component
  */
-export function HintSlotFactory(
-	parentProps: Readonly<
-		ExtractPropTypes<HintSlotProps | HintSlotPropsWithLoading>
-	>,
-	parentSlots: Slots,
-): {
-	HintSlot: Component
-	hasHint: Ref<boolean>
-	hasInvalid: Ref<boolean>
-	hasValid: Ref<boolean>
-	hasLoading: Ref<boolean>
-} {
-	// slots
-	const {
-		invalid: invalidSlot,
-		valid: validSlot,
-		hint: hintSlot,
-		loading: loadingSlot,
-	} = parentSlots
+export function HintSlotFactory(props: HintSlotProps, slots: Slots) {
+	// label
+	const invalidLabel = computed(() => joinLines(props.invalidLabel))
+	const validLabel = computed(() => joinLines(props.validLabel))
+	const loadingLabel = computed(() => props.loadingLabel)
+	const hintLabel = computed(() => props.hintLabel)
 
-	// props
-	const {
-		hintLabel,
-		modelValue,
-		valid,
-		validLabel,
-		invalid,
-		invalidLabel,
-		...otherProps
-	} = toRefs(parentProps)
-
-	const loading = resolveFieldData(otherProps, 'loading') as
-		| Ref<boolean>
-		| undefined
-	const loadingLabel = resolveFieldData(otherProps, 'loadingLabel') as
-		| Ref<string>
-		| undefined
-
-	const hasInvalid = computed(() => {
-		if (!invalid.value) {
-			return false
-		}
-		if (invalid.value && invalidSlot) {
-			return true
-		}
-		if (
-			invalidLabel?.value &&
-			Array.isArray(invalidLabel.value) &&
-			invalidLabel.value.length > 0
-		) {
-			return true
-		}
-		if (invalidLabel?.value && !isEmpty(invalidLabel)) {
-			return true
-		}
-		return false
-	})
-
-	const hasHint = computed(
-		() => !!((hintLabel && hintLabel.value) || hintSlot),
+	// type
+	const hasLoadingLabelOrSlot = computed(() =>
+		Boolean(props.loading && (slots.loading || loadingLabel.value)),
 	)
-
-	const hasValid = computed(
-		() => !!((validLabel && validLabel.value) || validSlot),
-	)
-
-	const hasLoading = computed(
+	const hasInvalidLabelOrSlot = computed(
 		() =>
-			!!(
-				(loading?.value && loadingSlot) ||
-				(loading?.value && loadingLabel?.value)
-			),
+			!hasLoadingLabelOrSlot.value &&
+			Boolean(props.invalid && (slots.invalid || invalidLabel.value)),
 	)
-
+	const hasValidLabelOrSlot = computed(
+		() =>
+			!hasLoadingLabelOrSlot.value &&
+			!hasInvalidLabelOrSlot.value &&
+			Boolean(props.valid && (slots.valid || validLabel.value)),
+	)
+	const hasHintLabelOrSlot = computed(
+		() =>
+			!hasLoadingLabelOrSlot.value &&
+			!hasInvalidLabelOrSlot.value &&
+			!hasValidLabelOrSlot.value &&
+			Boolean(slots.hint || hintLabel.value),
+	)
 	const isVisible = computed(
 		() =>
-			hasHint.value ||
-			hasValid.value ||
-			hasInvalid.value ||
-			hasLoading.value,
+			hasInvalidLabelOrSlot.value ||
+			hasValidLabelOrSlot.value ||
+			hasLoadingLabelOrSlot.value ||
+			hasHintLabelOrSlot.value,
 	)
-
-	return {
-		hasInvalid,
-		hasHint,
-		hasValid,
-		hasLoading,
-		HintSlot: {
-			name: 'HintSlot',
-			props: {
-				params: {
-					type: Object,
-					default: () => ({}),
-				},
-			},
-			setup(props) {
-				const hintContent = computed(() => {
-					const slotProps = toReactive({
-						hintLabel,
-						modelValue,
-						valid,
-						validLabel,
-						invalid,
-						invalidLabel,
-						loading,
-						loadingLabel,
-						...props.params,
-					})
-
-					if (invalid?.value) {
-						return (
-							invalidSlot?.(slotProps) ||
-							joinLines(invalidLabel?.value) ||
-							hintLabel?.value
-						)
-					}
-
-					if (valid?.value)
-						return (
-							validSlot?.(slotProps) ||
-							joinLines(validLabel?.value) ||
-							hintLabel?.value
-						)
-
-					if (loading?.value)
-						return (
-							loadingSlot?.(slotProps) ||
-							joinLines(loadingLabel?.value) ||
-							hintLabel?.value
-						)
-
-					return (
-						hintSlot?.(slotProps) ||
-						joinLines(hintLabel?.value) ||
-						hintLabel?.value
-					)
-				})
-
-				return {
-					isVisible,
-					hasInvalid,
-					hasValid,
-					hintContent,
-				}
-			},
-			render() {
-				if (this.isVisible) {
-					return h(
-						'small',
-						{
-							role: this.hasInvalid
-								? 'alert'
-								: this.hasValid
-								? 'status'
-								: undefined,
-						},
-						this.hintContent,
-					)
-				}
+	const hintSlotScope = computed(() => ({
+		modelValue: props.modelValue,
+		valid: props.valid,
+		invalid: props.invalid,
+		loading: props.loading,
+	}))
+	// component
+	const HintSlot = defineComponent({
+		name: 'HintSlot',
+		props: {
+			tag: {
+				type: String,
+				default: 'small',
 			},
 		},
+		setup() {
+			return {
+				isVisible,
+				invalidLabel,
+				validLabel,
+				loadingLabel,
+				hintLabel,
+				hasInvalidLabelOrSlot,
+				hasValidLabelOrSlot,
+				hasLoadingLabelOrSlot,
+				hasHintLabelOrSlot,
+			}
+		},
+		render() {
+			if (this.isVisible) {
+				let role
+				if (this.hasInvalidLabelOrSlot) {
+					role = 'alert'
+				}
+				if (this.hasValidLabelOrSlot) {
+					role = 'status'
+				}
+				if (this.hasLoadingLabelOrSlot) {
+					return h(
+						this.tag,
+						{
+							role,
+						},
+						this.$slots.loading?.() ?? this.loadingLabel,
+					)
+				}
+				if (this.hasInvalidLabelOrSlot) {
+					return h(
+						this.tag,
+						{
+							role,
+						},
+						this.$slots.invalid?.() ??
+							this.$slots.invalid ??
+							this.invalidLabel,
+					)
+				}
+				if (this.hasValidLabelOrSlot) {
+					return h(
+						this.tag,
+						{
+							role,
+						},
+						this.$slots.valid?.() ?? this.validLabel,
+					)
+				}
+				return h(
+					this.tag,
+					{
+						role,
+					},
+					this.$slots.hint?.() ?? this.$slots.hint ?? this.hintLabel,
+				)
+			}
+			return null
+		},
+	})
+
+	return {
+		hasInvalidLabelOrSlot,
+		hasHintLabelOrSlot,
+		hasValidLabelOrSlot,
+		hasLoadingLabelOrSlot,
+		hintSlotScope,
+		HintSlot,
 	}
 }
 

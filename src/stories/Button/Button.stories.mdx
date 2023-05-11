@@ -13,19 +13,19 @@ import { argTypes, defaultArgs } from './Button.settings'
 export const Template = (args, { argTypes }) => ({
 	props: Object.keys(argTypes),
 	data() {
-		return { value: undefined }
+		return { currentValue: undefined }
 	},
 	setup() {
 		return { args }
 	},
 	components: { VvButton },
 	template: /*html*/ `
-		<vv-button v-bind="args" v-model="value" name="my-button" data-testId="element">
+		<vv-button v-bind="args" v-model="currentValue" name="my-button" data-testId="element">
 			<template #before v-if="args.before"><div v-html="args.before"></div></template>
 			<template #default v-if="args.default"><div v-html="args.default"></div></template>
 			<template #after v-if="args.after"><div v-html="args.after"></div></template>
 		</vv-button>
-		<div v-if="args.toggle" class="mt-md">Value: {{ value }}</div>`,
+		<div v-if="args.toggle" class="mt-md">Value: {{ currentValue }}</div>`,
 })
 
 <Canvas>
