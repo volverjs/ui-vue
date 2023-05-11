@@ -1,0 +1,13 @@
+# Set update schedule for npm packages
+
+version: 2
+updates:
+    - package-ecosystem: 'npm'
+      directory: '/'
+      schedule:
+          # Check for updates every week
+          interval: 'weekly'
+      # Specify labels for npm pull requests
+      labels:
+          - 'npm'
+          - 'dependencies'
