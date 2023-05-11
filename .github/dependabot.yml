@@ -5,9 +5,8 @@ updates:
     - package-ecosystem: 'npm'
       directory: '/'
       schedule:
-          # Check for updates every week
-          interval: 'weekly'
-      # Specify labels for npm pull requests
-      labels:
-          - 'npm'
-          - 'dependencies'
+          interval: 'daily'
+          time: '09:00'
+          timezone: 'Europe/Rome'
+    # Disable all pull requests for npm dependencies
+    #   open-pull-requests-limit: 0
