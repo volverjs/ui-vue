@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
     sonarcloud:
-        uses: ./.github/workflows/test.yml
+        uses: ./.github/workflows/sonarcloud.yml
 
     styleguide:
         needs: sonarcloud
