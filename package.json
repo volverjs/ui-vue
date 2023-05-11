@@ -78,7 +78,7 @@
     "@storybook/addon-links": "7.0.5",
     "@storybook/channel-postmessage": "7.0.5",
     "@storybook/channel-websocket": "7.0.5",
-    "@storybook/cli": "7.0.5",
+    "@storybook/cli": "7.0.10",
     "@storybook/client-api": "7.0.5",
     "@storybook/client-logger": "7.0.5",
     "@storybook/core-common": "7.0.5",
