@@ -4,6 +4,8 @@ on:
     # Runs on release publish
     release:
         types: [published]
+    pull_request:
+        branches: [main]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
