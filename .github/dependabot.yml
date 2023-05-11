@@ -5,8 +5,9 @@ updates:
     - package-ecosystem: 'npm'
       directory: '/'
       schedule:
-          # Check for updates every week
-          interval: 'weekly'
+          interval: 'daily'
+          time: '17:24'
+          timezone: 'Europe/Rome'
       # Specify labels for npm pull requests
       labels:
           - 'npm'
