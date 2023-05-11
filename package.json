@@ -88,7 +88,7 @@
     "@storybook/test-runner": "^0.10.0",
     "@storybook/testing-library": "^0.1.0",
     "@storybook/vue3": "7.0.5",
-    "@storybook/vue3-vite": "7.0.5",
+    "@storybook/vue3-vite": "7.0.10",
     "@types/jest-axe": "^3.5.5",
     "@types/jsdom": "^21.1.1",
     "@types/node": "18.15.11",
