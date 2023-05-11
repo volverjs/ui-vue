@@ -11,8 +11,8 @@ dependencies:
     specifier: 4.1.1
     version: 4.1.1(vue@3.3.1)
   '@volverjs/style':
-    specifier: 0.1.9
-    version: 0.1.9
+    specifier: 0.1.10
+    version: 0.1.10
   '@vueuse/core':
     specifier: ^10.1.2
     version: 10.1.2(vue@3.3.1)
@@ -4408,8 +4408,8 @@ packages:
       typescript: 5.0.4
     dev: true
 
-  /@volverjs/style@0.1.9:
-    resolution: {integrity: sha512-IQL678sSVh70FrlUKgsm43IA7+kitC/D8j/sz/q/b/UtCmlhQ1kKAP9AROU0/mKpkp8MV96YHKaLim5jOkk2Bg==}
+  /@volverjs/style@0.1.10:
+    resolution: {integrity: sha512-jahozQ7azL5q2QiyJj2GdNwY4R9lJ/m8wbC49J8FtqYiS4SAi9FZZsIHHK6lGLUWgfzQk5wbilD+u3GKFhQjdw==}
     engines: {node: '>= 12.x'}
     dev: false
 

@@ -35,7 +35,7 @@ All notable changes to this project will be documented in this file.
   - `@vue/compiler-sfc` to `v3.3.1`
 
 - dependencies:
-  - `@volverjs/style` to `v0.1.9`
+  - `@volverjs/style` to `v0.1.10`
   - `vue` to `v3.3.1`
 
 ## [0.0.5] - 2023-03-29

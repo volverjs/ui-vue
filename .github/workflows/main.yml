@@ -19,7 +19,11 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    sonarcloud:
+        uses: ./.github/workflows/test.yml
+
     styleguide:
+        needs: sonarcloud
         uses: ./.github/workflows/styleguide.yml
 
     test:
