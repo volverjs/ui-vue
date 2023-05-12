@@ -2,11 +2,6 @@ name: Run library test
 
 on:
     workflow_call:
-        inputs:
-            testEnv:
-                default: false
-                required: false
-                type: boolean
 
 jobs:
     storybook:
@@ -30,8 +25,4 @@ jobs:
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps
             - name: Run Storybook test
-              if: ${{ !inputs.testEnv }}
               run: pnpm test-remote
-            - name: Run Storybook test environment
-              if: ${{ inputs.testEnv }}
-              run: pnpm test-remote-env
