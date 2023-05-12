@@ -1,4 +1,4 @@
-name: Build library
+name: Test library
 
 on:
     workflow_call:

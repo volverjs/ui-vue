@@ -1,4 +1,4 @@
-name: Main pipeline
+name: Check pipeline
 
 on:
     # Run on pull request
