@@ -5,8 +5,8 @@ updates:
     - package-ecosystem: 'npm'
       directory: '/'
       schedule:
-          interval: 'daily'
-          time: '10:11'
-          timezone: 'Europe/Rome'
+          interval: 'weekly'
+          #   time: '10:11'
+          #   timezone: 'Europe/Rome'
     # Disable all pull requests for npm dependencies
     #   open-pull-requests-limit: 0
