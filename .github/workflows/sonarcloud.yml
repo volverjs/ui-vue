@@ -6,7 +6,7 @@ on:
     workflow_call:
 
 jobs:
-    analysis:
+    sonarcloud:
         runs-on: ubuntu-latest
 
         steps:
