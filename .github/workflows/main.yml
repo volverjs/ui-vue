@@ -22,6 +22,10 @@ concurrency:
 jobs:
     analysis:
         uses: ./.github/workflows/sonarcloud.yml
+        secrets: inherit
+        # secrets:
+        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     styleguide:
         needs: analysis
