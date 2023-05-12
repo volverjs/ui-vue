@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
     analysis:
-        uses: ./.github/workflows/sonacloud.yml
+        uses: ./.github/workflows/sonarcloud.yml
 
     styleguide:
         needs: analysis
