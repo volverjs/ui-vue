@@ -6,13 +6,6 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
-	let baseUrl = '/ui-vue/'
-	if (mode === 'development') {
-		baseUrl = './'
-	} else if (process.env.STORYBOOK_MODE === 'test') {
-		baseUrl = '/ui-vue/test/'
-	}
-
 	return defineConfig({
 		build: {
 			lib: {
@@ -28,7 +21,7 @@ export default ({ mode }: { mode: string }) => {
 				},
 			},
 		},
-		base: baseUrl,
+		base: mode === 'development' ? './' : '/ui-vue/',
 		plugins: [
 			vue(),
 			ESLint(),

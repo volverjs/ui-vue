@@ -28,6 +28,7 @@ jobs:
     styleguide:
         needs: analysis
         uses: ./.github/workflows/styleguide.yml
+        secrets: inherit
         with:
             testEnv: true
 
