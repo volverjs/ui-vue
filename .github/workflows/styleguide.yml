@@ -34,7 +34,6 @@ jobs:
             - name: Vercel deploy
               if: ${{ inputs.testEnv }}
               uses: ./.github/workflows/vercel-deploy.yml
-              secrets: inherit
 
             # if not testEnv -> deploy on github pages
             - name: Setup GitHub Pages
