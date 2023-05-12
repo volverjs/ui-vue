@@ -160,12 +160,8 @@
 			dirty: isDirty.value,
 			focus: focused.value,
 			floating: floating.value,
+			badges: props.badges,
 		})),
-	)
-
-	// current options, filtered or prop options
-	const hasOptions = computed(() =>
-		props.searchable ? filteredOptions.value : props.options,
 	)
 
 	const {
@@ -302,7 +298,7 @@
 		disabled: disabled.value,
 		readonly: readonly.value,
 		modifiers: props.modifiers,
-		options: hasOptions.value,
+		options: props.options,
 		labelKey: props.labelKey,
 		valueKey: props.valueKey,
 		icon: props.icon,
@@ -339,16 +335,20 @@
 	}))
 
 	// computed
-	onKeyStroke([' ', 'Enter'], (e) => {
-		if (props.autoOpen) {
-			return
-		}
-		if (!expanded.value && focused.value) {
-			e.preventDefault()
-			e.stopImmediatePropagation()
-			toggleExpanded()
-		}
-	})
+	onKeyStroke(
+		[' ', 'Enter'],
+		(e) => {
+			if (props.autoOpen) {
+				return
+			}
+			if (!expanded.value && focused.value) {
+				e.preventDefault()
+				e.stopImmediatePropagation()
+				toggleExpanded()
+			}
+		},
+		{ target: inputEl },
+	)
 </script>
 
 <template>
@@ -422,9 +422,12 @@
 								v-bind="{ selectedOptions, onInput }"
 							>
 								<template v-if="hasValue">
-									<template v-if="!badges">
+									<div
+										v-if="!badges"
+										class="vv-select__value"
+									>
 										{{ hasValue }}
-									</template>
+									</div>
 									<VvBadge
 										v-for="(
 											option, index

@@ -334,7 +334,11 @@
 		}
 	})
 	onKeyStroke([' ', 'Enter'], (e) => {
-		if (expanded.value && focused.value) {
+		if (
+			expanded.value &&
+			focused.value &&
+			e.target !== document.activeElement
+		) {
 			e.preventDefault()
 			const activeElement = document.activeElement as HTMLElement
 			activeElement.click()
