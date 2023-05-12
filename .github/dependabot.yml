@@ -4,9 +4,13 @@ version: 2
 updates:
     - package-ecosystem: 'npm'
       directory: '/'
+      target-branch: 'develop'
+      ignore:
+          - dependency-name: '*'
+            update-types: ['version-update:semver-major']
       schedule:
-          interval: 'weekly'
-          #   time: '10:11'
-          #   timezone: 'Europe/Rome'
+          interval: 'daily'
+          time: '12:32'
+          timezone: 'Europe/Rome'
     # Disable all pull requests for npm dependencies
     #   open-pull-requests-limit: 0

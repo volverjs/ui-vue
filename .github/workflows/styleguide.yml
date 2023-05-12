@@ -2,6 +2,11 @@ name: Build library
 
 on:
     workflow_call:
+        inputs:
+            testEnv:
+                default: false
+                required: false
+                type: boolean
 
 jobs:
     build:
@@ -24,6 +29,11 @@ jobs:
               env:
                   NODE_OPTIONS: '--max_old_space_size=4096'
               run: pnpm styleguide
+            - name: Build stileguide test
+              if: ${{ inputs.testEnv }}
+              env:
+                  NODE_OPTIONS: '--max_old_space_size=4096'
+              run: pnpm styleguide:test
             - name: Setup GitHub Pages
               uses: actions/configure-pages@v2
             - name: Upload styleguide

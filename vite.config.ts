@@ -6,6 +6,13 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
+	let baseUrl = '/ui-vue/'
+	if (mode === 'development') {
+		baseUrl = './'
+	} else if (process.env.STORYBOOK_MODE === 'test') {
+		baseUrl = '/ui-vue/test/'
+	}
+
 	return defineConfig({
 		build: {
 			lib: {
@@ -21,7 +28,7 @@ export default ({ mode }: { mode: string }) => {
 				},
 			},
 		},
-		base: mode === 'development' ? './' : '/ui-vue/',
+		base: baseUrl,
 		plugins: [
 			vue(),
 			ESLint(),
@@ -30,15 +37,12 @@ export default ({ mode }: { mode: string }) => {
 				imports: ['vue', '@vueuse/core'],
 				// Auto import for module exports under directories
 				// by default it only scan one level of modules under the directory
-				dirs: [
-					'./src/composables/**',
-					'./src/utils/'
-				],
+				dirs: ['./src/composables/**', './src/utils/'],
 				dts: true,
 				eslintrc: {
 					enabled: true,
 				},
-			})
+			}),
 		],
 		resolve: {
 			alias: {

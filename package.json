@@ -27,6 +27,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "styleguide": "storybook build",
+    "styleguide:test": "STORYBOOK_MODE=test pnpm styleguide",
     "build": "npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
     "hot": "node ./scripts/build.js --hot",
     "type-check": "vue-tsc --noEmit",
@@ -35,6 +36,7 @@
     "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly",
     "test-local": "test-storybook --stories-json",
     "test-remote": "test-storybook --stories-json --url https://volverjs.github.io/ui-vue/",
+    "test-remote-env": "test-storybook --stories-json --url https://volverjs.github.io/ui-vue/test/",
     "credits": "npx @opengovsg/credits-generator"
   },
   "type": "module",
