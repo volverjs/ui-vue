@@ -34,7 +34,7 @@
     "generate-icons": "ts-node-esm ./scripts/icons.ts --srcPath=src/assets/icons",
     "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly",
     "test-local": "test-storybook --stories-json",
-    "test-remote": "test-storybook --stories-json --url https://volverjs.github.io/ui-vue/",
+    "test-remote": "test-storybook --stories-json --url https://volver-ui-vue.vercel.app",
     "credits": "npx @opengovsg/credits-generator"
   },
   "type": "module",
