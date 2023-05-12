@@ -25,15 +25,10 @@ jobs:
               run: pnpm install --no-frozen-lockfile
             - name: Bump version with release tag name
               run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
-            - name: Build stileguide
+            - name: Build styleguide
               env:
                   NODE_OPTIONS: '--max_old_space_size=4096'
               run: pnpm styleguide
-
-            # if testEnv -> Vercel deploy for PR testing
-            - name: Vercel deploy
-              if: ${{ inputs.testEnv }}
-              uses: ./.github/workflows/vercel-deploy.yml
 
             # if not testEnv -> deploy on github pages
             - name: Setup GitHub Pages
@@ -44,6 +39,12 @@ jobs:
               uses: actions/upload-pages-artifact@v1
               with:
                   path: './storybook-static'
+
+    # if testEnv -> Vercel deploy for PR testing
+    vercel-deploy:
+        if: ${{ inputs.testEnv }}
+        uses: ./.github/workflows/vercel-deploy.yml
+        secrets: inherit
 
     deploy:
         environment:
