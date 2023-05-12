@@ -34,9 +34,9 @@ jobs:
     test:
         needs: styleguide
         uses: ./.github/workflows/test.yml
+        with:
+            testEnv: true
 
     build:
         needs: test
         uses: ./.github/workflows/build.yml
-        with:
-            testEnv: true
