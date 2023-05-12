@@ -28,22 +28,21 @@ export function useProvideDropdownTrigger({
 		'aria-expanded': boolean
 	}>
 }) {
-	const bus = mitt()
+	const bus = mitt<{
+		click: Event
+		mouseover: Event
+		mouseleave: Event
+	}>()
 	const component = defineComponent({
 		name: 'VvDropdownTriggerProvider',
-		provide() {
-			return {
-				[INJECTION_KEY_DROPDOWN_TRIGGER]: {
-					reference,
-					id,
-					expanded,
-					aria,
-					bus,
-				},
-			}
-		},
 		setup() {
-			return {}
+			provide(INJECTION_KEY_DROPDOWN_TRIGGER, {
+				reference,
+				id,
+				expanded,
+				aria,
+				bus,
+			})
 		},
 		render() {
 			return h(Fragment, {}, this.$slots.default?.())
@@ -86,10 +85,10 @@ export function useProvideDropdownItem({
 export function useProvideDropdownAction({
 	expanded,
 }: {
-	expanded: Ref<boolean>
+	expanded?: Ref<boolean>
 }) {
 	provide(INJECTION_KEY_DROPDOWN_ACTION, {
-		role: ActionRoles.menuitem,
+		role: ref(ActionRoles.menuitem),
 		expanded,
 	})
 }

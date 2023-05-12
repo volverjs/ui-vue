@@ -164,11 +164,9 @@ The following features are planned for the next releases:
 - [x] (v0.0.3) Redesign of `VvCombobox` for better accessibility and more features;
 - [x] (v0.0.3) Rewrite of `VvDropdown` to get it applicable to any element;
 - [x] (v0.0.5) Input masks for `VvInputText` component;
-- [x] `VvAvatar` component;
-- [x] `VvAvatarGroup` component;
-- [x] Menus, navigation and tabs with `VvNav`;
-- [x] `VvTab` component;
-- [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
+- [x] (v0.0.6) `VvAvatar` and `VvAvatarGroup` component;
+- [x] (v0.0.6) Menus, navigation and tabs with `VvNav` and `VvTab`;
+- [x] (v0.0.6) Alerts, notifications and toasts with `VvAlert` and `VvAlertGroup` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
 - [ ] Multiple uploads, image crop and file previews with `VvInputFile`;

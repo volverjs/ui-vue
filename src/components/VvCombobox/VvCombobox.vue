@@ -237,12 +237,6 @@
 			.join(props.separator)
 	})
 
-	watch(selectedOptions, () => {
-		if (!props.multiple && props.autoClose) {
-			collapse()
-		}
-	})
-
 	/**
 	 * Function triggered on click on input
 	 */
@@ -284,7 +278,7 @@
 				toReturn = [value as Option]
 			}
 		} else {
-			if (props.autoClose) {
+			if (!props.keepOpen) {
 				collapse()
 			}
 			if (props.unselectable && value === props.modelValue) {
@@ -332,7 +326,6 @@
 		flip: props.flip,
 		autoPlacement: props.autoPlacement,
 		arrow: props.arrow,
-		autoClose: props.autoClose,
 		autofocusFirst: searchable.value ? false : props.autofocusFirst,
 		triggerWidth: props.triggerWidth,
 		modifiers: props.dropdownModifiers,

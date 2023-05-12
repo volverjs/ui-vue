@@ -218,7 +218,7 @@
 	onClickOutside(
 		floatingEl,
 		() => {
-			if (props.autoClose) {
+			if (!props.keepOpen) {
 				expanded.value = false
 			}
 		},
@@ -374,7 +374,7 @@
 				class="vv-dropdown__arrow"
 			></div>
 			<slot name="before" v-bind="{ expanded }" />
-			<ul
+			<div
 				v-bind="attrs"
 				:id="hasId"
 				ref="listEl"
@@ -389,7 +389,7 @@
 						role: itemRole,
 					}"
 				/>
-			</ul>
+			</div>
 			<slot name="after" v-bind="{ expanded }" />
 		</div>
 	</Transition>

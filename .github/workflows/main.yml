@@ -12,6 +12,7 @@ permissions:
     contents: read
     pages: write
     id-token: write
+    pull-requests: read
 
 # Allow one concurrent deployment
 concurrency:
@@ -19,7 +20,12 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    analysis:
+        uses: ./.github/workflows/sonarcloud.yml
+        secrets: inherit
+
     styleguide:
+        needs: analysis
         uses: ./.github/workflows/styleguide.yml
 
     test:

@@ -1,8 +1,10 @@
 import type { ExtractPropTypes, Ref } from 'vue'
 import type { AccordionGroupState } from '../../types/group'
 import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
+import { ModifiersProps } from '@/props'
 
 export const VvAccordionProps = {
+	...ModifiersProps,
 	/**
 	 * Accordion name
 	 */
@@ -22,10 +24,6 @@ export const VvAccordionProps = {
 		type: Boolean,
 		default: undefined,
 	},
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
-	 */
-	modifiers: [String, Array] as PropType<string | string[]>,
 	/**
 	 * If true, the accordion will be disabled
 	 */

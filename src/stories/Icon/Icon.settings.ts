@@ -5,6 +5,7 @@ import { ModifiersArgTypes } from '@/stories/argTypes'
 export const defaultArgs = {
 	...propsToObject(VvIconProps),
 	name: 'add-circle',
+	width: 48
 }
 
 export const argTypes = {

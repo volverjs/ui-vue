@@ -41,7 +41,6 @@ export const argTypes = {
 	...FloatingLabelArgTypes,
 	...UnselectableArgTypes,
 	multiple: {
-		type: 'boolean',
 		description:
 			'This Boolean attribute indicates that multiple options can be selected in the list.',
 		table: {
@@ -51,7 +50,6 @@ export const argTypes = {
 		},
 	},
 	required: {
-		type: 'boolean',
 		description:
 			'A Boolean attribute indicating that an option with a non-empty string value must be selected.',
 		table: {
@@ -61,7 +59,6 @@ export const argTypes = {
 		},
 	},
 	size: {
-		type: 'string',
 		description:
 			'If the control is presented as a scrolling list box this attribute represents the number of rows in the list.',
 		control: {
@@ -69,14 +66,12 @@ export const argTypes = {
 		},
 	},
 	label: {
-		type: 'string',
 		description: '<label> value for the select',
 		control: {
 			type: 'text',
 		},
 	},
 	placeholder: {
-		type: 'string',
 		description: 'Text that appears when it has no value set.',
 		control: {
 			type: 'text',

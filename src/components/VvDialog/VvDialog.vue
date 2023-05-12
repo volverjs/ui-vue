@@ -60,7 +60,7 @@
 
 	// methods
 	onClickOutside(modalWrapper, () => {
-		if (props.autoClose) {
+		if (!props.keepOpen) {
 			modelValue.value = false
 		}
 	})

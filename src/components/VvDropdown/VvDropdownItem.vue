@@ -21,12 +21,12 @@
 </script>
 
 <template>
-	<li
+	<div
 		v-bind="{ role }"
 		ref="element"
 		class="vv-dropdown__item"
 		:class="{ 'focus-visible': focused || focusedWithin }"
 	>
 		<slot />
-	</li>
+	</div>
 </template>

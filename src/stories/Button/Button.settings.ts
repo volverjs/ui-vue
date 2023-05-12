@@ -22,7 +22,7 @@ export const defaultArgs = {
 }
 
 export const argTypes = {
-	modifiers: {
+	 modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: [
 			'primary',
@@ -71,18 +71,12 @@ export const argTypes = {
 	},
 	value: {
 		description: 'The button value',
-		type: {
-			summary: ['string', 'boolean', 'number'],
-		},
 		table: {
 			defaultValue: { summary: 'undefined' },
 		},
 	},
 	uncheckedValue: {
 		description: 'The button unchecked value',
-		type: {
-			summary: ['string', 'boolean', 'number'],
-		},
 		table: {
 			defaultValue: { summary: 'undefined' },
 		},
@@ -107,9 +101,6 @@ export const argTypes = {
 	rel: {
 		description: 'The rel attribute of the button',
 		control: { type: 'text' },
-		type: {
-			summary: 'boolean',
-		},
 		table: {
 			defaultValue: { summary: 'noopener noreferrer' },
 		},
@@ -162,5 +153,5 @@ export const argTypes = {
 				summary: 'html',
 			},
 		},
-	},
+	}, 
 }
