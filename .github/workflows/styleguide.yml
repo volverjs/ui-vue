@@ -40,7 +40,7 @@ jobs:
               with:
                   path: './storybook-static'
 
-    # if testEnv -> Vercel deploy for PR testing
+    # Vercel deploy for PR testing
     vercel-deploy:
         uses: ./.github/workflows/vercel-deploy.yml
         secrets: inherit
