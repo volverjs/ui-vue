@@ -30,6 +30,7 @@ jobs:
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps
             - name: Run Storybook test
+              if: ${{ !inputs.testEnv }}
               run: pnpm test-remote
             - name: Run Storybook test environment
               if: ${{ inputs.testEnv }}
