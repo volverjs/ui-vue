@@ -10,7 +10,7 @@ updates:
             update-types: ['version-update:semver-major']
       schedule:
           interval: 'daily'
-          time: '12:32'
+          time: '12:38'
           timezone: 'Europe/Rome'
     # Disable all pull requests for npm dependencies
     #   open-pull-requests-limit: 0
