@@ -26,6 +26,7 @@ jobs:
             - name: Bump version with release tag name
               run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
             - name: Build stileguide
+              if: ${{ !inputs.testEnv }}
               env:
                   NODE_OPTIONS: '--max_old_space_size=4096'
               run: pnpm styleguide
