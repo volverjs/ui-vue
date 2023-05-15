@@ -30,15 +30,12 @@ export default ({ mode }: { mode: string }) => {
 				imports: ['vue', '@vueuse/core'],
 				// Auto import for module exports under directories
 				// by default it only scan one level of modules under the directory
-				dirs: [
-					'./src/composables/**',
-					'./src/utils/'
-				],
+				dirs: ['./src/composables/**', './src/utils/'],
 				dts: true,
 				eslintrc: {
 					enabled: true,
 				},
-			})
+			}),
 		],
 		resolve: {
 			alias: {

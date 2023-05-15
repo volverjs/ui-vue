@@ -1,4 +1,4 @@
-name: Build library
+name: Test library
 
 on:
     workflow_call:
@@ -20,10 +20,11 @@ jobs:
               run: pnpm install --no-frozen-lockfile
             - name: Bump version with release tag name
               run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
-            - name: Build stileguide
+            - name: Build styleguide
               env:
                   NODE_OPTIONS: '--max_old_space_size=4096'
               run: pnpm styleguide
+
             - name: Setup GitHub Pages
               uses: actions/configure-pages@v2
             - name: Upload styleguide
