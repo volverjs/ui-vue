@@ -8,7 +8,7 @@ updates:
       schedule:
           #   interval: 'weelkly'
           interval: 'daily'
-          time: '09:36'
+          time: '09:46'
           timezone: 'Europe/Rome'
       ignore:
           - dependency-name: '*'
