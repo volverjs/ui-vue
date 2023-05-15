@@ -2,11 +2,6 @@ name: Test library
 
 on:
     workflow_call:
-        inputs:
-            testEnv:
-                default: false
-                required: false
-                type: boolean
 
 jobs:
     build:
@@ -30,29 +25,19 @@ jobs:
                   NODE_OPTIONS: '--max_old_space_size=4096'
               run: pnpm styleguide
 
-            # if not testEnv -> deploy on github pages
             - name: Setup GitHub Pages
-              if: ${{ !inputs.testEnv }}
               uses: actions/configure-pages@v2
             - name: Upload styleguide
-              if: ${{ !inputs.testEnv }}
               uses: actions/upload-pages-artifact@v1
               with:
                   path: './storybook-static'
 
-    # Vercel deploy for PR testing
-    vercel-deploy:
-        uses: ./.github/workflows/vercel-deploy.yml
-        secrets: inherit
-
-    # if not testEnv -> deploy on github pages
     deploy:
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
         needs: build
-        if: ${{ !inputs.testEnv }}
         steps:
             - name: Deploy to GitHub Pages
               id: deployment

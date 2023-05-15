@@ -6,9 +6,10 @@ updates:
       directory: '/'
       target-branch: 'develop'
       schedule:
-          interval: 'weelkly'
-          #   time: '12:55'
-          #   timezone: 'Europe/Rome'
+          #   interval: 'weelkly'
+          interval: 'daily'
+          time: '09:36'
+          timezone: 'Europe/Rome'
       ignore:
           - dependency-name: '*'
             update-types: ['version-update:semver-major']

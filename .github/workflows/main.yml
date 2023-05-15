@@ -22,16 +22,22 @@ jobs:
         uses: ./.github/workflows/sonarcloud.yml
         secrets: inherit
 
-    styleguide:
+    # Vercel deploy for storybook testing
+    vercel-deploy:
         needs: analysis
-        uses: ./.github/workflows/styleguide.yml
+        uses: ./.github/workflows/vercel-deploy.yml
+        secrets: inherit
 
     test:
-        needs: styleguide
+        needs: vercel-deploy
         uses: ./.github/workflows/test.yml
 
-    build:
+    styleguide:
         needs: test
+        uses: ./.github/workflows/styleguide.yml
+
+    build:
+        needs: styleguide
         uses: ./.github/workflows/build.yml
 
     publish-npm:
