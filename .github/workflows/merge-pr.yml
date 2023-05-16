@@ -1,9 +1,7 @@
 name: Auto-merge PR
 on:
-    pull_request_target:
     check_suite:
-        types:
-            - completed
+        types: [completed]
 
 permissions:
     pull-requests: write
