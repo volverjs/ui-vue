@@ -1,4 +1,4 @@
-name: Check pipeline
+name: Check PR
 
 on:
     # Run on pull request
@@ -18,20 +18,34 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    # Sonarcloud analysis
     analysis:
         uses: ./.github/workflows/sonarcloud.yml
         secrets: inherit
 
+    # CI
     build:
         needs: analysis
         uses: ./.github/workflows/build.yml
 
-    # Vercel deploy for storybook testing
+    # Vercel deploy env for storybook test
     vercel-deploy:
         needs: build
         uses: ./.github/workflows/vercel-deploy.yml
         secrets: inherit
 
-    test:
+    # Storybook test on vercel env
+    vercel-test:
         needs: vercel-deploy
         uses: ./.github/workflows/test.yml
+
+    # Trigger depfu merge
+    trigger-automerge:
+        needs: vercel-test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Trigger automerge
+              uses: peter-evans/repository-dispatch@v1
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: checks-complete

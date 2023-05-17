@@ -18,28 +18,33 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    # Sonarcloud analysis
     analysis:
         uses: ./.github/workflows/sonarcloud.yml
         secrets: inherit
 
-    # Vercel deploy for storybook testing
+    # Vercel deploy for storybook test
     vercel-deploy:
         needs: analysis
         uses: ./.github/workflows/vercel-deploy.yml
         secrets: inherit
 
+    # Styleguide test on Vercel env
     test:
         needs: vercel-deploy
         uses: ./.github/workflows/test.yml
 
+    # Publish styleguide to GitHub Pages
     styleguide:
         needs: test
         uses: ./.github/workflows/styleguide.yml
 
+    # Build package
     build:
         needs: styleguide
         uses: ./.github/workflows/build.yml
 
+    # Publish package to NPM
     publish-npm:
         needs: build
         runs-on: ubuntu-latest
@@ -56,6 +61,7 @@ jobs:
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
+    # Publish package to GPR
     publish-gpr:
         needs: build
         runs-on: ubuntu-latest
