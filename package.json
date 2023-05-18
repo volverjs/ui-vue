@@ -72,7 +72,7 @@
     "@rushstack/eslint-patch": "^1.2.0",
     "@storybook/addon-a11y": "7.0.12",
     "@storybook/addon-actions": "7.0.12",
-    "@storybook/addon-docs": "7.0.11",
+    "@storybook/addon-docs": "7.0.12",
     "@storybook/addon-essentials": "7.0.11",
     "@storybook/addon-interactions": "7.0.11",
     "@storybook/addon-links": "7.0.11",
