@@ -40,11 +40,23 @@ jobs:
         uses: ./.github/workflows/test.yml
 
     # Trigger depfu merge
-    trigger-automerge:
+    approve-pr:
         needs: vercel-test
         runs-on: ubuntu-latest
+        if: ${{ github.actor == 'depfu[bot]' }}
         steps:
-            - name: Trigger automerge
-              uses: peter-evans/repository-dispatch@v2
-              with:
-                  event-type: checks-complete
+            - name: Approve PR
+              run: gh pr review --approve "$PR_URL"
+              env:
+                  PR_URL: ${{github.event.pull_request.html_url}}
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    merge-pr:
+        needs: approve-pr
+        runs-on: ubuntu-latest
+        if: ${{ github.actor == 'depfu[bot]' }}
+        steps:
+            - name: Squash PR
+              run: gh pr merge --auto --squash "$PR_URL"
+              env:
+                  PR_URL: ${{github.event.pull_request.html_url}}
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
