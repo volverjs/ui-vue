@@ -43,7 +43,7 @@ jobs:
     approve-pr:
         needs: vercel-test
         runs-on: ubuntu-latest
-        if: ${{ github.actor == 'depfu[bot]' }}
+        if: ${{ github.event.pull_request.user.login == 'depfu[bot]' }}
         steps:
             - name: Approve PR
               run: gh pr review --approve "$PR_URL"
@@ -53,7 +53,7 @@ jobs:
     merge-pr:
         needs: approve-pr
         runs-on: ubuntu-latest
-        if: ${{ github.actor == 'depfu[bot]' }}
+        if: ${{ github.event.pull_request.user.login == 'depfu[bot]' }}
         steps:
             - name: Squash PR
               run: gh pr merge --auto --squash "$PR_URL"
