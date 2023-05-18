@@ -3,7 +3,7 @@ on:
     # Triggered by pr-check-suite.yml
     # on check_suite:completed with positive result
     repository_dispatch:
-        types: [completed]
+        types: [checks-complete]
 
 permissions:
     pull-requests: write
