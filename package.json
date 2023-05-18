@@ -120,7 +120,7 @@
     "react-dom": "^18.2.0",
     "remark": "^14.0.2",
     "sass": "^1.62.1",
-    "storybook": "7.0.11",
+    "storybook": "7.0.12",
     "storybook-addon-markdown-docs": "^1.0.5",
     "storybook-dark-mode": "^3.0.0",
     "storybook-version": "^0.1.1",
