@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.8] - 2023-05-12
+
+### Added
+
+- `VvAlert` new `title` and `close` slots.
+
 ## [0.0.7] - 2023-05-12
 
 ### Fixed
@@ -133,6 +139,8 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.8]: https://github.com/volverjs/style/compare/v0.0.7...v0.0.8
+[0.0.7]: https://github.com/volverjs/style/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/volverjs/style/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/volverjs/style/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/volverjs/style/compare/v0.0.3...v0.0.4

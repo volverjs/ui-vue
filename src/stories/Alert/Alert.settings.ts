@@ -87,6 +87,16 @@ export const argTypes = {
 			},
 		},
 	},
+	close: {
+		control: {
+			type: 'text',
+		},
+		table: {
+			type: {
+				summary: 'html',
+			},
+		},
+	},
 	default: {
 		control: {
 			type: 'text',

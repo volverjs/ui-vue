@@ -16,27 +16,45 @@
 
 <template>
 	<div v-bind="hasProps">
-		<div class="vv-alert__header">
+		<div
+			v-if="
+				$slots.header ||
+				$slots.title ||
+				$slots.close ||
+				$slots['title::before'] ||
+				$slots['title::after'] ||
+				title ||
+				dismissable ||
+				autoClose
+			"
+			class="vv-alert__header"
+		>
 			<VvIcon v-if="hasIcon" v-bind="hasIcon" class="vv-alert__icon" />
 			<!-- @slot Header slot -->
 			<slot name="header">
 				<!-- @slot Before title slot -->
 				<slot name="title::before" />
 				<strong :id="hasTitleId" class="vv-alert__title">
-					{{ title }}
+					<!-- @slot Title slot -->
+					<slot name="title">
+						{{ title }}
+					</slot>
 				</strong>
 				<!-- @slot After title slot -->
 				<slot name="title::after" />
 			</slot>
-			<button
-				v-if="dismissable || autoClose"
-				class="vv-alert__close"
-				type="button"
-				:aria-label="closeLabel"
-				@click.stop="close"
-			>
-				<div class="vv-alert__close-mask"></div>
-			</button>
+			<!-- @slot Close button slot -->
+			<slot name="close" v-bind="{ close }">
+				<button
+					v-if="dismissable || autoClose"
+					class="vv-alert__close"
+					type="button"
+					:aria-label="closeLabel"
+					@click.stop="close"
+				>
+					<div class="vv-alert__close-mask"></div>
+				</button>
+			</slot>
 		</div>
 		<div v-if="$slots.default || content" class="vv-alert__content">
 			<!-- @slot Content slot -->
