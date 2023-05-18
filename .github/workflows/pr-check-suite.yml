@@ -10,8 +10,8 @@ permissions:
     contents: write
     pages: write
     id-token: write
-    pull-requests: read
-
+    pull-requests: all
+    
 # Allow one concurrent deployment
 concurrency:
     group: 'pages'
