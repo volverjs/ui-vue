@@ -16,7 +16,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	const alertHeaderEl =
 		element.getElementsByClassName('vv-alert__header')?.[0]
-	const closeButton = alertHeaderEl?.lastChild as HTMLElement
+	const closeButtonEl = element.getElementsByClassName('vv-alert__close')?.[0]
 	const alertContentEl =
 		element.getElementsByClassName('vv-alert__content')?.[0]
 	const alertFooterEl =
@@ -32,14 +32,18 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	// dismissable
 	if (args.dismissable) {
 		expect(element).toHaveClass('vv-alert--dismissable')
-		expect(closeButton).toHaveClass('vv-alert__close')
+		expect(closeButtonEl).not.toBeUndefined()
 	}
 
 	// autoclose
 	if (args.autoClose) {
 		expect(element).toHaveClass('vv-alert--auto-close')
-		expect(closeButton).toHaveClass('vv-alert__close')
-		expect(closeButton.firstChild).toHaveClass('vv-alert__close-mask')
+		expect(closeButtonEl).not.toBeUndefined()
+		expect(closeButtonEl.firstChild).toHaveClass('vv-alert__close-mask')
+	}
+
+	if (!args.autoClose && !args.dismissable) {
+		expect(closeButtonEl).toBeUndefined()
 	}
 
 	// icon
