@@ -18,7 +18,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	}
 
 	// check if tooltip is visible after focus
-	await parentElement.focus()
+	await parentElement.focus({
+		preventScroll: true,
+	})
 	await sleep(1200)
 	await expect(window.getComputedStyle(element)).toHaveProperty(
 		'opacity',

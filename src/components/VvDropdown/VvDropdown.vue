@@ -210,7 +210,9 @@
 					floatingEl.value,
 				)
 				if (focusableElements.length > 0) {
-					focusableElements[0].focus()
+					focusableElements[0].focus({
+						preventScroll: true,
+					})
 				}
 			})
 		}
@@ -286,9 +288,13 @@
 					document.activeElement as HTMLElement,
 				)
 				if (activeElementIndex < focusableElements.length - 1) {
-					focusableElements[activeElementIndex + 1].focus()
+					focusableElements[activeElementIndex + 1].focus({
+						preventScroll: true,
+					})
 				} else {
-					focusableElements[0].focus()
+					focusableElements[0].focus({
+						preventScroll: true,
+					})
 				}
 			}
 		})
@@ -306,9 +312,13 @@
 					document.activeElement as HTMLElement,
 				)
 				if (activeElementIndex > 0) {
-					focusableElements[activeElementIndex - 1].focus()
+					focusableElements[activeElementIndex - 1].focus({
+						preventScroll: true,
+					})
 				} else {
-					focusableElements[focusableElements.length - 1].focus()
+					focusableElements[focusableElements.length - 1].focus({
+						preventScroll: true,
+					})
 				}
 			}
 		})

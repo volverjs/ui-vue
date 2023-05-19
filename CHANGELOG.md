@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - `VvAlert` new `title` and `close` slots.
 
+### Fixed
+
+- `focus()` with `preventScroll: true`.
+
 ## [0.0.7] - 2023-05-12
 
 ### Fixed

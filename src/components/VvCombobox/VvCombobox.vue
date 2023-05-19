@@ -101,7 +101,9 @@
 	const onAfterExpand = () => {
 		if (searchable.value) {
 			if (inputSearchEl.value) {
-				inputSearchEl.value.focus()
+				inputSearchEl.value.focus({
+					preventScroll: true,
+				})
 			}
 		}
 	}
