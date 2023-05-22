@@ -2,7 +2,6 @@ import type { PlayAttributes } from '@/test/types'
 import { within } from '@storybook/testing-library'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
-import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
@@ -16,6 +15,8 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	)[0] as HTMLSelectElement
 	const hint = element.getElementsByClassName('vv-select__hint')[0]
 
+	const { getOptionValue } = useOptions(args)
+
 	if (
 		!args.invalid &&
 		!args.disabled &&
@@ -25,8 +26,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	) {
 		// select first value
 		const firstValue = getOptionValue(
-			args.options[0].options ? args.options[0] : args,
-			0,
+			args.options[0].options?.[0] ?? args.options[0],
 		)
 		select.value = firstValue
 		select.dispatchEvent(new Event('change'))

@@ -76,3 +76,21 @@ export const GroupedOptions: Story = {
 		],
 	},
 }
+
+export const DotPathOptions: Story = {
+	...Default,
+	args: {
+		...Default.args,
+		valueKey: 'value.val',
+		labelKey: 'label.en',
+		options: [
+			{ value: { val: 'first' }, label: { it: 'Primo', en: 'First' } },
+			{
+				value: { val: 'second' },
+				label: { it: 'Secondo', en: 'Second' },
+			},
+			{ value: { val: 'third' }, label: { it: 'Terzo', en: 'Third' } },
+			{ value: { val: 'fourth' }, label: { it: 'Quarto', en: 'Fourth' } },
+		],
+	},
+}

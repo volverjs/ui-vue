@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.8] - 2023-05-12
+## [0.0.8] - 2023-05-22
 
 ### Added
 
 - `VvAlert` new `title` and `close` slots.
+- Allow dot notation on props `labelKey`, `valueKey`, `disabledKey` in components `VvSelect`, `VvCombo`, `VvRadioGroup`, `VvCheckboxGroup`
 
 ### Fixed
 

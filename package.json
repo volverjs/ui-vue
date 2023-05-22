@@ -60,6 +60,7 @@
     "maska": "^2.1.9",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.2",
+    "ts-dot-prop": "^2.1.2",
     "vue": "^3.3.4"
   },
   "devDependencies": {

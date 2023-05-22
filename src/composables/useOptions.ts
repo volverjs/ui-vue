@@ -1,4 +1,5 @@
 import type { Option } from '../types/generic'
+import { get } from 'ts-dot-prop'
 
 // eslint-disable-next-line
 export function useOptions(props: any) {
@@ -11,7 +12,7 @@ export function useOptions(props: any) {
 		return String(
 			typeof labelKey.value === 'function'
 				? labelKey.value(option)
-				: option[labelKey.value],
+				: get(option, labelKey.value),
 		)
 	}
 
@@ -20,7 +21,7 @@ export function useOptions(props: any) {
 
 		return typeof valueKey.value === 'function'
 			? valueKey.value(option)
-			: option[valueKey.value]
+			: get(option, valueKey.value)
 	}
 
 	const getOptionDisabled = (option: string | Option): boolean => {
@@ -28,7 +29,7 @@ export function useOptions(props: any) {
 
 		return typeof disabledKey.value === 'function'
 			? disabledKey.value(option)
-			: option[disabledKey.value]
+			: get(option, disabledKey.value)
 	}
 
 	const getOptionGrouped = (option: string | Option) => {

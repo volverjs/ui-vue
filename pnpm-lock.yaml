@@ -28,6 +28,9 @@ dependencies:
   nanoid:
     specifier: ^4.0.2
     version: 4.0.2
+  ts-dot-prop:
+    specifier: ^2.1.2
+    version: 2.1.2
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -12200,6 +12203,13 @@ packages:
     engines: {node: '>=6.10'}
     dev: true
 
+  /ts-dot-prop@2.1.2:
+    resolution: {integrity: sha512-YyBdUfp3SavXpKHLumacXDS6JoIT/235ZpkKXFa0l2ZNFu/ok077W7H4GBypk4cga7gZoVALfJrsYpJsVS1BdA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      ts-util-is: 2.0.2
+    dev: false
+
   /ts-map@1.0.3:
     resolution: {integrity: sha512-vDWbsl26LIcPGmDpoVzjEP6+hvHZkBkLW7JpvwbCv/5IYPJlsbzCVXY3wsCeAxAUeTclNOUZxnLdGh3VBD/J6w==}
     dev: true
@@ -12234,6 +12244,11 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /ts-util-is@2.0.2:
+    resolution: {integrity: sha512-04T15Tok4y9VJlJsi9bLhqxmUosDFBKDo93VdZf3BModUcJfEzea0L+SMPNlSLpPr+vcNU3vHwxnfJl5wkOqhg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
