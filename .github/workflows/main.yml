@@ -25,7 +25,6 @@ jobs:
 
     # Vercel deploy for storybook test
     vercel-deploy:
-        needs: analysis
         uses: ./.github/workflows/vercel-deploy.yml
         secrets: inherit
 
@@ -41,7 +40,6 @@ jobs:
 
     # Build package
     build:
-        needs: styleguide
         uses: ./.github/workflows/build.yml
 
     # Publish package to NPM
