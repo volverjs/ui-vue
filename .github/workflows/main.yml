@@ -44,7 +44,7 @@ jobs:
 
     # Publish package to NPM
     publish-npm:
-        needs: build
+        needs: [build, styleguide, test, analysis]
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
@@ -61,7 +61,7 @@ jobs:
 
     # Publish package to GPR
     publish-gpr:
-        needs: build
+        needs: [build, styleguide, test, analysis]
         runs-on: ubuntu-latest
         permissions:
             contents: read
