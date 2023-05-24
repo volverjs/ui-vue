@@ -1,7 +1,12 @@
 <script lang="ts">
 	export default {
 		name: 'VvCombobox',
-		components: { VvDropdown, VvDropdownOption, VvDropdownOptgroup },
+		components: {
+			VvDropdown,
+			VvDropdownOption,
+			VvDropdownOptgroup,
+			VvButton,
+		},
 	}
 </script>
 
@@ -14,6 +19,7 @@
 	import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
 	import VvSelect from '../VvSelect/VvSelect.vue'
 	import VvBadge from '../VvBadge/VvBadge.vue'
+	import VvButton from '../VvButton/VvButton.vue'
 	import HintSlotFactory from '../common/HintSlot'
 	import type { Option } from '../../types/generic'
 	import { DropdownRole } from '../../constants'
@@ -132,6 +138,9 @@
 	const hasDropdownId = computed(() => `${hasId.value}-dropdown`)
 	const hasSearchId = computed(() => `${hasId.value}-search`)
 	const hasLabelId = computed(() => `${hasId.value}-label`)
+
+	// ref
+	const dropdownEl = ref()
 
 	// icons
 	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
@@ -366,11 +375,13 @@
 		</label>
 		<div ref="wrapperEl" class="vv-select__wrapper">
 			<VvDropdown
+				ref="dropdownEl"
 				v-model="expanded"
 				v-bind="dropdownProps"
 				:role="DropdownRole.listbox"
 				@after-expand="onAfterExpand"
 				@after-collapse="onAfterCollapse"
+				@click="$event.stopPropagation()"
 			>
 				<template
 					v-if="searchable || $slots['dropdown::before']"
@@ -563,9 +574,16 @@
 						</slot>
 					</VvDropdownOption>
 				</template>
-				<template v-if="$slots['dropdown::after']" #after>
+				<template #after>
 					<!-- @slot Slot after dropdown items -->
-					<slot name="dropdown::after" />
+					<slot name="dropdown::after">
+						<!-- Close button if dropdown custom position is enabled and floating-ui disabled -->
+						<VvButton
+							v-if="dropdownEl?.dropdownCustomPosition === 'true'"
+							label="Close"
+							modifiers="secondary"
+						/>
+					</slot>
 				</template>
 			</VvDropdown>
 		</div>

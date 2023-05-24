@@ -132,6 +132,7 @@ export const VvComboboxProps = {
 	 */
 	dropdownModifiers: {
 		type: [String, Array] as PropType<string | string[]>,
+		default: 'mobile',
 	},
 	/**
 	 * Open dropdown on focus

@@ -43,7 +43,7 @@
 
 	// template elements
 	const localReferenceEl = ref<HTMLElement | null>(null)
-	const floatingEl: Ref<HTMLElement | null> = ref(null)
+	const floatingEl: Ref = ref()
 	const arrowEl = ref<HTMLElement | null>(null)
 	const listEl = ref<HTMLUListElement | null>(null)
 	const referenceEl = computed({
@@ -51,6 +51,25 @@
 		set: (newValue) => {
 			localReferenceEl.value = newValue
 		},
+	})
+
+	// ref to store the value of css-var "--dropdown-custom-position"
+	const dropdownCustomPosition = ref()
+
+	// set dropdownCustomPosition value from css-var "--dropdown-custom-position"
+	const onChangeDropdownCustomPosition = () => {
+		dropdownCustomPosition.value = window
+			.getComputedStyle(floatingEl.value)
+			.getPropertyValue('--dropdown-custom-position')
+			?.trim()
+	}
+
+	// observe dropdown style for "--dropdown-custom-position" css var to disable floating-ui
+	onMounted(() => {
+		useMutationObserver(floatingEl.value, onChangeDropdownCustomPosition, {
+			attributeFilter: ['style'],
+			window,
+		})
 	})
 
 	// floating ui
@@ -138,17 +157,22 @@
 			middleware,
 		},
 	)
-	const dropdownPlacement = computed(() => ({
-		position: strategy.value,
-		top: `${y.value ?? 0}px`,
-		left: `${x.value ?? 0}px`,
-		maxWidth: maxWidth.value,
-		maxHeight: maxHeight.value,
-		width:
-			props.triggerWidth && referenceEl.value
-				? `${referenceEl.value.offsetWidth}px`
-				: undefined,
-	}))
+	const dropdownPlacement = computed(() => {
+		if (dropdownCustomPosition?.value === 'true') {
+			return {}
+		}
+		return {
+			position: strategy.value,
+			top: `${y.value ?? 0}px`,
+			left: `${x.value ?? 0}px`,
+			maxWidth: maxWidth.value,
+			maxHeight: maxHeight.value,
+			width:
+				props.triggerWidth && referenceEl.value
+					? `${referenceEl.value.offsetWidth}px`
+					: undefined,
+		}
+	})
 
 	// placement
 	const side = computed(() => placement.value.split('-')[0])
@@ -162,6 +186,9 @@
 			}[side.value] ?? 'bottom'),
 	)
 	const arrowPlacement = computed(() => {
+		if (dropdownCustomPosition?.value === 'true') {
+			return {}
+		}
 		if (['bottom', 'top'].includes(staticSide.value)) {
 			return {
 				right: `${middlewareData.value.arrow?.x ?? 0}px`,
@@ -201,7 +228,7 @@
 	const init = (el: HTMLElement) => {
 		referenceEl.value = el
 	}
-	defineExpose({ toggle, show, hide, init })
+	defineExpose({ toggle, show, hide, init, dropdownCustomPosition })
 	watch(expanded, (newValue) => {
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {
@@ -344,14 +371,10 @@
 		}
 	})
 	onKeyStroke([' ', 'Enter'], (e) => {
-		if (
-			expanded.value &&
-			focused.value &&
-			e.target !== document.activeElement
-		) {
-			e.preventDefault()
-			const activeElement = document.activeElement as HTMLElement
-			activeElement.click()
+		const htmlEl = e.target as HTMLElement
+
+		if (expanded.value && focused.value && htmlEl) {
+			htmlEl?.click()
 		}
 	})
 	const onTransitionBeforeEnter = () => {
@@ -380,6 +403,7 @@
 			ref="floatingEl"
 			:style="dropdownPlacement"
 			:class="bemCssClasses"
+			@click="hide()"
 		>
 			<div
 				v-if="props.arrow"

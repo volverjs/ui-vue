@@ -25,12 +25,10 @@ jobs:
 
     # CI
     build:
-        needs: analysis
         uses: ./.github/workflows/build.yml
 
     # Vercel deploy env for storybook test
     vercel-deploy:
-        needs: build
         uses: ./.github/workflows/vercel-deploy.yml
         secrets: inherit
 
@@ -41,5 +39,5 @@ jobs:
 
     # Trigger depfu merge
     trigger-automerge:
-        needs: vercel-test
+        needs: [vercel-test, build, analysis]
         uses: ./.github/workflows/pr-depfu-merge.yml

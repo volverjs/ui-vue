@@ -55,49 +55,49 @@ devDependencies:
     specifier: ^1.2.0
     version: 1.2.0
   '@storybook/addon-a11y':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-actions':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-docs':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-essentials':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-interactions':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-links':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)
   '@storybook/channel-postmessage':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/channel-websocket':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/cli':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/client-api':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/client-logger':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/core-common':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/jest':
     specifier: ^0.1.0
     version: 0.1.0
   '@storybook/preview-api':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/preview-web':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12
   '@storybook/test-runner':
     specifier: ^0.10.0
@@ -106,10 +106,10 @@ devDependencies:
     specifier: ^0.1.0
     version: 0.1.0
   '@storybook/vue3':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(vue@3.3.4)
   '@storybook/vue3-vite':
-    specifier: 7.0.12
+    specifier: ^7.0.12
     version: 7.0.12(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.8)(vue@3.3.4)
   '@tsconfig/node18':
     specifier: ^2.0.1
@@ -121,7 +121,7 @@ devDependencies:
     specifier: ^21.1.1
     version: 21.1.1
   '@types/node':
-    specifier: 20.2.1
+    specifier: ^20.2.1
     version: 20.2.1
   '@types/react':
     specifier: ^18.2.6
@@ -133,8 +133,8 @@ devDependencies:
     specifier: ^4.2.3
     version: 4.2.3(vite@4.3.8)(vue@3.3.4)
   '@volverjs/style':
-    specifier: 0.1.11-beta.1
-    version: 0.1.11-beta.1
+    specifier: ^0.1.11-beta.3
+    version: 0.1.11-beta.3
   '@vue/compiler-sfc':
     specifier: ^3.3.4
     version: 3.3.4
@@ -4410,8 +4410,8 @@ packages:
       typescript: 5.0.4
     dev: true
 
-  /@volverjs/style@0.1.11-beta.1:
-    resolution: {integrity: sha512-+rKX2TbtEg1yuM1aJO2LDsvOJfNIy+rN/Rhs0YjhcAqbsNtwRckZtJszoXk8k4TlJc0HaxiVYSVBK6+fmWnEGA==}
+  /@volverjs/style@0.1.11-beta.3:
+    resolution: {integrity: sha512-Bfb31YxdJ5XG++geQcrlo7llW4Hquz/X5lZjEn8b3SDbq09cpQ/YJzpTlTH5Az/GoQ2U6IoPFvCXB/EPk/FmEg==}
     engines: {node: '>= 12.x'}
     dev: true
 
