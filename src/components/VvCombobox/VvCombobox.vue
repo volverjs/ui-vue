@@ -381,7 +381,6 @@
 				:role="DropdownRole.listbox"
 				@after-expand="onAfterExpand"
 				@after-collapse="onAfterCollapse"
-				@click="$event.stopPropagation()"
 			>
 				<template
 					v-if="searchable || $slots['dropdown::before']"
@@ -582,6 +581,7 @@
 							v-if="dropdownEl?.dropdownCustomPosition === 'true'"
 							label="Close"
 							modifiers="secondary"
+							@click="dropdownEl.hide()"
 						/>
 					</slot>
 				</template>

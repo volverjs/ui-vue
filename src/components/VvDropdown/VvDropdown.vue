@@ -403,7 +403,6 @@
 			ref="floatingEl"
 			:style="dropdownPlacement"
 			:class="bemCssClasses"
-			@click="hide()"
 		>
 			<div
 				v-if="props.arrow"
