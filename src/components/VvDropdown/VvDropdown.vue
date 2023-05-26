@@ -54,22 +54,24 @@
 	})
 
 	// ref to store the value of css-var "--dropdown-custom-position"
-	const dropdownCustomPosition = ref()
-
-	// set dropdownCustomPosition value from css-var "--dropdown-custom-position"
-	const onChangeDropdownCustomPosition = () => {
-		dropdownCustomPosition.value = window
-			.getComputedStyle(floatingEl.value)
-			.getPropertyValue('--dropdown-custom-position')
-			?.trim()
-	}
+	const hasCustomPosition = ref(false)
 
 	// observe dropdown style for "--dropdown-custom-position" css var to disable floating-ui
 	onMounted(() => {
-		useMutationObserver(floatingEl.value, onChangeDropdownCustomPosition, {
-			attributeFilter: ['style'],
-			window,
-		})
+		useMutationObserver(
+			floatingEl.value,
+			() => {
+				hasCustomPosition.value =
+					window
+						.getComputedStyle(floatingEl.value)
+						.getPropertyValue('--dropdown-custom-position')
+						?.trim() === 'true'
+			},
+			{
+				attributeFilter: ['style'],
+				window,
+			},
+		)
 	})
 
 	// floating ui
@@ -158,8 +160,8 @@
 		},
 	)
 	const dropdownPlacement = computed(() => {
-		if (dropdownCustomPosition?.value === 'true') {
-			return {}
+		if (hasCustomPosition.value) {
+			return undefined
 		}
 		return {
 			position: strategy.value,
@@ -175,31 +177,34 @@
 	})
 
 	// placement
-	const side = computed(() => placement.value.split('-')[0])
-	const staticSide = computed(
+	const side = computed(
 		() =>
-			({
-				top: 'bottom',
-				right: 'left',
-				bottom: 'top',
-				left: 'right',
-			}[side.value] ?? 'bottom'),
+			placement.value.split('-')[0] as
+				| 'top'
+				| 'right'
+				| 'bottom'
+				| 'left',
 	)
 	const arrowPlacement = computed(() => {
-		if (dropdownCustomPosition?.value === 'true') {
-			return {}
+		if (hasCustomPosition.value) {
+			return undefined
 		}
-		if (['bottom', 'top'].includes(staticSide.value)) {
-			return {
-				right: `${middlewareData.value.arrow?.x ?? 0}px`,
-				[staticSide.value]: `${
-					-(arrowEl.value?.offsetWidth ?? 0) / 2
-				}px`,
-			}
-		}
+		const staticSide = {
+			top: 'bottom',
+			right: 'left',
+			bottom: 'top',
+			left: 'right',
+		}[side.value]
 		return {
-			top: `${middlewareData.value.arrow?.y ?? 0}px`,
-			[staticSide.value]: `${-(arrowEl.value?.offsetWidth ?? 0) / 2}px`,
+			left:
+				middlewareData.value.arrow?.x !== undefined
+					? `${middlewareData.value.arrow?.x}px`
+					: undefined,
+			top:
+				middlewareData.value.arrow?.y !== undefined
+					? `${middlewareData.value.arrow?.y}px`
+					: undefined,
+			[staticSide]: `${-(arrowEl.value?.offsetWidth ?? 0) / 2}px`,
 		}
 	})
 
@@ -228,7 +233,13 @@
 	const init = (el: HTMLElement) => {
 		referenceEl.value = el
 	}
-	defineExpose({ toggle, show, hide, init, dropdownCustomPosition })
+	defineExpose({
+		toggle,
+		show,
+		hide,
+		init,
+		customPosition: hasCustomPosition,
+	})
 	watch(expanded, (newValue) => {
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {

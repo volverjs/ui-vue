@@ -578,7 +578,7 @@
 					<slot name="dropdown::after">
 						<!-- Close button if dropdown custom position is enabled and floating-ui disabled -->
 						<VvButton
-							v-if="dropdownEl?.dropdownCustomPosition === 'true'"
+							v-if="dropdownEl?.customPosition"
 							label="Close"
 							modifiers="secondary"
 							@click="dropdownEl.hide()"

@@ -6,14 +6,15 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- `VvAlert` new `title` and `close` slots.
-- `VvDropdown` `VvCombobox` mobile management.
-- Allow dot notation on props `labelKey`, `valueKey`, `disabledKey` in components `VvSelect`, `VvCombo`, `VvRadioGroup`, `VvCheckboxGroup`
+- `VvAlert` new `title` and `close` slots;
+- `VvDropdown` `VvCombobox` mobile management;
+- Allow dot notation on props `labelKey`, `valueKey`, `disabledKey` in components `VvSelect`, `VvCombo`, `VvRadioGroup`, `VvCheckboxGroup`.
 
 ### Fixed
 
-- `focus()` with `preventScroll: true`.
-- `VvCombobox` select option on key "enter"
+- `focus()` with `preventScroll: true`;
+- `VvDropdown` arrow placement;
+- `VvCombobox` select option on key "enter".
 
 ## [0.0.7] - 2023-05-12
 
