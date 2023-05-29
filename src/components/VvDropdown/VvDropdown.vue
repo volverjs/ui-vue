@@ -34,6 +34,14 @@
 		'beforeCollapse',
 		'afterExpand',
 		'afterCollapse',
+		'before-enter',
+		'after-leave',
+		'enter',
+		'after-enter',
+		'enter-cancelled',
+		'before-leave',
+		'leave',
+		'leave-cancelled',
 	])
 	const { id } = toRefs(props)
 	const hasId = useUniqueId(id)
@@ -388,11 +396,34 @@
 			htmlEl?.click()
 		}
 	})
-	const onTransitionBeforeEnter = () => {
-		emit(expanded.value ? 'beforeExpand' : 'beforeCollapse')
-	}
-	const onTransitionAfterLeave = () => {
-		emit(expanded.value ? 'afterExpand' : 'afterCollapse')
+
+	const dropdownTransitionHandlers = {
+		'before-enter': () => {
+			emit(expanded.value ? 'beforeExpand' : 'beforeCollapse')
+			emit('before-enter')
+		},
+		'after-leave': () => {
+			emit(expanded.value ? 'afterExpand' : 'afterCollapse')
+			emit('after-leave')
+		},
+		enter: () => {
+			emit('enter')
+		},
+		'after-enter': () => {
+			emit('after-enter')
+		},
+		'enter-cancelled': () => {
+			emit('enter-cancelled')
+		},
+		'before-leave': () => {
+			emit('before-leave')
+		},
+		leave: () => {
+			emit('leave')
+		},
+		'leave-cancelled': () => {
+			emit('leave-cancelled')
+		},
 	}
 </script>
 
@@ -402,13 +433,7 @@
 			v-bind="{ init, show, hide, toggle, expanded, aria: referenceAria }"
 		/>
 	</VvDropdownTriggerProvider>
-	<Transition
-		:name="transitionName"
-		v-on="{
-			beforeEnter: onTransitionBeforeEnter,
-			onAfterLeave: onTransitionAfterLeave,
-		}"
-	>
+	<Transition :name="transitionName" v-on="dropdownTransitionHandlers">
 		<div
 			v-show="expanded"
 			ref="floatingEl"

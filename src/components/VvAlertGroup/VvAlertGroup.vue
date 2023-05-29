@@ -11,6 +11,33 @@
 	const props = defineProps(VvAlertGroupProps)
 	const emit = defineEmits(VvAlertGroupEvents)
 	const { hasProps, hasTransition } = useVvAlertGroup(props, emit)
+
+	const alertGroupTransitionHandlers = {
+		'before-enter': () => {
+			emit('before-enter')
+		},
+		'after-leave': () => {
+			emit('after-leave')
+		},
+		enter: () => {
+			emit('enter')
+		},
+		'after-enter': () => {
+			emit('after-enter')
+		},
+		'enter-cancelled': () => {
+			emit('enter-cancelled')
+		},
+		'before-leave': () => {
+			emit('before-leave')
+		},
+		leave: () => {
+			emit('leave')
+		},
+		'leave-cancelled': () => {
+			emit('leave-cancelled')
+		},
+	}
 </script>
 
 <template>
@@ -22,6 +49,7 @@
 			role="group"
 			:name="hasTransition"
 			class="vv-alert-group__list"
+			v-on="alertGroupTransitionHandlers"
 		>
 			<!-- @slot The slot for alert list  -->
 			<slot>

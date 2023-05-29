@@ -1,6 +1,18 @@
 import { IdProps } from '../../props'
 
-export const VvDialogEvents = ['open', 'close', 'update:modelValue']
+export const VvDialogEvents = [
+	'open',
+	'close',
+	'update:modelValue',
+	'before-enter',
+	'after-leave',
+	'enter',
+	'after-enter',
+	'enter-cancelled',
+	'before-leave',
+	'leave',
+	'leave-cancelled',
+]
 
 export const VvDialogProps = {
 	...IdProps,

@@ -51,10 +51,30 @@
 		'before-enter': () => {
 			dialogEl.value?.showModal()
 			emit('open')
+			emit('before-enter')
 		},
 		'after-leave': () => {
 			dialogEl.value?.close()
 			emit('close')
+			emit('after-leave')
+		},
+		enter: () => {
+			emit('enter')
+		},
+		'after-enter': () => {
+			emit('after-enter')
+		},
+		'enter-cancelled': () => {
+			emit('enter-cancelled')
+		},
+		'before-leave': () => {
+			emit('before-leave')
+		},
+		leave: () => {
+			emit('leave')
+		},
+		'leave-cancelled': () => {
+			emit('leave-cancelled')
 		},
 	}
 
