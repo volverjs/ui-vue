@@ -1,5 +1,3 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Depfu](https://badges.depfu.com/badges/4b0c9d8ea210e93aa7a181e7252716f2/status.svg)](https://depfu.com) [![Depfu](https://badges.depfu.com/badges/4b0c9d8ea210e93aa7a181e7252716f2/overview.svg)](https://depfu.com/github/volverjs/ui-vue?project_id=38572)
-
 <div align="center">
   
 [![volverjs](.storybook/static/volverjs-beta.svg)](https://volverjs.github.io/ui-vue)
@@ -9,6 +7,8 @@
 `vue` `components` `component-library` `design-system` \
 `input` `button` `accordion` `badge` `combobox` `breadcrumb` `dialog`\
 `checkbox` `radio` `textarea` `badge`
+  
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Depfu](https://badges.depfu.com/badges/4b0c9d8ea210e93aa7a181e7252716f2/status.svg)](https://depfu.com) [![Depfu](https://badges.depfu.com/badges/4b0c9d8ea210e93aa7a181e7252716f2/overview.svg)](https://depfu.com/github/volverjs/ui-vue?project_id=38572)
 
 <br>
 
