@@ -1,17 +1,11 @@
 import type { PropType } from 'vue'
-import { DropdownProps, IdProps } from '../../props'
+import { DropdownProps, IdProps, ModifiersProps } from '../../props'
 import { DropdownRole } from '../../constants'
 
 export const VvDropdownProps = {
 	...IdProps,
 	...DropdownProps,
-	/**
-	 * Component BEM modifiers
-	 */
-	modifiers: {
-		type: [String, Array] as PropType<string | string[]>,
-		default: 'mobile',
-	},
+	...ModifiersProps,
 	/**
 	 * Show / hide dropdown programmatically
 	 */
