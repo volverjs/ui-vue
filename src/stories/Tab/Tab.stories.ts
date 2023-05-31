@@ -20,9 +20,9 @@ export const Default: Story = {
 		...defaultArgs,
 	},
 	render: (args) => ({
-		components: {VvTab},
+		components: { VvTab },
 		setup() {
-			return {args}
+			return { args }
 		},
 		template: /* html */ `
 			<div class="m-md w-1/2">
@@ -64,7 +64,7 @@ export const Default: Story = {
 						</p>
 					</template>
 				</vv-tab>
-			</div>`
+			</div>`,
 	}),
 	play: defaultTest,
 }

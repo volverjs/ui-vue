@@ -457,4 +457,11 @@ export const ActionProps = {
 		validator: (value: ButtonType) =>
 			Object.values(ButtonType).includes(value),
 	},
+	/**
+	 * Button aria-label
+	 */
+	ariaLabel: {
+		type: String,
+		default: undefined,
+	},
 }

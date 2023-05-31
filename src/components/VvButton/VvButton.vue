@@ -118,6 +118,7 @@
 			href,
 			target,
 			rel,
+			ariaLabel,
 		}"
 		:id="hasId"
 		ref="element"

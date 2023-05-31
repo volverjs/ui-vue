@@ -1,3 +1,5 @@
+import type { VvCombobox } from '@/components'
+import type { Meta } from '@storybook/vue3'
 import {
 	ValidArgTypes,
 	InvalidArgTypes,
@@ -15,7 +17,7 @@ import {
 } from '@/stories/argTypes'
 import { VvComboboxProps } from '@/components/VvCombobox'
 
-export const defaultArgs = {
+export const defaultArgs: Meta<typeof VvCombobox>['args'] = {
 	...propsToObject(VvComboboxProps),
 	name: 'vv-combobox',
 	maxValues: undefined,

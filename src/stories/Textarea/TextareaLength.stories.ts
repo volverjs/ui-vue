@@ -35,7 +35,7 @@ export const Count: Story = {
 	args: {
 		...Default.args,
 		count: true,
-		minLength: 100,
+		minlength: 100,
 	},
 }
 

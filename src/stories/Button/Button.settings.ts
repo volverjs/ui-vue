@@ -1,3 +1,5 @@
+import type { Meta } from '@storybook/vue3'
+import type { VvButton } from '@/components'
 import {
 	DefaultSlotArgTypes,
 	ModifiersArgTypes,
@@ -7,7 +9,7 @@ import {
 } from '@/stories/argTypes'
 import normal from '@/assets/icons/normal.json'
 
-export const defaultArgs = {
+export const defaultArgs: Meta<typeof VvButton>['args'] = {
 	label: 'Button',
 	type: 'button',
 	toggle: false,
@@ -22,7 +24,7 @@ export const defaultArgs = {
 }
 
 export const argTypes = {
-	 modifiers: {
+	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: [
 			'primary',
@@ -153,5 +155,5 @@ export const argTypes = {
 				summary: 'html',
 			},
 		},
-	}, 
+	},
 }

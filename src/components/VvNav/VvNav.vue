@@ -55,7 +55,7 @@
 						disabled: navItem.disabled,
 					}"
 					class="vv-nav__item-label"
-					v-on="navItem.on || {}"
+					v-on="navItem.on"
 					@click="onClick(navItem)"
 				>
 					{{ navItem.title }}

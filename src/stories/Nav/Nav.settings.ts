@@ -1,7 +1,9 @@
+import type { Meta } from '@storybook/vue3'
+import type { VvNav } from '@/components'
 import { VvNavProps } from '@/components/VvNav'
 import { ModifiersArgTypes } from '@/stories/argTypes'
 
-export const defaultArgs = {
+export const defaultArgs: Meta<typeof VvNav>['args'] = {
 	...propsToObject(VvNavProps),
 	items: [
 		{
