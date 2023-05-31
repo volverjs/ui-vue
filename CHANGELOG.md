@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.9] - 2023-05-31
+
+### Fixed
+
+- `VvDropdown` no default modifiers;
+- `VvDropdown` animation frame update with `strategy: 'fixed'`.
+
+### Added
+
+- Emit of transition events on `VvDialog` and `VvDropdown`.
+
 ## [0.0.8] - 2023-05-22
 
 ### Added
@@ -147,6 +158,7 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.9]: https://github.com/volverjs/style/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/volverjs/style/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/volverjs/style/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/volverjs/style/compare/v0.0.5...v0.0.6

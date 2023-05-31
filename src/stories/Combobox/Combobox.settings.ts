@@ -43,6 +43,7 @@ export const defaultArgs = {
 	],
 	placeholder: 'Select an option',
 	label: 'Combobox label',
+	strategy: 'fixed',
 }
 
 export const argTypes = {

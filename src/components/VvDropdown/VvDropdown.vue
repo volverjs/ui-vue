@@ -161,7 +161,11 @@
 		referenceEl,
 		floatingEl,
 		{
-			whileElementsMounted: autoUpdate,
+			whileElementsMounted: (...args) => {
+				return autoUpdate(...args, {
+					animationFrame: props.strategy === 'fixed',
+				})
+			},
 			placement: computed(() => props.placement),
 			strategy: computed(() => props.strategy),
 			middleware,
