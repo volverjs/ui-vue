@@ -302,11 +302,11 @@ export const DropdownProps = {
 		default: false,
 	},
 	/**
-	 * Close dropdown on click outside
+	 * Keep open dropdown on click outside
 	 */
-	autoClose: {
+	keepOpen: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 	/**
 	 * Autofocus first item on dropdown open
@@ -406,6 +406,7 @@ export const CheckboxRadioProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	...LabelProps,
+	...LoadingProps,
 	/**
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
@@ -426,6 +427,7 @@ export const CheckboxRadioGroupProps = {
 	...ReadonlyProps,
 	...ModifiersProps,
 	...LabelProps,
+	...LoadingProps,
 	/**
 	 * Input value
 	 */
@@ -454,5 +456,12 @@ export const ActionProps = {
 		default: ButtonType.button,
 		validator: (value: ButtonType) =>
 			Object.values(ButtonType).includes(value),
+	},
+	/**
+	 * Button aria-label
+	 */
+	ariaLabel: {
+		type: String,
+		default: undefined,
 	},
 }

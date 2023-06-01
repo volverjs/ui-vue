@@ -12,3 +12,4 @@ npm-debug.log*
 storybook-static
 dist
 bin
+.vercel

@@ -15,14 +15,18 @@ jobs:
             - uses: pnpm/action-setup@v2.2.4
               with:
                   version: 7
+
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'pnpm'
+
             - name: Install dependencies
-              run: pnpm install
+              run: pnpm install --no-frozen-lockfile
+
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps
+
             - name: Run Storybook test
               run: pnpm test-remote

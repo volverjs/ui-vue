@@ -7,6 +7,8 @@
 `vue` `components` `component-library` `design-system` \
 `input` `button` `accordion` `badge` `combobox` `breadcrumb` `dialog`\
 `checkbox` `radio` `textarea` `badge`
+  
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=volverjs_ui-vue&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=volverjs_ui-vue) [![Depfu](https://badges.depfu.com/badges/4b0c9d8ea210e93aa7a181e7252716f2/status.svg)](https://depfu.com) [![Depfu](https://badges.depfu.com/badges/4b0c9d8ea210e93aa7a181e7252716f2/overview.svg)](https://depfu.com/github/volverjs/ui-vue?project_id=38572)
 
 <br>
 
@@ -164,11 +166,9 @@ The following features are planned for the next releases:
 - [x] (v0.0.3) Redesign of `VvCombobox` for better accessibility and more features;
 - [x] (v0.0.3) Rewrite of `VvDropdown` to get it applicable to any element;
 - [x] (v0.0.5) Input masks for `VvInputText` component;
-- [x] (v0.0.6) `VvAvatar` component;
-- [x] (v0.0.6) `VvAvatarGroup` component;
-- [x] (v0.0.6) Menus, navigation and tabs with `VvNav`;
-- [x] (v0.0.6) `VvTab` component;
-- [ ] Alerts, notifications and toasts with `VvAlert` and `VvToast` component;
+- [x] (v0.0.6) `VvAvatar` and `VvAvatarGroup` component;
+- [x] (v0.0.6) Menus, navigation and tabs with `VvNav` and `VvTab`;
+- [x] (v0.0.6) Alerts, notifications and toasts with `VvAlert` and `VvAlertGroup` component;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
 - [ ] Multiple uploads, image crop and file previews with `VvInputFile`;

@@ -1,3 +1,5 @@
+import { ModifiersProps } from '@/props'
+
 export interface VvAccordionGroupItem {
 	title: string
 	content: string
@@ -7,6 +9,7 @@ export interface VvAccordionGroupItem {
 }
 
 export const VvAccordionGroupProps = {
+	...ModifiersProps,
 	/**
 	 * VModel
 	 */
@@ -23,10 +26,6 @@ export const VvAccordionGroupProps = {
 	 * If true, accordion items stay open when another item is opened
 	 */
 	collapse: Boolean,
-	/**
-	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion-group--'
-	 */
-	modifiers: [String, Array] as PropType<string | string[]>,
 	/**
 	 * String or String[] of css classes (modifiers) that will be concatenated to prefix 'vv-accordion--'
 	 */

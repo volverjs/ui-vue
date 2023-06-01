@@ -1,3 +1,5 @@
+import type { Meta } from '@storybook/vue3'
+import type { VvButton } from '@/components'
 import {
 	DefaultSlotArgTypes,
 	ModifiersArgTypes,
@@ -7,7 +9,7 @@ import {
 } from '@/stories/argTypes'
 import normal from '@/assets/icons/normal.json'
 
-export const defaultArgs = {
+export const defaultArgs: Meta<typeof VvButton>['args'] = {
 	label: 'Button',
 	type: 'button',
 	toggle: false,
@@ -71,18 +73,12 @@ export const argTypes = {
 	},
 	value: {
 		description: 'The button value',
-		type: {
-			summary: ['string', 'boolean', 'number'],
-		},
 		table: {
 			defaultValue: { summary: 'undefined' },
 		},
 	},
 	uncheckedValue: {
 		description: 'The button unchecked value',
-		type: {
-			summary: ['string', 'boolean', 'number'],
-		},
 		table: {
 			defaultValue: { summary: 'undefined' },
 		},
@@ -107,9 +103,6 @@ export const argTypes = {
 	rel: {
 		description: 'The rel attribute of the button',
 		control: { type: 'text' },
-		type: {
-			summary: 'boolean',
-		},
 		table: {
 			defaultValue: { summary: 'noopener noreferrer' },
 		},

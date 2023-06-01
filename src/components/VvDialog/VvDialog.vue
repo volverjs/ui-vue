@@ -9,9 +9,10 @@
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import { VvDialogEvents, VvDialogProps } from '.'
 
-	// props and emit
+	// props, emit and template refs
 	const props = defineProps(VvDialogProps)
 	const emit = defineEmits(VvDialogEvents)
+	const dialogEl: Ref<HTMLDialogElement | undefined> = ref()
 
 	// data
 	const localModelValue = ref(false)
@@ -26,7 +27,6 @@
 			emit('update:modelValue', value)
 		},
 	})
-	const htmlAttrIsOpen = ref(true)
 
 	// template ref
 	const modalWrapper = ref(null)
@@ -36,7 +36,6 @@
 		const { id } = props
 		return {
 			id,
-			open: htmlAttrIsOpen.value,
 		} as DialogHTMLAttributes
 	})
 	const dialogClass = computed(() => {
@@ -50,18 +49,38 @@
 	const transitioName = computed(() => `vv-dialog--${props.transition}`)
 	const dialogTransitionHandlers = {
 		'before-enter': () => {
-			htmlAttrIsOpen.value = true
+			dialogEl.value?.showModal()
 			emit('open')
+			emit('before-enter')
 		},
 		'after-leave': () => {
-			htmlAttrIsOpen.value = false
+			dialogEl.value?.close()
 			emit('close')
+			emit('after-leave')
+		},
+		enter: () => {
+			emit('enter')
+		},
+		'after-enter': () => {
+			emit('after-enter')
+		},
+		'enter-cancelled': () => {
+			emit('enter-cancelled')
+		},
+		'before-leave': () => {
+			emit('before-leave')
+		},
+		leave: () => {
+			emit('leave')
+		},
+		'leave-cancelled': () => {
+			emit('leave-cancelled')
 		},
 	}
 
 	// methods
 	onClickOutside(modalWrapper, () => {
-		if (props.autoClose) {
+		if (!props.keepOpen) {
 			modelValue.value = false
 		}
 	})
@@ -87,7 +106,12 @@
 
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
-		<dialog v-show="modelValue" v-bind="dialogAttrs" :class="dialogClass">
+		<dialog
+			v-show="modelValue"
+			v-bind="dialogAttrs"
+			ref="dialogEl"
+			:class="dialogClass"
+		>
 			<article ref="modalWrapper" class="vv-dialog__wrapper">
 				<header v-if="$slots.header || title" class="vv-dialog__header">
 					<!-- @slot Header slot -->

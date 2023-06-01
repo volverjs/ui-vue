@@ -4,8 +4,8 @@ import { DropdownRole } from '../../constants'
 
 export const VvDropdownProps = {
 	...IdProps,
-	...ModifiersProps,
 	...DropdownProps,
+	...ModifiersProps,
 	/**
 	 * Show / hide dropdown programmatically
 	 */

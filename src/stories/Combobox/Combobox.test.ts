@@ -2,7 +2,6 @@ import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { within } from '@storybook/testing-library'
 import { sleep } from '@/test/sleep'
-import { getOptionValue } from '@/test/options'
 import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
@@ -22,10 +21,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		'vv-dropdown',
 	)[0] as HTMLElement
 	const dropdownFirstItem = dropdown.querySelectorAll(
-		'li[role="option"]',
+		'div[role="option"]',
 	)[0] as HTMLElement
 	const dropdownSecondItem = dropdown.querySelectorAll(
-		'li[role="option"]',
+		'div[role="option"]',
 	)[1] as HTMLElement
 	const hint = element.getElementsByClassName('vv-select__hint')[0]
 
@@ -49,11 +48,12 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		// select first value
 		await expect(dropdownFirstItem).toBeClicked()
 		await sleep()
-		const firstValue = getOptionValue(
-			args.options[0].options ? args.options[0] : args,
-			0,
-		)
 
+		const { getOptionValue } = useOptions(args)
+
+		const firstValue = getOptionValue(
+			args.options[0].options?.[0] ?? args.options[0],
+		)
 		// in grouped options the first element is not selectable
 		if (args.multiple) {
 			await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
@@ -66,8 +66,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 			await expect(dropdownSecondItem).toBeClicked()
 			await sleep()
 			const secondValue = getOptionValue(
-				args.options[0].options ? args.options[0] : args,
-				1,
+				args.options[0].options?.[1] ?? args.options[1],
 			)
 			if (args.multiple) {
 				await expect(JSON.parse(value.innerHTML)).toEqual([

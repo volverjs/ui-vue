@@ -26,6 +26,7 @@
 		isInGroup,
 	} = useGroupProps(props, emit)
 	const hasId = useUniqueId(id)
+	const hasHintId = computed(() => `${hasId.value}-hint`)
 	const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))
 
 	// template ref
@@ -144,7 +145,12 @@
 	})
 
 	// hint
-	const { HintSlot } = HintSlotFactory(props, slots)
+	const {
+		HintSlot,
+		hasHintLabelOrSlot,
+		hasInvalidLabelOrSlot,
+		hintSlotScope,
+	} = HintSlotFactory(props, slots)
 </script>
 
 <template>
@@ -160,11 +166,26 @@
 			:value="hasValue"
 			:tabindex="tabindex"
 			:aria-invalid="isInvalid"
+			:aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
+			:aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined"
 		/>
 		<!-- @slot Use this slot for check label -->
 		<slot :value="modelValue">
 			{{ label }}
 		</slot>
-		<HintSlot class="vv-checkbox__hint" :params="{ value: modelValue }" />
+		<HintSlot :id="hasHintId" class="vv-checkbox__hint">
+			<template v-if="$slots.hint" #hint>
+				<slot name="hint" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.loading" #loading>
+				<slot name="loading" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.valid" #valid>
+				<slot name="valid" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.invalid" #invalid>
+				<slot name="invalid" v-bind="hintSlotScope" />
+			</template>
+		</HintSlot>
 	</label>
 </template>

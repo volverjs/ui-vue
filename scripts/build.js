@@ -25,7 +25,13 @@ packageJson.typesVersions = {
 
 const baseConfig = {
 	plugins: [
-		vue(),
+		vue({
+			template: {
+				compilerOptions: {
+					comments: false,
+				},
+			},
+		}),
 		externalizeDeps(),
 		ESLint(),
 		AutoImport({

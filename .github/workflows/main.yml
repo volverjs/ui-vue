@@ -10,6 +10,7 @@ permissions:
     contents: read
     pages: write
     id-token: write
+    pull-requests: read
 
 # Allow one concurrent deployment
 concurrency:
@@ -17,19 +18,47 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    styleguide:
-        uses: ./.github/workflows/styleguide.yml
+    # Sonarcloud analysis
+    analysis:
+        uses: ./.github/workflows/sonarcloud.yml
+        secrets: inherit
 
+    # Vercel deploy for storybook test
+    vercel-deploy:
+        uses: ./.github/workflows/vercel-deploy.yml
+        secrets: inherit
+
+    # Styleguide test on Vercel env
     test:
-        needs: styleguide
+        needs: vercel-deploy
         uses: ./.github/workflows/test.yml
 
+    # Publish styleguide to GitHub Pages
+    build-styleguide:
+        uses: ./.github/workflows/styleguide.yml
+
+    # Build package
     build:
-        needs: test
         uses: ./.github/workflows/build.yml
 
+    deploy-styleguide:
+        needs: [build, build-styleguide, test, analysis]
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: github-pages
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v1
+
+    # Publish package to NPM
     publish-npm:
-        needs: build
+        needs: [build, build-styleguide, test, analysis]
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
@@ -44,8 +73,9 @@ jobs:
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
+    # Publish package to GPR
     publish-gpr:
-        needs: build
+        needs: [build, build-styleguide, test, analysis]
         runs-on: ubuntu-latest
         permissions:
             contents: read

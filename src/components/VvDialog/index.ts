@@ -1,6 +1,18 @@
 import { IdProps } from '../../props'
 
-export const VvDialogEvents = ['open', 'close', 'update:modelValue']
+export const VvDialogEvents = [
+	'open',
+	'close',
+	'update:modelValue',
+	'before-enter',
+	'after-leave',
+	'enter',
+	'after-enter',
+	'enter-cancelled',
+	'before-leave',
+	'leave',
+	'leave-cancelled',
+]
 
 export const VvDialogProps = {
 	...IdProps,
@@ -24,7 +36,7 @@ export const VvDialogProps = {
 	 */
 	size: String,
 	/**
-	 * Close dialog on click outside
+	 * Keep open dialog on click outside
 	 */
-	autoClose: { type: Boolean, default: true },
+	keepOpen: { type: Boolean, default: false },
 }

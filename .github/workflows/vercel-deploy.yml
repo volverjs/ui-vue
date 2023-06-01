@@ -1,0 +1,31 @@
+name: Vercel Test Deployment
+
+on:
+    workflow_call:
+
+env:
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+    Deploy-Preview:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: pnpm/action-setup@v2.2.2
+              with:
+                  version: 7
+            - name: Install Vercel CLI
+              run: npm install --global vercel@latest
+
+            - name: Bump version with release tag name
+              run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
+
+            - name: Pull Vercel Environment Information
+              run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Build Project Artifacts
+              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Deploy Project Artifacts to Vercel
+              run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}

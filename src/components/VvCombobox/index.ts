@@ -132,13 +132,20 @@ export const VvComboboxProps = {
 	 */
 	dropdownModifiers: {
 		type: [String, Array] as PropType<string | string[]>,
+		default: 'mobile',
 	},
 	/**
 	 * Open dropdown on focus
 	 */
-	autoOpen: Boolean,
+	autoOpen: {
+		type: Boolean,
+		default: false,
+	},
 	/**
-	 * Close dropdown on select (not multiple)
+	 * Keep open dropdown on single select
 	 */
-	autoClose: Boolean,
+	keepOpen: {
+		type: Boolean,
+		default: false,
+	},
 }

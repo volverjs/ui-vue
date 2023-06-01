@@ -28,7 +28,21 @@
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
-	const emit = defineEmits(['update:modelValue'])
+	const emit = defineEmits([
+		'update:modelValue',
+		'beforeExpand',
+		'beforeCollapse',
+		'afterExpand',
+		'afterCollapse',
+		'before-enter',
+		'after-leave',
+		'enter',
+		'after-enter',
+		'enter-cancelled',
+		'before-leave',
+		'leave',
+		'leave-cancelled',
+	])
 	const { id } = toRefs(props)
 	const hasId = useUniqueId(id)
 	const attrs = useAttrs()
@@ -37,7 +51,7 @@
 
 	// template elements
 	const localReferenceEl = ref<HTMLElement | null>(null)
-	const floatingEl: Ref<HTMLElement | null> = ref(null)
+	const floatingEl: Ref = ref()
 	const arrowEl = ref<HTMLElement | null>(null)
 	const listEl = ref<HTMLUListElement | null>(null)
 	const referenceEl = computed({
@@ -45,6 +59,27 @@
 		set: (newValue) => {
 			localReferenceEl.value = newValue
 		},
+	})
+
+	// ref to store the value of css-var "--dropdown-custom-position"
+	const hasCustomPosition = ref(false)
+
+	// observe dropdown style for "--dropdown-custom-position" css var to disable floating-ui
+	onMounted(() => {
+		useMutationObserver(
+			floatingEl.value,
+			() => {
+				hasCustomPosition.value =
+					window
+						.getComputedStyle(floatingEl.value)
+						.getPropertyValue('--dropdown-custom-position')
+						?.trim() === 'true'
+			},
+			{
+				attributeFilter: ['style'],
+				window,
+			},
+		)
 	})
 
 	// floating ui
@@ -126,47 +161,62 @@
 		referenceEl,
 		floatingEl,
 		{
-			whileElementsMounted: autoUpdate,
+			whileElementsMounted: (...args) => {
+				return autoUpdate(...args, {
+					animationFrame: props.strategy === 'fixed',
+				})
+			},
 			placement: computed(() => props.placement),
 			strategy: computed(() => props.strategy),
 			middleware,
 		},
 	)
-	const dropdownPlacement = computed(() => ({
-		position: strategy.value,
-		top: `${y.value ?? 0}px`,
-		left: `${x.value ?? 0}px`,
-		maxWidth: maxWidth.value,
-		maxHeight: maxHeight.value,
-		width:
-			props.triggerWidth && referenceEl.value
-				? `${referenceEl.value.offsetWidth}px`
-				: undefined,
-	}))
-
-	// placement
-	const side = computed(() => placement.value.split('-')[0])
-	const staticSide = computed(
-		() =>
-			({
-				top: 'bottom',
-				right: 'left',
-				bottom: 'top',
-				left: 'right',
-			}[side.value] ?? 'bottom'),
-	)
-	const arrowPlacement = computed(() => {
-		if (['bottom', 'top'].includes(staticSide.value)) {
-			return {
-				right: `${middlewareData.value.arrow?.x ?? 0}px`,
-				[staticSide.value]: `${
-					-(arrowEl.value?.offsetWidth ?? 0) / 2
-				}px`,
-			}
+	const dropdownPlacement = computed(() => {
+		if (hasCustomPosition.value) {
+			return undefined
 		}
 		return {
-			top: `${middlewareData.value.arrow?.y ?? 0}px`,
-			[staticSide.value]: `${-(arrowEl.value?.offsetWidth ?? 0) / 2}px`,
+			position: strategy.value,
+			top: `${y.value ?? 0}px`,
+			left: `${x.value ?? 0}px`,
+			maxWidth: maxWidth.value,
+			maxHeight: maxHeight.value,
+			width:
+				props.triggerWidth && referenceEl.value
+					? `${referenceEl.value.offsetWidth}px`
+					: undefined,
+		}
+	})
+
+	// placement
+	const side = computed(
+		() =>
+			placement.value.split('-')[0] as
+				| 'top'
+				| 'right'
+				| 'bottom'
+				| 'left',
+	)
+	const arrowPlacement = computed(() => {
+		if (hasCustomPosition.value) {
+			return undefined
+		}
+		const staticSide = {
+			top: 'bottom',
+			right: 'left',
+			bottom: 'top',
+			left: 'right',
+		}[side.value]
+		return {
+			left:
+				middlewareData.value.arrow?.x !== undefined
+					? `${middlewareData.value.arrow?.x}px`
+					: undefined,
+			top:
+				middlewareData.value.arrow?.y !== undefined
+					? `${middlewareData.value.arrow?.y}px`
+					: undefined,
+			[staticSide]: `${-(arrowEl.value?.offsetWidth ?? 0) / 2}px`,
 		}
 	})
 
@@ -195,7 +245,13 @@
 	const init = (el: HTMLElement) => {
 		referenceEl.value = el
 	}
-	defineExpose({ toggle, show, hide, init })
+	defineExpose({
+		toggle,
+		show,
+		hide,
+		init,
+		customPosition: hasCustomPosition,
+	})
 	watch(expanded, (newValue) => {
 		if (newValue && props.autofocusFirst) {
 			nextTick(() => {
@@ -204,7 +260,9 @@
 					floatingEl.value,
 				)
 				if (focusableElements.length > 0) {
-					focusableElements[0].focus()
+					focusableElements[0].focus({
+						preventScroll: true,
+					})
 				}
 			})
 		}
@@ -212,7 +270,7 @@
 	onClickOutside(
 		floatingEl,
 		() => {
-			if (props.autoClose) {
+			if (!props.keepOpen) {
 				expanded.value = false
 			}
 		},
@@ -280,9 +338,13 @@
 					document.activeElement as HTMLElement,
 				)
 				if (activeElementIndex < focusableElements.length - 1) {
-					focusableElements[activeElementIndex + 1].focus()
+					focusableElements[activeElementIndex + 1].focus({
+						preventScroll: true,
+					})
 				} else {
-					focusableElements[0].focus()
+					focusableElements[0].focus({
+						preventScroll: true,
+					})
 				}
 			}
 		})
@@ -300,9 +362,13 @@
 					document.activeElement as HTMLElement,
 				)
 				if (activeElementIndex > 0) {
-					focusableElements[activeElementIndex - 1].focus()
+					focusableElements[activeElementIndex - 1].focus({
+						preventScroll: true,
+					})
 				} else {
-					focusableElements[focusableElements.length - 1].focus()
+					focusableElements[focusableElements.length - 1].focus({
+						preventScroll: true,
+					})
 				}
 			}
 		})
@@ -328,12 +394,41 @@
 		}
 	})
 	onKeyStroke([' ', 'Enter'], (e) => {
-		if (expanded.value && focused.value) {
-			e.preventDefault()
-			const activeElement = document.activeElement as HTMLElement
-			activeElement.click()
+		const htmlEl = e.target as HTMLElement
+
+		if (expanded.value && focused.value && htmlEl) {
+			htmlEl?.click()
 		}
 	})
+
+	const dropdownTransitionHandlers = {
+		'before-enter': () => {
+			emit(expanded.value ? 'beforeExpand' : 'beforeCollapse')
+			emit('before-enter')
+		},
+		'after-leave': () => {
+			emit(expanded.value ? 'afterExpand' : 'afterCollapse')
+			emit('after-leave')
+		},
+		enter: () => {
+			emit('enter')
+		},
+		'after-enter': () => {
+			emit('after-enter')
+		},
+		'enter-cancelled': () => {
+			emit('enter-cancelled')
+		},
+		'before-leave': () => {
+			emit('before-leave')
+		},
+		leave: () => {
+			emit('leave')
+		},
+		'leave-cancelled': () => {
+			emit('leave-cancelled')
+		},
+	}
 </script>
 
 <template>
@@ -342,7 +437,7 @@
 			v-bind="{ init, show, hide, toggle, expanded, aria: referenceAria }"
 		/>
 	</VvDropdownTriggerProvider>
-	<Transition :name="transitionName">
+	<Transition :name="transitionName" v-on="dropdownTransitionHandlers">
 		<div
 			v-show="expanded"
 			ref="floatingEl"
@@ -356,7 +451,7 @@
 				class="vv-dropdown__arrow"
 			></div>
 			<slot name="before" v-bind="{ expanded }" />
-			<ul
+			<div
 				v-bind="attrs"
 				:id="hasId"
 				ref="listEl"
@@ -371,7 +466,7 @@
 						role: itemRole,
 					}"
 				/>
-			</ul>
+			</div>
 			<slot name="after" v-bind="{ expanded }" />
 		</div>
 	</Transition>

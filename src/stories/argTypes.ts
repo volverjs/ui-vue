@@ -3,7 +3,6 @@ import { Placement, Position, Side } from '../constants'
 
 export const ValidArgTypes = {
 	valid: {
-		type: 'boolean',
 		description: 'Valid state',
 		table: {
 			defaultValue: {
@@ -12,9 +11,6 @@ export const ValidArgTypes = {
 		},
 	},
 	validLabel: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		description: 'Valid hint label',
 		control: {
 			type: 'text',
@@ -24,7 +20,6 @@ export const ValidArgTypes = {
 
 export const InvalidArgTypes = {
 	invalid: {
-		type: 'boolean',
 		description: 'Invalid state',
 		table: {
 			defaultValue: {
@@ -33,9 +28,6 @@ export const InvalidArgTypes = {
 		},
 	},
 	invalidLabel: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		description: 'Invalid hint label',
 		control: {
 			type: 'text',
@@ -45,7 +37,6 @@ export const InvalidArgTypes = {
 
 export const LoadingArgTypes = {
 	loading: {
-		type: 'boolean',
 		description: 'Loading state',
 		table: {
 			defaultValue: {
@@ -54,9 +45,6 @@ export const LoadingArgTypes = {
 		},
 	},
 	loadingLabel: {
-		type: {
-			summary: 'string',
-		},
 		description: 'Loading label',
 		control: {
 			type: 'text',
@@ -66,8 +54,8 @@ export const LoadingArgTypes = {
 
 export const DisabledArgTypes = {
 	disabled: {
-		type: 'boolean',
-		description: 'Whether the form control is disabled',
+		control: 'boolean',
+		description: 'Whether the component is disabled',
 		table: {
 			defaultValue: {
 				summary: false,
@@ -78,7 +66,6 @@ export const DisabledArgTypes = {
 
 export const ReadonlyArgTypes = {
 	readonly: {
-		type: 'boolean',
 		description: 'The value is not editable',
 		table: {
 			defaultValue: {
@@ -90,9 +77,6 @@ export const ReadonlyArgTypes = {
 
 export const ModifiersArgTypes = {
 	modifiers: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		description: 'Component BEM modifiers',
 		options: [],
 		control: {
@@ -123,18 +107,12 @@ export const IconArgTypes = {
 
 export const OptionsArgTypes = {
 	options: {
-		type: {
-			summary: ['string[]', 'object[]'],
-		},
 		description: 'List of options',
 		control: {
 			type: 'array',
 		},
 	},
 	labelKey: {
-		type: {
-			summary: ['string', 'function'],
-		},
 		description: 'Key of label in option object',
 		control: {
 			type: 'text',
@@ -146,9 +124,6 @@ export const OptionsArgTypes = {
 		},
 	},
 	valueKey: {
-		type: {
-			summary: ['string', 'function'],
-		},
 		description: 'Key of value in option object',
 		control: {
 			type: 'text',
@@ -160,9 +135,6 @@ export const OptionsArgTypes = {
 		},
 	},
 	disabledKey: {
-		type: {
-			summary: ['string', 'function'],
-		},
 		description: 'Key of disabled in option object',
 		control: {
 			type: 'text',
@@ -196,7 +168,6 @@ export const CountArgTypes = {
 
 export const DebounceArgTypes = {
 	debounce: {
-		type: 'number',
 		description: 'Debounce milliseconds',
 		control: {
 			type: 'number',
@@ -247,7 +218,6 @@ export const HintArgTypes = {
 
 export const TabindexArgTypes = {
 	tabindex: {
-		type: 'number',
 		description: 'Global attribute tabindex',
 		control: {
 			type: 'number',
@@ -262,9 +232,6 @@ export const TabindexArgTypes = {
 
 export const IdNameArgTypes = {
 	id: {
-		type: {
-			summary: ['string', 'number'],
-		},
 		description: 'Global attribute id.',
 		control: {
 			type: 'text',
@@ -276,9 +243,6 @@ export const IdNameArgTypes = {
 		},
 	},
 	name: {
-		type: {
-			summary: 'string',
-		},
 		description:
 			'Name of the form control. Submitted with the form as part of a name/value pair.',
 		control: {
@@ -401,14 +365,14 @@ export const DropdownArgTypes = {
 			},
 		},
 	},
-	autoClose: {
-		description: 'Close dropdown on click outside',
+	keepOpen: {
+		description: 'Keep open dropdown on click outside',
 		control: {
 			type: 'boolean',
 		},
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: false,
 			},
 			type: {
 				summary: 'boolean',
@@ -433,7 +397,6 @@ export const DropdownArgTypes = {
 
 export const UnselectableArgTypes = {
 	unselectable: {
-		type: 'boolean',
 		description: 'If true the field will be unselectable',
 		table: {
 			defaultValue: {
@@ -445,7 +408,6 @@ export const UnselectableArgTypes = {
 
 export const FloatingLabelArgTypes = {
 	floating: {
-		type: 'boolean',
 		description: 'If true the label will be floating',
 		table: {
 			defaultValue: {
@@ -457,7 +419,6 @@ export const FloatingLabelArgTypes = {
 
 export const AutofocusArgTypes = {
 	autofocus: {
-		type: 'boolean',
 		description: 'Global attribute autofocus.',
 		table: {
 			defaultValue: {
@@ -469,9 +430,6 @@ export const AutofocusArgTypes = {
 
 export const AutocompleteArgTypes = {
 	autocomplete: {
-		type: {
-			summary: 'string',
-		},
 		description: 'Hint for for autofill feature.',
 		control: {
 			type: 'text',
@@ -501,7 +459,6 @@ export const InputTextareaArgTypes = {
 	...IconArgTypes,
 	...FloatingLabelArgTypes,
 	minlength: {
-		type: 'number',
 		description:
 			'Minimum length (number of characters) of value. Available for input types: text, search, url, tel, email, password.',
 		control: {
@@ -509,7 +466,6 @@ export const InputTextareaArgTypes = {
 		},
 	},
 	maxlength: {
-		type: 'number',
 		description:
 			'Maximum length (number of characters) of value. Available for input types: text, search, url, tel, email, password, number.',
 		control: {
@@ -517,7 +473,6 @@ export const InputTextareaArgTypes = {
 		},
 	},
 	placeholder: {
-		type: 'string',
 		description:
 			'Text that appears in the form control when it has no value set. Available for input types: text, search, url, tel, email, password, number.',
 		control: {
@@ -525,7 +480,6 @@ export const InputTextareaArgTypes = {
 		},
 	},
 	required: {
-		type: 'boolean',
 		description:
 			'A value is required or must be check for the form to be submittable. Available for all input types except color.',
 		table: {
@@ -535,7 +489,6 @@ export const InputTextareaArgTypes = {
 		},
 	},
 	label: {
-		type: 'string',
 		description: 'Input label',
 		control: {
 			type: 'text',
@@ -552,14 +505,12 @@ export const CheckboxRadioArgTypes = {
 	...DisabledArgTypes,
 	...ReadonlyArgTypes,
 	label: {
-		type: 'string',
 		description: 'Input label',
 		control: {
 			type: 'text',
 		},
 	},
 	value: {
-		type: ['string', 'number', 'boolean'],
 		description: 'Input value',
 		control: {
 			type: 'text',
@@ -575,16 +526,12 @@ export const CheckboxRadioGroupArgTypes = {
 	...DisabledArgTypes,
 	...ReadonlyArgTypes,
 	label: {
-		type: 'string',
 		description: 'Input label',
 		control: {
 			type: 'text',
 		},
 	},
 	name: {
-		type: {
-			summary: 'string',
-		},
 		description:
 			'Name of the form control. Submitted with the form as part of a name/value pair.',
 		control: {
@@ -592,7 +539,6 @@ export const CheckboxRadioGroupArgTypes = {
 		},
 	},
 	vertical: {
-		type: 'boolean',
 		description:
 			'If true the options will be displayed vertically instead of horizontally',
 		table: {

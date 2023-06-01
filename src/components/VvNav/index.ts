@@ -6,7 +6,7 @@ export type NavItem = {
 	to?: string | { [key: string]: unknown }
 	href?: string
 	disabled?: boolean
-	on: () => void
+	on?: Record<string, () => void>
 }
 
 export const VvNavProps = {

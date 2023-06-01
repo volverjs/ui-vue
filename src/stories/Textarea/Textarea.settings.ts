@@ -14,7 +14,6 @@ export const argTypes = {
 	...InputTextareaArgTypes,
 	...HintArgTypes,
 	cols: {
-		type: 'number',
 		description:
 			'The visible width of the text control, in average character widths. If it is specified, it must be a positive integer. If it is not specified, the default value is 20.',
 		control: {
@@ -27,7 +26,6 @@ export const argTypes = {
 		},
 	},
 	rows: {
-		type: 'number',
 		description:
 			'The number of visible text lines for the control. If it is specified, it must be a positive integer. If it is not specified, the default value is 2.',
 		control: {
@@ -40,9 +38,6 @@ export const argTypes = {
 		},
 	},
 	wrap: {
-		type: {
-			summary: 'string',
-		},
 		description:
 			'Indicates how the control should wrap the value for form submission.',
 		options: ['hard', 'soft', 'off'],
@@ -56,9 +51,6 @@ export const argTypes = {
 		},
 	},
 	spellcheck: {
-		type: {
-			summary: ['string', 'boolean'],
-		},
 		description:
 			'Specifies whether the textarea is subject to spell checking by the underlying browser/OS. ',
 		options: [true, false, 'default'],

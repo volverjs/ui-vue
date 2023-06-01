@@ -2,24 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.6] - 2023-04-04
-
-### Added
-
-- `VvAvatar` component;
-- `VvAvatarGroup` component;
-- `VvNav` component;
-- `VvTab` component;
-- `VvButton` custom `value` and `unncheckedValue` when it's used as `toggle`.
+## [0.0.9] - 2023-05-31
 
 ### Fixed
 
-- Some props types issues.
-- `VvButtonGroup` modifiers are now merged with the child modifiers.
+- `VvDropdown` no default modifiers;
+- `VvDropdown` animation frame update with `strategy: 'fixed'`.
+
+### Added
+
+- Emit of transition events on `VvDialog` and `VvDropdown`.
+
+## [0.0.8] - 2023-05-22
+
+### Added
+
+- `VvAlert` new `title` and `close` slots;
+- `VvDropdown` `VvCombobox` mobile management;
+- Allow dot notation on props `labelKey`, `valueKey`, `disabledKey` in components `VvSelect`, `VvCombo`, `VvRadioGroup`, `VvCheckboxGroup`.
+
+### Fixed
+
+- `focus()` with `preventScroll: true`;
+- `VvDropdown` arrow placement;
+- `VvCombobox` select option on key "enter".
+
+## [0.0.7] - 2023-05-12
+
+### Fixed
+
+- `VvCombobox` and `VvDropdown` space keydown event.
+
+## [0.0.6] - 2023-05-11
+
+### Added
+
+- `VvAvatar` and `VvAvatarGroup` components and test;
+- `VvNav` component and test;
+- `VvTab` component and test;
+- `VvButton` custom `value` and `unncheckedValue` when it's used as `toggle`;
+- `VvAlert` and `VvAlertGroup` components and test.
+
+### Fixed
+
+- Some props types issues;
+- `VvButtonGroup` modifiers are now merged with the child modifiers;
+- `VvDialog` now uses `showModal()` and `close()` dialog functions;
+- `VvInputText`, `VvTextarea`, `VvSelect`, `VvCombobox`, `VvCheckbox` and `VvRadio` hint slots.
+
+### Changed
+
+- `autoClose:true` is now `keepOpen` for `VvCombobox`, `VvDropdown` and `VvDialog`.
 
 ### Upgrade
 
-- `storybook@7.0.0-beta.40` to `storybook@7.0.2` stable version
+- dev dependencies:
+
+  - `storybook@7.0.0-beta.40` to `storybook@7.0.10` stable version
+  - `eslint-plugin-vue`to `v9.12.0`
+  - `glob` to `v7.2.3`
+  - `terser` to `v5.17.3`
+  - `@vitejs/plugin-vue` to `v4.2.2`
+  - `@vue/compiler-sfc` to `v3.3.1`
+
+- dependencies:
+  - `@volverjs/style` to `v0.1.10`
+  - `vue` to `v3.3.1`
 
 ## [0.0.5] - 2023-03-29
 
@@ -110,6 +158,10 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.9]: https://github.com/volverjs/style/compare/v0.0.8...v0.0.9
+[0.0.8]: https://github.com/volverjs/style/compare/v0.0.7...v0.0.8
+[0.0.7]: https://github.com/volverjs/style/compare/v0.0.6...v0.0.7
+[0.0.6]: https://github.com/volverjs/style/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/volverjs/style/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/volverjs/style/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/volverjs/style/compare/v0.0.2...v0.0.3

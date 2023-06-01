@@ -15,7 +15,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)
 			? args.modifiers
-			: [args.modifiers]
+			: args.modifiers.split(' ')
 
 	// modifiers
 	if (modifiers) {

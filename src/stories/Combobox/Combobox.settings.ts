@@ -1,3 +1,5 @@
+import type { VvCombobox } from '@/components'
+import type { Meta } from '@storybook/vue3'
 import {
 	ValidArgTypes,
 	InvalidArgTypes,
@@ -15,13 +17,35 @@ import {
 } from '@/stories/argTypes'
 import { VvComboboxProps } from '@/components/VvCombobox'
 
-export const defaultArgs = {
+export const defaultArgs: Meta<typeof VvCombobox>['args'] = {
 	...propsToObject(VvComboboxProps),
 	name: 'vv-combobox',
 	maxValues: undefined,
-	options: ['Option 1', 'Option 2', 'Option 3'],
+	options: [
+		'Option 1',
+		'Option 2',
+		'Option 3',
+		'Option 4',
+		'Option 5',
+		'Option 6',
+		'Option 7',
+		'Option 8',
+		'Option 9',
+		'Option 10',
+		'Option 11',
+		'Option 12',
+		'Option 13',
+		'Option 14',
+		'Option 15',
+		'Option 16',
+		'Option 17',
+		'Option 18',
+		'Option 19',
+		'Option 20',
+	],
 	placeholder: 'Select an option',
 	label: 'Combobox label',
+	strategy: 'fixed',
 }
 
 export const argTypes = {
@@ -47,7 +71,6 @@ export const argTypes = {
 		},
 	},
 	multiple: {
-		type: 'boolean',
 		description:
 			' This Boolean attribute indicates that multiple options can be selected in the list.',
 		table: {
@@ -57,14 +80,12 @@ export const argTypes = {
 		},
 	},
 	label: {
-		type: 'string',
 		description: '<label> value for the combobox',
 		control: {
 			type: 'text',
 		},
 	},
 	noResultsLabel: {
-		type: 'string',
 		description: 'Label of "no results" options',
 		control: {
 			type: 'text',
@@ -76,14 +97,12 @@ export const argTypes = {
 		},
 	},
 	placeholder: {
-		type: 'string',
 		description: 'Text that appears when it has no value set.',
 		control: {
 			type: 'text',
 		},
 	},
 	searchable: {
-		type: 'boolean',
 		description: 'Enable search in options',
 		table: {
 			defaultValue: {
@@ -92,7 +111,6 @@ export const argTypes = {
 		},
 	},
 	searchPlaceholder: {
-		type: 'string',
 		description:
 			'Text that appears in the in the search input when it has no value set..',
 		control: {
@@ -100,7 +118,6 @@ export const argTypes = {
 		},
 	},
 	debounceSearch: {
-		type: 'number',
 		description: 'Debounce milliseconds for search',
 		control: {
 			type: 'number',
@@ -108,15 +125,12 @@ export const argTypes = {
 	},
 	maxValues: {
 		description: 'Max number of selected values',
-		type: {
-			summary: ['string', 'string[]'],
-		},
+
 		control: {
 			type: 'text',
 		},
 	},
 	separator: {
-		type: 'string',
 		description: 'Separator of selected values',
 		control: {
 			type: 'text',
@@ -128,7 +142,6 @@ export const argTypes = {
 		},
 	},
 	native: {
-		type: 'boolean',
 		description: 'Show native select',
 		table: {
 			defaultValue: {
@@ -137,7 +150,6 @@ export const argTypes = {
 		},
 	},
 	badges: {
-		type: 'boolean',
 		description: 'Show badges for selected values',
 		table: {
 			defaultValue: {
@@ -146,9 +158,6 @@ export const argTypes = {
 		},
 	},
 	badgeModifiers: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		description: 'Modifiers for badges',
 		control: {
 			type: 'text',
@@ -160,16 +169,12 @@ export const argTypes = {
 		},
 	},
 	dropdownModifiers: {
-		type: {
-			summary: ['string', 'string[]'],
-		},
 		control: {
 			type: 'text',
 		},
 		description: 'Modifiers for dropdown',
 	},
 	autoOpen: {
-		type: 'boolean',
 		description: 'Open dropdown on focus',
 		table: {
 			defaultValue: {
@@ -177,9 +182,8 @@ export const argTypes = {
 			},
 		},
 	},
-	autoClose: {
-		type: 'boolean',
-		description: 'Close dropdown on select of an option (not multiple)',
+	keepOpen: {
+		description: 'Keep open dropdown on signle select',
 		table: {
 			defaultValue: {
 				summary: false,

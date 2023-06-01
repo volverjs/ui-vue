@@ -17,7 +17,6 @@ export const defaultArgs = {
 export const argTypes = {
 	...CheckboxRadioArgTypes,
 	indeterminate: {
-		type: 'boolean',
 		description: 'If true, the input will be indeterminated',
 		table: {
 			defaultValue: {
@@ -32,7 +31,6 @@ export const argTypes = {
 		},
 	},
 	switch: {
-		type: 'boolean',
 		description: 'If true, the input will be displayed as a switch.',
 		table: {
 			defaultValue: {

@@ -66,8 +66,9 @@
 	const hasProps = computed(() => {
 		const toReturn = {
 			...dropdownAria?.value,
-			'aria-pressed': pressed.value ? true : undefined,
-			role,
+			ariaPressed: pressed.value ? true : undefined,
+			ariaLabel: props.ariaLabel,
+			role: role?.value,
 		}
 		switch (hasTag.value) {
 			case ActionTag.a:
