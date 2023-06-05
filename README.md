@@ -1,6 +1,6 @@
 <div align="center">
   
-[![volverjs](.storybook/static/volverjs-ui.svg)](https://volverjs.github.io/ui-vue)
+[![volverjs](.storybook/static/volverjs-ui-vue.svg)](https://volverjs.github.io/ui-vue)
 
 ## @volverjs/ui-vue
 
