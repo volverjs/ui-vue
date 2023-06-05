@@ -270,7 +270,7 @@
 	onClickOutside(
 		floatingEl,
 		() => {
-			if (!props.keepOpen) {
+			if (!props.keepOpen && expanded.value) {
 				expanded.value = false
 			}
 		},
