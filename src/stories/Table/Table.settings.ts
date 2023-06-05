@@ -80,7 +80,6 @@ export const defaultArgs = {
 		},
 	],
 	sort: 'firstname',
-	order: 'asc',
 	limit: 5,
 	limitSteps: [5, 10],
 	page: 1,

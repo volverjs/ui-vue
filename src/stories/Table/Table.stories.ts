@@ -1,26 +1,35 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import VvTable from '@/components/VvTable/VvTable.vue'
 import { defaultArgs, argTypes } from './Table.settings'
 import { defaultTest } from './Table.test'
 
-<Meta
-	title="Components/Table"
-	component={VvTable}
-	args={defaultArgs}
-	argTypes={argTypes}
-/>
+const meta: Meta<typeof VvTable> = {
+	title: 'Components/Table',
+	component: VvTable,
+	args: defaultArgs,
+	argTypes: argTypes,
+	tags: ['autodocs'],
+}
 
-export const Template = (args) => ({
-	components: { VvTable },
-	setup() {
-		return { args }
+export default meta
+
+type Story = StoryObj<typeof VvTable>
+
+export const Default: Story = {
+	args: {
+		...defaultArgs,
 	},
-	template: /* html */ `
-		<div class="p-md" style="max-height: 400px; overflow-y: scroll;">
+	render: (args) => ({
+		components: { VvTable },
+		setup() {
+			return { args }
+		},
+		template: /* html */ `
+		<div class="p-md" style="max-height: 400px; overflow-y: scroll;" data-testId="element">
 			<vv-table
+			
 				class="px-xl"
 				v-bind="args"
-				data-testId="element"
 				@update:sort="args.sort = $event"
 				@update:order="args.order = $event"
 				@update:limit="args.limit = $event"
@@ -38,10 +47,6 @@ export const Template = (args) => ({
 				<template #skeleton::age v-if="args['skeleton::age']"><div v-html="args['skeleton::age']"></div></template>
 			</vv-table>
 		</div>`,
-})
-
-<Canvas>
-	<Story name="Default" play={defaultTest}>
-		{Template.bind()}
-	</Story>
-</Canvas>
+	}),
+	play: defaultTest,
+}

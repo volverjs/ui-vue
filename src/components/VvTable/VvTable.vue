@@ -122,262 +122,212 @@
 </script>
 
 <template>
-	<div class="sortable-table">
-		<div class="sortable-table__wrapper">
-			<table class="vv-table">
-				<thead>
-					<tr>
-						<th
-							v-for="column in hasColumns"
-							:key="column.name"
-							v-bind="{
-								class: [
-									column.class,
-									column.classTh,
-									{
-										selected: hasSort === column.name,
-									},
-								],
-							}"
+	<table class="vv-table">
+		<thead>
+			<tr>
+				<th
+					v-for="column in hasColumns"
+					:key="column.name"
+					v-bind="{
+						class: [
+							column.class,
+							column.classTh,
+							{
+								selected: hasSort === column.name,
+							},
+						],
+					}"
+				>
+					<div v-if="!column.sortable" class="ellipsis">
+						{{ column.label }}
+					</div>
+					<button
+						v-else
+						type="button"
+						class="pr-md"
+						@click="onClickSort(column.name)"
+					>
+						{{ column.label }}
+						<VvIcon
+							v-bind="
+								hasSort === column.name
+									? {
+											name:
+												hasOrder === 'asc'
+													? 'order-up'
+													: 'order-down',
+									  }
+									: {
+											name: 'order-down',
+									  }
+							"
+						/>
+					</button>
+				</th>
+			</tr>
+		</thead>
+		<TransitionGroup tag="tbody" :name="transitionName">
+			<slot
+				name="tbody"
+				v-bind="{ columns: hasColumns, data, isLoading }"
+			>
+				<slot v-if="isLoading" name="loading">
+					<tr v-for="index in hasLimit" :key="index">
+						<td
+							v-for="{ name, wrapperClass } in hasColumns"
+							:key="name"
 						>
-							<div v-if="!column.sortable" class="ellipsis">
-								{{ column.label }}
-							</div>
-							<button
-								v-else
-								type="button"
-								class="pr-md"
-								@click="onClickSort(column.name)"
+							<slot
+								v-bind="{
+									index,
+									wrapperClass,
+								}"
+								:name="`skeleton::${name}`"
 							>
-								{{ column.label }}
-								<VvIcon
-									v-bind="
-										hasSort === column.name
-											? {
-													name:
-														hasOrder === 'asc'
-															? 'order-up'
-															: 'order-down',
-											  }
-											: {
-													name: 'order-down',
-											  }
-									"
-								/>
-							</button>
-						</th>
+								<div class="vv-skeleton" :class="wrapperClass">
+									<div class="vv-skeleton__item"></div>
+								</div>
+							</slot>
+						</td>
 					</tr>
-				</thead>
-				<TransitionGroup tag="tbody" :name="transitionName">
-					<slot
-						name="tbody"
-						v-bind="{ columns: hasColumns, data, isLoading }"
-					>
-						<slot v-if="isLoading" name="loading">
-							<tr v-for="index in hasLimit" :key="index">
-								<td
-									v-for="{ name, wrapperClass } in hasColumns"
-									:key="name"
+				</slot>
+				<template v-else-if="!isError">
+					<template v-if="data.length">
+						<tr v-for="(row, index) in currentData" :key="index">
+							<td
+								v-for="{
+									name,
+									field,
+									wrapperClass,
+									render,
+									...column
+								} in hasColumns"
+								:key="name"
+								:class="[column.class, column.classTd]"
+							>
+								<template v-if="render">
+									<component :is="render(row, index)" />
+								</template>
+								<slot
+									v-else-if="slots[`col::${name}`]"
+									v-bind="{
+										row,
+										field,
+										wrapperClass,
+										index,
+										value: row[name],
+									}"
+									:name="`col::${name}`"
+								/>
+								<slot
+									v-else
+									v-bind="{
+										name,
+										row,
+										field,
+										wrapperClass,
+										index,
+										value: row[name],
+									}"
+									name="col"
 								>
-									<slot
-										v-bind="{
-											index,
-											wrapperClass,
-										}"
-										:name="`skeleton::${name}`"
+									<div
+										class="text-ellipsis overflow-hidden"
+										:class="wrapperClass"
 									>
-										<div
-											class="vv-skeleton"
-											:class="wrapperClass"
-										>
-											<div
-												class="vv-skeleton__item"
-											></div>
-										</div>
-									</slot>
-								</td>
-							</tr>
-						</slot>
-						<template v-else-if="!isError">
-							<template v-if="data.length">
-								<tr
-									v-for="(row, index) in currentData"
-									:key="index"
-								>
-									<td
-										v-for="{
-											name,
-											field,
-											wrapperClass,
-											render,
-											...column
-										} in hasColumns"
-										:key="name"
-										:class="[column.class, column.classTd]"
-									>
-										<template v-if="render">
-											<component
-												:is="render(row, index)"
-											/>
-										</template>
-										<slot
-											v-else-if="slots[`col::${name}`]"
-											v-bind="{
-												row,
-												field,
-												wrapperClass,
-												index,
-												value: row[name],
-											}"
-											:name="`col::${name}`"
-										/>
-										<slot
-											v-else
-											v-bind="{
-												name,
-												row,
-												field,
-												wrapperClass,
-												index,
-												value: row[name],
-											}"
-											name="col"
-										>
-											<div
-												class="text-ellipsis overflow-hidden"
-												:class="wrapperClass"
-											>
-												{{ dotGet(row, field ?? name) }}
-											</div>
-										</slot>
-									</td>
-								</tr>
-							</template>
-							<slot v-else name="empty" />
-						</template>
-						<slot v-else name="error" />
-					</slot>
-				</TransitionGroup>
-				<tfoot v-if="slots.tfoot">
-					<slot name="tfoot" />
-				</tfoot>
-				<caption v-if="slots.caption">
-					<slot name="caption" />
-				</caption>
-			</table>
-		</div>
-		<slot
-			name="navigation"
-			v-bind="{
-				hide: hideNavigation,
-				prevDisabled: hasPrevDisabled,
-				prev: onClickPrev,
-				nextDisabled: hasNextDisabled,
-				next: onClickNext,
-				total: hasPageCount,
-				page: hasPage,
-			}"
+										{{ dotGet(row, field ?? name) }}
+									</div>
+								</slot>
+							</td>
+						</tr>
+					</template>
+					<slot v-else name="empty" />
+				</template>
+				<slot v-else name="error" />
+			</slot>
+		</TransitionGroup>
+		<tfoot v-if="slots.tfoot">
+			<slot name="tfoot" />
+		</tfoot>
+		<caption v-if="slots.caption">
+			<slot name="caption" />
+		</caption>
+	</table>
+	<slot
+		name="navigation"
+		v-bind="{
+			hide: hideNavigation,
+			prevDisabled: hasPrevDisabled,
+			prev: onClickPrev,
+			nextDisabled: hasNextDisabled,
+			next: onClickNext,
+			total: hasPageCount,
+			page: hasPage,
+		}"
+	>
+		<div
+			v-if="!hideNavigation"
+			class="navigation mt-auto grid grid-cols-2 pt-md"
 		>
-			<div v-if="!hideNavigation" class="mt-auto grid grid-cols-2 pt-md">
-				<div class="flex items-center">
-					<label for="items-shown" class="text-12"
-						>{{ labelItemsShown }}:</label
+			<div class="flex items-center">
+				<label for="items-shown" class="text-12"
+					>{{ labelItemsShown }}:</label
+				>
+				<select
+					v-if="hasLimitSteps.length"
+					id="items-shown"
+					v-model="hasLimit"
+					:disabled="hasNavAndLimitDisabled"
+					name="items-shown"
+					class="navigation__limit"
+				>
+					<option
+						v-for="step in hasLimitSteps"
+						:key="step"
+						:value="step"
 					>
-					<select
-						v-if="hasLimitSteps.length"
-						id="items-shown"
-						v-model="hasLimit"
+						{{ step }}
+					</option>
+				</select>
+				<span v-else id="items-shown" class="navigation__total">
+					{{ hasTotal }}
+				</span>
+			</div>
+			<div class="flex justify-end items-center">
+				<VvButtonGroup>
+					<VvButton
+						:title="labelPrev"
+						:disabled="hasPrevDisabled"
+						icon="chevron-left"
+						modifiers="secondary"
+						@click.stop="onClickPrev()"
+					/>
+					<VvButton
+						:label="`${hasPage}/${hasPageCount}`"
 						:disabled="hasNavAndLimitDisabled"
-						name="items-shown"
-						class="sortable-table__limit"
-					>
-						<option
-							v-for="step in hasLimitSteps"
-							:key="step"
-							:value="step"
-						>
-							{{ step }}
-						</option>
-					</select>
-					<span v-else id="items-shown" class="sortable-table__total">
-						{{ hasTotal }}
-					</span>
-				</div>
-				<div class="flex justify-end items-center">
-					<VvButtonGroup>
-						<VvButton
-							:title="labelPrev"
-							:disabled="hasPrevDisabled"
-							icon="chevron-left"
-							modifiers="secondary"
-							@click.stop="onClickPrev()"
-						/>
-						<VvButton
-							:label="`${hasPage}/${hasPageCount}`"
-							:disabled="hasNavAndLimitDisabled"
-							:style="{ pointerEvents: 'none' }"
-							class="font-normal"
-							modifiers="secondary"
-							@click.stop="onClickPage(hasPage)"
-						/>
-						<VvButton
-							:title="labelNext"
-							:disabled="hasNextDisabled"
-							icon="chevron-right"
-							modifiers="secondary"
-							@click.stop="onClickNext()"
-						/>
-					</VvButtonGroup>
-					<!-- <small v-if="hasPageCount" class="ml-6 text-12">
+						:style="{ pointerEvents: 'none' }"
+						class="font-normal"
+						modifiers="secondary"
+						@click.stop="onClickPage(hasPage)"
+					/>
+					<VvButton
+						:title="labelNext"
+						:disabled="hasNextDisabled"
+						icon="chevron-right"
+						modifiers="secondary"
+						@click.stop="onClickNext()"
+					/>
+				</VvButtonGroup>
+				<!-- <small v-if="hasPageCount" class="ml-6 text-12">
 						{{ labelTotalPages }} {{ hasPageCount }}
 					</small> -->
-				</div>
 			</div>
-		</slot>
-	</div>
+		</div>
+	</slot>
 </template>
 
 <style lang="scss">
-	.sortable-table {
-		display: flex;
-		flex-grow: 1;
-		flex-direction: column;
-		min-width: 0;
-
-		&__wrapper {
-			// border: var(--border) solid var(--color-surface-4);
-			border-radius: var(--rounded);
-			background: var(--color-surface);
-			width: 100%;
-			overflow: auto;
-		}
-
-		th,
-		td {
-			padding: var(--spacing-16);
-		}
-
-		th {
-			&.selected {
-				background: var(--color-surface-2);
-				color: var(--color-word);
-			}
-
-			& > button {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				width: 100%;
-				border: none;
-				background: none;
-				font-size: inherit;
-				font-weight: inherit;
-				color: inherit;
-				cursor: pointer;
-				gap: var(--spacing-8);
-			}
-		}
-
+	.navigation {
 		&__limit {
 			font-size: var(--text-12);
 			padding: 0 var(--spacing-12) 0 var(--spacing-8);
