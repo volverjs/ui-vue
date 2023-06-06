@@ -6,6 +6,8 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
 		'element',
 	)) as HTMLElement
+	const buttons =
+		canvasElement.getElementsByClassName('buttons-container')?.[0]
 
 	expect(element).toHaveClass('vv-alert-group')
 
@@ -69,6 +71,17 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		const div = document.createElement('div')
 		div.innerHTML = args.after
 		expect(element.lastElementChild?.innerHTML).toEqual(div.innerHTML)
+	}
+
+	if (buttons) {
+		// click every button child and expect to have alert with correct css class
+		for (let i = 0; i < buttons.children.length; i++) {
+			const button = buttons.children[i] as HTMLElement
+			await button.click()
+			expect(alertGroupList.lastElementChild).toHaveClass(
+				`vv-alert--${button.id}`,
+			)
+		}
 	}
 
 	// check accessibility
