@@ -1,11 +1,11 @@
 import type { Meta } from '@storybook/vue3'
-import VvAlert from '@/components/VvAlert/VvAlert.vue'
+import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
 import { defaultArgs, argTypes } from './AlertGroup.settings'
 import { Default as DefaultStory, type Story } from './AlertGroup.stories'
 
-const meta: Meta<typeof VvAlert> = {
+const meta: Meta<typeof VvAlertGroup> = {
 	title: 'Components/AlertGroup/Slots',
-	component: VvAlert,
+	component: VvAlertGroup,
 	args: defaultArgs,
 	argTypes,
 }

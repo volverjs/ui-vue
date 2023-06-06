@@ -159,6 +159,9 @@
       "v-tooltip": [
         "dist/directives/v-tooltip.d.ts"
       ],
+      "composables": [
+        "dist/composables/index.d.ts"
+      ],
       "components": [
         "dist/components/index.d.ts"
       ],
@@ -292,6 +295,11 @@
       "types": "./dist/directives/v-tooltip.d.ts",
       "import": "./dist/directives/v-tooltip.es.js",
       "default": "./dist/directives/v-tooltip.umd.js"
+    },
+    "./composables": {
+      "types": "./dist/composables/index.d.ts",
+      "import": "./dist/composables/index.es.js",
+      "default": "./dist/composables/index.umd.js"
     },
     "./components": {
       "types": "./dist/components/index.d.ts",

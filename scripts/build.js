@@ -191,6 +191,27 @@ directivesSources.forEach(({ name, entry }) => {
 	})
 })
 
+// build composables library
+packageJson.exports['./composables'] = {
+	types: './dist/composables/index.d.ts',
+	import: './dist/composables/index.es.js',
+	default: './dist/composables/index.umd.js',
+}
+packageJson.typesVersions['*']['composables'] = ['dist/composables/index.d.ts']
+build({
+	...baseConfig,
+	build: {
+		watch,
+		minify,
+		emptyOutDir: false,
+		lib: {
+			name: 'composables',
+			entry: './src/composables/index.ts',
+			fileName: (format) => `composables/index.${format}.js`,
+		},
+	},
+})
+
 // build components library
 packageJson.exports['./components'] = {
 	types: './dist/components/index.d.ts',

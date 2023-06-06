@@ -118,6 +118,7 @@
     "unrefElement": true,
     "until": true,
     "useActiveElement": true,
+    "useAlert": true,
     "useAnimate": true,
     "useArrayDifference": true,
     "useArrayEvery": true,
@@ -308,6 +309,7 @@
     "watchThrottled": true,
     "watchTriggerable": true,
     "watchWithFilter": true,
-    "whenever": true
+    "whenever": true,
+    "composables": true
   }
 }

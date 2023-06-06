@@ -1,6 +1,7 @@
 import type { InjectionKey, Ref } from 'vue'
 import type { Emitter } from 'mitt'
 import type { Volver } from './Volver'
+import type { AlertModifiers } from './types/alert'
 
 export const DEFAULT_ICONIFY_PROVIDER = 'vv'
 
@@ -110,3 +111,23 @@ export const INJECTION_KEY_ALERT_GROUP = Symbol.for(
 	name?: Ref<string | undefined>
 	bus?: Emitter<{ close: string }>
 }>
+export const DEFAULT_ALERT_AUTO_CLOSE = 10000
+export const DEFAULT_ALERT_MODIFIERS = 'info'
+export const DEFAULT_ALERT_DISMISSABLE = true
+export const DEFAULT_ALERT_GROUP = 'default'
+export const DEFAULT_ALERT_INFO_ICON = 'information'
+export const DEFAULT_ALERT_SUCCESS_ICON = 'check-circle'
+export const DEFAULT_ALERT_WARNING_ICON = 'warning'
+export const DEFAULT_ALERT_DANGER_ICON = 'error'
+export const DefaultAlertIconMap = new Map<AlertModifiers, string>([
+	['success', DEFAULT_ALERT_SUCCESS_ICON],
+	['info', DEFAULT_ALERT_INFO_ICON],
+	['warning', DEFAULT_ALERT_WARNING_ICON],
+	['danger', DEFAULT_ALERT_DANGER_ICON],
+])
+// {
+// 	success: DEFAULT_ALERT_SUCCESS_ICON,
+// 	info: DEFAULT_ALERT_INFO_ICON,
+// 	warning: DEFAULT_ALERT_WARNING_ICON,
+// 	danger: DEFAULT_ALERT_DANGER_ICON,
+// }
