@@ -2,13 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.10] - 2023-06-06
-
-### Added
-
-- `useAlert` to manage alerts, story and test
-
-## [0.0.9] - 2023-05-31
+## [0.0.9] - 2023-06-06
 
 ### Fixed
 
@@ -17,7 +11,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Emit of transition events on `VvDialog` and `VvDropdown`.
+- Emit of transition events on `VvDialog` and `VvDropdown`;
+- `useAlert` to manage alerts, story and test.
 
 ## [0.0.8] - 2023-05-22
 
@@ -164,7 +159,6 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
-[0.0.10]: https://github.com/volverjs/style/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/volverjs/style/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/volverjs/style/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/volverjs/style/compare/v0.0.6...v0.0.7
