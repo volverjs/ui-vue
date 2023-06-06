@@ -8,6 +8,12 @@ import {
 } from '@/constants'
 import type { Alert, AlertModifiers } from '@/types/alert'
 
+const groups = reactive(
+	new Map<string, Map<string, Alert>>([
+		[DEFAULT_ALERT_GROUP, new Map<string, Alert>()],
+	]),
+)
+
 /**
  * @description Composable to access alert groups, alerts and functions to add, remove and get alerts by group.
  * @example
@@ -28,12 +34,6 @@ import type { Alert, AlertModifiers } from '@/types/alert'
  *  }
  */
 export const useAlert = () => {
-	const groups = reactive(
-		new Map<string, Map<string, Alert>>([
-			[DEFAULT_ALERT_GROUP, new Map<string, Alert>()],
-		]),
-	)
-
 	const addAlert = (
 		{
 			id = crypto.randomUUID(),
