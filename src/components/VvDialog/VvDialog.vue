@@ -15,16 +15,16 @@
 	const dialogEl: Ref<HTMLDialogElement | undefined> = ref()
 
 	// data
+	const modelValue = useVModel(props, 'modelValue', emit)
 	const localModelValue = ref(false)
-	const modelValue = computed({
-		get() {
-			return props.modelValue ?? localModelValue.value
-		},
-		set(value) {
-			if (props.modelValue === undefined) {
-				localModelValue.value = value
+	const opened = computed({
+		get: () => modelValue.value ?? localModelValue.value,
+		set: (newValue) => {
+			if (modelValue.value === undefined) {
+				localModelValue.value = newValue
+				return
 			}
-			emit('update:modelValue', value)
+			modelValue.value = newValue
 		},
 	})
 
@@ -80,24 +80,24 @@
 
 	// methods
 	onClickOutside(modalWrapper, () => {
-		if (!props.keepOpen) {
-			modelValue.value = false
+		if (!props.keepOpen && opened.value) {
+			opened.value = false
 		}
 	})
 
 	function close() {
-		modelValue.value = false
+		opened.value = false
 	}
 
 	function open() {
-		modelValue.value = true
+		opened.value = true
 	}
 
 	defineExpose({ close, open })
 
 	// keyboard
 	onKeyStroke('Escape', (e) => {
-		if (modelValue.value) {
+		if (opened.value) {
 			e.preventDefault()
 			close()
 		}
@@ -107,7 +107,7 @@
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
 		<dialog
-			v-show="modelValue"
+			v-show="opened"
 			v-bind="dialogAttrs"
 			ref="dialogEl"
 			:class="dialogClass"
