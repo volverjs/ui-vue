@@ -41,6 +41,13 @@ export const VvComboboxProps = {
 	...DropdownProps,
 	...LabelProps,
 	/**
+	 * Dropdown show / hide transition name
+	 */
+	transitionName: {
+		type: String,
+		default: 'vv-dropdown--mobile-fade-block',
+	},
+	/**
 	 * modelValue can be a string, number, boolean, object or array of string, number, boolean, object
 	 */
 	modelValue: {
@@ -71,6 +78,10 @@ export const VvComboboxProps = {
 	 * Label for deselected option hint
 	 */
 	deselectHintLabel: { type: String, default: 'Press enter to remove' },
+	/**
+	 * Label close button
+	 */
+	closeLabel: { type: String, default: 'Close' },
 	/**
 	 * Select input placeholder
 	 */

@@ -86,13 +86,90 @@ export const argTypes = {
 		},
 	},
 	noResultsLabel: {
-		description: 'Label of "no results" options',
+		description: 'Label for no search results',
 		control: {
 			type: 'text',
 		},
 		table: {
 			defaultValue: {
 				summary: 'No results',
+			},
+		},
+	},
+	noOptionsLabel: {
+		description: 'Label for no options available',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'No options available',
+			},
+		},
+	},
+	selectedHintLabel: {
+		description: 'Label for selected option hint',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Selected',
+			},
+		},
+	},
+	deselectActionLabel: {
+		description: 'Label for deselect action button',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Deselect',
+			},
+		},
+	},
+	selectHintLabel: {
+		description: 'Label for select option hint',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Press enter to select',
+			},
+		},
+	},
+	deselectHintLabel: {
+		description: 'Label for deselected option hint',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Press enter to remove',
+			},
+		},
+	},
+	closeLabel: {
+		description: 'Label for close button',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Close',
+			},
+		},
+	},
+	loadingLabel: {
+		description: 'Label for loading',
+		control: {
+			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Loading...',
 			},
 		},
 	},
@@ -115,6 +192,11 @@ export const argTypes = {
 			'Text that appears in the in the search input when it has no value set..',
 		control: {
 			type: 'text',
+		},
+		table: {
+			defaultValue: {
+				summary: 'Search...',
+			},
 		},
 	},
 	debounceSearch: {
@@ -173,6 +255,22 @@ export const argTypes = {
 			type: 'text',
 		},
 		description: 'Modifiers for dropdown',
+		table: {
+			defaultValue: {
+				summary: 'mobile',
+			},
+		},
+	},
+	transitionName: {
+		control: {
+			type: 'text',
+		},
+		description: 'Transition name for dropdown',
+		table: {
+			defaultValue: {
+				summary: 'vv-dropdown--mobile-fade-block',
+			},
+		},
 	},
 	autoOpen: {
 		description: 'Open dropdown on focus',
@@ -187,6 +285,14 @@ export const argTypes = {
 		table: {
 			defaultValue: {
 				summary: false,
+			},
+		},
+	},
+	autofocusFirst: {
+		description: 'Autofocus first option on open dropdown',
+		table: {
+			defaultValue: {
+				summary: true,
 			},
 		},
 	},

@@ -334,7 +334,7 @@
 		autoPlacement: propsDefaults.value.autoPlacement,
 		arrow: propsDefaults.value.arrow,
 		autofocusFirst: searchable.value
-			? false
+			? true
 			: propsDefaults.value.autofocusFirst,
 		triggerWidth: propsDefaults.value.triggerWidth,
 		modifiers: propsDefaults.value.dropdownModifiers,
@@ -390,7 +390,6 @@
 					<slot name="dropdown::before" />
 					<input
 						v-if="searchable"
-						v-show="expanded"
 						:id="hasSearchId"
 						ref="inputSearchEl"
 						v-model="searchText"
@@ -579,7 +578,7 @@
 						<!-- Close button if dropdown custom position is enabled and floating-ui disabled -->
 						<VvButton
 							v-if="dropdownEl?.customPosition"
-							label="Close"
+							:label="closeLabel"
 							modifiers="secondary"
 							@click="dropdownEl.hide()"
 						/>
