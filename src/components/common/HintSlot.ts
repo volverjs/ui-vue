@@ -1,4 +1,5 @@
 import type { ExtractPropTypes, Slots } from 'vue'
+import type { Ref } from 'vue'
 
 /**
  * Merge array of string
