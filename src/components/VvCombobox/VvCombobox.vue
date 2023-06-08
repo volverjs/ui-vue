@@ -50,7 +50,7 @@
 		hasHintLabelOrSlot,
 		hasInvalidLabelOrSlot,
 		hintSlotScope,
-	} = HintSlotFactory(props, slots)
+	} = HintSlotFactory(propsDefaults, slots)
 
 	// template ref
 	const inputEl: Ref<HTMLElement | null> = ref(null)

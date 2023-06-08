@@ -40,7 +40,7 @@ export const VvAlertProps = {
 	 */
 	title: {
 		type: String,
-		default: '',
+		default: undefined,
 	},
 	/**
 	 * The alert content
@@ -49,7 +49,7 @@ export const VvAlertProps = {
 	 */
 	content: {
 		type: String,
-		default: '',
+		default: undefined,
 	},
 	/**
 	 * The alert footer
@@ -58,7 +58,7 @@ export const VvAlertProps = {
 	 */
 	footer: {
 		type: String,
-		default: '',
+		default: undefined,
 	},
 	/**
 	 * The alert role

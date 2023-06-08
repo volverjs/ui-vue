@@ -13,6 +13,13 @@
 	const emit = defineEmits(VvCheckboxEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvCheckboxProps>(
+		'VvCheckbox',
+		VvCheckboxProps,
+		props,
+	)
+
 	// data
 	const {
 		id,
@@ -150,7 +157,7 @@
 		hasHintLabelOrSlot,
 		hasInvalidLabelOrSlot,
 		hintSlotScope,
-	} = HintSlotFactory(props, slots)
+	} = HintSlotFactory(propsDefaults, slots)
 </script>
 
 <template>

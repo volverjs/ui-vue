@@ -34,7 +34,11 @@
 			<slot name="header">
 				<!-- @slot Before title slot -->
 				<slot name="title::before" />
-				<strong :id="hasTitleId" class="vv-alert__title">
+				<strong
+					v-if="$slots.title || title"
+					:id="hasTitleId"
+					class="vv-alert__title"
+				>
 					<!-- @slot Title slot -->
 					<slot name="title">
 						{{ title }}

@@ -19,7 +19,7 @@ export type HintSlotProps = Readonly<
 			default: ''
 			required: true
 		}
-		modelValue: null
+		modelValue: unknown
 		valid: BooleanConstructor
 		validLabel: (StringConstructor | ArrayConstructor)[]
 		invalid: BooleanConstructor
@@ -35,7 +35,11 @@ export type HintSlotProps = Readonly<
  * @param {Slots} parentSlots vue slots
  * @returns {Component} vue component
  */
-export function HintSlotFactory(props: HintSlotProps, slots: Slots) {
+export function HintSlotFactory(
+	propsOrRef: HintSlotProps | Ref<HintSlotProps>,
+	slots: Slots,
+) {
+	const props = unref(propsOrRef)
 	// label
 	const invalidLabel = computed(() => joinLines(props.invalidLabel))
 	const validLabel = computed(() => joinLines(props.validLabel))

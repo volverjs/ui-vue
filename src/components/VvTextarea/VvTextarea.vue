@@ -15,6 +15,13 @@
 	const emit = defineEmits(VvTextareaEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvTextareaProps>(
+		'VvTextarea',
+		VvTextareaProps,
+		props,
+	)
+
 	// template refs
 	const textarea = ref()
 
@@ -91,7 +98,7 @@
 		hasHintLabelOrSlot,
 		hasInvalidLabelOrSlot,
 		hintSlotScope,
-	} = HintSlotFactory(props, slots)
+	} = HintSlotFactory(propsDefaults, slots)
 
 	// styles
 	const bemCssClasses = useModifiers(

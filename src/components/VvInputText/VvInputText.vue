@@ -22,6 +22,13 @@
 	const emit = defineEmits(VvInputTextEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvInputTextProps>(
+		'VvInputText',
+		VvInputTextProps,
+		props,
+	)
+
 	// template refs
 	const inputEl = ref()
 	const innerEl = ref()
@@ -278,7 +285,7 @@
 		hasHintLabelOrSlot,
 		hasInvalidLabelOrSlot,
 		hintSlotScope,
-	} = HintSlotFactory(props, slots)
+	} = HintSlotFactory(propsDefaults, slots)
 	const PasswordInputActions = VvInputTextActionsFactory(
 		INPUT_TYPES.PASSWORD,
 		props,

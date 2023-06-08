@@ -1,3 +1,1 @@
-import { useAlert } from './alert/useAlert'
-
-export { useAlert }
+export { useAlert } from './alert/useAlert'

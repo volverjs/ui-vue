@@ -17,6 +17,13 @@
 	const emit = defineEmits(VvRadioGroupEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvRadioGroupProps>(
+		'VvRadioGroup',
+		VvRadioGroupProps,
+		props,
+	)
+
 	// data
 	const modelValue = useVModel(props, 'modelValue', emit)
 	const { disabled, readonly, vertical, valid, invalid, modifiers } =
@@ -58,7 +65,7 @@
 	}
 
 	// hint
-	const { HintSlot, hintSlotScope } = HintSlotFactory(props, slots)
+	const { HintSlot, hintSlotScope } = HintSlotFactory(propsDefaults, slots)
 </script>
 
 <template>

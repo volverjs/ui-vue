@@ -17,6 +17,13 @@
 	const emit = defineEmits(VvCheckboxGroupEvents)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvCheckboxGroupProps>(
+		'VvCheckboxGroup',
+		VvCheckboxGroupProps,
+		props,
+	)
+
 	// data
 	const modelValue = useVModel(props, 'modelValue', emit)
 	const { disabled, readonly, vertical, valid, invalid, modifiers } =
@@ -56,7 +63,7 @@
 			value: getOptionValue(option),
 		}
 	}
-	const { HintSlot, hintSlotScope } = HintSlotFactory(props, slots)
+	const { HintSlot, hintSlotScope } = HintSlotFactory(propsDefaults, slots)
 </script>
 
 <template>

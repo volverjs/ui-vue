@@ -16,6 +16,13 @@
 	const emit = defineEmits(VvSelectEmits)
 	const slots = useSlots()
 
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvSelectProps>(
+		'VvSelect',
+		VvSelectProps,
+		props,
+	)
+
 	// template refs
 	const select = ref()
 
@@ -25,7 +32,7 @@
 		hasHintLabelOrSlot,
 		hasInvalidLabelOrSlot,
 		hintSlotScope,
-	} = HintSlotFactory(props, slots)
+	} = HintSlotFactory(propsDefaults, slots)
 
 	// data
 	const {

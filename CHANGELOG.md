@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Default props by global plugin configuration for input components;
 - Emit of transition events on `VvDialog` and `VvDropdown`;
 - `useAlert` to manage alerts, story and test.
 
