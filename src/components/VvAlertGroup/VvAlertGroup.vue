@@ -8,8 +8,10 @@
 	import { useVvAlertGroup, VvAlertGroupEvents, VvAlertGroupProps } from '.'
 	import VvAlert from '../VvAlert/VvAlert.vue'
 
+	// props and emit
 	const props = defineProps(VvAlertGroupProps)
 	const emit = defineEmits(VvAlertGroupEvents)
+
 	const { hasProps, hasTransition } = useVvAlertGroup(props, emit)
 
 	const alertGroupTransitionHandlers = {

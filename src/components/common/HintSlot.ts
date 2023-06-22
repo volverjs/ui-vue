@@ -40,27 +40,35 @@ export function HintSlotFactory(
 	propsOrRef: HintSlotProps | Ref<HintSlotProps>,
 	slots: Slots,
 ) {
-	const props = unref(propsOrRef)
+	const props = computed(() => {
+		if (isRef(propsOrRef)) {
+			return propsOrRef.value
+		}
+		return propsOrRef
+	})
+
 	// label
-	const invalidLabel = computed(() => joinLines(props.invalidLabel))
-	const validLabel = computed(() => joinLines(props.validLabel))
-	const loadingLabel = computed(() => props.loadingLabel)
-	const hintLabel = computed(() => props.hintLabel)
+	const invalidLabel = computed(() => joinLines(props.value.invalidLabel))
+	const validLabel = computed(() => joinLines(props.value.validLabel))
+	const loadingLabel = computed(() => props.value.loadingLabel)
+	const hintLabel = computed(() => props.value.hintLabel)
 
 	// type
 	const hasLoadingLabelOrSlot = computed(() =>
-		Boolean(props.loading && (slots.loading || loadingLabel.value)),
+		Boolean(props.value.loading && (slots.loading || loadingLabel.value)),
 	)
 	const hasInvalidLabelOrSlot = computed(
 		() =>
 			!hasLoadingLabelOrSlot.value &&
-			Boolean(props.invalid && (slots.invalid || invalidLabel.value)),
+			Boolean(
+				props.value.invalid && (slots.invalid || invalidLabel.value),
+			),
 	)
 	const hasValidLabelOrSlot = computed(
 		() =>
 			!hasLoadingLabelOrSlot.value &&
 			!hasInvalidLabelOrSlot.value &&
-			Boolean(props.valid && (slots.valid || validLabel.value)),
+			Boolean(props.value.valid && (slots.valid || validLabel.value)),
 	)
 	const hasHintLabelOrSlot = computed(
 		() =>
@@ -77,10 +85,10 @@ export function HintSlotFactory(
 			hasHintLabelOrSlot.value,
 	)
 	const hintSlotScope = computed(() => ({
-		modelValue: props.modelValue,
-		valid: props.valid,
-		invalid: props.invalid,
-		loading: props.loading,
+		modelValue: props.value.modelValue,
+		valid: props.value.valid,
+		invalid: props.value.invalid,
+		loading: props.value.loading,
 	}))
 	// component
 	const HintSlot = defineComponent({

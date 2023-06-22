@@ -60,6 +60,9 @@ export const getStyleNames = function (kebabName: string) {
 			'vv-dropdown-action',
 		]
 	}
+	if (kebabName === 'vv-button-group') {
+		return ['vv-button', 'vv-button-group']
+	}
 	if (kebabName === 'vv-accordion-group') {
 		return ['vv-accordion', 'vv-accordion-group']
 	}

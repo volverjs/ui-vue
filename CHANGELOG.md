@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - `VvCombobox` close label;
 - `VvCombobox` default dropdown transition and modifier;
 - `VvDropdown` no default modifiers;
+- `VvDialog` catch escape keydown event with `keepOpen: true`;
 - `VvDropdown` animation frame update with `strategy: 'fixed'`.
 
 ### Added

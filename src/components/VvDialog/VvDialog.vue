@@ -17,7 +17,7 @@
 	// data
 	const modelValue = useVModel(props, 'modelValue', emit)
 	const localModelValue = ref(false)
-	const opened = computed({
+	const isOpened = computed({
 		get: () => modelValue.value ?? localModelValue.value,
 		set: (newValue) => {
 			if (modelValue.value === undefined) {
@@ -80,37 +80,36 @@
 
 	// methods
 	onClickOutside(modalWrapper, () => {
-		if (!props.keepOpen && opened.value) {
-			opened.value = false
+		if (!props.keepOpen) {
+			close()
 		}
 	})
 
 	function close() {
-		opened.value = false
+		isOpened.value = false
 	}
 
 	function open() {
-		opened.value = true
+		isOpened.value = true
 	}
 
 	defineExpose({ close, open })
 
-	// keyboard
-	onKeyStroke('Escape', (e) => {
-		if (opened.value) {
-			e.preventDefault()
+	const onCancel = () => {
+		if (!props.keepOpen) {
 			close()
 		}
-	})
+	}
 </script>
 
 <template>
 	<Transition :name="transitioName" v-on="dialogTransitionHandlers">
 		<dialog
-			v-show="opened"
+			v-show="isOpened"
 			v-bind="dialogAttrs"
 			ref="dialogEl"
 			:class="dialogClass"
+			@cancel.stop.prevent="onCancel"
 		>
 			<article ref="modalWrapper" class="vv-dialog__wrapper">
 				<header v-if="$slots.header || title" class="vv-dialog__header">
