@@ -184,6 +184,12 @@
 
 	// options filtered by search text
 	const filteredOptions = computed(() => {
+		if (propsDefaults.value.searchFunction) {
+			return propsDefaults.value.searchFunction(
+				debouncedSearchText.value,
+				props.options,
+			)
+		}
 		return props.options?.filter((option) => {
 			return getOptionLabel(option)
 				.toLowerCase()

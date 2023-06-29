@@ -16,6 +16,7 @@ import {
 	DropdownProps,
 	LabelProps,
 } from '../../props'
+import type { Option } from '../../types/generic'
 
 export const VvComboboxEvents = [
 	'update:modelValue',
@@ -90,6 +91,18 @@ export const VvComboboxProps = {
 	 * Use input text to search on options
 	 */
 	searchable: Boolean,
+	/**
+	 * Search function to filter options
+	 */
+	searchFunction: {
+		type: Function as PropType<
+			(
+				search: string,
+				options?: (Option | string)[],
+			) => (Option | string)[]
+		>,
+		default: undefined,
+	},
 	/**
 	 * On searchable select is the input search placeholder
 	 */

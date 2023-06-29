@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file.
 
 - Default props by global plugin configuration for input components;
 - Emit of transition events on `VvDialog` and `VvDropdown`;
-- `useAlert` to manage alerts, story and test.
+- `useAlert` to manage alerts, story and test;
+- `VvCombobox` custom search function.
 
 ## [0.0.8] - 2023-05-22
 

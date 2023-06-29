@@ -187,6 +187,14 @@ export const argTypes = {
 			},
 		},
 	},
+	searchFunction: {
+		description: 'Search function to filter options',
+		table: {
+			defaultValue: {
+				summary: undefined,
+			},
+		},
+	},
 	searchPlaceholder: {
 		description:
 			'Text that appears in the in the search input when it has no value set..',
