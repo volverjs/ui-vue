@@ -105,7 +105,7 @@
 		expanded.value = false
 	}
 	const onAfterExpand = () => {
-		if (searchable.value) {
+		if (propsDefaults.value.searchable) {
 			if (inputSearchEl.value) {
 				inputSearchEl.value.focus({
 					preventScroll: true,
@@ -114,7 +114,7 @@
 		}
 	}
 	const onAfterCollapse = () => {
-		if (searchable.value) {
+		if (propsDefaults.value.searchable) {
 			searchText.value = ''
 		}
 	}
@@ -131,13 +131,16 @@
 		valid,
 		invalid,
 		floating,
-		searchable,
 	} = toRefs(props)
 	const hasId = useUniqueId(id)
 	const hasHintId = computed(() => `${hasId.value}-hint`)
 	const hasDropdownId = computed(() => `${hasId.value}-dropdown`)
 	const hasSearchId = computed(() => `${hasId.value}-search`)
 	const hasLabelId = computed(() => `${hasId.value}-label`)
+
+	// loading
+	const localLoading = ref(false)
+	const isLoading = computed(() => localLoading.value || loading.value)
 
 	// ref
 	const dropdownEl = ref()
@@ -162,7 +165,7 @@
 		modifiers,
 		computed(() => ({
 			disabled: disabled.value,
-			loading: loading.value,
+			loading: isLoading.value,
 			readonly: readonly.value,
 			'icon-before': Boolean(hasIconBefore.value),
 			'icon-after': Boolean(hasIconAfter.value),
@@ -183,12 +186,17 @@
 	} = useOptions(props)
 
 	// options filtered by search text
-	const filteredOptions = computed(() => {
+	const filteredOptions = computedAsync(async () => {
 		if (propsDefaults.value.searchFunction) {
-			return propsDefaults.value.searchFunction(
-				debouncedSearchText.value,
-				props.options,
+			localLoading.value = true
+			const toReturn = await Promise.resolve(
+				propsDefaults.value.searchFunction(
+					debouncedSearchText.value,
+					props.options,
+				),
 			)
+			localLoading.value = false
+			return toReturn
 		}
 		return props.options?.filter((option) => {
 			return getOptionLabel(option)
@@ -310,7 +318,7 @@
 		invalid: invalid.value,
 		invalidLabel: propsDefaults.value.invalidLabel,
 		hintLabel: propsDefaults.value.hintLabel,
-		loading: loading.value,
+		loading: isLoading.value,
 		loadingLabel: propsDefaults.value.loadingLabel,
 		disabled: disabled.value,
 		readonly: readonly.value,
@@ -339,7 +347,7 @@
 		flip: propsDefaults.value.flip,
 		autoPlacement: propsDefaults.value.autoPlacement,
 		arrow: propsDefaults.value.arrow,
-		autofocusFirst: searchable.value
+		autofocusFirst: propsDefaults.value.searchable
 			? true
 			: propsDefaults.value.autofocusFirst,
 		triggerWidth: propsDefaults.value.triggerWidth,
@@ -375,7 +383,7 @@
 		<label
 			v-if="label"
 			:id="hasLabelId"
-			:for="searchable ? hasSearchId : undefined"
+			:for="propsDefaults.searchable ? hasSearchId : undefined"
 		>
 			{{ label }}
 		</label>
@@ -389,13 +397,15 @@
 				@after-collapse="onAfterCollapse"
 			>
 				<template
-					v-if="searchable || $slots['dropdown::before']"
+					v-if="
+						propsDefaults.searchable || $slots['dropdown::before']
+					"
 					#before
 				>
 					<!-- @slot Slot before dropdown items -->
 					<slot name="dropdown::before" />
 					<input
-						v-if="searchable"
+						v-if="propsDefaults.searchable"
 						:id="hasSearchId"
 						ref="inputSearchEl"
 						v-model="searchText"

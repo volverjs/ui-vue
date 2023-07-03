@@ -98,8 +98,8 @@ export const VvComboboxProps = {
 		type: Function as PropType<
 			(
 				search: string,
-				options?: (Option | string)[],
-			) => (Option | string)[]
+				options: (Option | string)[],
+			) => (Option | string)[] | Promise<(Option | string)[]>
 		>,
 		default: undefined,
 	},
