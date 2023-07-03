@@ -499,7 +499,7 @@
 					</div>
 				</template>
 				<template #items>
-					<template v-if="filteredOptions.length">
+					<template v-if="filteredOptions?.length">
 						<template
 							v-for="(option, index) in filteredOptions"
 							:key="index"

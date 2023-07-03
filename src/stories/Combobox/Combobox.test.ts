@@ -62,7 +62,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		}
 
 		// select second value
-		if (args.options.length > 1) {
+		if (args.options && args.options.length > 1) {
 			await expect(dropdownSecondItem).toBeClicked()
 			await sleep()
 			const secondValue = getOptionValue(
