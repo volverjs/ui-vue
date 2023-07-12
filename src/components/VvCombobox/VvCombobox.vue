@@ -405,7 +405,7 @@
 					<!-- @slot Slot before dropdown items -->
 					<slot name="dropdown::before" />
 					<input
-						v-if="propsDefaults.searchable"
+						v-if="propsDefaults.searchable && !disabled"
 						:id="hasSearchId"
 						ref="inputSearchEl"
 						v-model="searchText"
@@ -499,7 +499,7 @@
 					</div>
 				</template>
 				<template #items>
-					<template v-if="filteredOptions?.length">
+					<template v-if="!disabled && filteredOptions?.length">
 						<template
 							v-for="(option, index) in filteredOptions"
 							:key="index"
@@ -581,7 +581,7 @@
 							{{ propsDefaults.noOptionsLabel }}
 						</slot>
 					</VvDropdownOption>
-					<VvDropdownOption v-else modifiers="inert">
+					<VvDropdownOption v-else-if="!disabled" modifiers="inert">
 						<!-- @slot Slot for no results available -->
 						<slot name="no-results">
 							{{ propsDefaults.noResultsLabel }}
