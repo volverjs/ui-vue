@@ -96,7 +96,7 @@
 			}
 		} else if (props.flip) {
 			if (typeof props.flip === 'boolean') {
-				toReturn.push(flip())
+				toReturn.push(flip({ fallbackStrategy: 'initialPlacement' }))
 			} else {
 				toReturn.push(flip(props.flip as FlipOptions))
 			}
@@ -175,16 +175,17 @@
 		if (hasCustomPosition.value) {
 			return undefined
 		}
+		const width =
+			props.triggerWidth && referenceEl.value
+				? `${referenceEl.value?.offsetWidth}px`
+				: undefined
 		return {
 			position: strategy.value,
 			top: `${y.value ?? 0}px`,
 			left: `${x.value ?? 0}px`,
-			maxWidth: maxWidth.value,
+			maxWidth: width ? undefined : maxWidth.value,
 			maxHeight: maxHeight.value,
-			width:
-				props.triggerWidth && referenceEl.value
-					? `${referenceEl.value.offsetWidth}px`
-					: undefined,
+			width,
 		}
 	})
 
