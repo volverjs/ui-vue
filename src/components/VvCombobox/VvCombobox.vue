@@ -476,6 +476,7 @@
 											:aria-label="
 												propsDefaults.deselectActionLabel
 											"
+											type="button"
 											@click.stop="onInput(option)"
 										>
 											<VvIcon name="close" />
