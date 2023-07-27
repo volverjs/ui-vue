@@ -49,12 +49,16 @@
 	const transitioName = computed(() => `vv-dialog--${props.transition}`)
 	const dialogTransitionHandlers = {
 		'before-enter': () => {
-			dialogEl.value?.showModal()
+			if (!dialogEl.value?.open) {
+				dialogEl.value?.showModal()
+			}
 			emit('open')
 			emit('before-enter')
 		},
 		'after-leave': () => {
-			dialogEl.value?.close()
+			if (dialogEl.value?.open) {
+				dialogEl.value?.close()
+			}
 			emit('close')
 			emit('after-leave')
 		},

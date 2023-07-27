@@ -7,9 +7,11 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - `VvCombobox` close label;
+- `VvCombobox` badge remove button with type `button`;
 - `VvCombobox` default dropdown transition and modifier;
 - `VvDropdown` no default modifiers;
 - `VvDialog` catch escape keydown event with `keepOpen: true`;
+- `VvDialog` `showModal()` and `close()` only if element has `open` attribute;
 - `VvDropdown` animation frame update with `strategy: 'fixed'`.
 
 ### Added
