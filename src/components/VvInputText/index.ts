@@ -196,6 +196,13 @@ export const VvInputTextProps = {
 	unit: {
 		type: String,
 	},
+	/**
+	 * Select input text on focus
+	 */
+	selectOnFocus: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export type VvInputTextPropsTypes = ExtractPropTypes<typeof VvInputTextProps>

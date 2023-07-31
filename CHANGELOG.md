@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 - `VvCombobox` default dropdown transition and modifier;
 - `VvDropdown` no default modifiers;
 - `VvDialog` catch escape keydown event with `keepOpen: true`;
-- `VvDialog` `showModal()` and `close()` only if element has `open` attribute;
+- `VvDialog` triggers `showModal()` and `close()` only if element has `open` attribute;
 - `VvDropdown` animation frame update with `strategy: 'fixed'`.
 
 ### Added
@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Emit of transition events on `VvDialog` and `VvDropdown`;
 - `useAlert` to manage alerts, story and test;
 - `VvCombobox` custom search function.
+- `VvInputText` add `select-on-focus` prop to select all text on focus;
 
 ## [0.0.8] - 2023-05-22
 

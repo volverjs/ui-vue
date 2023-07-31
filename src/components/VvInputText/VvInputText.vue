@@ -83,6 +83,11 @@
 	const isFocused = computed(
 		() => focused.value && !props.disabled && !props.readonly,
 	)
+	watch(isFocused, (newValue) => {
+		if (newValue && propsDefaults.value.selectOnFocus && inputEl.value) {
+			inputEl.value.select()
+		}
+	})
 
 	// visibility
 	const isVisible = useElementVisibility(inputEl)

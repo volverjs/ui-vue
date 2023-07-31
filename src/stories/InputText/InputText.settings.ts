@@ -176,7 +176,6 @@ export const argTypes = {
 	},
 	mask: {
 		description: 'Input mask, only for text type',
-
 		control: {
 			type: 'text',
 		},
@@ -210,6 +209,54 @@ export const argTypes = {
 		table: {
 			defaultValue: {
 				summary: false,
+			},
+		},
+	},
+	autoWidth: {
+		description: 'Adjust input width to content',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	hideActions: {
+		description: 'Hide type number, password and search actions',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
+			},
+		},
+	},
+	unit: {
+		description: 'Add unit label to input',
+		control: {
+			type: 'text',
+		},
+	},
+	selectOnFocus: {
+		description: 'Select input text on focus',
+		control: {
+			type: 'boolean',
+		},
+		table: {
+			defaultValue: {
+				summary: false,
+			},
+			type: {
+				summary: 'boolean',
 			},
 		},
 	},
