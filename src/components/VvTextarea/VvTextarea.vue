@@ -37,6 +37,9 @@
 		invalid,
 		loading,
 		modifiers,
+		debounce,
+		minlength,
+		maxlength,
 	} = toRefs(props)
 	const hasId = useUniqueId(id)
 	const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -46,7 +49,7 @@
 	)
 
 	// debounce
-	const localModelValue = useDebouncedInput(modelValue, emit, props.debounce)
+	const localModelValue = useDebouncedInput(modelValue, emit, debounce?.value)
 
 	// icons
 	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
@@ -67,9 +70,9 @@
 
 	// count
 	const { formatted: countFormatted } = useTextCount(localModelValue, {
-		mode: props.count,
-		upperLimit: Number(props.maxlength),
-		lowerLimit: Number(props.minlength),
+		mode: count?.value,
+		upperLimit: Number(maxlength?.value),
+		lowerLimit: Number(minlength?.value),
 	})
 
 	// tabindex
@@ -143,7 +146,7 @@
 				'aria-errormessage': hasInvalidLabelOrSlot.value
 					? hasHintId.value
 					: undefined,
-			} as TextareaHTMLAttributes),
+			}) as TextareaHTMLAttributes,
 	)
 
 	// slots props

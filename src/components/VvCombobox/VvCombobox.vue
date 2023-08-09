@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 	import type { Ref } from 'vue'
+	import { toRefs } from 'vue'
 	import { VvComboboxProps, VvComboboxEvents } from '.'
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import VvDropdown from '../VvDropdown/VvDropdown.vue'
@@ -84,7 +85,7 @@
 	const searchText = ref('')
 	const debouncedSearchText = refDebounced(
 		searchText,
-		Number(props.debounceSearch),
+		computed(() => Number(props.debounceSearch)),
 	)
 	watch(debouncedSearchText, () =>
 		emit('change:search', debouncedSearchText.value),
@@ -235,12 +236,15 @@
 		} else if (props.modelValue) {
 			selectedValues = [props.modelValue]
 		}
-		const options = props.options.reduce((acc, value) => {
-			if (isGroup(value)) {
-				return [...acc, ...getOptionGrouped(value)]
-			}
-			return [...acc, value]
-		}, [] as Array<Option | string>)
+		const options = props.options.reduce(
+			(acc, value) => {
+				if (isGroup(value)) {
+					return [...acc, ...getOptionGrouped(value)]
+				}
+				return [...acc, value]
+			},
+			[] as Array<Option | string>,
+		)
 
 		return options.filter((option) => {
 			if (isGroup(option)) {

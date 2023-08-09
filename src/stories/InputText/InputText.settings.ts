@@ -174,42 +174,16 @@ export const argTypes = {
 			},
 		},
 	},
-	mask: {
-		description: 'Input mask, only for text type',
+	iMask: {
+		description: '[iMask](https://imask.js.org/guide.html) options',
+		control: {
+			type: 'object',
+		},
+	},
+	masked: {
+		description: 'Masked input',
 		control: {
 			type: 'text',
-		},
-	},
-	maskEager: {
-		description: 'Show mask before typing',
-		table: {
-			defaultValue: {
-				summary: false,
-			},
-		},
-	},
-	maskReversed: {
-		description: 'Write typing reverse (ex. for numbers)',
-		table: {
-			defaultValue: {
-				summary: false,
-			},
-		},
-	},
-	maskTokens: {
-		description: 'Add mask custom tokens',
-		table: {
-			defaultValue: {
-				summary: 'undefined',
-			},
-		},
-	},
-	maskTokensReplace: {
-		description: 'Replace default tokens',
-		table: {
-			defaultValue: {
-				summary: false,
-			},
 		},
 	},
 	autoWidth: {

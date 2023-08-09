@@ -1,5 +1,5 @@
 import type { ExtractPropTypes, PropType } from 'vue'
-import type { MaskTokens } from 'maska'
+import type { FactoryOpts } from 'imask'
 import { InputTextareaProps } from '../../props'
 
 export const INPUT_TYPES = {
@@ -28,7 +28,23 @@ export const TYPES_ICON = {
 	SEARCH: 'close',
 } as const
 
-export const VvInputTextEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
+export const VvInputTextEvents = [
+	'update:modelValue',
+	'update:masked',
+	'accept',
+	'accept:typed',
+	'accept:masked',
+	'accept:unmasked',
+	'complete',
+	'complete:typed',
+	'complete:masked',
+	'complete:unmasked',
+	'focus',
+	'blur',
+	'keyup',
+	'keydown',
+	'keypress',
+]
 
 export const VvInputTextProps = {
 	...InputTextareaProps,
@@ -137,44 +153,19 @@ export const VvInputTextProps = {
 		default: 'Clear',
 	},
 	/**
-	 * Input mask, only for text type
-	 * @see https://beholdr.github.io/maska/
+	 * iMask options
+	 * @see https://imask.js.org/guide.html
 	 */
-	mask: {
+	iMask: {
+		type: Object as PropType<FactoryOpts>,
+		default: undefined,
+	},
+	/**
+	 * Masked value
+	 */
+	masked: {
 		type: String,
 		default: undefined,
-	},
-	/**
-	 * Show mask before typing
-	 * @see https://beholdr.github.io/maska/#/?id=maskinput-options
-	 */
-	maskEager: {
-		type: Boolean,
-		default: false,
-	},
-	/**
-	 * Write values reverse (ex. for numbers)
-	 * @see https://beholdr.github.io/maska/#/?id=maskinput-options
-	 */
-	maskReversed: {
-		type: Boolean,
-		default: false,
-	},
-	/**
-	 * Add mask custom tokens
-	 * @see https://beholdr.github.io/maska/#/?id=custom-tokens
-	 */
-	maskTokens: {
-		type: Object as PropType<MaskTokens>,
-		default: undefined,
-	},
-	/**
-	 * Replace default tokens
-	 * @see https://beholdr.github.io/maska/#/?id=custom-tokens
-	 */
-	maskTokensReplace: {
-		type: Boolean,
-		default: false,
 	},
 	/**
 	 * Adjust input width to content

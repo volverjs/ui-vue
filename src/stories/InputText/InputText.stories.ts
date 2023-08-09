@@ -25,14 +25,15 @@ export const Default: Story = {
 		setup() {
 			return { args }
 		},
-		data: () => ({ inputValue: undefined }),
+		data: () => ({ inputValue: undefined, maskedInputValue: undefined }),
 		template: /* html */ `
-			<vv-input-text v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+			<vv-input-text v-bind="args" v-model="inputValue" v-model:masked="maskedInputValue" :data-testData="inputValue" data-testId="element">
 				<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
 				<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
 			</vv-input-text>
-			<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+			<div>Value: <span data-testId="value">{{ inputValue }}</span></div> 
+			<div v-if="args.iMask" class="mt-sm">Masked Value: <span data-testId="masked-value">{{ maskedInputValue }}</span></div> 
 		`,
 	}),
 	play: defaultTest,
@@ -82,7 +83,6 @@ export const Hint: Story = {
 		...defaultArgs,
 		hintLabel: 'Please enter your name.',
 	},
-
 }
 
 export const Loading: Story = {
@@ -99,14 +99,6 @@ export const Floating: Story = {
 	args: {
 		...defaultArgs,
 		floating: true,
-	},
-}
-
-export const Mask: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		mask: '##-###-##',
 	},
 }
 

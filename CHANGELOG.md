@@ -14,6 +14,11 @@ All notable changes to this project will be documented in this file.
 - `VvDialog` triggers `showModal()` and `close()` only if element has `open` attribute;
 - `VvDropdown` animation frame update with `strategy: 'fixed'`.
 
+### Changed
+
+- `maska` has been replaced by `vue-imask` in `VvInputText`;
+- `mask`, `maskEager`, `maskReversed`, `maskTokens` and `maskTokensReplace` props in `VvInputText` are now `iMask` object.
+
 ### Added
 
 - Default props by global plugin configuration for input components;

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	import type { InputHTMLAttributes } from 'vue'
-	import { Mask } from 'maska'
+	import { useIMask } from 'vue-imask'
 	import HintSlotFactory from '../common/HintSlot'
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
@@ -29,12 +29,6 @@
 		props,
 	)
 
-	// template refs
-	const inputEl = ref()
-	const innerEl = ref()
-
-	defineExpose({ $inner: innerEl })
-
 	// data
 	const {
 		id,
@@ -46,6 +40,12 @@
 		valid,
 		invalid,
 		loading,
+		debounce,
+		maxlength,
+		minlength,
+		type,
+		iMask,
+		step,
 	} = toRefs(props)
 	const hasId = useUniqueId(id)
 	const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -54,28 +54,91 @@
 		props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder,
 	)
 
+	// template refs
+	const maskReady = ref(false)
+	const { el, mask, typed, masked, unmasked } = useIMask(
+		computed(
+			() =>
+				iMask?.value ?? {
+					mask: /./,
+				},
+		),
+		{
+			emit,
+			onAccept: () => {
+				if (!maskReady.value) {
+					return
+				}
+				emit('update:masked', masked.value)
+				if (type.value === INPUT_TYPES.NUMBER) {
+					if (typeof typed.value !== 'number') {
+						localModelValue.value = Number(typed.value)
+						return
+					}
+					localModelValue.value = typed.value
+					return
+				}
+				if (type.value === INPUT_TYPES.DATE) {
+					let date = typed.value
+					if (!(date instanceof Date)) {
+						date = new Date(date)
+					}
+					localModelValue.value = `${date.getFullYear()}-${(
+						'0' +
+						(date.getMonth() + 1)
+					).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
+					return
+				}
+				if (type.value === INPUT_TYPES.DATETIME_LOCAL) {
+					let date = typed.value
+					if (!(typed.value instanceof Date)) {
+						date = new Date(date)
+					}
+					localModelValue.value = `${date.getFullYear()}-${(
+						'0' +
+						(date.getMonth() + 1)
+					).slice(-2)}-${('0' + date.getDate()).slice(-2)}T${(
+						'0' + date.getHours()
+					).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`
+					return
+				}
+				localModelValue.value = unmasked.value
+			},
+		},
+	)
+	onMounted(() => {
+		if (mask.value) {
+			maskReady.value = true
+			typed.value = localModelValue.value ?? ''
+		}
+	})
+	watch(
+		() => props.modelValue,
+		(newValue) => {
+			if (mask.value) {
+				typed.value =
+					newValue && iMask?.value?.mask === Date
+						? new Date(newValue)
+						: newValue ?? null
+			}
+		},
+	)
+	watch(
+		() => props.masked,
+		(newValue) => {
+			masked.value = newValue ?? ''
+		},
+	)
+	const inputEl = el as Ref<HTMLInputElement>
+	const innerEl = ref()
+
+	defineExpose({ $inner: innerEl })
+
 	// debounce
 	const localModelValue = useDebouncedInput(
 		modelValue,
 		emit,
-		props.debounce,
-		{
-			getter: (value) => {
-				if (mask.value) {
-					return mask.value.masked(value ?? '')
-				}
-				return value
-			},
-			setter: (value) => {
-				if (mask.value) {
-					value = mask.value.unmasked(value)
-				}
-				if (props.type === INPUT_TYPES.NUMBER) {
-					return Number(value)
-				}
-				return value
-			},
-		},
+		debounce?.value ?? 0,
 	)
 
 	// focus
@@ -118,12 +181,21 @@
 	const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
 	const onStepUp = () => {
 		if (isClickable.value) {
+			if (iMask?.value) {
+				typed.value = typed.value + Number(step?.value ?? 1)
+				return
+			}
 			inputEl.value.stepUp()
 			localModelValue.value = unref(inputEl).value
 		}
 	}
 	const onStepDown = () => {
 		if (isClickable.value) {
+			if (iMask?.value) {
+				typed.value = typed.value - Number(step?.value ?? 1)
+
+				return
+			}
 			inputEl.value.stepDown()
 			localModelValue.value = unref(inputEl).value
 		}
@@ -132,7 +204,7 @@
 	// search
 	const isSearch = computed(() => props.type === INPUT_TYPES.SEARCH)
 	const onClear = () => {
-		localModelValue.value = undefined
+		localModelValue.value = ''
 	}
 
 	// icons
@@ -158,9 +230,9 @@
 
 	// count
 	const { formatted: countFormatted } = useTextCount(localModelValue, {
-		mode: props.count,
-		upperLimit: Number(props.maxlength),
-		lowerLimit: Number(props.minlength),
+		mode: count.value,
+		upperLimit: Number(maxlength?.value),
+		lowerLimit: Number(minlength?.value),
 	})
 
 	// tabindex
@@ -210,6 +282,9 @@
 				return INPUT_TYPES.TEXT
 			}
 			if (isDateTime.value && !isDirty.value && !focused.value) {
+				return INPUT_TYPES.TEXT
+			}
+			if (iMask?.value) {
 				return INPUT_TYPES.TEXT
 			}
 			return props.type
@@ -304,33 +379,6 @@
 		props,
 	)
 
-	// mask
-	const mask = ref()
-	watch(
-		[
-			() => props.mask,
-			() => props.type,
-			() => props.maskEager,
-			() => props.maskReversed,
-			() => props.maskTokens,
-			() => props.maskTokensReplace,
-		],
-		([newMask, newType, eager, reversed, tokens, tokensReplace]) => {
-			if (newMask && newType === INPUT_TYPES.TEXT) {
-				mask.value = new Mask({
-					mask: newMask,
-					eager,
-					reversed,
-					tokens,
-					tokensReplace,
-				})
-				return
-			}
-			mask.value = undefined
-		},
-		{ immediate: true },
-	)
-
 	// auto-width
 	const onClickInner = () => {
 		if (isClickable.value) {
@@ -348,6 +396,26 @@
 					: undefined,
 		}
 	})
+
+	// keydown
+	const onKeyDown = (event: KeyboardEvent) => {
+		switch (event.code) {
+			case 'ArrowUp':
+				if (isNumber.value) {
+					onStepUp()
+					event.preventDefault()
+				}
+				break
+
+			case 'ArrowDown':
+				if (isNumber.value) {
+					onStepDown()
+					event.preventDefault()
+				}
+				break
+		}
+		emit('keydown', event)
+	}
 </script>
 
 <template>
@@ -373,10 +441,11 @@
 				<input
 					:id="hasId"
 					ref="inputEl"
-					v-model="localModelValue"
 					v-bind="hasAttrs"
 					:style="hasStyle"
 					@keyup="emit('keyup', $event)"
+					@keydown="onKeyDown"
+					@keypress="emit('keypress', $event)"
 				/>
 				<div
 					v-if="(unit || $slots.unit) && isDirty"

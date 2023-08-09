@@ -4,32 +4,48 @@ import { sleep } from '@/test/sleep'
 import { within, userEvent } from '@storybook/testing-library'
 import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
 
-const valueByType = (type: InputType, mask?: string) => {
+const valueByType = (type: InputType, mask?: string, id?: string) => {
 	if (mask) {
-		return '1234567'
+		switch (id) {
+			case 'phone-number':
+				return { toType: '393923847556' }
+			case 'date-placeholder':
+				return { toType: '01011970', toCheck: '1970-01-01' }
+			case 'phone-or-email':
+				return {
+					toType:
+						Math.random() < 0.5 ? '393923847556' : 'test@test.com',
+				}
+			case 'intl-number':
+				return { toType: '1234567890.22' }
+			case 'currency':
+				return { toType: '1234567890.22' }
+			default:
+				return { toType: '1234567890' }
+		}
 	}
 	switch (type) {
 		case INPUT_TYPES.TEXT:
 		case INPUT_TYPES.PASSWORD:
 		case INPUT_TYPES.SEARCH:
-			return 'Lorem ipsum'
+			return { toType: 'Lorem ipsum' }
 		case INPUT_TYPES.NUMBER:
-			return '1'
+			return { toType: '1' }
 		case INPUT_TYPES.EMAIL:
-			return 'test@test.com'
+			return { toType: 'test@test.com' }
 		case INPUT_TYPES.TEL:
-			return '+1234567890'
+			return { toType: '+1234567890' }
 		case INPUT_TYPES.URL:
-			return 'https://www.test.com'
+			return { toType: 'https://www.test.com' }
 		case INPUT_TYPES.DATE:
-			return new Date().toISOString().split('T')[0]
+			return { toType: new Date().toISOString().split('T')[0] }
 		case INPUT_TYPES.TIME:
-			return '12:00'
+			return { toType: '12:00' }
 		case INPUT_TYPES.COLOR:
 		case INPUT_TYPES.DATETIME_LOCAL:
 		case INPUT_TYPES.MONTH:
 		case INPUT_TYPES.WEEK:
-			return undefined
+			return { toType: undefined }
 	}
 }
 
@@ -45,17 +61,17 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// value
 	if (!args.invalid && !args.disabled && !args.readonly) {
-		const inputValue = valueByType(args.type, args.mask)
-		if (inputValue) {
+		const { toType, toCheck } = valueByType(args.type, args.iMask, args.id)
+		if (toType) {
 			await expect(input).toBeClicked()
-			await userEvent.keyboard(inputValue)
+			await userEvent.keyboard(toType)
 			await sleep()
 			if (args.maxlength) {
 				await expect(value.innerHTML).toEqual(
-					inputValue.slice(0, args.maxlength),
+					toType.slice(0, args.maxlength),
 				)
 			} else {
-				await expect(value.innerHTML).toEqual(inputValue)
+				await expect(value.innerHTML).toEqual(toCheck ?? toType)
 			}
 		}
 	}
