@@ -79,6 +79,13 @@
 					return
 				}
 				if (type.value === INPUT_TYPES.DATE) {
+					if (
+						el.value instanceof HTMLInputElement &&
+						el.value.type === 'date'
+					) {
+						localModelValue.value = el.value.value
+						return
+					}
 					let date = typed.value
 					if (!(date instanceof Date)) {
 						date = new Date(date)
@@ -90,6 +97,13 @@
 					return
 				}
 				if (type.value === INPUT_TYPES.DATETIME_LOCAL) {
+					if (
+						el.value instanceof HTMLInputElement &&
+						el.value.type === 'datetime-local'
+					) {
+						localModelValue.value = el.value.value
+						return
+					}
 					let date = typed.value
 					if (!(typed.value instanceof Date)) {
 						date = new Date(date)
