@@ -71,6 +71,16 @@
 				}
 				emit('update:masked', masked.value)
 				if (type.value === INPUT_TYPES.NUMBER) {
+					if (masked.value === '') {
+						if (
+							localModelValue.value === null ||
+							localModelValue.value === undefined
+						) {
+							return
+						}
+						localModelValue.value = undefined
+						return
+					}
 					if (typeof typed.value !== 'number') {
 						localModelValue.value = Number(typed.value)
 						return
@@ -87,6 +97,13 @@
 						return
 					}
 					let date = typed.value
+					if (date === null || date === '') {
+						if (!localModelValue.value) {
+							return
+						}
+						localModelValue.value = ''
+						return
+					}
 					if (!(date instanceof Date)) {
 						date = new Date(date)
 					}
@@ -105,6 +122,13 @@
 						return
 					}
 					let date = typed.value
+					if (date === null || date === '') {
+						if (!localModelValue.value) {
+							return
+						}
+						localModelValue.value = ''
+						return
+					}
 					if (!(typed.value instanceof Date)) {
 						date = new Date(date)
 					}
@@ -114,6 +138,9 @@
 					).slice(-2)}-${('0' + date.getDate()).slice(-2)}T${(
 						'0' + date.getHours()
 					).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`
+					return
+				}
+				if (!localModelValue.value && !unmasked.value) {
 					return
 				}
 				localModelValue.value = unmasked.value
@@ -133,7 +160,7 @@
 				typed.value =
 					newValue && iMask?.value?.mask === Date
 						? new Date(newValue)
-						: newValue ?? null
+						: newValue ?? ''
 			}
 		},
 	)
