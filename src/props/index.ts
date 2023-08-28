@@ -9,6 +9,7 @@ import type {
 } from '../types/floating-ui'
 import {
 	Placement,
+	Strategy,
 	Position,
 	Side,
 	AnchorTarget,
@@ -228,22 +229,17 @@ export const DropdownProps = {
 	placement: {
 		type: String as PropType<`${Side}` | `${Placement}`>,
 		default: Side.bottom,
-		validator: (value: Side & Placement) => {
-			return (
-				Object.values(Side).includes(value) ||
-				Object.values(Placement).includes(value)
-			)
-		},
+		validator: (value: Side & Placement) =>
+			Object.values(Side).includes(value) ||
+			Object.values(Placement).includes(value),
 	},
 	/**
 	 * Dropdown strategy
 	 */
 	strategy: {
-		type: String as PropType<'fixed' | 'absolute'>,
-		default: 'absolute',
-		validator: (value: 'fixed' | 'absolute') => {
-			return ['fixed', 'absolute'].includes(value)
-		},
+		type: String as PropType<`${Strategy}`>,
+		default: undefined,
+		validator: (value: Strategy) => Object.values(Strategy).includes(value),
 	},
 	/**
 	 * Dropdown show / hide transition name

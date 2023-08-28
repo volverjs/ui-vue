@@ -25,6 +25,7 @@
 		ShiftOptions,
 		SizeOptions,
 	} from '../../types/floating-ui'
+	import { Side, Strategy } from '../../constants'
 
 	// props, emit and attrs
 	const props = defineProps(VvDropdownProps)
@@ -157,13 +158,13 @@
 
 		return toReturn
 	})
-	const { x, y, strategy, middlewareData, placement } = useFloating(
+	const { x, y, middlewareData, placement, strategy } = useFloating(
 		referenceEl,
 		floatingEl,
 		{
 			whileElementsMounted: (...args) => {
 				return autoUpdate(...args, {
-					animationFrame: props.strategy === 'fixed',
+					animationFrame: props.strategy === Strategy.fixed,
 				})
 			},
 			placement: computed(() => props.placement),
@@ -193,20 +194,20 @@
 	const side = computed(
 		() =>
 			placement.value.split('-')[0] as
-				| 'top'
-				| 'right'
-				| 'bottom'
-				| 'left',
+				| Side.top
+				| Side.right
+				| Side.bottom
+				| Side.left,
 	)
 	const arrowPlacement = computed(() => {
 		if (hasCustomPosition.value) {
 			return undefined
 		}
 		const staticSide = {
-			top: 'bottom',
-			right: 'left',
-			bottom: 'top',
-			left: 'right',
+			[Side.top]: Side.bottom,
+			[Side.right]: Side.left,
+			[Side.bottom]: Side.top,
+			[Side.left]: Side.right,
 		}[side.value]
 		return {
 			left:

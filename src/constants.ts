@@ -5,6 +5,11 @@ import type { AlertModifiers } from './types/alert'
 
 export const DEFAULT_ICONIFY_PROVIDER = 'vv'
 
+export enum Strategy {
+	absolute = 'absolute',
+	fixed = 'fixed',
+}
+
 export enum Side {
 	left = 'left',
 	right = 'right',
