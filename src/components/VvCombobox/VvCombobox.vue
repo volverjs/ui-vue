@@ -182,8 +182,8 @@
 	const {
 		getOptionLabel,
 		getOptionValue,
-		getOptionDisabled,
 		getOptionGrouped,
+		isOptionDisabled,
 	} = useOptions(props)
 
 	// options filtered by search text
@@ -210,7 +210,7 @@
 	 * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
 	 * @param {String | Option} option
 	 */
-	function getOptionSelected(option: string | Option) {
+	function isOptionSelected(option: string | Option) {
 		if (Array.isArray(props.modelValue)) {
 			// check if contain whole option or option value
 			return (
@@ -230,29 +230,17 @@
 	 * Check if is multiple mode, object mode or "string" mode
 	 */
 	const selectedOptions = computed(() => {
-		let selectedValues: Array<typeof props.modelValue> = []
-		if (Array.isArray(props.modelValue)) {
-			selectedValues = props.modelValue as Array<typeof props.modelValue>
-		} else if (props.modelValue) {
-			selectedValues = [props.modelValue]
-		}
-		const options = props.options.reduce(
+		const options = props.options.reduce<Array<Option | string>>(
 			(acc, value) => {
 				if (isGroup(value)) {
 					return [...acc, ...getOptionGrouped(value)]
 				}
 				return [...acc, value]
 			},
-			[] as Array<Option | string>,
+			[],
 		)
-
 		return options.filter((option) => {
-			if (isGroup(option)) {
-				return getOptionGrouped(option).some((item) =>
-					selectedValues.includes(getOptionValue(item)),
-				)
-			}
-			return selectedValues.includes(getOptionValue(option))
+			return isOptionSelected(option)
 		})
 	})
 
@@ -518,8 +506,8 @@
 										option,
 									)"
 									v-bind="{
-										disabled: getOptionDisabled(item),
-										selected: getOptionSelected(item),
+										selected: isOptionSelected(item),
+										disabled: isOptionDisabled(item),
 										unselectable,
 										deselectHintLabel:
 											propsDefaults.deselectHintLabel,
@@ -538,8 +526,8 @@
 										v-bind="{
 											option,
 											selectedOptions,
-											selected: getOptionSelected(item),
-											disabled: getOptionDisabled(item),
+											selected: isOptionSelected(item),
+											disabled: isOptionDisabled(item),
 										}"
 									>
 										{{ getOptionLabel(item) }}
@@ -549,8 +537,8 @@
 							<VvDropdownOption
 								v-else
 								v-bind="{
-									disabled: getOptionDisabled(option),
-									selected: getOptionSelected(option),
+									selected: isOptionSelected(option),
+									disabled: isOptionDisabled(option),
 									unselectable,
 									deselectHintLabel:
 										propsDefaults.deselectHintLabel,
@@ -568,8 +556,8 @@
 									v-bind="{
 										option,
 										selectedOptions,
-										selected: getOptionSelected(option),
-										disabled: getOptionDisabled(option),
+										selected: isOptionSelected(option),
+										disabled: isOptionDisabled(option),
 									}"
 								>
 									{{ getOptionLabel(option) }}

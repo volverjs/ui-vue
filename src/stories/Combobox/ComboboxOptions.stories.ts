@@ -94,3 +94,21 @@ export const DotPathOptions: Story = {
 		],
 	},
 }
+
+export const ObjectValue: Story = {
+	...Default,
+	args: {
+		...Default.args,
+		multiple: true,
+		options: [
+			{
+				value: { name: 'John Doe', email: 'john.doe@test.com' },
+				label: 'John Doe',
+			},
+			{
+				value: { name: 'Jane Doe', email: 'jane.doe@test.com' },
+				label: 'Jane Doe',
+			},
+		],
+	},
+}

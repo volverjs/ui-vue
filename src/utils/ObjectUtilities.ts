@@ -9,9 +9,10 @@ import type { Ref } from 'vue'
  */
 // eslint-disable-next-line
 export function equals(obj1: any, obj2: any, field?: string) {
-	if (field)
+	if (field) {
 		return resolveFieldData(obj1, field) === resolveFieldData(obj2, field)
-	else return deepEquals(obj1, obj2)
+	}
+	return deepEquals(obj1, obj2)
 }
 
 /**

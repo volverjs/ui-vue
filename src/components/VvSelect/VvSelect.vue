@@ -139,7 +139,7 @@
 	const {
 		getOptionLabel,
 		getOptionValue,
-		getOptionDisabled,
+		isOptionDisabled,
 		getOptionGrouped,
 	} = useOptions(props)
 
@@ -195,7 +195,7 @@
 						<option
 							v-if="!isGroup(option)"
 							:key="index"
-							:disabled="getOptionDisabled(option)"
+							:disabled="isOptionDisabled(option)"
 							:value="getOptionValue(option)"
 						>
 							{{ getOptionLabel(option) }}
@@ -203,13 +203,13 @@
 						<optgroup
 							v-else
 							:key="`group-${index}`"
-							:disabled="getOptionDisabled(option)"
+							:disabled="isOptionDisabled(option)"
 							:label="getOptionLabel(option)"
 						>
 							<option
 								v-for="(item, i) in getOptionGrouped(option)"
 								:key="`group-${index}-item-${i}`"
-								:disabled="getOptionDisabled(item)"
+								:disabled="isOptionDisabled(item)"
 								:value="getOptionValue(item)"
 							>
 								{{ getOptionLabel(item) }}

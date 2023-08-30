@@ -14,7 +14,7 @@ export default meta
 
 type Story = StoryObj<typeof VvInputText>
 
-export const RegExp: Story = {
+export const Regex: Story = {
 	...Default,
 	args: {
 		...defaultArgs,

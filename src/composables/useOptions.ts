@@ -24,7 +24,7 @@ export function useOptions(props: any) {
 			: get(option, valueKey.value)
 	}
 
-	const getOptionDisabled = (option: string | Option): boolean => {
+	const isOptionDisabled = (option: string | Option): boolean => {
 		if (typeof option !== 'object' && option !== null) return false
 
 		return typeof disabledKey.value === 'function'
@@ -41,7 +41,7 @@ export function useOptions(props: any) {
 		options,
 		getOptionLabel,
 		getOptionValue,
-		getOptionDisabled,
+		isOptionDisabled,
 		getOptionGrouped,
 	}
 }

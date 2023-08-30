@@ -133,7 +133,7 @@
     "ts-node": "^10.9.1",
     "typescript": "~5.2.2",
     "unplugin-auto-import": "^0.16.6",
-    "unplugin-vue-components": "^0.25.1",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.9",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-externalize-deps": "^0.7.0",
