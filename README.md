@@ -68,7 +68,7 @@ app.use(VolverPlugin, {
    * if you want can import components globally
    * components: { VvButton, VvInputText }
    */
-  compoments: undefined,
+  components: undefined,
   /*
    * if you want can import directives globally
    * directives: { toolip: VTooltip }
@@ -157,6 +157,69 @@ export default defineConfig({
   ]
 })
 ```
+
+## Composables
+
+`@volverjs/ui-vue`utility composables
+
+### useAlert
+
+Used to show alert messages and notifications
+
+```typescript
+export type AlertModifiers =
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'danger'
+  | 'brand'
+  | 'accent'
+```
+
+```typescript
+export type Alert = {
+  id: string | number
+  group: string
+  title?: string
+  icon: string | Record<string, unknown>
+  content?: string
+  footer?: string
+  modifiers: AlertModifiers
+  dismissable: boolean
+  autoClose: number
+  timestamp: number
+}
+```
+
+##### Usage
+
+```typescript
+import { useAlert } from '@volverjs/ui-vue/composables'
+
+const { addAlert, removeAlert, alerts } = useAlert()
+
+function showSuccess() {
+  addAlert({
+    title: 'Success!',
+    modifiers: 'success'
+  })
+}
+```
+
+```html
+<vv-alert-group name="alert-group" :items="alerts" :onClose="removeAlert" />
+
+<div class="flex gap-md">
+  <vv-button
+    label="Show success"
+    modifiers="secondary"
+    @click="showSuccess"
+    class="mb-lg"
+  />
+</div>
+```
+
+###
 
 ## Roadmap
 
