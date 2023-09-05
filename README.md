@@ -207,7 +207,7 @@ function showSuccess() {
 ```
 
 ```html
-<vv-alert-group name="alert-group" :items="alerts" :onClose="removeAlert" />
+<vv-alert-group name="alert-group" :items="alerts" @close="removeAlert" />
 
 <div class="flex gap-md">
   <vv-button
