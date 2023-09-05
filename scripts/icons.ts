@@ -12,6 +12,7 @@ import {
 import path from 'path'
 import { validateIconSet } from '@iconify/utils'
 import type { IconifyJSON } from '@iconify/types'
+import chokidar from 'chokidar'
 
 /**
  * @field key is the iconify prefix
@@ -109,17 +110,15 @@ async function generateIcons(
 		validateIconSet(iconifyJson)
 	} catch (error) {
 		throw new Error(
-			`Icon set is not valid: ${
-				(error as { message?: string })?.message
-			}`,
+			`Icon set is not valid: ${(error as { message?: string })
+				?.message}`,
 		)
 	}
 
 	// Write IconifyJSON into file.json
-	fileSystem.writeFileSync(
-		`${destPath}/${iconifyJson.prefix}.json`,
-		JSON.stringify(iconifyJson),
-	)
+	const filename = `${destPath}/${iconifyJson.prefix}.json`
+	fileSystem.mkdirSync(path.dirname(filename), { recursive: true })
+	fileSystem.writeFileSync(filename, JSON.stringify(iconifyJson))
 }
 
 /**
@@ -150,6 +149,7 @@ const argv = yargs(hideBin(process.argv)).argv as {
 	srcPath?: string
 	destPath?: string
 	prefix?: string
+	watch?: boolean
 }
 const srcPath = argv.srcPath
 const destPath = argv.destPath || srcPath
@@ -161,4 +161,16 @@ if (!srcPath || !destPath) {
 	)
 	process.exit()
 }
-createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+
+if (argv.watch) {
+	chokidar
+		.watch(srcPath)
+		.on('add', () => {
+			createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+		})
+		.on('change', () => {
+			createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+		})
+} else {
+	createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+}

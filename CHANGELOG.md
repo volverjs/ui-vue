@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.10] - 2023-08-30
 
+### Added
+
+- `--watch` flag for `generate-icons` script.
+
 ### Fixed
 
 - Improved `VvCombobox` support for object values.

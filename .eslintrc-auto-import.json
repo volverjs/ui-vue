@@ -8,6 +8,7 @@
     "PropType": true,
     "Ref": true,
     "VNode": true,
+    "WritableComputedRef": true,
     "asyncComputed": true,
     "autoResetRef": true,
     "computed": true,

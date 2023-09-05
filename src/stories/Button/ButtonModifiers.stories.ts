@@ -3,7 +3,6 @@ import VvButton from '@/components/VvButton/VvButton.vue'
 import { Default } from './Button.stories'
 import { argTypes, defaultArgs } from './Button.settings'
 
-
 const meta: Meta<typeof VvButton> = {
 	title: 'Components/Button/Modifiers',
 	component: VvButton,
@@ -70,9 +69,6 @@ export const StaticLight: Story = {
 	},
 	render: (args) => ({
 		components: { VvButton },
-		backgrounds: {
-			default: 'dark',
-		},
 		setup() {
 			return { args }
 		},
@@ -81,23 +77,18 @@ export const StaticLight: Story = {
 				<vv-button v-bind="args" data-testId="element" />
 			</div>
 		`,
-	})
-
+	}),
 }
-
 
 export const StaticDark: Story = {
 	...Default,
 	args: {
 		...Default.args,
-		label: 'Static light',
-		modifiers: 'static-light',
+		label: 'Static dark',
+		modifiers: 'static-dark',
 	},
 	render: (args) => ({
 		components: { VvButton },
-		backgrounds: {
-			default: 'dark',
-		},
 		setup() {
 			return { args }
 		},
@@ -106,7 +97,7 @@ export const StaticDark: Story = {
 				<vv-button v-bind="args" data-testId="element" />
 			</div>
 		`,
-	})
+	}),
 }
 
 export const Block: Story = {
@@ -136,7 +127,6 @@ export const FullBleed: Story = {
 		modifiers: 'full-bleed',
 	},
 }
-
 
 export const Action: Story = {
 	...Default,
