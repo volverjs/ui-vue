@@ -7,16 +7,15 @@ export const defaultArgs: Meta<typeof VvNav>['args'] = {
 	...propsToObject(VvNavProps),
 	items: [
 		{
-			title: 'Item 1',
+			label: 'Item 1',
 			href: 'javascript:void(0)',
 		},
 		{
-			title: 'Item 2',
+			label: 'Item 2',
 			to: 'about',
 		},
 		{
-			title: 'Item 3',
-			to: 'contacts',
+			label: 'Item 3',
 			on: {
 				click: () => {
 					// eslint-disable-next-line no-console

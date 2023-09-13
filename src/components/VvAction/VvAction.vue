@@ -132,6 +132,7 @@
 			active,
 			pressed,
 			disabled,
+			current,
 		}"
 		@click.passive="onClick"
 		@mouseover.passive="onMouseover"

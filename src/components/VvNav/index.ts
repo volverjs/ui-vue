@@ -1,21 +1,8 @@
-import { ModifiersProps } from '@/props'
-
-export type NavItem = {
-	id?: string
-	title: string
-	to?: string | { [key: string]: unknown }
-	href?: string
-	disabled?: boolean
-	on?: Record<string, () => void>
-}
+import { ModifiersProps, NavProps } from '@/props'
 
 export const VvNavProps = {
 	...ModifiersProps,
-	items: {
-		type: Array as PropType<NavItem[]>,
-		required: true,
-		default: () => [],
-	},
+	...NavProps,
 }
 
 export const VvNavEvents = ['click']

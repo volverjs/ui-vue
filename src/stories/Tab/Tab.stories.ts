@@ -27,7 +27,7 @@ export const Default: Story = {
 		template: /* html */ `
 			<div class="m-md w-1/2">
 				<vv-tab v-bind="args" data-testId="element">
-					<template #tab-item_0>
+					<template #panel::tab-1>
 						<span class="text-20 font-semibold">Tab 1</span>
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -39,7 +39,7 @@ export const Default: Story = {
 							elit libero, a pharetra augue.
 						</p>
 					</template>
-					<template #tab-item_1>
+					<template #panel::tab-2>
 						<span class="text-20 font-semibold">Tab 2</span>
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
