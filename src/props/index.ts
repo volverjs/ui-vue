@@ -1,12 +1,13 @@
 import type { PropType } from 'vue'
-import type { Option } from '../types/generic'
+import type { Option } from '@/types/generic'
+import type { NavItem } from '@/types/nav'
 import type {
 	AutoPlacementOptions,
 	FlipOptions,
 	OffsetOptions,
 	ShiftOptions,
 	SizeOptions,
-} from '../types/floating-ui'
+} from '@/types/floating-ui'
 import {
 	Placement,
 	Strategy,
@@ -14,7 +15,7 @@ import {
 	Side,
 	AnchorTarget,
 	ButtonType,
-} from '../constants'
+} from '@/constants'
 
 export const LinkProps = {
 	/**
@@ -100,6 +101,13 @@ export const ActiveProps = {
 	 * Whether the item is active
 	 */
 	active: Boolean,
+}
+
+export const CurrentProps = {
+	/**
+	 * Whether the item is current
+	 */
+	current: Boolean,
 }
 
 export const PressedProps = {
@@ -443,6 +451,7 @@ export const ActionProps = {
 	...LabelProps,
 	...PressedProps,
 	...ActiveProps,
+	...CurrentProps,
 	...LinkProps,
 	/**
 	 * Button type
@@ -459,5 +468,12 @@ export const ActionProps = {
 	ariaLabel: {
 		type: String,
 		default: undefined,
+	},
+}
+
+export const NavProps = {
+	items: {
+		type: Array as PropType<NavItem[]>,
+		default: () => [],
 	},
 }

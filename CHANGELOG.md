@@ -6,11 +6,19 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- `VvAction` prop for `current` class;
+- `VvNavItem` and `VvNavSeparator` components;
 - `--watch` flag for `generate-icons` script.
 
 ### Fixed
 
+- `VvCombobox` keep an array `modelValue` also with `multiple: false`;
 - Improved `VvCombobox` support for object values.
+
+### Changed
+
+- Align `VvNav` items prop with `VvAction` props;
+- Align `VvTab` items prop with `VvAction` and `VvNav` props;
 
 ## [0.0.9] - 2023-08-30
 

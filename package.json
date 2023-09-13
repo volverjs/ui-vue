@@ -57,7 +57,7 @@
     "@vueuse/core": "^10.4.1",
     "jsdom": "^22.1.0",
     "mitt": "^3.0.1",
-    "nanoid": "^4.0.2",
+    "nanoid": "^5.0.1",
     "ts-dot-prop": "^2.1.3",
     "vue": "^3.3.4",
     "vue-imask": "^7.1.3"
@@ -66,40 +66,40 @@
     "@volverjs/style": "0.*"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.15",
+    "@babel/core": "^7.22.17",
     "@babel/preset-env": "^7.22.15",
     "@babel/preset-typescript": "^7.22.15",
     "@iconify/types": "^2.0.0",
     "@iconify/utils": "^2.1.9",
     "@mdx-js/react": "^2.3.0",
     "@rushstack/eslint-patch": "^1.3.3",
-    "@storybook/addon-a11y": "^7.4.0",
-    "@storybook/addon-actions": "^7.4.0",
-    "@storybook/addon-docs": "^7.4.0",
-    "@storybook/addon-essentials": "^7.4.0",
-    "@storybook/addon-interactions": "^7.4.0",
-    "@storybook/addon-links": "^7.4.0",
-    "@storybook/channel-postmessage": "^7.4.0",
-    "@storybook/channel-websocket": "^7.4.0",
-    "@storybook/cli": "^7.4.0",
-    "@storybook/client-api": "^7.4.0",
-    "@storybook/client-logger": "^7.4.0",
-    "@storybook/core-common": "^7.4.0",
+    "@storybook/addon-a11y": "^7.4.1",
+    "@storybook/addon-actions": "^7.4.1",
+    "@storybook/addon-docs": "^7.4.1",
+    "@storybook/addon-essentials": "^7.4.1",
+    "@storybook/addon-interactions": "^7.4.1",
+    "@storybook/addon-links": "^7.4.1",
+    "@storybook/channel-postmessage": "^7.4.1",
+    "@storybook/channel-websocket": "^7.4.1",
+    "@storybook/cli": "^7.4.1",
+    "@storybook/client-api": "^7.4.1",
+    "@storybook/client-logger": "^7.4.1",
+    "@storybook/core-common": "^7.4.1",
     "@storybook/jest": "^0.2.2",
-    "@storybook/preview-api": "^7.4.0",
-    "@storybook/preview-web": "^7.4.0",
+    "@storybook/preview-api": "^7.4.1",
+    "@storybook/preview-web": "^7.4.1",
     "@storybook/test-runner": "^0.13.0",
     "@storybook/testing-library": "^0.2.0",
-    "@storybook/vue3": "^7.4.0",
-    "@storybook/vue3-vite": "^7.4.0",
-    "@tsconfig/node18": "^18.2.1",
+    "@storybook/vue3": "^7.4.1",
+    "@storybook/vue3-vite": "^7.4.1",
+    "@tsconfig/node18": "^18.2.2",
     "@types/jest-axe": "^3.5.5",
     "@types/jsdom": "^21.1.2",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.6.0",
     "@types/react": "^18.2.21",
     "@types/yargs": "^17.0.24",
     "@vitejs/plugin-vue": "^4.3.4",
-    "@volverjs/style": "0.1.12-beta.4",
+    "@volverjs/style": "0.1.12-beta.8",
     "@vue/compiler-sfc": "^3.3.4",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^11.0.3",
@@ -107,7 +107,7 @@
     "@vue/tsconfig": "^0.4.0",
     "change-case": "^4.1.2",
     "chokidar": "^3.5.3",
-    "eslint": "^8.48.0",
+    "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-mdx": "^2.2.0",
     "eslint-plugin-mdx": "^2.2.0",
@@ -116,17 +116,17 @@
     "eslint-plugin-vue": "^9.17.0",
     "glob": "7.2.3",
     "jest-axe": "^8.0.0",
-    "jest-diff": "^29.6.4",
+    "jest-diff": "^29.7.0",
     "jest-get-type": "^29.6.3",
     "jsdom": "^22.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
-    "pretty-format": "^29.6.3",
+    "pretty-format": "^29.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remark": "^14.0.3",
     "sass": "^1.66.1",
-    "storybook": "^7.4.0",
+    "storybook": "^7.4.1",
     "storybook-addon-markdown-docs": "^2.0.0",
     "storybook-dark-mode": "^3.0.1",
     "storybook-version": "^0.1.1",
@@ -138,7 +138,7 @@
     "vite": "^4.4.9",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-externalize-deps": "^0.7.0",
-    "vue-tsc": "^1.8.8",
+    "vue-tsc": "^1.8.11",
     "yargs": "^17.7.2"
   },
   "typesVersions": {
@@ -239,8 +239,11 @@
       "vv-nav": [
         "dist/components/VvNav/VvNav.vue.d.ts"
       ],
-      "vv-nav-item-title": [
-        "dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts"
+      "vv-nav-item": [
+        "dist/components/VvNavItem/VvNavItem.vue.d.ts"
+      ],
+      "vv-nav-separator": [
+        "dist/components/VvNavSeparator/VvNavSeparator.vue.d.ts"
       ],
       "vv-progress": [
         "dist/components/VvProgress/VvProgress.vue.d.ts"
@@ -428,10 +431,15 @@
       "import": "./dist/components/VvNav/VvNav.es.js",
       "default": "./dist/components/VvNav/VvNav.umd.js"
     },
-    "./vv-nav-item-title": {
-      "types": "./dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts",
-      "import": "./dist/components/VvNavItemTitle/VvNavItemTitle.es.js",
-      "default": "./dist/components/VvNavItemTitle/VvNavItemTitle.umd.js"
+    "./vv-nav-item": {
+      "types": "./dist/components/VvNavItem/VvNavItem.vue.d.ts",
+      "import": "./dist/components/VvNavItem/VvNavItem.es.js",
+      "default": "./dist/components/VvNavItem/VvNavItem.umd.js"
+    },
+    "./vv-nav-separator": {
+      "types": "./dist/components/VvNavSeparator/VvNavSeparator.vue.d.ts",
+      "import": "./dist/components/VvNavSeparator/VvNavSeparator.es.js",
+      "default": "./dist/components/VvNavSeparator/VvNavSeparator.umd.js"
     },
     "./vv-progress": {
       "types": "./dist/components/VvProgress/VvProgress.vue.d.ts",

@@ -1,20 +1,20 @@
+import type { Meta } from '@storybook/vue3'
+import type { VvTab } from '@/components'
 import { VvTabProps } from '@/components/VvTab'
 
-export const defaultArgs = {
+export const defaultArgs: Meta<typeof VvTab>['args'] = {
 	...propsToObject(VvTabProps),
 	items: [
 		{
-			title: 'Item 1',
-			href: 'javascript:void(0)',
+			tab: 'tab-1',
+			label: 'Item 1',
 		},
 		{
-			title: 'Item 2',
-			to: 'about',
+			tab: 'tab-2',
+			label: 'Item 2',
 		},
 		{
-			id: 'tab-3',
-			title: 'Item 3',
-			to: 'contacts',
+			label: 'Item 3',
 			on: {
 				click: () => {
 					// eslint-disable-next-line no-console

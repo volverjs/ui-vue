@@ -1,6 +1,6 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
-import { within, userEvent } from '@storybook/testing-library'
+import { within } from '@storybook/testing-library'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	const element = (await within(canvasElement).findByTestId(
@@ -16,21 +16,13 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	expect(childrenEls?.children[0].children.length).toEqual(args.items?.length)
 
 	// take firse and second elements
-	const firstEl = await element.getElementsByTagName('a')?.[0]
-	const secondEl = await element.getElementsByTagName('router-link')?.[1]
-	// check they have not current class
-	const secondElHasCurrentClass = secondEl.classList.contains('current')
-	const firstElHasCurrentClass = firstEl.classList.contains('current')
-
-	await expect(firstElHasCurrentClass).toBe(false)
-	await expect(secondElHasCurrentClass).toBe(false)
-	// click first item and check "current" css class
-	await userEvent.click(firstEl)
-	await expect(firstEl).toHaveClass('current')
+	const firstNavItemLabelEl =
+		await element.getElementsByClassName('vv-nav__item-label')?.[0]
+	await expect(firstNavItemLabelEl.classList.contains('current')).toBe(true)
 
 	// check tab content to include "Tab 1"
-	const tabPanelEl = element.getElementsByClassName('vv-tab__panel')?.[0]
-	await expect(tabPanelEl.innerHTML.includes('Tab 1')).toBe(true)
+	const firstTabPanelEl = element.getElementsByClassName('vv-tab__panel')?.[0]
+	await expect(firstTabPanelEl.classList.contains('target')).toBe(true)
 
 	// check accessibility
 	await expect(element).toHaveNoViolations()

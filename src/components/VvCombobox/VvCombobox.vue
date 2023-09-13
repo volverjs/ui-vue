@@ -266,12 +266,13 @@
 			return
 		}
 
+		// get option value
 		const value = getOptionValue(option)
-
 		let toReturn: string | string[] | Option | Option[] | undefined = value
-		// Check multiple prop, override value with array and remove or add the value
+
+		// check multiple prop, override value with array and remove or add the value
 		if (props.multiple) {
-			// check maxValues prop and block check new values
+			// check max-values prop and block check new values
 			if (Array.isArray(props.modelValue)) {
 				const maxValues = Number(props.maxValues)
 				if (
@@ -294,7 +295,13 @@
 			if (!props.keepOpen) {
 				collapse()
 			}
-			if (props.unselectable && value === props.modelValue) {
+			if (Array.isArray(props.modelValue)) {
+				if (props.unselectable && props.modelValue.includes(value)) {
+					toReturn = []
+				} else {
+					toReturn = [value]
+				}
+			} else if (props.unselectable && value === props.modelValue) {
 				toReturn = undefined
 			}
 		}
