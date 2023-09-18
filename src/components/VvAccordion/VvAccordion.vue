@@ -5,7 +5,7 @@
 </script>
 
 <script setup lang="ts">
-	import { nanoid } from 'nanoid'
+	import { uid } from 'uid'
 	import { VvAccordionEvents, VvAccordionProps, useGroupProps } from '.'
 
 	// props, attrs and emit
@@ -15,7 +15,7 @@
 
 	// data
 	const accordionName = computed(
-		() => props.name || (attrs?.id as string) || nanoid(),
+		() => props.name || (attrs?.id as string) || uid(),
 	)
 	const {
 		modifiers,
