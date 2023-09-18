@@ -238,7 +238,7 @@ export const IdNameArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: 'nanoid',
+				summary: 'uid',
 			},
 		},
 	},
