@@ -36,25 +36,31 @@ export function useDefaultProps(
 	return {
 		...component,
 		name: componentName,
-		props: Object.keys(props).reduce((acc, key) => {
-			if (!(key in componentDefaults)) {
-				acc[key] = props[key]
-				return acc
-			}
-			const customDefault = componentDefaults[key]
-			if (typeof props[key] === 'function' || Array.isArray(props[key])) {
+		props: Object.keys(props).reduce(
+			(acc, key) => {
+				if (!(key in componentDefaults)) {
+					acc[key] = props[key]
+					return acc
+				}
+				const customDefault = componentDefaults[key]
+				if (
+					typeof props[key] === 'function' ||
+					Array.isArray(props[key])
+				) {
+					acc[key] = {
+						type: props[key],
+						default: customDefault,
+					}
+					return acc
+				}
 				acc[key] = {
-					type: props[key],
+					...(props[key] as Record<string, unknown>),
 					default: customDefault,
 				}
 				return acc
-			}
-			acc[key] = {
-				...(props[key] as Record<string, unknown>),
-				default: customDefault,
-			}
-			return acc
-		}, {} as Record<string, unknown>),
+			},
+			{} as Record<string, unknown>,
+		),
 	}
 }
 
@@ -248,7 +254,7 @@ const VolverPlugin: Plugin = {
 	 * @param {App} Vue
 	 * @param {Object} options
 	 */
-	install(app: App, options: VolverOptions) {
+	install(app: App, options: VolverOptions = {}) {
 		const volver = new Volver(options)
 
 		// register global methods
