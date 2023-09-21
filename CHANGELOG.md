@@ -8,11 +8,14 @@ All notable changes to this project will be documented in this file.
 
 - `VvAction` prop for `current` class;
 - `VvNavItem` and `VvNavSeparator` components;
+- inner types export;
 - `--watch` flag for `generate-icons` script.
 
 ### Fixed
 
 - `VvCombobox` keep an array `modelValue` also with `multiple: false`;
+- `VvCombobox` focus state;
+- `VvTextarea` focus state;
 - Improved `VvCombobox` support for object values.
 
 ### Changed
