@@ -117,7 +117,7 @@
 			'icon-after': hasIconAfter.value,
 			floating: props.floating && !isEmpty(props.label),
 			dirty: isDirty.value,
-			focused: focused.value,
+			focus: focused.value,
 			resizable: props.resizable,
 		})),
 	)

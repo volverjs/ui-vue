@@ -173,7 +173,7 @@
 			valid: valid.value,
 			invalid: invalid.value,
 			dirty: isDirty.value,
-			focus: focused.value,
+			focus: focused.value || focusedWithin.value || expanded.value,
 			floating: floating.value,
 			badges: props.badges,
 		})),
