@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3'
 import type { VvTab } from '@/components'
 import { VvTabProps } from '@/components/VvTab'
 
@@ -25,7 +25,7 @@ export const defaultArgs: Meta<typeof VvTab>['args'] = {
 	],
 }
 
-export const defaultArgTypes = {
+export const defaultArgTypes: ArgTypes = {
 	tabId: {
 		description: 'Slot by tab-id',
 		control: {
