@@ -392,4 +392,12 @@ export const argTypes = {
 			},
 		},
 	},
+	'update:search': {
+		table: {
+			category: 'Events',
+			type: {
+				summary: 'string',
+			},
+		},
+	},
 }

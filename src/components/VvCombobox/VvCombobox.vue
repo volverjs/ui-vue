@@ -87,9 +87,13 @@
 		searchText,
 		computed(() => Number(props.debounceSearch)),
 	)
-	watch(debouncedSearchText, () =>
-		emit('change:search', debouncedSearchText.value),
-	)
+	watch(debouncedSearchText, () => {
+		emit('update:search', debouncedSearchText.value)
+		/**
+		 * @deprecated change:search should not be used, use update:search instead
+		 */
+		emit('change:search', debouncedSearchText.value)
+	})
 
 	// expanded
 	const expanded = ref(false)

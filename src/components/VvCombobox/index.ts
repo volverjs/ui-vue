@@ -20,6 +20,10 @@ import type { Option } from '../../types/generic'
 
 export const VvComboboxEvents = [
 	'update:modelValue',
+	'update:search',
+	/**
+	 * @deprecated change:search should not be used, use update:search instead
+	 */
 	'change:search',
 	'focus',
 	'blur',

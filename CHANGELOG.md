@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file.
 - `VvNavItem` and `VvNavSeparator` components;
 - inner types export;
 - `--watch` flag for `generate-icons` script.
+- `VvCombobox` event `update:search`
+
+### Deprecated
+
+- event `change:search` on `VvCombobox` (use `update:search`)
 
 ### Fixed
 
