@@ -13,3 +13,4 @@ storybook-static
 dist
 bin
 .vercel
+.eslintrc-auto-import.json
