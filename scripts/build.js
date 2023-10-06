@@ -6,7 +6,7 @@ import { fileURLToPath, URL } from 'url'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
 import ESLint from 'vite-plugin-eslint'
 import AutoImport from 'unplugin-auto-import/vite'
-import { paramCase } from 'change-case'
+import { kebabCase } from 'change-case'
 
 // eslint-disable-next-line no-undef
 const hot = process.argv.includes('--hot')
@@ -167,7 +167,7 @@ const directivesSources = directives.map((entry) => {
 	}
 })
 directivesSources.forEach(({ name, entry }) => {
-	const paramCaseName = paramCase(name)
+	const paramCaseName = kebabCase(name)
 	const subPath = `directives/${name}`
 	packageJson.exports[`./${paramCaseName}`] = {
 		types: `./dist/${subPath}.d.ts`,
@@ -245,7 +245,7 @@ const componentsSources = components.map((entry) => {
 	}
 })
 componentsSources.forEach(({ name, entry }) => {
-	const paramCaseName = paramCase(name)
+	const paramCaseName = kebabCase(name)
 	const subPath = `components/${name}/${name}`
 	packageJson.exports[`./${paramCaseName}`] = {
 		types: `./dist/${subPath}.vue.d.ts`,

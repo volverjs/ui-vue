@@ -310,9 +310,6 @@
     "watchThrottled": true,
     "watchTriggerable": true,
     "watchWithFilter": true,
-    "whenever": true,
-    "ExtractDefaultPropTypes": true,
-    "ExtractPropTypes": true,
-    "ExtractPublicPropTypes": true
+    "whenever": true
   }
 }

@@ -66,40 +66,47 @@ async function generateIcons(
 	const iconSet = blankIconSet(prefix)
 
 	for (const file of files) {
-		// Read icon, create SVG instance
-		const content = await fileSystem.promises.readFile(file, {
-			encoding: 'utf-8',
-		})
-		const svg = new SVG(content)
-		// Clean up icon code
-		await cleanupSVG(svg)
+		try {
+			// Read icon, create SVG instance
+			const content = await fileSystem.promises.readFile(file, {
+				encoding: 'utf-8',
+			})
+			const svg = new SVG(content)
+			// Clean up icon code
+			await cleanupSVG(svg)
 
-		// Assume icon is monotone: replace color with currentColor, add if missing
-		// If icon is not monotone, remove this code
-		await parseColors(svg, {
-			defaultColor: 'currentColor',
-			callback: (attr, colorStr, color) => {
-				return !color || isEmptyColor(color) ? colorStr : 'currentColor'
-			},
-		})
+			// Assume icon is monotone: replace color with currentColor, add if missing
+			// If icon is not monotone, remove this code
+			await parseColors(svg, {
+				defaultColor: 'currentColor',
+				callback: (attr, colorStr, color) => {
+					return !color || isEmptyColor(color)
+						? colorStr
+						: 'currentColor'
+				},
+			})
 
-		// Optimise
-		await runSVGO(svg)
+			// Optimise
+			await runSVGO(svg)
 
-		// https://docs.iconify.design/tools/utils/icon-name.html
-		// All parts of icon name must match the following regular expression: /^[a-z0-9]+(-[a-z0-9]+)*$/
-		const fileName = file
-			// get file name from path
-			.replace(/^.*[\\/]/, '')
-			// remove extension
-			.split('.')[0]
-			// replace white spaces with '-'
-			.replace(/ /g, '-')
-			// remove chars that not match the Iconify regex icon name (plus '-')
-			.replace(/[^a-z0-9-]/gi, '')
+			// https://docs.iconify.design/tools/utils/icon-name.html
+			// All parts of icon name must match the following regular expression: /^[a-z0-9]+(-[a-z0-9]+)*$/
+			const fileName = file
+				// get file name from path
+				.replace(/^.*[\\/]/, '')
+				// remove extension
+				.split('.')[0]
+				// replace white spaces with '-'
+				.replace(/ /g, '-')
+				// remove chars that not match the Iconify regex icon name (plus '-')
+				.replace(/[^a-z0-9-]/gi, '')
 
-		// Add icon to icon set
-		iconSet.fromSVG(fileName, svg)
+			// Add icon to icon set
+			iconSet.fromSVG(fileName, svg)
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.error(error)
+		}
 	}
 
 	// Get the IconifyJSON object from iconSet
@@ -163,8 +170,11 @@ if (!srcPath || !destPath) {
 }
 
 if (argv.watch) {
+	createIconifyJsonFiles(srcPath, destPath, argv.prefix)
 	chokidar
-		.watch(srcPath)
+		.watch(srcPath, {
+			ignoreInitial: true,
+		})
 		.on('add', () => {
 			createIconifyJsonFiles(srcPath, destPath, argv.prefix)
 		})

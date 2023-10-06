@@ -114,7 +114,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-storybook": "^0.6.14",
     "eslint-plugin-vue": "^9.17.0",
-    "glob": "10.3.10",
+    "glob": "7.2.3",
     "jest-axe": "^8.0.0",
     "jest-diff": "^29.7.0",
     "jest-get-type": "^29.6.3",

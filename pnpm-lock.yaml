@@ -182,8 +182,8 @@ devDependencies:
     specifier: ^9.17.0
     version: 9.17.0(eslint@8.50.0)
   glob:
-    specifier: 10.3.10
-    version: 10.3.10
+    specifier: 7.2.3
+    version: 7.2.3
   jest-axe:
     specifier: ^8.0.0
     version: 8.0.0
