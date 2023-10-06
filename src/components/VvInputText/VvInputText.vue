@@ -227,7 +227,7 @@
 				return
 			}
 			inputEl.value.stepUp()
-			localModelValue.value = unref(inputEl).value
+			localModelValue.value = Number(unref(inputEl).value)
 		}
 	}
 	const onStepDown = () => {
@@ -238,7 +238,7 @@
 				return
 			}
 			inputEl.value.stepDown()
-			localModelValue.value = unref(inputEl).value
+			localModelValue.value = Number(unref(inputEl).value)
 		}
 	}
 
