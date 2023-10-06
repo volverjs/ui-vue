@@ -55,7 +55,7 @@
 			case props.href !== undefined:
 				return ActionTag.a
 			default:
-				return ActionTag.button
+				return props.defaultTag // button
 		}
 	})
 
@@ -85,12 +85,14 @@
 					to: props.to,
 					target: props.target,
 				}
-			default:
+			case ActionTag.button:
 				return {
 					...toReturn,
 					type: props.type,
 					disabled: props.disabled,
 				}
+			default:
+				return toReturn
 		}
 	})
 

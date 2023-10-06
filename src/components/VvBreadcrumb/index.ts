@@ -1,13 +1,7 @@
 import { ModifiersProps } from '../../props'
-
-export interface Route {
-	label: string
-	to?: string | { [key: string]: unknown }
-	title?: string
-	href?: string
-}
+import type { NavItem } from '../../types'
 
 export const VvBreadcrumbProps = {
 	...ModifiersProps,
-	routes: Array as PropType<Route[]>,
+	routes: Array as PropType<NavItem[]>,
 }

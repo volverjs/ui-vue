@@ -15,6 +15,7 @@ import {
 	Side,
 	AnchorTarget,
 	ButtonType,
+	ActionTag,
 } from '@/constants'
 
 export const LinkProps = {
@@ -468,6 +469,13 @@ export const ActionProps = {
 	ariaLabel: {
 		type: String,
 		default: undefined,
+	},
+	/**
+	 * Default tag for the action
+	 */
+	defaultTag: {
+		type: String,
+		default: ActionTag.button,
 	},
 }
 
