@@ -1,5 +1,6 @@
 export type Nullable<T> = T | null | undefined
 
-export type Option = Record<string | number | symbol, unknown> & {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Option = Record<string | number | symbol, any> & {
 	options?: Option[]
 }

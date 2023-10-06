@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - `VvCombobox` keep an array `modelValue` also with `multiple: false`;
 - `VvCombobox` focus state;
 - `VvTextarea` focus state;
+- `v-tooltip` directive update on props change;
 - `VvInputText` force type number on stepUp/stepDown;
 - Improved `VvCombobox` support for object values.
 

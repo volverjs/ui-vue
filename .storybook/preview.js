@@ -6,7 +6,7 @@ import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
 import { themes } from '@storybook/theming'
 import './style.scss'
-import directives from '@/directives'
+import * as directives from '@/directives'
 
 const fullVersion = packageJson.version
 const fullSplittedVersion = fullVersion.split('-')

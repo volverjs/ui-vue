@@ -293,4 +293,3 @@ const VolverPlugin: Plugin = {
 }
 
 export default VolverPlugin
-export * from './types'
