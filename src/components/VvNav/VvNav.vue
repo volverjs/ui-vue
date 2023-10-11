@@ -37,7 +37,9 @@
 					:data-index="index"
 					v-bind="item"
 					v-on="on"
-				/>
+				>
+					<slot name="item" v-bind="{ item, index }" />
+				</VvNavItem>
 			</slot>
 		</ul>
 	</nav>
