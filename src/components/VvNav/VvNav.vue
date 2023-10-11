@@ -32,13 +32,13 @@
 		>
 			<slot>
 				<VvNavItem
-					v-for="({ on = {}, ...item }, index) in items"
+					v-for="({ on = {}, data, ...item }, index) in items"
 					:key="index"
 					:data-index="index"
 					v-bind="item"
 					v-on="on"
 				>
-					<slot name="item" v-bind="{ item, index }" />
+					<slot name="item" v-bind="{ item, data, index }" />
 				</VvNavItem>
 			</slot>
 		</ul>

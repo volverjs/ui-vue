@@ -12,6 +12,7 @@ export type NavItem = {
 	current?: boolean
 	class?: string | string[]
 	on?: Record<'click' | string, () => void>
+	data?: Record<string, unknown>
 }
 
 export type NavItemTab = NavItem & {
