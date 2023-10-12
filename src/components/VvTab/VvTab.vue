@@ -60,8 +60,8 @@
 			}"
 			@click="onNavClick"
 		>
-			<template #item="{ item, index }">
-				<slot name="nav-item" v-bind="{ item, index }" />
+			<template #item="{ item, data, index }">
+				<slot name="nav-item" v-bind="{ item, data, index }" />
 			</template>
 		</VvNav>
 		<!-- #endregion -->
