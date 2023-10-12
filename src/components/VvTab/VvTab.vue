@@ -59,7 +59,11 @@
 				modifiers: hasNavModifiers,
 			}"
 			@click="onNavClick"
-		/>
+		>
+			<template #item="{ item, data, index }">
+				<slot name="nav-item" v-bind="{ item, data, index }" />
+			</template>
+		</VvNav>
 		<!-- #endregion -->
 
 		<!-- #region panels -->

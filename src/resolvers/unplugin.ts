@@ -38,6 +38,11 @@ export interface VolverResolverOptions {
 	 * @default undefined
 	 */
 	ignore?: string[]
+	/**
+	 * cherry pick components from named exports
+	 * @default undefined
+	 */
+	cherryPick?: boolean
 }
 
 const STYLE_EXCLUDE = ['vv-icon', 'vv-action']
@@ -113,6 +118,7 @@ export function VolverResolver({
 	importStyle,
 	directives,
 	ignore,
+	cherryPick,
 }: VolverResolverOptions = {}): ComponentResolver[] {
 	return [
 		{
@@ -134,9 +140,16 @@ export function VolverResolver({
 				}
 
 				// import component
+				if (cherryPick) {
+					return {
+						from: `@volverjs/ui-vue/${kebabName}`,
+						sideEffects: getSideEffects(kebabName, importStyle),
+					}
+				}
 				return {
-					from: `@volverjs/ui-vue/${kebabName}`,
+					from: '@volverjs/ui-vue/components',
 					sideEffects: getSideEffects(kebabName, importStyle),
+					name,
 				}
 			},
 		},
@@ -159,9 +172,16 @@ export function VolverResolver({
 				}
 
 				// import directive
+				if (cherryPick) {
+					return {
+						from: `@volverjs/ui-vue/${kebabName}`,
+						sideEffects: getSideEffects(kebabName, importStyle),
+					}
+				}
 				return {
-					from: `@volverjs/ui-vue/${kebabName}`,
+					from: '@volverjs/ui-vue/directives',
 					sideEffects: getSideEffects(kebabName, importStyle),
+					name,
 				}
 			},
 		},

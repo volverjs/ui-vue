@@ -9,12 +9,13 @@ All notable changes to this project will be documented in this file.
 - `VvAction` prop for `current` class;
 - `VvNavItem` and `VvNavSeparator` components;
 - inner types export;
-- `--watch` flag for `generate-icons` script.
-- `VvCombobox` event `update:search`
+- `--watch` flag for `generate-icons` script;
+- `VvCombobox` event `update:search`;
+- scoped slot for items in `VvNav` and `VvTab`.
 
 ### Deprecated
 
-- event `change:search` on `VvCombobox` (use `update:search`)
+- event `change:search` on `VvCombobox` (use `update:search`).
 
 ### Fixed
 
