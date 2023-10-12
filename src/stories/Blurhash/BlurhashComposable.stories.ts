@@ -5,6 +5,7 @@ import { useBlurhash } from '@/composables/useBlurhash'
 
 const meta: Meta = {
 	title: 'Composables/Blurhash',
+	tags: ['autodocs'],
 }
 
 export default meta

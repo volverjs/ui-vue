@@ -1,46 +1,36 @@
+<script lang="ts">
+	export default {
+		name: 'VvInputFile',
+	}
+</script>
+
 <script setup lang="ts">
 	import { useVModel } from '@vueuse/core'
 	import type { UploadedFile } from '../../types'
 	import { computed, onBeforeUnmount, ref } from 'vue'
 	import VvButton from '../VvButton/VvButton.vue'
 	import VvIcon from '../VvIcon/VvIcon.vue'
+	import HintSlotFactory from '../common/HintSlot'
+	import { type VvInputFileEvents, VvInputFileProps } from '.'
 
-	const props = withDefaults(
-		defineProps<{
-			modelValue?: File | (File | UploadedFile)[] | UploadedFile
-			modifiers?: string | string[]
-			label?: string
-			labelButton?: string
-			id?: string
-			name: string
-			accept?: string
-			loading?: boolean
-			valid?: boolean
-			invalid?: boolean
-			hint?: string | number
-			placeholder?: string
-			multiple?: boolean
-			max?: number | string
-		}>(),
-		{
-			modelValue: undefined,
-			id: Math.random().toString(36),
-			modifiers: () => [],
-			label: '',
-			labelButton: 'Image',
-			accept: '',
-			hint: '',
-			placeholder: '',
-			multiple: false,
-			max: undefined,
-		},
+	// props, emit, slots and attrs
+	const props = defineProps(VvInputFileProps)
+	const emit = defineEmits<VvInputFileEvents>()
+	const slots = useSlots()
+
+	// props merged with volver defaults (now only for labels)
+	const propsDefaults = useDefaults<typeof VvInputFileProps>(
+		'VvInputFile',
+		VvInputFileProps,
+		props,
 	)
-	const emit = defineEmits<{
-		'update:modelValue': [File | undefined]
-	}>()
+
+	const { modifiers, id } = toRefs(props)
+
+	const hasId = useUniqueId(id)
+	const hasHintId = computed(() => `${hasId.value}-hint`)
 
 	// styles
-	const { modifiers } = toRefs(props)
 	const bemCssClasses = useModifiers(
 		'vv-input-file',
 		modifiers,
@@ -49,8 +39,17 @@
 			loading: props.loading,
 			valid: props.valid === true,
 			invalid: props.invalid === true,
+			'icon-before': !!props.iconLeft,
+			'icon-after': !!props.iconRight,
 		})),
 	)
+
+	const {
+		HintSlot,
+		hasHintLabelOrSlot,
+		hasInvalidLabelOrSlot,
+		hintSlotScope,
+	} = HintSlotFactory(propsDefaults, slots)
 
 	const localModelValue = useVModel(props, 'modelValue', emit)
 	const files = computed(() => {
@@ -64,6 +63,10 @@
 
 	const hasMax = computed(() => {
 		return typeof props.max === 'string' ? parseInt(props.max) : props.max
+	})
+
+	const hasDropArea = computed(() => {
+		return modifiers?.value?.includes('drop-area')
 	})
 
 	const isMultiple = computed(() => {
@@ -173,10 +176,11 @@
 
 <template>
 	<div :class="bemCssClasses">
-		<label v-if="label" :for="id">
+		<label v-if="label" :for="hasId">
 			{{ label }}
 		</label>
 		<div
+			v-if="hasDropArea"
 			class="vv-input-file__drop-area"
 			@dragenter.prevent.stop="onDragenter"
 			@dragleave.prevent.stop="onDragleave"
@@ -184,33 +188,45 @@
 			@dragover.prevent.stop
 			@click.stop="onClick"
 		>
-			<VvButton
-				modifiers="action"
-				aria-label="upload"
-				:label="!previewSrc ? labelButton : undefined"
-				:class="{
-					'absolute top-8 right-8': previewSrc,
-				}"
-				:icon="!previewSrc ? 'image' : 'edit'"
-				class="z-1"
-				@click.stop="onClick"
-			/>
-			<picture class="vv-input-file__preview">
-				<img v-if="previewSrc" :src="previewSrc" :alt="files[0].name" />
-			</picture>
+			<slot name="drop-area">
+				<VvButton
+					modifiers="action"
+					aria-label="upload"
+					:label="!previewSrc ? labelButton : undefined"
+					:class="{
+						'absolute top-8 right-8': previewSrc,
+					}"
+					:icon="!previewSrc ? 'image' : 'edit'"
+					class="z-1"
+					@click.stop="onClick"
+				/>
+				<picture class="vv-input-file__preview">
+					<img
+						v-if="previewSrc"
+						:src="previewSrc"
+						:alt="files[0].name"
+					/>
+				</picture>
+			</slot>
 		</div>
 		<div class="vv-input-file__wrapper">
+			<VvIcon v-if="iconLeft" :name="iconLeft" />
 			<input
-				:id="id"
+				:id="hasId"
 				ref="inputEl"
 				:placeholder="placeholder"
-				:aria-describedby="hint ? `${id}-hint` : undefined"
+				:aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
+				:aria-invalid="invalid"
+				:aria-errormessage="
+					hasInvalidLabelOrSlot ? hasHintId : undefined
+				"
 				:multiple="isMultiple"
 				:accept="accept"
 				type="file"
 				:name="name"
 				@change="onChange"
 			/>
+			<VvIcon v-if="iconRight" :name="iconRight" />
 		</div>
 		<ul class="vv-input-file__list">
 			<li
@@ -235,8 +251,19 @@
 				/>
 			</li>
 		</ul>
-		<small v-if="hint" :id="`${id}-hint`" class="vv-input-file__hint">
-			{{ hint }}
-		</small>
+		<HintSlot :id="hasHintId" class="vv-input-file__hint">
+			<template v-if="$slots.hint" #hint>
+				<slot name="hint" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.loading" #loading>
+				<slot name="loading" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.valid" #valid>
+				<slot name="valid" v-bind="hintSlotScope" />
+			</template>
+			<template v-if="$slots.invalid" #invalid>
+				<slot name="invalid" v-bind="hintSlotScope" />
+			</template>
+		</HintSlot>
 	</div>
 </template>
