@@ -76,23 +76,32 @@ export const Default: StoryObj = {
 			},
 		},
 		template: /* html */ `
-			<div class="w-full h-150" :class="{ 'vv-skeleton': isLoading }">
-				{{blurhash}}
-				<vv-input-file v-model="file" name="input-file" accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png" />
-                <picture>
-                    <canvas
-						v-show="blurhash"
-                        ref="canvas"
-                        class="w-full h-full block object-cover" />
-                    <img
-						v-if="image"
-                        class="w-full h-full block object-cover"
-                        :class="{ 'vv-skeleton__item': isLoading }"
-                        :src="imageUrl"
-                        alt="image"
-                        :width="image.width"
-                        :height="image.height" />
-                </picture>
+			<div class="w-full grid gap-md grid-cols-3 h-150" :class="{ 'vv-skeleton': isLoading }">
+				<div class="w-150 h-150 col-span-1">
+					<div class="text-20 font-semibold mb-md">Upload image</div>
+					<vv-input-file v-model="file" name="input-file" modifiers="square hidden" accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png" />
+				</div>
+				<div v-show="blurhash" class="h-150 col-span-2">
+					<picture class="flex gap-md justify-center">
+						<div>
+							<div class="text-20 font-semibold mb-md">Blurhash</div>
+							<canvas
+								ref="canvas"
+								class="w-150 h-150 block object-cover" />
+						</div>
+						<div>
+							<div class="text-20 font-semibold mb-md">Image</div>
+							<img
+								v-if="image"
+								class="w-150 h-150 block object-cover"
+								:class="{ 'vv-skeleton__item': isLoading }"
+								:src="imageUrl"
+								alt="image"
+								:width="image.width"
+								:height="image.height" />
+						</div>
+					</picture>
+				</div>
 			</div>
 		`,
 	}),

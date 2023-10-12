@@ -38,6 +38,20 @@
 	const emit = defineEmits<{
 		'update:modelValue': [File | undefined]
 	}>()
+
+	// styles
+	const { modifiers } = toRefs(props)
+	const bemCssClasses = useModifiers(
+		'vv-input-file',
+		modifiers,
+		computed(() => ({
+			dragging: isDragging.value,
+			loading: props.loading,
+			valid: props.valid === true,
+			invalid: props.invalid === true,
+		})),
+	)
+
 	const localModelValue = useVModel(props, 'modelValue', emit)
 	const files = computed(() => {
 		if (!localModelValue.value) {
@@ -62,28 +76,7 @@
 		return hasMax.value - files.value.length > 1
 	})
 
-	const normalizedModifiers = computed(() => {
-		let toReturn = props.modifiers
-		if (typeof toReturn === 'string') {
-			toReturn = toReturn.split(' ')
-		}
-		return toReturn.map((modifier) => `vv-input-file--${modifier}`)
-	})
 	const isDragging = ref(false)
-	const attributes = computed(() => {
-		return {
-			class: [
-				'vv-input-file',
-				...normalizedModifiers.value,
-				{
-					'vv-input-file--dragging': isDragging.value,
-					'vv-input-file--loading': props.loading,
-					'vv-input-file--valid': props.valid === true,
-					'vv-input-file--invalid': props.invalid === true,
-				},
-			],
-		}
-	})
 
 	const inputEl = ref<HTMLInputElement>()
 	const onDragenter = () => {
@@ -179,12 +172,12 @@
 </script>
 
 <template>
-	<div v-bind="attributes">
+	<div :class="bemCssClasses">
 		<label v-if="label" :for="id">
 			{{ label }}
 		</label>
 		<div
-			class="vv-input-file__drop-area rounded"
+			class="vv-input-file__drop-area"
 			@dragenter.prevent.stop="onDragenter"
 			@dragleave.prevent.stop="onDragleave"
 			@drop.prevent.stop="onDrop"
@@ -193,14 +186,12 @@
 		>
 			<VvButton
 				modifiers="action"
+				aria-label="upload"
 				:label="!previewSrc ? labelButton : undefined"
 				:class="{
 					'absolute top-8 right-8': previewSrc,
 				}"
-				:icon="{
-					name: !previewSrc ? 'image-add' : 'edit',
-					prefix: 'siv',
-				}"
+				:icon="!previewSrc ? 'image' : 'edit'"
 				class="z-1"
 				@click.stop="onClick"
 			/>
@@ -239,6 +230,7 @@
 					type="button"
 					class="vv-input-file__item-remove"
 					title="Remove"
+					aria-label="remove-file"
 					@click.stop="onClickRemoveFile(index)"
 				/>
 			</li>
