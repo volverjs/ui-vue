@@ -232,9 +232,10 @@ The following features are planned for the next releases:
 - [x] (v0.0.6) `VvAvatar` and `VvAvatarGroup` component;
 - [x] (v0.0.6) Menus, navigation and tabs with `VvNav` and `VvTab`;
 - [x] (v0.0.6) Alerts, notifications and toasts with `VvAlert` and `VvAlertGroup` component;
+- [x] Multiple uploads with `VvInputFile`;
+- [ ] Image crop and file previews;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
-- [ ] Multiple uploads, image crop and file previews with `VvInputFile`;
 - [ ] Carousel and galleries with `VvCarousel` component;
 - [ ] Calendar and date picker with `VvCalendar` component.
 
