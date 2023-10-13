@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- `useBlurhash` composable;
+- `VvInputFile` component;
 - `VvAction` prop for `current` class;
 - `VvNavItem` and `VvNavSeparator` components;
 - inner types export;

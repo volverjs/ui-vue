@@ -139,6 +139,7 @@
     "useBase64": true,
     "useBattery": true,
     "useBluetooth": true,
+    "useBlurhash": true,
     "useBreakpoints": true,
     "useBroadcastChannel": true,
     "useBrowserLocation": true,

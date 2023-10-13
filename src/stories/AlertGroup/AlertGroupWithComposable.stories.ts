@@ -6,7 +6,7 @@ import { Default as DefaultStory, type Story } from './AlertGroup.stories'
 import { useAlert } from '@/composables/alert/useAlert'
 
 const meta: Meta<typeof VvAlertGroup> = {
-	title: 'Components/AlertGroup/UseComposable',
+	title: 'Composables/useAlert',
 	component: VvAlertGroup,
 	args: defaultArgs,
 	argTypes,
@@ -15,7 +15,7 @@ const meta: Meta<typeof VvAlertGroup> = {
 
 export default meta
 
-export const UseComposable: Story = {
+export const Default: Story = {
 	...DefaultStory,
 	parameters: {
 		docs: {
