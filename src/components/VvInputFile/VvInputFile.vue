@@ -129,7 +129,7 @@
 					: toReturn
 		}
 		for (const file of uploadedFiles) {
-			if (hasMax.value && toReturn.length > hasMax.value) {
+			if (hasMax.value && toReturn.length >= hasMax.value) {
 				break
 			}
 			toReturn.push(file)
