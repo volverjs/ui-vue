@@ -13,4 +13,24 @@ export const argTypes = {
 		...ModifiersArgTypes.modifiers,
 		options: ['drop-area', 'hidden', 'square', 'circle'],
 	},
+	'drop-area': {
+		description: 'Drop area slot',
+		control: {
+			type: 'text',
+		},
+		table: {
+			category: 'Slots',
+			type: {
+				summary: 'html',
+			},
+		},
+	},
+	'update:model-value': {
+		table: {
+			category: 'Events',
+			type: {
+				summary: 'File | File[]',
+			},
+		},
+	},
 }

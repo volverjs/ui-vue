@@ -11,7 +11,7 @@
 	import VvButton from '../VvButton/VvButton.vue'
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import HintSlotFactory from '../common/HintSlot'
-	import { type VvInputFileEvents, VvInputFileProps } from '.'
+	import { VvInputFileProps, type VvInputFileEvents } from '.'
 
 	// props, emit, slots and attrs
 	const props = defineProps(VvInputFileProps)
@@ -53,7 +53,11 @@
 
 	const localModelValue = useVModel(props, 'modelValue', emit)
 	const files = computed(() => {
-		if (!localModelValue.value) {
+		if (
+			!localModelValue.value ||
+			(!Array.isArray(localModelValue.value) &&
+				!(localModelValue.value as File)?.name)
+		) {
 			return []
 		}
 		return Array.isArray(localModelValue.value)
@@ -106,13 +110,13 @@
 		inputEl.value.value = ''
 	}
 
-	const addFiles = (files: FileList) => {
+	const addFiles = (uploadedFiles: FileList) => {
 		if (!props.multiple) {
 			if (Array.isArray(localModelValue.value)) {
-				localModelValue.value = [...files]
+				localModelValue.value = [...uploadedFiles]
 				return
 			}
-			localModelValue.value = files[0]
+			localModelValue.value = uploadedFiles[0]
 			return
 		}
 		let toReturn: (File | UploadedFile)[] = []
@@ -124,11 +128,11 @@
 					? [...localModelValue.value]
 					: toReturn
 		}
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0; i < uploadedFiles.length; i++) {
 			if (hasMax.value && toReturn.length >= hasMax.value) {
 				break
 			}
-			toReturn.push(files[i])
+			toReturn.push(uploadedFiles[i])
 		}
 		localModelValue.value = toReturn
 	}

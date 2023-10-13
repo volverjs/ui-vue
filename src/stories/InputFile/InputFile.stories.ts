@@ -21,14 +21,17 @@ export const Default: Story = {
 	render: (args) => ({
 		components: { VvInputFile },
 		setup() {
+			const files = ref([])
 			return {
 				args,
+				files,
 			}
 		},
 		template: /* html */ `
 			<div class="w-1/4">
-				<vv-input-file v-bind="args">
+				<vv-input-file v-bind="args" v-model="files">
 					<template #drop-area v-if="args['drop-area']"><div v-html="args['drop-area']"></div></template>
+					<template #hint v-if="args['hint']"><div v-html="args['hint']"></div></template>
 				</vv-input-file>
 			</div>
 		`,

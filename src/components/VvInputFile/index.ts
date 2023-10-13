@@ -21,9 +21,10 @@ export const VvInputFileProps = {
 	...LoadingProps,
 	name: { type: String },
 	id: { type: String },
-	modelValue: Object as PropType<
-		File | (File | UploadedFile)[] | UploadedFile
-	>,
+	modelValue: {
+		type: Object as PropType<File | (File | UploadedFile)[] | UploadedFile>,
+		required: true,
+	},
 	max: [Number, String],
 	labelButton: { type: String, default: 'Image' },
 	loading: Boolean,
