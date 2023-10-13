@@ -128,12 +128,13 @@
 					? [...localModelValue.value]
 					: toReturn
 		}
-		for (let i = 0; i < uploadedFiles.length; i++) {
+		for (const file of uploadedFiles) {
 			if (hasMax.value && toReturn.length >= hasMax.value) {
 				break
 			}
-			toReturn.push(uploadedFiles[i])
+			toReturn.push(file)
 		}
+
 		localModelValue.value = toReturn
 	}
 

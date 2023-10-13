@@ -41,7 +41,7 @@ export const Default: StoryObj = {
 			file: {
 				immediate: true,
 				async handler(newValue) {
-					if (newValue && newValue.size) {
+					if (newValue?.size) {
 						this.imageUrl = URL.createObjectURL(newValue)
 						this.image = await this.loadImage(this.imageUrl)
 						this.blurhash = await this.encode(newValue)
@@ -155,7 +155,7 @@ export const Default: StoryObj = {
 	const image = ref()
 
 	watch(file, async (newValue) => {
-		if (newValue && newValue.size) {
+		if (newValue?.size) {
 			this.imageUrl = URL.createObjectURL(newValue)
 			this.image = await this.loadImage(this.imageUrl)
 			this.blurhash = await this.encode(newValue)
