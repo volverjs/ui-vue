@@ -139,6 +139,7 @@
     "useBase64": true,
     "useBattery": true,
     "useBluetooth": true,
+    "useBlurhash": true,
     "useBreakpoints": true,
     "useBroadcastChannel": true,
     "useBrowserLocation": true,
@@ -310,7 +311,6 @@
     "watchThrottled": true,
     "watchTriggerable": true,
     "watchWithFilter": true,
-    "whenever": true,
-    "useBlurhash": true
+    "whenever": true
   }
 }

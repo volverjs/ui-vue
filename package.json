@@ -237,6 +237,9 @@
       "vv-icon": [
         "dist/components/VvIcon/VvIcon.vue.d.ts"
       ],
+      "vv-input-file": [
+        "dist/components/VvInputFile/VvInputFile.vue.d.ts"
+      ],
       "vv-input-text": [
         "dist/components/VvInputText/VvInputText.vue.d.ts"
       ],
@@ -424,6 +427,11 @@
       "types": "./dist/components/VvIcon/VvIcon.vue.d.ts",
       "import": "./dist/components/VvIcon/VvIcon.es.js",
       "default": "./dist/components/VvIcon/VvIcon.umd.js"
+    },
+    "./vv-input-file": {
+      "types": "./dist/components/VvInputFile/VvInputFile.vue.d.ts",
+      "import": "./dist/components/VvInputFile/VvInputFile.es.js",
+      "default": "./dist/components/VvInputFile/VvInputFile.umd.js"
     },
     "./vv-input-text": {
       "types": "./dist/components/VvInputText/VvInputText.vue.d.ts",
