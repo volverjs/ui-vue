@@ -219,7 +219,100 @@ function showSuccess() {
 </div>
 ```
 
-###
+### useBlurhash
+
+Used to create blurred preview image ([blurhash](https://blurha.sh/))
+
+##### Example
+
+```typescript
+import { useBlurhash } from '@volverjs/ui-vue/composables'
+
+const { encode, decode, loadImage } = useBlurhash()
+
+const isLoading = ref(false)
+const file = ref({})
+const canvas = ref()
+const isImgLoaded = ref(false)
+const blurhash = ref('')
+const imageUrl = ref('')
+const image = ref()
+
+watch(
+  file,
+  async (newValue) => {
+    if (newValue?.size) {
+      this.imageUrl = URL.createObjectURL(newValue)
+      this.image = await this.loadImage(this.imageUrl)
+      this.blurhash = await this.encode(newValue)
+    } else {
+      this.image = null
+      this.imageUrl = ''
+      this.blurhash = ''
+    }
+  },
+  { immediate: true }
+)
+
+watch(blurhash, async (newValue) => {
+  if (this.image) {
+    const blurhashDecoded = await this.decode(
+      newValue,
+      this.image.width,
+      this.image.height
+    )
+
+    if (this.canvas) {
+      this.canvas.width = this.image.width
+      this.canvas.height = this.image.height
+      const ctx = this.canvas.getContext('2d')
+      const imageData = ctx.createImageData(
+        this.canvas.width,
+        this.canvas.height
+      )
+      imageData.data.set(blurhashDecoded)
+      ctx.putImageData(imageData, 0, 0)
+    }
+  }
+})
+```
+
+```html
+<div
+  class="w-full grid gap-md grid-cols-3 h-150"
+  :class="{ 'vv-skeleton': isLoading }"
+>
+  <div class="w-150 h-150 col-span-1">
+    <div class="text-20 font-semibold mb-md">Upload image</div>
+    <vv-input-file
+      v-model="file"
+      name="input-file"
+      modifiers="drop-area square hidden"
+      accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png"
+    />
+  </div>
+  <div v-show="blurhash" class="h-150 col-span-2">
+    <picture class="flex gap-md justify-center">
+      <div>
+        <div class="text-20 font-semibold mb-md">Blurhash</div>
+        <canvas ref="canvas" class="w-150 h-150 block object-cover" />
+      </div>
+      <div>
+        <div class="text-20 font-semibold mb-md">Image</div>
+        <img
+          v-if="image"
+          class="w-150 h-150 block object-cover"
+          :class="{ 'vv-skeleton__item': isLoading }"
+          :src="imageUrl"
+          alt="image"
+          :width="image.width"
+          :height="image.height"
+        />
+      </div>
+    </picture>
+  </div>
+</div>
+```
 
 ## Roadmap
 
@@ -232,7 +325,8 @@ The following features are planned for the next releases:
 - [x] (v0.0.6) `VvAvatar` and `VvAvatarGroup` component;
 - [x] (v0.0.6) Menus, navigation and tabs with `VvNav` and `VvTab`;
 - [x] (v0.0.6) Alerts, notifications and toasts with `VvAlert` and `VvAlertGroup` component;
-- [x] Multiple uploads with `VvInputFile`;
+- [x] (v0.0.10) Multiple uploads with `VvInputFile`;
+- [x] (v0.0.10) `useBlurhash` composable;
 - [ ] Image crop and file previews;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
