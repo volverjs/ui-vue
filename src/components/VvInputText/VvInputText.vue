@@ -249,11 +249,11 @@
 	}
 
 	// icons
-	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
-		icon,
-		iconPosition,
-	)
-	const defaultAfterIcon = computed(() => {
+	const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
+	const iconAfter = computed(() => {
+		if (hasIconAfter.value !== undefined) {
+			return hasIconAfter.value
+		}
 		switch (props.type) {
 			case INPUT_TYPES.COLOR:
 				return { name: TYPES_ICON.COLOR }
@@ -264,9 +264,8 @@
 				return { name: TYPES_ICON.DATE }
 			case INPUT_TYPES.TIME:
 				return { name: TYPES_ICON.TIME }
-			default:
-				return ''
 		}
+		return undefined
 	})
 
 	// count
@@ -307,8 +306,8 @@
 			loading: loading.value,
 			disabled: props.disabled,
 			readonly: props.readonly,
-			'icon-before': hasIconBefore.value,
-			'icon-after': hasIconAfter.value || !isEmpty(defaultAfterIcon),
+			'icon-before': hasIconBefore.value !== undefined,
+			'icon-after': iconAfter.value !== undefined,
 			floating: props.floating && !isEmpty(props.label),
 			dirty: isDirty.value,
 			focus: isFocused.value,
@@ -476,8 +475,8 @@
 			>
 				<VvIcon
 					v-if="hasIconBefore"
+					v-bind="hasIconBefore"
 					class="vv-input-text__icon"
-					v-bind="hasIcon"
 				/>
 				<input
 					:id="hasId"
@@ -500,9 +499,9 @@
 			</div>
 			<!-- @slot Slot to replace right icon -->
 			<VvIcon
-				v-if="hasIconAfter || defaultAfterIcon"
+				v-if="iconAfter"
+				v-bind="iconAfter"
 				class="vv-input-text__icon vv-input-text__icon-after"
-				v-bind="hasIconAfter ? hasIcon : defaultAfterIcon"
 			/>
 			<PasswordInputActions
 				v-else-if="isPassword && !hideActions && isClickable"

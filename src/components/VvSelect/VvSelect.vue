@@ -65,10 +65,7 @@
 	})
 
 	// icons
-	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
-		icon,
-		iconPosition,
-	)
+	const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
 
 	// dirty
 	const isDirty = computed(() => !isEmpty(props.modelValue))
@@ -100,8 +97,8 @@
 			loading: loading.value,
 			disabled: disabled.value,
 			readonly: readonly.value,
-			'icon-before': hasIconBefore.value,
-			'icon-after': hasIconAfter.value,
+			'icon-before': hasIconBefore.value !== undefined,
+			'icon-after': hasIconAfter.value !== undefined,
 			dirty: isDirty.value,
 			focus: focused.value,
 			floating: floating.value,
@@ -174,8 +171,8 @@
 			<div class="vv-select__inner">
 				<VvIcon
 					v-if="hasIconBefore"
+					v-bind="hasIconBefore"
 					class="vv-select__icon"
-					v-bind="hasIcon"
 				/>
 				<select
 					:id="hasId"
@@ -219,8 +216,8 @@
 				</select>
 				<VvIcon
 					v-if="hasIconAfter"
+					v-bind="hasIconAfter"
 					class="vv-select__icon vv-select__icon-after"
-					v-bind="hasIcon"
 				/>
 			</div>
 			<div v-if="$slots.after" class="vv-select__input-after">

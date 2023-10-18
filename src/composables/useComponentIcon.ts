@@ -1,34 +1,35 @@
 import type { Ref } from 'vue'
+import type { VvIconProps } from '../components/VvIcon'
 import { Position, Side } from '../constants'
 
 export function useComponentIcon(
-	icon: Ref<string | object | undefined> | undefined,
-	iconPosition: Ref<string>,
+	icon?: Ref<string | VvIconProps | undefined>,
+	iconPosition?: Ref<string | undefined>,
 ) {
-	const hasIconBefore = computed(() =>
-		Boolean(icon?.value && iconPosition.value === Position.before),
-	)
-	const hasIconAfter = computed(() =>
-		Boolean(icon?.value && iconPosition.value === Position.after),
-	)
-	const hasIconLeft = computed(() =>
-		Boolean(icon?.value && iconPosition.value === Side.left),
-	)
-	const hasIconRight = computed(() =>
-		Boolean(icon?.value && iconPosition.value === Side.right),
-	)
-	const hasIconTop = computed(() =>
-		Boolean(icon?.value && iconPosition.value === Side.top),
-	)
-	const hasIconBottom = computed(() =>
-		Boolean(icon?.value && iconPosition.value === Side.bottom),
-	)
 	const hasIcon = computed(() => {
 		if (typeof icon?.value === 'string') {
 			return { name: icon?.value }
 		}
 		return icon?.value
 	})
+	const hasIconBefore = computed(() =>
+		iconPosition?.value === Position.before ? hasIcon.value : undefined,
+	)
+	const hasIconAfter = computed(() =>
+		iconPosition?.value === Position.after ? hasIcon.value : undefined,
+	)
+	const hasIconLeft = computed(() =>
+		iconPosition?.value === Side.left ? hasIcon.value : undefined,
+	)
+	const hasIconRight = computed(() =>
+		iconPosition?.value === Side.right ? hasIcon.value : undefined,
+	)
+	const hasIconTop = computed(() =>
+		iconPosition?.value === Side.top ? hasIcon.value : undefined,
+	)
+	const hasIconBottom = computed(() =>
+		iconPosition?.value === Side.bottom ? hasIcon.value : undefined,
+	)
 	return {
 		hasIcon,
 		hasIconLeft,

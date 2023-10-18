@@ -6,10 +6,10 @@
 
 <script setup lang="ts">
 	import { Icon, addIcon, iconExists } from '@iconify/vue'
-	import { VvIconProps } from '.'
+	import { type VvIconProps, VvIconPropsDefaults } from '.'
 
 	// props
-	const props = defineProps(VvIconProps)
+	const props = withDefaults(defineProps<VvIconProps>(), VvIconPropsDefaults)
 
 	const hasRotate = computed(() => {
 		if (typeof props.rotate === 'string') {

@@ -17,6 +17,7 @@ import {
 	ButtonType,
 	ActionTag,
 } from '@/constants'
+import type { VvIconProps } from '@/components/VvIcon'
 
 export const LinkProps = {
 	/**
@@ -35,6 +36,7 @@ export const LinkProps = {
 	 */
 	target: {
 		type: String as PropType<`${AnchorTarget}`>,
+		default: undefined,
 		validator: (value: AnchorTarget) =>
 			Object.values(AnchorTarget).includes(value),
 	},
@@ -51,29 +53,35 @@ export const ValidProps = {
 	/**
 	 * Valid status
 	 */
-	valid: Boolean,
+	valid: { type: Boolean, default: false },
 	/**
 	 * Valid label
 	 */
-	validLabel: [String, Array],
+	validLabel: { type: [String, Array], default: undefined },
 }
 
 export const InvalidProps = {
 	/**
 	 * Invalid status
 	 */
-	invalid: Boolean,
+	invalid: {
+		type: Boolean,
+		default: false,
+	},
 	/**
 	 * Invalid label
 	 */
-	invalidLabel: [String, Array],
+	invalidLabel: { type: [String, Array], default: undefined },
 }
 
 export const LoadingProps = {
 	/**
 	 * Loading status
 	 */
-	loading: Boolean,
+	loading: {
+		type: Boolean,
+		default: false,
+	},
 	/**
 	 * Loading label
 	 */
@@ -87,56 +95,80 @@ export const DisabledProps = {
 	/**
 	 * Whether the form control is disabled
 	 */
-	disabled: Boolean,
+	disabled: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const SelectedProps = {
 	/**
 	 * Whether the item is selected
 	 */
-	selected: Boolean,
+	selected: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const ActiveProps = {
 	/**
 	 * Whether the item is active
 	 */
-	active: Boolean,
+	active: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const CurrentProps = {
 	/**
 	 * Whether the item is current
 	 */
-	current: Boolean,
+	current: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const PressedProps = {
 	/**
 	 * Whether the item is pressed
 	 */
-	pressed: Boolean,
+	pressed: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const LabelProps = {
 	/**
 	 * The item label
 	 */
-	label: [String, Number],
+	label: {
+		type: [String, Number],
+		default: undefined,
+	},
 }
 
 export const ReadonlyProps = {
 	/**
 	 * The value is not editable
 	 */
-	readonly: Boolean,
+	readonly: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const ModifiersProps = {
 	/**
 	 * Component BEM modifiers
 	 */
-	modifiers: [String, Array] as PropType<string | string[]>,
+	modifiers: {
+		type: [String, Array] as PropType<string | string[]>,
+		default: undefined,
+	},
 }
 
 export const HintProps = {
@@ -181,7 +213,10 @@ export const DebounceProps = {
 	/**
 	 * Milliseconds to wait before emitting the input event
 	 */
-	debounce: [Number, String],
+	debounce: {
+		type: [Number, String],
+		default: undefined,
+	},
 }
 
 export const IconProps = {
@@ -189,7 +224,10 @@ export const IconProps = {
 	 * VvIcon name or props
 	 * @see VVIcon
 	 */
-	icon: { type: [String, Object] },
+	icon: {
+		type: [String, Object] as PropType<string | VvIconProps>,
+		default: undefined,
+	},
 	/**
 	 * VvIcon position
 	 */
@@ -213,7 +251,10 @@ export const FloatingLabelProps = {
 	/**
 	 * If true the label will be floating
 	 */
-	floating: Boolean,
+	floating: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const UnselectableProps = {
@@ -255,6 +296,7 @@ export const DropdownProps = {
 	 */
 	transitionName: {
 		type: String,
+		default: undefined,
 	},
 	/**
 	 * Offset of the dropdown from the trigger
@@ -325,6 +367,7 @@ export const DropdownProps = {
 	 */
 	triggerWidth: {
 		type: Boolean,
+		default: false,
 	},
 }
 
@@ -343,7 +386,10 @@ export const AutofocusProps = {
 	 * Global attribute autofocus
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus
 	 */
-	autofocus: Boolean,
+	autofocus: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const AutocompleteProps = {
@@ -377,28 +423,34 @@ export const InputTextareaProps = {
 	 * Available for input types: text, search, url, tel, email, password
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#minlength
 	 */
-	minlength: [String, Number],
+	minlength: { type: [String, Number], default: undefined },
 	/**
 	 * Input / Textarea maxlength
 	 * Maximum length (number of characters) of value
 	 * Available for input types: text, search, url, tel, email, password
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#maxlength
 	 */
-	maxlength: [String, Number],
+	maxlength: { type: [String, Number], default: undefined },
 	/**
 	 * Input / Textarea placeholder
 	 * Text that appears in the form control when it has no value set
 	 * Available for input types: text, search, url, tel, email, password, number
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#placeholder
 	 */
-	placeholder: String,
+	placeholder: {
+		type: String,
+		default: undefined,
+	},
 	/**
 	 * Input / Textarea required
 	 * A value is required or must be check for the form to be submittable
 	 * Available for all input types except color
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#required
 	 */
-	required: Boolean,
+	required: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const CheckboxRadioProps = {
@@ -416,11 +468,17 @@ export const CheckboxRadioProps = {
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
 	 */
-	value: [String, Number, Boolean],
+	value: {
+		type: [String, Number, Boolean],
+		default: undefined,
+	},
 	/**
 	 * Input value
 	 */
-	modelValue: [Object, Number, Boolean, String],
+	modelValue: {
+		type: [Object, Number, Boolean, String],
+		default: undefined,
+	},
 }
 
 export const CheckboxRadioGroupProps = {
@@ -436,7 +494,10 @@ export const CheckboxRadioGroupProps = {
 	/**
 	 * Input value
 	 */
-	modelValue: [String, Array, Boolean, Number, Symbol],
+	modelValue: {
+		type: [String, Array, Boolean, Number, Symbol],
+		default: undefined,
+	},
 	/**
 	 * Input name
 	 */
@@ -444,7 +505,10 @@ export const CheckboxRadioGroupProps = {
 	/**
 	 * If true, the group will be displayed in a vertical column
 	 */
-	vertical: Boolean,
+	vertical: {
+		type: Boolean,
+		default: false,
+	},
 }
 
 export const ActionProps = {

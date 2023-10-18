@@ -52,10 +52,7 @@
 	const localModelValue = useDebouncedInput(modelValue, emit, debounce?.value)
 
 	// icons
-	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
-		icon,
-		iconPosition,
-	)
+	const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
 
 	// focus
 	const { focused } = useComponentFocus(textarea, emit)
@@ -113,8 +110,8 @@
 			loading: loading.value,
 			disabled: props.disabled,
 			readonly: props.readonly,
-			'icon-before': hasIconBefore.value,
-			'icon-after': hasIconAfter.value,
+			'icon-before': hasIconBefore.value !== undefined,
+			'icon-after': hasIconAfter.value !== undefined,
 			floating: props.floating && !isEmpty(props.label),
 			dirty: isDirty.value,
 			focus: focused.value,
@@ -180,8 +177,8 @@
 			<div class="vv-textarea__inner">
 				<VvIcon
 					v-if="hasIconBefore"
+					v-bind="hasIconBefore"
 					class="vv-textarea__icon"
-					v-bind="hasIcon"
 				/>
 				<textarea
 					:id="hasId"
@@ -192,8 +189,8 @@
 				/>
 				<VvIcon
 					v-if="hasIconAfter"
+					v-bind="hasIconAfter"
 					class="vv-textarea__icon vv-textarea__icon-after"
-					v-bind="hasIcon"
 				/>
 			</div>
 			<div v-if="$slots.after" class="vv-textarea__input-after">

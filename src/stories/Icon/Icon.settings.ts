@@ -1,11 +1,11 @@
-import { VvIconProps } from '@/components/VvIcon'
+import { VvIconPropsDefaults } from '@/components/VvIcon'
 import normal from '@/assets/icons/normal.json'
 import { ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
-	...propsToObject(VvIconProps),
+	...VvIconPropsDefaults,
 	name: 'add-circle',
-	width: 48
+	width: 48,
 }
 
 export const argTypes = {

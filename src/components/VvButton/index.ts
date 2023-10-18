@@ -6,6 +6,7 @@ import {
 	LoadingProps,
 	ModifiersProps,
 	UnselectableProps,
+	IconProps,
 } from '../../props'
 import { INJECTION_KEY_BUTTON_GROUP, Side } from '../../constants'
 
@@ -17,10 +18,7 @@ export const VvButtonProps = {
 	...ModifiersProps,
 	...UnselectableProps,
 	...LoadingProps,
-	/**
-	 * Button icon
-	 */
-	icon: [String, Object],
+	...IconProps,
 	/**
 	 * Button icon position
 	 */

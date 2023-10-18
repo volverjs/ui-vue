@@ -86,9 +86,7 @@ export const useVvAlert = (
 	const hasTitleId = computed(() => `${hasId.value}-title`)
 
 	// icon
-	const hasIcon = computed(() =>
-		typeof props.icon === 'string' ? { name: props.icon } : props.icon,
-	)
+	const { hasIcon } = useComponentIcon(computed(() => props.icon))
 
 	// props
 	const hasClass = useModifiers(

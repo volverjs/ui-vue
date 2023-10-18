@@ -1,10 +1,11 @@
 import { ModifiersProps } from '@/props'
 import type { ExtractPropTypes } from 'vue'
+import type { VvIconProps } from '../VvIcon'
 
 export type AlertItem = {
 	id: string | number
 	title?: string
-	icon?: string | Record<string, unknown>
+	icon?: string | VvIconProps
 	content?: string
 	footer?: string
 	modifiers?: string | string[]

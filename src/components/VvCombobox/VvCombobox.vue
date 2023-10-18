@@ -151,10 +151,7 @@
 	const dropdownEl = ref()
 
 	// icons
-	const { hasIcon, hasIconBefore, hasIconAfter } = useComponentIcon(
-		icon,
-		iconPosition,
-	)
+	const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
 
 	// dirty
 	const isDirty = computed(() => !isEmpty(props.modelValue))
@@ -172,8 +169,8 @@
 			disabled: disabled.value,
 			loading: isLoading.value,
 			readonly: readonly.value,
-			'icon-before': Boolean(hasIconBefore.value),
-			'icon-after': Boolean(hasIconAfter.value),
+			'icon-before': hasIconBefore.value !== undefined,
+			'icon-after': hasIconAfter.value !== undefined,
 			valid: valid.value,
 			invalid: invalid.value,
 			dirty: isDirty.value,
@@ -429,8 +426,8 @@
 					<div class="vv-select__inner">
 						<VvIcon
 							v-if="hasIconBefore"
+							v-bind="hasIconBefore"
 							class="vv-select__icon"
-							v-bind="hasIcon"
 						/>
 						<div
 							ref="inputEl"
@@ -493,8 +490,8 @@
 						</div>
 						<VvIcon
 							v-if="hasIconAfter"
+							v-bind="hasIconAfter"
 							class="vv-select__icon vv-select__icon-after"
-							v-bind="hasIcon"
 						/>
 					</div>
 					<div v-if="$slots.after" class="vv-select__input-after">

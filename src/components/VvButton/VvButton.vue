@@ -74,9 +74,7 @@
 	 * @description Define icon attributes.
 	 * @returns {Object} The icon attributes.
 	 */
-	const hasIconProps = computed(() =>
-		typeof icon?.value === 'string' ? { name: icon?.value } : icon?.value,
-	)
+	const { hasIcon } = useComponentIcon(icon)
 
 	/**
 	 * @description Catch click event
@@ -146,9 +144,11 @@
 			<template v-else>
 				<!-- @slot Before label and icon -->
 				<slot name="before" />
-				<template v-if="icon">
-					<VvIcon class="vv-button__icon" v-bind="hasIconProps" />
-				</template>
+				<VvIcon
+					v-if="hasIcon"
+					v-bind="hasIcon"
+					class="vv-button__icon"
+				/>
 				<span v-if="label" class="vv-button__label">
 					<!-- @slot Use this slot for button label -->
 					<slot name="label">
