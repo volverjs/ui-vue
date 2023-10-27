@@ -155,14 +155,17 @@
 		localModelValue.value = toReturn
 	}
 
+	const currentFileIndex = ref(0)
 	const previewSrc = computed(() => {
 		if (files.value.length === 0) {
 			return
 		}
-		if (files.value[0] instanceof File) {
-			return URL.createObjectURL(files.value[0])
+		if (files.value[currentFileIndex.value] instanceof File) {
+			return URL.createObjectURL(
+				files.value[currentFileIndex.value] as File,
+			)
 		}
-		return files.value[0].url
+		return (files.value[currentFileIndex.value] as UploadedFile).url
 	})
 
 	onBeforeUnmount(() => {
@@ -176,6 +179,18 @@
 			return
 		}
 		return Math.floor(size / 1024)
+	}
+
+	const onClickDownloadFile = (file: File | UploadedFile) => {
+		const link = document.createElement('a')
+		if (file instanceof File) {
+			link.href = URL.createObjectURL(file)
+		} else if (file.url) {
+			link.href = file.url
+		}
+		link.setAttribute('download', file.name)
+		document.body.appendChild(link)
+		link.click()
 	}
 </script>
 
@@ -201,7 +216,7 @@
 					:class="{
 						'absolute top-8 right-8': previewSrc,
 					}"
-					:icon="!previewSrc ? 'image' : 'edit'"
+					:icon="!previewSrc ? 'image' : isMultiple ? 'add' : 'edit'"
 					class="z-1"
 					@click.stop="onClick"
 				/>
@@ -209,7 +224,7 @@
 					<img
 						v-if="previewSrc"
 						:src="previewSrc"
-						:alt="files[0].name"
+						:alt="files[currentFileIndex].name"
 					/>
 				</picture>
 			</slot>
@@ -238,12 +253,20 @@
 				v-for="(file, index) in files"
 				:key="index"
 				class="vv-input-file__item"
+				@click.stop="currentFileIndex = index"
 			>
-				<VvIcon
-					class="vv-input-file__item-icon"
-					name="akar-icons:file"
-				/>
-				<div class="vv-input-file__item-name">{{ file.name }}</div>
+				<button
+					type="button"
+					class="vv-input-file__item-icon cursor-pointer"
+					title="Download"
+					aria-label="download-file"
+					@click.stop="onClickDownloadFile(file)"
+				>
+					<VvIcon name="download" />
+				</button>
+				<div class="vv-input-file__item-name cursor-pointer">
+					{{ file.name }}
+				</div>
 				<small class="vv-input-file__item-info">
 					{{ sizeInKiB(file.size) }} KB
 				</small>
