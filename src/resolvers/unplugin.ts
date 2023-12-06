@@ -47,7 +47,7 @@ export interface VolverResolverOptions {
 
 const STYLE_EXCLUDE = ['vv-icon', 'vv-action']
 const VOLVER_PREFIX = 'vv'
-const DIRECTIVES = ['v-tooltip']
+const DIRECTIVES = ['v-tooltip', 'v-contextmenu']
 
 export const getStyleNames = function (kebabName: string) {
 	if (STYLE_EXCLUDE.includes(kebabName)) {
@@ -181,7 +181,7 @@ export function VolverResolver({
 				return {
 					from: '@volverjs/ui-vue/directives',
 					sideEffects: getSideEffects(kebabName, importStyle),
-					name,
+					name: `v${name}`,
 				}
 			},
 		},

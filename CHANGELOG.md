@@ -19,6 +19,10 @@ All notable changes to this project will be documented in this file.
 
 - event `change:search` on `VvCombobox` (use `update:search`).
 
+### Changed
+
+- `@volverjs/ui-vue/directives` now exports `vTooltip` and `vContextmenu` directives instead of `tooltip` and `contextmenu`.
+
 ### Fixed
 
 - `VvCombobox` keep an array `modelValue` also with `multiple: false`;
