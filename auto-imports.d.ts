@@ -51,7 +51,6 @@ declare global {
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
   const isString: typeof import('./src/utils/ObjectUtilities')['isString']
-  const kebabCase: typeof import('./src/utils/ObjectUtilities')['kebabCase']
   const makeDestructurable: typeof import('@vueuse/core')['makeDestructurable']
   const markRaw: typeof import('vue')['markRaw']
   const nextTick: typeof import('vue')['nextTick']
