@@ -1,12 +1,13 @@
+import type { App, Component, Directive, Plugin, Ref } from 'vue'
 import {
-	addCollection,
-	addIcon,
-	addAPIProvider,
 	type IconifyIcon,
 	type IconifyJSON,
 	type PartialIconifyAPIConfig,
+	addCollection,
+	addIcon,
+	addAPIProvider,
 } from '@iconify/vue'
-import type { App, Component, Directive, Plugin, Ref } from 'vue'
+import { kebabCase } from 'change-case'
 import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from './constants'
 
 export function useDefaultProps(
@@ -283,6 +284,10 @@ const VolverPlugin: Plugin = {
 		// register directives
 		if (options.directives) {
 			Object.entries(options.directives).forEach(([name, directive]) => {
+				const kebabName = kebabCase(name)
+				if (kebabName.startsWith('v-')) {
+					name = kebabName.substring(2).toLocaleLowerCase()
+				}
 				app.directive(name, directive)
 			})
 		}

@@ -2,17 +2,7 @@ import type {
 	ComponentResolver,
 	SideEffectsInfo,
 } from 'unplugin-vue-components/types'
-
-function kebabCase(str: string, options?: { condense: boolean }) {
-	if (typeof str !== 'string') throw new TypeError('expected a string')
-	return str
-		.trim()
-		.replace(/([a-z])([A-Z])/g, '$1-$2')
-		.replace(/\W/g, (m) => (/[À-ž]/.test(m) ? m : '-'))
-		.replace(/^-+|-+$/g, '')
-		.replace(/-{2,}/g, (m) => (options?.condense ? '-' : m))
-		.toLowerCase()
-}
+import { kebabCase } from 'change-case'
 
 type ImportStyle = boolean | 'css' | 'scss'
 
@@ -47,7 +37,7 @@ export interface VolverResolverOptions {
 
 const STYLE_EXCLUDE = ['vv-icon', 'vv-action']
 const VOLVER_PREFIX = 'vv'
-const DIRECTIVES = ['v-tooltip']
+const DIRECTIVES = ['v-tooltip', 'v-contextmenu']
 
 export const getStyleNames = function (kebabName: string) {
 	if (STYLE_EXCLUDE.includes(kebabName)) {
@@ -181,7 +171,7 @@ export function VolverResolver({
 				return {
 					from: '@volverjs/ui-vue/directives',
 					sideEffects: getSideEffects(kebabName, importStyle),
-					name,
+					name: `v${name}`,
 				}
 			},
 		},
