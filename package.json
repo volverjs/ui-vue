@@ -57,7 +57,7 @@
     "@vueuse/core": "^10.5.0",
     "blurhash": "^2.0.5",
     "comlink": "^4.4.1",
-    "jsdom": "^22.1.0",
+    "jsdom": "^23.0.1",
     "mitt": "^3.0.1",
     "pica": "^9.0.1",
     "ts-dot-prop": "^2.1.3",
