@@ -38,6 +38,14 @@ export const Default: Story = {
 	}),
 }
 
+export const Readonly: Story = {
+	...Default,
+	args: {
+		...defaultArgs,
+		readonly: true,
+	},
+}
+
 export const Valid: Story = {
 	...Default,
 	args: {

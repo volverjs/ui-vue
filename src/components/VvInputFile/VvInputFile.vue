@@ -25,7 +25,7 @@
 		props,
 	)
 
-	const { modifiers, id } = toRefs(props)
+	const { modifiers, id, readonly } = toRefs(props)
 
 	const hasId = useUniqueId(id)
 	const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -142,7 +142,9 @@
 		if (!inputEl.value) {
 			return
 		}
-		inputEl.value.click()
+		if (!readonly.value) {
+			inputEl.value.click()
+		}
 	}
 
 	const onClickRemoveFile = (index: number) => {
@@ -210,6 +212,7 @@
 		>
 			<slot name="drop-area">
 				<VvButton
+					v-if="!readonly"
 					modifiers="action"
 					aria-label="upload"
 					:label="!previewSrc ? labelButton : undefined"
@@ -234,6 +237,7 @@
 			<input
 				:id="hasId"
 				ref="inputEl"
+				:readonly="readonly"
 				:placeholder="placeholder"
 				:aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
 				:aria-invalid="invalid"
@@ -271,6 +275,7 @@
 					{{ sizeInKiB(file.size) }} KB
 				</small>
 				<button
+					v-if="!readonly"
 					type="button"
 					class="vv-input-file__item-remove"
 					title="Remove"

@@ -6,6 +6,7 @@ import {
 	HintProps,
 	LabelProps,
 	LoadingProps,
+	ReadonlyProps,
 } from '../../props'
 
 export type VvInputFileEvents = {
@@ -19,6 +20,7 @@ export const VvInputFileProps = {
 	...HintProps,
 	...LabelProps,
 	...LoadingProps,
+	...ReadonlyProps,
 	name: { type: String },
 	id: { type: String },
 	modelValue: {
