@@ -1,7 +1,7 @@
 {
   "name": "@volverjs/ui-vue",
   "description": "@volverjs/ui-vue is a lightweight Vue 3 component library to accompany @volverjs/style.",
-  "author": "24/Consulting",
+  "author": "8 Wave",
   "license": "MIT",
   "keywords": [
     "vue",
@@ -21,7 +21,7 @@
   },
   "version": "0.0.0",
   "engines": {
-    "node": ">= 16.x"
+    "node": ">= 20.x"
   },
   "packageManager": "pnpm@8.7.0",
   "scripts": {
@@ -31,7 +31,7 @@
     "hot": "node ./scripts/build.js --hot",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.ts,.mdx --fix",
-    "generate-icons": "ts-node-esm ./scripts/icons.ts --srcPath=src/assets/icons",
+    "generate-icons": "node --loader ts-node/esm ./scripts/icons.ts --srcPath=src/assets/icons",
     "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly",
     "test-local": "test-storybook --stories-json",
     "test-remote": "test-storybook --stories-json --url https://volver-ui-vue.vercel.app",
