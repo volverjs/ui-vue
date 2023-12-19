@@ -20,9 +20,6 @@
     "url": "https://github.com/volverjs/ui-vue/issues"
   },
   "version": "0.0.0",
-  "engines": {
-    "node": ">= 20.x"
-  },
   "packageManager": "pnpm@8.7.0",
   "scripts": {
     "dev": "storybook dev -p 6006",
