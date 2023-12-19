@@ -6,12 +6,12 @@
 	height="85"
 >
 	<style>
-		.fill {
+		path {
 			fill: #000;
 		}
 
 		@media (prefers-color-scheme: dark) {
-			.fill {
+			path {
 				fill: #fff;
 			}
 		}
