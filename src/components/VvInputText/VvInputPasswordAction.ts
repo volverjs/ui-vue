@@ -1,5 +1,5 @@
-import { TYPES_ICON } from '../VvInputText'
 import VvIcon from '../VvIcon/VvIcon.vue'
+import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
 
 export default defineComponent({
 	components: {
@@ -19,12 +19,12 @@ export default defineComponent({
 			default: 'Hide password',
 		},
 		iconShow: {
-			type: String,
-			default: TYPES_ICON.PASSWORD_SHOW,
+			type: [String, Object] as PropType<string | VvIconProps>,
+			default: ACTION_ICONS.showPassword,
 		},
 		iconHide: {
-			type: String,
-			default: TYPES_ICON.PASSWORD_HIDE,
+			type: [String, Object] as PropType<string | VvIconProps>,
+			default: ACTION_ICONS.hidePassword,
 		},
 	},
 	emits: ['toggle-password'],
@@ -33,6 +33,7 @@ export default defineComponent({
 		const activeIcon = computed(() =>
 			active.value ? props.iconHide : props.iconShow,
 		)
+		const { hasIcon } = useComponentIcon(activeIcon)
 
 		function onClick(e: Event) {
 			e?.stopPropagation()
@@ -45,14 +46,17 @@ export default defineComponent({
 		return {
 			active,
 			activeIcon,
+			hasIcon,
 			onClick,
 		}
 	},
 	render() {
-		const icon = h(VvIcon, {
-			name: this.activeIcon,
-			class: 'vv-input-text__icon',
-		})
+		const icon = this.hasIcon
+			? h(VvIcon, {
+					...this.hasIcon,
+					class: 'vv-input-text__icon',
+				})
+			: undefined
 		return h(
 			'button',
 			{

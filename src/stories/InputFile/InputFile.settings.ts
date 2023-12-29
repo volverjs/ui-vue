@@ -11,7 +11,7 @@ export const argTypes = {
 	...HintArgTypes,
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: ['drop-area', 'hidden', 'square', 'circle'],
+		options: ['hidden', 'square', 'circle'],
 	},
 	'drop-area': {
 		description: 'Drop area slot',

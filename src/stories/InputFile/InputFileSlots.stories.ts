@@ -18,8 +18,16 @@ export const DropArea: Story = {
 	...DefaultStory,
 	args: {
 		...DefaultStory.args,
-		'drop-area':
-			'<div class="text-20 font-weight">Drop here your file</div>',
-		modifiers: 'drop-area hidden square',
+		class: 'max-w-320',
+		'drop-area': 'Drag one or more files to this drop zone.',
+		dropArea: true,
+	},
+}
+
+export const Hint: Story = {
+	...DefaultStory,
+	args: {
+		...DefaultStory.args,
+		hint: 'Hint <em class="italic">slot!</em>',
 	},
 }

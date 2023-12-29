@@ -1,6 +1,7 @@
 import type { ExtractPropTypes, PropType } from 'vue'
 import type { FactoryOpts } from 'imask'
 import { InputTextareaProps } from '../../props'
+import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
 
 export const INPUT_TYPES = {
 	TEXT: 'text',
@@ -18,15 +19,6 @@ export const INPUT_TYPES = {
 	WEEK: 'week',
 } as const
 export type InputType = ValueOf<typeof INPUT_TYPES>
-
-export const TYPES_ICON = {
-	PASSWORD_SHOW: 'eye-on',
-	PASSWORD_HIDE: 'eye-off',
-	DATE: 'calendar',
-	TIME: 'time',
-	COLOR: 'color',
-	SEARCH: 'close',
-} as const
 
 export const VvInputTextEvents = [
 	'update:modelValue',
@@ -98,24 +90,24 @@ export const VvInputTextProps = {
 	 * @see VVIcon
 	 */
 	iconShowPassword: {
-		type: String,
-		default: TYPES_ICON.PASSWORD_SHOW,
+		type: [String, Object] as PropType<string | VvIconProps>,
+		default: ACTION_ICONS.showPassword,
 	},
 	/**
 	 * VvIcon name for hide password button
 	 * @see VVIcon
 	 */
 	iconHidePassword: {
-		type: String,
-		default: TYPES_ICON.PASSWORD_HIDE,
+		type: [String, Object] as PropType<string | VvIconProps>,
+		default: ACTION_ICONS.hidePassword,
 	},
 	/**
 	 * VvIcon name for clear button
 	 * @see VVIcon
 	 */
 	iconClear: {
-		type: String,
-		default: TYPES_ICON.SEARCH,
+		type: [String, Object] as PropType<string | VvIconProps>,
+		default: ACTION_ICONS.clear,
 	},
 	/**
 	 * Label for step up button

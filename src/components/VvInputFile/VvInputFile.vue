@@ -24,11 +24,24 @@
 		VvInputFileProps,
 		props,
 	)
-
-	const { modifiers, id, readonly } = toRefs(props)
-
+	const { modifiers, id, readonly, icon, iconPosition, iconDownload } =
+		toRefs(props)
 	const hasId = useUniqueId(id)
 	const hasHintId = computed(() => `${hasId.value}-hint`)
+
+	const hasProgress = computed(() => {
+		if (!props.progress) {
+			return false
+		}
+		const progress =
+			typeof props.progress === 'string'
+				? parseInt(props.progress)
+				: props.progress
+		return progress > 0 && progress < 100
+	})
+
+	const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
+	const { hasIcon: hasIconDownload } = useComponentIcon(iconDownload)
 
 	// styles
 	const bemCssClasses = useModifiers(
@@ -36,11 +49,12 @@
 		modifiers,
 		computed(() => ({
 			dragging: isDragging.value,
-			loading: props.loading,
+			loading: props.loading && !hasProgress.value,
 			valid: props.valid === true,
 			invalid: props.invalid === true,
-			'icon-before': !!props.iconLeft,
-			'icon-after': !!props.iconRight,
+			'icon-before': !!hasIconBefore.value,
+			'icon-after': !!hasIconAfter.value,
+			'drop-area': hasDropArea.value,
 		})),
 	)
 
@@ -70,7 +84,7 @@
 	})
 
 	const hasDropArea = computed(() => {
-		return modifiers?.value?.includes('drop-area')
+		return props.dropArea && !readonly.value
 	})
 
 	const isMultiple = computed(() => {
@@ -134,11 +148,11 @@
 			}
 			toReturn.push(file)
 		}
-
 		localModelValue.value = toReturn
+		selectedFileIndex.value = toReturn.length - 1
 	}
 
-	const onClick = () => {
+	const onClickDropArea = () => {
 		if (!inputEl.value) {
 			return
 		}
@@ -157,17 +171,34 @@
 		localModelValue.value = toReturn
 	}
 
-	const currentFileIndex = ref(0)
+	const selectedFileIndex = ref(0)
+	const PREVIEW_MIME_TYPES = ['image/jpeg', 'image/png']
 	const previewSrc = computed(() => {
 		if (files.value.length === 0) {
 			return
 		}
-		if (files.value[currentFileIndex.value] instanceof File) {
-			return URL.createObjectURL(
-				files.value[currentFileIndex.value] as File,
-			)
+
+		if (files.value[selectedFileIndex.value] instanceof File) {
+			const currentFile = files.value[selectedFileIndex.value] as File
+			if (!PREVIEW_MIME_TYPES.includes(currentFile.type)) {
+				return undefined
+			}
+			return URL.createObjectURL(currentFile)
 		}
-		return (files.value[currentFileIndex.value] as UploadedFile).url
+		const currentFile = files.value[selectedFileIndex.value] as UploadedFile
+		if (currentFile.thumbnailUrl) {
+			return currentFile.thumbnailUrl
+		}
+		if (!PREVIEW_MIME_TYPES.includes(currentFile.type)) {
+			return undefined
+		}
+		return currentFile.url
+	})
+
+	watch(previewSrc, (_newValue, oldValue) => {
+		if (oldValue) {
+			URL.revokeObjectURL(oldValue)
+		}
 	})
 
 	onBeforeUnmount(() => {
@@ -193,7 +224,27 @@
 		link.setAttribute('download', file.name)
 		document.body.appendChild(link)
 		link.click()
+		document.body.removeChild(link)
+		URL.revokeObjectURL(link.href)
 	}
+
+	const onClickSelectFile = (index: number) => {
+		selectedFileIndex.value = index
+	}
+
+	const dropdAreaActionLabel = computed(() => {
+		if (files.value.length === 0 || isMultiple.value) {
+			return props.labelAdd
+		}
+		return props.labelReplace
+	})
+
+	const dropAreaActionIcon = computed(() => {
+		if (files.value.length === 0 || isMultiple.value) {
+			return props.iconAdd
+		}
+		return props.iconReplace
+	})
 </script>
 
 <template>
@@ -208,35 +259,35 @@
 			@dragleave.prevent.stop="onDragleave"
 			@drop.prevent.stop="onDrop"
 			@dragover.prevent.stop
-			@click.stop="onClick"
+			@click.stop="onClickDropArea"
 		>
 			<slot name="drop-area">
-				<VvButton
-					v-if="!readonly"
-					modifiers="action"
-					aria-label="upload"
-					:label="!previewSrc ? labelButton : undefined"
-					:class="{
-						'absolute top-8 right-8': previewSrc,
-					}"
-					:icon="!previewSrc ? 'image' : isMultiple ? 'add' : 'edit'"
-					class="z-1"
-					@click.stop="onClick"
-				/>
 				<picture class="vv-input-file__preview">
 					<img
 						v-if="previewSrc"
 						:src="previewSrc"
-						:alt="files[currentFileIndex].name"
+						:alt="files[selectedFileIndex].name"
 					/>
 				</picture>
+				<VvButton
+					v-if="!readonly"
+					modifiers="action"
+					:label="!previewSrc ? dropdAreaActionLabel : undefined"
+					:title="previewSrc ? dropdAreaActionLabel : undefined"
+					:class="{
+						'vv-input-file__drop-area-action': previewSrc,
+					}"
+					:icon="dropAreaActionIcon"
+					@click.stop="onClickDropArea"
+				/>
 			</slot>
 		</div>
 		<div class="vv-input-file__wrapper">
-			<VvIcon v-if="iconLeft" :name="iconLeft" />
+			<VvIcon v-if="hasIconBefore" v-bind="hasIconBefore" />
 			<input
 				:id="hasId"
 				ref="inputEl"
+				type="file"
 				:readonly="readonly"
 				:placeholder="placeholder"
 				:aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
@@ -246,29 +297,42 @@
 				"
 				:multiple="isMultiple"
 				:accept="accept"
-				type="file"
 				:name="name"
 				@change="onChange"
 			/>
-			<VvIcon v-if="iconRight" :name="iconRight" />
+			<progress
+				v-if="hasProgress"
+				class="vv-input-file__progress"
+				:value="progress"
+				max="100"
+			>
+				{{ progress }}%
+			</progress>
+			<VvIcon v-if="hasIconAfter" v-bind="hasIconAfter" />
 		</div>
 		<ul class="vv-input-file__list">
 			<li
 				v-for="(file, index) in files"
 				:key="index"
 				class="vv-input-file__item"
-				@click.stop="currentFileIndex = index"
+				:class="{
+					active:
+						index === selectedFileIndex &&
+						hasDropArea &&
+						files.length > 1,
+				}"
+				@click.stop="onClickSelectFile(index)"
 			>
 				<button
+					v-if="hasIconDownload"
 					type="button"
-					class="vv-input-file__item-icon cursor-pointer"
-					title="Download"
-					aria-label="download-file"
+					class="vv-input-file__item-action"
+					:title="labelDownload"
 					@click.stop="onClickDownloadFile(file)"
 				>
-					<VvIcon name="download" />
+					<VvIcon v-bind="hasIconDownload" />
 				</button>
-				<div class="vv-input-file__item-name cursor-pointer">
+				<div class="vv-input-file__item-name">
 					{{ file.name }}
 				</div>
 				<small class="vv-input-file__item-info">
@@ -278,8 +342,7 @@
 					v-if="!readonly"
 					type="button"
 					class="vv-input-file__item-remove"
-					title="Remove"
-					aria-label="remove-file"
+					:title="labelRemove"
 					@click.stop="onClickRemoveFile(index)"
 				/>
 			</li>

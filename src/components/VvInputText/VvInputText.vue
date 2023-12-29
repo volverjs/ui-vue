@@ -9,12 +9,12 @@
 	import { useIMask } from 'vue-imask'
 	import HintSlotFactory from '../common/HintSlot'
 	import VvIcon from '../VvIcon/VvIcon.vue'
+	import { ACTION_ICONS } from '../VvIcon'
 	import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 	import {
 		VvInputTextEvents,
 		VvInputTextProps,
 		INPUT_TYPES,
-		TYPES_ICON,
 	} from '../VvInputText'
 
 	// props, emit, slots and attrs
@@ -256,14 +256,14 @@
 		}
 		switch (props.type) {
 			case INPUT_TYPES.COLOR:
-				return { name: TYPES_ICON.COLOR }
+				return { name: ACTION_ICONS.showColorPicker }
 			case INPUT_TYPES.DATE:
 			case INPUT_TYPES.DATETIME_LOCAL:
 			case INPUT_TYPES.WEEK:
 			case INPUT_TYPES.MONTH:
-				return { name: TYPES_ICON.DATE }
+				return { name: ACTION_ICONS.showDatePicker }
 			case INPUT_TYPES.TIME:
-				return { name: TYPES_ICON.TIME }
+				return { name: ACTION_ICONS.showTimePicker }
 		}
 		return undefined
 	})
@@ -306,8 +306,8 @@
 			loading: loading.value,
 			disabled: props.disabled,
 			readonly: props.readonly,
-			'icon-before': hasIconBefore.value !== undefined,
-			'icon-after': iconAfter.value !== undefined,
+			'icon-before': !!hasIconBefore.value,
+			'icon-after': !!iconAfter.value,
 			floating: props.floating && !isEmpty(props.label),
 			dirty: isDirty.value,
 			focus: isFocused.value,
