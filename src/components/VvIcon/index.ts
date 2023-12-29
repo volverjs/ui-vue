@@ -1,5 +1,18 @@
 import type { IconifyIconOnLoad, IconifyRenderMode } from '@iconify/vue'
 
+export const ACTION_ICONS = {
+	showPassword: 'eye-on',
+	hidePassword: 'eye-off',
+	showDatePicker: 'calendar',
+	showTimePicker: 'time',
+	showColorPicker: 'color',
+	clear: 'close',
+	add: 'add',
+	remove: 'trash',
+	edit: 'edit',
+	download: 'download',
+} as const
+
 export enum IconPrefix {
 	simple = 'simple',
 	normal = 'normal',

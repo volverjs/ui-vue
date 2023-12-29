@@ -56,5 +56,7 @@ export default ({ mode }: { mode: string }) => {
 			exclude: ['@volverjs/style'],
 			force: true,
 		},
+		// https://github.com/storybookjs/storybook/issues/25256
+		assetsInclude: ['/sb-preview/runtime.js'],
 	})
 }

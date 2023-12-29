@@ -1,3 +1,4 @@
+import type { VvIconProps } from '../VvIcon'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 export default defineComponent({
@@ -14,28 +15,31 @@ export default defineComponent({
 			default: 'Clear',
 		},
 		icon: {
-			type: String,
+			type: [String, Object] as PropType<string | VvIconProps>,
 			default: 'close',
 		},
 	},
 	emits: ['clear'],
 	setup(props, { emit }) {
+		const { hasIcon } = useComponentIcon(computed(() => props.icon))
 		function onClick(e: Event) {
 			e?.stopPropagation()
 			if (!props.disabled) {
 				emit('clear')
 			}
 		}
-
 		return {
+			hasIcon,
 			onClick,
 		}
 	},
 	render() {
-		const icon = h(VvIcon, {
-			name: this.icon,
-			class: 'vv-input-text__icon',
-		})
+		const icon = this.hasIcon
+			? h(VvIcon, {
+					...this.hasIcon,
+					class: 'vv-input-text__icon',
+				})
+			: undefined
 
 		return h(
 			'button',

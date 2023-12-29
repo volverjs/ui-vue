@@ -3,6 +3,7 @@
   "include": ["vite.config.*", "vitest.config.*", "scripts/**/*.ts"],
   "compilerOptions": {
     "composite": true,
+    "noEmit": false,
     "types": ["node", "vite/client"]
   }
 }
