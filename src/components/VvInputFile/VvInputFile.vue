@@ -166,6 +166,9 @@
 			localModelValue.value = undefined
 			return
 		}
+		if (selectedFileIndex.value === index) {
+			selectedFileIndex.value = 0
+		}
 		const toReturn = [...localModelValue.value]
 		toReturn.splice(index, 1)
 		localModelValue.value = toReturn
@@ -177,7 +180,9 @@
 		if (files.value.length === 0) {
 			return
 		}
-
+		if (!files.value[selectedFileIndex.value]) {
+			return undefined
+		}
 		if (files.value[selectedFileIndex.value] instanceof File) {
 			const currentFile = files.value[selectedFileIndex.value] as File
 			if (!PREVIEW_MIME_TYPES.includes(currentFile.type)) {
