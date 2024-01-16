@@ -13,7 +13,9 @@ import {
 import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
 
 export type VvInputFileEvents = {
-	'update:modelValue': [File | undefined]
+	'update:modelValue': [
+		File | UploadedFile | (File | UploadedFile)[] | undefined,
+	]
 }
 
 export const VvInputFileProps = {
@@ -30,7 +32,9 @@ export const VvInputFileProps = {
 	 * Input value
 	 */
 	modelValue: {
-		type: Object as PropType<File | (File | UploadedFile)[] | UploadedFile>,
+		type: Object as PropType<
+			File | UploadedFile | (File | UploadedFile)[] | undefined
+		>,
 		required: true,
 	},
 	/**
@@ -53,6 +57,20 @@ export const VvInputFileProps = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#multiple
 	 */
 	multiple: { type: Boolean, default: false },
+	/**
+	 * Front or rear camera
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture
+	 */
+	capture: {
+		type: String as PropType<'user' | 'environment'>,
+		default: undefined,
+		validation: (value?: string) => {
+			if (value === undefined) {
+				return true
+			}
+			return ['user', 'environment'].includes(value)
+		},
+	},
 	/**
 	 * Max number of files
 	 */
