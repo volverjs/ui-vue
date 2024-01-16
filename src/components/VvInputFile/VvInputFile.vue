@@ -302,6 +302,7 @@
 				"
 				:multiple="isMultiple"
 				:accept="accept"
+				:capture="capture"
 				:name="name"
 				@change="onChange"
 			/>
