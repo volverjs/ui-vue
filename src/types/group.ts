@@ -1,18 +1,11 @@
 import type { Ref } from 'vue'
-
-/**
- * State shared for a group of elements
- */
-export default interface GroupState {
-	// The key of the group
-	[itemKey: string]: Ref<unknown> | unknown | undefined
-	key: string | number | symbol
-}
+import type { Emitter } from 'mitt'
 
 /**
  * State shared in a group of inputs
  */
-export interface InputGroupState extends GroupState {
+export type InputGroupState = {
+	modelValue: Ref<unknown>
 	readonly: Ref<boolean>
 	disabled: Ref<boolean>
 	valid: Ref<boolean>
@@ -22,7 +15,7 @@ export interface InputGroupState extends GroupState {
 /**
  * State shared in a group of buttons
  */
-export interface ButtonGroupState extends GroupState {
+export type ButtonGroupState = {
 	modelValue: Ref<
 		string | number | boolean | (string | number | boolean)[] | undefined
 	>
@@ -36,9 +29,24 @@ export interface ButtonGroupState extends GroupState {
 /**
  * State shared in a group of accordions
  */
-export interface AccordionGroupState extends GroupState {
-	collapse: Ref<boolean>
+export type AccordionGroupBusEvents = {
+	toggle: { name: string; value: boolean }
+	register: { name: string }
+	unregister: { name: string }
+	expand: { name?: string | string[] }
+	collapse: { name?: string | string[] }
+}
+export type AccordionGroupState = {
 	disabled: Ref<boolean>
 	modifiers: Ref<string[] | string | undefined>
-	not: Ref<boolean>
+	bus: Emitter<AccordionGroupBusEvents>
+}
+
+/**
+ * State shared in a group of alerts
+ */
+export type AlertGroupBusEvents = { close: string }
+export type AlertGroupState = {
+	name?: Ref<string | undefined>
+	bus?: Emitter<AlertGroupBusEvents>
 }

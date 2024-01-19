@@ -32,10 +32,7 @@ export const VvInputFileProps = {
 	 * Input value
 	 */
 	modelValue: {
-		type: Object as PropType<
-			File | UploadedFile | (File | UploadedFile)[] | undefined
-		>,
-		required: true,
+		type: Object as PropType<File | UploadedFile | (File | UploadedFile)[]>,
 	},
 	/**
 	 * Whether to show progress bar
@@ -79,6 +76,10 @@ export const VvInputFileProps = {
 	 * Show drop area
 	 */
 	dropArea: { type: Boolean, default: false },
+	/**
+	 * Enable sorting
+	 */
+	sortable: { type: Boolean, default: false },
 	/**
 	 * Label for add button
 	 */

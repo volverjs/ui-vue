@@ -42,10 +42,10 @@ export function useGroupProps(
 	const valid = getGroupOrLocalRef('valid', props) as Ref<boolean>
 	const invalid = getGroupOrLocalRef('invalid', props) as Ref<boolean>
 	const readonly = computed(() =>
-		Boolean(props.readonly || group?.value?.readonly.value),
+		Boolean(props.readonly || group?.readonly.value),
 	)
 	const disabled = computed(() =>
-		Boolean(props.disabled || group?.value?.disabled.value),
+		Boolean(props.disabled || group?.disabled.value),
 	)
 
 	return {
