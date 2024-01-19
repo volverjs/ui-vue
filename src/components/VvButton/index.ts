@@ -1,4 +1,4 @@
-import type { Ref, PropType, ExtractPropTypes } from 'vue'
+import type { PropType, ExtractPropTypes } from 'vue'
 import type { ButtonGroupState } from '../../types/group'
 import {
 	ActionProps,
@@ -77,19 +77,14 @@ export function useGroupProps(
 	const { id, iconPosition, icon, label, pressed } = toRefs(props)
 
 	// group props
-	const modelValue = getGroupOrLocalRef('modelValue', props, emit) as Ref<
-		string | number | boolean | (string | number | boolean)[] | undefined
-	>
-	const toggle = getGroupOrLocalRef('toggle', props) as Ref<boolean>
-	const unselectable = getGroupOrLocalRef(
-		'unselectable',
-		props,
-	) as Ref<boolean>
-	const multiple = computed(() => group?.value.multiple.value ?? false)
+	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
+	const toggle = getGroupOrLocalRef('toggle', props)
+	const unselectable = getGroupOrLocalRef('unselectable', props)
+	const multiple = computed(() => group?.multiple.value ?? false)
 	// merge local and group modifiers
 	const modifiers = computed(() => {
 		let localModifiers = props.modifiers
-		let groupModifiers = group?.value.modifiers.value
+		let groupModifiers = group?.modifiers.value
 
 		const toReturn = new Set<string>()
 		if (localModifiers) {
@@ -107,7 +102,7 @@ export function useGroupProps(
 		return Array.from(toReturn)
 	})
 	const disabled = computed(() =>
-		Boolean(props.disabled || group?.value?.disabled.value),
+		Boolean(props.disabled || group?.disabled.value),
 	)
 
 	return {

@@ -1,4 +1,4 @@
-import type { ExtractPropTypes, Ref } from 'vue'
+import type { ExtractPropTypes } from 'vue'
 import type { AccordionGroupState } from '../../types/group'
 import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 import { ModifiersProps } from '@/props'
@@ -40,29 +40,19 @@ export type VvAccordionPropsTypes = ExtractPropTypes<typeof VvAccordionProps>
 /**
  * Merges local and group props
  */
-export function useGroupProps(
-	props: VvAccordionPropsTypes,
-	emit: (event: string, value: unknown) => void,
-) {
-	const { group, isInGroup, getGroupOrLocalRef } =
-		useInjectedGroupState<AccordionGroupState>(
-			INJECTION_KEY_ACCORDION_GROUP,
-		)
-
-	// local props
-	const { title, content } = toRefs(props)
+export function useGroupProps(props: VvAccordionPropsTypes) {
+	const { group, isInGroup } = useInjectedGroupState<AccordionGroupState>(
+		INJECTION_KEY_ACCORDION_GROUP,
+	)
 
 	// group props
-	const modelValue = getGroupOrLocalRef('modelValue', props, emit)
-	const not = getGroupOrLocalRef('not', props) as Ref<boolean>
-	const collapse = getGroupOrLocalRef('collapse', props) as Ref<boolean>
 	const disabled = computed(() =>
-		Boolean(props.disabled || group?.value?.disabled.value),
+		Boolean(props.disabled || group?.disabled.value),
 	)
 	// merge local and group modifiers
 	const modifiers = computed(() => {
 		let localModifiers = props.modifiers
-		let groupModifiers = group?.value.modifiers.value
+		let groupModifiers = group?.modifiers.value
 
 		const toReturn = new Set<string>()
 		if (localModifiers) {
@@ -82,15 +72,10 @@ export function useGroupProps(
 
 	return {
 		// group props
-		modelValue,
-		not,
 		isInGroup,
 		group,
-		collapse,
 		modifiers,
 		disabled,
-		// local props
-		title,
-		content,
+		bus: group?.bus,
 	}
 }

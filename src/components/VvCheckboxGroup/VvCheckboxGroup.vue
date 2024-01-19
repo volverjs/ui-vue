@@ -29,8 +29,7 @@
 	const { disabled, readonly, vertical, valid, invalid, modifiers } =
 		toRefs(props)
 
-	useProvideGroupState<InputGroupState>({
-		key: INJECTION_KEY_CHECK_GROUP,
+	useProvideGroupState<InputGroupState>(INJECTION_KEY_CHECK_GROUP, {
 		modelValue,
 		disabled,
 		readonly,

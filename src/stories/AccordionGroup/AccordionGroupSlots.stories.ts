@@ -46,7 +46,7 @@ export const Default: Story = {
 				<vv-accordion name="a-3" title="Details 3" :content="content" />
 			</vv-accordion-group>
 			<div class="mt-24"  >
-				Opened: <span data-testId="value">{{ selected }}</span>
+				{{ args.not ? 'Closed' : 'Opened'}}: <span data-testId="value">{{ selected }}</span>
 			</div>
 		`,
 	}),

@@ -2,6 +2,12 @@ import type { InjectionKey, Ref } from 'vue'
 import type { Emitter } from 'mitt'
 import type { Volver } from './Volver'
 import type { AlertModifiers } from './types/alert'
+import type {
+	AccordionGroupState,
+	InputGroupState,
+	ButtonGroupState,
+	AlertGroupState,
+} from './types'
 
 export const DEFAULT_ICONIFY_PROVIDER = 'vv'
 
@@ -73,10 +79,18 @@ export enum AnchorTarget {
 export const INJECTION_KEY_VOLVER = Symbol.for('volver') as InjectionKey<Volver>
 
 // groups
-export const INJECTION_KEY_BUTTON_GROUP = Symbol.for('buttonGroup')
-export const INJECTION_KEY_RADIO_GROUP = Symbol.for('radioGroup')
-export const INJECTION_KEY_CHECK_GROUP = Symbol.for('checkGroup')
-export const INJECTION_KEY_ACCORDION_GROUP = Symbol.for('accordionGroup')
+export const INJECTION_KEY_BUTTON_GROUP = Symbol.for(
+	'buttonGroup',
+) as InjectionKey<ButtonGroupState>
+export const INJECTION_KEY_RADIO_GROUP = Symbol.for(
+	'radioGroup',
+) as InjectionKey<InputGroupState>
+export const INJECTION_KEY_CHECK_GROUP = Symbol.for(
+	'checkGroup',
+) as InjectionKey<InputGroupState>
+export const INJECTION_KEY_ACCORDION_GROUP = Symbol.for(
+	'accordionGroup',
+) as InjectionKey<AccordionGroupState>
 
 // dropdown
 export const INJECTION_KEY_DROPDOWN_TRIGGER = Symbol.for(
@@ -112,10 +126,7 @@ export const INJECTION_KEY_DROPDOWN_ACTION = Symbol.for(
 // alert
 export const INJECTION_KEY_ALERT_GROUP = Symbol.for(
 	'alertGroup',
-) as InjectionKey<{
-	name?: Ref<string | undefined>
-	bus?: Emitter<{ close: string }>
-}>
+) as InjectionKey<AlertGroupState>
 export const DEFAULT_ALERT_AUTO_CLOSE = 10000
 export const DEFAULT_ALERT_MODIFIERS = 'info'
 export const DEFAULT_ALERT_DISMISSABLE = true
@@ -130,9 +141,3 @@ export const DefaultAlertIconMap = new Map<AlertModifiers, string>([
 	['warning', DEFAULT_ALERT_WARNING_ICON],
 	['danger', DEFAULT_ALERT_DANGER_ICON],
 ])
-// {
-// 	success: DEFAULT_ALERT_SUCCESS_ICON,
-// 	info: DEFAULT_ALERT_INFO_ICON,
-// 	warning: DEFAULT_ALERT_WARNING_ICON,
-// 	danger: DEFAULT_ALERT_DANGER_ICON,
-// }

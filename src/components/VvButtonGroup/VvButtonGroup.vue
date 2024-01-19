@@ -52,8 +52,7 @@
 	})
 
 	// provide
-	useProvideGroupState<ButtonGroupState>({
-		key: INJECTION_KEY_BUTTON_GROUP,
+	useProvideGroupState<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP, {
 		modelValue,
 		disabled,
 		toggle,

@@ -5,8 +5,11 @@
 </script>
 
 <script setup lang="ts">
-	import type { Ref } from 'vue'
-	import type { AccordionGroupState } from '../../types/group'
+	import mitt from 'mitt'
+	import type {
+		AccordionGroupState,
+		AccordionGroupBusEvents,
+	} from '../../types/group'
 	import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 	import VvAccordion from '../VvAccordion/VvAccordion.vue'
 	import { VvAccordionGroupProps, VvAccordionGroupEvents } from '.'
@@ -16,67 +19,159 @@
 	const emit = defineEmits(VvAccordionGroupEvents)
 
 	// data
-	const { disabled, collapse, modifiers, itemModifiers, items, not } =
-		toRefs(props)
+	const { disabled, modifiers, itemModifiers, items } = toRefs(props)
 	watchEffect(() => {
-		if (typeof props.modelValue === 'string' && collapse.value) {
-			// eslint-disable-next-line
+		if (typeof props.modelValue === 'string' && props.collapse) {
+			// eslint-disable-next-line no-console
 			console.warn(
 				`[VvAccordionGroup]: modelValue is a string but collapse is true.`,
 			)
 		}
 	})
-	let localModelValue: Ref<string[]> = ref([])
+
+	const accordionNames = reactive(new Set<string>())
+	let modelValue = ref(new Set<string>())
 	watch(
 		() => props.storeKey,
-		(newKey) => {
-			if (newKey) {
-				localModelValue = useStorage(newKey, localModelValue.value)
-			} else {
-				localModelValue = ref([])
+		(newKey, oldKey) => {
+			if (oldKey && oldKey !== newKey) {
+				localStorage.removeItem(oldKey)
 			}
+			if (newKey) {
+				modelValue = useLocalStorage(newKey, modelValue.value)
+				return
+			}
+			modelValue = ref(new Set<string>(modelValue.value))
 		},
 		{ immediate: true },
 	)
-	const modelValue = computed({
-		get: () => {
-			if (props.modelValue !== undefined) {
-				if (!collapse.value) {
-					return Array.isArray(props.modelValue)
-						? props.modelValue[0]
-						: props.modelValue
-				}
-				return props.modelValue
+	watch(
+		[modelValue, accordionNames, () => props.not, () => props.collapse],
+		() => {
+			if (props.not) {
+				emit(
+					'update:modelValue',
+					[...accordionNames].filter(
+						(name) => !modelValue.value.has(name),
+					),
+				)
+				return
 			}
-			return !collapse.value
-				? localModelValue.value?.[0]
-				: localModelValue.value
-		},
-		set: (newValue) => {
-			if (props.modelValue !== undefined) {
-				if (
-					(Array.isArray(props.modelValue) || collapse.value) &&
-					!Array.isArray(newValue)
-				) {
-					newValue = [newValue]
-				}
-				return emit('update:modelValue', newValue)
+			if (props.collapse) {
+				emit('update:modelValue', [...modelValue.value])
+				return
 			}
-			localModelValue.value = Array.isArray(newValue)
-				? newValue
-				: [newValue]
+			emit('update:modelValue', modelValue.value.values().next().value)
 		},
-	})
+		{
+			deep: true,
+			immediate: true,
+		},
+	)
+	watch(
+		() => props.modelValue,
+		(newValue, oldValue) => {
+			if (
+				newValue === undefined ||
+				newValue === null ||
+				JSON.stringify(newValue) === JSON.stringify(oldValue)
+			) {
+				return
+			}
+			let toReturn = new Set<string>()
+			if (props.not) {
+				if (typeof newValue === 'string') {
+					toReturn = new Set<string>(
+						[...accordionNames].filter((name) => name !== newValue),
+					)
+				} else if (Array.isArray(newValue)) {
+					toReturn = new Set<string>(
+						[...accordionNames].filter(
+							(name) => !newValue.includes(name),
+						),
+					)
+				}
+			} else {
+				if (typeof newValue === 'string') {
+					toReturn = new Set<string>([newValue])
+				} else if (Array.isArray(newValue)) {
+					toReturn = new Set<string>(newValue)
+				}
+			}
+			for (const name of accordionNames) {
+				bus.emit('toggle', { name, value: toReturn.has(name) })
+			}
+			modelValue.value = toReturn
+		},
+		{
+			immediate: true,
+		},
+	)
 
 	// provide
-	useProvideGroupState<AccordionGroupState>({
-		key: INJECTION_KEY_ACCORDION_GROUP,
-		modelValue,
+	const bus = mitt<AccordionGroupBusEvents>()
+	useProvideGroupState<AccordionGroupState>(INJECTION_KEY_ACCORDION_GROUP, {
 		disabled,
-		collapse,
 		modifiers: itemModifiers,
-		not,
+		bus,
 	})
+	bus.on('register', ({ name }) => {
+		accordionNames.add(name)
+	})
+	bus.on('unregister', ({ name }) => {
+		accordionNames.delete(name)
+	})
+	bus.on('toggle', ({ name, value }) => {
+		if (value) {
+			if (!props.collapse) {
+				for (const item of modelValue.value) {
+					if (item !== name) {
+						bus.emit('toggle', { name: item, value: false })
+					}
+				}
+				modelValue.value.clear()
+			}
+			modelValue.value.add(name)
+			return
+		}
+		modelValue.value.delete(name)
+	})
+	const expand = (name?: string | string[]) => {
+		if (typeof name === 'string') {
+			bus.emit('toggle', { name, value: true })
+			return
+		}
+		if (Array.isArray(name)) {
+			for (const item of name) {
+				bus.emit('toggle', { name: item, value: true })
+			}
+			return
+		}
+		for (const item of accordionNames) {
+			bus.emit('toggle', { name: item, value: true })
+		}
+	}
+	bus.on('expand', ({ name }) => expand(name))
+
+	const collapse = (name?: string | string[]) => {
+		if (typeof name === 'string') {
+			bus.emit('toggle', { name, value: false })
+			return
+		}
+		if (Array.isArray(name)) {
+			for (const item of name) {
+				bus.emit('toggle', { name: item, value: false })
+			}
+			return
+		}
+		for (const item of accordionNames) {
+			bus.emit('toggle', { name: item, value: false })
+		}
+	}
+	bus.on('collapse', ({ name }) => collapse(name))
+
+	// expose
+	defineExpose({ modelValue, expand, collapse })
 
 	// styles
 	const bemCssClasses = useModifiers(
@@ -91,7 +186,13 @@
 <template>
 	<div :class="bemCssClasses">
 		<!-- @slot Default slot -->
-		<slot>
+		<slot
+			v-bind="{
+				modelValue,
+				expand,
+				collapse,
+			}"
+		>
 			<VvAccordion
 				v-for="item in items"
 				:key="item.title"

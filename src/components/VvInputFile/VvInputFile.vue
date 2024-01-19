@@ -12,6 +12,7 @@
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import HintSlotFactory from '../common/HintSlot'
 	import { VvInputFileProps, type VvInputFileEvents } from '.'
+	import Sortable from 'vuedraggable'
 
 	// props, emit, slots and attrs
 	const props = defineProps(VvInputFileProps)
@@ -66,17 +67,26 @@
 	} = HintSlotFactory(propsDefaults, slots)
 
 	const localModelValue = useVModel(props, 'modelValue', emit)
-	const files = computed(() => {
-		if (
-			!localModelValue.value ||
-			(!Array.isArray(localModelValue.value) &&
-				!(localModelValue.value as File)?.name)
-		) {
-			return []
-		}
-		return Array.isArray(localModelValue.value)
-			? localModelValue.value
-			: [localModelValue.value]
+	const files = computed({
+		get: () => {
+			if (
+				!localModelValue.value ||
+				(!Array.isArray(localModelValue.value) &&
+					!(localModelValue.value as File)?.name)
+			) {
+				return []
+			}
+			return Array.isArray(localModelValue.value)
+				? localModelValue.value
+				: [localModelValue.value]
+		},
+		set: (value) => {
+			if (isMultiple.value) {
+				localModelValue.value = value
+				return
+			}
+			localModelValue.value = value?.[0]
+		},
 	})
 
 	const hasMax = computed(() => {
@@ -250,6 +260,12 @@
 		}
 		return props.iconReplace
 	})
+
+	const onSortEnd = ({ newIndex }: { newIndex: number | null }) => {
+		if (newIndex !== null) {
+			selectedFileIndex.value = newIndex
+		}
+	}
 </script>
 
 <template>
@@ -316,43 +332,51 @@
 			</progress>
 			<VvIcon v-if="hasIconAfter" v-bind="hasIconAfter" />
 		</div>
-		<ul class="vv-input-file__list">
-			<li
-				v-for="(file, index) in files"
-				:key="index"
-				class="vv-input-file__item"
-				:class="{
-					active:
-						index === selectedFileIndex &&
-						hasDropArea &&
-						files.length > 1,
-				}"
-				@click.stop="onClickSelectFile(index)"
-			>
-				<button
-					v-if="hasIconDownload"
-					type="button"
-					class="vv-input-file__item-action"
-					:title="labelDownload"
-					@click.stop="onClickDownloadFile(file)"
+		<Sortable
+			v-model="files"
+			tag="ul"
+			class="vv-input-file__list"
+			item-key="name"
+			:move="() => sortable"
+			@end="onSortEnd"
+		>
+			<template #item="{ element: file, index }">
+				<li
+					class="vv-input-file__item"
+					:class="{
+						active:
+							index === selectedFileIndex &&
+							hasDropArea &&
+							files.length > 1,
+						'cursor-move': sortable,
+					}"
+					@click.stop="onClickSelectFile(index)"
 				>
-					<VvIcon v-bind="hasIconDownload" />
-				</button>
-				<div class="vv-input-file__item-name">
-					{{ file.name }}
-				</div>
-				<small class="vv-input-file__item-info">
-					{{ sizeInKiB(file.size) }} KB
-				</small>
-				<button
-					v-if="!readonly"
-					type="button"
-					class="vv-input-file__item-remove"
-					:title="labelRemove"
-					@click.stop="onClickRemoveFile(index)"
-				/>
-			</li>
-		</ul>
+					<button
+						v-if="hasIconDownload"
+						type="button"
+						class="vv-input-file__item-action"
+						:title="labelDownload"
+						@click.stop="onClickDownloadFile(file)"
+					>
+						<VvIcon v-bind="hasIconDownload" />
+					</button>
+					<div class="vv-input-file__item-name">
+						{{ file.name }}
+					</div>
+					<small class="vv-input-file__item-info">
+						{{ sizeInKiB(file.size) }} KB
+					</small>
+					<button
+						v-if="!readonly"
+						type="button"
+						class="vv-input-file__item-remove"
+						:title="labelRemove"
+						@click.stop="onClickRemoveFile(index)"
+					/>
+				</li>
+			</template>
+		</Sortable>
 		<HintSlot :id="hasHintId" class="vv-input-file__hint">
 			<template v-if="$slots.hint" #hint>
 				<slot name="hint" v-bind="hintSlotScope" />

@@ -12,65 +12,114 @@
 	const props = defineProps(VvAccordionProps)
 	const attrs = useAttrs()
 	const emit = defineEmits(VvAccordionEvents)
+	const modelValue = useVModel(props, 'modelValue', emit)
 
 	// data
 	const accordionName = computed(
 		() => props.name || (attrs?.id as string) || uid(),
 	)
-	const {
-		modifiers,
-		title,
-		content,
-		disabled,
-		collapse,
+	const { title, content, not } = toRefs(props)
+	const { isInGroup, modifiers, disabled, bus } = useGroupProps(props)
+
+	// state
+	const isExpanded = ref(false)
+	watch(
 		modelValue,
-		isInGroup,
-		not,
-	} = useGroupProps(props, emit)
-	const localModelValue = ref(false)
-	const isOpen = computed({
-		get: () => {
-			let toReturn = modelValue.value as boolean
-			if (isInGroup.value) {
-				if (collapse.value && Array.isArray(modelValue.value)) {
-					toReturn = modelValue.value.includes(accordionName.value)
-				} else {
-					toReturn = modelValue.value === accordionName.value
-				}
-			} else if (modelValue.value === undefined) {
-				// localModelValue is used when the accordion is not in a group
-				toReturn = localModelValue.value
+		(newValue) => {
+			if (typeof newValue === 'boolean') {
+				isExpanded.value = not.value ? !newValue : newValue
 			}
-			return not.value ? !toReturn : toReturn
 		},
-		set: (newValue) => {
-			if (not.value) {
-				newValue = !newValue
-			}
-			if (isInGroup.value) {
-				if (collapse.value && Array.isArray(modelValue.value)) {
-					if (newValue) {
-						modelValue.value.push(accordionName.value)
-						return
-					}
-					modelValue.value = modelValue.value.filter(
-						(name: string) => name !== accordionName.value,
-					)
-					return
+		{ immediate: true },
+	)
+	watch(isExpanded, (newValue) => {
+		modelValue.value = not.value ? !newValue : newValue
+	})
+	bus?.on('toggle', ({ name, value }) => {
+		if (name !== accordionName.value) {
+			return
+		}
+		isExpanded.value = value
+	})
+	const onClick = () => {
+		if (disabled.value) {
+			return
+		}
+		if (isInGroup.value) {
+			bus?.emit('toggle', {
+				name: accordionName.value,
+				value: !isExpanded.value,
+			})
+			return
+		}
+		isExpanded.value = !isExpanded.value
+	}
+
+	// register / unregister
+	watch(
+		accordionName,
+		(newValue, oldValue) => {
+			if (bus) {
+				if (oldValue && oldValue !== newValue) {
+					bus.emit('unregister', { name: oldValue })
 				}
-				modelValue.value = newValue ? accordionName.value : null
-				return
+				bus.emit('register', { name: newValue })
 			}
-			// localModelValue is used when the accordion is not in a group
-			if (
-				modelValue.value === undefined &&
-				typeof newValue === 'boolean'
-			) {
-				localModelValue.value = newValue
-				return
-			}
-			modelValue.value = newValue
 		},
+		{
+			immediate: true,
+		},
+	)
+	onBeforeUnmount(() => {
+		if (bus) {
+			bus.emit('unregister', { name: accordionName.value })
+		}
+	})
+
+	// methods
+	const expand = () => {
+		if (isExpanded.value) {
+			return
+		}
+		onClick()
+	}
+
+	const collapse = () => {
+		if (!isExpanded.value) {
+			return
+		}
+		onClick()
+	}
+
+	const groupExpand = (name?: string | string[]) => {
+		if (!bus) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				`[VvAccordion]: You are trying to expand accordion group of "${accordionName.value}" but it is not in a group`,
+			)
+			return
+		}
+		bus.emit('expand', { name })
+	}
+
+	const groupCollapse = (name?: string | string[]) => {
+		if (!bus) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				`[VvAccordion]: You are trying to collapse accordion group of "${accordionName.value}" but it is not in a group`,
+			)
+			return
+		}
+		bus?.emit('collapse', { name })
+	}
+
+	// expose
+	defineExpose({
+		isExpanded,
+		expand,
+		collapse,
+		groupExpand,
+		groupCollapse,
 	})
 
 	// styles
@@ -81,27 +130,41 @@
 			disabled: disabled.value,
 		})),
 	)
-
-	// methods
-	const onClick = useToggle(isOpen)
 </script>
 
 <template>
-	<details :id="accordionName" :class="bemCssClasses" :open="isOpen">
+	<details :id="accordionName" :class="bemCssClasses" :open="isExpanded">
 		<summary
 			:aria-controls="accordionName"
-			:aria-expanded="isOpen"
+			:aria-expanded="isExpanded"
 			class="vv-accordion__summary"
 			@click.prevent="onClick()"
 		>
 			<!-- @slot Slot for title -->
-			<slot name="summary" v-bind="{ open: isOpen }">
+			<slot
+				name="summary"
+				v-bind="{
+					isExpanded,
+					expand,
+					collapse,
+					groupExpand,
+					groupCollapse,
+				}"
+			>
 				{{ title }}
 			</slot>
 		</summary>
-		<div :aria-hidden="!isOpen" class="vv-accordion__content">
+		<div :aria-hidden="!isExpanded" class="vv-accordion__content">
 			<!-- @slot Slot for content  -->
-			<slot name="default" v-bind="{ open: isOpen }">
+			<slot
+				v-bind="{
+					isExpanded,
+					expand,
+					collapse,
+					groupExpand,
+					groupCollapse,
+				}"
+			>
 				{{ content }}
 			</slot>
 		</div>
