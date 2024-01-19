@@ -91,12 +91,10 @@
 						),
 					)
 				}
-			} else {
-				if (typeof newValue === 'string') {
-					toReturn = new Set<string>([newValue])
-				} else if (Array.isArray(newValue)) {
-					toReturn = new Set<string>(newValue)
-				}
+			} else if (typeof newValue === 'string') {
+				toReturn = new Set<string>([newValue])
+			} else if (Array.isArray(newValue)) {
+				toReturn = new Set<string>(newValue)
 			}
 			for (const name of accordionNames) {
 				bus.emit('toggle', { name, value: toReturn.has(name) })
