@@ -1,3 +1,4 @@
+import type { Ref, InjectionKey } from 'vue'
 import type { Emitter } from 'mitt'
 
 /**
