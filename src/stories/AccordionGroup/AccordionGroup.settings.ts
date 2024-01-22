@@ -65,12 +65,12 @@ export const argTypes = {
 	},
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
-		options: ['compact', 'bordered'],
+		options: ['condensed'],
 	},
 	itemModifiers: {
 		description: 'Accordion items BEM modifiers',
 		control: 'check',
-		options: ['marker-right', 'bordered'],
+		options: ['marker-right', 'bordered', 'square'],
 	},
 	...DisabledArgTypes,
 	...DefaultSlotArgTypes,

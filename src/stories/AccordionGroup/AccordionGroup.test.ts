@@ -29,10 +29,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// open
 	if (!args.disabled && args.items && args.items.length > 0) {
-		expect(firstChild.open).toBe(false)
+		expect(firstChild.open).toBe(args.not ?? false)
 		expect(firstChildSummary).toBeClicked()
 		await sleep()
-		expect(firstChild.open).toBe(true)
+		expect(firstChild.open).toBe(!args.not)
 		if (firstChild.open) {
 			if (args.not) {
 				expect(JSON.stringify(JSON.parse(value.innerText))).toBe(
@@ -51,10 +51,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 			} else {
 				expect(value.innerText).toBe(args.items[0].name)
 			}
+			expect(firstChildSummary.getAttribute('aria-expanded')).toBe('true')
+			const content = firstChild.lastChild as HTMLElement
+			expect(content.getAttribute('aria-hidden')).toBe('false')
 		}
-		expect(firstChildSummary.getAttribute('aria-expanded')).toBe('true')
-		const content = firstChild.lastChild as HTMLElement
-		expect(content.getAttribute('aria-hidden')).toBe('false')
 	}
 
 	// accessibility
