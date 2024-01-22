@@ -15,6 +15,7 @@ export const VvAccordionGroupProps = {
 	 */
 	modelValue: {
 		type: [String, Array] as PropType<string | string[] | undefined>,
+		default: undefined,
 	},
 	/**
 	 * Accordion items
