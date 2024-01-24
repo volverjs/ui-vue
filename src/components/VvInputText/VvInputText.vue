@@ -336,14 +336,16 @@
 		if (!suggestions.value) {
 			return []
 		}
-		return [...suggestions.value].filter(
-			(suggestion) =>
-				isEmpty(localModelValue.value) ||
-				(`${suggestion}`
-					.toLowerCase()
-					.includes(`${localModelValue.value}`.toLowerCase()) &&
-					suggestion !== localModelValue.value),
-		)
+		return [...suggestions.value]
+			.filter(
+				(suggestion) =>
+					isEmpty(localModelValue.value) ||
+					(`${suggestion}`
+						.toLowerCase()
+						.includes(`${localModelValue.value}`.toLowerCase()) &&
+						suggestion !== localModelValue.value),
+			)
+			.reverse()
 	})
 	const hasSuggestions = computed(
 		() =>
