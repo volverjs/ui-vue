@@ -41,6 +41,7 @@
 	const storageModelValue = usePersistence<string | string[] | undefined>(
 		storageKey,
 		storageType,
+		[],
 	)
 	const localModelValue = computed({
 		get: () => {
