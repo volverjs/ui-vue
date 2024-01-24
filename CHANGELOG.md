@@ -10,18 +10,21 @@ All notable changes to this project will be documented in this file.
 - `VvInputFile` component;
 - `VvAction` prop for `current` class;
 - `VvNavItem` and `VvNavSeparator` components;
-- inner types export;
+- Inner types export;
 - `--watch` flag for `generate-icons` script;
 - `VvCombobox` event `update:search`;
-- scoped slot for items in `VvNav` and `VvTab`.
+- `VvInputText` suggestions;
+- Storage selection for `VvAccordionGroup` persistence;
+- Scoped slot for items in `VvNav` and `VvTab`.
 
 ### Deprecated
 
-- event `change:search` on `VvCombobox` (use `update:search`).
+- Event `change:search` on `VvCombobox` (use `update:search`).
 
 ### Changed
 
-- `@volverjs/ui-vue/directives` now exports `vTooltip` and `vContextmenu` directives instead of `tooltip` and `contextmenu`.
+- `@volverjs/ui-vue/directives` now exports `vTooltip` and `vContextmenu` directives instead of `tooltip` and `contextmenu`;
+- `VvAccordionGroup` prop for storage key `storeKey` is now `storageKey`.
 
 ### Fixed
 
@@ -30,6 +33,7 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` focus state;
 - `v-tooltip` directive update on props change;
 - `VvInputText` force type number on stepUp/stepDown;
+- Removed `target` prop validation;
 - Improved `VvCombobox` support for object values.
 
 ### Changed

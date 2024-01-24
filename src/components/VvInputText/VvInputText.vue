@@ -11,6 +11,8 @@
 	import VvIcon from '../VvIcon/VvIcon.vue'
 	import { ACTION_ICONS } from '../VvIcon'
 	import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
+	import VvDropdown from '../VvDropdown/VvDropdown.vue'
+	import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
 	import {
 		VvInputTextEvents,
 		VvInputTextProps,
@@ -34,6 +36,7 @@
 		id,
 		icon,
 		iconPosition,
+		iconRemoveSuggestion,
 		label,
 		modelValue,
 		count,
@@ -46,6 +49,8 @@
 		type,
 		iMask,
 		step,
+		storageKey,
+		storageType,
 	} = toRefs(props)
 	const hasId = useUniqueId(id)
 	const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -54,7 +59,7 @@
 		props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder,
 	)
 
-	// template refs
+	// mask
 	const maskReady = ref(false)
 	const { el, mask, typed, masked, unmasked } = useIMask(
 		computed(
@@ -170,8 +175,12 @@
 			masked.value = newValue ?? ''
 		},
 	)
+
+	// template refs
 	const inputEl = el as Ref<HTMLInputElement>
-	const innerEl = ref()
+	const innerEl = ref<HTMLInputElement>()
+	const wrapperEl = ref<HTMLDivElement>()
+	const dropdownEl = ref<typeof VvDropdown>()
 
 	defineExpose({ $inner: innerEl })
 
@@ -191,6 +200,26 @@
 		if (newValue && propsDefaults.value.selectOnFocus && inputEl.value) {
 			inputEl.value.select()
 		}
+		if (newValue) {
+			dropdownEl.value?.show()
+			return
+		}
+		setTimeout(() => {
+			if (isDirty.value && suggestions.value) {
+				const suggestionsLimit = props.maxSuggestions - 1
+				if (
+					suggestions.value.size > suggestionsLimit &&
+					!suggestions.value.has(localModelValue.value)
+				) {
+					suggestions.value = new Set(
+						[...suggestions.value].slice(
+							suggestions.value.size - suggestionsLimit,
+						),
+					)
+				}
+				suggestions.value.add(localModelValue.value)
+			}
+		}, 300)
 	})
 
 	// visibility
@@ -267,6 +296,8 @@
 		}
 		return undefined
 	})
+	const { hasIcon: hasIconRemoveSuggestion } =
+		useComponentIcon(iconRemoveSuggestion)
 
 	// count
 	const { formatted: countFormatted } = useTextCount(localModelValue, {
@@ -294,6 +325,39 @@
 		}
 		return undefined
 	})
+
+	// suggestions
+	const suggestions = usePersistence<Set<string>>(
+		storageKey,
+		storageType,
+		new Set(),
+	)
+	const filteredSuggestions = computed(() => {
+		if (!suggestions.value) {
+			return []
+		}
+		return [...suggestions.value].filter(
+			(suggestion) =>
+				isEmpty(localModelValue.value) ||
+				(`${suggestion}`
+					.toLowerCase()
+					.includes(`${localModelValue.value}`.toLowerCase()) &&
+					suggestion !== localModelValue.value),
+		)
+	})
+	const hasSuggestions = computed(
+		() =>
+			storageKey?.value &&
+			suggestions.value &&
+			suggestions.value.size > 0,
+	)
+	const onSuggestionSelect = (suggestion: string) => {
+		localModelValue.value = suggestion
+		dropdownEl.value?.hide()
+	}
+	const onSuggestionRemove = (suggestion: string) => {
+		suggestions.value?.delete(suggestion)
+	}
 
 	// styles
 	const { modifiers } = toRefs(props)
@@ -463,7 +527,7 @@
 		<label v-if="label" :for="hasId" class="vv-input-text__label">
 			{{ label }}
 		</label>
-		<div class="vv-input-text__wrapper">
+		<div ref="wrapperEl" class="vv-input-text__wrapper">
 			<div v-if="$slots.before" class="vv-input-text__input-before">
 				<!-- @slot Slot before input icon -->
 				<slot name="before" v-bind="slotProps" />
@@ -542,5 +606,36 @@
 				<slot name="invalid" v-bind="hintSlotScope" />
 			</template>
 		</HintSlot>
+		<VvDropdown
+			v-if="hasSuggestions"
+			ref="dropdownEl"
+			:reference="wrapperEl"
+			:autofocus-first="false"
+			:trigger-width="true"
+		>
+			<template #items>
+				<VvDropdownOption
+					v-for="value in filteredSuggestions"
+					:key="value"
+					@click.stop="onSuggestionSelect(value)"
+				>
+					<div class="flex-1">
+						<slot name="suggestion" v-bind="{ value }">
+							{{ value }}
+						</slot>
+					</div>
+					<button
+						v-if="suggestions && hasIconRemoveSuggestion"
+						type="button"
+						tabindex="-1"
+						class="cursor-pointer"
+						:title="labelRemoveSuggestion"
+						@click.stop="onSuggestionRemove(value)"
+					>
+						<VvIcon v-bind="hasIconRemoveSuggestion" />
+					</button>
+				</VvDropdownOption>
+			</template>
+		</VvDropdown>
 	</div>
 </template>

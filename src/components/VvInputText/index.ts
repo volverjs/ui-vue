@@ -1,6 +1,6 @@
 import type { ExtractPropTypes, PropType } from 'vue'
 import type { FactoryOpts } from 'imask'
-import { InputTextareaProps } from '../../props'
+import { InputTextareaProps, StorageProps } from '../../props'
 import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
 
 export const INPUT_TYPES = {
@@ -40,6 +40,7 @@ export const VvInputTextEvents = [
 
 export const VvInputTextProps = {
 	...InputTextareaProps,
+	...StorageProps,
 	/**
 	 * Input value
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
@@ -110,6 +111,14 @@ export const VvInputTextProps = {
 		default: ACTION_ICONS.clear,
 	},
 	/**
+	 * VvIcon name for remove suggestion button
+	 * @see VVIcon
+	 */
+	iconRemoveSuggestion: {
+		type: [String, Object] as PropType<string | VvIconProps>,
+		default: ACTION_ICONS.remove,
+	},
+	/**
 	 * Label for step up button
 	 */
 	labelStepUp: {
@@ -143,6 +152,13 @@ export const VvInputTextProps = {
 	labelClear: {
 		type: String,
 		default: 'Clear',
+	},
+	/**
+	 * Label for remove suggestion button
+	 */
+	labelRemoveSuggestion: {
+		type: String,
+		default: 'Remove suggestion',
 	},
 	/**
 	 * iMask options
@@ -185,6 +201,13 @@ export const VvInputTextProps = {
 	selectOnFocus: {
 		type: Boolean,
 		default: false,
+	},
+	/**
+	 * Maximum number of suggestions
+	 */
+	maxSuggestions: {
+		type: Number,
+		default: 5,
 	},
 }
 

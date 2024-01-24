@@ -1,6 +1,7 @@
 import { type Ref, Fragment } from 'vue'
 import mitt from 'mitt'
 import {
+	type DropdownItemState,
 	INJECTION_KEY_DROPDOWN_TRIGGER,
 	INJECTION_KEY_DROPDOWN_ACTION,
 	INJECTION_KEY_DROPDOWN_ITEM,
@@ -61,10 +62,9 @@ export function useProvideDropdownTrigger({
  */
 export function useProvideDropdownItem({
 	role,
-	expanded,
-}: {
+	...others
+}: Omit<DropdownItemState, 'role'> & {
 	role: Ref<`${DropdownRole}`>
-	expanded: Ref<boolean>
 }) {
 	const itemRole = computed(() =>
 		role.value === DropdownRole.listbox
@@ -73,7 +73,7 @@ export function useProvideDropdownItem({
 	)
 	provide(INJECTION_KEY_DROPDOWN_ITEM, {
 		role: itemRole,
-		expanded,
+		...others,
 	})
 	return { itemRole }
 }

@@ -5,6 +5,9 @@
 </script>
 
 <script setup lang="ts">
+	import { VvDropdownItemProps } from '.'
+
+	const props = defineProps(VvDropdownItemProps)
 	const { role, expanded } = useInjectedDropdownItem()
 	const element = ref(null)
 	useProvideDropdownAction({ expanded })
@@ -14,7 +17,7 @@
 
 	// focus item on hover
 	watch(hovered, (newValue) => {
-		if (newValue) {
+		if (newValue && props.focusOnHover) {
 			focused.value = true
 		}
 	})

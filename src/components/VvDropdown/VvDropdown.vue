@@ -299,9 +299,7 @@
 		})
 	bus.on('click', toggle)
 
-	// provide top dropdown item
 	const { role, modifiers } = toRefs(props)
-	const { itemRole } = useProvideDropdownItem({ role, expanded })
 
 	// styles
 	const bemCssClasses = useModifiers(
@@ -375,6 +373,17 @@
 			}
 		})
 	}
+
+	// hover
+	const hovered = useElementHover(floatingEl)
+
+	// provide top dropdown item
+	const { itemRole } = useProvideDropdownItem({
+		role,
+		expanded,
+		focused,
+		hovered,
+	})
 
 	// keyboard
 	onKeyStroke('Escape', (e) => {

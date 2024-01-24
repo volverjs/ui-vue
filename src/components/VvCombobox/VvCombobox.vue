@@ -526,6 +526,7 @@
 									}"
 									:key="i"
 									class="vv-dropdown-option"
+									focus-on-hover
 									@click.passive="onInput(item)"
 								>
 									<!-- @slot Slot for option customization -->
@@ -556,6 +557,7 @@
 										propsDefaults.selectedHintLabel,
 								}"
 								class="vv-dropdown-option"
+								focus-on-hover
 								@click.passive="onInput(option)"
 							>
 								<!-- @slot Slot for option customization -->

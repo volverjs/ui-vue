@@ -13,9 +13,9 @@ import {
 	Strategy,
 	Position,
 	Side,
-	AnchorTarget,
 	ButtonType,
 	ActionTag,
+	StorageType,
 } from '@/constants'
 import type { VvIconProps } from '@/components/VvIcon'
 
@@ -34,12 +34,7 @@ export const LinkProps = {
 	/**
 	 * Anchor target
 	 */
-	target: {
-		type: String as PropType<`${AnchorTarget}`>,
-		default: undefined,
-		validator: (value: AnchorTarget) =>
-			Object.values(AnchorTarget).includes(value),
-	},
+	target: String,
 	/**
 	 * Anchor rel
 	 */
@@ -548,4 +543,14 @@ export const NavProps = {
 		type: Array as PropType<NavItem[]>,
 		default: () => [],
 	},
+}
+
+export const StorageProps = {
+	storageType: {
+		type: String as PropType<`${StorageType}`>,
+		default: StorageType.local,
+		validator: (value: StorageType) =>
+			Object.values(StorageType).includes(value),
+	},
+	storageKey: String,
 }
