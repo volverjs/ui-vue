@@ -20,7 +20,14 @@
 	const emit = defineEmits(VvAccordionGroupEvents)
 
 	// data
-	const { disabled, modifiers, itemModifiers, items } = toRefs(props)
+	const {
+		disabled,
+		modifiers,
+		itemModifiers,
+		items,
+		storageKey,
+		storageType,
+	} = toRefs(props)
 	watchEffect(() => {
 		if (typeof props.modelValue === 'string' && props.collapse) {
 			// eslint-disable-next-line no-console
@@ -31,33 +38,20 @@
 	})
 
 	const accordionNames = reactive(new Set<string>())
-	let storeModelValue: Ref<string | string[] | undefined> = ref()
-	watch(
-		() => props.storeKey,
-		(newKey, oldKey) => {
-			if (oldKey && oldKey !== newKey) {
-				localStorage.removeItem(oldKey)
-			}
-			if (newKey) {
-				storeModelValue = useLocalStorage(newKey, storeModelValue.value)
-				return
-			}
-			storeModelValue = ref(storeModelValue.value)
-		},
-		{
-			immediate: true,
-		},
+	const storageModelValue = usePersistence<string | string[] | undefined>(
+		storageKey,
+		storageType,
 	)
 	const localModelValue = computed({
 		get: () => {
 			if (props.modelValue !== null && props.modelValue !== undefined) {
 				return props.modelValue
 			}
-			return storeModelValue.value
+			return storageModelValue.value
 		},
 		set: (newValue) => {
 			emit('update:modelValue', newValue)
-			storeModelValue.value = newValue
+			storageModelValue.value = newValue
 		},
 	})
 	const expandedAccordions = computed<Set<string>>({

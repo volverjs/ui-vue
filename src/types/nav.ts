@@ -1,12 +1,10 @@
-import type { AnchorTarget } from '@/constants'
-
 export type NavItem = {
 	label: string
 	ariaLabel?: string
 	title?: string
 	to?: string | Record<string, unknown>
 	href?: string
-	target?: `${AnchorTarget}`
+	target?: string
 	rel?: string
 	disabled?: boolean
 	current?: boolean

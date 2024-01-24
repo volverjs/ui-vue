@@ -1,4 +1,4 @@
-import { ModifiersProps } from '@/props'
+import { ModifiersProps, StorageProps } from '@/props'
 
 export interface VvAccordionGroupItem {
 	title: string
@@ -10,6 +10,7 @@ export interface VvAccordionGroupItem {
 
 export const VvAccordionGroupProps = {
 	...ModifiersProps,
+	...StorageProps,
 	/**
 	 * VModel
 	 */
@@ -44,10 +45,6 @@ export const VvAccordionGroupProps = {
 	 * If true, the accordion items will be opened by default
 	 */
 	not: Boolean,
-	/**
-	 * Enable local storage persistence
-	 */
-	storeKey: String,
 }
 
 export const VvAccordionGroupEvents = ['update:modelValue']

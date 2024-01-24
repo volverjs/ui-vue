@@ -121,11 +121,8 @@ export const argTypes = {
 		control: { type: 'text' },
 	},
 	target: {
-		options: ['', '_blank', '_self', '_parent', '_top'],
 		description: 'The target attribute',
-		control: {
-			type: 'select',
-		},
+		control: { type: 'text' },
 	},
 	to: {
 		description: 'The router link / nuxt link settings',

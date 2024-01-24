@@ -5,30 +5,11 @@
 </script>
 
 <script setup lang="ts">
+	import { VvDropdownOptionProps } from '.'
 	import VvDropdownItem from './VvDropdownItem.vue'
-	import {
-		DisabledProps,
-		ModifiersProps,
-		SelectedProps,
-		UnselectableProps,
-	} from '../../props'
 
 	// props
-	const props = defineProps({
-		...DisabledProps,
-		...SelectedProps,
-		...UnselectableProps,
-		...ModifiersProps,
-		deselectHintLabel: {
-			type: String,
-		},
-		selectHintLabel: {
-			type: String,
-		},
-		selectedHintLabel: {
-			type: String,
-		},
-	})
+	const props = defineProps(VvDropdownOptionProps)
 
 	// style
 	const { modifiers } = toRefs(props)
@@ -61,6 +42,7 @@
 		:tabindex="disabled ? -1 : 0"
 		:aria-selected="selected"
 		:aria-disabled="disabled"
+		:focus-on-hover="focusOnHover"
 	>
 		<slot />
 		<span class="vv-dropdown-option__hint" :title="hintLabel">

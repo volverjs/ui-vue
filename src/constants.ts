@@ -11,6 +11,11 @@ import type {
 
 export const DEFAULT_ICONIFY_PROVIDER = 'vv'
 
+export enum StorageType {
+	local = 'local',
+	session = 'session',
+}
+
 export enum Strategy {
 	absolute = 'absolute',
 	fixed = 'fixed',
@@ -68,13 +73,6 @@ export enum DropdownItemRole {
 	presentation = 'presentation',
 }
 
-export enum AnchorTarget {
-	_blank = '_blank',
-	_self = '_self',
-	_parent = '_parent',
-	_top = '_top',
-}
-
 // volver
 export const INJECTION_KEY_VOLVER = Symbol.for('volver') as InjectionKey<Volver>
 
@@ -93,9 +91,7 @@ export const INJECTION_KEY_ACCORDION_GROUP = Symbol.for(
 ) as InjectionKey<AccordionGroupState>
 
 // dropdown
-export const INJECTION_KEY_DROPDOWN_TRIGGER = Symbol.for(
-	'dropdownTrigger',
-) as InjectionKey<{
+export type DropdownTriggerState = {
 	id?: Ref<string | number>
 	reference?: Ref<HTMLElement | null>
 	bus?: Emitter<{
@@ -109,19 +105,28 @@ export const INJECTION_KEY_DROPDOWN_TRIGGER = Symbol.for(
 		'aria-haspopup': boolean
 		'aria-expanded': boolean
 	}>
-}>
-export const INJECTION_KEY_DROPDOWN_ITEM = Symbol.for(
-	'dropdownItem',
-) as InjectionKey<{
+}
+export const INJECTION_KEY_DROPDOWN_TRIGGER = Symbol.for(
+	'dropdownTrigger',
+) as InjectionKey<DropdownTriggerState>
+
+export type DropdownItemState = {
 	role?: Ref<`${DropdownItemRole}`>
 	expanded?: Ref<boolean>
-}>
-export const INJECTION_KEY_DROPDOWN_ACTION = Symbol.for(
-	'dropdownAction',
-) as InjectionKey<{
+	focused?: Ref<boolean>
+	hovered?: Ref<boolean>
+}
+export const INJECTION_KEY_DROPDOWN_ITEM = Symbol.for(
+	'dropdownItem',
+) as InjectionKey<DropdownItemState>
+
+export type DropdownActionState = {
 	role?: Ref<`${ActionRoles}`>
 	expanded?: Ref<boolean>
-}>
+}
+export const INJECTION_KEY_DROPDOWN_ACTION = Symbol.for(
+	'dropdownAction',
+) as InjectionKey<DropdownActionState>
 
 // alert
 export const INJECTION_KEY_ALERT_GROUP = Symbol.for(
