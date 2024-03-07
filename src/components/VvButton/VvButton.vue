@@ -1,6 +1,7 @@
 <script lang="ts">
 	export default {
 		name: 'VvButton',
+		inheritAttrs: false,
 	}
 </script>
 
@@ -82,6 +83,14 @@
 	const toggleValue = computed(() => {
 		return props.value !== undefined ? props.value : name.value
 	})
+	const hasListeners = computed(() => {
+		if (!toggle.value) {
+			return undefined
+		}
+		return {
+			onClick,
+		}
+	})
 	const onClick = () => {
 		if (toggle.value) {
 			if (Array.isArray(modelValue.value)) {
@@ -108,6 +117,8 @@
 <template>
 	<VvAction
 		v-bind="{
+			...attrs,
+			...hasListeners,
 			disabled,
 			pressed,
 			active,
@@ -121,7 +132,6 @@
 		:id="hasId"
 		ref="element"
 		:class="bemCssClasses"
-		@click="onClick"
 	>
 		<!-- @slot Default slot -->
 		<slot>

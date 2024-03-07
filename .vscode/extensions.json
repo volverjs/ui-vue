@@ -1,11 +1,10 @@
 {
-	"recommendations": [
-		"Vue.volar",
-		"Vue.vscode-typescript-vue-plugin",
-		"dbaeumer.vscode-eslint",
-		"Tobermory.es6-string-html",
-		"unifiedjs.vscode-mdx",
-		"esbenp.prettier-vscode",
-		"stylelint.vscode-stylelint"
-	]
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "Tobermory.es6-string-html",
+    "unifiedjs.vscode-mdx",
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint"
+  ]
 }
