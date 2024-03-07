@@ -11,6 +11,7 @@
 	// props and emit
 	const props = defineProps(VvActionProps)
 	const emit = defineEmits(VvActionEvents)
+	const instance = getCurrentInstance()
 
 	// inject plugin
 	const volver = useVolver()
@@ -104,24 +105,33 @@
 			e.preventDefault()
 			return
 		}
+		if (instance?.vnode.props?.onClick) {
+			emit('click', e)
+			return
+		}
 		dropdownEventBus?.emit('click', e)
-		emit('click', e)
 	}
 
 	/**
 	 * @description Catch mouseover event
 	 */
 	const onMouseover = (e: Event) => {
+		if (instance?.vnode.props?.onMouseover) {
+			emit('mouseover', e)
+			return
+		}
 		dropdownEventBus?.emit('mouseover', e)
-		emit('mouseover', e)
 	}
 
 	/**
 	 * @description Catch mouseleave event
 	 */
 	const onMouseleave = (e: Event) => {
+		if (instance?.vnode.props?.onMouseleave) {
+			emit('mouseleave', e)
+			return
+		}
 		dropdownEventBus?.emit('mouseleave', e)
-		emit('mouseleave', e)
 	}
 </script>
 
