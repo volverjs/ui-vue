@@ -167,27 +167,28 @@ export default defineConfig({
 Used to show alert messages and notifications
 
 ```typescript
-export type AlertModifiers =
+export type AlertModifier =
   | 'success'
   | 'info'
   | 'warning'
   | 'danger'
   | 'brand'
   | 'accent'
+  | string
 ```
 
 ```typescript
 export type Alert = {
   id: string | number
-  group: string
   title?: string
-  icon: string | Record<string, unknown>
+  icon?: string | VvIconProps
   content?: string
   footer?: string
-  modifiers: AlertModifiers
-  dismissable: boolean
-  autoClose: number
-  timestamp: number
+  modifiers?: AlertModifier | AlertModifier[]
+  dismissable?: boolean
+  autoClose?: number
+  closeLabel?: string
+  role?: AlertRole
 }
 ```
 

@@ -1,5 +1,4 @@
-import { expect } from '@storybook/jest'
-import { userEvent } from '@storybook/testing-library'
+import { userEvent, expect } from '@storybook/test'
 import { axe } from 'jest-axe'
 import { sleep } from '@/test/sleep'
 
@@ -79,8 +78,7 @@ expect.extend({
 		const img = element.getElementsByTagName(imgTag)
 		return {
 			pass: img.length === 1,
-			message: () =>
-				`${imgTag} not exist!`,
+			message: () => `${imgTag} not exist!`,
 		}
 	},
 })

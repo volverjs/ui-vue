@@ -76,7 +76,7 @@ export const VvAlertProps = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Alertdialog_role
 	 */
 	role: {
-		type: String as PropType<AlertRole>,
+		type: String as PropType<`${AlertRole}`>,
 		default: AlertRole.alert,
 	},
 }

@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from '@storybook/testing-library'
+import { within } from '@storybook/test'
 import { expect } from '@/test/expect'
 
 export async function defaultTest(
