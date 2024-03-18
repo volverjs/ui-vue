@@ -1,12 +1,12 @@
 import type { InjectionKey, Ref } from 'vue'
 import type { Emitter } from 'mitt'
 import type { Volver } from './Volver'
-import type { AlertModifiers } from './types/alert'
 import type {
 	AccordionGroupState,
 	InputGroupState,
 	ButtonGroupState,
 	AlertGroupState,
+	AlertModifier,
 } from './types'
 
 export const DEFAULT_ICONIFY_PROVIDER = 'vv'
@@ -71,6 +71,11 @@ export enum DropdownRole {
 export enum DropdownItemRole {
 	option = 'option',
 	presentation = 'presentation',
+}
+
+export enum AlertRole {
+	alert = 'alert',
+	alertdialog = 'alertdialog',
 }
 
 // volver
@@ -140,7 +145,7 @@ export const DEFAULT_ALERT_INFO_ICON = 'information'
 export const DEFAULT_ALERT_SUCCESS_ICON = 'check-circle'
 export const DEFAULT_ALERT_WARNING_ICON = 'warning'
 export const DEFAULT_ALERT_DANGER_ICON = 'error'
-export const DefaultAlertIconMap = new Map<AlertModifiers, string>([
+export const DefaultAlertIconMap = new Map<AlertModifier, string>([
 	['success', DEFAULT_ALERT_SUCCESS_ICON],
 	['info', DEFAULT_ALERT_INFO_ICON],
 	['warning', DEFAULT_ALERT_WARNING_ICON],

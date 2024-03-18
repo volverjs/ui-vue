@@ -8,9 +8,11 @@ import {
 } from '@/constants'
 import type { Alert, AlertModifiers } from '@/types/alert'
 
+type AlertInGroup = Alert & { timestamp: number; group: string }
+
 const groups = reactive(
-	new Map<string, Map<string, Alert>>([
-		[DEFAULT_ALERT_GROUP, new Map<string, Alert>()],
+	new Map<string, Map<string, AlertInGroup>>([
+		[DEFAULT_ALERT_GROUP, new Map<string, AlertInGroup>()],
 	]),
 )
 
@@ -45,10 +47,11 @@ export const useAlert = () => {
 			modifiers = DEFAULT_ALERT_MODIFIERS,
 			dismissable = DEFAULT_ALERT_DISMISSABLE,
 			autoClose = DEFAULT_ALERT_AUTO_CLOSE,
-		} = {} as Partial<Alert>,
+			timestamp = Date.now(),
+		} = {} as Partial<AlertInGroup>,
 	) => {
 		if (!groups.has(group)) {
-			groups.set(group, new Map<string, Alert>())
+			groups.set(group, new Map<string, AlertInGroup>())
 		}
 		const groupMap = groups.get(group)
 		const normalizedModifiers =
@@ -73,7 +76,7 @@ export const useAlert = () => {
 			modifiers,
 			dismissable,
 			autoClose,
-			timestamp: Date.now(),
+			timestamp,
 		})
 	}
 
@@ -88,7 +91,7 @@ export const useAlert = () => {
 			return groupMap && groupMap instanceof Map
 				? Array.from(groupMap?.values()).sort(
 						(a, b) => a.timestamp - b.timestamp,
-				  )
+					)
 				: []
 		})
 	}
