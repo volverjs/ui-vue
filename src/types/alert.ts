@@ -1,20 +1,24 @@
-export type AlertModifiers =
+import type { VvIconProps } from '@/components/VvIcon'
+import { AlertRole } from '@/constants'
+
+export type AlertModifier =
 	| 'success'
 	| 'info'
 	| 'warning'
 	| 'danger'
 	| 'brand'
 	| 'accent'
+	| string
 
 export type Alert = {
 	id: string | number
-	group: string
 	title?: string
-	icon: string | Record<string, unknown>
+	icon?: string | VvIconProps
 	content?: string
 	footer?: string
-	modifiers: AlertModifiers
-	dismissable: boolean
-	autoClose: number
-	timestamp: number
+	modifiers?: AlertModifier | AlertModifier[]
+	dismissable?: boolean
+	autoClose?: number
+	closeLabel?: string
+	role?: AlertRole
 }

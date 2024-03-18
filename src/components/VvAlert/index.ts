@@ -1,11 +1,18 @@
-import { IconProps, IdProps, ModifiersProps } from '@/props'
-import type { ExtractPropTypes, PropType } from 'vue'
-import { withModifiers } from 'vue'
+import { type ExtractPropTypes, type PropType, withModifiers } from 'vue'
+import { AlertRole } from '@/constants'
+import { IconProps, IdProps } from '@/props'
+import type { AlertModifier } from '@/types'
 
 export const VvAlertProps = {
 	...IdProps,
-	...ModifiersProps,
 	...IconProps,
+	/**
+	 * Component BEM modifiers
+	 */
+	modifiers: {
+		type: [String, Array] as PropType<AlertModifier | AlertModifier[]>,
+		default: undefined,
+	},
 	/**
 	 * The alert is dismissable
 	 * @default false
@@ -69,8 +76,8 @@ export const VvAlertProps = {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Alertdialog_role
 	 */
 	role: {
-		type: String as PropType<'alert' | 'alertdialog'>,
-		default: 'alert',
+		type: String as PropType<`${AlertRole}`>,
+		default: AlertRole.alert,
 	},
 }
 

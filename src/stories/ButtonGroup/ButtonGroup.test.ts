@@ -1,6 +1,6 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
-import { within } from '@storybook/testing-library'
+import { within } from '@storybook/test'
 
 export async function defaultTest(
 	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,

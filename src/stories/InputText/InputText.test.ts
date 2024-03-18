@@ -1,7 +1,7 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
-import { within, userEvent } from '@storybook/testing-library'
+import { within, userEvent } from '@storybook/test'
 import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
 
 const valueByType = (type: InputType, mask?: string, id?: string) => {

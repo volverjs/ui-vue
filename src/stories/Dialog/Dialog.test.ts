@@ -1,7 +1,7 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
-import { userEvent } from '@storybook/testing-library'
-import { within } from '@storybook/testing-library'
+import { userEvent } from '@storybook/test'
+import { within } from '@storybook/test'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest(

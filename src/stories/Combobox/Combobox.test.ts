@@ -1,6 +1,6 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
-import { within } from '@storybook/testing-library'
+import { within } from '@storybook/test'
 import { sleep } from '@/test/sleep'
 import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 

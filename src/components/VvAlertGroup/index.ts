@@ -1,19 +1,6 @@
-import { ModifiersProps } from '@/props'
 import type { ExtractPropTypes } from 'vue'
-import type { VvIconProps } from '../VvIcon'
-
-export type AlertItem = {
-	id: string | number
-	title?: string
-	icon?: string | VvIconProps
-	content?: string
-	footer?: string
-	modifiers?: string | string[]
-	dismissable?: boolean
-	autoClose?: number
-	closeLabel?: string
-	role?: 'alert' | 'alertdialog'
-}
+import type { Alert } from '@/types'
+import { ModifiersProps } from '@/props'
 
 export const VvAlertGroupProps = {
 	...ModifiersProps,
@@ -22,7 +9,7 @@ export const VvAlertGroupProps = {
 		required: true,
 	},
 	items: {
-		type: Array as PropType<AlertItem[]>,
+		type: Array as PropType<Alert[]>,
 		default: () => [],
 	},
 	stack: {

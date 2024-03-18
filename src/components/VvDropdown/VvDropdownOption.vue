@@ -33,6 +33,7 @@
 		if (!props.disabled) {
 			return props.selectHintLabel
 		}
+		return ''
 	})
 </script>
 
