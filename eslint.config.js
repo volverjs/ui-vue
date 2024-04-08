@@ -1,7 +1,4 @@
-/* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution')
-
-module.exports = {
+export default {
 	root: true,
 	extends: [
 		'./.eslintrc-auto-import.json',
@@ -27,5 +24,14 @@ module.exports = {
 			files: '*.mdx',
 			extends: 'plugin:mdx/recommended',
 		},
+	],
+	ignore: [
+		'node_modules',
+		'.eslintrc.js',
+		'.vscode',
+		'dist',
+		'storybook-static',
+		'vendor',
+		'bin',
 	],
 }
