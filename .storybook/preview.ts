@@ -10,7 +10,7 @@ import * as directives from '@/directives'
 
 const fullVersion = packageJson.version
 const fullSplittedVersion = fullVersion.split('-')
-let postfix = null
+let postfix
 if (fullSplittedVersion.length > 1) {
 	postfix = fullSplittedVersion[1]
 }

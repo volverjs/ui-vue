@@ -59,6 +59,13 @@
 		props.floating && isEmpty(props.placeholder) ? ' ' : props.placeholder,
 	)
 
+	// debounce
+	const localModelValue = useDebouncedInput(
+		modelValue,
+		emit,
+		debounce?.value ?? 0,
+	)
+
 	// mask
 	const maskReady = ref(false)
 	const { el, mask, typed, masked, unmasked } = useIMask(
@@ -152,20 +159,32 @@
 			},
 		},
 	)
+	const updateMaskValue = (newValue: string | number | undefined) => {
+		if (iMask) {
+			if (newValue === undefined) {
+				typed.value = ''
+				unmasked.value = ''
+				return
+			}
+			if (iMask.value?.mask === Date) {
+				typed.value = new Date(newValue)
+				return
+			}
+			typed.value = newValue
+			unmasked.value = `${typed.value}`
+		}
+	}
 	onMounted(() => {
 		if (mask.value) {
 			maskReady.value = true
-			typed.value = localModelValue.value ?? ''
+			updateMaskValue(props.modelValue)
 		}
 	})
 	watch(
 		() => props.modelValue,
 		(newValue) => {
 			if (mask.value) {
-				typed.value =
-					newValue && iMask?.value?.mask === Date
-						? new Date(newValue)
-						: newValue ?? ''
+				updateMaskValue(newValue)
 			}
 		},
 	)
@@ -183,13 +202,6 @@
 	const dropdownEl = ref<typeof VvDropdown>()
 
 	defineExpose({ $inner: innerEl })
-
-	// debounce
-	const localModelValue = useDebouncedInput(
-		modelValue,
-		emit,
-		debounce?.value ?? 0,
-	)
 
 	// focus
 	const { focused } = useComponentFocus(inputEl, emit)
