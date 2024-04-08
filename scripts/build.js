@@ -4,7 +4,7 @@ import { build } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
-import ESLint from 'vite-plugin-eslint'
+import ESLint from '@nabla/vite-plugin-eslint'
 import AutoImport from 'unplugin-auto-import/vite'
 import { kebabCase } from 'change-case'
 
