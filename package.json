@@ -1,7 +1,7 @@
 {
   "name": "@volverjs/ui-vue",
   "description": "@volverjs/ui-vue is a lightweight Vue 3 component library to accompany @volverjs/style.",
-  "author": "8 Wave",
+  "author": "8 Wave S.r.l.",
   "license": "MIT",
   "keywords": [
     "vue",
