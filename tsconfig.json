@@ -4,8 +4,7 @@
     "src/**/*",
     "src/**/*.vue",
     "src/stories/**/*.test.ts",
-    "assets/auto-imports.d.ts",
-    ".storybook/**/*"
+    "assets/auto-imports.d.ts"
   ],
   "compilerOptions": {
     "module": "ESNext",
