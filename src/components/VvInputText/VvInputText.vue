@@ -431,9 +431,13 @@
 			type === INPUT_TYPES.DATETIME_LOCAL ||
 			type === INPUT_TYPES.NUMBER
 		) {
+			let max = props.max
+			if(type === INPUT_TYPES.DATE && !max) {
+				max = '9999-12-31'
+			}
 			toReturn.step = props.step
 			toReturn.max =
-				props.max !== undefined ? String(props.max) : undefined
+				max !== undefined ? String(max) : undefined
 			toReturn.min =
 				props.min !== undefined ? String(props.min) : undefined
 		}
