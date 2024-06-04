@@ -66,8 +66,17 @@
 </script>
 
 <template>
-	<div :class="bemCssClasses" role="group">
+	<fieldset :class="bemCssClasses" role="group">
+		<legend
+			v-if="$slots.legend || legendLabel"
+			class="vv-button-group__legend"
+		>
+			<!-- @slot Legend slot -->
+			<slot name="legend">
+				{{ legendLabel }}
+			</slot>
+		</legend>
 		<!-- @slot Default slot -->
 		<slot />
-	</div>
+	</fieldset>
 </template>

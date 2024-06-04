@@ -90,12 +90,9 @@
 			if (isBinary.value) {
 				modelValue.value = newValue ? props.value : props.uncheckedValue
 			} else if (Array.isArray(modelValue.value) || isInGroup.value) {
+				const currentValue = modelValue.value ?? []
 				const toReturn = new Set(
-					Array.isArray(modelValue.value)
-						? modelValue.value
-						: modelValue.value !== undefined
-						? [modelValue.value]
-						: [],
+					Array.isArray(currentValue) ? currentValue : [currentValue],
 				)
 				if (newValue) {
 					toReturn.add(props.value)

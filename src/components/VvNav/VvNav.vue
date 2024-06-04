@@ -24,12 +24,7 @@
 
 <template>
 	<nav :class="bemCssClasses">
-		<ul
-			class="vv-nav__menu"
-			role="menu"
-			aria-busy="true"
-			@click.stop="onClick"
-		>
+		<ul class="vv-nav__menu" role="menu" @click.stop="onClick">
 			<slot>
 				<VvNavItem
 					v-for="({ on = {}, data, ...item }, index) in items"

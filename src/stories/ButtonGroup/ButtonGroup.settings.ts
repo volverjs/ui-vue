@@ -27,6 +27,14 @@ export const argTypes = {
 			type: 'check',
 		},
 	},
+	legend: {
+		control: {
+			type: 'text',
+			table: {
+				category: 'Slots',
+			},
+		},
+	},
 	...UnselectableArgTypes,
 	...DefaultSlotArgTypes,
 }

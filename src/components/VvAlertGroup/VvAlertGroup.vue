@@ -48,7 +48,6 @@
 		<slot name="before" />
 		<TransitionGroup
 			tag="div"
-			role="group"
 			:name="hasTransition"
 			class="vv-alert-group__list"
 			v-on="alertGroupTransitionHandlers"
