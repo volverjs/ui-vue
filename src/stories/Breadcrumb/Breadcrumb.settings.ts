@@ -1,4 +1,5 @@
 import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvBreadcrumbProps),
@@ -20,7 +21,7 @@ export const defaultArgs = {
 	],
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	modifiers: {
 		control: 'check',
 		options: ['multiline'],

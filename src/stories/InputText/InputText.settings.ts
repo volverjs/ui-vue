@@ -1,6 +1,7 @@
 import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvInputTextProps } from '@/components/VvInputText'
 import normal from '@/assets/icons/normal.json'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvInputTextProps),
@@ -13,7 +14,8 @@ export const defaultArgs = {
 	maxlength: undefined,
 }
 
-export const argTypes = {
+// @ts-ignore
+export const argTypes: ArgTypes = {
 	...InputTextareaArgTypes,
 	...HintArgTypes,
 	type: {
@@ -61,7 +63,7 @@ export const argTypes = {
 			'Incremental values that are valid. Available for input types: date, month, week, time, datetime-local and number.',
 		table: {
 			defaultValue: {
-				summary: 1,
+				summary: '1',
 			},
 		},
 	},
@@ -77,7 +79,7 @@ export const argTypes = {
 			'Whether to allow multiple values. Available for input type email.',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -193,7 +195,7 @@ export const argTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
 				summary: 'boolean',
@@ -207,7 +209,7 @@ export const argTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
 				summary: 'boolean',
@@ -227,7 +229,7 @@ export const argTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
 				summary: 'boolean',

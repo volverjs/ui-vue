@@ -3,11 +3,9 @@ import { expect } from '@/test/expect'
 import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
 
-	if (!args.items || !args.items?.length) {
+	if (!args.items?.length) {
 		throw new Error('No items passed')
 	}
 
@@ -17,7 +15,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	// take firse and second elements
 	const firstNavItemLabelEl =
-		await element.getElementsByClassName('vv-nav__item-label')?.[0]
+		element.getElementsByClassName('vv-nav__item-label')?.[0]
 	await expect(firstNavItemLabelEl.classList.contains('current')).toBe(true)
 
 	// check tab content to include "Tab 1"

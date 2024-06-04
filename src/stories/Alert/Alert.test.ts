@@ -3,9 +3,7 @@ import { expect } from '@/test/expect'
 import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
 
 	expect(element).toHaveClass('vv-alert')
 

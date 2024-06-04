@@ -1,3 +1,4 @@
+import type { ArgTypes } from '@storybook/types'
 import { DisabledArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
@@ -9,7 +10,7 @@ export const defaultArgs = {
 	not: false,
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	summary: {
 		description: 'The title slot',
 		control: {
@@ -49,7 +50,7 @@ export const argTypes = {
 		control: 'boolean',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: `false`,
 			},
 		},
 	},

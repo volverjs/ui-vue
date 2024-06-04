@@ -5,12 +5,8 @@ import { within } from '@storybook/test'
 export async function defaultTest(
 	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
-	const buttonGroup = (await within(canvasElement).findByTestId(
-		'button-group',
-	)) as HTMLElement
-	const firstButton = (await within(canvasElement).findByTestId(
-		'first-button',
-	)) as HTMLElement
+	const buttonGroup = await within(canvasElement).findByTestId('button-group')
+	const firstButton = await within(canvasElement).findByTestId('first-button')
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)
 			? args.modifiers

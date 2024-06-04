@@ -5,13 +5,15 @@ import {
 } from '@/stories/argTypes'
 import { VvButtonGroupProps } from '@/components/VvButtonGroup'
 import { argTypes as buttonArgTypes } from '../Button/Button.settings'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvButtonGroupProps),
 	modifiers: [],
 }
 
-export const argTypes = {
+// @ts-ignore
+export const argTypes: ArgTypes = {
 	modelValue: {
 		table: {
 			disable: true,

@@ -22,7 +22,7 @@ export const DefaultIconPosition: Story = {
 	},
 }
 
-export const After: Story ={
+export const After: Story = {
 	...Default,
 	args: {
 		...Default.args,

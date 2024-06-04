@@ -1,5 +1,6 @@
 import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvTextareaProps } from '@/components/VvTextarea'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvTextareaProps),
@@ -10,7 +11,8 @@ export const defaultArgs = {
 	maxlength: undefined,
 }
 
-export const argTypes = {
+// @ts-ignore
+export const argTypes: ArgTypes = {
 	...InputTextareaArgTypes,
 	...HintArgTypes,
 	cols: {
@@ -21,7 +23,7 @@ export const argTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: 20,
+				summary: '20',
 			},
 		},
 	},
@@ -33,7 +35,7 @@ export const argTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: 2,
+				summary: '2',
 			},
 		},
 	},

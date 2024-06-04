@@ -1,11 +1,12 @@
 import { ModifiersArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	max: undefined,
 	value: undefined,
 	label: 'Progress bar',
 }
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	...ModifiersArgTypes,
 	max: {
 		description:

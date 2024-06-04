@@ -50,12 +50,8 @@ const valueByType = (type: InputType, mask?: string, id?: string) => {
 }
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
+	const value = await within(canvasElement).findByTestId('value')
 	const input = element.getElementsByTagName('input')[0]
 	const hint = element.getElementsByClassName('vv-input-text__hint')[0]
 

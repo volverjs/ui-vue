@@ -1,5 +1,6 @@
 import { HintArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 import { VvInputFileProps } from '@/components/VvInputFile'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvInputFileProps),
@@ -7,7 +8,7 @@ export const defaultArgs = {
 	label: 'Upload file',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	...HintArgTypes,
 	modifiers: {
 		...ModifiersArgTypes.modifiers,

@@ -49,7 +49,6 @@ export const OptionValueKey: Story = {
 			{ id: 'second', label: 'Second' },
 			{ id: 'third', label: 'Third' },
 		],
-
 	},
 }
 

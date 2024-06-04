@@ -4,9 +4,7 @@ import { sleep } from '@/test/sleep'
 import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const parentElement = (await within(canvasElement).findByTestId(
-		'parent',
-	)) as HTMLElement
+	const parentElement = await within(canvasElement).findByTestId('parent')
 	const element = parentElement.firstElementChild as HTMLSpanElement
 
 	if (args.default) {
@@ -18,7 +16,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	}
 
 	// check if tooltip is visible after focus
-	await parentElement.focus({
+	parentElement.focus({
 		preventScroll: true,
 	})
 	await sleep(1200)
@@ -31,7 +29,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 	await expect(element).toHaveNoViolations()
 
 	// check if tooltip is not visible after blur
-	await parentElement.blur()
+	parentElement.blur()
 	await sleep(1200)
 	await expect(window.getComputedStyle(element)).toHaveProperty(
 		'opacity',

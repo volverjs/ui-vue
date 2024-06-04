@@ -16,6 +16,7 @@ import {
 	AutocompleteArgTypes,
 } from '@/stories/argTypes'
 import { VvSelectProps } from '@/components/VvSelect'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvSelectProps),
@@ -24,7 +25,7 @@ export const defaultArgs = {
 	placeholder: 'Select an option',
 	label: 'Select label',
 }
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	...IdNameArgTypes,
 	...AutofocusArgTypes,
 	...AutocompleteArgTypes,
@@ -45,7 +46,7 @@ export const argTypes = {
 			'This Boolean attribute indicates that multiple options can be selected in the list.',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -54,7 +55,7 @@ export const argTypes = {
 			'A Boolean attribute indicating that an option with a non-empty string value must be selected.',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},

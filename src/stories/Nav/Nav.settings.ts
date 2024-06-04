@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3'
 import type { VvNav } from '@/components'
 import { VvNavProps } from '@/components/VvNav'
 import { ModifiersArgTypes } from '@/stories/argTypes'
@@ -27,7 +27,7 @@ export const defaultArgs: Meta<typeof VvNav>['args'] = {
 	modifiers: 'sidebar',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: ['sidebar', 'aside', 'tabs', 'full'],

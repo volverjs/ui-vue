@@ -4,14 +4,10 @@ import { sleep } from '@/test/sleep'
 import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
 	const firstChild = element.children[0] as HTMLDetailsElement
 	const firstChildSummary = firstChild.getElementsByTagName('summary')[0]
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
+	const value = await within(canvasElement).findByTestId('value')
 
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)

@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3'
 import type { VvButton } from '@/components'
 import {
 	DefaultSlotArgTypes,
@@ -23,7 +23,8 @@ export const defaultArgs: Meta<typeof VvButton>['args'] = {
 	icon: undefined,
 }
 
-export const argTypes = {
+// @ts-ignore
+export const argTypes: ArgTypes = {
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: [
@@ -59,7 +60,6 @@ export const argTypes = {
 	label: {
 		table: {
 			category: '',
-			type: '',
 		},
 		description: 'The label of the button',
 		control: { type: 'text' },
@@ -68,7 +68,7 @@ export const argTypes = {
 		description: 'Whether the button is toggleable',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: false },
+			defaultValue: { summary: 'false' },
 		},
 	},
 	value: {
@@ -90,14 +90,14 @@ export const argTypes = {
 		description: 'Whether the button is pressed',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: false },
+			defaultValue: { summary: 'false' },
 		},
 	},
 	active: {
 		description: 'Whether the button is active',
 		control: { type: 'boolean' },
 		table: {
-			defaultValue: { summary: false },
+			defaultValue: { summary: 'false' },
 		},
 	},
 	rel: {

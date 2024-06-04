@@ -69,7 +69,6 @@ export const Invalid: Story = {
 	},
 }
 
-
 export const Valid: Story = {
 	...Default,
 	args: {

@@ -1,18 +1,13 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
-import { userEvent } from '@storybook/test'
-import { within } from '@storybook/test'
+import { userEvent, within } from '@storybook/test'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest(
 	{ canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLDialogElement
-	const button = (await within(canvasElement).findByTestId(
-		'button',
-	)) as HTMLButtonElement
+	const element = await within(canvasElement).findByTestId('element')
+	const button = await within(canvasElement).findByTestId('button')
 
 	// hidden
 	await expect(element?.style.display).toEqual('none')

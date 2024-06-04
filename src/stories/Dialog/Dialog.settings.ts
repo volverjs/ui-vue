@@ -1,4 +1,5 @@
 import { DefaultSlotArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	id: 'dialog',
@@ -9,7 +10,7 @@ export const defaultArgs = {
 	default: 'Default slot content',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	title: { control: 'text' },
 	transition: {
 		control: 'radio',

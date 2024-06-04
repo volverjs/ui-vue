@@ -45,4 +45,3 @@ export const Inline: Story = {
 		svg: `<svg viewBox="0 0 24 24">${NormalIcons.icons.bell.body}</svg>`,
 	},
 }
-

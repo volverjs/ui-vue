@@ -1,12 +1,13 @@
+import type { ArgTypes } from '@storybook/vue3'
 import normal from '../assets/icons/normal.json'
 import { Placement, Position, Side } from '../constants'
 
-export const ValidArgTypes = {
+export const ValidArgTypes: ArgTypes = {
 	valid: {
 		description: 'Valid state',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -18,12 +19,12 @@ export const ValidArgTypes = {
 	},
 }
 
-export const InvalidArgTypes = {
+export const InvalidArgTypes: ArgTypes = {
 	invalid: {
 		description: 'Invalid state',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -35,12 +36,12 @@ export const InvalidArgTypes = {
 	},
 }
 
-export const LoadingArgTypes = {
+export const LoadingArgTypes: ArgTypes = {
 	loading: {
 		description: 'Loading state',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -52,30 +53,30 @@ export const LoadingArgTypes = {
 	},
 }
 
-export const DisabledArgTypes = {
+export const DisabledArgTypes: ArgTypes = {
 	disabled: {
 		control: 'boolean',
 		description: 'Whether the component is disabled',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
 }
 
-export const ReadonlyArgTypes = {
+export const ReadonlyArgTypes: ArgTypes = {
 	readonly: {
 		description: 'The value is not editable',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
 }
 
-export const ModifiersArgTypes = {
+export const ModifiersArgTypes: ArgTypes = {
 	modifiers: {
 		description: 'Component BEM modifiers',
 		options: [],
@@ -85,7 +86,7 @@ export const ModifiersArgTypes = {
 	},
 }
 
-export const IconArgTypes = {
+export const IconArgTypes: ArgTypes = {
 	icon: {
 		description: 'VvIcon name or props',
 		options: ['', ...Object.keys(normal.icons)],
@@ -105,10 +106,11 @@ export const IconArgTypes = {
 	},
 }
 
-export const OptionsArgTypes = {
+export const OptionsArgTypes: ArgTypes = {
 	options: {
 		description: 'List of options',
 		control: {
+			// @ts-ignore
 			type: 'array',
 		},
 	},
@@ -147,7 +149,7 @@ export const OptionsArgTypes = {
 	},
 }
 
-export const CountArgTypes = {
+export const CountArgTypes: ArgTypes = {
 	count: {
 		description: 'Show character limit',
 		options: [true, false, 'limit', 'countdown'],
@@ -155,18 +157,17 @@ export const CountArgTypes = {
 			type: 'radio',
 		},
 		table: {
-			category: null,
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
-				summary: ['boolean', 'string'],
+				summary: 'boolean | string',
 			},
 		},
 	},
 }
 
-export const DebounceArgTypes = {
+export const DebounceArgTypes: ArgTypes = {
 	debounce: {
 		description: 'Debounce milliseconds',
 		control: {
@@ -175,7 +176,7 @@ export const DebounceArgTypes = {
 	},
 }
 
-export const DefaultSlotArgTypes = {
+export const DefaultSlotArgTypes: ArgTypes = {
 	default: {
 		description: 'The default slot',
 		control: {
@@ -190,7 +191,7 @@ export const DefaultSlotArgTypes = {
 	},
 }
 
-export const HintArgTypes = {
+export const HintArgTypes: ArgTypes = {
 	hintLabel: {
 		description: 'Hint label',
 		control: {
@@ -216,7 +217,7 @@ export const HintArgTypes = {
 	},
 }
 
-export const TabindexArgTypes = {
+export const TabindexArgTypes: ArgTypes = {
 	tabindex: {
 		description: 'Global attribute tabindex',
 		control: {
@@ -224,13 +225,13 @@ export const TabindexArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: 0,
+				summary: '0',
 			},
 		},
 	},
 }
 
-export const IdNameArgTypes = {
+export const IdNameArgTypes: ArgTypes = {
 	id: {
 		description: 'Global attribute id.',
 		control: {
@@ -251,7 +252,7 @@ export const IdNameArgTypes = {
 	},
 }
 
-export const DropdownArgTypes = {
+export const DropdownArgTypes: ArgTypes = {
 	placement: {
 		description: 'Dropdown placement',
 		options: [...Object.values(Placement), ...Object.values(Side)],
@@ -285,10 +286,10 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: 0,
+				summary: '0',
 			},
 			type: {
-				summary: ['number', 'string', 'object'],
+				summary: 'number | string | object',
 			},
 		},
 	},
@@ -300,10 +301,10 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: 'true',
 			},
 			type: {
-				summary: ['boolean', 'object'],
+				summary: 'boolean | object',
 			},
 		},
 	},
@@ -315,10 +316,10 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: 'true',
 			},
 			type: {
-				summary: ['boolean', 'object'],
+				summary: 'boolean | object',
 			},
 		},
 	},
@@ -333,7 +334,7 @@ export const DropdownArgTypes = {
 				summary: '{ "padding": 10 }',
 			},
 			type: {
-				summary: ['boolean', 'object'],
+				summary: 'boolean | object',
 			},
 		},
 	},
@@ -344,10 +345,10 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
-				summary: ['boolean', 'object'],
+				summary: 'boolean | object',
 			},
 		},
 	},
@@ -358,7 +359,7 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
 				summary: 'boolean',
@@ -372,7 +373,7 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
 				summary: 'boolean',
@@ -386,7 +387,7 @@ export const DropdownArgTypes = {
 		},
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 			type: {
 				summary: 'boolean',
@@ -395,40 +396,40 @@ export const DropdownArgTypes = {
 	},
 }
 
-export const UnselectableArgTypes = {
+export const UnselectableArgTypes: ArgTypes = {
 	unselectable: {
 		description: 'If true the field will be unselectable',
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: 'true',
 			},
 		},
 	},
 }
 
-export const FloatingLabelArgTypes = {
+export const FloatingLabelArgTypes: ArgTypes = {
 	floating: {
 		description: 'If true the label will be floating',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
 }
 
-export const AutofocusArgTypes = {
+export const AutofocusArgTypes: ArgTypes = {
 	autofocus: {
 		description: 'Global attribute autofocus.',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
 }
 
-export const AutocompleteArgTypes = {
+export const AutocompleteArgTypes: ArgTypes = {
 	autocomplete: {
 		description: 'Hint for for autofill feature.',
 		control: {
@@ -496,7 +497,7 @@ export const InputTextareaArgTypes = {
 	},
 }
 
-export const CheckboxRadioArgTypes = {
+export const CheckboxRadioArgTypes: ArgTypes = {
 	...IdNameArgTypes,
 	...TabindexArgTypes,
 	...ValidArgTypes,
@@ -518,7 +519,7 @@ export const CheckboxRadioArgTypes = {
 	},
 }
 
-export const CheckboxRadioGroupArgTypes = {
+export const CheckboxRadioGroupArgTypes: ArgTypes = {
 	...ValidArgTypes,
 	...InvalidArgTypes,
 	...OptionsArgTypes,
@@ -543,7 +544,7 @@ export const CheckboxRadioGroupArgTypes = {
 			'If true the options will be displayed vertically instead of horizontally',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},

@@ -1,5 +1,6 @@
 import { VvAvatarGroupProps } from '@/components/VvAvatarGroup'
 import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...propsToObject(VvAvatarGroupProps),
@@ -25,7 +26,7 @@ export const defaultArgs = {
 	avatarModifiers: 'rounded',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	...DefaultSlotArgTypes,
 	default: {
 		description: 'Default slot',

@@ -3,6 +3,7 @@ import {
 	DisabledArgTypes,
 	ModifiersArgTypes,
 } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	collapse: false,
@@ -31,7 +32,7 @@ export const defaultArgs = {
 	itemModifiers: [],
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	'`details::${item.name}`': {
 		table: {
 			disable: true,
@@ -50,7 +51,7 @@ export const argTypes = {
 		control: 'boolean',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -59,7 +60,7 @@ export const argTypes = {
 		control: 'boolean',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},

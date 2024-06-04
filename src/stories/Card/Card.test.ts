@@ -3,9 +3,7 @@ import { expect } from '@/test/expect'
 import { within } from '@storybook/test'
 
 export async function defaulTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'card',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('card')
 	const modifiers =
 		!args.modifiers || Array.isArray(args.modifiers)
 			? args.modifiers

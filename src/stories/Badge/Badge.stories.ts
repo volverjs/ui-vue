@@ -18,7 +18,7 @@ type Story = StoryObj<typeof VvBadge>
 export const Default: Story = {
 	args: {
 		...defaultArgs,
-		value: 14
+		value: 14,
 	},
 	render: (args) => ({
 		components: { VvBadge },

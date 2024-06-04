@@ -1,4 +1,5 @@
 import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	title: 'Card title',
@@ -6,7 +7,7 @@ export const defaultArgs = {
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	modifiers: {
 		...ModifiersArgTypes.modifiers,
 		options: ['glass'],
