@@ -1,11 +1,9 @@
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
-import { within } from '@storybook/test'
+import { userEvent, within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
 	const buttons =
 		canvasElement.getElementsByClassName('buttons-container')?.[0]
 
@@ -75,9 +73,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
 	if (buttons) {
 		// click every button child and expect to have alert with correct css class
-		for (let i = 0; i < buttons.children.length; i++) {
-			const button = buttons.children[i] as HTMLElement
-			await button.click()
+		for (const element of buttons.children) {
+			const button = element as HTMLElement
+			await userEvent.click(button)
 			expect(alertGroupList.lastElementChild).toHaveClass(
 				`vv-alert--${button.id}`,
 			)

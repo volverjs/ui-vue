@@ -4,6 +4,7 @@ export const VvButtonGroupProps = {
 	...ModifiersProps,
 	...DisabledProps,
 	...UnselectableProps,
+	legendLabel: { type: String },
 	/**
 	 * String or String[] of css classes (modifiers) that will be provided to each button'
 	 */

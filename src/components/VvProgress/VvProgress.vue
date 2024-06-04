@@ -23,7 +23,6 @@
 
 <template>
 	<progress
-		role="progressbar"
 		v-bind="{
 			class: bemCssClasses,
 			ariaLabel,

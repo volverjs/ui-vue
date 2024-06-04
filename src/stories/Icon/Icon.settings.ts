@@ -1,6 +1,7 @@
 import { VvIconPropsDefaults } from '@/components/VvIcon'
 import normal from '@/assets/icons/normal.json'
 import { ModifiersArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	...VvIconPropsDefaults,
@@ -8,7 +9,7 @@ export const defaultArgs = {
 	width: 48,
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	name: {
 		options: Object.keys(normal.icons),
 		control: {

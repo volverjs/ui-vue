@@ -11,12 +11,8 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 		return
 	}
 
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
+	const value = await within(canvasElement).findByTestId('value')
 	const dropdown = element.getElementsByClassName(
 		'vv-dropdown',
 	)[0] as HTMLElement

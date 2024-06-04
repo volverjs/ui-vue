@@ -3,13 +3,15 @@ import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue
 import { defaultTest } from './AccordionGroup.test'
 import { defaultArgs, argTypes } from './AccordionGroup.settings'
 
-export default {
+const meta: Meta<typeof VvAccordionGroup> = {
 	title: 'Components/AccordionGroup',
 	component: VvAccordionGroup,
 	args: defaultArgs,
 	argTypes,
 	tags: ['autodocs'],
-} as Meta<typeof VvAccordionGroup>
+}
+
+export default meta
 
 export type Story = StoryObj<typeof VvAccordionGroup>
 

@@ -5,12 +5,8 @@ import { within } from '@storybook/test'
 import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
+	const value = await within(canvasElement).findByTestId('value')
 	const radio = element.getElementsByClassName('vv-radio')[0]
 	const input = radio.getElementsByTagName('input')[0]
 	const hint = element.getElementsByClassName('vv-radio-group__hint')[0]

@@ -247,7 +247,7 @@
 
 	const hasValue = computed(() => {
 		return selectedOptions.value
-			.map((option) => getOptionLabel(option))
+			.map((option: string | Option) => getOptionLabel(option))
 			.join(props.separator)
 	})
 
@@ -434,6 +434,7 @@
 							v-bind="aria"
 							class="vv-select__input"
 							role="combobox"
+							:aria-controls="hasDropdownId"
 							:aria-expanded="expanded"
 							:aria-labelledby="hasLabelId"
 							:aria-describedby="

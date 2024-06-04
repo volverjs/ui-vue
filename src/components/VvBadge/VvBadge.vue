@@ -13,7 +13,7 @@
 </script>
 
 <template>
-	<span :class="bemCssClasses" role="status">
+	<span :class="bemCssClasses">
 		<!-- @slot Default slot -->
 		<slot>{{ value }}</slot>
 	</span>

@@ -18,7 +18,7 @@ type Story = StoryObj<typeof VvBadge>
 export const Default: Story = {
 	args: {
 		...defaultArgs,
-		value: 14
+		value: 14,
 	},
 	render: (args) => ({
 		components: { VvBadge },
@@ -26,7 +26,7 @@ export const Default: Story = {
 			return { args }
 		},
 		template: /*html*/ `
-			<vv-badge v-bind="args">
+			<vv-badge v-bind="args" data-testId="element">
 				<template #default v-if="args.default"><span v-html="args.default"></span></template>	
 			</vv-badge>
 		`,

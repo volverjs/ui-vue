@@ -11,7 +11,7 @@
 
 <template>
 	<li class="vv-nav__item" role="presentation">
-		<VvAction v-bind="$attrs" class="vv-nav__item-label">
+		<VvAction v-bind="$attrs" class="vv-nav__item-label" role="menuitem">
 			<slot />
 		</VvAction>
 	</li>

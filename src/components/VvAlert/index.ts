@@ -138,18 +138,18 @@ export const useVvAlert = (
 
 	// listeners
 	const isMouseover = ref(false)
-	const onMouseover = withModifiers(() => {
+	const onMouseover = () => {
 		isMouseover.value = true
 		if (timeout) {
 			clearTimeout(timeout)
 		}
-	}, ['passive'])
-	const onMouseleave = withModifiers(() => {
+	}
+	const onMouseleave = () => {
 		isMouseover.value = false
 		if (props.autoClose > 0) {
 			timeout = setTimeout(close, props.autoClose)
 		}
-	}, ['passive'])
+	}
 
 	return {
 		close,

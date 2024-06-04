@@ -4,12 +4,8 @@ import { sleep } from '@/test/sleep'
 import { within, userEvent } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
+	const value = await within(canvasElement).findByTestId('value')
 	const textarea = element.getElementsByTagName('textarea')[0]
 	const hint = element.getElementsByClassName('vv-textarea__hint')[0]
 

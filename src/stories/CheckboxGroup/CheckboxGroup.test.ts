@@ -5,12 +5,8 @@ import { within } from '@storybook/test'
 import { getOptionValue } from '@/test/options'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
+	const value = await within(canvasElement).findByTestId('value')
 	const checkbox = element.getElementsByClassName('vv-checkbox')[0]
 	const input = checkbox.getElementsByTagName('input')[0]
 	const hint = element.getElementsByClassName('vv-checkbox-group__hint')[0]

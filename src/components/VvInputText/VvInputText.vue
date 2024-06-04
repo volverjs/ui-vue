@@ -67,6 +67,7 @@
 	)
 
 	// mask
+	const NEGATIVE_ZERO_REGEX = /^-0?[.,]?[0*]?$/
 	const maskReady = ref(false)
 	const { el, mask, typed, masked, unmasked } = useIMask(
 		computed(
@@ -83,7 +84,7 @@
 				}
 				emit('update:masked', masked.value)
 				if (type.value === INPUT_TYPES.NUMBER) {
-					if (masked.value === '') {
+					if (/^-$|^$/.test(unmasked.value)) {
 						if (
 							localModelValue.value === null ||
 							localModelValue.value === undefined
@@ -91,6 +92,10 @@
 							return
 						}
 						localModelValue.value = undefined
+						return
+					}
+					if (NEGATIVE_ZERO_REGEX.test(unmasked.value)) {
+						localModelValue.value = 0
 						return
 					}
 					if (typeof typed.value !== 'number') {
@@ -168,6 +173,13 @@
 			}
 			if (iMask.value?.mask === Date) {
 				typed.value = new Date(newValue)
+				return
+			}
+			if (
+				type.value === INPUT_TYPES.NUMBER &&
+				NEGATIVE_ZERO_REGEX.test(unmasked.value) &&
+				newValue === 0
+			) {
 				return
 			}
 			typed.value = newValue
@@ -432,12 +444,11 @@
 			type === INPUT_TYPES.NUMBER
 		) {
 			let max = props.max
-			if(type === INPUT_TYPES.DATE && !max) {
+			if (type === INPUT_TYPES.DATE && !max) {
 				max = '9999-12-31'
 			}
 			toReturn.step = props.step
-			toReturn.max =
-				max !== undefined ? String(max) : undefined
+			toReturn.max = max !== undefined ? String(max) : undefined
 			toReturn.min =
 				props.min !== undefined ? String(props.min) : undefined
 		}

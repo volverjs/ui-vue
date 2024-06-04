@@ -1,4 +1,5 @@
 import { CheckboxRadioArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	name: 'checkbox',
@@ -14,13 +15,14 @@ export const defaultArgs = {
 	uncheckedValue: undefined,
 }
 
-export const argTypes = {
+// @ts-ignore
+export const argTypes: ArgTypes = {
 	...CheckboxRadioArgTypes,
 	indeterminate: {
 		description: 'If true, the input will be indeterminated',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -34,7 +36,7 @@ export const argTypes = {
 		description: 'If true, the input will be displayed as a switch.',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},

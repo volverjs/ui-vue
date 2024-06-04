@@ -1,5 +1,5 @@
 import type { VvCombobox } from '@/components'
-import type { Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3'
 import {
 	ValidArgTypes,
 	InvalidArgTypes,
@@ -48,7 +48,7 @@ export const defaultArgs: Meta<typeof VvCombobox>['args'] = {
 	strategy: 'fixed',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	...TabindexArgTypes,
 	...ValidArgTypes,
 	...InvalidArgTypes,
@@ -66,7 +66,7 @@ export const argTypes = {
 		...DropdownArgTypes.triggerWidth,
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: 'true',
 			},
 		},
 	},
@@ -75,7 +75,7 @@ export const argTypes = {
 			' This Boolean attribute indicates that multiple options can be selected in the list.',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -183,7 +183,7 @@ export const argTypes = {
 		description: 'Enable search in options',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -235,7 +235,7 @@ export const argTypes = {
 		description: 'Show native select',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -243,7 +243,7 @@ export const argTypes = {
 		description: 'Show badges for selected values',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -284,7 +284,7 @@ export const argTypes = {
 		description: 'Open dropdown on focus',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -292,7 +292,7 @@ export const argTypes = {
 		description: 'Keep open dropdown on signle select',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -300,7 +300,7 @@ export const argTypes = {
 		description: 'Autofocus first option on open dropdown',
 		table: {
 			defaultValue: {
-				summary: true,
+				summary: 'true',
 			},
 		},
 	},

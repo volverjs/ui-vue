@@ -1,10 +1,11 @@
 import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
+import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
 	modifiers: [],
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	value: {
 		control: { type: 'text' },
 	},

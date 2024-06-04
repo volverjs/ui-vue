@@ -1,3 +1,4 @@
+import type { ArgTypes } from '@storybook/vue3'
 import { ModifiersArgTypes } from '../argTypes'
 
 export const defaultArgs = {
@@ -28,7 +29,8 @@ export const defaultArgs = {
 	stack: false,
 	reverse: false,
 }
-export const argTypes = {
+
+export const argTypes: ArgTypes = {
 	name: {
 		description: 'The alert group name',
 	},

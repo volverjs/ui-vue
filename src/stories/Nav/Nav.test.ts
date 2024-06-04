@@ -3,13 +3,11 @@ import { expect } from '@/test/expect'
 import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
+	const element = await within(canvasElement).findByTestId('element')
 
 	const menuEl = element.getElementsByClassName('vv-nav__menu')[0]
 
-	if (!args.items || !args.items?.length) {
+	if (!args.items?.length) {
 		throw new Error('No items passed')
 	}
 

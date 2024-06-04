@@ -4,15 +4,9 @@ import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = (await within(canvasElement).findByTestId(
-		'element',
-	)) as HTMLElement
-	const value = (await within(canvasElement).findByTestId(
-		'value',
-	)) as HTMLElement
-	const select = element.getElementsByTagName(
-		'select',
-	)[0] as HTMLSelectElement
+	const element = await within(canvasElement).findByTestId('element')
+	const value = await within(canvasElement).findByTestId('value')
+	const select = element.getElementsByTagName('select')[0]
 	const hint = element.getElementsByClassName('vv-select__hint')[0]
 
 	const { getOptionValue } = useOptions(args)

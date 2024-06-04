@@ -1,7 +1,6 @@
-import type { Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3'
 import type { VvAlert } from '@/components'
-import { IconArgTypes } from '../argTypes'
-import { ModifiersArgTypes } from '../argTypes'
+import { IconArgTypes, ModifiersArgTypes } from '../argTypes'
 
 export const defaultArgs: Meta<typeof VvAlert>['args'] = {
 	title: 'Alert title!',
@@ -11,7 +10,7 @@ export const defaultArgs: Meta<typeof VvAlert>['args'] = {
 	role: 'alert',
 }
 
-export const argTypes = {
+export const argTypes: ArgTypes = {
 	title: {
 		description: 'The alert title',
 	},
@@ -23,7 +22,7 @@ export const argTypes = {
 		control: 'boolean',
 		table: {
 			defaultValue: {
-				summary: false,
+				summary: 'false',
 			},
 		},
 	},
@@ -32,7 +31,7 @@ export const argTypes = {
 		control: 'number',
 		table: {
 			defaultValue: {
-				summary: 0,
+				summary: '0',
 			},
 		},
 	},
@@ -55,7 +54,9 @@ export const argTypes = {
 		control: 'radio',
 		options: ['alert', 'alertdialog'],
 		table: {
-			defaultValue: 'alert',
+			defaultValue: {
+				summary: 'alert',
+			},
 		},
 	},
 	// slots
