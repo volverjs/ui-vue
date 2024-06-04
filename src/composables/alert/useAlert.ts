@@ -6,7 +6,7 @@ import {
 	DEFAULT_ALERT_INFO_ICON,
 	DefaultAlertIconMap,
 } from '@/constants'
-import type { Alert, AlertModifier } from '@/types/alert'
+import type { Alert } from '@/types/alert'
 
 type AlertInGroup = Alert & { timestamp: number; group: string }
 
@@ -59,8 +59,8 @@ export const useAlert = () => {
 
 		if (!icon) {
 			const alertModifier = normalizedModifiers.find((modifier) =>
-				DefaultAlertIconMap.has(modifier as AlertModifier),
-			) as AlertModifier | undefined
+				DefaultAlertIconMap.has(modifier),
+			)
 
 			if (alertModifier) {
 				icon = DefaultAlertIconMap.get(alertModifier) as string

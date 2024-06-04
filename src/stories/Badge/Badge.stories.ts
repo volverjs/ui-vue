@@ -26,7 +26,7 @@ export const Default: Story = {
 			return { args }
 		},
 		template: /*html*/ `
-			<vv-badge v-bind="args">
+			<vv-badge v-bind="args" data-testId="element">
 				<template #default v-if="args.default"><span v-html="args.default"></span></template>	
 			</vv-badge>
 		`,
