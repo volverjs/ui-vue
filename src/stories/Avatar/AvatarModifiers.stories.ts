@@ -94,8 +94,7 @@ export const CustomColor: Story = {
 		...argTypes,
 		modifiers: {
 			...argTypes.modifiers,
-			//@ts-ignore
-			options: [...argTypes.modifiers.options, 'accent'],
+			options: [...(argTypes.modifiers.options ?? []), 'accent'],
 		},
 	},
 }

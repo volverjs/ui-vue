@@ -1,5 +1,4 @@
-export default {
-	root: true,
+module.exports = {
 	extends: [
 		'./.eslintrc-auto-import.json',
 		'plugin:vue/vue3-recommended',
@@ -24,14 +23,5 @@ export default {
 			files: '*.mdx',
 			extends: 'plugin:mdx/recommended',
 		},
-	],
-	ignore: [
-		'node_modules',
-		'.eslintrc.js',
-		'.vscode',
-		'dist',
-		'storybook-static',
-		'vendor',
-		'bin',
 	],
 }

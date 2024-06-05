@@ -49,7 +49,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: github-pages
             - name: Deploy to GitHub Pages
@@ -62,10 +62,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: package
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v4
               with:
                   node-version: 20
                   registry-url: https://registry.npmjs.org/
@@ -82,10 +82,10 @@ jobs:
             packages: write
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: package
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v4
               with:
                   node-version: 20
                   registry-url: https://npm.pkg.github.com/

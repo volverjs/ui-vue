@@ -7,7 +7,6 @@ const meta: Meta<typeof VvAvatarGroup> = {
 	title: 'Components/AvatarGroup/Modifiers',
 	component: VvAvatarGroup,
 	args: defaultArgs,
-	// @ts-ignore
 	argTypes,
 }
 

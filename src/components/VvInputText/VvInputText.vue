@@ -165,7 +165,7 @@
 		},
 	)
 	const updateMaskValue = (newValue: string | number | undefined) => {
-		if (iMask) {
+		if (iMask?.value) {
 			if (newValue === undefined) {
 				typed.value = ''
 				unmasked.value = ''
