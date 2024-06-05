@@ -23,7 +23,6 @@ export const defaultArgs: Meta<typeof VvButton>['args'] = {
 	icon: undefined,
 }
 
-// @ts-ignore
 export const argTypes: ArgTypes = {
 	modifiers: {
 		...ModifiersArgTypes.modifiers,

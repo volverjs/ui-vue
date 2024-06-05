@@ -15,7 +15,6 @@ export const defaultArgs = {
 	uncheckedValue: undefined,
 }
 
-// @ts-ignore
 export const argTypes: ArgTypes = {
 	...CheckboxRadioArgTypes,
 	indeterminate: {

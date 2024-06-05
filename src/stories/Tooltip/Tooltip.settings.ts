@@ -7,7 +7,6 @@ export const defaultArgs = {
 	value: "I'm a tooltip",
 }
 
-// @ts-ignore
 export const argTypes: ArgTypes = {
 	...ModifiersArgTypes,
 	...DefaultSlotArgTypes,

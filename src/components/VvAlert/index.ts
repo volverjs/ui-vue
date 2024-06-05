@@ -1,4 +1,4 @@
-import { type ExtractPropTypes, type PropType, withModifiers } from 'vue'
+import { type ExtractPropTypes, type PropType } from 'vue'
 import { AlertRole } from '@/constants'
 import { IconProps, IdProps } from '@/props'
 import type { AlertModifier } from '@/types'

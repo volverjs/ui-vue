@@ -7,13 +7,12 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
-            - uses: pnpm/action-setup@v2.2.4
-              with:
-                  version: 7
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
 
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'pnpm'
@@ -30,10 +29,10 @@ jobs:
               run: pnpm styleguide
 
             - name: Setup GitHub Pages
-              uses: actions/configure-pages@v2
+              uses: actions/configure-pages@v5
 
             - name: Upload styleguide
-              uses: actions/upload-pages-artifact@v1
+              uses: actions/upload-pages-artifact@v3
               with:
                   name: 'github-pages'
                   path: './storybook-static'

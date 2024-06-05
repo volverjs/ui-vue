@@ -12,7 +12,6 @@ export const defaultArgs = {
 	modifiers: [],
 }
 
-// @ts-ignore
 export const argTypes: ArgTypes = {
 	modelValue: {
 		table: {
