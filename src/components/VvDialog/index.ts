@@ -4,14 +4,14 @@ export const VvDialogEvents = [
     'open',
     'close',
     'update:modelValue',
-    'before-enter',
-    'after-leave',
+    'beforeEnter',
+    'afterLeave',
     'enter',
-    'after-enter',
-    'enter-cancelled',
-    'before-leave',
+    'afterEnter',
+    'enterCancelled',
+    'beforeLeave',
     'leave',
-    'leave-cancelled',
+    'leaveCancelled',
 ]
 
 export const VvDialogProps = {
