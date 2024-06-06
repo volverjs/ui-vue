@@ -40,14 +40,14 @@ export const VvAlertGroupProps = {
 
 export const VvAlertGroupEvents = [
     'close',
-    'before-enter',
-    'after-leave',
+    'beforeEnter',
+    'afterLeave',
     'enter',
-    'after-enter',
-    'enter-cancelled',
-    'before-leave',
+    'afterEnter',
+    'enterCancelled',
+    'beforeLeave',
     'leave',
-    'leave-cancelled',
+    'leaveCancelled',
 ]
 
 export function useVvAlertGroup(props: Readonly<ExtractPropTypes<typeof VvAlertGroupProps>>,	emit: (event: string, ...args: unknown[]) => void) {
