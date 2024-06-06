@@ -1,91 +1,90 @@
+import type { ArgTypes } from '@storybook/vue3'
 import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvTextareaProps } from '@/components/VvTextarea'
-import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
-	...propsToObject(VvTextareaProps),
-	name: 'vv-textarea',
-	label: 'Textarea label',
-	placeholder: 'Textarea placeholder',
-	minlength: undefined,
-	maxlength: undefined,
+    ...propsToObject(VvTextareaProps),
+    name: 'vv-textarea',
+    label: 'Textarea label',
+    placeholder: 'Textarea placeholder',
+    minlength: undefined,
+    maxlength: undefined,
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error to be fixed
 export const argTypes: ArgTypes = {
-	...InputTextareaArgTypes,
-	...HintArgTypes,
-	cols: {
-		description:
+    ...InputTextareaArgTypes,
+    ...HintArgTypes,
+    cols: {
+        description:
 			'The visible width of the text control, in average character widths. If it is specified, it must be a positive integer. If it is not specified, the default value is 20.',
-		control: {
-			type: 'number',
-		},
-		table: {
-			defaultValue: {
-				summary: '20',
-			},
-		},
-	},
-	rows: {
-		description:
+        control: {
+            type: 'number',
+        },
+        table: {
+            defaultValue: {
+                summary: '20',
+            },
+        },
+    },
+    rows: {
+        description:
 			'The number of visible text lines for the control. If it is specified, it must be a positive integer. If it is not specified, the default value is 2.',
-		control: {
-			type: 'number',
-		},
-		table: {
-			defaultValue: {
-				summary: '2',
-			},
-		},
-	},
-	wrap: {
-		description:
+        control: {
+            type: 'number',
+        },
+        table: {
+            defaultValue: {
+                summary: '2',
+            },
+        },
+    },
+    wrap: {
+        description:
 			'Indicates how the control should wrap the value for form submission.',
-		options: ['hard', 'soft', 'off'],
-		control: {
-			type: 'check',
-		},
-		table: {
-			defaultValue: {
-				summary: 'soft',
-			},
-		},
-	},
-	spellcheck: {
-		description:
+        options: ['hard', 'soft', 'off'],
+        control: {
+            type: 'check',
+        },
+        table: {
+            defaultValue: {
+                summary: 'soft',
+            },
+        },
+    },
+    spellcheck: {
+        description:
 			'Specifies whether the textarea is subject to spell checking by the underlying browser/OS. ',
-		options: [true, false, 'default'],
-		control: {
-			type: 'check',
-		},
-		table: {
-			defaultValue: {
-				summary: 'default',
-			},
-		},
-	},
-	before: {
-		control: {
-			type: 'text',
-		},
-		table: {
-			category: 'Slots',
-			type: {
-				summary: 'html',
-			},
-		},
-	},
-	after: {
-		control: {
-			type: 'text',
-		},
-		table: {
-			category: 'Slots',
-			type: {
-				summary: 'html',
-			},
-		},
-	},
+        options: [true, false, 'default'],
+        control: {
+            type: 'check',
+        },
+        table: {
+            defaultValue: {
+                summary: 'default',
+            },
+        },
+    },
+    before: {
+        control: {
+            type: 'text',
+        },
+        table: {
+            category: 'Slots',
+            type: {
+                summary: 'html',
+            },
+        },
+    },
+    after: {
+        control: {
+            type: 'text',
+        },
+        table: {
+            category: 'Slots',
+            type: {
+                summary: 'html',
+            },
+        },
+    },
 }

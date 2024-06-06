@@ -1,5 +1,6 @@
 import { uid } from 'uid'
 import type { Ref } from 'vue'
 
-export const useUniqueId = (id?: Ref<string | number | undefined>) =>
-	computed(() => String(id?.value || uid()))
+export function useUniqueId(id?: Ref<string | number | undefined>) {
+    return computed(() => String(id?.value || uid()))
+}

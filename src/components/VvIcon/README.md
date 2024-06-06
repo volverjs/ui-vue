@@ -47,7 +47,7 @@ Launch the script `generate-icons --srcPath=assets/icons/custom` to generate the
 import customIcons from '@/assets/icons/custom.json'
 
 app.use(VolverPlugin, {
-  iconsCollections: [customIcons]
+    iconsCollections: [customIcons]
 })
 ```
 

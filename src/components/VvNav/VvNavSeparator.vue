@@ -1,11 +1,11 @@
 <script lang="ts">
-	export default {
-		name: 'VvNavSeparator',
-	}
+export default {
+    name: 'VvNavSeparator',
+}
 </script>
 
 <template>
-	<li class="vv-nav__separator" role="separator">
-		<slot />
-	</li>
+    <li class="vv-nav__separator" role="separator">
+        <slot />
+    </li>
 </template>

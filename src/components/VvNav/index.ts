@@ -1,8 +1,8 @@
 import { ModifiersProps, NavProps } from '@/props'
 
 export const VvNavProps = {
-	...ModifiersProps,
-	...NavProps,
+    ...ModifiersProps,
+    ...NavProps,
 }
 
 export const VvNavEvents = ['click']

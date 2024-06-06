@@ -7,9 +7,8 @@ import type { Emitter } from 'mitt'
 export function useProvideGroupState<
 	TGroupState extends Record<
 		string,
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		Ref<unknown> | Emitter<any>
 	>,
 >(key: InjectionKey<TGroupState>, groupState: TGroupState) {
-	provide(key, groupState)
+    provide(key, groupState)
 }

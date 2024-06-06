@@ -7,17 +7,17 @@ import { INJECTION_KEY_ALERT_GROUP } from '@/constants'
  * @param {Ref<string | undefined>} name the alert group name
  */
 export function useProvideAlertGroup({
-	name,
+    name,
 }: {
-	name: Ref<string | undefined>
+    name: Ref<string | undefined>
 }) {
-	const bus = mitt<{
-		close: string
-	}>()
-	provide(INJECTION_KEY_ALERT_GROUP, {
-		name,
-		bus,
-	})
+    const bus = mitt<{
+        close: string
+    }>()
+    provide(INJECTION_KEY_ALERT_GROUP, {
+        name,
+        bus,
+    })
 
-	return bus
+    return bus
 }

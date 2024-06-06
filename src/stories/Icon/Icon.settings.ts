@@ -1,73 +1,73 @@
+import type { ArgTypes } from '@storybook/vue3'
 import { VvIconPropsDefaults } from '@/components/VvIcon'
 import normal from '@/assets/icons/normal.json'
 import { ModifiersArgTypes } from '@/stories/argTypes'
-import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
-	...VvIconPropsDefaults,
-	name: 'add-circle',
-	width: 48,
+    ...VvIconPropsDefaults,
+    name: 'add-circle',
+    width: 48,
 }
 
 export const argTypes: ArgTypes = {
-	name: {
-		options: Object.keys(normal.icons),
-		control: {
-			type: 'select',
-		},
-	},
-	mode: {
-		options: ['style', 'bg', 'mask', 'svg'],
-		control: {
-			type: 'select',
-		},
-	},
-	src: {
-		description: 'Url remote SVG icon',
-		control: {
-			type: 'text',
-		},
-		table: {
-			type: {
-				summary: 'url',
-			},
-		},
-	},
-	svg: {
-		description: 'Svg icon string',
-		control: {
-			type: 'text',
-		},
-		table: {
-			type: {
-				summary: 'xml',
-			},
-		},
-	},
-	prefix: {
-		options: ['simple', 'normal', 'detailed'],
-		control: {
-			type: 'select',
-		},
-		table: {
-			defaultValue: {
-				summary: 'normal',
-			},
-		},
-	},
-	flip: {
-		options: ['', 'vertical', 'horizontal'],
-		control: {
-			type: 'radio',
-		},
-	},
-	onLoad: {
-		description: 'A callback that is called when icon data has been loaded',
-		table: {
-			type: {
-				summary: 'function',
-			},
-		},
-	},
-	...ModifiersArgTypes,
+    name: {
+        options: Object.keys(normal.icons),
+        control: {
+            type: 'select',
+        },
+    },
+    mode: {
+        options: ['style', 'bg', 'mask', 'svg'],
+        control: {
+            type: 'select',
+        },
+    },
+    src: {
+        description: 'Url remote SVG icon',
+        control: {
+            type: 'text',
+        },
+        table: {
+            type: {
+                summary: 'url',
+            },
+        },
+    },
+    svg: {
+        description: 'Svg icon string',
+        control: {
+            type: 'text',
+        },
+        table: {
+            type: {
+                summary: 'xml',
+            },
+        },
+    },
+    prefix: {
+        options: ['simple', 'normal', 'detailed'],
+        control: {
+            type: 'select',
+        },
+        table: {
+            defaultValue: {
+                summary: 'normal',
+            },
+        },
+    },
+    flip: {
+        options: ['', 'vertical', 'horizontal'],
+        control: {
+            type: 'radio',
+        },
+    },
+    onLoad: {
+        description: 'A callback that is called when icon data has been loaded',
+        table: {
+            type: {
+                summary: 'function',
+            },
+        },
+    },
+    ...ModifiersArgTypes,
 }

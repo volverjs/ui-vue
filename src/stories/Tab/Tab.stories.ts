@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import VvTab from '@/components/VvTab/VvTab.vue'
 import { defaultArgs, defaultArgTypes } from './Tab.settings'
 import { defaultTest } from './Tab.test'
+import VvTab from '@/components/VvTab/VvTab.vue'
 
 const meta: Meta<typeof VvTab> = {
-	title: 'Components/Tab',
-	component: VvTab,
-	args: defaultArgs,
-	argTypes: defaultArgTypes,
-	tags: ['autodocs'],
+    title: 'Components/Tab',
+    component: VvTab,
+    args: defaultArgs,
+    argTypes: defaultArgTypes,
+    tags: ['autodocs'],
 }
 
 export default meta
@@ -16,15 +16,15 @@ export default meta
 type Story = StoryObj<typeof VvTab>
 
 export const Default: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvTab },
-		setup() {
-			return { args }
-		},
-		template: /* html */ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvTab },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
 			<div class="m-md w-1/2">
 				<vv-tab v-bind="args" data-testId="element">
 					<template #panel::tab-1>
@@ -65,6 +65,6 @@ export const Default: Story = {
 					</template>
 				</vv-tab>
 			</div>`,
-	}),
-	play: defaultTest,
+    }),
+    play: defaultTest,
 }

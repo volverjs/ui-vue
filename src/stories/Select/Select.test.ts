@@ -1,79 +1,80 @@
-import type { PlayAttributes } from '@/test/types'
 import { within } from '@storybook/test'
+import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
-	const element = await within(canvasElement).findByTestId('element')
-	const value = await within(canvasElement).findByTestId('value')
-	const select = element.getElementsByTagName('select')[0]
-	const hint = element.getElementsByClassName('vv-select__hint')[0]
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const select = element.getElementsByTagName('select')[0]
+    const hint = element.getElementsByClassName('vv-select__hint')[0]
 
-	const { getOptionValue } = useOptions(args)
+    const { getOptionValue } = useOptions(args)
 
-	if (
-		!args.invalid &&
-		!args.disabled &&
-		!args.readonly &&
-		args.options &&
-		args.options.length > 0
-	) {
-		// select first value
-		const firstValue = getOptionValue(
-			args.options[0].options?.[0] ?? args.options[0],
-		)
-		select.value = firstValue
-		select.dispatchEvent(new Event('change'))
-		await sleep()
-		if (args.multiple) {
-			await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
-		} else {
-			await expect(value.innerHTML).toEqual(firstValue)
-		}
-	}
+    if (
+        !args.invalid
+        && !args.disabled
+        && !args.readonly
+        && args.options
+        && args.options.length > 0
+    ) {
+        // select first value
+        const firstValue = getOptionValue(
+            args.options[0].options?.[0] ?? args.options[0],
+        )
+        select.value = firstValue
+        select.dispatchEvent(new Event('change'))
+        await sleep()
+        if (args.multiple) {
+            await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
+        }
+        else {
+            await expect(value.innerHTML).toEqual(firstValue)
+        }
+    }
 
-	// disabled
-	if (args.disabled) {
-		await expect(element).toHaveClass('vv-select--disabled')
-		await expect(select).toHaveProperty('disabled')
-		await expect(select).not.toBeClicked()
-	}
+    // disabled
+    if (args.disabled) {
+        await expect(element).toHaveClass('vv-select--disabled')
+        await expect(select).toHaveProperty('disabled')
+        await expect(select).not.toBeClicked()
+    }
 
-	// readonly
-	if (args.readonly) {
-		await expect(element).toHaveClass('vv-select--readonly')
-		await expect(select).toHaveProperty('disabled')
-		await expect(select).not.toBeClicked()
-	}
+    // readonly
+    if (args.readonly) {
+        await expect(element).toHaveClass('vv-select--readonly')
+        await expect(select).toHaveProperty('disabled')
+        await expect(select).not.toBeClicked()
+    }
 
-	// invalid
-	if (args.invalid) {
-		await expect(element).toHaveClass('vv-select--invalid')
-		await expect(select).toHaveProperty('ariaInvalid')
-		if (args.invalidLabel) {
-			await expect(hint.innerHTML).toEqual(args.invalidLabel)
-		}
-	}
+    // invalid
+    if (args.invalid) {
+        await expect(element).toHaveClass('vv-select--invalid')
+        await expect(select).toHaveProperty('ariaInvalid')
+        if (args.invalidLabel) {
+            await expect(hint.innerHTML).toEqual(args.invalidLabel)
+        }
+    }
 
-	// valid
-	if (args.valid) {
-		await expect(element).toHaveClass('vv-select--valid')
-		await expect(select).toHaveProperty('ariaInvalid', 'false')
-		if (args.validLabel) {
-			await expect(hint.innerHTML).toEqual(args.validLabel)
-		}
-	}
+    // valid
+    if (args.valid) {
+        await expect(element).toHaveClass('vv-select--valid')
+        await expect(select).toHaveProperty('ariaInvalid', 'false')
+        if (args.validLabel) {
+            await expect(hint.innerHTML).toEqual(args.validLabel)
+        }
+    }
 
-	// loading
-	if (args.loading) {
-		await expect(element).toHaveClass('vv-select--loading')
-	}
+    // loading
+    if (args.loading) {
+        await expect(element).toHaveClass('vv-select--loading')
+    }
 
-	// hint
-	if (args.hintLabel) {
-		await expect(hint.innerHTML).toEqual(args.hintLabel)
-	}
+    // hint
+    if (args.hintLabel) {
+        await expect(hint.innerHTML).toEqual(args.hintLabel)
+    }
 
-	// check accessibility
-	await expect(element).toHaveNoViolations()
+    // check accessibility
+    await expect(element).toHaveNoViolations()
 }

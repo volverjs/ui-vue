@@ -1,9 +1,9 @@
 {
-  "extends": ["@tsconfig/node18/tsconfig.json", "@vue/tsconfig/tsconfig.json"],
-  "include": ["vite.config.*", "vitest.config.*", "scripts/**/*.ts"],
-  "compilerOptions": {
-    "composite": true,
-    "noEmit": false,
-    "types": ["node", "vite/client"]
-  }
+    "extends": ["@tsconfig/node18/tsconfig.json", "@vue/tsconfig/tsconfig.json"],
+    "compilerOptions": {
+        "composite": true,
+        "types": ["node", "vite/client"],
+        "noEmit": false
+    },
+    "include": ["vite.config.*", "vitest.config.*", "scripts/**/*.ts"]
 }

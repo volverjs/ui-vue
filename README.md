@@ -1,5 +1,5 @@
 <div align="center">
-  
+
 [![volverjs](.storybook/static/volverjs-ui-vue.svg)](https://volverjs.github.io/ui-vue)
 
 ## @volverjs/ui-vue
@@ -46,12 +46,12 @@ Install the plugin in your `main.ts` file.
 ```typescript
 // main.ts
 import { createApp } from 'vue'
-import App from './App.vue'
 
 // import @volverjs/ui-vue plugin
 import { VolverPlugin } from '@volverjs/ui-vue'
 // import @volverjs/ui-vue icons collections
 import iconsCollections from '@volverjs/ui-vue/icons'
+import App from './App.vue'
 /*
  * import @volverjs/style base style with reset and props
  * for scss support you can import the scss file
@@ -63,28 +63,28 @@ const app = createApp(App).mount('#app')
 
 // install the plugin
 app.use(VolverPlugin, {
-  iconsCollections,
-  /*
+    iconsCollections,
+    /*
    * if you want can import components globally
    * components: { VvButton, VvInputText }
    */
-  components: undefined,
-  /*
+    components: undefined,
+    /*
    * if you want can import directives globally
    * directives: { toolip: VTooltip }
    */
-  directives: undefined,
-  /*
+    directives: undefined,
+    /*
    * if you want can create components aliases
    * aliases: { Btn: VvButton, BtnDanger: VvButton}
    */
-  aliases: undefined,
-  /*
+    aliases: undefined,
+    /*
    * if you want can change default props
    * for globally imported components and aliases
    * defaults: { VvButton: { modifiers: 'secondary', BtnDanger: { modifiers: 'danger' } }
    */
-  defaults: undefined
+    defaults: undefined
 })
 ```
 
@@ -129,32 +129,32 @@ import Components from 'unplugin-vue-components/vite'
 import { VolverResolver } from '@volverjs/ui-vue/resolvers/unplugin'
 
 export default defineConfig({
-  // ...
-  plugins: [
     // ...
-    Components({
-      resolvers: [
-        VolverResolver({
-          /*
+    plugins: [
+    // ...
+        Components({
+            resolvers: [
+                VolverResolver({
+                    /*
            * enable/disable auto import of components style
            * also accept 'scss' for scss support
            * default: false
            */
-          importStyle: false,
-          /*
+                    importStyle: false,
+                    /*
            * enable/disable auto import of directives
            * default: false
            */
-          directives: false,
-          /*
+                    directives: false,
+                    /*
            * Change components prefix
            * default: 'vv'
            */
-          prefix: 'vv'
+                    prefix: 'vv'
+                })
+            ]
         })
-      ]
-    })
-  ]
+    ]
 })
 ```
 
@@ -168,27 +168,27 @@ Used to show alert messages and notifications
 
 ```typescript
 export type AlertModifier =
-  | 'success'
-  | 'info'
-  | 'warning'
-  | 'danger'
-  | 'brand'
-  | 'accent'
-  | string
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'brand'
+    | 'accent'
+    | string
 ```
 
 ```typescript
 export type Alert = {
-  id: string | number
-  title?: string
-  icon?: string | VvIconProps
-  content?: string
-  footer?: string
-  modifiers?: AlertModifier | AlertModifier[]
-  dismissable?: boolean
-  autoClose?: number
-  closeLabel?: string
-  role?: AlertRole
+    id: string | number
+    title?: string
+    icon?: string | VvIconProps
+    content?: string
+    footer?: string
+    modifiers?: AlertModifier | AlertModifier[]
+    dismissable?: boolean
+    autoClose?: number
+    closeLabel?: string
+    role?: AlertRole
 }
 ```
 
@@ -200,10 +200,10 @@ import { useAlert } from '@volverjs/ui-vue/composables'
 const { addAlert, removeAlert, alerts } = useAlert()
 
 function showSuccess() {
-  addAlert({
-    title: 'Success!',
-    modifiers: 'success'
-  })
+    addAlert({
+        title: 'Success!',
+        modifiers: 'success'
+    })
 }
 ```
 
@@ -240,41 +240,42 @@ const imageUrl = ref('')
 const image = ref()
 
 watch(
-  file,
-  async (newValue) => {
-    if (newValue?.size) {
-      this.imageUrl = URL.createObjectURL(newValue)
-      this.image = await this.loadImage(this.imageUrl)
-      this.blurhash = await this.encode(newValue)
-    } else {
-      this.image = null
-      this.imageUrl = ''
-      this.blurhash = ''
-    }
-  },
-  { immediate: true }
+    file,
+    async (newValue) => {
+        if (newValue?.size) {
+            this.imageUrl = URL.createObjectURL(newValue)
+            this.image = await this.loadImage(this.imageUrl)
+            this.blurhash = await this.encode(newValue)
+        }
+        else {
+            this.image = null
+            this.imageUrl = ''
+            this.blurhash = ''
+        }
+    },
+    { immediate: true }
 )
 
 watch(blurhash, async (newValue) => {
-  if (this.image) {
-    const blurhashDecoded = await this.decode(
-      newValue,
-      this.image.width,
-      this.image.height
-    )
+    if (this.image) {
+        const blurhashDecoded = await this.decode(
+            newValue,
+            this.image.width,
+            this.image.height
+        )
 
-    if (this.canvas) {
-      this.canvas.width = this.image.width
-      this.canvas.height = this.image.height
-      const ctx = this.canvas.getContext('2d')
-      const imageData = ctx.createImageData(
-        this.canvas.width,
-        this.canvas.height
-      )
-      imageData.data.set(blurhashDecoded)
-      ctx.putImageData(imageData, 0, 0)
+        if (this.canvas) {
+            this.canvas.width = this.image.width
+            this.canvas.height = this.image.height
+            const ctx = this.canvas.getContext('2d')
+            const imageData = ctx.createImageData(
+                this.canvas.width,
+                this.canvas.height
+            )
+            imageData.data.set(blurhashDecoded)
+            ctx.putImageData(imageData, 0, 0)
+        }
     }
-  }
 })
 ```
 

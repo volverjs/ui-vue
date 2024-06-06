@@ -32,7 +32,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -44,7 +43,6 @@ https://github.com/iconify/tools
 ### License
 There is no license specified in this repository. Please visit the source and contact the repository's owners to find out more.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -55,7 +53,6 @@ https://github.com/iconify/iconify
 
 ### License
 There is no license specified in this repository. Please visit the source and contact the repository's owners to find out more.
-
 
 -------------------------------------------------------------------------------
 
@@ -88,7 +85,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -120,7 +116,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -131,7 +126,6 @@ https://github.com/woltapp/blurhash/tree/master/TypeScript
 
 ### License
 There is no license specified in this repository. Please visit the source and contact the repository's owners to find out more.
-
 
 -------------------------------------------------------------------------------
 
@@ -377,7 +371,6 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -408,7 +401,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 
 -------------------------------------------------------------------------------
 
@@ -441,7 +433,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -473,7 +464,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -484,7 +474,6 @@ https://github.com/lukeed/uid
 
 ### License
 There is no license specified in this repository. Please visit the source and contact the repository's owners to find out more.
-
 
 -------------------------------------------------------------------------------
 
@@ -517,7 +506,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -549,7 +537,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
 -------------------------------------------------------------------------------
 
 ## Project
@@ -580,6 +567,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 
 -------------------------------------------------------------------------------
