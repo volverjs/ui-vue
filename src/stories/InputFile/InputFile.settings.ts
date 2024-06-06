@@ -1,37 +1,37 @@
+import type { ArgTypes } from '@storybook/vue3'
 import { HintArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 import { VvInputFileProps } from '@/components/VvInputFile'
-import type { ArgTypes } from '@storybook/vue3'
 
 export const defaultArgs = {
-	...propsToObject(VvInputFileProps),
-	name: 'vv-input-file',
-	label: 'Upload file',
+    ...propsToObject(VvInputFileProps),
+    name: 'vv-input-file',
+    label: 'Upload file',
 }
 
 export const argTypes: ArgTypes = {
-	...HintArgTypes,
-	modifiers: {
-		...ModifiersArgTypes.modifiers,
-		options: ['hidden', 'square', 'circle'],
-	},
-	'drop-area': {
-		description: 'Drop area slot',
-		control: {
-			type: 'text',
-		},
-		table: {
-			category: 'Slots',
-			type: {
-				summary: 'html',
-			},
-		},
-	},
-	'update:model-value': {
-		table: {
-			category: 'Events',
-			type: {
-				summary: 'File | File[]',
-			},
-		},
-	},
+    ...HintArgTypes,
+    'modifiers': {
+        ...ModifiersArgTypes.modifiers,
+        options: ['hidden', 'square', 'circle'],
+    },
+    'drop-area': {
+        description: 'Drop area slot',
+        control: {
+            type: 'text',
+        },
+        table: {
+            category: 'Slots',
+            type: {
+                summary: 'html',
+            },
+        },
+    },
+    'update:model-value': {
+        table: {
+            category: 'Events',
+            type: {
+                summary: 'File | File[]',
+            },
+        },
+    },
 }

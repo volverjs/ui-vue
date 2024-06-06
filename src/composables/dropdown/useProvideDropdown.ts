@@ -1,13 +1,13 @@
 import { type Ref, Fragment } from 'vue'
 import mitt from 'mitt'
 import {
-	type DropdownItemState,
-	INJECTION_KEY_DROPDOWN_TRIGGER,
-	INJECTION_KEY_DROPDOWN_ACTION,
-	INJECTION_KEY_DROPDOWN_ITEM,
-	DropdownRole,
-	DropdownItemRole,
-	ActionRoles,
+    type DropdownItemState,
+    INJECTION_KEY_DROPDOWN_TRIGGER,
+    INJECTION_KEY_DROPDOWN_ACTION,
+    INJECTION_KEY_DROPDOWN_ITEM,
+    DropdownRole,
+    DropdownItemRole,
+    ActionRoles,
 } from '../../constants'
 
 /**
@@ -15,45 +15,45 @@ import {
  * @param {Ref<HTMLElement | null>} reference the dropdown reference
  */
 export function useProvideDropdownTrigger({
-	reference,
-	id,
-	expanded,
-	aria,
+    reference,
+    id,
+    expanded,
+    aria,
 }: {
-	reference: Ref<HTMLElement | null>
-	id: Ref<string | number>
-	expanded: Ref<boolean>
-	aria: Ref<{
-		'aria-controls': string
-		'aria-haspopup': boolean
-		'aria-expanded': boolean
-	}>
+    reference: Ref<HTMLElement | null>
+    id: Ref<string | number>
+    expanded: Ref<boolean>
+    aria: Ref<{
+        'aria-controls': string
+        'aria-haspopup': boolean
+        'aria-expanded': boolean
+    }>
 }) {
-	const bus = mitt<{
-		click: Event
-		mouseover: Event
-		mouseleave: Event
-	}>()
-	const component = defineComponent({
-		name: 'VvDropdownTriggerProvider',
-		setup() {
-			provide(INJECTION_KEY_DROPDOWN_TRIGGER, {
-				reference,
-				id,
-				expanded,
-				aria,
-				bus,
-			})
-		},
-		render() {
-			return h(Fragment, {}, this.$slots.default?.())
-		},
-	})
+    const bus = mitt<{
+        click: Event
+        mouseover: Event
+        mouseleave: Event
+    }>()
+    const component = defineComponent({
+        name: 'VvDropdownTriggerProvider',
+        setup() {
+            provide(INJECTION_KEY_DROPDOWN_TRIGGER, {
+                reference,
+                id,
+                expanded,
+                aria,
+                bus,
+            })
+        },
+        render() {
+            return h(Fragment, {}, this.$slots.default?.())
+        },
+    })
 
-	return {
-		bus,
-		component,
-	}
+    return {
+        bus,
+        component,
+    }
 }
 
 /**
@@ -61,21 +61,21 @@ export function useProvideDropdownTrigger({
  * @param {Ref<string>} role the dropdown item role
  */
 export function useProvideDropdownItem({
-	role,
-	...others
+    role,
+    ...others
 }: Omit<DropdownItemState, 'role'> & {
-	role: Ref<`${DropdownRole}`>
+    role: Ref<`${DropdownRole}`>
 }) {
-	const itemRole = computed(() =>
-		role.value === DropdownRole.listbox
-			? DropdownItemRole.option
-			: DropdownItemRole.presentation,
-	)
-	provide(INJECTION_KEY_DROPDOWN_ITEM, {
-		role: itemRole,
-		...others,
-	})
-	return { itemRole }
+    const itemRole = computed(() =>
+        role.value === DropdownRole.listbox
+            ? DropdownItemRole.option
+            : DropdownItemRole.presentation,
+    )
+    provide(INJECTION_KEY_DROPDOWN_ITEM, {
+        role: itemRole,
+        ...others,
+    })
+    return { itemRole }
 }
 
 /**
@@ -83,12 +83,12 @@ export function useProvideDropdownItem({
  * @param {Ref<string>} role the dropdown item role
  */
 export function useProvideDropdownAction({
-	expanded,
+    expanded,
 }: {
-	expanded?: Ref<boolean>
+    expanded?: Ref<boolean>
 }) {
-	provide(INJECTION_KEY_DROPDOWN_ACTION, {
-		role: ref(ActionRoles.menuitem),
-		expanded,
-	})
+    provide(INJECTION_KEY_DROPDOWN_ACTION, {
+        role: ref(ActionRoles.menuitem),
+        expanded,
+    })
 }

@@ -4,79 +4,80 @@ import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 import { useBlurhash } from '@/composables/useBlurhash'
 
 const meta: Meta = {
-	title: 'Composables/useBlurhash',
-	tags: ['autodocs'],
+    title: 'Composables/useBlurhash',
+    tags: ['autodocs'],
 }
 
 export default meta
 
 export const Default: StoryObj = {
-	render: (args) => ({
-		components: { VvInputFile },
-		setup() {
-			const isLoading = ref(false)
-			const { encode, decode, loadImage } = useBlurhash()
-			const file = ref({})
-			const canvas = ref()
-			const isImgLoaded = ref(false)
-			const blurhash = ref('')
-			const imageUrl = ref('')
-			const image = ref()
+    render: args => ({
+        components: { VvInputFile },
+        setup() {
+            const isLoading = ref(false)
+            const { encode, decode, loadImage } = useBlurhash()
+            const file = ref({})
+            const canvas = ref()
+            const isImgLoaded = ref(false)
+            const blurhash = ref('')
+            const imageUrl = ref('')
+            const image = ref()
 
-			return {
-				args,
-				isLoading,
-				canvas,
-				encode,
-				decode,
-				file,
-				blurhash,
-				isImgLoaded,
-				loadImage,
-				image,
-				imageUrl,
-			}
-		},
-		watch: {
-			file: {
-				immediate: true,
-				async handler(newValue) {
-					if (newValue?.size) {
-						this.imageUrl = URL.createObjectURL(newValue)
-						this.image = await this.loadImage(this.imageUrl)
-						this.blurhash = await this.encode(newValue)
-					} else {
-						this.image = null
-						this.imageUrl = ''
-						this.blurhash = ''
-					}
-				},
-			},
-			blurhash: {
-				async handler(newValue) {
-					if (this.image) {
-						const blurhashDecoded = await this.decode(
-							newValue,
-							this.image.width,
-							this.image.height,
-						)
+            return {
+                args,
+                isLoading,
+                canvas,
+                encode,
+                decode,
+                file,
+                blurhash,
+                isImgLoaded,
+                loadImage,
+                image,
+                imageUrl,
+            }
+        },
+        watch: {
+            file: {
+                immediate: true,
+                async handler(newValue) {
+                    if (newValue?.size) {
+                        this.imageUrl = URL.createObjectURL(newValue)
+                        this.image = await this.loadImage(this.imageUrl)
+                        this.blurhash = await this.encode(newValue)
+                    }
+                    else {
+                        this.image = null
+                        this.imageUrl = ''
+                        this.blurhash = ''
+                    }
+                },
+            },
+            blurhash: {
+                async handler(newValue) {
+                    if (this.image) {
+                        const blurhashDecoded = await this.decode(
+                            newValue,
+                            this.image.width,
+                            this.image.height,
+                        )
 
-						if (this.canvas) {
-							this.canvas.width = this.image.width
-							this.canvas.height = this.image.height
-							const ctx = this.canvas.getContext('2d')
-							const imageData = ctx.createImageData(
-								this.canvas.width,
-								this.canvas.height,
-							)
-							imageData.data.set(blurhashDecoded)
-							ctx.putImageData(imageData, 0, 0)
-						}
-					}
-				},
-			},
-		},
-		template: /* html */ `
+                        if (this.canvas) {
+                            this.canvas.width = this.image.width
+                            this.canvas.height = this.image.height
+                            const ctx = this.canvas.getContext('2d')
+                            const imageData = ctx.createImageData(
+                                this.canvas.width,
+                                this.canvas.height,
+                            )
+                            imageData.data.set(blurhashDecoded)
+                            ctx.putImageData(imageData, 0, 0)
+                        }
+                    }
+                },
+            },
+        },
+        template: /* html */ `
 			<div class="w-full grid gap-md grid-cols-3 h-150" :class="{ 'vv-skeleton': isLoading }">
 				<div class="w-150 h-150 col-span-1">
 					<div class="text-20 font-semibold mb-md">Upload image</div>
@@ -105,14 +106,14 @@ export const Default: StoryObj = {
 				</div>
 			</div>
 		`,
-	}),
+    }),
 
-	parameters: {
-		docs: {
-			source: {
-				type: 'code',
-				language: 'html',
-				code: /* html */ `
+    parameters: {
+        docs: {
+            source: {
+                type: 'code',
+                language: 'html',
+                code: /* html */ `
 <div class="w-full grid gap-md grid-cols-3 h-150" :class="{ 'vv-skeleton': isLoading }">
 	<div class="w-150 h-150 col-span-1">
 		<div class="text-20 font-semibold mb-md">Upload image</div>
@@ -189,7 +190,7 @@ export const Default: StoryObj = {
 	})
 </script>
 				`,
-			},
-		},
-	},
+            },
+        },
+    },
 }

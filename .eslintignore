@@ -1,7 +1,0 @@
-node_modules
-.eslintrc.cjs
-.vscode
-dist
-bin
-storybook-static
-vendor

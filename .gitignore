@@ -5,10 +5,6 @@ node_modules
 # Logs
 npm-debug.log*
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-
 # Project 
 storybook-static
 dist

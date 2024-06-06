@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 import { defaultArgs, argTypes } from './InputFile.settings'
+import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 
 const meta: Meta = {
-	title: 'Components/InputFile',
-	component: VvInputFile,
-	args: defaultArgs,
-	argTypes,
-	tags: ['autodocs'],
+    title: 'Components/InputFile',
+    component: VvInputFile,
+    args: defaultArgs,
+    argTypes,
+    tags: ['autodocs'],
 }
 
 export default meta
@@ -15,75 +15,75 @@ export default meta
 type Story = StoryObj<typeof VvInputFile>
 
 export const Default: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvInputFile },
-		setup() {
-			const files = ref([])
-			return {
-				args,
-				files,
-			}
-		},
-		template: /* html */ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvInputFile },
+        setup() {
+            const files = ref([])
+            return {
+                args,
+                files,
+            }
+        },
+        template: /* html */ `
 			<vv-input-file v-bind="args" v-model="files">
 				<template #drop-area v-if="args['drop-area']"><div v-html="args['drop-area']"></div></template>
 				<template #hint v-if="args['hint']"><div v-html="args['hint']"></div></template>
 			</vv-input-file>
 		`,
-	}),
+    }),
 }
 
 export const Readonly: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		readonly: true,
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        readonly: true,
+    },
 }
 
 export const Valid: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		valid: true,
-		validLabel: 'The field is valid.',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        valid: true,
+        validLabel: 'The field is valid.',
+    },
 }
 
 export const Invalid: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		invalid: true,
-		invalidLabel: 'The field is required.',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        invalid: true,
+        invalidLabel: 'The field is required.',
+    },
 }
 
 export const Hint: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		hintLabel: 'Please upload a file.',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        hintLabel: 'Please upload a file.',
+    },
 }
 
 export const Loading: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		loading: true,
-		loadingLabel: 'Loading...',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        loading: true,
+        loadingLabel: 'Loading...',
+    },
 }
 
 export const Progress: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		progress: 30,
-		hintLabel: '30%',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        progress: 30,
+        hintLabel: '30%',
+    },
 }
