@@ -27,18 +27,27 @@ const isOpened = computed({
 // template ref
 const modalWrapper = ref(null)
 
-// styles
+/**
+ * @description Define component classes with BEM style.
+ * @returns {Array} The component classes.
+ */
+const { modifiers } = toRefs(props)
+const bemCssClasses = useModifiers(
+    'vv-dialog',
+    modifiers,
+    computed(() => {
+        if (props.size) {
+            return { [props.size]: !!props.size }
+        }
+        return {}
+    }),
+)
+
 const dialogAttrs = computed(() => {
     const { id } = props
     return {
         id,
     } as DialogHTMLAttributes
-})
-const dialogClass = computed(() => {
-    if (!props.size) {
-        return 'vv-dialog'
-    }
-    return ['vv-dialog', `vv-dialog--${props.size}`]
 })
 
 // transitions
@@ -114,7 +123,7 @@ export default {
             v-show="isOpened"
             v-bind="dialogAttrs"
             ref="dialogEl"
-            :class="dialogClass"
+            :class="bemCssClasses"
             @cancel.stop.prevent="onCancel"
         >
             <article ref="modalWrapper" class="vv-dialog__wrapper">
