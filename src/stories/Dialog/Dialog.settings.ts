@@ -1,5 +1,5 @@
 import type { ArgTypes } from '@storybook/vue3'
-import { DefaultSlotArgTypes } from '@/stories/argTypes'
+import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
     id: 'dialog',
@@ -15,6 +15,14 @@ export const argTypes: ArgTypes = {
     transition: {
         control: 'radio',
         options: ['fade-block', 'fade-inline', 'scale'],
+    },
+    modifiers: {
+        ...ModifiersArgTypes.modifiers,
+        options: [
+            'standard',
+            'small',
+            'fullscreen',
+        ],
     },
     size: {
         control: 'radio',

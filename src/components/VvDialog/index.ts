@@ -1,4 +1,4 @@
-import { IdProps } from '../../props'
+import { IdProps, ModifiersProps } from '@/props'
 
 export const VvDialogEvents = [
     'open',
@@ -15,6 +15,7 @@ export const VvDialogEvents = [
 ]
 
 export const VvDialogProps = {
+    ...ModifiersProps,
     ...IdProps,
     /**
      * Dialog title
