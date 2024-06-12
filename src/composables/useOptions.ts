@@ -4,39 +4,45 @@ import type { Option } from '../types/generic'
 export function useOptions(props: any) {
     const { options, labelKey, valueKey, disabledKey } = toRefs(props)
 
-    const getOptionLabel = (option: string | Option): string => {
-        if (typeof option !== 'object' && option !== null)
+    const getOptionLabel = <T extends string | Option>(option: T): string => {
+        if (typeof option === 'string') {
             return option
-
+        }
         return String(
             typeof labelKey.value === 'function'
                 ? labelKey.value(option)
-                : get(option, labelKey.value),
+                : get(option as object, labelKey.value),
         )
     }
 
-    const getOptionValue = (option: string | Option) => {
-        if (typeof option !== 'object' && option !== null)
+    const getOptionValue = <T extends string | Option>(option: T) => {
+        if (typeof option === 'string') {
             return option
+        }
 
         return typeof valueKey.value === 'function'
             ? valueKey.value(option)
-            : get(option, valueKey.value)
+            : get(option as object, valueKey.value)
     }
 
-    const isOptionDisabled = (option: string | Option): boolean => {
-        if (typeof option !== 'object' && option !== null)
+    const isOptionDisabled = <T extends string | Option>(option: T): boolean => {
+        if (typeof option === 'string') {
             return false
+        }
 
         return typeof disabledKey.value === 'function'
             ? disabledKey.value(option)
-            : get(option, disabledKey.value)
+            : get(option as object, disabledKey.value)
     }
 
-    const getOptionGrouped = (option: string | Option) => {
-        if (typeof option !== 'object' && option !== null)
+    const getOptionGrouped = <T extends string | Option>(option: T) => {
+        if (typeof option == 'string') {
             return []
-        return option.options || []
+        }
+        if (typeof option === 'object' && option && 'options' in option) {
+            return option.options as T[]
+        }
+        return []
     }
 
     return {

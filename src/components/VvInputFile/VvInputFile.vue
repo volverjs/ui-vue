@@ -6,13 +6,11 @@ import type { UploadedFile } from '../../types'
 import VvButton from '../VvButton/VvButton.vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
-import { VvInputFileProps, type VvInputFileEvents } from '.'
+import { type VvInputFileEvents, VvInputFileProps } from '.'
 
 // props, emit, slots and attrs
 const props = defineProps(VvInputFileProps)
-
 const emit = defineEmits<VvInputFileEvents>()
-
 const slots = useSlots()
 
 // props merged with volver defaults (now only for labels)
@@ -169,6 +167,11 @@ function onClickDropArea() {
 }
 
 function onClickRemoveFile(index: number) {
+    const toRemove = !Array.isArray(localModelValue.value) ? localModelValue.value : localModelValue.value[index]
+    if (!toRemove) {
+        return
+    }
+    emit('remove', toRemove)
     if (!Array.isArray(localModelValue.value)) {
         localModelValue.value = undefined
         return
@@ -176,9 +179,9 @@ function onClickRemoveFile(index: number) {
     if (selectedFileIndex.value === index) {
         selectedFileIndex.value = 0
     }
-    const toReturn = [...localModelValue.value]
-    toReturn.splice(index, 1)
-    localModelValue.value = toReturn
+    const newModelValue = [...localModelValue.value]
+    newModelValue.splice(index, 1)
+    localModelValue.value = newModelValue
 }
 
 const selectedFileIndex = ref(0)
@@ -227,13 +230,13 @@ function sizeInKiB(size?: number) {
 }
 
 function onClickDownloadFile(file: File | UploadedFile) {
+    emit('download', file)
+    const href = file instanceof File ? URL.createObjectURL(file) : file.url
+    if (!href) {
+        return
+    }
     const link = document.createElement('a')
-    if (file instanceof File) {
-        link.href = URL.createObjectURL(file)
-    }
-    else if (file.url) {
-        link.href = file.url
-    }
+    link.href = href
     link.setAttribute('download', file.name)
     document.body.appendChild(link)
     link.click()

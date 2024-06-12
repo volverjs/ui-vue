@@ -34,6 +34,7 @@ export const VvDialogProps = {
     transition: { type: String, default: 'fade-block' },
     /**
      * Dialog size
+     * @deprecated use modifiers instead
      */
     size: String,
     /**

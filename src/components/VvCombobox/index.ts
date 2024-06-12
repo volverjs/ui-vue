@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { MaybeElement } from '@vueuse/core'
 import {
     ValidProps,
     InvalidProps,
@@ -18,16 +19,16 @@ import {
 } from '../../props'
 import type { Option } from '../../types/generic'
 
-export const VvComboboxEvents = [
-    'update:modelValue',
-    'update:search',
+export type VvComboboxEvents = {
+    'update:modelValue': [any]
+    'update:search': [string]
     /**
-     * @deprecated change:search should not be used, use update:search instead
+     * @deprecated use update:search instead
      */
-    'change:search',
-    'focus',
-    'blur',
-]
+    'change:search': [string]
+    'focus': [MaybeElement]
+    'blur': [MaybeElement]
+}
 
 export const VvComboboxProps = {
     ...IdNameProps,
@@ -176,4 +177,24 @@ export const VvComboboxProps = {
         type: Boolean,
         default: false,
     },
+}
+
+// WARNING: This is a provisiaonal implementation, it may change in the future
+export function useVvComboboxProps<T extends Option | string>() {
+    return {
+        ...VvComboboxProps,
+        options: {
+            ...VvComboboxProps.options,
+            type: Array as PropType<T[]>,
+        },
+        searchFunction: {
+            ...VvComboboxProps.searchFunction,
+            type: Function as PropType<
+			(
+			    search: string,
+			    options: T[],
+			) => T[] | Promise<T[]>
+		>,
+        },
+    }
 }

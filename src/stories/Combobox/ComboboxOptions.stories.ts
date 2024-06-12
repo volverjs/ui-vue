@@ -5,6 +5,7 @@ import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
 
 const meta: Meta<typeof VvCombobox> = {
     title: 'Components/Combobox/Options',
+    // @ts-expect-error missing generic components support
     component: VvCombobox,
     args: defaultArgs,
     argTypes,

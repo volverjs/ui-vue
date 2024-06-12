@@ -3,7 +3,7 @@ export type UploadedFile<Source = undefined> = Source extends undefined
             name: string
             size: number
             type: string
-            url: string
+            url?: string
             thumbnailUrl?: string
             lastModified?: number
         }
@@ -11,7 +11,7 @@ export type UploadedFile<Source = undefined> = Source extends undefined
             name: string
             size: number
             type: string
-            url: string
+            url?: string
             thumbnailUrl?: string
             lastModified?: number
             source: Source

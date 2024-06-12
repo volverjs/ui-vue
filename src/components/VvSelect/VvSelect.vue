@@ -1,18 +1,18 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string | Option">
 import type { SelectHTMLAttributes } from 'vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
 import HintSlotFactory from '../common/HintSlot'
-import { VvSelectProps, VvSelectEmits } from '.'
-import type { Option } from '@/types/generic'
+import type { Option } from '../../types/generic'
+import { type VvSelectEmits, useVvSelectProps } from '.'
 
 // props, emit and slots
-const props = defineProps(VvSelectProps)
-
-const emit = defineEmits(VvSelectEmits)
-
+// WARNING: This is a provisiaonal implementation, it may change in the future
+const props = defineProps(useVvSelectProps<T>())
+const emit = defineEmits<VvSelectEmits>()
 const slots = useSlots()
 
 // props merged with volver defaults (now only for labels)
+const VvSelectProps = useVvSelectProps<T>()
 const propsDefaults = useDefaults<typeof VvSelectProps>(
     'VvSelect',
     VvSelectProps,
@@ -149,10 +149,11 @@ const localModelValue = computed({
 })
 
 // Grouped options
-function isGroup(option: string | Option) {
-    if (typeof option === 'string')
+function isGroup(option: T) {
+    if (typeof option === 'string') {
         return false
-    return option && option.options && option.options.length > 0
+    }
+    return option.options?.length
 }
 </script>
 

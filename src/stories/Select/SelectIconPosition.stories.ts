@@ -5,6 +5,7 @@ import VvSelect from '@/components/VvSelect/VvSelect.vue'
 
 const meta: Meta<typeof VvSelect> = {
     title: 'Components/Select/Icon',
+    // @ts-expect-error missing generic components support
     component: VvSelect,
     args: defaultArgs,
     argTypes,
