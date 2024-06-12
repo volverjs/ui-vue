@@ -1,3 +1,4 @@
+import type { MaybeElement } from '@vueuse/core'
 import {
     ValidProps,
     InvalidProps,
@@ -16,6 +17,13 @@ import {
     AutocompleteProps,
     LabelProps,
 } from '../../props'
+import type { Option } from '../../types/generic'
+
+export type VvSelectEmits = {
+    'update:modelValue': [any]
+    'focus': [MaybeElement]
+    'blur': [MaybeElement]
+}
 
 export const VvSelectProps = {
     ...IdNameProps,
@@ -66,4 +74,14 @@ export const VvSelectProps = {
     placeholder: String,
 }
 
-export const VvSelectEmits = ['update:modelValue', 'focus', 'blur']
+// WARNING: This is a provisiaonal implementation, it may change in the future
+export function useVvSelectProps<T extends Option | string>() {
+    return {
+        ...VvSelectProps,
+        options: {
+            ...VvSelectProps.options,
+            type: Array as PropType<T[]>,
+            default: () => [],
+        },
+    }
+}

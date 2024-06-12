@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string | Option">
 import type { Ref } from 'vue'
 import { toRefs } from 'vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
@@ -11,16 +11,16 @@ import VvButton from '../VvButton/VvButton.vue'
 import HintSlotFactory from '../common/HintSlot'
 import type { Option } from '../../types/generic'
 import { DropdownRole } from '../../constants'
-import { VvComboboxProps, VvComboboxEvents } from '.'
+import { type VvComboboxEvents, useVvComboboxProps } from '.'
 
 // props, emit and slots
-const props = defineProps(VvComboboxProps)
-
-const emit = defineEmits(VvComboboxEvents)
-
+// WARNING: This is a provisiaonal implementation, it may change in the future
+const props = defineProps(useVvComboboxProps<T>())
+const emit = defineEmits<VvComboboxEvents>()
 const slots = useSlots()
 
 // props merged with volver defaults (now only for labels)
+const VvComboboxProps = useVvComboboxProps<T>()
 const propsDefaults = useDefaults<typeof VvComboboxProps>(
     'VvCombobox',
     VvComboboxProps,
@@ -28,11 +28,11 @@ const propsDefaults = useDefaults<typeof VvComboboxProps>(
 )
 
 // Grouped options
-function isGroup(option: string | Option) {
+function isGroup(option: T) {
     if (typeof option === 'string') {
         return false
     }
-    return option.options && option.options.length > 0
+    return option.options?.length
 }
 
 // hint slot
@@ -79,9 +79,7 @@ const debouncedSearchText = refDebounced(
 )
 watch(debouncedSearchText, () => {
     emit('update:search', debouncedSearchText.value)
-    /**
-     * @deprecated change:search should not be used, use update:search instead
-     */
+    // DEPRECATED: Must be removed in the future
     // eslint-disable-next-line vue/custom-event-name-casing
     emit('change:search', debouncedSearchText.value)
 })
@@ -203,9 +201,9 @@ const filteredOptions = computedAsync(async () => {
 
 /**
  * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
- * @param {string | Option} option
+ * @param {T} option
  */
-function isOptionSelected(option: string | Option) {
+function isOptionSelected(option: T) {
     if (Array.isArray(props.modelValue)) {
         // check if contain whole option or option value
         return (
@@ -225,7 +223,7 @@ function isOptionSelected(option: string | Option) {
  * Check if is multiple mode, object mode or "string" mode
  */
 const selectedOptions = computed(() => {
-    const options = props.options.reduce<Array<Option | string>>(
+    const options = props.options.reduce<T[]>(
         (acc, value) => {
             if (isGroup(value)) {
                 return [...acc, ...getOptionGrouped(value)]
@@ -241,7 +239,7 @@ const selectedOptions = computed(() => {
 
 const hasValue = computed(() => {
     return selectedOptions.value
-        .map((option: string | Option) => getOptionLabel(option))
+        .map((option: T) => getOptionLabel(option))
         .join(props.separator)
 })
 
@@ -254,16 +252,16 @@ function onClickInput() {
 
 /**
  * Function triggered on input of checkbox or radio (multple or single mode)
- * @param option {string | Option} option value
+ * @param option {T} option value
  */
-function onInput(option: string | Option) {
+function onInput(option: T) {
     if (props.disabled || props.readonly) {
         return
     }
 
     // get option value
     const value = getOptionValue(option)
-    let toReturn: string | string[] | Option | Option[] | undefined = value
+    let toReturn = value
 
     // check multiple prop, override value with array and remove or add the value
     if (props.multiple) {
@@ -285,7 +283,7 @@ function onInput(option: string | Option) {
                 : [...props.modelValue, value]
         }
         else {
-            toReturn = [value as Option]
+            toReturn = [value]
         }
     }
     else {

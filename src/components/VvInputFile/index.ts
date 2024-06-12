@@ -13,6 +13,12 @@ import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
 import type { UploadedFile } from '@/types'
 
 export type VvInputFileEvents = {
+    'remove': [
+        File | UploadedFile,
+    ]
+    'download': [
+        File | UploadedFile,
+    ]
     'update:modelValue': [
 		File | UploadedFile | (File | UploadedFile)[] | undefined,
     ]

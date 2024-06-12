@@ -35,6 +35,7 @@ const { modifiers } = toRefs(props)
 const bemCssClasses = useModifiers(
     'vv-dialog',
     modifiers,
+    // DEPRECATED: Must be removed in the future
     computed(() => {
         if (props.size) {
             return { [props.size]: !!props.size }

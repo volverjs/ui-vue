@@ -2,7 +2,7 @@ import type { MaybeElement, MaybeElementRef } from '@vueuse/core'
 
 export function useComponentFocus(
     inputTemplateRef: MaybeElementRef<MaybeElement>,
-    emit: (event: 'focus' | 'blur', value: unknown) => void,
+    emit: ((name: 'blur', ...args: any[]) => void) & ((name: 'focus', ...args: any[]) => void) & ((name: any, ...args: any[]) => void),
 ) {
     const { focused } = useFocus(inputTemplateRef)
 
