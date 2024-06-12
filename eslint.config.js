@@ -20,5 +20,5 @@ export default antfu({
         'sort-imports': 'off',
     },
 }, {
-    ignores: ['dist', 'bin', 'node_modules', 'storybook-static', 'vendor', 'scripts'],
+    ignores: ['dist', 'bin', 'node_modules', 'storybook-static', 'vendor', 'scripts', 'package.json', 'pnpm-lock.yaml'],
 })
