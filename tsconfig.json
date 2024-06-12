@@ -48,8 +48,6 @@
         }
     ],
     "include": [
-        "package.json",
-        "pnpm-lock.yaml",
         "env.d.ts",
         "src/**/*",
         "src/**/*.vue",
