@@ -448,7 +448,7 @@
     "change-case": "^5.4.4",
     "chokidar": "^3.6.0",
     "eslint": "^9.4.0",
-    "glob": "10.4.1",
+    "glob": "7.2.3",
     "jest-axe": "^9.0.0",
     "jest-diff": "^29.7.0",
     "jest-get-type": "^29.6.3",

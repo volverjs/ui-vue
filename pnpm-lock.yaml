@@ -160,8 +160,8 @@ importers:
         specifier: ^9.4.0
         version: 9.4.0
       glob:
-        specifier: 10.4.1
-        version: 10.4.1
+        specifier: 7.2.3
+        version: 7.2.3
       jest-axe:
         specifier: ^9.0.0
         version: 9.0.0
