@@ -11,6 +11,8 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         return
     }
 
+    const { getOptionValue } = useOptions(args)
+
     const element = await within(canvasElement).findByTestId('element')
     const value = await within(canvasElement).findByTestId('value')
     const dropdown = element.getElementsByClassName(
@@ -39,13 +41,12 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         && !args.disabled
         && !args.readonly
         && args.options
+        && !args.autofocusFirst
         && args.options.length > 0
     ) {
         // select first value
         await expect(dropdownFirstItem).toBeClicked()
         await sleep()
-
-        const { getOptionValue } = useOptions(args)
 
         const firstValue = getOptionValue(
             args.options[0].options?.[0] ?? args.options[0],
@@ -101,6 +102,19 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // hint
     if (args.hintLabel) {
         await expect(hint.innerHTML).toEqual(args.hintLabel)
+    }
+
+    // autoselect first
+    if (args.autoselectFirst) {
+        const firstValue = getOptionValue(
+            args.options[0].options?.[0] ?? args.options[0],
+        )
+        if (args.multiple) {
+            await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
+        }
+        else {
+            await expect(value.innerHTML).toEqual(firstValue)
+        }
     }
 
     // check accessibility

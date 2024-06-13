@@ -20,7 +20,7 @@ const propsDefaults = useDefaults<typeof VvSelectProps>(
 )
 
 // template refs
-const select = ref()
+const selectEl = ref()
 
 // hint
 const {
@@ -29,6 +29,17 @@ const {
     hasInvalidLabelOrSlot,
     hintSlotScope,
 } = HintSlotFactory(propsDefaults, slots)
+
+// focus
+const { focused } = useComponentFocus(selectEl, emit)
+
+// group
+function isGroup(option: T) {
+    if (typeof option === 'string') {
+        return false
+    }
+    return option.options?.length
+}
 
 // data
 const {
@@ -44,33 +55,47 @@ const {
     floating,
     multiple,
 } = toRefs(props)
-
-// computed
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
 
-// focus
-const { focused } = useComponentFocus(select, emit)
+// tabindex
+const isDisabledOrReadonly = computed(() => props.disabled || props.readonly)
+const hasTabindex = computed(() => {
+    return isDisabledOrReadonly.value ? -1 : props.tabindex
+})
+
+// modelValue
+const localModelValue = computed({
+    get: () => {
+        return props.modelValue
+    },
+    set: (newValue) => {
+        if (Array.isArray(newValue)) {
+            newValue = newValue.filter(item => item !== undefined)
+            if (newValue.length === 0 && !props.unselectable) {
+                selectEl.value.value = props.modelValue
+                return
+            }
+        }
+        emit('update:modelValue', newValue)
+    },
+})
+const isDirty = computed(() => {
+    if (Array.isArray(localModelValue.value)) {
+        return localModelValue.value.length > 0
+    }
+    return localModelValue.value !== undefined && localModelValue.value !== null
+})
 
 // visibility
-const isVisible = useElementVisibility(select)
+const isVisible = useElementVisibility(selectEl)
 watch(isVisible, (newValue) => {
     if (newValue && props.autofocus) {
         focused.value = true
     }
 })
-
 // icons
 const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
-
-// dirty
-const isDirty = computed(() => !isEmpty(props.modelValue))
-
-// disabled
-const isDisabled = computed(() => props.disabled || props.readonly)
-const hasTabindex = computed(() => {
-    return isDisabled.value ? -1 : props.tabindex
-})
 
 // invalid
 const isInvalid = computed(() => {
@@ -102,12 +127,34 @@ const bemCssClasses = useModifiers(
     })),
 )
 
+// options
+const {
+    getOptionLabel,
+    getOptionValue,
+    isOptionDisabled,
+    getOptionGrouped,
+} = useOptions(props)
+
+/**
+ * Auto select the first option if autoOpen is enabled
+ */
+watch(
+    () => props.options,
+    (newValue) => {
+        if (newValue?.length && props.autoselectFirst && !isDirty.value) {
+            const firstOptionValue = getOptionValue(newValue[0])
+            localModelValue.value = props.multiple ? [firstOptionValue] : firstOptionValue
+        }
+    },
+    { immediate: true },
+)
+
 // attrs
 const hasAttrs: SelectHTMLAttributes = computed(() => {
     return {
         'name': props.name,
         'tabindex': hasTabindex.value,
-        'disabled': isDisabled.value,
+        'disabled': isDisabledOrReadonly.value,
         'required': props.required,
         'size': props.size,
         'autocomplete': props.autocomplete,
@@ -128,33 +175,6 @@ const slotProps = computed(() => ({
     invalid: props.invalid,
     modelValue: props.modelValue,
 }))
-
-const {
-    getOptionLabel,
-    getOptionValue,
-    isOptionDisabled,
-    getOptionGrouped,
-} = useOptions(props)
-
-const localModelValue = computed({
-    get: () => {
-        return props.modelValue
-    },
-    set: (newValue) => {
-        if (Array.isArray(newValue)) {
-            newValue = newValue.filter(item => item !== undefined)
-        }
-        emit('update:modelValue', newValue)
-    },
-})
-
-// Grouped options
-function isGroup(option: T) {
-    if (typeof option === 'string') {
-        return false
-    }
-    return option.options?.length
-}
 </script>
 
 <script lang="ts">
@@ -180,9 +200,9 @@ export default {
                 />
                 <select
                     :id="hasId"
-                    ref="select"
-                    v-model="localModelValue"
+                    ref="selectEl"
                     v-bind="hasAttrs"
+                    v-model="localModelValue"
                 >
                     <option
                         v-if="placeholder"

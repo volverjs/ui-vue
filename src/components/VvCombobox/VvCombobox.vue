@@ -27,13 +27,11 @@ const propsDefaults = useDefaults<typeof VvComboboxProps>(
     props,
 )
 
-// Grouped options
-function isGroup(option: T) {
-    if (typeof option === 'string') {
-        return false
-    }
-    return option.options?.length
-}
+// template ref
+const inputEl: Ref<HTMLElement | null> = ref(null)
+const inputSearchEl: Ref<HTMLElement | null> = ref(null)
+const wrapperEl: Ref<HTMLElement | null> = ref(null)
+const dropdownEl = ref<typeof VvDropdown | null>(null)
 
 // hint slot
 const {
@@ -42,11 +40,6 @@ const {
     hasInvalidLabelOrSlot,
     hintSlotScope,
 } = HintSlotFactory(propsDefaults, slots)
-
-// template ref
-const inputEl: Ref<HTMLElement | null> = ref(null)
-const inputSearchEl: Ref<HTMLElement | null> = ref(null)
-const wrapperEl: Ref<HTMLElement | null> = ref(null)
 
 // focus
 const { focused } = useComponentFocus(inputEl, emit)
@@ -87,17 +80,17 @@ watch(debouncedSearchText, () => {
 // expanded
 const expanded = ref(false)
 function toggleExpanded() {
-    if (props.disabled || props.readonly)
+    if (isDisabledOrReadonly.value)
         return
     expanded.value = !expanded.value
 }
 function expand() {
-    if (props.disabled || props.readonly || expanded.value)
+    if (isDisabledOrReadonly.value || expanded.value)
         return
     expanded.value = true
 }
 function collapse() {
-    if (props.disabled || props.readonly || !expanded.value)
+    if (isDisabledOrReadonly.value || !expanded.value)
         return
     expanded.value = false
 }
@@ -114,6 +107,14 @@ function onAfterCollapse() {
     if (propsDefaults.value.searchable) {
         searchText.value = ''
     }
+}
+
+// group
+function isGroup(option: T) {
+    if (typeof option === 'string') {
+        return false
+    }
+    return option.options?.length
 }
 
 // data
@@ -135,23 +136,61 @@ const hasDropdownId = computed(() => `${hasId.value}-dropdown`)
 const hasSearchId = computed(() => `${hasId.value}-search`)
 const hasLabelId = computed(() => `${hasId.value}-label`)
 
+// tabindex
+const isDisabledOrReadonly = computed(() => props.disabled || props.readonly)
+const hasTabindex = computed(() => {
+    return isDisabledOrReadonly.value ? -1 : props.tabindex
+})
+
+// modelValue
+const localModelValue = computed({
+    get: () => {
+        if (Array.isArray(props.modelValue)) {
+            return new Set(props.modelValue)
+        }
+        return props.modelValue !== undefined && props.modelValue !== null ? new Set([props.modelValue]) : new Set()
+    },
+    set: (value: Set<unknown>) => {
+        emit('update:modelValue', props.multiple ? [...value] : [...value].pop())
+    },
+})
+const sizeOfModelValue = computed(() => localModelValue.value.size)
+const isDirty = computed(() => sizeOfModelValue.value > 0)
+const hasMaxValues = computed(() => {
+    if (!props.multiple) {
+        return 1
+    }
+    if (props.maxValues === undefined) {
+        return Infinity
+    }
+    return Number(props.maxValues)
+})
+const isUnselectable = computed(() => {
+    if (isDisabledOrReadonly.value) {
+        return false
+    }
+    // DEPRECATED: Must be removed in the future
+    if (!props.unselectable) {
+        return false
+    }
+    return sizeOfModelValue.value > Number(props.minValues)
+})
+const isSelectable = computed(() => {
+    if (isDisabledOrReadonly.value) {
+        return false
+    }
+    if (!props.multiple) {
+        return true
+    }
+    return sizeOfModelValue.value < hasMaxValues.value
+})
+
 // loading
 const localLoading = ref(false)
 const isLoading = computed(() => localLoading.value || loading.value)
 
-// ref
-const dropdownEl = ref()
-
 // icons
 const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
-
-// dirty
-const isDirty = computed(() => !isEmpty(props.modelValue))
-
-// tabindex
-const hasTabindex = computed(() => {
-    return disabled.value || readonly.value ? -1 : props.tabindex
-})
 
 // styles
 const bemCssClasses = useModifiers(
@@ -172,6 +211,7 @@ const bemCssClasses = useModifiers(
     })),
 )
 
+// options
 const {
     getOptionLabel,
     getOptionValue,
@@ -179,7 +219,10 @@ const {
     isOptionDisabled,
 } = useOptions(props)
 
-// options filtered by search text
+function isOptionDisabledOrNotSelectable(option: T) {
+    return isOptionDisabled(option) || (!isSelectable.value && !isOptionSelected(option))
+}
+
 const filteredOptions = computedAsync(async () => {
     if (propsDefaults.value.searchFunction) {
         localLoading.value = true
@@ -200,22 +243,11 @@ const filteredOptions = computedAsync(async () => {
 })
 
 /**
- * Check if an option exist into modelValue array (multiple) or is equal to modelValue (single)
+ * Check if an option is selected
  * @param {T} option
  */
 function isOptionSelected(option: T) {
-    if (Array.isArray(props.modelValue)) {
-        // check if contain whole option or option value
-        return (
-            contains(option, props.modelValue)
-            || contains(getOptionValue(option), props.modelValue)
-        )
-    }
-    // check if modelValue is equal to option or option value
-    return (
-        equals(option, props.modelValue)
-        || equals(getOptionValue(option), props.modelValue)
-    )
+    return localModelValue.value.has(getOptionValue(option))
 }
 
 /**
@@ -251,59 +283,36 @@ function onClickInput() {
 }
 
 /**
- * Function triggered on input of checkbox or radio (multple or single mode)
+ * Function triggered on option click
  * @param option {T} option value
  */
 function onInput(option: T) {
-    if (props.disabled || props.readonly) {
-        return
+    const isSelected = isOptionSelected(option)
+    if (isSelected && isUnselectable.value) {
+        localModelValue.value.delete(getOptionValue(option))
     }
-
-    // get option value
-    const value = getOptionValue(option)
-    let toReturn = value
-
-    // check multiple prop, override value with array and remove or add the value
-    if (props.multiple) {
-        // check max-values prop and block check new values
-        if (Array.isArray(props.modelValue)) {
-            const maxValues = Number(props.maxValues)
-            if (
-                props.maxValues !== undefined
-                && maxValues >= 0
-                && props.modelValue?.length >= maxValues
-            ) {
-                if (!contains(value, props.modelValue)) {
-                    // maxValues reached
-                    return
-                }
-            }
-            toReturn = contains(value, props.modelValue)
-                ? removeFromList(value, props.modelValue)
-                : [...props.modelValue, value]
-        }
-        else {
-            toReturn = [value]
-        }
+    else if (!isSelected && isSelectable.value) {
+        localModelValue.value.add(getOptionValue(option))
     }
-    else {
-        if (!props.keepOpen) {
-            collapse()
-        }
-        if (Array.isArray(props.modelValue)) {
-            if (props.unselectable && props.modelValue.includes(value)) {
-                toReturn = []
-            }
-            else {
-                toReturn = [value]
-            }
-        }
-        else if (props.unselectable && value === props.modelValue) {
-            toReturn = undefined
-        }
+    // force reactivity
+    localModelValue.value = new Set(localModelValue.value)
+    if (!props.multiple && !props.keepOpen) {
+        collapse()
     }
-    emit('update:modelValue', toReturn)
 }
+
+/**
+ * Auto select the first option if autoOpen is enabled
+ */
+watch(
+    () => props.options,
+    (newValue) => {
+        if (newValue?.length && props.autoselectFirst && !isDirty.value) {
+            onInput(newValue[0])
+        }
+    },
+    { immediate: true },
+)
 
 const selectProps = computed(() => ({
     id: hasId.value,
@@ -325,7 +334,8 @@ const selectProps = computed(() => ({
     icon: propsDefaults.value.icon,
     iconPosition: propsDefaults.value.iconPosition,
     floating: propsDefaults.value.floating,
-    unselectable: propsDefaults.value.unselectable,
+    unselectable: isUnselectable.value,
+    autoselectFirst: propsDefaults.value.autoselectFirst,
     multiple: propsDefaults.value.multiple,
     label: propsDefaults.value.label,
     placeholder: propsDefaults.value.placeholder,
@@ -357,7 +367,7 @@ const slotProps = computed(() => ({
     modelValue: props.modelValue,
 }))
 
-// computed
+// keyboard
 onKeyStroke(
     [' ', 'Enter'],
     (e) => {
@@ -478,9 +488,7 @@ export default {
                                         {{ getOptionLabel(option) }}
                                         <button
                                             v-if="
-                                                unselectable
-                                                    && !readonly
-                                                    && !disabled
+                                                isUnselectable
                                             "
                                             :aria-label="
                                                 propsDefaults.deselectActionLabel
@@ -524,8 +532,8 @@ export default {
                                     )"
                                     v-bind="{
                                         selected: isOptionSelected(item),
-                                        disabled: isOptionDisabled(item),
-                                        unselectable,
+                                        disabled: isOptionDisabledOrNotSelectable(item),
+                                        unselectable: isUnselectable,
                                         deselectHintLabel:
                                             propsDefaults.deselectHintLabel,
                                         selectHintLabel:
@@ -545,7 +553,7 @@ export default {
                                             option,
                                             selectedOptions,
                                             selected: isOptionSelected(item),
-                                            disabled: isOptionDisabled(item),
+                                            disabled: isOptionDisabledOrNotSelectable(item),
                                         }"
                                     >
                                         {{ getOptionLabel(item) }}
@@ -556,8 +564,8 @@ export default {
                                 v-else
                                 v-bind="{
                                     selected: isOptionSelected(option),
-                                    disabled: isOptionDisabled(option),
-                                    unselectable,
+                                    disabled: isOptionDisabledOrNotSelectable(option),
+                                    unselectable: isUnselectable,
                                     deselectHintLabel:
                                         propsDefaults.deselectHintLabel,
                                     selectHintLabel:
@@ -576,7 +584,7 @@ export default {
                                         option,
                                         selectedOptions,
                                         selected: isOptionSelected(option),
-                                        disabled: isOptionDisabled(option),
+                                        disabled: isOptionDisabledOrNotSelectable(option),
                                     }"
                                 >
                                     {{ getOptionLabel(option) }}

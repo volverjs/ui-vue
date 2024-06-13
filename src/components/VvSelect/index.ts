@@ -12,10 +12,10 @@ import {
     IconProps,
     IdNameProps,
     FloatingLabelProps,
-    UnselectableProps,
     AutofocusProps,
     AutocompleteProps,
     LabelProps,
+    UnselectableProps,
 } from '../../props'
 import type { Option } from '../../types/generic'
 
@@ -67,6 +67,13 @@ export const VvSelectProps = {
     modelValue: {
         type: [String, Number, Boolean, Object, Array],
         default: undefined,
+    },
+    /**
+     * Select first option automatically
+     */
+    autoselectFirst: {
+        type: Boolean,
+        default: false,
     },
     /**
      * Select placeholder

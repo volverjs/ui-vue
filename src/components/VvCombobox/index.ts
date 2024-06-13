@@ -12,7 +12,6 @@ import {
     IconProps,
     TabindexProps,
     FloatingLabelProps,
-    UnselectableProps,
     IdNameProps,
     DropdownProps,
     LabelProps,
@@ -43,7 +42,6 @@ export const VvComboboxProps = {
     ...OptionsProps,
     ...IconProps,
     ...FloatingLabelProps,
-    ...UnselectableProps,
     ...DropdownProps,
     ...LabelProps,
     /**
@@ -127,9 +125,21 @@ export const VvComboboxProps = {
      */
     multiple: Boolean,
     /**
+     * The min number of selected values
+     */
+    minValues: {
+        type: [Number, String],
+        default: 0,
+    },
+    /**
      * The max number of selected values
      */
     maxValues: [Number, String],
+    /**
+     * If true the input will be unselectable
+     * @deprecated use minValues instead
+     */
+    unselectable: { type: Boolean, default: true },
     /**
      * The select label separator visible to the user
      */
@@ -167,6 +177,13 @@ export const VvComboboxProps = {
      * Open dropdown on focus
      */
     autoOpen: {
+        type: Boolean,
+        default: false,
+    },
+    /**
+     * Select first option automatically
+     */
+    autoselectFirst: {
         type: Boolean,
         default: false,
     },

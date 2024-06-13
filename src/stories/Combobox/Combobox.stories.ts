@@ -161,6 +161,14 @@ export const KeepOpen: Story = {
     },
 }
 
+export const autoselectFirst: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        autoselectFirst: true,
+    },
+}
+
 export const Size: Story = {
     ...Default,
     args: {

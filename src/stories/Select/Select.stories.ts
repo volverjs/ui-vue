@@ -112,3 +112,11 @@ export const Floating: Story = {
         floating: true,
     },
 }
+
+export const AutoselectFirst: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        autoselectFirst: true,
+    },
+}

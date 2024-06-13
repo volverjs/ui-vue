@@ -60,8 +60,8 @@ export const argTypes: ArgTypes = {
     ...OptionsArgTypes,
     ...IconArgTypes,
     ...FloatingLabelArgTypes,
-    ...UnselectableArgTypes,
     ...DropdownArgTypes,
+    ...UnselectableArgTypes,
     'triggerWidth': {
         ...DropdownArgTypes.triggerWidth,
         table: {
@@ -215,9 +215,24 @@ export const argTypes: ArgTypes = {
     },
     'maxValues': {
         description: 'Max number of selected values',
-
         control: {
-            type: 'text',
+            type: 'number',
+        },
+        table: {
+            type: {
+                summary: 'number',
+            },
+        },
+    },
+    'minValues': {
+        description: 'Min number of selected values',
+        control: {
+            type: 'number',
+        },
+        table: {
+            type: {
+                summary: 'number',
+            },
         },
     },
     'separator': {

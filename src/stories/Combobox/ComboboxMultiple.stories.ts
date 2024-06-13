@@ -23,6 +23,15 @@ export const DefaultMultiple: Story = {
     },
 }
 
+export const MinValues: Story = {
+    ...Default,
+    args: {
+        ...Default.args,
+        multiple: true,
+        minValues: 2,
+    },
+}
+
 export const MaxValues: Story = {
     ...Default,
     args: {
