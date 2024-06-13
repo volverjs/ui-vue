@@ -82,16 +82,16 @@ export const DotPathOptions: Story = {
     ...Default,
     args: {
         ...Default.args,
-        valueKey: 'value.val',
+        valueKey: 'value.id',
         labelKey: 'label.en',
         options: [
-            { value: { val: 'first' }, label: { it: 'Primo', en: 'First' } },
+            { value: { id: 'first' }, label: { it: 'Primo', en: 'First' } },
             {
-                value: { val: 'second' },
+                value: { id: 'second' },
                 label: { it: 'Secondo', en: 'Second' },
             },
-            { value: { val: 'third' }, label: { it: 'Terzo', en: 'Third' } },
-            { value: { val: 'fourth' }, label: { it: 'Quarto', en: 'Fourth' } },
+            { value: { id: 'third' }, label: { it: 'Terzo', en: 'Third' } },
+            { value: { id: 'fourth' }, label: { it: 'Quarto', en: 'Fourth' } },
         ],
     },
 }
@@ -101,15 +101,11 @@ export const ObjectValue: Story = {
     args: {
         ...Default.args,
         multiple: true,
+        labelKey: 'name',
+        valueKey: '',
         options: [
-            {
-                value: { name: 'John Doe', email: 'john.doe@test.com' },
-                label: 'John Doe',
-            },
-            {
-                value: { name: 'Jane Doe', email: 'jane.doe@test.com' },
-                label: 'Jane Doe',
-            },
+            { name: 'John Doe', email: 'john.doe@test.com' },
+            { name: 'Jane Doe', email: 'jane.doe@test.com' },
         ],
     },
 }

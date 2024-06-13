@@ -8,10 +8,11 @@ export function useOptions(props: any) {
         if (typeof option === 'string') {
             return option
         }
+        if (typeof labelKey.value === 'function') {
+            return labelKey.value(option)
+        }
         return String(
-            typeof labelKey.value === 'function'
-                ? labelKey.value(option)
-                : get(option as object, labelKey.value),
+            labelKey.value ? get(option as object, labelKey.value) : option,
         )
     }
 
@@ -19,20 +20,20 @@ export function useOptions(props: any) {
         if (typeof option === 'string') {
             return option
         }
-
-        return typeof valueKey.value === 'function'
-            ? valueKey.value(option)
-            : get(option as object, valueKey.value)
+        if (typeof valueKey.value === 'function') {
+            return valueKey.value(option)
+        }
+        return valueKey.value ? get(option as object, valueKey.value) : option
     }
 
     const isOptionDisabled = <T extends string | Option>(option: T): boolean => {
         if (typeof option === 'string') {
             return false
         }
-
-        return typeof disabledKey.value === 'function'
-            ? disabledKey.value(option)
-            : get(option as object, disabledKey.value)
+        if (typeof disabledKey.value === 'function') {
+            return disabledKey.value(option)
+        }
+        return disabledKey.value ? get(option as object, disabledKey.value) : false
     }
 
     const getOptionGrouped = <T extends string | Option>(option: T) => {

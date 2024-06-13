@@ -11,6 +11,8 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         return
     }
 
+    const { getOptionValue } = useOptions(args)
+
     const element = await within(canvasElement).findByTestId('element')
     const value = await within(canvasElement).findByTestId('value')
     const dropdown = element.getElementsByClassName(
@@ -42,10 +44,10 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         && args.options.length > 0
     ) {
         // select first value
-        await expect(dropdownFirstItem).toBeClicked()
-        await sleep()
-
-        const { getOptionValue } = useOptions(args)
+        if (!args.autoselectFirst) {
+            await expect(dropdownFirstItem).toBeClicked()
+            await sleep()
+        }
 
         const firstValue = getOptionValue(
             args.options[0].options?.[0] ?? args.options[0],

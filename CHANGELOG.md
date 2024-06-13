@@ -15,16 +15,20 @@ All notable changes to this project will be documented in this file.
 - `VvCombobox` event `update:search`;
 - `VvInputText` suggestions;
 - Storage selection for `VvAccordionGroup` persistence;
-- Scoped slot for items in `VvNav` and `VvTab`.
+- Scoped slot for items in `VvNav` and `VvTab`;
+- `VvCombobox` and `VvSelect` prop `autoselectFirst`.
 
 ### Deprecated
 
-- Event `change:search` on `VvCombobox` (use `update:search`).
+- Event `change:search` on `VvCombobox` (use `update:search`);
+- `VvCombobox` prop `unselectable` (use `minValues` instead).
 
 ### Changed
 
 - `@volverjs/ui-vue/directives` now exports `vTooltip` and `vContextmenu` directives instead of `tooltip` and `contextmenu`;
 - `VvAccordionGroup` prop for storage key `storeKey` is now `storageKey`.
+- Align `VvNav` items prop with `VvAction` props;
+- Align `VvTab` items prop with `VvAction` and `VvNav` props;
 
 ### Fixed
 
@@ -35,11 +39,6 @@ All notable changes to this project will be documented in this file.
 - `VvInputText` force type number on stepUp/stepDown;
 - Removed `target` prop validation;
 - Improved `VvCombobox` support for object values.
-
-### Changed
-
-- Align `VvNav` items prop with `VvAction` props;
-- Align `VvTab` items prop with `VvAction` and `VvNav` props;
 
 ## [0.0.9] - 2023-08-30
 

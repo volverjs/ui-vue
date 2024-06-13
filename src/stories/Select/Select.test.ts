@@ -22,9 +22,11 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         const firstValue = getOptionValue(
             args.options[0].options?.[0] ?? args.options[0],
         )
-        select.value = firstValue
-        select.dispatchEvent(new Event('change'))
-        await sleep()
+        if (!args.autoselectFirst) {
+            select.value = firstValue
+            select.dispatchEvent(new Event('change'))
+            await sleep()
+        }
         if (args.multiple) {
             await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
         }
