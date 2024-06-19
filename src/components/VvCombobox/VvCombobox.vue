@@ -151,7 +151,7 @@ const localModelValue = computed({
         return props.modelValue !== undefined && props.modelValue !== null ? new Set([props.modelValue]) : new Set()
     },
     set: (value: Set<unknown>) => {
-        emit('update:modelValue', props.multiple ? [...value] : [...value].pop())
+        emit('update:modelValue', props.multiple || Array.isArray(props.modelValue) ? [...value] : [...value].pop())
     },
 })
 const sizeOfModelValue = computed(() => localModelValue.value.size)
@@ -292,6 +292,9 @@ function onInput(option: T) {
         localModelValue.value.delete(getOptionValue(option))
     }
     else if (!isSelected && isSelectable.value) {
+        if (!props.multiple) {
+            localModelValue.value.clear()
+        }
         localModelValue.value.add(getOptionValue(option))
     }
     // force reactivity
