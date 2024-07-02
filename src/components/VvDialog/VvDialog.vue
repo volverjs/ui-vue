@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { DialogHTMLAttributes } from 'vue'
-import VvIcon from '../VvIcon/VvIcon.vue'
 import { VvDialogEvents, VvDialogProps } from '.'
 
 // props, emit and template refs
@@ -134,12 +133,11 @@ export default {
                         {{ title }}
                         <button
                             type="button"
-                            aria-label="Close"
+                            :aria-label="labelClose"
+                            :title="labelClose"
                             class="vv-dialog__close"
                             @click.passive="close"
-                        >
-                            <VvIcon name="close" />
-                        </button>
+                        />
                     </slot>
                 </header>
                 <div class="vv-dialog__content">

@@ -99,11 +99,11 @@ export const VvComboboxProps = {
      */
     searchFunction: {
         type: Function as PropType<
-			(
+            (
 			    search: string,
 			    options: (Option | string)[],
-			) => (Option | string)[] | Promise<(Option | string)[]>
-		>,
+            ) => (Option | string)[] | Promise<(Option | string)[]>
+        >,
         default: undefined,
     },
     /**
@@ -207,11 +207,11 @@ export function useVvComboboxProps<T extends Option | string>() {
         searchFunction: {
             ...VvComboboxProps.searchFunction,
             type: Function as PropType<
-			(
+                (
 			    search: string,
 			    options: T[],
-			) => T[] | Promise<T[]>
-		>,
+                ) => T[] | Promise<T[]>
+            >,
         },
     }
 }

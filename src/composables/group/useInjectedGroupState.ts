@@ -16,9 +16,9 @@ export function useInjectedGroupState<GroupStateType>(
      * Get a group or local property
      */
     function getGroupOrLocalRef<
-		TProps extends object,
-		TName extends keyof GroupStateType,
-	>(
+        TProps extends object,
+        TName extends keyof GroupStateType,
+    >(
         propName: TName,
         props: TProps,
         emit?: (event: string, ...args: unknown[]) => void,

@@ -21,7 +21,7 @@ export const VvButtonGroupProps = {
             | boolean
             | (string | number | boolean)[]
             | undefined
-		>,
+        >,
         default: undefined,
     },
 }
