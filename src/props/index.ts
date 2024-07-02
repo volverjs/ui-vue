@@ -300,7 +300,7 @@ export const DropdownProps = {
     offset: {
         type: [Number, String, Object] as PropType<
 			OffsetOptions | number | string
-		>,
+        >,
         default: 0,
     },
     /**

@@ -13,7 +13,7 @@ function joinLines(items: string[] | string | unknown[] | undefined) {
 }
 
 export type HintSlotProps = Readonly<
-	ExtractPropTypes<{
+    ExtractPropTypes<{
 	    hintLabel: {
 	        type: StringConstructor
 	        default: ''
@@ -26,7 +26,7 @@ export type HintSlotProps = Readonly<
 	    invalidLabel: (StringConstructor | ArrayConstructor)[]
 	    loading: BooleanConstructor
 	    loadingLabel: StringConstructor
-	}>
+    }>
 >
 
 /**

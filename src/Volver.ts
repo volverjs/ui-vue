@@ -22,13 +22,13 @@ export function useDefaultProps(
     }
 
     const componentDefaults = defaults?.[componentName] as Record<
-		string,
-		unknown
-	>
+        string,
+        unknown
+    >
     const props = (component as Record<string, unknown>).props as Record<
-		string,
-		unknown
-	>
+        string,
+        unknown
+    >
 
     if (!componentDefaults || !props) {
         return { ...component, name: componentName }

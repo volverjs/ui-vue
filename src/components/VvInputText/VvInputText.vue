@@ -171,8 +171,8 @@ function updateMaskValue(newValue: string | number | undefined) {
     }
     if (
         type.value === INPUT_TYPES.NUMBER
-            && NEGATIVE_ZERO_REGEX.test(unmasked.value)
-            && newValue === 0
+        && NEGATIVE_ZERO_REGEX.test(unmasked.value)
+        && newValue === 0
     ) {
         return
     }
@@ -430,11 +430,11 @@ const hasAttrs = computed(() => {
     }
     if (
         type === INPUT_TYPES.DATE
-            || type === INPUT_TYPES.MONTH
-            || type === INPUT_TYPES.WEEK
-            || type === INPUT_TYPES.TIME
-            || type === INPUT_TYPES.DATETIME_LOCAL
-            || type === INPUT_TYPES.NUMBER
+        || type === INPUT_TYPES.MONTH
+        || type === INPUT_TYPES.WEEK
+        || type === INPUT_TYPES.TIME
+        || type === INPUT_TYPES.DATETIME_LOCAL
+        || type === INPUT_TYPES.NUMBER
     ) {
         let max = props.max
         if (type === INPUT_TYPES.DATE && !max) {
@@ -447,22 +447,22 @@ const hasAttrs = computed(() => {
     }
     if (
         type === INPUT_TYPES.TEXT
-            || type === INPUT_TYPES.SEARCH
-            || type === INPUT_TYPES.URL
-            || type === INPUT_TYPES.TEL
-            || type === INPUT_TYPES.EMAIL
-            || type === INPUT_TYPES.PASSWORD
-            || type === INPUT_TYPES.NUMBER
+        || type === INPUT_TYPES.SEARCH
+        || type === INPUT_TYPES.URL
+        || type === INPUT_TYPES.TEL
+        || type === INPUT_TYPES.EMAIL
+        || type === INPUT_TYPES.PASSWORD
+        || type === INPUT_TYPES.NUMBER
     ) {
         toReturn.placeholder = inputTextPlaceholder.value
     }
     if (
         type === INPUT_TYPES.TEXT
-            || type === INPUT_TYPES.SEARCH
-            || type === INPUT_TYPES.URL
-            || type === INPUT_TYPES.TEL
-            || type === INPUT_TYPES.EMAIL
-            || type === INPUT_TYPES.PASSWORD
+        || type === INPUT_TYPES.SEARCH
+        || type === INPUT_TYPES.URL
+        || type === INPUT_TYPES.TEL
+        || type === INPUT_TYPES.EMAIL
+        || type === INPUT_TYPES.PASSWORD
     ) {
         toReturn.minlength = props.minlength
         toReturn.maxlength = props.maxlength

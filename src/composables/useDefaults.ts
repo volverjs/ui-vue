@@ -55,8 +55,8 @@ export function useDefaults<Definition>(
                 // single type
                 if (typeof simplifiedPropsDefinition[key] === 'function') {
                     const typeFunction = simplifiedPropsDefinition[key] as <
-						T,
-					>() => T
+                        T,
+                    >() => T
                     if (typeFunction() === propValue) {
                         acc[key] = componentDefaults[key]
                     }
@@ -84,7 +84,7 @@ export function useDefaults<Definition>(
             }
             return acc
         }, {} as Record<string, unknown>) as Readonly<
-			ExtractPropTypes<Definition>
-		>
+            ExtractPropTypes<Definition>
+        >
     })
 }

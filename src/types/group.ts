@@ -18,7 +18,7 @@ export type InputGroupState = {
 export type ButtonGroupState = {
     modelValue: Ref<
 		string | number | boolean | (string | number | boolean)[] | undefined
-	>
+    >
     disabled: Ref<boolean>
     toggle: Ref<boolean>
     multiple: Ref<boolean>
