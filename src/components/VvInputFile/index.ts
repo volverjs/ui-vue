@@ -7,6 +7,7 @@ import {
     LabelProps,
     LoadingProps,
     ReadonlyProps,
+    DisabledProps,
     IconProps,
 } from '../../props'
 import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
@@ -33,6 +34,7 @@ export const VvInputFileProps = {
     ...LabelProps,
     ...LoadingProps,
     ...ReadonlyProps,
+    ...DisabledProps,
     ...IconProps,
     /**
      * Input value

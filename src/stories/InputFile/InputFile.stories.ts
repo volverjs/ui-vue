@@ -44,6 +44,14 @@ export const Readonly: Story = {
     },
 }
 
+export const Disabled: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        disabled: true,
+    },
+}
+
 export const Valid: Story = {
     ...Default,
     args: {
