@@ -19,7 +19,7 @@ const propsDefaults = useDefaults<typeof VvInputFileProps>(
     VvInputFileProps,
     props,
 )
-const { modifiers, id, readonly, icon, iconPosition, iconDownload }
+const { modifiers, id, readonly, disabled, icon, iconPosition, iconDownload }
 		= toRefs(props)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -83,12 +83,14 @@ const files = computed({
     },
 })
 
+const isDisabledOrReadonly = computed(() => props.disabled || props.readonly)
+
 const hasMax = computed(() => {
     return typeof props.max === 'string' ? Number.parseInt(props.max) : props.max
 })
 
 const hasDropArea = computed(() => {
-    return props.dropArea && !readonly.value
+    return props.dropArea && !isDisabledOrReadonly.value
 })
 
 const isMultiple = computed(() => {
@@ -161,7 +163,7 @@ function onClickDropArea() {
     if (!inputEl.value) {
         return
     }
-    if (!readonly.value) {
+    if (!isDisabledOrReadonly.value) {
         inputEl.value.click()
     }
 }
@@ -302,6 +304,7 @@ export default {
                     modifiers="action"
                     :label="!previewSrc ? dropdAreaActionLabel : undefined"
                     :title="previewSrc ? dropdAreaActionLabel : undefined"
+                    :disabled="disabled"
                     :class="{
                         'vv-input-file__drop-area-action': previewSrc,
                     }"
@@ -317,6 +320,7 @@ export default {
                 ref="inputEl"
                 type="file"
                 :readonly="readonly"
+                :disabled="disabled"
                 :placeholder="placeholder"
                 :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
                 :aria-invalid="invalid"
@@ -379,6 +383,7 @@ export default {
                         type="button"
                         class="vv-input-file__item-remove"
                         :title="labelRemove"
+                        :disabled="disabled"
                         @click.stop="onClickRemoveFile(index)"
                     />
                 </li>
