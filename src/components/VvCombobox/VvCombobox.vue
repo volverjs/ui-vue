@@ -146,15 +146,15 @@ const hasTabindex = computed(() => {
 const localModelValue = computed({
     get: () => {
         if (Array.isArray(props.modelValue)) {
-            return new Set(props.modelValue)
+            return props.modelValue
         }
-        return props.modelValue !== undefined && props.modelValue !== null ? new Set([props.modelValue]) : new Set()
+        return props.modelValue !== undefined && props.modelValue !== null ? [props.modelValue] : []
     },
-    set: (value: Set<unknown>) => {
-        emit('update:modelValue', props.multiple || Array.isArray(props.modelValue) ? [...value] : [...value].pop())
+    set: (value: unknown[]) => {
+        emit('update:modelValue', props.multiple || Array.isArray(props.modelValue) ? value : value.pop())
     },
 })
-const sizeOfModelValue = computed(() => localModelValue.value.size)
+const sizeOfModelValue = computed(() => localModelValue.value.length)
 const isDirty = computed(() => sizeOfModelValue.value > 0)
 const hasMaxValues = computed(() => {
     if (!props.multiple) {
@@ -173,7 +173,7 @@ const isUnselectable = computed(() => {
     if (!props.unselectable) {
         return false
     }
-    return sizeOfModelValue.value > Number(props.minValues)
+    return Number(props.minValues) === 0 || (sizeOfModelValue.value > Number(props.minValues))
 })
 const isSelectable = computed(() => {
     if (isDisabledOrReadonly.value) {
@@ -247,7 +247,16 @@ const filteredOptions = computedAsync(async () => {
  * @param {T} option
  */
 function isOptionSelected(option: T) {
-    return localModelValue.value.has(getOptionValue(option))
+    const optionValue = getOptionValue(option)
+    if (typeof optionValue === 'object') {
+        return localModelValue.value.some((item) => {
+            if (typeof item === 'object') {
+                return JSON.stringify(item) === JSON.stringify(optionValue)
+            }
+            return false
+        })
+    }
+    return localModelValue.value.includes(optionValue)
 }
 
 /**
@@ -288,17 +297,21 @@ function onClickInput() {
  */
 function onInput(option: T) {
     const isSelected = isOptionSelected(option)
+    const optionValue = getOptionValue(option)
     if (isSelected && isUnselectable.value) {
-        localModelValue.value.delete(getOptionValue(option))
+        localModelValue.value = localModelValue.value.filter((item) => {
+            if (typeof optionValue === 'object' && typeof item === 'object') {
+                return JSON.stringify(item) !== JSON.stringify(optionValue)
+            }
+            return item !== optionValue
+        })
     }
     else if (!isSelected && isSelectable.value) {
         if (!props.multiple) {
-            localModelValue.value.clear()
+            localModelValue.value = []
         }
-        localModelValue.value.add(getOptionValue(option))
+        localModelValue.value = [...localModelValue.value, optionValue]
     }
-    // force reactivity
-    localModelValue.value = new Set(localModelValue.value)
     if (!props.multiple && !props.keepOpen) {
         collapse()
     }
