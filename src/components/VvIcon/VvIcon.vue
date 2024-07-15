@@ -61,7 +61,7 @@ function getSvgContent(svg: string): SVGSVGElement | undefined {
     let dom
     if (typeof window === 'undefined') {
         // SSR
-        // eslint-disable-next-line ts/no-var-requires, ts/no-require-imports
+        // eslint-disable-next-line ts/no-require-imports, ts/no-var-requires
         const { JSDOM } = require('jsdom')
         dom = new JSDOM().window
     }
