@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InputHTMLAttributes } from 'vue'
 import { useIMask } from 'vue-imask'
+import type { MaskedNumberOptions } from 'imask'
 import HintSlotFactory from '../common/HintSlot'
 import VvIcon from '../VvIcon/VvIcon.vue'
 import { ACTION_ICONS } from '../VvIcon'
@@ -66,10 +67,24 @@ const NEGATIVE_ZERO_REGEX = /^-0?[.,]?[0*]?$/
 const maskReady = ref(false)
 const { el, mask, typed, masked, unmasked } = useIMask(
     computed(
-        () =>
-            props.iMask ?? {
-                mask: /./,
-            },
+        () => {
+            if (!props.iMask) {
+                return {
+                    mask: /./,
+                }
+            }
+            if (props.iMask.mask === Number) {
+                const toReturn = { ...props.iMask } as MaskedNumberOptions
+                if (props.min) {
+                    toReturn.min = Number(props.min)
+                }
+                if (props.max) {
+                    toReturn.max = Number(props.max)
+                }
+                return toReturn
+            }
+            return props.iMask
+        },
     ),
     {
         emit,
@@ -269,7 +284,7 @@ const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
 function onStepUp() {
     if (isClickable.value) {
         if (props.iMask) {
-            typed.value = typed.value + Number(step?.value ?? 1)
+            typed.value = Number(typed.value) + Number(step?.value ?? 1)
             return
         }
         inputEl.value.stepUp()
@@ -279,8 +294,7 @@ function onStepUp() {
 function onStepDown() {
     if (isClickable.value) {
         if (props.iMask) {
-            typed.value = typed.value - Number(step?.value ?? 1)
-
+            typed.value = Number(typed.value) - Number(step?.value ?? 1)
             return
         }
         inputEl.value.stepDown()
