@@ -16,7 +16,8 @@ export default antfu({
     },
     rules: {
         'style/no-tabs': 'off',
-        'style/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
+        'style/indent': 'off',
+        'style/no-mixed-spaces-and-tabs': 'off',
         'sort-imports': 'off',
     },
 }, {
