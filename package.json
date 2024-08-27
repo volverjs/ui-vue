@@ -403,14 +403,14 @@
     "@vueuse/core": "^11.0.1",
     "blurhash": "^2.0.5",
     "comlink": "^4.4.1",
-    "jsdom": "^24.1.1",
+    "jsdom": "^25.0.0",
     "mitt": "^3.0.1",
     "pica": "^9.0.1",
     "ts-dot-prop": "^2.1.4",
     "uid": "^2.0.2",
     "vue": "^3.4.38",
     "vue-imask": "^7.6.1",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.26.0",
