@@ -224,11 +224,17 @@ onBeforeUnmount(() => {
     }
 })
 
-function sizeInKiB(size?: number) {
-    if (!size) {
+function formatBytes(bytes?: number, decimals?: number) {
+    if (!bytes) {
         return
     }
-    return Math.floor(size / 1024)
+    if (bytes === 0)
+        return '0 Bytes'
+    const k = 1024
+    const dm = !decimals ? 2 : decimals <= 0 ? 0 : decimals
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return `${Number.parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`
 }
 
 function onClickDownloadFile(file: File | UploadedFile) {
@@ -376,7 +382,7 @@ export default {
                         {{ file.name }}
                     </div>
                     <small class="vv-input-file__item-info">
-                        {{ sizeInKiB(file.size) }} KB
+                        {{ formatBytes(file.size) }}
                     </small>
                     <button
                         v-if="!readonly"
