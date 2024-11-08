@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './AlertGroup.test'
-import { defaultArgs, argTypes } from './AlertGroup.settings'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
+import { argTypes, defaultArgs } from './AlertGroup.settings'
+import { defaultTest } from './AlertGroup.test'
 
 const meta: Meta<typeof VvAlertGroup> = {
     title: 'Components/AlertGroup',

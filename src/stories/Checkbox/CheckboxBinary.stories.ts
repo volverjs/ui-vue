@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './Checkbox.settings'
-import { Default } from './Checkbox.stories'
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
+import { argTypes, defaultArgs } from './Checkbox.settings'
+import { Default } from './Checkbox.stories'
 
 const meta: Meta<typeof VvCheckbox> = {
     title: 'Components/Checkbox/Binary',

@@ -1,5 +1,5 @@
-import VolverPlugin from './Volver'
 import type { Volver, VolverOptions } from './Volver'
+import VolverPlugin from './Volver'
 
 export { VolverPlugin }
 export * from './types'

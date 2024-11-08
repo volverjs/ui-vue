@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import fileSystem from 'node:fs'
 import path from 'node:path'
 import yargs from 'yargs'
@@ -93,13 +94,13 @@ async function generateIcons(
             // https://docs.iconify.design/tools/utils/icon-name.html
             // All parts of icon name must match the following regular expression: /^[a-z0-9]+(-[a-z0-9]+)*$/
             const fileName = file
-            // get file name from path
+                // get file name from path
                 .replace(/^.*[\\/]/, '')
-            // remove extension
+                // remove extension
                 .split('.')[0]
-            // replace white spaces with '-'
+                // replace white spaces with '-'
                 .replace(/ /g, '-')
-            // remove chars that not match the Iconify regex icon name (plus '-')
+                // remove chars that not match the Iconify regex icon name (plus '-')
                 .replace(/[^a-z0-9-]/gi, '')
 
             // Add icon to icon set

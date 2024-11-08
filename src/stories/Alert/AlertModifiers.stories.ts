@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './Alert.settings'
-import { Default, type Story } from './Alert.stories'
 import VvAlert from '@/components/VvAlert/VvAlert.vue'
+import { argTypes, defaultArgs } from './Alert.settings'
+import { Default, type Story } from './Alert.stories'
 
 const meta: Meta<typeof VvAlert> = {
     title: 'Components/Alert/Modifiers',

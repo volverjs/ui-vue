@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
-import { computed, isRef, ref, unref, watch } from 'vue'
 import { StorageType } from '@/constants'
+import { computed, isRef, ref, unref, watch } from 'vue'
 
 export function usePersistence<T>(storageKey: Ref<string | undefined> | undefined,	storageType: Ref<`${StorageType}`> | `${StorageType}` = StorageType.local,	defaultValue?: T) {
     const localValue: Ref<T | undefined> = ref()

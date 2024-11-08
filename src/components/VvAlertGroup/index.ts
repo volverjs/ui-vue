@@ -1,5 +1,5 @@
-import type { ExtractPropTypes } from 'vue'
 import type { Alert } from '@/types'
+import type { ExtractPropTypes } from 'vue'
 import { ModifiersProps } from '@/props'
 
 export const VvAlertGroupProps = {
@@ -51,12 +51,12 @@ export const VvAlertGroupEvents = [
 ]
 
 export function useVvAlertGroup(props: Readonly<ExtractPropTypes<typeof VvAlertGroupProps>>,	emit: (event: string, ...args: unknown[]) => void) {
-    const bus = useProvideAlertGroup({ name: computed(() => props.name) })
+    const bus = useAlertProvideGroup({ name: computed(() => props.name) })
 
     // check props block and inline coexist
     if ((props.block && !props.inline) || (!props.block && props.inline)) {
         console.warn(
-			`[VvAlertGroup]: block and inline props must coexist at the same time.`,
+            `[VvAlertGroup]: block and inline props must coexist at the same time.`,
         )
     }
 

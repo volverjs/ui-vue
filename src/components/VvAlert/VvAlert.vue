@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VvIcon from '../VvIcon/VvIcon.vue'
 import { useVvAlert, VvAlertEvents, VvAlertProps } from '.'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 const props = defineProps(VvAlertProps)
 

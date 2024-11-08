@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { VvActionEvents, VvActionProps } from '.'
 import { ActionTag } from '../../constants'
-import { VvActionProps, VvActionEvents } from '.'
 
 // props and emit
 const props = defineProps(VvActionProps)

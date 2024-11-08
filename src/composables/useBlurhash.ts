@@ -1,7 +1,7 @@
-import { wrap } from 'comlink'
-import Pica from 'pica'
 import type { BlurhashWorkerType } from '@/types/blurhash'
 import BlurhashWorker from '@/workers/blurhash?worker&inline'
+import { wrap } from 'comlink'
+import Pica from 'pica'
 
 const remoteFunction = wrap<BlurhashWorkerType>(new BlurhashWorker())
 

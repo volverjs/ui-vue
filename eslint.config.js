@@ -1,8 +1,10 @@
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
+    type: 'lib',
     typescript: {
         overrides: {
+            'ts/explicit-function-return-type': 'off',
             'ts/consistent-type-definitions': 'off',
         },
     },
@@ -16,10 +18,14 @@ export default antfu({
     },
     rules: {
         'style/no-tabs': 'off',
-        'style/indent': 'off',
         'style/no-mixed-spaces-and-tabs': 'off',
-        'sort-imports': 'off',
     },
+    extends: [
+        'src/.eslintrc-auto-import.json',
+    ],
+    ignores: [
+        '**/icons/**',
+    ],
 }, {
     ignores: ['dist', 'bin', 'node_modules', 'storybook-static', 'vendor', 'scripts', 'package.json', 'pnpm-lock.yaml'],
 })

@@ -1,6 +1,4 @@
-import type { PropType } from 'vue'
-import type { Option } from '@/types/generic'
-import type { NavItem } from '@/types/nav'
+import type { VvIconProps } from '@/components/VvIcon'
 import type {
     AutoPlacementOptions,
     FlipOptions,
@@ -8,16 +6,18 @@ import type {
     ShiftOptions,
     SizeOptions,
 } from '@/types/floating-ui'
+import type { Option } from '@/types/generic'
+import type { NavItem } from '@/types/nav'
+import type { PropType } from 'vue'
 import {
+    ActionTag,
+    ButtonType,
     Placement,
-    Strategy,
     Position,
     Side,
-    ButtonType,
-    ActionTag,
     StorageType,
+    Strategy,
 } from '@/constants'
-import type { VvIconProps } from '@/components/VvIcon'
 
 export const LinkProps = {
     /**

@@ -184,8 +184,8 @@ export function isEmpty(
         || value === ''
         || (Array.isArray(value) && value.length === 0)
         || (!(value instanceof Date)
-        && typeof value === 'object'
-        && Object.keys(value).length === 0))(unref(value))
+            && typeof value === 'object'
+            && Object.keys(value).length === 0))(unref(value))
 }
 
 /**
@@ -243,8 +243,8 @@ export function propsToObject(props: any) {
             if ('default' in props[key]) {
                 accumulator[key]
 					= typeof props[key].default === 'function'
-					    ? props[key].default()
-					    : props[key].default
+                        ? props[key].default()
+                        : props[key].default
                 return accumulator
             }
             if (isFunction(props[key])) {

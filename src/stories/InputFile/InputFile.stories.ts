@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './InputFile.settings'
 import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
+import { argTypes, defaultArgs } from './InputFile.settings'
 
 const meta: Meta = {
     title: 'Components/InputFile',

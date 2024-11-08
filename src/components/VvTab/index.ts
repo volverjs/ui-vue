@@ -1,5 +1,5 @@
-import { ModifiersProps } from '@/props'
 import type { NavItemTab } from '@/types/nav'
+import { ModifiersProps } from '@/props'
 
 export const VvTabProps = {
     ...ModifiersProps,

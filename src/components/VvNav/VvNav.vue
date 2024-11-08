@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { VvNavEvents, VvNavProps } from '@/components/VvNav'
 import VvNavItem from './VvNavItem.vue'
-import { VvNavProps, VvNavEvents } from '@/components/VvNav'
 
 const props = defineProps(VvNavProps)
 const emit = defineEmits(VvNavEvents)

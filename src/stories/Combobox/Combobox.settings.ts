@@ -1,21 +1,21 @@
-import type { ArgTypes, Meta } from '@storybook/vue3'
 import type { VvCombobox } from '@/components'
+import type { ArgTypes, Meta } from '@storybook/vue3'
+import { VvComboboxProps } from '@/components/VvCombobox'
 import {
-    ValidArgTypes,
-    InvalidArgTypes,
-    HintArgTypes,
-    LoadingArgTypes,
     DisabledArgTypes,
-    ReadonlyArgTypes,
+    DropdownArgTypes,
+    FloatingLabelArgTypes,
+    HintArgTypes,
+    IconArgTypes,
+    InvalidArgTypes,
+    LoadingArgTypes,
     ModifiersArgTypes,
     OptionsArgTypes,
-    IconArgTypes,
+    ReadonlyArgTypes,
     TabindexArgTypes,
-    FloatingLabelArgTypes,
     UnselectableArgTypes,
-    DropdownArgTypes,
+    ValidArgTypes,
 } from '@/stories/argTypes'
-import { VvComboboxProps } from '@/components/VvCombobox'
 
 export const defaultArgs: Meta<typeof VvCombobox>['args'] = {
     ...propsToObject(VvComboboxProps),

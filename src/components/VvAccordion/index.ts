@@ -1,7 +1,7 @@
 import type { ExtractPropTypes } from 'vue'
 import type { AccordionGroupState } from '../../types/group'
-import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 import { ModifiersProps } from '@/props'
+import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 
 export const VvAccordionProps = {
     ...ModifiersProps,
@@ -41,7 +41,7 @@ export type VvAccordionPropsTypes = ExtractPropTypes<typeof VvAccordionProps>
  * Merges local and group props
  */
 export function useGroupProps(props: VvAccordionPropsTypes) {
-    const { group, isInGroup } = useInjectedGroupState<AccordionGroupState>(
+    const { group, isInGroup } = useGroupStateInject<AccordionGroupState>(
         INJECTION_KEY_ACCORDION_GROUP,
     )
 

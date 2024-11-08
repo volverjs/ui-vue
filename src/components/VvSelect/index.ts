@@ -1,23 +1,23 @@
 import type { MaybeElement } from '@vueuse/core'
+import type { Option } from '../../types/generic'
 import {
-    ValidProps,
-    InvalidProps,
-    HintProps,
-    LoadingProps,
+    AutocompleteProps,
+    AutofocusProps,
     DisabledProps,
-    ReadonlyProps,
-    ModifiersProps,
-    TabindexProps,
-    OptionsProps,
+    FloatingLabelProps,
+    HintProps,
     IconProps,
     IdNameProps,
-    FloatingLabelProps,
-    AutofocusProps,
-    AutocompleteProps,
+    InvalidProps,
     LabelProps,
+    LoadingProps,
+    ModifiersProps,
+    OptionsProps,
+    ReadonlyProps,
+    TabindexProps,
     UnselectableProps,
+    ValidProps,
 } from '../../props'
-import type { Option } from '../../types/generic'
 
 export type VvSelectEmits = {
     'update:modelValue': [any]

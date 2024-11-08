@@ -1,8 +1,8 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import ESLint from '@nabla/vite-plugin-eslint'
+import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
+import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
@@ -58,5 +58,13 @@ export default ({ mode }: { mode: string }) => {
         },
         // https://github.com/storybookjs/storybook/issues/25256
         assetsInclude: ['/sb-preview/runtime.js'],
+
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern',
+                },
+            },
+        },
     })
 }

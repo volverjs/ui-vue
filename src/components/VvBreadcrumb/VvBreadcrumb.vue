@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { VvBreadcrumbProps } from '.'
 import { useModifiers } from '../../composables/useModifiers'
 import VvAction from '../VvAction/VvAction.vue'
-import { VvBreadcrumbProps } from '.'
 
 const props = defineProps(VvBreadcrumbProps)
 
@@ -45,7 +45,7 @@ export default {
                     default-tag="span"
                 >
                     <!-- @slot Slot for label -->
-                    <slot name="label" v-bind="{ route, index }">
+                    <slot name="label" v-bind="{ ...route, index, label, isLast: isLast(index) }">
                         {{ label }}
                     </slot>
                 </VvAction>

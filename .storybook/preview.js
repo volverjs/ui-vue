@@ -1,12 +1,12 @@
-import { setup } from '@storybook/vue3'
-import { themes } from '@storybook/theming'
-import packageJson from '../package.json'
-import VolverPlugin from '@/Volver'
-import iconsSimple from '@/assets/icons/simple.json'
-import iconsNormal from '@/assets/icons/normal.json'
 import iconsDetailed from '@/assets/icons/detailed.json'
-import './style.scss'
+import iconsNormal from '@/assets/icons/normal.json'
+import iconsSimple from '@/assets/icons/simple.json'
 import * as directives from '@/directives'
+import VolverPlugin from '@/Volver'
+import { themes } from '@storybook/theming'
+import { setup } from '@storybook/vue3'
+import packageJson from '../package.json'
+import './style.scss'
 
 const fullVersion = packageJson.version
 const fullSplittedVersion = fullVersion.split('-')

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VvDropdownItem from './VvDropdownItem.vue'
 import { VvDropdownOptionProps } from '.'
+import VvDropdownItem from './VvDropdownItem.vue'
 
 // props
 const props = defineProps(VvDropdownOptionProps)

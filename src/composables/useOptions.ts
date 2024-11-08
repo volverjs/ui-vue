@@ -1,5 +1,5 @@
-import { get } from 'ts-dot-prop'
 import type { Option } from '../types/generic'
+import { get } from 'ts-dot-prop'
 
 export function useOptions(props: any) {
     const { options, labelKey, valueKey, disabledKey } = toRefs(props)

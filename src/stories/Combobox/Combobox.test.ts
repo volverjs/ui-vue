@@ -1,8 +1,8 @@
-import { within } from '@storybook/test'
 import type { PlayAttributes } from '@/test/types'
+import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
-import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
+import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // native

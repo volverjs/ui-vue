@@ -1,6 +1,6 @@
-import { render, type Directive, type DirectiveBinding } from 'vue'
-import VvTooltip from '../components/VvTooltip/VvTooltip.vue'
 import type { Side } from '../constants'
+import { type Directive, type DirectiveBinding, render } from 'vue'
+import VvTooltip from '../components/VvTooltip/VvTooltip.vue'
 
 const tooltip: Directive = (() => {
     return {

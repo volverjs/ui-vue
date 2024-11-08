@@ -1,7 +1,7 @@
-import type { ExtractPropTypes, PropType } from 'vue'
 import type { FactoryOpts } from 'imask'
+import type { ExtractPropTypes, PropType } from 'vue'
 import { InputTextareaProps, StorageProps } from '../../props'
-import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
+import { ACTION_ICONS, type VvIconProps } from '../VvIcon'
 
 export const INPUT_TYPES = {
     TEXT: 'text',

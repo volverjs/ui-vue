@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './Badge.test'
-import { defaultArgs, argTypes } from './Badge.settings'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
+import { argTypes, defaultArgs } from './Badge.settings'
+import { defaultTest } from './Badge.test'
 
 const meta: Meta<typeof VvBadge> = {
     title: 'Components/Badge',

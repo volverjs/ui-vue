@@ -1,6 +1,6 @@
-import { userEvent, within } from '@storybook/test'
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
+import { userEvent, within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
@@ -44,7 +44,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
     if (args.inline && args.block) {
         expect(element).toHaveClass(
-			`vv-alert-group--${args.block}-${args.inline}`,
+            `vv-alert-group--${args.block}-${args.inline}`,
         )
     }
 
@@ -77,7 +77,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
             const button = element as HTMLElement
             await userEvent.click(button)
             expect(alertGroupList.lastElementChild).toHaveClass(
-				`vv-alert--${button.id}`,
+                `vv-alert--${button.id}`,
             )
         }
     }

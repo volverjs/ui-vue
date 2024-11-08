@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { Default as DefaultStory } from './InputFile.stories'
-import { argTypes, defaultArgs } from './InputFile.settings'
 import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
+import { argTypes, defaultArgs } from './InputFile.settings'
+import { Default as DefaultStory } from './InputFile.stories'
 
 const meta: Meta<typeof VvInputFile> = {
     title: 'Components/InputFile/Slots',

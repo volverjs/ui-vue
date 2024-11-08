@@ -1,22 +1,22 @@
 import type { ArgTypes } from '@storybook/vue3'
+import { VvSelectProps } from '@/components/VvSelect'
 import {
-    ValidArgTypes,
-    InvalidArgTypes,
-    HintArgTypes,
-    LoadingArgTypes,
+    AutocompleteArgTypes,
+    AutofocusArgTypes,
     DisabledArgTypes,
-    ReadonlyArgTypes,
+    FloatingLabelArgTypes,
+    HintArgTypes,
+    IconArgTypes,
+    IdNameArgTypes,
+    InvalidArgTypes,
+    LoadingArgTypes,
     ModifiersArgTypes,
     OptionsArgTypes,
-    IconArgTypes,
+    ReadonlyArgTypes,
     TabindexArgTypes,
-    IdNameArgTypes,
-    FloatingLabelArgTypes,
     UnselectableArgTypes,
-    AutofocusArgTypes,
-    AutocompleteArgTypes,
+    ValidArgTypes,
 } from '@/stories/argTypes'
-import { VvSelectProps } from '@/components/VvSelect'
 
 export const defaultArgs = {
     ...propsToObject(VvSelectProps),

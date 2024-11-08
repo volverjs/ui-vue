@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useGroupProps, VvCheckboxEvents, VvCheckboxProps } from '.'
 import { HintSlotFactory } from '../common/HintSlot'
-import { VvCheckboxProps, VvCheckboxEvents, useGroupProps } from '.'
 
 // props, emits and slots
 const props = defineProps(VvCheckboxProps)
@@ -124,7 +124,7 @@ const bemCssClasses = useModifiers(
 watchEffect(() => {
     if (isBinary.value && Array.isArray(modelValue.value)) {
         console.warn(
-				`[VvCheckbox] The model value is an array but the component is in binary mode.`,
+            `[VvCheckbox] The model value is an array but the component is in binary mode.`,
         )
     }
 })

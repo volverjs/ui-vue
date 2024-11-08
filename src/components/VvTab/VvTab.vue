@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { VvTabProps, VvTabEvents } from '@/components/VvTab'
-import VvNav from '@/components/VvNav/VvNav.vue'
 import type { NavItemTab } from '@/types/nav'
+import VvNav from '@/components/VvNav/VvNav.vue'
+import { VvTabEvents, VvTabProps } from '@/components/VvTab'
 
 const props = defineProps(VvTabProps)
 const emit = defineEmits(VvTabEvents)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VvAlert from '../VvAlert/VvAlert.vue'
 import { useVvAlertGroup, VvAlertGroupEvents, VvAlertGroupProps } from '.'
+import VvAlert from '../VvAlert/VvAlert.vue'
 
 // props and emit
 const props = defineProps(VvAlertGroupProps)

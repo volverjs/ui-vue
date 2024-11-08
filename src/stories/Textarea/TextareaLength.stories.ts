@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { Default } from './Textarea.stories'
-import { defaultArgs, argTypes } from './Textarea.settings'
 import VvTextarea from '@/components/VvTextarea/VvTextarea.vue'
+import { argTypes, defaultArgs } from './Textarea.settings'
+import { Default } from './Textarea.stories'
 
 const meta: Meta<typeof VvTextarea> = {
     title: 'Components/Textarea/Length',

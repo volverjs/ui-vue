@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - `VvAccordionGroup` prop for storage key `storeKey` is now `storageKey`.
 - Align `VvNav` items prop with `VvAction` props;
 - Align `VvTab` items prop with `VvAction` and `VvNav` props;
+- Replace `uid` with `useId` from `vue`;
 
 ### Fixed
 

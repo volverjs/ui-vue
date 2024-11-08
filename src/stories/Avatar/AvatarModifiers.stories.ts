@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from '../Avatar/Avatar.test'
-import { defaultArgs, argTypes } from './Avatar.settings'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import { defaultTest } from '../Avatar/Avatar.test'
+import { argTypes, defaultArgs } from './Avatar.settings'
 
 const meta: Meta<typeof VvAvatar> = {
     title: 'Components/Avatar/Modifiers',

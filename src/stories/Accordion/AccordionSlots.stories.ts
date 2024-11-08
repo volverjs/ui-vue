@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { Default as AccordionDefault } from './Accordion.stories'
-import { defaultArgs } from './Accordion.settings'
 import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+import { defaultArgs } from './Accordion.settings'
+import { Default as AccordionDefault } from './Accordion.stories'
 
 const meta: Meta<typeof VvAccordion> = {
     title: 'Components/Accordion/Slots',

@@ -1,26 +1,26 @@
-import { type Ref, Fragment } from 'vue'
 import mitt from 'mitt'
+import { Fragment, type Ref } from 'vue'
 import {
+    ActionRoles,
+    DropdownItemRole,
     type DropdownItemState,
-    INJECTION_KEY_DROPDOWN_TRIGGER,
+    DropdownRole,
     INJECTION_KEY_DROPDOWN_ACTION,
     INJECTION_KEY_DROPDOWN_ITEM,
-    DropdownRole,
-    DropdownItemRole,
-    ActionRoles,
+    INJECTION_KEY_DROPDOWN_TRIGGER,
 } from '../../constants'
 
 /**
  * Share the dropdown reference and the event bus with all its children.
  * @param {Ref<HTMLElement | null>} reference the dropdown reference
  */
-export function useProvideDropdownTrigger({
+export function useDropdownProvideTrigger({
     reference,
     id,
     expanded,
     aria,
 }: {
-    reference: Ref<HTMLElement | null>
+    reference: Ref<HTMLElement | null | undefined>
     id: Ref<string | number>
     expanded: Ref<boolean>
     aria: Ref<{
@@ -60,7 +60,7 @@ export function useProvideDropdownTrigger({
  * Share the dropdown item role with all its children.
  * @param {Ref<string>} role the dropdown item role
  */
-export function useProvideDropdownItem({
+export function useDropdownProvideItem({
     role,
     ...others
 }: Omit<DropdownItemState, 'role'> & {
@@ -82,7 +82,7 @@ export function useProvideDropdownItem({
  * Share the dropdown item role with all its children.
  * @param {Ref<string>} role the dropdown item role
  */
-export function useProvideDropdownAction({
+export function useDropdownProvideAction({
     expanded,
 }: {
     expanded?: Ref<boolean>

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './Dialog.settings'
-import { Default as DefaultStory } from './Dialog.stories'
 import VvDialog from '@/components/VvDialog/VvDialog.vue'
+import { argTypes, defaultArgs } from './Dialog.settings'
+import { Default as DefaultStory } from './Dialog.stories'
 
 const meta: Meta<typeof VvDialog> = {
     title: 'Components/Dialog/Slots',

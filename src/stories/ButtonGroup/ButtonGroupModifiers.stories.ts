@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { Default } from './ButtonGroup.stories'
-import { defaultArgs, argTypes } from './ButtonGroup.settings'
 import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { argTypes, defaultArgs } from './ButtonGroup.settings'
+import { Default } from './ButtonGroup.stories'
 
 const meta: Meta<typeof VvButtonGroup> = {
     title: 'Components/ButtonGroup/Modifiers',

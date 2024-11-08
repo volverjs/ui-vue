@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './Nav.settings'
-import { defaultTest } from './Nav.test'
 import VvNav from '@/components/VvNav/VvNav.vue'
+import { argTypes, defaultArgs } from './Nav.settings'
+import { defaultTest } from './Nav.test'
 
 const meta: Meta<typeof VvNav> = {
     title: 'Components/Nav',

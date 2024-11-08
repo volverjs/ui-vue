@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { Default } from './CheckboxGroup.stories'
-import { defaultArgs, argTypes } from './CheckboxGroup.settings'
 import VvCheckboxGroup from '@/components/VvCheckboxGroup/VvCheckboxGroup.vue'
+import { argTypes, defaultArgs } from './CheckboxGroup.settings'
+import { Default } from './CheckboxGroup.stories'
 
 const meta: Meta<typeof VvCheckboxGroup> = {
     title: 'Components/CheckboxGroup/Options',
