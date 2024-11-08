@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './Combobox.settings'
-import { Default } from './Combobox.stories'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import { argTypes, defaultArgs } from './Combobox.settings'
+import { Default } from './Combobox.stories'
 
 const meta: Meta<typeof VvCombobox> = {
     title: 'Components/Combobox/Multiple',

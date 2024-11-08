@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { TextareaHTMLAttributes } from 'vue'
+import { VvTextareaEvents, VvTextareaProps } from '.'
 import HintSlotFactory from '../common/HintSlot'
 import VvIcon from '../VvIcon/VvIcon.vue'
-import { VvTextareaProps, VvTextareaEvents } from '.'
 
 // props, emit and slots
 const props = defineProps(VvTextareaProps)

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './AvatarGroup.settings'
-import { defaultTest } from './AvatarGroup.test'
-import VvAvatarGroup from '@/components/VvAvatarGroup/VvAvatarGroup.vue'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import VvAvatarGroup from '@/components/VvAvatarGroup/VvAvatarGroup.vue'
+import { argTypes, defaultArgs } from './AvatarGroup.settings'
+import { defaultTest } from './AvatarGroup.test'
 
 const meta: Meta<typeof VvAvatarGroup> = {
     title: 'Components/AvatarGroup/Slots',

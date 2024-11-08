@@ -1,5 +1,5 @@
-import { ModifiersProps } from '../../props'
 import type { NavItem } from '../../types'
+import { ModifiersProps } from '../../props'
 
 export const VvBreadcrumbProps = {
     ...ModifiersProps,

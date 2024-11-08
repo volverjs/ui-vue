@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { UploadedFile } from '../../types'
 import { useVModel } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import Sortable from 'vuedraggable'
-import type { UploadedFile } from '../../types'
+import { type VvInputFileEvents, VvInputFileProps } from '.'
+import HintSlotFactory from '../common/HintSlot'
 import VvButton from '../VvButton/VvButton.vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
-import { type VvInputFileEvents, VvInputFileProps } from '.'
 
 // props, emit, slots and attrs
 const props = defineProps(VvInputFileProps)
@@ -66,7 +66,7 @@ const files = computed({
         if (
             !localModelValue.value
             || (!Array.isArray(localModelValue.value)
-            && !(localModelValue.value as File)?.name)
+                && !(localModelValue.value as File)?.name)
         ) {
             return []
         }
@@ -105,7 +105,7 @@ const isMultiple = computed(() => {
 
 const isDragging = ref(false)
 
-const inputEl = ref<HTMLInputElement>()
+const inputEl = useTemplateRef<HTMLInputElement>('inputEl')
 function onDragenter() {
     isDragging.value = true
 }
@@ -146,8 +146,8 @@ function addFiles(uploadedFiles: FileList) {
     else {
         toReturn
 				= localModelValue.value && Array.isArray(localModelValue.value)
-				    ? [...localModelValue.value]
-				    : toReturn
+                ? [...localModelValue.value]
+                : toReturn
     }
     for (const file of uploadedFiles) {
         if (hasMax.value && toReturn.length >= hasMax.value) {

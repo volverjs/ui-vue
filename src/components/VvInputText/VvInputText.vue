@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import type { MaskedNumberOptions } from 'imask'
 import type { InputHTMLAttributes } from 'vue'
 import { useIMask } from 'vue-imask'
-import type { MaskedNumberOptions } from 'imask'
 import HintSlotFactory from '../common/HintSlot'
-import VvIcon from '../VvIcon/VvIcon.vue'
-import { ACTION_ICONS } from '../VvIcon'
-import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 import VvDropdown from '../VvDropdown/VvDropdown.vue'
 import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+import { ACTION_ICONS } from '../VvIcon'
+import VvIcon from '../VvIcon/VvIcon.vue'
 import {
+    INPUT_TYPES,
     VvInputTextEvents,
     VvInputTextProps,
-    INPUT_TYPES,
 } from '../VvInputText'
+import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 
 // props, emit, slots and attrs
 const props = defineProps(VvInputTextProps)
@@ -135,9 +135,9 @@ const { el, mask, typed, masked, unmasked } = useIMask(
                     date = new Date(date)
                 }
                 localModelValue.value = `${date.getFullYear()}-${(
-						`0${
-						date.getMonth() + 1}`
-					).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`
+                    `0${
+                        date.getMonth() + 1}`
+                ).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`
                 return
             }
             if (type.value === INPUT_TYPES.DATETIME_LOCAL) {
@@ -160,11 +160,11 @@ const { el, mask, typed, masked, unmasked } = useIMask(
                     date = new Date(date)
                 }
                 localModelValue.value = `${date.getFullYear()}-${(
-						`0${
-						date.getMonth() + 1}`
-					).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}T${(
-						`0${date.getHours()}`
-					).slice(-2)}:${(`0${date.getMinutes()}`).slice(-2)}`
+                    `0${
+                        date.getMonth() + 1}`
+                ).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}T${(
+                    `0${date.getHours()}`
+                ).slice(-2)}:${(`0${date.getMinutes()}`).slice(-2)}`
                 return
             }
             if (!localModelValue.value && !unmasked.value) {
@@ -217,9 +217,9 @@ watch(
 
 // template refs
 const inputEl = el as Ref<HTMLInputElement>
-const innerEl = ref<HTMLInputElement>()
-const wrapperEl = ref<HTMLDivElement>()
-const dropdownEl = ref<typeof VvDropdown>()
+const innerEl = useTemplateRef<HTMLInputElement>('innerEl')
+const wrapperEl = useTemplateRef<HTMLDivElement>('wrapperEl')
+const dropdownEl = useTemplateRef<typeof VvDropdown>('dropdownEl')
 
 defineExpose({ $inner: innerEl })
 
@@ -372,9 +372,9 @@ const filteredSuggestions = computed(() => {
             suggestion =>
                 isEmpty(localModelValue.value)
                 || (`${suggestion}`
-					    .toLowerCase()
-					    .includes(`${localModelValue.value}`.toLowerCase())
-					    && suggestion !== localModelValue.value),
+                    .toLowerCase()
+                    .includes(`${localModelValue.value}`.toLowerCase())
+                    && suggestion !== localModelValue.value),
         )
         .reverse()
 })

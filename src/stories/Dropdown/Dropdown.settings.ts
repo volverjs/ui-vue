@@ -1,7 +1,7 @@
 import type { ArgTypes } from '@storybook/vue3'
-import { DropdownArgTypes } from '../argTypes'
 import { VvDropdownProps } from '@/components/VvDropdown'
 import { DropdownRole } from '@/constants'
+import { DropdownArgTypes } from '../argTypes'
 
 export const defaultArgs = {
     ...propsToObject(VvDropdownProps),

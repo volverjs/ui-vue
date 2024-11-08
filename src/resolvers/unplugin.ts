@@ -88,9 +88,9 @@ const getSideEffects = function (kebabName: string, importStyle?: ImportStyle) {
     if (styleNames) {
         styleNames.forEach((name) => {
             sideEffects.push(
-				`@volverjs/style/${
-					importStyle === 'scss' ? 'scss/' : ''
-				}components/${name}`,
+                `@volverjs/style/${
+                    importStyle === 'scss' ? 'scss/' : ''
+                }components/${name}`,
             )
         })
     }
@@ -121,8 +121,8 @@ export function VolverResolver({
                     return
                 }
                 const kebabName = kebabCase(name).replace(
-					`${prefix}-`,
-					`${VOLVER_PREFIX}-`,
+                    `${prefix}-`,
+                    `${VOLVER_PREFIX}-`,
                 )
 
                 if (ignore && ignore.includes(kebabName)) {

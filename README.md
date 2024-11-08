@@ -123,10 +123,10 @@ To learn more about icons collections, check [icons documentation](src/component
 You can use `@volverjs/ui-vue` with [`unplugin-vue-components`](https://github.com/antfu/unplugin-vue-components) to automatically import components and styles.
 
 ```typescript
+import { VolverResolver } from '@volverjs/ui-vue/resolvers/unplugin'
+import Components from 'unplugin-vue-components/vite'
 // vite.config.ts
 import { defineConfig } from 'vite'
-import Components from 'unplugin-vue-components/vite'
-import { VolverResolver } from '@volverjs/ui-vue/resolvers/unplugin'
 
 export default defineConfig({
     // ...

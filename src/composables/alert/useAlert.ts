@@ -1,12 +1,12 @@
+import type { Alert } from '@/types/alert'
 import {
     DEFAULT_ALERT_AUTO_CLOSE,
     DEFAULT_ALERT_DISMISSABLE,
     DEFAULT_ALERT_GROUP,
-    DEFAULT_ALERT_MODIFIERS,
     DEFAULT_ALERT_INFO_ICON,
+    DEFAULT_ALERT_MODIFIERS,
     DefaultAlertIconMap,
 } from '@/constants'
-import type { Alert } from '@/types/alert'
 
 type AlertInGroup = Alert & { timestamp: number, group: string }
 

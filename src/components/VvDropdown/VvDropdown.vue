@@ -1,15 +1,5 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import {
-    useFloating,
-    offset,
-    flip,
-    autoUpdate,
-    shift,
-    autoPlacement,
-    arrow,
-    size,
-} from '@floating-ui/vue'
 import type {
     AutoPlacementOptions,
     FlipOptions,
@@ -17,8 +7,18 @@ import type {
     ShiftOptions,
     SizeOptions,
 } from '../../types/floating-ui'
-import { Side, Strategy } from '../../constants'
+import {
+    arrow,
+    autoPlacement,
+    autoUpdate,
+    flip,
+    offset,
+    shift,
+    size,
+    useFloating,
+} from '@floating-ui/vue'
 import { VvDropdownProps } from '.'
+import { Side, Strategy } from '../../constants'
 
 // props, emit and attrs
 const props = defineProps(VvDropdownProps)
@@ -48,10 +48,10 @@ const maxWidth = ref('auto')
 const maxHeight = ref('auto')
 
 // template elements
-const localReferenceEl = ref<HTMLElement | null>(null)
+const localReferenceEl = ref<HTMLElement>()
 const floatingEl: Ref = ref()
-const arrowEl = ref<HTMLElement | null>(null)
-const listEl = ref<HTMLUListElement | null>(null)
+const arrowEl = useTemplateRef<HTMLElement>('arrowEl')
+const listEl = useTemplateRef<HTMLElement>('listEl')
 const referenceEl = computed({
     get: () => props.reference ?? localReferenceEl.value,
     set: (newValue) => {
@@ -69,9 +69,9 @@ onMounted(() => {
         () => {
             hasCustomPosition.value
 					= window
-					    .getComputedStyle(floatingEl.value)
-					    .getPropertyValue('--dropdown-custom-position')
-					    ?.trim() === 'true'
+                    .getComputedStyle(floatingEl.value)
+                    .getPropertyValue('--dropdown-custom-position')
+                    ?.trim() === 'true'
         },
         {
             attributeFilter: ['style'],
@@ -294,7 +294,7 @@ const referenceAria = computed(() => ({
 
 // provide to dropdown
 const { component: VvDropdownTriggerProvider, bus }
-		= useProvideDropdownTrigger({
+		= useDropdownProvideTrigger({
 		    reference: referenceEl,
 		    id: hasId,
 		    expanded,
@@ -383,7 +383,7 @@ function focusPrev() {
 const hovered = useElementHover(floatingEl)
 
 // provide top dropdown item
-const { itemRole } = useProvideDropdownItem({
+const { itemRole } = useDropdownProvideItem({
     role,
     expanded,
     focused,

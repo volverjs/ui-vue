@@ -1,8 +1,8 @@
-import { within, userEvent } from '@storybook/test'
 import type { PlayAttributes } from '@/test/types'
+import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
-import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
+import { userEvent, within } from '@storybook/test'
 
 function valueByType(type: InputType, mask?: string, id?: string) {
     if (mask) {

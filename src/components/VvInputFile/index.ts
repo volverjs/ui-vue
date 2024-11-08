@@ -1,17 +1,17 @@
+import type { UploadedFile } from '@/types'
 import {
-    IdNameProps,
-    ModifiersProps,
-    ValidProps,
-    InvalidProps,
+    DisabledProps,
     HintProps,
+    IconProps,
+    IdNameProps,
+    InvalidProps,
     LabelProps,
     LoadingProps,
+    ModifiersProps,
     ReadonlyProps,
-    DisabledProps,
-    IconProps,
+    ValidProps,
 } from '../../props'
-import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
-import type { UploadedFile } from '@/types'
+import { ACTION_ICONS, type VvIconProps } from '../VvIcon'
 
 export type VvInputFileEvents = {
     'remove': [

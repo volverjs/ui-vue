@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './InputText.settings'
-import { defaultTest } from './InputText.test'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Position } from '@/constants'
+import { argTypes, defaultArgs } from './InputText.settings'
+import { defaultTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText',

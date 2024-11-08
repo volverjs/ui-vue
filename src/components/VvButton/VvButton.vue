@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import VvIcon from '../VvIcon/VvIcon.vue'
-import VvAction from '../VvAction/VvAction.vue'
+import { useGroupProps, VvButtonEvents, VvButtonProps } from '.'
 import { Side } from '../../constants'
-import { VvButtonEvents, VvButtonProps, useGroupProps } from '.'
+import VvAction from '../VvAction/VvAction.vue'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 // props, attrs, slots and emit
 const props = defineProps(VvButtonProps)

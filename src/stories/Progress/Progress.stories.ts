@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './Progress.test'
-import { defaultArgs, argTypes } from './Progress.settings'
 import VvProgress from '@/components/VvProgress/VvProgress.vue'
+import { argTypes, defaultArgs } from './Progress.settings'
+import { defaultTest } from './Progress.test'
 
 const meta: Meta<typeof VvProgress> = {
     title: 'Components/Progress',

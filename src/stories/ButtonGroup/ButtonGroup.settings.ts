@@ -1,11 +1,11 @@
 import type { ArgTypes } from '@storybook/vue3'
-import { argTypes as buttonArgTypes } from '../Button/Button.settings'
+import { VvButtonGroupProps } from '@/components/VvButtonGroup'
 import {
     DefaultSlotArgTypes,
     ModifiersArgTypes,
     UnselectableArgTypes,
 } from '@/stories/argTypes'
-import { VvButtonGroupProps } from '@/components/VvButtonGroup'
+import { argTypes as buttonArgTypes } from '../Button/Button.settings'
 
 export const defaultArgs = {
     ...propsToObject(VvButtonGroupProps),

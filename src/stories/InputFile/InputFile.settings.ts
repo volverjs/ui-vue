@@ -1,6 +1,6 @@
 import type { ArgTypes } from '@storybook/vue3'
-import { HintArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 import { VvInputFileProps } from '@/components/VvInputFile'
+import { HintArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
     ...propsToObject(VvInputFileProps),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VvAvatarGroupProps } from '@/components/VvAvatarGroup'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
+import { VvAvatarGroupProps } from '@/components/VvAvatarGroup'
 
 const props = defineProps(VvAvatarGroupProps)
 const { modifiers, items, toShow, totalItems, avatarModifiers }

@@ -1,6 +1,6 @@
 import type { ArgTypes } from '@storybook/vue3'
-import { VvIconPropsDefaults } from '@/components/VvIcon'
 import normal from '@/assets/icons/normal.json'
+import { VvIconPropsDefaults } from '@/components/VvIcon'
 import { ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {

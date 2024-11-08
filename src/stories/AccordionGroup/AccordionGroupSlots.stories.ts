@@ -1,8 +1,8 @@
-import { defaultTest } from './AccordionGroup.test'
-import { defaultArgs, argTypes } from './AccordionGroup.settings'
-import meta, { type Story } from './AccordionGroup.stories'
 import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import { argTypes, defaultArgs } from './AccordionGroup.settings'
+import meta, { type Story } from './AccordionGroup.stories'
+import { defaultTest } from './AccordionGroup.test'
 
 export default {
     ...meta,

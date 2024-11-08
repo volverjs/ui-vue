@@ -1,13 +1,13 @@
-import type { ArgTypes, Meta } from '@storybook/vue3'
 import type { VvButton } from '@/components'
+import type { ArgTypes, Meta } from '@storybook/vue3'
+import normal from '@/assets/icons/normal.json'
 import {
     DefaultSlotArgTypes,
-    ModifiersArgTypes,
     DisabledArgTypes,
     LoadingArgTypes,
+    ModifiersArgTypes,
     UnselectableArgTypes,
 } from '@/stories/argTypes'
-import normal from '@/assets/icons/normal.json'
 
 export const defaultArgs: Meta<typeof VvButton>['args'] = {
     label: 'Button',

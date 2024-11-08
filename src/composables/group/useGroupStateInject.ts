@@ -1,9 +1,9 @@
-import type { Ref, InjectionKey } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 
 /**
  * Injects a group state
  */
-export function useInjectedGroupState<GroupStateType>(
+export function useGroupStateInject<GroupStateType>(
     groupKey: InjectionKey<GroupStateType>,
 ) {
     // Get group state

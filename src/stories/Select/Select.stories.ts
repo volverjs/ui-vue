@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './Select.test'
-import { defaultArgs, argTypes } from './Select.settings'
 import VvSelect from '@/components/VvSelect/VvSelect.vue'
+import { argTypes, defaultArgs } from './Select.settings'
+import { defaultTest } from './Select.test'
 
 const meta: Meta<typeof VvSelect> = {
     title: 'Components/Select',

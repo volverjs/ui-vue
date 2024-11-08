@@ -1,4 +1,4 @@
-import type { flip, autoPlacement, shift, offset, size } from '@floating-ui/vue'
+import type { autoPlacement, flip, offset, shift, size } from '@floating-ui/vue'
 
 export type AutoPlacementOptions = Parameters<typeof autoPlacement>[0]
 export type FlipOptions = Parameters<typeof flip>[0]

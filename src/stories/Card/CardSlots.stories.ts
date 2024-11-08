@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaulTest } from './Card.test'
-import { defaultArgs, argTypes } from './Card.settings'
 import VvCard from '@/components/VvCard/VvCard.vue'
+import { argTypes, defaultArgs } from './Card.settings'
+import { defaulTest } from './Card.test'
 
 const meta: Meta<typeof VvCard> = {
     title: 'Components/Card/Slots',

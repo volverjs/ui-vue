@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultArgs, argTypes } from './Icon.settings'
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import NormalIcons from '@/assets/icons/normal.json'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import { argTypes, defaultArgs } from './Icon.settings'
 
 const meta: Meta<typeof VvIcon> = {
     title: 'Components/Icon',

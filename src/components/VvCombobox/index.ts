@@ -1,22 +1,22 @@
-import type { PropType } from 'vue'
 import type { MaybeElement } from '@vueuse/core'
+import type { PropType } from 'vue'
+import type { Option } from '../../types/generic'
 import {
-    ValidProps,
-    InvalidProps,
-    HintProps,
-    LoadingProps,
     DisabledProps,
-    ReadonlyProps,
+    DropdownProps,
+    FloatingLabelProps,
+    HintProps,
+    IconProps,
+    IdNameProps,
+    InvalidProps,
+    LabelProps,
+    LoadingProps,
     ModifiersProps,
     OptionsProps,
-    IconProps,
+    ReadonlyProps,
     TabindexProps,
-    FloatingLabelProps,
-    IdNameProps,
-    DropdownProps,
-    LabelProps,
+    ValidProps,
 } from '../../props'
-import type { Option } from '../../types/generic'
 
 export type VvComboboxEvents = {
     'update:modelValue': [any]
@@ -100,8 +100,8 @@ export const VvComboboxProps = {
     searchFunction: {
         type: Function as PropType<
             (
-			    search: string,
-			    options: (Option | string)[],
+                search: string,
+                options: (Option | string)[],
             ) => (Option | string)[] | Promise<(Option | string)[]>
         >,
         default: undefined,
@@ -208,8 +208,8 @@ export function useVvComboboxProps<T extends Option | string>() {
             ...VvComboboxProps.searchFunction,
             type: Function as PropType<
                 (
-			    search: string,
-			    options: T[],
+                    search: string,
+                    options: T[],
                 ) => T[] | Promise<T[]>
             >,
         },

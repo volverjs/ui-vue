@@ -1,7 +1,7 @@
+import type { AlertModifier } from '@/types'
 import type { ExtractPropTypes, PropType } from 'vue'
 import { AlertRole } from '@/constants'
 import { IconProps, IdProps } from '@/props'
-import type { AlertModifier } from '@/types'
 
 export const VvAlertProps = {
     ...IdProps,

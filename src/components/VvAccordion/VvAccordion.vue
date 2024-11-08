@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { uid } from 'uid'
-import { VvAccordionEvents, VvAccordionProps, useGroupProps } from '.'
+import { useId } from 'vue'
+import { useGroupProps, VvAccordionEvents, VvAccordionProps } from '.'
 
 // props, attrs and emit
 const props = defineProps(VvAccordionProps)
@@ -12,7 +12,7 @@ const modelValue = useVModel(props, 'modelValue', emit)
 
 // data
 const accordionName = computed(
-    () => props.name || (attrs?.id as string) || uid(),
+    () => props.name || (attrs?.id as string) || useId(),
 )
 const { title, content, not } = toRefs(props)
 const { isInGroup, modifiers, disabled, bus } = useGroupProps(props)
@@ -90,7 +90,7 @@ function collapse() {
 function groupExpand(name?: string | string[]) {
     if (!bus) {
         console.warn(
-				`[VvAccordion]: You are trying to expand accordion group of "${accordionName.value}" but it is not in a group`,
+            `[VvAccordion]: You are trying to expand accordion group of "${accordionName.value}" but it is not in a group`,
         )
         return
     }
@@ -100,7 +100,7 @@ function groupExpand(name?: string | string[]) {
 function groupCollapse(name?: string | string[]) {
     if (!bus) {
         console.warn(
-				`[VvAccordion]: You are trying to collapse accordion group of "${accordionName.value}" but it is not in a group`,
+            `[VvAccordion]: You are trying to collapse accordion group of "${accordionName.value}" but it is not in a group`,
         )
         return
     }

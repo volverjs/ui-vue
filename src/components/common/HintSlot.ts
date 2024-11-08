@@ -1,4 +1,4 @@
-import type { ExtractPropTypes, Slots, Ref } from 'vue'
+import type { ExtractPropTypes, Ref, Slots } from 'vue'
 
 /**
  * Merge array of string
@@ -14,18 +14,18 @@ function joinLines(items: string[] | string | unknown[] | undefined) {
 
 export type HintSlotProps = Readonly<
     ExtractPropTypes<{
-	    hintLabel: {
-	        type: StringConstructor
-	        default: ''
-	        required: true
-	    }
-	    modelValue: unknown
-	    valid: BooleanConstructor
-	    validLabel: (StringConstructor | ArrayConstructor)[]
-	    invalid: BooleanConstructor
-	    invalidLabel: (StringConstructor | ArrayConstructor)[]
-	    loading: BooleanConstructor
-	    loadingLabel: StringConstructor
+        hintLabel: {
+            type: StringConstructor
+            default: ''
+            required: true
+        }
+        modelValue: unknown
+        valid: BooleanConstructor
+        validLabel: (StringConstructor | ArrayConstructor)[]
+        invalid: BooleanConstructor
+        invalidLabel: (StringConstructor | ArrayConstructor)[]
+        loading: BooleanConstructor
+        loadingLabel: StringConstructor
     }>
 >
 
@@ -60,7 +60,7 @@ export function HintSlotFactory(
         () =>
             !hasLoadingLabelOrSlot.value
             && Boolean(
-			    props.value.invalid && (slots.invalid || invalidLabel.value),
+                props.value.invalid && (slots.invalid || invalidLabel.value),
             ),
     )
     const hasValidLabelOrSlot = computed(

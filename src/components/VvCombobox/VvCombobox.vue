@@ -1,17 +1,17 @@
 <script setup lang="ts" generic="T extends string | Option">
 import type { Ref } from 'vue'
+import type { Option } from '../../types/generic'
 import { toRefs } from 'vue'
-import VvIcon from '../VvIcon/VvIcon.vue'
-import VvDropdown from '../VvDropdown/VvDropdown.vue'
-import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
-import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
-import VvSelect from '../VvSelect/VvSelect.vue'
+import { useVvComboboxProps, type VvComboboxEvents } from '.'
+import { DropdownRole } from '../../constants'
+import HintSlotFactory from '../common/HintSlot'
 import VvBadge from '../VvBadge/VvBadge.vue'
 import VvButton from '../VvButton/VvButton.vue'
-import HintSlotFactory from '../common/HintSlot'
-import type { Option } from '../../types/generic'
-import { DropdownRole } from '../../constants'
-import { type VvComboboxEvents, useVvComboboxProps } from '.'
+import VvDropdown from '../VvDropdown/VvDropdown.vue'
+import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
+import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
+import VvIcon from '../VvIcon/VvIcon.vue'
+import VvSelect from '../VvSelect/VvSelect.vue'
 
 // props, emit and slots
 // WARNING: This is a provisiaonal implementation, it may change in the future
@@ -31,7 +31,7 @@ const propsDefaults = useDefaults<typeof VvComboboxProps>(
 const inputEl: Ref<HTMLElement | null> = ref(null)
 const inputSearchEl: Ref<HTMLElement | null> = ref(null)
 const wrapperEl: Ref<HTMLElement | null> = ref(null)
-const dropdownEl = ref<typeof VvDropdown | null>(null)
+const dropdownEl = useTemplateRef<typeof VvDropdown>('dropdownEl')
 
 // hint slot
 const {

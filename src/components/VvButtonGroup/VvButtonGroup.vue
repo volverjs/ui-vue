@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ButtonGroupState } from '../../types/group'
+import { VvButtonGroupEvents, VvButtonGroupProps } from '.'
 import { INJECTION_KEY_BUTTON_GROUP } from '../../constants'
-import { VvButtonGroupProps, VvButtonGroupEvents } from '.'
 
 const props = defineProps(VvButtonGroupProps)
 
@@ -20,7 +20,7 @@ const {
 watchEffect(() => {
     if (typeof props.modelValue === 'string' && multiple.value) {
         console.warn(
-				`[VvButtonGroup]: modelValue is a string but multiple is true.`,
+            `[VvButtonGroup]: modelValue is a string but multiple is true.`,
         )
     }
 })
@@ -46,7 +46,7 @@ const modelValue = computed({
 })
 
 // provide
-useProvideGroupState<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP, {
+useGroupStateProvide<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP, {
     modelValue,
     disabled,
     toggle,

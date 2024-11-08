@@ -1,9 +1,9 @@
 import type { Component } from 'vue'
+import { INPUT_TYPES, type VvInputTextPropsTypes } from '.'
 import VvIcon from '../VvIcon/VvIcon.vue'
+import VvInputClearAction from '../VvInputText/VvInputClearAction'
 import VvInputPasswordAction from '../VvInputText/VvInputPasswordAction'
 import VvInputStepAction from '../VvInputText/VvInputStepAction'
-import VvInputClearAction from '../VvInputText/VvInputClearAction'
-import { type VvInputTextPropsTypes, INPUT_TYPES } from '.'
 
 export default function VvInputTextActionsFactory(
     type: string,
@@ -69,7 +69,7 @@ export default function VvInputTextActionsFactory(
                             disabled:
 								this.isDisabled
 								|| (parentProps.max !== undefined
-								&& parentProps.modelValue === parentProps.max),
+								    && parentProps.modelValue === parentProps.max),
                             label: this.labelStepUp,
                             onStepUp,
                             onStepDown,
@@ -79,7 +79,7 @@ export default function VvInputTextActionsFactory(
                             disabled:
 								this.isDisabled
 								|| (parentProps.min !== undefined
-								&& parentProps.modelValue === parentProps.min),
+								    && parentProps.modelValue === parentProps.min),
                             label: this.labelStepDown,
                             onStepUp,
                             onStepDown,

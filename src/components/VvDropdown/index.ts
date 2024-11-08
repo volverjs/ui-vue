@@ -1,13 +1,13 @@
 import type { PropType } from 'vue'
+import { DropdownRole } from '../../constants'
 import {
+    DisabledProps,
     DropdownProps,
     IdProps,
-    DisabledProps,
     ModifiersProps,
     SelectedProps,
     UnselectableProps,
 } from '../../props'
-import { DropdownRole } from '../../constants'
 
 export const VvDropdownProps = {
     ...IdProps,

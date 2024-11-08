@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './Breadcrumb.test'
-import { defaultArgs, argTypes } from './Breadcrumb.settings'
 import VvBreadcrumb from '@/components/VvBreadcrumb/VvBreadcrumb.vue'
+import { argTypes, defaultArgs } from './Breadcrumb.settings'
+import { defaultTest } from './Breadcrumb.test'
 
 const meta: Meta<typeof VvBreadcrumb> = {
     title: 'Components/Breadcrumb',

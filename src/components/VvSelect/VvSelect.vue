@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends string | Option">
 import type { SelectHTMLAttributes } from 'vue'
-import VvIcon from '../VvIcon/VvIcon.vue'
-import HintSlotFactory from '../common/HintSlot'
 import type { Option } from '../../types/generic'
-import { type VvSelectEmits, useVvSelectProps } from '.'
+import { useVvSelectProps, type VvSelectEmits } from '.'
+import HintSlotFactory from '../common/HintSlot'
+import VvIcon from '../VvIcon/VvIcon.vue'
 
 // props, emit and slots
 // WARNING: This is a provisiaonal implementation, it may change in the future
@@ -20,7 +20,7 @@ const propsDefaults = useDefaults<typeof VvSelectProps>(
 )
 
 // template refs
-const selectEl = ref()
+const selectEl = useTemplateRef<HTMLSelectElement>('selectEl')
 
 // hint
 const {
@@ -72,8 +72,8 @@ const localModelValue = computed({
     set: (newValue) => {
         if (Array.isArray(newValue)) {
             newValue = newValue.filter(item => item !== undefined)
-            if (newValue.length === 0 && !props.unselectable) {
-                selectEl.value.value = props.modelValue
+            if (newValue.length === 0 && !props.unselectable && selectEl.value) {
+                selectEl.value.value = String(props.modelValue)
                 return
             }
         }

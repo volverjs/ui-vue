@@ -1,7 +1,7 @@
 import type { ExtractPropTypes } from 'vue'
 import type { InputGroupState } from '../../types/group'
-import { CheckboxRadioProps } from '../../props'
 import { INJECTION_KEY_RADIO_GROUP } from '../../constants'
+import { CheckboxRadioProps } from '../../props'
 
 export const VvRadioProps = CheckboxRadioProps
 
@@ -18,7 +18,7 @@ export function useGroupProps(
 ) {
     const { id } = toRefs(props)
     const { group, isInGroup, getGroupOrLocalRef }
-		= useInjectedGroupState<InputGroupState>(INJECTION_KEY_RADIO_GROUP)
+		= useGroupStateInject<InputGroupState>(INJECTION_KEY_RADIO_GROUP)
 
     // global props
     const modelValue = getGroupOrLocalRef('modelValue', props, emit)

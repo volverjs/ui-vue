@@ -1,5 +1,5 @@
+import { ACTION_ICONS, type VvIconProps } from '../VvIcon'
 import VvIcon from '../VvIcon/VvIcon.vue'
-import { type VvIconProps, ACTION_ICONS } from '../VvIcon'
 
 export default defineComponent({
     components: {

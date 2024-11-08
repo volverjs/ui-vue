@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './Button.test'
-import { argTypes, defaultArgs } from './Button.settings'
 import VvButton from '@/components/VvButton/VvButton.vue'
+import { argTypes, defaultArgs } from './Button.settings'
+import { defaultTest } from './Button.test'
 
 const meta: Meta<typeof VvButton> = {
     title: 'Components/Button',

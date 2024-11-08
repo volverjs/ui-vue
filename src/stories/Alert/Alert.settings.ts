@@ -1,6 +1,6 @@
+import type { VvAlert } from '@/components'
 import type { ArgTypes, Meta } from '@storybook/vue3'
 import { IconArgTypes, ModifiersArgTypes } from '../argTypes'
-import type { VvAlert } from '@/components'
 
 export const defaultArgs: Meta<typeof VvAlert>['args'] = {
     title: 'Alert title!',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useGroupProps, VvRadioEvents, VvRadioProps } from '.'
 import { HintSlotFactory } from '../common/HintSlot'
-import { VvRadioProps, VvRadioEvents, useGroupProps } from '.'
 
 // props, emit and slots
 const props = defineProps(VvRadioProps)

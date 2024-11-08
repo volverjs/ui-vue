@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import mitt from 'mitt'
 import type {
-    AccordionGroupState,
     AccordionGroupBusEvents,
+    AccordionGroupState,
 } from '../../types/group'
+import mitt from 'mitt'
+import { VvAccordionGroupEvents, VvAccordionGroupProps } from '.'
 import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 import VvAccordion from '../VvAccordion/VvAccordion.vue'
-import { VvAccordionGroupProps, VvAccordionGroupEvents } from '.'
 
 // props and emit
 const props = defineProps(VvAccordionGroupProps)
@@ -24,7 +24,7 @@ const {
 watchEffect(() => {
     if (typeof props.modelValue === 'string' && props.collapse) {
         console.warn(
-				`[VvAccordionGroup]: modelValue is a string but collapse is true.`,
+            `[VvAccordionGroup]: modelValue is a string but collapse is true.`,
         )
     }
 })
@@ -112,7 +112,7 @@ onMounted(() => {
 
 // provide
 const bus = mitt<AccordionGroupBusEvents>()
-useProvideGroupState<AccordionGroupState>(INJECTION_KEY_ACCORDION_GROUP, {
+useGroupStateProvide<AccordionGroupState>(INJECTION_KEY_ACCORDION_GROUP, {
     disabled,
     modifiers: itemModifiers,
     bus,

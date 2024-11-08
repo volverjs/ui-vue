@@ -1,11 +1,11 @@
 import type { App, Component, Directive, Plugin, Ref } from 'vue'
 import {
+    addAPIProvider,
+    addCollection,
+    addIcon,
     type IconifyIcon,
     type IconifyJSON,
     type PartialIconifyAPIConfig,
-    addCollection,
-    addIcon,
-    addAPIProvider,
 } from '@iconify/vue'
 import { kebabCase } from 'change-case'
 import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from './constants'

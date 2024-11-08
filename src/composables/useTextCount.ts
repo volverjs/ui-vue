@@ -35,8 +35,8 @@ export function useTextCount(
 
         if (options?.mode === 'limit' && options?.upperLimit) {
             return `${length.value} / ${
-				options.lowerLimit ? `${options.lowerLimit}-` : ''
-			}${options.upperLimit}`
+                options.lowerLimit ? `${options.lowerLimit}-` : ''
+            }${options.upperLimit}`
         }
 
         if (options?.mode === 'countdown') {

@@ -1,7 +1,7 @@
-import { within } from '@storybook/test'
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
+import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const parentElement = await within(canvasElement).findByTestId('parent')

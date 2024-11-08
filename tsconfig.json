@@ -1,21 +1,14 @@
 {
     "compilerOptions": {
-        // A few notes:
-        // - Vue 3 supports ES2016+
-        // - For Vite, the actual compilation target is determined by the
-        //   `build.target` option in the Vite config.
-        //   So don't change the `target` field here. It has to be
-        //   at least `ES2020` for dynamic `import()`s and `import.meta` to work correctly.
-        // - If you are not using Vite, feel free to override the `target` field.
         "target": "ESNext",
         // Required in Vue projects
         "jsx": "preserve",
         // Other
-        "lib": ["esnext", "dom"],
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "useDefineForClassFields": true,
         "baseUrl": ".",
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "Bundler",
         "paths": {
             "@/*": ["./src/*"]
         },
@@ -29,9 +22,6 @@
             "./auto-imports"
         ],
         "strict": true,
-        // `"noImplicitThis": true` is part of `strict`
-        // Added again here in case some users decide to disable `strict`.
-        // This enables stricter inference for data properties on `this`.
         "noImplicitThis": true,
         "outDir": "dist",
         // Recommended

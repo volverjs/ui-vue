@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import VvTab from '@/components/VvTab/VvTab.vue'
 import { defaultArgs, defaultArgTypes } from './Tab.settings'
 import { defaultTest } from './Tab.test'
-import VvTab from '@/components/VvTab/VvTab.vue'
 
 const meta: Meta<typeof VvTab> = {
     title: 'Components/Tab',

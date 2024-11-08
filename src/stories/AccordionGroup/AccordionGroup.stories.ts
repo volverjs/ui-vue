@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './AccordionGroup.test'
-import { defaultArgs, argTypes } from './AccordionGroup.settings'
 import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import { argTypes, defaultArgs } from './AccordionGroup.settings'
+import { defaultTest } from './AccordionGroup.test'
 
 const meta: Meta<typeof VvAccordionGroup> = {
     title: 'Components/AccordionGroup',

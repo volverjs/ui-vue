@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Option } from '../../types/generic'
 import type { InputGroupState } from '../../types/group'
+import { VvCheckboxGroupEvents, VvCheckboxGroupProps } from '.'
 import { INJECTION_KEY_CHECK_GROUP } from '../../constants'
 import { HintSlotFactory } from '../common/HintSlot'
 import VvCheckbox from '../VvCheckbox/VvCheckbox.vue'
-import { VvCheckboxGroupProps, VvCheckboxGroupEvents } from '.'
 
 // props, emit and slots
 const props = defineProps(VvCheckboxGroupProps)
@@ -25,7 +25,7 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const { disabled, readonly, vertical, valid, invalid, modifiers }
 		= toRefs(props)
 
-useProvideGroupState<InputGroupState>(INJECTION_KEY_CHECK_GROUP, {
+useGroupStateProvide<InputGroupState>(INJECTION_KEY_CHECK_GROUP, {
     modelValue,
     disabled,
     readonly,

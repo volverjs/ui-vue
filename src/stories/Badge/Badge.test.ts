@@ -1,6 +1,6 @@
-import { within } from '@storybook/test'
 import type { PlayAttributes } from '@/test/types'
 import { expect } from '@/test/expect'
+import { within } from '@storybook/test'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const badge = await within(canvasElement).findByTestId('element')

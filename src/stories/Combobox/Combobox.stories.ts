@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { defaultTest } from './Combobox.test'
-import { defaultArgs, argTypes } from './Combobox.settings'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import { argTypes, defaultArgs } from './Combobox.settings'
+import { defaultTest } from './Combobox.test'
 
 const meta: Meta<typeof VvCombobox> = {
     title: 'Components/Combobox',

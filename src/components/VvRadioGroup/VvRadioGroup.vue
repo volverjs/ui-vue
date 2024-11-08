@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Option } from '../../types/generic'
 import type { InputGroupState } from '../../types/group'
+import { VvRadioGroupEvents, VvRadioGroupProps } from '.'
 import { INJECTION_KEY_RADIO_GROUP } from '../../constants'
 import { HintSlotFactory } from '../common/HintSlot'
 import VvRadio from '../VvRadio/VvRadio.vue'
-import { VvRadioGroupProps, VvRadioGroupEvents } from '.'
 
 // props, emit and slots
 const props = defineProps(VvRadioGroupProps)
@@ -25,7 +25,7 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const { disabled, readonly, vertical, valid, invalid, modifiers }
 		= toRefs(props)
 
-useProvideGroupState<InputGroupState>(INJECTION_KEY_RADIO_GROUP, {
+useGroupStateProvide<InputGroupState>(INJECTION_KEY_RADIO_GROUP, {
     modelValue,
     disabled,
     readonly,

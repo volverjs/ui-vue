@@ -1,8 +1,8 @@
+import { sleep } from '@/test/sleep'
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable ts/no-namespace */
-import { userEvent, expect } from '@storybook/test'
+import { expect, userEvent } from '@storybook/test'
 import { axe } from 'jest-axe'
-import { sleep } from '@/test/sleep'
 
 declare global {
     namespace jest {
@@ -68,7 +68,7 @@ expect.extend({
                 element.classList.contains(cssClass),
             ),
             message: () =>
-				`One of these classes doesn't exist: ${classes.join(', ')}`,
+                `One of these classes doesn't exist: ${classes.join(', ')}`,
         }
     },
     async toHaveImgChild(element: HTMLElement, imgTag: string) {

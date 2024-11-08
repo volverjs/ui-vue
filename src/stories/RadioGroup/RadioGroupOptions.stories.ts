@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { Default } from './RadioGroup.stories'
-import { defaultArgs, argTypes } from './RadioGroup.settings'
 import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
+import { argTypes, defaultArgs } from './RadioGroup.settings'
+import { Default } from './RadioGroup.stories'
 
 const meta: Meta<typeof VvRadioGroup> = {
     title: 'Components/RadioGroup/Options',

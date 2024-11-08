@@ -1,7 +1,7 @@
 export interface PlayAttributes {
     canvasElement: HTMLElement
-    // eslint-disable-next-line
-	args: Record<string, any>
+
+    args: Record<string, any>
     name?: string
 }
 

@@ -1,13 +1,13 @@
-import type { InjectionKey, Ref } from 'vue'
 import type { Emitter } from 'mitt'
-import type { Volver } from './Volver'
+import type { InjectionKey, Ref } from 'vue'
 import type {
     AccordionGroupState,
-    InputGroupState,
-    ButtonGroupState,
     AlertGroupState,
     AlertModifier,
+    ButtonGroupState,
+    InputGroupState,
 } from './types'
+import type { Volver } from './Volver'
 
 export const DEFAULT_ICONIFY_PROVIDER = 'vv'
 
@@ -98,7 +98,7 @@ export const INJECTION_KEY_ACCORDION_GROUP = Symbol.for(
 // dropdown
 export type DropdownTriggerState = {
     id?: Ref<string | number>
-    reference?: Ref<HTMLElement | null>
+    reference?: Ref<HTMLElement | null | undefined>
     bus?: Emitter<{
         click: Event
         mouseover: Event

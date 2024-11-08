@@ -1,14 +1,14 @@
-import type { PropType, ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, PropType } from 'vue'
 import type { ButtonGroupState } from '../../types/group'
+import { INJECTION_KEY_BUTTON_GROUP, Side } from '../../constants'
 import {
     ActionProps,
+    IconProps,
     IdProps,
     LoadingProps,
     ModifiersProps,
     UnselectableProps,
-    IconProps,
 } from '../../props'
-import { INJECTION_KEY_BUTTON_GROUP, Side } from '../../constants'
 
 export const VvButtonEvents = ['update:modelValue']
 
@@ -71,7 +71,7 @@ export function useGroupProps(
     emit: (event: (typeof VvButtonEvents)[number], value: unknown) => void,
 ) {
     const { group, isInGroup, getGroupOrLocalRef }
-		= useInjectedGroupState<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP)
+		= useGroupStateInject<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP)
 
     // local props
     const { id, iconPosition, icon, label, pressed } = toRefs(props)

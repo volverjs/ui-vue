@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon, addIcon, iconExists } from '@iconify/vue'
+import { addIcon, Icon, iconExists } from '@iconify/vue'
 import { type VvIconProps, VvIconPropsDefaults } from '.'
 
 // props
@@ -61,7 +61,7 @@ function getSvgContent(svg: string): SVGSVGElement | undefined {
     let dom
     if (typeof window === 'undefined') {
         // SSR
-        // eslint-disable-next-line ts/no-require-imports, ts/no-var-requires
+        // eslint-disable-next-line ts/no-require-imports
         const { JSDOM } = require('jsdom')
         dom = new JSDOM().window
     }

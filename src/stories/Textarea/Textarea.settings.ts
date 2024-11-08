@@ -1,6 +1,6 @@
 import type { ArgTypes } from '@storybook/vue3'
-import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 import { VvTextareaProps } from '@/components/VvTextarea'
+import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
     ...propsToObject(VvTextareaProps),
