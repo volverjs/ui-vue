@@ -108,6 +108,9 @@ importers:
       '@storybook/test-runner':
         specifier: ^0.19.1
         version: 0.19.1(@types/node@22.9.0)(storybook@8.4.2(prettier@3.3.3))(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@22.9.0)(typescript@5.6.3))
+      '@storybook/types':
+        specifier: ^8.4.2
+        version: 8.4.2(storybook@8.4.2(prettier@3.3.3))
       '@storybook/vue3':
         specifier: ^8.4.2
         version: 8.4.2(storybook@8.4.2(prettier@3.3.3))(vue@3.5.12(typescript@5.6.3))
@@ -2053,6 +2056,11 @@ packages:
 
   '@storybook/theming@8.4.2':
     resolution: {integrity: sha512-9j4fnu5LcV+qSs1rdwf61Bt14lms0T1LOZkHxGNcS1c1oH+cPS+sxECh2lxtni+mvOAHUlBs9pKhVZzRPdWpvg==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
+  '@storybook/types@8.4.2':
+    resolution: {integrity: sha512-fpHeQOeYg9DdBgx1+aXDtIxwb8thWc7z6yoesv+5SPetLAwasnptkqGS1/w5mSgXkHkui7e4cGoboPnuTM7cFg==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
@@ -8816,6 +8824,10 @@ snapshots:
       storybook: 8.4.2(prettier@3.3.3)
 
   '@storybook/theming@8.4.2(storybook@8.4.2(prettier@3.3.3))':
+    dependencies:
+      storybook: 8.4.2(prettier@3.3.3)
+
+  '@storybook/types@8.4.2(storybook@8.4.2(prettier@3.3.3))':
     dependencies:
       storybook: 8.4.2(prettier@3.3.3)
 

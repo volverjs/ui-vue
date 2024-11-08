@@ -394,8 +394,8 @@
   },
   "peerDependencies": {
     "@volverjs/style": "0.*",
-    "vue": "^3.5.*",
-    "@vueuse/core": "^11.*"
+    "@vueuse/core": "^11.*",
+    "vue": "^3.5.*"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.5",
@@ -430,6 +430,7 @@
     "@storybook/preview-api": "^8.4.2",
     "@storybook/test": "^8.4.2",
     "@storybook/test-runner": "^0.19.1",
+    "@storybook/types": "^8.4.2",
     "@storybook/vue3": "^8.4.2",
     "@storybook/vue3-vite": "^8.4.2",
     "@tsconfig/node18": "^18.2.4",
