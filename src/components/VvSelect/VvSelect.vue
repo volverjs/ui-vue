@@ -20,7 +20,7 @@ const propsDefaults = useDefaults<typeof VvSelectProps>(
 )
 
 // template refs
-const selectEl = useTemplateRef<HTMLSelectElement>('selectEl')
+const selectEl = ref<HTMLSelectElement>()
 
 // hint
 const {

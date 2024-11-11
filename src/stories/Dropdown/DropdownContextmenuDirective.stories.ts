@@ -23,7 +23,7 @@ export const Default: Story = {
     render: args => ({
         components: { VvDropdown, VvDropdownAction, VvIcon },
         setup() {
-            const dropdownEl = useTemplateRef<typeof VvDropdown>('dropdownEl')
+            const dropdownEl = ref<typeof VvDropdown>()
             return { args, dropdownEl }
         },
         template: /* html */ `

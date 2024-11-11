@@ -50,8 +50,8 @@ const maxHeight = ref('auto')
 // template elements
 const localReferenceEl = ref<HTMLElement>()
 const floatingEl: Ref = ref()
-const arrowEl = useTemplateRef<HTMLElement>('arrowEl')
-const listEl = useTemplateRef<HTMLElement>('listEl')
+const arrowEl = ref<HTMLElement>()
+const listEl = ref<HTMLElement>()
 const referenceEl = computed({
     get: () => props.reference ?? localReferenceEl.value,
     set: (newValue) => {
