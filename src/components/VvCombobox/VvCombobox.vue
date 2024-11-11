@@ -31,7 +31,7 @@ const propsDefaults = useDefaults<typeof VvComboboxProps>(
 const inputEl: Ref<HTMLElement | null> = ref(null)
 const inputSearchEl: Ref<HTMLElement | null> = ref(null)
 const wrapperEl: Ref<HTMLElement | null> = ref(null)
-const dropdownEl = useTemplateRef<typeof VvDropdown>('dropdownEl')
+const dropdownEl = ref<typeof VvDropdown>()
 
 // hint slot
 const {

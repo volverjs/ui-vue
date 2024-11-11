@@ -217,9 +217,9 @@ watch(
 
 // template refs
 const inputEl = el as Ref<HTMLInputElement>
-const innerEl = useTemplateRef<HTMLInputElement>('innerEl')
-const wrapperEl = useTemplateRef<HTMLDivElement>('wrapperEl')
-const dropdownEl = useTemplateRef<typeof VvDropdown>('dropdownEl')
+const innerEl = ref<HTMLInputElement>()
+const wrapperEl = ref<HTMLDivElement>()
+const dropdownEl = ref<typeof VvDropdown>()
 
 defineExpose({ $inner: innerEl })
 

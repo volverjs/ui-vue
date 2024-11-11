@@ -105,7 +105,7 @@ const isMultiple = computed(() => {
 
 const isDragging = ref(false)
 
-const inputEl = useTemplateRef<HTMLInputElement>('inputEl')
+const inputEl = ref<HTMLInputElement>()
 function onDragenter() {
     isDragging.value = true
 }
