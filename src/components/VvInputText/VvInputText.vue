@@ -402,6 +402,7 @@ const bemCssClasses = useModifiers(
         'invalid': invalid.value,
         'loading': loading.value,
         'disabled': props.disabled,
+        'required': props.required,
         'readonly': props.readonly,
         'icon-before': !!hasIconBefore.value,
         'icon-after': !!iconAfter.value,

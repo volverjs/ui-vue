@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { TextareaHTMLAttributes } from 'vue'
-import { VvTextareaEvents, VvTextareaProps } from '.'
 import HintSlotFactory from '../common/HintSlot'
 import VvIcon from '../VvIcon/VvIcon.vue'
+import { VvTextareaEvents, VvTextareaProps } from '.'
 
 // props, emit and slots
 const props = defineProps(VvTextareaProps)
@@ -168,7 +168,7 @@ export default {
 <template>
     <div :class="bemCssClasses">
         <label v-if="label" :for="hasId" class="vv-textarea__label">
-            {{ label }}
+            {{ label }} <span v-if="required">*</span>
         </label>
         <div class="vv-textarea__wrapper">
             <!-- @slot Slot to replace icon before textarea -->
