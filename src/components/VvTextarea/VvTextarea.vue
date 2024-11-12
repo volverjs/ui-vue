@@ -106,6 +106,7 @@ const bemCssClasses = useModifiers(
         'loading': loading.value,
         'disabled': props.disabled,
         'readonly': props.readonly,
+        'required': props.required,
         'icon-before': hasIconBefore.value !== undefined,
         'icon-after': hasIconAfter.value !== undefined,
         'floating': props.floating && !isEmpty(props.label),
