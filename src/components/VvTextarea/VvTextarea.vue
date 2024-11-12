@@ -168,7 +168,7 @@ export default {
 <template>
     <div :class="bemCssClasses">
         <label v-if="label" :for="hasId" class="vv-textarea__label">
-            {{ label }} <span v-if="required">*</span>
+            {{ label }}
         </label>
         <div class="vv-textarea__wrapper">
             <!-- @slot Slot to replace icon before textarea -->
