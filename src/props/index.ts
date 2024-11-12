@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import type { VvIconProps } from '@/components/VvIcon'
 import type {
     AutoPlacementOptions,
@@ -8,7 +9,6 @@ import type {
 } from '@/types/floating-ui'
 import type { Option } from '@/types/generic'
 import type { NavItem } from '@/types/nav'
-import type { PropType } from 'vue'
 import {
     ActionTag,
     ButtonType,
@@ -91,6 +91,16 @@ export const DisabledProps = {
      * Whether the form control is disabled
      */
     disabled: {
+        type: Boolean,
+        default: false,
+    },
+}
+
+export const RequiredProps = {
+    /**
+     * Whether the form control is required
+     */
+    required: {
         type: Boolean,
         default: false,
     },
@@ -442,10 +452,7 @@ export const InputTextareaProps = {
      * Available for all input types except color
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#required
      */
-    required: {
-        type: Boolean,
-        default: false,
-    },
+    ...RequiredProps,
 }
 
 export const CheckboxRadioProps = {

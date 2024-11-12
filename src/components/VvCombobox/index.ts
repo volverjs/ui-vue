@@ -14,6 +14,7 @@ import {
     ModifiersProps,
     OptionsProps,
     ReadonlyProps,
+    RequiredProps,
     TabindexProps,
     ValidProps,
 } from '../../props'
@@ -44,6 +45,7 @@ export const VvComboboxProps = {
     ...FloatingLabelProps,
     ...DropdownProps,
     ...LabelProps,
+    ...RequiredProps,
     /**
      * Dropdown show / hide transition name
      */
