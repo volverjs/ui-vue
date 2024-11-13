@@ -49,6 +49,24 @@ function valueByType(type: InputType, mask?: string, id?: string) {
     }
 }
 
+export async function checkNullTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.getElementsByTagName('input')[0]
+
+    await expect(input).toHaveProperty('value', '')
+    await expect(value.innerHTML).toEqual('null')
+}
+
+export async function checkUndefinedTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.getElementsByTagName('input')[0]
+
+    await expect(input).toHaveProperty('value', '')
+    await expect(value.innerHTML).toEqual('undefined')
+}
+
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
     const value = await within(canvasElement).findByTestId('value')

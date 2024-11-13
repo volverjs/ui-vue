@@ -31,7 +31,7 @@ export const Default: Story = {
 				<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
 			</vv-textarea>
-			<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+			<div>Value: <span data-testId="value">{{ inputValue }}</span></div> 
 		`,
     }),
     play: defaultTest,

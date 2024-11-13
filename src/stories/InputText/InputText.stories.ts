@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { Position } from '@/constants'
 import { argTypes, defaultArgs } from './InputText.settings'
-import { defaultTest } from './InputText.test'
+import { checkNullTest, checkUndefinedTest, defaultTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText',
@@ -37,6 +37,42 @@ export const Default: Story = {
 		`,
     }),
     play: defaultTest,
+}
+
+export const Null: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: null, maskedInputValue: undefined }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" v-model:masked="maskedInputValue" :data-testData="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ JSON.stringify(inputValue) }}</span></div>
+		`,
+    }),
+    play: checkNullTest,
+}
+
+export const Undefined: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined, maskedInputValue: undefined }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" v-model:masked="maskedInputValue" :data-testData="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ inputValue === undefined ? 'undefined' : inputValue }}</span></div>
+		`,
+    }),
+    play: checkUndefinedTest,
 }
 
 export const Disabled: Story = {
