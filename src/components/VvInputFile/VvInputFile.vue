@@ -43,10 +43,13 @@ const bemCssClasses = useModifiers(
     'vv-input-file',
     modifiers,
     computed(() => ({
-        'dragging': isDragging.value,
-        'loading': props.loading && !hasProgress.value,
         'valid': props.valid === true,
         'invalid': props.invalid === true,
+        'loading': props.loading && !hasProgress.value,
+        'disabled': props.disabled,
+        'required': props.required,
+        'readonly': props.readonly,
+        'dragging': isDragging.value,
         'icon-before': !!hasIconBefore.value,
         'icon-after': !!hasIconAfter.value,
         'drop-area': hasDropArea.value,
@@ -325,18 +328,19 @@ export default {
                 :id="hasId"
                 ref="inputEl"
                 type="file"
-                :readonly="readonly"
-                :disabled="disabled"
-                :placeholder="placeholder"
+                :readonly
+                :disabled
+                :required
+                :placeholder
                 :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
                 :aria-invalid="invalid"
                 :aria-errormessage="
                     hasInvalidLabelOrSlot ? hasHintId : undefined
                 "
                 :multiple="isMultiple"
-                :accept="accept"
-                :capture="capture"
-                :name="name"
+                :accept
+                :capture
+                :name
                 @change="onChange"
             >
             <progress

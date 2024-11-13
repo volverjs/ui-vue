@@ -174,8 +174,8 @@ const { el, mask, typed, masked, unmasked } = useIMask(
         },
     },
 )
-function updateMaskValue(newValue: string | number | undefined) {
-    if (newValue === undefined) {
+function updateMaskValue(newValue: string | number | undefined | null) {
+    if (newValue === undefined || newValue === null) {
         typed.value = ''
         unmasked.value = ''
         return
