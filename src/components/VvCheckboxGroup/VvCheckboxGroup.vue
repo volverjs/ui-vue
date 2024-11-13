@@ -43,6 +43,7 @@ const bemCssClasses = useModifiers(
     computed(() => ({
         disabled: disabled.value,
         readonly: readonly.value,
+        required: props.required,
         horizontal: !vertical.value,
         valid: valid.value,
         invalid: invalid.value,
@@ -56,6 +57,7 @@ function getOptionProps(option: string | Option, index: number) {
         name: props.name,
         label: getOptionLabel(option),
         value: getOptionValue(option),
+        required: props.required,
     }
 }
 const { HintSlot, hintSlotScope } = HintSlotFactory(propsDefaults, slots)

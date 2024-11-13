@@ -98,10 +98,10 @@ export default {
             v-model="localModelValue"
             type="radio"
             class="vv-radio__input"
-            :name="name"
+            :name
             :disabled="isDisabled"
             :value="hasValue"
-            :tabindex="tabindex"
+            :tabindex
             :aria-invalid="isInvalid"
             :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
             :aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined"

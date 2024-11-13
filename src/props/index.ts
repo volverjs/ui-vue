@@ -1,4 +1,3 @@
-import type { PropType } from 'vue'
 import type { VvIconProps } from '@/components/VvIcon'
 import type {
     AutoPlacementOptions,
@@ -9,6 +8,7 @@ import type {
 } from '@/types/floating-ui'
 import type { Option } from '@/types/generic'
 import type { NavItem } from '@/types/nav'
+import type { PropType } from 'vue'
 import {
     ActionTag,
     ButtonType,
@@ -493,6 +493,7 @@ export const CheckboxRadioGroupProps = {
     ...ModifiersProps,
     ...LabelProps,
     ...LoadingProps,
+    ...RequiredProps,
     /**
      * Input value
      */
