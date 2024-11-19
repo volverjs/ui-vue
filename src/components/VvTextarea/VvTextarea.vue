@@ -2,6 +2,8 @@
 import type { TextareaHTMLAttributes } from 'vue'
 import { VvTextareaEvents, VvTextareaProps } from '.'
 import HintSlotFactory from '../common/HintSlot'
+import VvDropdown from '../VvDropdown/VvDropdown.vue'
+import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 // props, emit and slots
@@ -19,13 +21,17 @@ const propsDefaults = useDefaults<typeof VvTextareaProps>(
 )
 
 // template refs
-const textarea = ref()
+const textareaEl = ref<HTMLTextAreaElement>()
+const wrapperEl = ref<HTMLDivElement>()
+const suggestionsDropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
 // data
 const {
     id,
     icon,
     iconPosition,
+    iconRemoveSuggestion,
+    labelRemoveSuggestion,
     label,
     modelValue,
     count,
@@ -36,6 +42,8 @@ const {
     debounce,
     minlength,
     maxlength,
+    storageKey,
+    storageType,
 } = toRefs(props)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -49,12 +57,41 @@ const localModelValue = useDebouncedInput(modelValue, emit, debounce?.value)
 
 // icons
 const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
+const { hasIcon: hasIconRemoveSuggestion }
+		= useComponentIcon(iconRemoveSuggestion)
 
 // focus
-const { focused } = useComponentFocus(textarea, emit)
+const { focused } = useComponentFocus(textareaEl, emit)
+const isFocused = computed(
+    () => focused.value && !props.disabled && !props.readonly,
+)
+watch(isFocused, (newValue) => {
+    if (newValue && propsDefaults.value.selectOnFocus && textareaEl.value) {
+        textareaEl.value.select()
+    }
+    if (newValue && suggestions.value?.size) {
+        suggestionsDropdownEl.value?.show()
+        return
+    }
+    if (isDirty.value && suggestions.value) {
+        const suggestionsLimit = props.maxSuggestions
+
+        if (
+            suggestions.value.size >= suggestionsLimit
+            && !suggestions.value.has(localModelValue.value)
+        ) {
+            suggestions.value = new Set(
+                [...suggestions.value].slice(
+                    suggestions.value.size - suggestionsLimit + 1,
+                ),
+            )
+        }
+        suggestions.value.add(localModelValue.value)
+    }
+})
 
 // visibility
-const isVisible = useElementVisibility(textarea)
+const isVisible = useElementVisibility(textareaEl)
 watch(isVisible, (newValue) => {
     if (newValue && props.autofocus) {
         focused.value = true
@@ -87,6 +124,41 @@ const isInvalid = computed(() => {
     }
     return undefined
 })
+
+// suggestions
+const suggestions = usePersistence<Set<string>>(
+    storageKey,
+    storageType,
+    new Set(),
+)
+const filteredSuggestions = computed(() => {
+    if (!suggestions.value) {
+        return []
+    }
+    return [...suggestions.value]
+        .filter(
+            suggestion =>
+                isEmpty(localModelValue.value)
+                || (`${suggestion}`
+                    .toLowerCase()
+                    .includes(`${localModelValue.value}`.toLowerCase())
+                    && suggestion !== localModelValue.value),
+        )
+        .reverse()
+})
+const hasSuggestions = computed(
+    () =>
+        storageKey?.value
+        && suggestions.value
+        && suggestions.value.size > 0,
+)
+function onSuggestionSelect(suggestion: string) {
+    localModelValue.value = suggestion
+    suggestionsDropdownEl.value?.hide()
+}
+function onSuggestionRemove(suggestion: string) {
+    suggestions.value?.delete(suggestion)
+}
 
 // hint
 const {
@@ -171,7 +243,7 @@ export default {
         <label v-if="label" :for="hasId" class="vv-textarea__label">
             {{ label }}
         </label>
-        <div class="vv-textarea__wrapper">
+        <div ref="wrapperEl" class="vv-textarea__wrapper">
             <!-- @slot Slot to replace icon before textarea -->
             <div v-if="$slots.before" class="vv-textarea__input-before">
                 <!-- @slot Slot before input -->
@@ -185,7 +257,7 @@ export default {
                 />
                 <textarea
                     :id="hasId"
-                    ref="textarea"
+                    ref="textareaEl"
                     v-model="localModelValue"
                     v-bind="hasAttrs"
                     @keyup="emit('keyup', $event)"
@@ -221,5 +293,36 @@ export default {
                 <slot name="invalid" v-bind="hintSlotScope" />
             </template>
         </HintSlot>
+        <VvDropdown
+            v-if="hasSuggestions"
+            ref="suggestionsDropdownEl"
+            :reference="wrapperEl"
+            :autofocus-first="false"
+            :trigger-width="true"
+        >
+            <template #items>
+                <VvDropdownOption
+                    v-for="value in filteredSuggestions"
+                    :key="value"
+                    @click.stop="onSuggestionSelect(value)"
+                >
+                    <div class="flex-1">
+                        <slot name="suggestion" v-bind="{ value }">
+                            {{ value }}
+                        </slot>
+                    </div>
+                    <button
+                        v-if="suggestions && hasIconRemoveSuggestion"
+                        type="button"
+                        tabindex="-1"
+                        class="cursor-pointer"
+                        :title="labelRemoveSuggestion"
+                        @click.stop="onSuggestionRemove(value)"
+                    >
+                        <VvIcon v-bind="hasIconRemoveSuggestion" />
+                    </button>
+                </VvDropdownOption>
+            </template>
+        </VvDropdown>
     </div>
 </template>

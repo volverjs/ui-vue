@@ -219,7 +219,7 @@ watch(
 const inputEl = el as Ref<HTMLInputElement>
 const innerEl = ref<HTMLInputElement>()
 const wrapperEl = ref<HTMLDivElement>()
-const dropdownEl = ref<typeof VvDropdown>()
+const suggestionsDropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
 defineExpose({ $inner: innerEl })
 
@@ -232,26 +232,24 @@ watch(isFocused, (newValue) => {
     if (newValue && propsDefaults.value.selectOnFocus && inputEl.value) {
         inputEl.value.select()
     }
-    if (newValue) {
-        dropdownEl.value?.show()
+    if (newValue && suggestions.value?.size) {
+        suggestionsDropdownEl.value?.show()
         return
     }
-    setTimeout(() => {
-        if (isDirty.value && suggestions.value) {
-            const suggestionsLimit = props.maxSuggestions - 1
-            if (
-                suggestions.value.size > suggestionsLimit
-                && !suggestions.value.has(localModelValue.value)
-            ) {
-                suggestions.value = new Set(
-                    [...suggestions.value].slice(
-                        suggestions.value.size - suggestionsLimit,
-                    ),
-                )
-            }
-            suggestions.value.add(localModelValue.value)
+    if (isDirty.value && suggestions.value) {
+        const suggestionsLimit = props.maxSuggestions
+        if (
+            suggestions.value.size >= suggestionsLimit
+            && !suggestions.value.has(localModelValue.value)
+        ) {
+            suggestions.value = new Set(
+                [...suggestions.value].slice(
+                    suggestions.value.size - suggestionsLimit + 1,
+                ),
+            )
         }
-    }, 300)
+        suggestions.value.add(localModelValue.value)
+    }
 })
 
 // visibility
@@ -386,7 +384,7 @@ const hasSuggestions = computed(
 )
 function onSuggestionSelect(suggestion: string) {
     localModelValue.value = suggestion
-    dropdownEl.value?.hide()
+    suggestionsDropdownEl.value?.hide()
 }
 function onSuggestionRemove(suggestion: string) {
     suggestions.value?.delete(suggestion)
@@ -651,7 +649,7 @@ export default {
         </HintSlot>
         <VvDropdown
             v-if="hasSuggestions"
-            ref="dropdownEl"
+            ref="suggestionsDropdownEl"
             :reference="wrapperEl"
             :autofocus-first="false"
             :trigger-width="true"
