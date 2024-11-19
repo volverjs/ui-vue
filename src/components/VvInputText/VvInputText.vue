@@ -219,7 +219,7 @@ watch(
 const inputEl = el as Ref<HTMLInputElement>
 const innerEl = ref<HTMLInputElement>()
 const wrapperEl = ref<HTMLDivElement>()
-const dropdownEl = ref<typeof VvDropdown>()
+const dropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
 defineExpose({ $inner: innerEl })
 
