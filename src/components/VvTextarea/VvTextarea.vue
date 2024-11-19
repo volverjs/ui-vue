@@ -75,14 +75,15 @@ watch(isFocused, (newValue) => {
     }
     setTimeout(() => {
         if (isDirty.value && suggestions.value) {
-            const suggestionsLimit = props.maxSuggestions - 1
+            const suggestionsLimit = props.maxSuggestions
+
             if (
-                suggestions.value.size > suggestionsLimit
+                suggestions.value.size >= suggestionsLimit
                 && !suggestions.value.has(localModelValue.value)
             ) {
                 suggestions.value = new Set(
                     [...suggestions.value].slice(
-                        suggestions.value.size - suggestionsLimit,
+                        suggestions.value.size - suggestionsLimit + 1,
                     ),
                 )
             }
