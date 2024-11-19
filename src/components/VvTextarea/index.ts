@@ -1,5 +1,6 @@
 import type { ExtractPropTypes } from 'vue'
-import { InputTextareaProps } from '../../props'
+import { InputTextareaProps, StorageProps } from '../../props'
+import { ACTION_ICONS, type VvIconProps } from '../VvIcon'
 
 export const WRAP = {
     hard: 'hard',
@@ -16,6 +17,7 @@ export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
 
 export const VvTextareaProps = {
     ...InputTextareaProps,
+    ...StorageProps,
     /**
      * Textarea value
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#value
@@ -41,6 +43,35 @@ export const VvTextareaProps = {
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#wrap
      */
     spellcheck: { type: [Boolean, String], default: SPELLCHECK.default },
+    /**
+     * VvIcon name for remove suggestion button
+     * @see VVIcon
+     */
+    iconRemoveSuggestion: {
+        type: [String, Object] as PropType<string | VvIconProps>,
+        default: ACTION_ICONS.remove,
+    },
+    /**
+     * Label for remove suggestion button
+     */
+    labelRemoveSuggestion: {
+        type: String,
+        default: 'Remove suggestion',
+    },
+    /**
+     * Maximum number of suggestions
+     */
+    maxSuggestions: {
+        type: Number,
+        default: 5,
+    },
+    /**
+     * Select input text on focus
+     */
+    selectOnFocus: {
+        type: Boolean,
+        default: false,
+    },
     /**
      * If true, the textarea will be resizable
      */
