@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - `VvInputText` suggestions;
 - Storage selection for `VvAccordionGroup` persistence;
 - Scoped slot for items in `VvNav` and `VvTab`;
+- added `storageKey` and `storageType` props to `VvTextarea` for suggestions;
 - `VvCombobox` and `VvSelect` prop `autoselectFirst`.
 
 ### Deprecated
