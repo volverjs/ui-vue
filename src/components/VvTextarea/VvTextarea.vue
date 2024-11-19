@@ -21,9 +21,9 @@ const propsDefaults = useDefaults<typeof VvTextareaProps>(
 )
 
 // template refs
-const textarea = ref()
+const textareaEl = ref<HTMLTextAreaElement>()
 const wrapperEl = ref<HTMLDivElement>()
-const dropdownEl = ref<InstanceType<typeof VvDropdown>>()
+const suggestionsDropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
 // data
 const {
@@ -61,39 +61,37 @@ const { hasIcon: hasIconRemoveSuggestion }
 		= useComponentIcon(iconRemoveSuggestion)
 
 // focus
-const { focused } = useComponentFocus(textarea, emit)
+const { focused } = useComponentFocus(textareaEl, emit)
 const isFocused = computed(
     () => focused.value && !props.disabled && !props.readonly,
 )
 watch(isFocused, (newValue) => {
-    if (newValue && propsDefaults.value.selectOnFocus && textarea.value) {
-        textarea.value.select()
+    if (newValue && propsDefaults.value.selectOnFocus && textareaEl.value) {
+        textareaEl.value.select()
     }
-    if (newValue) {
-        dropdownEl.value?.show()
+    if (newValue && suggestions.value?.size) {
+        suggestionsDropdownEl.value?.show()
         return
     }
-    setTimeout(() => {
-        if (isDirty.value && suggestions.value) {
-            const suggestionsLimit = props.maxSuggestions
+    if (isDirty.value && suggestions.value) {
+        const suggestionsLimit = props.maxSuggestions
 
-            if (
-                suggestions.value.size >= suggestionsLimit
-                && !suggestions.value.has(localModelValue.value)
-            ) {
-                suggestions.value = new Set(
-                    [...suggestions.value].slice(
-                        suggestions.value.size - suggestionsLimit + 1,
-                    ),
-                )
-            }
-            suggestions.value.add(localModelValue.value)
+        if (
+            suggestions.value.size >= suggestionsLimit
+            && !suggestions.value.has(localModelValue.value)
+        ) {
+            suggestions.value = new Set(
+                [...suggestions.value].slice(
+                    suggestions.value.size - suggestionsLimit + 1,
+                ),
+            )
         }
-    }, 300)
+        suggestions.value.add(localModelValue.value)
+    }
 })
 
 // visibility
-const isVisible = useElementVisibility(textarea)
+const isVisible = useElementVisibility(textareaEl)
 watch(isVisible, (newValue) => {
     if (newValue && props.autofocus) {
         focused.value = true
@@ -156,7 +154,7 @@ const hasSuggestions = computed(
 )
 function onSuggestionSelect(suggestion: string) {
     localModelValue.value = suggestion
-    dropdownEl.value?.hide()
+    suggestionsDropdownEl.value?.hide()
 }
 function onSuggestionRemove(suggestion: string) {
     suggestions.value?.delete(suggestion)
@@ -259,7 +257,7 @@ export default {
                 />
                 <textarea
                     :id="hasId"
-                    ref="textarea"
+                    ref="textareaEl"
                     v-model="localModelValue"
                     v-bind="hasAttrs"
                     @keyup="emit('keyup', $event)"
@@ -297,7 +295,7 @@ export default {
         </HintSlot>
         <VvDropdown
             v-if="hasSuggestions"
-            ref="dropdownEl"
+            ref="suggestionsDropdownEl"
             :reference="wrapperEl"
             :autofocus-first="false"
             :trigger-width="true"
