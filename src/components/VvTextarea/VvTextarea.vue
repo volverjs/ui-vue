@@ -23,7 +23,7 @@ const propsDefaults = useDefaults<typeof VvTextareaProps>(
 // template refs
 const textarea = ref()
 const wrapperEl = ref<HTMLDivElement>()
-const dropdownEl = ref<typeof VvDropdown>()
+const dropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
 // data
 const {
