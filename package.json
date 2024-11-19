@@ -2,7 +2,7 @@
   "name": "@volverjs/ui-vue",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.13.2",
   "description": "@volverjs/ui-vue is a lightweight Vue 3 component library to accompany @volverjs/style.",
   "author": "8 Wave S.r.l.",
   "license": "MIT",
@@ -413,7 +413,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.9.2",
+    "@antfu/eslint-config": "^3.8.0",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
