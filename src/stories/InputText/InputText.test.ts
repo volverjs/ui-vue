@@ -164,17 +164,21 @@ export async function isoTest({ canvasElement, args }: PlayAttributes) {
     const value = await within(canvasElement).findByTestId('value')
 
     const inputDate = getDateFromInputValue(input.value, args.type)
+    if (!inputDate) {
+        await expect(value.innerHTML).toEqual('null')
+        return
+    }
     const valueDate = new Date(value.innerHTML)
 
-    if (args.type === 'time' || args.type === 'datetime-local') {
+    if (args.type === INPUT_TYPES.TIME || args.type === INPUT_TYPES.DATETIME_LOCAL) {
         expect(inputDate.getHours()).toEqual(valueDate.getHours())
         expect(inputDate.getMinutes()).toEqual(valueDate.getMinutes())
     }
-    if (args.type === 'month' || args.type === 'date' || args.type === 'datetime-local') {
+    if (args.type === INPUT_TYPES.MONTH || args.type === INPUT_TYPES.DATE || args.type === INPUT_TYPES.DATETIME_LOCAL) {
         expect(inputDate.getMonth()).toEqual(valueDate.getMonth())
         expect(inputDate.getFullYear()).toEqual(valueDate.getFullYear())
     }
-    if (args.type === 'date' || args.type === 'datetime-local') {
+    if (args.type === INPUT_TYPES.DATE || args.type === INPUT_TYPES.DATETIME_LOCAL) {
         expect(inputDate.getDate()).toEqual(valueDate.getDate())
     }
 }

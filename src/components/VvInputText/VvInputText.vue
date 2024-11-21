@@ -3,6 +3,7 @@ import type { MaskedNumberOptions } from 'imask'
 import type { InputHTMLAttributes } from 'vue'
 import { useIMask } from 'vue-imask'
 import {
+    getDateFromInputValue,
     getInputValueFromDate,
     isDateIsoString,
 } from '../../utils/DateUtilities'
