@@ -17,7 +17,8 @@ All notable changes to this project will be documented in this file.
 - Storage selection for `VvAccordionGroup` persistence;
 - Scoped slot for items in `VvNav` and `VvTab`;
 - added `storageKey` and `storageType` props to `VvTextarea` for suggestions;
-- `VvCombobox` and `VvSelect` prop `autoselectFirst`.
+- `VvCombobox` and `VvSelect` prop `autoselectFirst`;
+- `VvInputText` add support for iso date format and date object for type `date`, `datetime-local`, `time` and `month`.
 
 ### Deprecated
 

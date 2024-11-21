@@ -157,3 +157,28 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // check accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function isoTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.getElementsByTagName('input')[0] as HTMLInputElement
+    const value = await within(canvasElement).findByTestId('value')
+
+    const inputDate = getDateFromInputValue(input.value, args.type)
+    if (!inputDate) {
+        await expect(value.innerHTML).toEqual('null')
+        return
+    }
+    const valueDate = new Date(value.innerHTML)
+
+    if (args.type === INPUT_TYPES.TIME || args.type === INPUT_TYPES.DATETIME_LOCAL) {
+        expect(inputDate.getHours()).toEqual(valueDate.getHours())
+        expect(inputDate.getMinutes()).toEqual(valueDate.getMinutes())
+    }
+    if (args.type === INPUT_TYPES.MONTH || args.type === INPUT_TYPES.DATE || args.type === INPUT_TYPES.DATETIME_LOCAL) {
+        expect(inputDate.getMonth()).toEqual(valueDate.getMonth())
+        expect(inputDate.getFullYear()).toEqual(valueDate.getFullYear())
+    }
+    if (args.type === INPUT_TYPES.DATE || args.type === INPUT_TYPES.DATETIME_LOCAL) {
+        expect(inputDate.getDate()).toEqual(valueDate.getDate())
+    }
+}

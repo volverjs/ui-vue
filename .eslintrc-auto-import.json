@@ -327,6 +327,13 @@
     "watchThrottled": true,
     "watchTriggerable": true,
     "watchWithFilter": true,
-    "whenever": true
+    "whenever": true,
+    "isIsoDate": true,
+    "getDateOfIsoWeek": true,
+    "getDateFromIsoWeek": true,
+    "getIsoWeekFromDate": true,
+    "getInputValueFromDate": true,
+    "isDateIsoString": true,
+    "getDateFromInputValue": true
   }
 }
