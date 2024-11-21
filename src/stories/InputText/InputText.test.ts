@@ -157,3 +157,24 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // check accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function isoTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.getElementsByTagName('input')[0] as HTMLInputElement
+    const value = await within(canvasElement).findByTestId('value')
+
+    const inputDate = getDateFromInputValue(input.value, args.type)
+    const valueDate = new Date(value.innerHTML)
+
+    if (args.type === 'time' || args.type === 'datetime-local') {
+        expect(inputDate.getHours()).toEqual(valueDate.getHours())
+        expect(inputDate.getMinutes()).toEqual(valueDate.getMinutes())
+    }
+    if (args.type === 'month' || args.type === 'date' || args.type === 'datetime-local') {
+        expect(inputDate.getMonth()).toEqual(valueDate.getMonth())
+        expect(inputDate.getFullYear()).toEqual(valueDate.getFullYear())
+    }
+    if (args.type === 'date' || args.type === 'datetime-local') {
+        expect(inputDate.getDate()).toEqual(valueDate.getDate())
+    }
+}

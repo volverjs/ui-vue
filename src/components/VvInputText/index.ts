@@ -45,7 +45,7 @@ export const VvInputTextProps = {
      * Input value
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value
      */
-    modelValue: [String, Number],
+    modelValue: [String, Number, Date],
     /**
      * Type of form control
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#type

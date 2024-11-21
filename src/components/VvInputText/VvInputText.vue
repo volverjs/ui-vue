@@ -2,6 +2,10 @@
 import type { MaskedNumberOptions } from 'imask'
 import type { InputHTMLAttributes } from 'vue'
 import { useIMask } from 'vue-imask'
+import {
+    getInputValueFromDate,
+    isDateIsoString,
+} from '../../utils/DateUtilities'
 import HintSlotFactory from '../common/HintSlot'
 import VvDropdown from '../VvDropdown/VvDropdown.vue'
 import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
@@ -62,9 +66,20 @@ const localModelValue = useDebouncedInput(
     debounce?.value ?? 0,
 )
 
+// seconds
+const hasSeconds = computed(() => {
+    const stepValue = typeof step.value === 'number' ? step.value : Number.parseInt(step.value)
+    if (Number.isNaN(stepValue)) {
+        return false
+    }
+    return stepValue % 60 !== 0
+})
+
 // mask
 const NEGATIVE_ZERO_REGEX = /^-0?[.,]?[0*]?$/
 const maskReady = ref(false)
+const modelValueDate = ref<Date>()
+const modelValueDateIsoString = ref<string>()
 const { el, mask, typed, masked, unmasked } = useIMask(
     computed(
         () => {
@@ -115,56 +130,62 @@ const { el, mask, typed, masked, unmasked } = useIMask(
                 localModelValue.value = typed.value
                 return
             }
-            if (type.value === INPUT_TYPES.DATE) {
-                if (
-                    el.value instanceof HTMLInputElement
-                    && el.value.type === 'date'
-                ) {
-                    localModelValue.value = el.value.value
-                    return
-                }
-                let date = typed.value
-                if (date === null || date === '') {
+            if (type.value === INPUT_TYPES.DATETIME_LOCAL
+                || type.value === INPUT_TYPES.DATE
+                || type.value === INPUT_TYPES.TIME
+                || type.value === INPUT_TYPES.MONTH
+            ) {
+                if (!typed.value) {
                     if (!localModelValue.value) {
+                        return
+                    }
+                    if (modelValueDate.value) {
+                        localModelValue.value = undefined
                         return
                     }
                     localModelValue.value = ''
                     return
                 }
+                if (!(typed.value instanceof Date) && !modelValueDate.value && !modelValueDateIsoString.value) {
+                    localModelValue.value = typed.value
+                    return
+                }
+
+                let date = typed.value
                 if (!(date instanceof Date)) {
-                    date = new Date(date)
+                    date = getDateFromInputValue(typed.value, type.value)
                 }
-                localModelValue.value = `${date.getFullYear()}-${(
-                    `0${
-                        date.getMonth() + 1}`
-                ).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`
-                return
-            }
-            if (type.value === INPUT_TYPES.DATETIME_LOCAL) {
-                if (
-                    el.value instanceof HTMLInputElement
-                    && el.value.type === 'datetime-local'
-                ) {
-                    localModelValue.value = el.value.value
-                    return
-                }
-                let date = typed.value
-                if (date === null || date === '') {
-                    if (!localModelValue.value) {
+                if (modelValueDate.value || modelValueDateIsoString.value) {
+                    const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
+                    if (type.value === INPUT_TYPES.DATETIME_LOCAL
+                        || type.value === INPUT_TYPES.DATE
+                        || type.value === INPUT_TYPES.MONTH
+                    ) {
+                        toReturn.setFullYear(date.getFullYear())
+                        toReturn.setMonth(date.getMonth())
+                    }
+                    if (type.value === INPUT_TYPES.DATETIME_LOCAL
+                        || type.value === INPUT_TYPES.DATE
+                    ) {
+                        toReturn.setDate(date.getDate())
+                    }
+                    if (type.value === INPUT_TYPES.DATETIME_LOCAL
+                        || type.value === INPUT_TYPES.TIME) {
+                        toReturn.setHours(date.getHours())
+                        toReturn.setMinutes(date.getMinutes())
+                        toReturn.setSeconds(date.getSeconds())
+                    }
+                    if (modelValueDate.value instanceof Date) {
+                        if (localModelValue.value?.getTime() === toReturn.getTime()) {
+                            return
+                        }
+                        localModelValue.value = toReturn
                         return
                     }
-                    localModelValue.value = ''
+                    localModelValue.value = toReturn.toISOString()
                     return
                 }
-                if (!(typed.value instanceof Date)) {
-                    date = new Date(date)
-                }
-                localModelValue.value = `${date.getFullYear()}-${(
-                    `0${
-                        date.getMonth() + 1}`
-                ).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}T${(
-                    `0${date.getHours()}`
-                ).slice(-2)}:${(`0${date.getMinutes()}`).slice(-2)}`
+                localModelValue.value = getInputValueFromDate(date, type.value, hasSeconds.value)
                 return
             }
             if (!localModelValue.value && !unmasked.value) {
@@ -174,14 +195,14 @@ const { el, mask, typed, masked, unmasked } = useIMask(
         },
     },
 )
-function updateMaskValue(newValue: string | number | undefined | null) {
+function updateMaskValue(newValue: string | number | Date | undefined | null) {
     if (newValue === undefined || newValue === null) {
         typed.value = ''
         unmasked.value = ''
         return
     }
     if (props.iMask?.mask === Date) {
-        typed.value = new Date(newValue)
+        typed.value = newValue instanceof Date ? newValue : new Date(newValue)
         return
     }
     if (
@@ -190,6 +211,27 @@ function updateMaskValue(newValue: string | number | undefined | null) {
         && newValue === 0
     ) {
         return
+    }
+    if (type.value === INPUT_TYPES.DATE
+        || type.value === INPUT_TYPES.MONTH
+        || type.value === INPUT_TYPES.DATETIME_LOCAL
+        || type.value === INPUT_TYPES.TIME) {
+        if (newValue instanceof Date || isDateIsoString(newValue)) {
+            if (newValue instanceof Date) {
+                modelValueDate.value = newValue
+                modelValueDateIsoString.value = undefined
+            }
+            else {
+                modelValueDateIsoString.value = newValue as string
+                modelValueDate.value = undefined
+            }
+            const newDate = new Date(newValue)
+            typed.value = getInputValueFromDate(newDate, type.value, hasSeconds.value)
+            unmasked.value = typed.value
+            return
+        }
+        modelValueDate.value = undefined
+        modelValueDateIsoString.value = undefined
     }
     typed.value = newValue
     unmasked.value = `${typed.value}`
@@ -529,10 +571,9 @@ const hasStyle = computed(() => {
         return undefined
     }
     return {
-        width:
-				localModelValue.value !== undefined
-				    ? `${String(localModelValue.value).length + 1}ch`
-				    : undefined,
+        width: localModelValue.value !== undefined
+            ? `${String(localModelValue.value).length + 1}ch`
+            : undefined,
     }
 })
 
