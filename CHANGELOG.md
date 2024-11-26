@@ -41,7 +41,8 @@ All notable changes to this project will be documented in this file.
 - `v-tooltip` directive update on props change;
 - `VvInputText` force type number on stepUp/stepDown;
 - Removed `target` prop validation;
-- Improved `VvCombobox` support for object values.
+- Improved `VvCombobox` support for object values;
+- Nuxt compatibility.
 
 ## [0.0.9] - 2023-08-30
 
