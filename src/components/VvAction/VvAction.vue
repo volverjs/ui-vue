@@ -48,7 +48,7 @@ const hasTag = computed(() => {
         case props.disabled:
             return ActionTag.button
         case props.to !== undefined:
-            return volver?.nuxt ? ActionTag.nuxtLink : ActionTag.routerLink
+            return volver?.nuxt ? resolveComponent(ActionTag.nuxtLink) : resolveComponent(ActionTag.routerLink)
         case props.href !== undefined:
             return ActionTag.a
         default:
