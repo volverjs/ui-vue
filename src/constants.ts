@@ -51,8 +51,8 @@ export enum ButtonType {
 }
 
 export enum ActionTag {
-    nuxtLink = 'NuxtLink',
-    routerLink = 'RouterLink',
+    nuxtLink = 'nuxt-link',
+    routerLink = 'router-link',
     a = 'a',
     button = 'button',
 }
