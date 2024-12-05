@@ -1,3 +1,5 @@
+const span = (num: number) => num.toString().padStart(2, '0')
+
 /**
  * Checks if a string is a valid ISO date string
  * @param dateString
@@ -32,7 +34,6 @@ export function getInputValueFromDate(date: Date | string, typeOfInput: 'date' |
     if (Number.isNaN(currentDate.getTime())) {
         return ''
     }
-    const span = (num: number) => num.toString().padStart(2, '0')
     let toReturn = `${currentDate.getFullYear()}-${span(currentDate.getMonth() + 1)}`
     if (typeOfInput === 'month') {
         return toReturn
@@ -84,9 +85,9 @@ export function getDateFromInputValue(value: string, typeOfInput: 'date' | 'time
             throw new Error('Invalid time format. Expected: HH:mm or HH:mm:ss')
         }
         if (value.length === 8) {
-            return new Date(`${currentYear}-${currentMonth + 1}-${currentDate}T${value}`)
+            return new Date(`${currentYear}-${span(currentMonth + 1)}-${span(currentDate)}T${value}`)
         }
-        return new Date(`${currentYear}-${currentMonth + 1}-${currentDate}T${value}:00`)
+        return new Date(`${currentYear}-${span(currentMonth + 1)}-${span(currentDate)}T${value}:00`)
     }
     if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/.test(value)) {
         throw new Error('Invalid datetime format. Expected: YYYY-MM-DDThh:mm or YYYY-MM-DDThh:mm:ss')
