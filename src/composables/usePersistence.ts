@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { StorageType } from '@/constants'
-import { computed, isRef, ref, unref, watch } from 'vue'
+import { isRef, ref, unref, watch } from 'vue'
 
 export function usePersistence<T>(storageKey: Ref<string | undefined> | undefined,	storageType: Ref<`${StorageType}`> | `${StorageType}` = StorageType.local,	defaultValue?: T) {
     const localValue: Ref<T | undefined> = ref()
@@ -26,6 +26,9 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
                             storageValue?.value ?? localValue.value,
                             storage,
                         )
+                        if (storageValue.value) {
+                            localValue.value = storageValue.value
+                        }
                         return
                     }
                     storageValue = undefined
@@ -61,16 +64,14 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
         }
     })
 
-    return computed<T | undefined>({
-        get: () => {
-            return storageValue?.value ?? localValue.value
-        },
-        set: (value) => {
-            if (storageValue) {
-                storageValue.value = value
-                return
-            }
-            localValue.value = value
-        },
+    watch(localValue, (newValue) => {
+        if (storageValue) {
+            storageValue.value = newValue
+        }
+    }, {
+        deep: true,
+        immediate: true,
     })
+
+    return localValue
 }
