@@ -402,6 +402,7 @@
     "@iconify/tools": "^4.0.7",
     "@iconify/vue": "^4.1.2",
     "blurhash": "^2.0.5",
+    "chokidar": "^4.0.1",
     "comlink": "^4.4.2",
     "jsdom": "^25.0.1",
     "mitt": "^3.0.1",
@@ -409,7 +410,6 @@
     "ts-dot-prop": "^2.1.4",
     "vue-imask": "^7.6.1",
     "vuedraggable": "^4.1.0",
-    "chokidar": "^4.0.1",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
@@ -463,7 +463,7 @@
     "storybook-dark-mode": "^4.0.2",
     "terser": "^5.36.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.7.2",
+    "typescript": "~5.4.2",
     "unplugin-auto-import": "^0.18.6",
     "unplugin-vue-components": "^0.27.5",
     "vite": "^6.0.2",
