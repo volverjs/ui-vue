@@ -1,11 +1,11 @@
-import iconsDetailed from '@/assets/icons/detailed.json'
-import iconsNormal from '@/assets/icons/normal.json'
-import iconsSimple from '@/assets/icons/simple.json'
-import * as directives from '@/directives'
-import VolverPlugin from '@/Volver'
 import { themes } from '@storybook/theming'
 import { setup } from '@storybook/vue3'
 import packageJson from '../package.json'
+import iconsDetailed from '../src/assets/icons/detailed.json'
+import iconsNormal from '../src/assets/icons/normal.json'
+import iconsSimple from '../src/assets/icons/simple.json'
+import * as directives from '../src/directives'
+import VolverPlugin from '../src/Volver'
 import './style.scss'
 
 const fullVersion = packageJson.version
