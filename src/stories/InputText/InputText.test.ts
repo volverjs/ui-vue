@@ -1,5 +1,6 @@
+import type { InputType } from '@/components/VvInputText'
 import type { PlayAttributes } from '@/test/types'
-import { INPUT_TYPES, type InputType } from '@/components/VvInputText'
+import { INPUT_TYPES } from '@/components/VvInputText'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 import { userEvent, within } from '@storybook/test'

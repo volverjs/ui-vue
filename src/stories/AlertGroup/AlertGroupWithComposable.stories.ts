@@ -1,9 +1,10 @@
 import type { Meta } from '@storybook/vue3'
+import type { Story } from './AlertGroup.stories'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import { useAlert } from '@/composables/alert/useAlert'
 import { argTypes, defaultArgs } from './AlertGroup.settings'
-import { Default as DefaultStory, type Story } from './AlertGroup.stories'
+import { Default as DefaultStory } from './AlertGroup.stories'
 
 const meta: Meta<typeof VvAlertGroup> = {
     title: 'Composables/useAlert',

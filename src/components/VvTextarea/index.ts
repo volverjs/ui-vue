@@ -1,6 +1,7 @@
 import type { ExtractPropTypes } from 'vue'
+import type { VvIconProps } from '../VvIcon'
 import { InputTextareaProps, StorageProps } from '../../props'
-import { ACTION_ICONS, type VvIconProps } from '../VvIcon'
+import { ACTION_ICONS } from '../VvIcon'
 
 export const WRAP = {
     hard: 'hard',

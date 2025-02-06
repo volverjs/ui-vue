@@ -1,9 +1,11 @@
+import type { Ref } from 'vue'
+import type { DropdownItemState } from '../../constants'
 import mitt from 'mitt'
-import { Fragment, type Ref } from 'vue'
+import { Fragment } from 'vue'
 import {
     ActionRoles,
     DropdownItemRole,
-    type DropdownItemState,
+
     DropdownRole,
     INJECTION_KEY_DROPDOWN_ACTION,
     INJECTION_KEY_DROPDOWN_ITEM,

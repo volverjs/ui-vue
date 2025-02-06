@@ -1,5 +1,6 @@
 import type { Component } from 'vue'
-import { INPUT_TYPES, type VvInputTextPropsTypes } from '.'
+import type { VvInputTextPropsTypes } from '.'
+import { INPUT_TYPES } from '.'
 import VvIcon from '../VvIcon/VvIcon.vue'
 import VvInputClearAction from '../VvInputText/VvInputClearAction'
 import VvInputPasswordAction from '../VvInputText/VvInputPasswordAction'

@@ -1,8 +1,9 @@
 <script setup lang="ts" generic="T extends string | Option">
 import type { Ref } from 'vue'
+import type { VvComboboxEvents } from '.'
 import type { Option } from '../../types/generic'
 import { toRefs } from 'vue'
-import { useVvComboboxProps, type VvComboboxEvents } from '.'
+import { useVvComboboxProps } from '.'
 import { DropdownRole } from '../../constants'
 import HintSlotFactory from '../common/HintSlot'
 import VvBadge from '../VvBadge/VvBadge.vue'

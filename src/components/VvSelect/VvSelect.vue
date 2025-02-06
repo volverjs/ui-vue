@@ -1,7 +1,8 @@
 <script setup lang="ts" generic="T extends string | Option">
 import type { SelectHTMLAttributes } from 'vue'
+import type { VvSelectEmits } from '.'
 import type { Option } from '../../types/generic'
-import { useVvSelectProps, type VvSelectEmits } from '.'
+import { useVvSelectProps } from '.'
 import HintSlotFactory from '../common/HintSlot'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
