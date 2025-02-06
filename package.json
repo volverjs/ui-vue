@@ -373,10 +373,8 @@
     "generate-icons": "./bin/icons.js"
   },
   "files": [
-    "*.d.ts",
     "bin",
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "dev": "storybook dev -p 6006",
