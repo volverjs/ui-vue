@@ -27,7 +27,7 @@ function getWidthHeightFromMaxSize(width: number,	height: number,	maxSize: numbe
     }
 }
 
-async function resizeImage(image: ImageBitmap | HTMLImageElement | HTMLCanvasElement | File | Blob,	width: number,	height: number) {
+async function resizeImage(image: ImageBitmap | HTMLImageElement | HTMLCanvasElement, width: number, height: number) {
     const resizer = new Pica()
     const canvas = document.createElement('canvas')
     canvas.width = width

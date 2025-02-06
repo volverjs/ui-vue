@@ -639,7 +639,7 @@ export default {
                     class="vv-input-text__unit"
                 >
                     <!-- @slot Slot to replace unit -->
-                    <slot name v-bind="slotProps">
+                    <slot name="unit" v-bind="slotProps">
                         {{ unit }}
                     </slot>
                 </div>

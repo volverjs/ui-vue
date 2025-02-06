@@ -16,7 +16,7 @@ maintained with ❤️ by
 
 <br>
 
-[![8 Wave](.storybook/static/8wave.svg)](https://8wave.it)
+[![8 wave](.storybook/static/8wave.svg)](https://8wave.it)
 
 <br>
 
@@ -44,13 +44,13 @@ npm install @volverjs/ui-vue --save
 Install the plugin in your `main.ts` file.
 
 ```typescript
-// main.ts
-import { createApp } from 'vue'
-
 // import @volverjs/ui-vue plugin
 import { VolverPlugin } from '@volverjs/ui-vue'
+
 // import @volverjs/ui-vue icons collections
 import iconsCollections from '@volverjs/ui-vue/icons'
+// main.ts
+import { createApp } from 'vue'
 import App from './App.vue'
 /*
  * import @volverjs/style base style with reset and props

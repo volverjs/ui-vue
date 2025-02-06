@@ -1,5 +1,6 @@
 import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-import { onMounted, type Ref, ref } from 'vue'
+import type { Ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 export function useDropdownVirtualElement(dropdownEl: Ref<typeof VvDropdown>) {
     const x = ref(0)

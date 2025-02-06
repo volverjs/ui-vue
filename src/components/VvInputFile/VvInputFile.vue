@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import type { VvInputFileEvents } from '.'
 import type { UploadedFile } from '../../types'
 import { useVModel } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import Sortable from 'vuedraggable'
-import { type VvInputFileEvents, VvInputFileProps } from '.'
+import { VvInputFileProps } from '.'
 import HintSlotFactory from '../common/HintSlot'
 import VvButton from '../VvButton/VvButton.vue'
 import VvIcon from '../VvIcon/VvIcon.vue'

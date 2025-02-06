@@ -36,9 +36,9 @@ export default defineComponent({
     render() {
         const icon = this.hasIcon
             ? h(VvIcon, {
-                ...this.hasIcon,
-                class: 'vv-input-text__icon',
-            })
+                    ...this.hasIcon,
+                    class: 'vv-input-text__icon',
+                })
             : undefined
 
         return h(

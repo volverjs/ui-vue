@@ -1,5 +1,6 @@
 import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-import { computed, getCurrentInstance, onMounted, onUnmounted, type Ref, unref } from 'vue'
+import type { Ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onUnmounted, unref } from 'vue'
 
 export function useDropdownContextmenu(dropdownEl: Ref<typeof VvDropdown>, targetEl?: Ref<HTMLElement> | HTMLElement) {
     const { x, y, getBoundingClientRect, onScroll } = useDropdownVirtualElement(dropdownEl)
