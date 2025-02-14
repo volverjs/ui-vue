@@ -347,6 +347,7 @@ function onStepDown() {
 const isSearch = computed(() => props.type === INPUT_TYPES.SEARCH)
 function onClear() {
     localModelValue.value = ''
+    emit('clear')
 }
 
 // icons

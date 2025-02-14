@@ -37,6 +37,7 @@ export const VvInputTextEvents = [
     'keyup',
     'keydown',
     'keypress',
+    'clear',
 ]
 
 export const VvInputTextProps = {
