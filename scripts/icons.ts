@@ -58,11 +58,16 @@ function getAllFiles(
  * @param {string} prefix The Iconify prefix
  * @param {Array<string>} files Array of SVG files paths
  * @param {string} destPath The destination folder to write IconifyJSON file
+ * @param {Object} options The options object
+ * @param {boolean} options.keepColors Keep colors in SVG
  */
 async function generateIcons(
     prefix: string,
     files: string[],
     destPath: string,
+    options?: {
+        keepColors?: boolean
+    },
 ) {
     // Create empty icon set
     const iconSet = blankIconSet(prefix)
@@ -79,14 +84,16 @@ async function generateIcons(
 
             // Assume icon is monotone: replace color with currentColor, add if missing
             // If icon is not monotone, remove this code
-            await parseColors(svg, {
-                defaultColor: 'currentColor',
-                callback: (attr, colorStr, color) => {
-                    return !color || isEmptyColor(color)
-                        ? colorStr
-                        : 'currentColor'
-                },
-            })
+            if (!options?.keepColors) {
+                await parseColors(svg, {
+                    defaultColor: 'currentColor',
+                    callback: (_attr, colorStr, color) => {
+                        return !color || isEmptyColor(color) || colorStr.includes('var(')
+                            ? colorStr
+                            : 'currentColor'
+                    },
+                })
+            }
 
             // Optimise
             await runSVGO(svg)
@@ -139,16 +146,19 @@ async function generateIcons(
 export function createIconifyJsonFiles(
     srcPath: string,
     destPath: string,
-    prefix?: string,
+    options?: {
+        prefix?: string
+        keepColors?: boolean
+    },
 ) {
-    const objectFiles = getAllFiles(srcPath, prefix)
+    const objectFiles = getAllFiles(srcPath, options?.prefix)
 
     if (!Object.keys(objectFiles).length) {
         console.error(`There are no files in ${srcPath}`)
     }
     else {
         Object.keys(objectFiles).forEach((prefix) => {
-            generateIcons(prefix, objectFiles[prefix], destPath)
+            generateIcons(prefix, objectFiles[prefix], destPath, options)
 
             console.info(`Icons generated in: ${destPath}/${prefix}.json\n`)
         })
@@ -160,6 +170,7 @@ const argv = yargs(hideBin(process.argv)).argv as {
     destPath?: string
     prefix?: string
     watch?: boolean
+    keepColors?: boolean
 }
 const srcPath = argv.srcPath
 const destPath = argv.destPath || srcPath
@@ -171,19 +182,20 @@ if (!srcPath || !destPath) {
     process.exit()
 }
 
+const options = { prefix: argv.prefix, keepColors: argv.keepColors }
 if (argv.watch) {
-    createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+    createIconifyJsonFiles(srcPath, destPath, options)
     chokidar
         .watch(srcPath, {
             ignoreInitial: true,
         })
         .on('add', () => {
-            createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+            createIconifyJsonFiles(srcPath, destPath, options)
         })
         .on('change', () => {
-            createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+            createIconifyJsonFiles(srcPath, destPath, options)
         })
 }
 else {
-    createIconifyJsonFiles(srcPath, destPath, argv.prefix)
+    createIconifyJsonFiles(srcPath, destPath, options)
 }

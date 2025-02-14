@@ -7,7 +7,7 @@ import VvInputPasswordAction from '../VvInputText/VvInputPasswordAction'
 import VvInputStepAction from '../VvInputText/VvInputStepAction'
 
 export default function VvInputTextActionsFactory(
-    type: string,
+    type: typeof INPUT_TYPES[keyof typeof INPUT_TYPES],
     parentProps: VvInputTextPropsTypes,
 ): Component {
     return {
@@ -42,7 +42,7 @@ export default function VvInputTextActionsFactory(
                     actions = [
                         h(VvInputClearAction, {
                             disabled: this.isDisabled,
-                            label: this.labelShowPassword,
+                            label: this.labelClear,
                             onClear,
                         }),
                     ]
