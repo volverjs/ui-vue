@@ -43,7 +43,7 @@ const emit = defineEmits([
 
 const { id } = toRefs(props)
 const hasId = useUniqueId(id)
-const attrs = useAttrs()
+const attrs = useAttrs() as Record<string, unknown>
 const maxWidth = ref('auto')
 const maxHeight = ref('auto')
 

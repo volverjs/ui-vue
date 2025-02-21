@@ -9,7 +9,7 @@ const props = defineProps(VvButtonProps)
 
 const emit = defineEmits(VvButtonEvents)
 
-const attrs = useAttrs()
+const attrs = useAttrs() as Record<string, unknown>
 const slots = useSlots()
 // data
 const {

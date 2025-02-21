@@ -7,7 +7,7 @@ const props = defineProps(VvAccordionProps)
 
 const emit = defineEmits(VvAccordionEvents)
 
-const attrs = useAttrs()
+const attrs = useAttrs() as Record<string, unknown>
 const modelValue = useVModel(props, 'modelValue', emit)
 
 // data
