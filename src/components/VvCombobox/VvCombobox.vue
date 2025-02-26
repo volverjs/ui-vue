@@ -562,7 +562,7 @@ export default {
                                     }"
                                     :key="i"
                                     class="vv-dropdown-option"
-                                    focus-on-hover
+                                    :focus-on-hover="focusOnHover"
                                     @click.passive="onInput(item)"
                                 >
                                     <!-- @slot Slot for option customization -->
@@ -593,7 +593,7 @@ export default {
                                         propsDefaults.selectedHintLabel,
                                 }"
                                 class="vv-dropdown-option"
-                                focus-on-hover
+                                :focus-on-hover="focusOnHover"
                                 @click.passive="onInput(option)"
                             >
                                 <!-- @slot Slot for option customization -->

@@ -196,6 +196,13 @@ export const VvComboboxProps = {
         type: Boolean,
         default: false,
     },
+    /**
+     * Focus on hover option (this prop remove the focus from the input search)
+     */
+    focusOnHover: {
+        type: Boolean,
+        default: true,
+    },
 }
 
 // WARNING: This is a provisiaonal implementation, it may change in the future
