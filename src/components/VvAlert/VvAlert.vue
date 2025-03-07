@@ -26,6 +26,7 @@ export default {
                     || $slots['title::before']
                     || $slots['title::after']
                     || title
+                    || hasIcon
                     || dismissable
                     || autoClose
             "
