@@ -85,21 +85,18 @@ const localModelValue = computed({
     set(newValue) {
         if (isBinary.value) {
             modelValue.value = newValue ? props.value : props.uncheckedValue
-        }
-        else if (Array.isArray(modelValue.value) || isInGroup.value) {
+        } else if (Array.isArray(modelValue.value) || isInGroup.value) {
             const currentValue = modelValue.value ?? []
             const toReturn = new Set(
                 Array.isArray(currentValue) ? currentValue : [currentValue],
             )
             if (newValue) {
                 toReturn.add(props.value)
-            }
-            else {
+            } else {
                 toReturn.delete(props.value)
             }
             modelValue.value = [...toReturn]
-        }
-        else {
+        } else {
             modelValue.value = newValue ? props.value : undefined
         }
         emit('change', newValue)
@@ -135,8 +132,7 @@ watch(
     (newValue) => {
         if (newValue) {
             input.value.indeterminate = true
-        }
-        else {
+        } else {
             input.value.indeterminate = false
         }
     },

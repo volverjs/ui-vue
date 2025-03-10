@@ -29,8 +29,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         }
         if (args.multiple) {
             await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
-        }
-        else {
+        } else {
             await expect(value.innerHTML).toEqual(firstValue)
         }
     }

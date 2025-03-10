@@ -146,8 +146,7 @@ function addFiles(uploadedFiles: FileList) {
     let toReturn: (File | UploadedFile)[] = []
     if (!Array.isArray(localModelValue.value) && localModelValue.value) {
         toReturn = [localModelValue.value]
-    }
-    else {
+    } else {
         toReturn
 				= localModelValue.value && Array.isArray(localModelValue.value)
                 ? [...localModelValue.value]

@@ -246,8 +246,7 @@ watch(
             this.imageUrl = URL.createObjectURL(newValue)
             this.image = await this.loadImage(this.imageUrl)
             this.blurhash = await this.encode(newValue)
-        }
-        else {
+        } else {
             this.image = null
             this.imageUrl = ''
             this.blurhash = ''

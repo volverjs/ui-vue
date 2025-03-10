@@ -19,8 +19,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         })
         if (args.disabled || args.readonly) {
             await expect(input).not.toBeChecked()
-        }
-        else {
+        } else {
             await expect(input).toBeChecked()
         }
     }

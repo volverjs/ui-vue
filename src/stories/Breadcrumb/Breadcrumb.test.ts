@@ -41,8 +41,7 @@ export async function defaultTest(
 
             // route test
             await expect(link.href).toContain(propRoutes.href)
-        }
-        else {
+        } else {
             await expect(linkContainer).toHaveClass(
                 'vv-breadcrumb__item-active',
             )

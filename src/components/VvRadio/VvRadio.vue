@@ -54,8 +54,7 @@ const localModelValue = computed({
     set(newValue) {
         if (Array.isArray(modelValue.value)) {
             modelValue.value = [props.value]
-        }
-        else {
+        } else {
             modelValue.value = props.value
         }
         emit('change', newValue)

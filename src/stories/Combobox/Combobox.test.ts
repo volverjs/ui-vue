@@ -55,8 +55,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         // in grouped options the first element is not selectable
         if (args.multiple) {
             await expect(JSON.parse(value.innerHTML)).toEqual([firstValue])
-        }
-        else {
+        } else {
             await expect(value.innerHTML).toEqual(firstValue)
         }
 
@@ -72,8 +71,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
                     firstValue,
                     secondValue,
                 ])
-            }
-            else {
+            } else {
                 await expect(value.innerHTML).toEqual(secondValue)
             }
         }

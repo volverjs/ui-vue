@@ -221,8 +221,7 @@ function updateMaskValue(newValue: string | number | Date | undefined | null) {
             if (newValue instanceof Date) {
                 modelValueDate.value = newValue
                 modelValueDateIsoString.value = undefined
-            }
-            else {
+            } else {
                 modelValueDateIsoString.value = newValue as string
                 modelValueDate.value = undefined
             }

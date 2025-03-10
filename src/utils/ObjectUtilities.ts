@@ -95,8 +95,7 @@ export function resolveFieldData(data: Record<string, unknown>, field: string) {
     if (data && Object.keys(data).length && field) {
         if (!field.includes('.')) {
             return data[field]
-        }
-        else {
+        } else {
             const fields = field.split('.')
             let value = data
 
@@ -110,8 +109,7 @@ export function resolveFieldData(data: Record<string, unknown>, field: string) {
 
             return value
         }
-    }
-    else {
+    } else {
         return null
     }
 }
@@ -214,8 +212,7 @@ export function removeFromList<Type = unknown>(value: Type, list: Type[]) {
     const indexElToRemove = findIndexInList(value, list)
     if (indexElToRemove > -1) {
         return list.filter((el, elIndex) => elIndex !== indexElToRemove)
-    }
-    else {
+    } else {
         return list
     }
 }
@@ -225,7 +222,7 @@ export function removeFromList<Type = unknown>(value: Type, list: Type[]) {
  * @returns {boolean} true if value is a string
  */
 export function isString(value: unknown) {
-    return typeof value === 'string' || value instanceof String
+    return typeof value === 'string'
 }
 
 /**

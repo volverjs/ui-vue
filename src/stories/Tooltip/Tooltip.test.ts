@@ -10,8 +10,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     if (args.default) {
         // slot default
         await expect(element.textContent).toEqual(args.default)
-    }
-    else if (args.value) {
+    } else if (args.value) {
         // value
         await expect(element.textContent).toEqual(args.value)
     }

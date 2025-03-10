@@ -76,8 +76,7 @@ export function useDefaults<Definition>(
                         ) {
                             acc[key] = componentDefaults[key]
                         }
-                    }
-                    else if (defaultValue === propValue) {
+                    } else if (defaultValue === propValue) {
                         acc[key] = componentDefaults[key]
                     }
                 }

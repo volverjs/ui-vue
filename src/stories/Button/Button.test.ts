@@ -29,8 +29,7 @@ export async function defaultTest(
     // disabled
     if (args.disabled) {
         await expect(element).not.toBeClicked()
-    }
-    else {
+    } else {
         await expect(element).toBeClicked()
 
         // link

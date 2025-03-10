@@ -60,8 +60,7 @@ const expandedAccordions = computed<Set<string>>({
                         name => name !== localModelValue.value,
                     ),
                 )
-            }
-            else if (Array.isArray(localModelValue.value)) {
+            } else if (Array.isArray(localModelValue.value)) {
                 toReturn = new Set<string>(
                     [...accordionNames].filter(
                         name =>
@@ -71,11 +70,9 @@ const expandedAccordions = computed<Set<string>>({
                     ),
                 )
             }
-        }
-        else if (typeof localModelValue.value === 'string') {
+        } else if (typeof localModelValue.value === 'string') {
             toReturn = new Set<string>([localModelValue.value])
-        }
-        else if (Array.isArray(localModelValue.value)) {
+        } else if (Array.isArray(localModelValue.value)) {
             toReturn = new Set<string>(localModelValue.value)
         }
         return toReturn
