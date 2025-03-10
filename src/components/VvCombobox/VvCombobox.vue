@@ -208,7 +208,7 @@ const bemCssClasses = useModifiers(
         'valid': valid.value,
         'invalid': invalid.value,
         'dirty': isDirty.value,
-        'focus': focused.value || focusedWithin.value || expanded.value,
+        'focus': (focused.value || focusedWithin.value || expanded.value) && !isDisabledOrReadonly.value,
         'floating': floating.value,
         'badges': props.badges,
     })),

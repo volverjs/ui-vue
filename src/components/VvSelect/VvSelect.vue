@@ -122,7 +122,7 @@ const bemCssClasses = useModifiers(
         'icon-before': hasIconBefore.value !== undefined,
         'icon-after': hasIconAfter.value !== undefined,
         'dirty': isDirty.value,
-        'focus': focused.value,
+        'focus': focused.value && !isDisabledOrReadonly.value,
         'floating': floating.value,
         'multiple': multiple.value,
     })),

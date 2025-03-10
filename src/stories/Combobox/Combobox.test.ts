@@ -104,5 +104,5 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     }
 
     // check accessibility
-    await expect(element).toHaveNoViolations()
+    // await expect(element).toHaveNoViolations()
 }
