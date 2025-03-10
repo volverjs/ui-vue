@@ -40,13 +40,11 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
                         ].splice(1),
                     ),
                 )
-            }
-            else if (args.collapse) {
+            } else if (args.collapse) {
                 expect(JSON.stringify(JSON.parse(value.textContent ?? ''))).toBe(
                     JSON.stringify([args.items[0].name]),
                 )
-            }
-            else {
+            } else {
                 expect(value.textContent ?? '').toBe(args.items[0].name)
             }
             expect(firstChildSummary.getAttribute('aria-expanded')).toBe('true')

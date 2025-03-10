@@ -221,8 +221,7 @@ function updateMaskValue(newValue: string | number | Date | undefined | null) {
             if (newValue instanceof Date) {
                 modelValueDate.value = newValue
                 modelValueDateIsoString.value = undefined
-            }
-            else {
+            } else {
                 modelValueDateIsoString.value = newValue as string
                 modelValueDate.value = undefined
             }
@@ -323,7 +322,7 @@ const isDateTime = computed(
 // number
 const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
 function onStepUp() {
-    if (isClickable.value) {
+    if (!isDisabledOrReadonly.value) {
         if (props.iMask) {
             typed.value = Number(typed.value) + Number(step?.value ?? 1)
             return
@@ -333,7 +332,7 @@ function onStepUp() {
     }
 }
 function onStepDown() {
-    if (isClickable.value) {
+    if (!isDisabledOrReadonly.value) {
         if (props.iMask) {
             typed.value = Number(typed.value) - Number(step?.value ?? 1)
             return
@@ -380,10 +379,10 @@ const { formatted: countFormatted } = useTextCount(localModelValue, {
 })
 
 // tabindex
-const isClickable = computed(() => !props.disabled && !props.readonly)
-const hasTabindex = computed(() =>
-    isClickable.value ? props.tabindex : -1,
-)
+const isDisabledOrReadonly = computed(() => props.disabled || props.readonly)
+const hasTabindex = computed(() => {
+    return isDisabledOrReadonly.value ? -1 : props.tabindex
+})
 
 // dirty
 const isDirty = computed(() => !isEmpty(modelValue))
@@ -450,7 +449,7 @@ const bemCssClasses = useModifiers(
         'icon-after': !!iconAfter.value,
         'floating': props.floating && !isEmpty(props.label),
         'dirty': isDirty.value,
-        'focus': isFocused.value,
+        'focus': isFocused.value && !isDisabledOrReadonly.value,
         'auto-width': props.autoWidth,
     })),
 )
@@ -564,7 +563,7 @@ const SearchInputActions = VvInputTextActionsFactory(
 
 // auto-width
 function onClickInner() {
-    if (isClickable.value) {
+    if (!isDisabledOrReadonly.value) {
         focused.value = true
     }
 }
@@ -652,16 +651,16 @@ export default {
                 class="vv-input-text__icon vv-input-text__icon-after"
             />
             <PasswordInputActions
-                v-else-if="isPassword && !hideActions && isClickable"
+                v-else-if="isPassword && !hideActions && !isDisabledOrReadonly"
                 @toggle-password="onTogglePassword"
             />
             <NumberInputActions
-                v-else-if="isNumber && !hideActions && isClickable"
+                v-else-if="isNumber && !hideActions && !isDisabledOrReadonly"
                 @step-up="onStepUp"
                 @step-down="onStepDown"
             />
             <SearchInputActions
-                v-else-if="isSearch && !hideActions && isClickable"
+                v-else-if="isSearch && !hideActions && !isDisabledOrReadonly"
                 @clear="onClear"
             />
             <!-- @slot Slot after input -->

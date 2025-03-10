@@ -208,7 +208,7 @@ const bemCssClasses = useModifiers(
         'valid': valid.value,
         'invalid': invalid.value,
         'dirty': isDirty.value,
-        'focus': focused.value || focusedWithin.value || expanded.value,
+        'focus': (focused.value || focusedWithin.value || expanded.value) && !isDisabledOrReadonly.value,
         'floating': floating.value,
         'badges': props.badges,
     })),
@@ -308,12 +308,12 @@ function onInput(option: T) {
             }
             return item !== optionValue
         })
-    }
-    else if (!isSelected && isSelectable.value) {
+    } else if (!isSelected && isSelectable.value) {
         if (!props.multiple) {
-            localModelValue.value = []
+            localModelValue.value = [optionValue]
+        } else {
+            localModelValue.value = [...localModelValue.value, optionValue]
         }
-        localModelValue.value = [...localModelValue.value, optionValue]
     }
     if (!props.multiple && !props.keepOpen) {
         collapse()

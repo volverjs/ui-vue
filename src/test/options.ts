@@ -4,12 +4,10 @@ export function getOptionValue(args: any, index: number) {
         if (args.valueKey) {
             if (typeof args.valueKey === 'function') {
                 value = args.valueKey(value)
-            }
-            else if (typeof value === 'object') {
+            } else if (typeof value === 'object') {
                 value = value[args.valueKey]
             }
-        }
-        else if (typeof value === 'object') {
+        } else if (typeof value === 'object') {
             value = value.value
         }
         return value

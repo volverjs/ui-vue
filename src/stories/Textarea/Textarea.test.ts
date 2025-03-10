@@ -20,8 +20,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
                 await expect(value.innerHTML).toEqual(
                     inputValue.slice(0, args.maxlength),
                 )
-            }
-            else {
+            } else {
                 await expect(value.innerHTML).toEqual(inputValue)
             }
         }

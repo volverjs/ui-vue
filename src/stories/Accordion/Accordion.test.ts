@@ -32,8 +32,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         div.innerHTML = args.summary
         expect(summary).toHaveClass('vv-accordion__summary')
         expect(summary.textContent).toEqual(div.textContent)
-    }
-    else if (args.title) {
+    } else if (args.title) {
         expect(summary).toHaveClass('vv-accordion__summary')
         expect(summary.textContent).toEqual(args.title)
     }
@@ -58,8 +57,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
             const div = document.createElement('div')
             div.innerHTML = args.default
             expect(content.textContent).toEqual(div.textContent)
-        }
-        else if (args.content) {
+        } else if (args.content) {
             expect(content.textContent).toEqual(args.content)
         }
     }

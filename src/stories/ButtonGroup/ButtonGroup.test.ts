@@ -22,8 +22,7 @@ export async function defaultTest(
     // check disabled
     if (args.disabled) {
         await expect(firstButton).not.toBeClicked()
-    }
-    else {
+    } else {
         await expect(firstButton).toBeClicked()
     }
 

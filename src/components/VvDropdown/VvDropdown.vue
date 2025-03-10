@@ -87,18 +87,15 @@ const middleware = computed(() => {
     if (props.autoPlacement) {
         if (typeof props.autoPlacement === 'boolean') {
             toReturn.push(autoPlacement())
-        }
-        else {
+        } else {
             toReturn.push(
                 autoPlacement(props.autoPlacement as AutoPlacementOptions),
             )
         }
-    }
-    else if (props.flip) {
+    } else if (props.flip) {
         if (typeof props.flip === 'boolean') {
             toReturn.push(flip({ fallbackStrategy: 'initialPlacement' }))
-        }
-        else {
+        } else {
             toReturn.push(flip(props.flip as FlipOptions))
         }
     }
@@ -106,8 +103,7 @@ const middleware = computed(() => {
     if (props.shift) {
         if (typeof props.shift === 'boolean') {
             toReturn.push(shift())
-        }
-        else {
+        } else {
             toReturn.push(shift(props.shift as ShiftOptions))
         }
     }
@@ -129,8 +125,7 @@ const middleware = computed(() => {
                     apply,
                 }),
             )
-        }
-        else {
+        } else {
             toReturn.push(
                 size({
                     ...(props.size as SizeOptions),
@@ -145,8 +140,7 @@ const middleware = computed(() => {
 
         if (['string', 'number'].includes(typeof props.offset)) {
             toReturn.push(offset(Number(props.offset)))
-        }
-        else {
+        } else {
             toReturn.push(offset(props.offset as OffsetOptions))
         }
     }
@@ -344,8 +338,7 @@ function focusNext() {
                 focusableElements[activeElementIndex + 1].focus({
                     preventScroll: true,
                 })
-            }
-            else {
+            } else {
                 focusableElements[0].focus({
                     preventScroll: true,
                 })
@@ -369,8 +362,7 @@ function focusPrev() {
                 focusableElements[activeElementIndex - 1].focus({
                     preventScroll: true,
                 })
-            }
-            else {
+            } else {
                 focusableElements[focusableElements.length - 1].focus({
                     preventScroll: true,
                 })

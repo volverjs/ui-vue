@@ -19,6 +19,7 @@ export default antfu({
     rules: {
         'style/no-tabs': 'off',
         'style/no-mixed-spaces-and-tabs': 'off',
+        'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],
     },
     extends: [
         'src/.eslintrc-auto-import.json',

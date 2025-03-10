@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
-import glob from 'glob'
+import { globSync } from 'glob'
 import { build } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
@@ -155,7 +155,7 @@ build({
 })
 
 // build single directives
-const directives = glob.sync('./src/directives/v-!(_*).ts')
+const directives = globSync('./src/directives/v-!(_*).ts')
 const directivesSources = directives.map((entry) => {
     const exportName = entry.replace(/.\/src\/|.ts|\/index/g, '')
     const splittedExportName = exportName.split('/')
@@ -233,7 +233,7 @@ build({
 })
 
 // build single components
-const components = glob.sync('./src/components/**/!(_*).vue')
+const components = globSync('./src/components/**/!(_*).vue')
 const componentsSources = components.map((entry) => {
     const exportName = entry.replace(/.\/src\/|.vue|\/index/g, '')
     const splittedExportName = exportName.split('/')
