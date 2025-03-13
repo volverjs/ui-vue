@@ -26,6 +26,9 @@ const emit = defineEmits(VvInputTextEvents)
 
 const slots = useSlots()
 
+// inject plugin
+const volver = useVolver()
+
 // props merged with volver defaults (now only for labels)
 const propsDefaults = useDefaults<typeof VvInputTextProps>(
     'VvInputText',
@@ -48,7 +51,6 @@ const {
     minlength,
     modelValue,
     step,
-    storageKey,
     storageType,
     type,
     valid,
@@ -399,6 +401,7 @@ const isInvalid = computed(() => {
 })
 
 // suggestions
+const storageKey = computed(() => props.storageKey ?? (volver?.experimentalFeatures.forceInputSuggestions ? props.name : undefined))
 const suggestions = usePersistence<Set<string>>(
     storageKey,
     storageType,

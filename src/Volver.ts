@@ -66,6 +66,13 @@ export function useDefaultProps(
 
 export type DefaultOptions = Record<string, Record<string, unknown>>
 
+export type VolverExperimentalFeatures = {
+    /**
+     * Force suggestions in `VvInputText` and `VvTextarea` component
+     */
+    forceInputSuggestions?: boolean
+}
+
 export type VolverOptions = {
     /**
      * If true set "fetchOptions" with credentials: 'include'
@@ -106,6 +113,10 @@ export type VolverOptions = {
      * Default props for components
      */
     defaults?: DefaultOptions
+    /**
+     * Experimental features
+     */
+    experimentalFeatures?: VolverExperimentalFeatures
 }
 
 export interface VolverInterface {
@@ -164,6 +175,8 @@ export class Volver implements VolverInterface {
     private _iconsCollections: IconifyJSON[] = []
     private _iconsProvider = DEFAULT_ICONIFY_PROVIDER
     private _nuxt = false
+    private _experimentalFeatures: VolverExperimentalFeatures = {}
+
     defaults: Ref<DefaultOptions> = ref({})
 
     constructor({
@@ -173,6 +186,7 @@ export class Volver implements VolverInterface {
 		nuxt,
 		iconsCollections,
 		defaults,
+        experimentalFeatures,
 	}: VolverOptions = {}) {
         // fetch options
         if (fetchOptions) {
@@ -199,21 +213,30 @@ export class Volver implements VolverInterface {
                 this.addCollection(iconsCollection, this._iconsProvider)
             })
         }
+        // set defaults
         if (defaults) {
             this.defaults.value = defaults
         }
+        // experimental features
+        if (experimentalFeatures) {
+            this._experimentalFeatures = experimentalFeatures
+        }
     }
 
-    get nuxt(): boolean {
+    get nuxt() {
         return this._nuxt
     }
 
-    get iconsProvider(): string {
+    get iconsProvider() {
         return this._iconsProvider
     }
 
-    get iconsCollections(): IconifyJSON[] {
+    get iconsCollections() {
         return this._iconsCollections
+    }
+
+    get experimentalFeatures() {
+        return this._experimentalFeatures
     }
 
     addCollection(
