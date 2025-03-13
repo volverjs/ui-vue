@@ -13,6 +13,9 @@ const emit = defineEmits(VvTextareaEvents)
 
 const slots = useSlots()
 
+// inject plugin
+const volver = useVolver()
+
 // props merged with volver defaults (now only for labels)
 const propsDefaults = useDefaults<typeof VvTextareaProps>(
     'VvTextarea',
@@ -42,7 +45,6 @@ const {
     debounce,
     minlength,
     maxlength,
-    storageKey,
     storageType,
 } = toRefs(props)
 const hasId = useUniqueId(id)
@@ -126,6 +128,7 @@ const isInvalid = computed(() => {
 })
 
 // suggestions
+const storageKey = computed(() => props.storageKey ?? (volver?.experimentalFeatures.forceInputSuggestions ? props.name : undefined))
 const suggestions = usePersistence<Set<string>>(
     storageKey,
     storageType,
