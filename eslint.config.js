@@ -17,6 +17,7 @@ export default antfu({
         semi: false,
     },
     rules: {
+        'vue/custom-event-name-casing': 'off',
         'style/no-tabs': 'off',
         'style/no-mixed-spaces-and-tabs': 'off',
         'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],

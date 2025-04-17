@@ -334,6 +334,11 @@
     "getIsoWeekFromDate": true,
     "getInputValueFromDate": true,
     "isDateIsoString": true,
-    "getDateFromInputValue": true
+    "getDateFromInputValue": true,
+    "createRef": true,
+    "onElementRemoval": true,
+    "useCountdown": true,
+    "usePreferredReducedTransparency": true,
+    "useSSRWidth": true
   }
 }

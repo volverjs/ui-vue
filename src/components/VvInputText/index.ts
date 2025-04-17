@@ -32,6 +32,8 @@ export const VvInputTextEvents = [
     'complete:typed',
     'complete:masked',
     'complete:unmasked',
+    'suggestion:selected',
+    'suggestion:removed',
     'focus',
     'blur',
     'keyup',

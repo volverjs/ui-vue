@@ -158,9 +158,11 @@ const hasSuggestions = computed(
 function onSuggestionSelect(suggestion: string) {
     localModelValue.value = suggestion
     suggestionsDropdownEl.value?.hide()
+    emit('suggestion:selected', suggestion)
 }
 function onSuggestionRemove(suggestion: string) {
     suggestions.value?.delete(suggestion)
+    emit('suggestion:removed', suggestion)
 }
 
 // hint
