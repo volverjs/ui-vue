@@ -14,7 +14,7 @@ export const SPELLCHECK = {
     default: 'default',
 }
 
-export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
+export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur', 'keyup', 'suggestion:selected', 'suggestion:removed']
 
 export const VvTextareaProps = {
     ...InputTextareaProps,
