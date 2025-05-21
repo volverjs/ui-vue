@@ -22,12 +22,13 @@ import {
 export type VvComboboxEvents = {
     'update:modelValue': [any]
     'update:search': [string]
+    'focus': [MaybeElement]
+    'blur': [MaybeElement]
+    'clear': []
     /**
      * @deprecated use update:search instead
      */
     'change:search': [string]
-    'focus': [MaybeElement]
-    'blur': [MaybeElement]
 }
 
 export const VvComboboxProps = {
@@ -202,6 +203,13 @@ export const VvComboboxProps = {
     focusOnHover: {
         type: Boolean,
         default: true,
+    },
+    /**
+     * Show clear button
+     */
+    clearable: {
+        type: Boolean,
+        default: false,
     },
 }
 

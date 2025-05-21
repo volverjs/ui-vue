@@ -12,6 +12,7 @@ import VvDropdown from '../VvDropdown/VvDropdown.vue'
 import VvDropdownOptgroup from '../VvDropdown/VvDropdownOptgroup.vue'
 import VvDropdownOption from '../VvDropdown/VvDropdownOption.vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
+import VvInputClearAction from '../VvInputText/VvInputClearAction'
 import VvSelect from '../VvSelect/VvSelect.vue'
 
 // props, emit and slots
@@ -74,7 +75,7 @@ const debouncedSearchText = refDebounced(
 watch(debouncedSearchText, () => {
     emit('update:search', debouncedSearchText.value)
     // DEPRECATED: Must be removed in the future
-    // eslint-disable-next-line vue/custom-event-name-casing
+
     emit('change:search', debouncedSearchText.value)
 })
 
@@ -321,6 +322,15 @@ function onInput(option: T) {
 }
 
 /**
+ * Function triggered on clear button click
+ */
+function onClear() {
+    localModelValue.value = []
+    emit('update:search', '')
+    emit('clear')
+}
+
+/**
  * Auto select the first option if autoOpen is enabled
  */
 watch(
@@ -530,9 +540,13 @@ export default {
                             class="vv-select__icon vv-select__icon-after"
                         />
                     </div>
-                    <div v-if="$slots.after" class="vv-select__input-after">
+                    <div v-if="$slots.after || isUnselectable" class="vv-select__input-after">
                         <!-- @slot Slot after input -->
-                        <slot name="after" v-bind="slotProps" />
+                        <slot name="after" v-bind="slotProps">
+                            <VvInputClearAction
+                                @click="onClear"
+                            />
+                        </slot>
                     </div>
                 </template>
                 <template #items>
