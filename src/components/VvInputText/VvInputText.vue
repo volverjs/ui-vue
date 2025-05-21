@@ -488,7 +488,8 @@ const hasAttrs = computed(() => {
         'aria-errormessage': hasInvalidLabelOrSlot.value
             ? hasHintId.value
             : undefined,
-    }
+        'inputMode': props.inputMode,
+    } as InputHTMLAttributes
     if (
         type === INPUT_TYPES.DATE
         || type === INPUT_TYPES.MONTH

@@ -213,6 +213,15 @@ export const VvInputTextProps = {
         type: Number,
         default: 5,
     },
+    /**
+     * The input mode to use for the input
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode
+     */
+    inputMode: {
+        type: String,
+        default: 'text',
+    },
+
 }
 
 export type VvInputTextPropsTypes = ExtractPropTypes<typeof VvInputTextProps>
