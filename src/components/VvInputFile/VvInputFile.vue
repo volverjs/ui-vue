@@ -5,6 +5,7 @@ import { useVModel } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import Sortable from 'vuedraggable'
 import { VvInputFileProps } from '.'
+import { filterFileList } from '../../utils/FileUtilities'
 import HintSlotFactory from '../common/HintSlot'
 import VvButton from '../VvButton/VvButton.vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
@@ -135,12 +136,15 @@ function onChange() {
 }
 
 function addFiles(uploadedFiles: FileList) {
+    // Filter files based on the accept prop
+    const filteredFiles = filterFileList(uploadedFiles, props.accept)
+
     if (!props.multiple) {
         if (Array.isArray(localModelValue.value)) {
-            localModelValue.value = [...uploadedFiles]
+            localModelValue.value = filteredFiles
             return
         }
-        localModelValue.value = uploadedFiles[0]
+        localModelValue.value = filteredFiles[0]
         return
     }
     let toReturn: (File | UploadedFile)[] = []
@@ -152,7 +156,7 @@ function addFiles(uploadedFiles: FileList) {
                 ? [...localModelValue.value]
                 : toReturn
     }
-    for (const file of uploadedFiles) {
+    for (const file of filteredFiles) {
         if (hasMax.value && toReturn.length >= hasMax.value) {
             break
         }

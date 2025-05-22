@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import type { VvIconProps } from '@/components/VvIcon'
 import type {
     AutoPlacementOptions,
@@ -8,7 +9,6 @@ import type {
 } from '@/types/floating-ui'
 import type { Option } from '@/types/generic'
 import type { NavItem } from '@/types/nav'
-import type { PropType } from 'vue'
 import {
     ActionTag,
     ButtonType,
@@ -227,7 +227,7 @@ export const DebounceProps = {
 export const IconProps = {
     /**
      * VvIcon name or props
-     * @see VVIcon
+     * @see VvIcon
      */
     icon: {
         type: [String, Object] as PropType<string | VvIconProps>,

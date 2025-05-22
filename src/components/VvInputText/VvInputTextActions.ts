@@ -1,10 +1,10 @@
 import type { Component } from 'vue'
 import type { VvInputTextPropsTypes } from '.'
 import { INPUT_TYPES } from '.'
+import VvInputClearAction from '../common/VvInputClearAction'
+import VvInputPasswordAction from '../common/VvInputPasswordAction'
+import VvInputStepAction from '../common/VvInputStepAction'
 import VvIcon from '../VvIcon/VvIcon.vue'
-import VvInputClearAction from '../VvInputText/VvInputClearAction'
-import VvInputPasswordAction from '../VvInputText/VvInputPasswordAction'
-import VvInputStepAction from '../VvInputText/VvInputStepAction'
 
 export default function VvInputTextActionsFactory(
     type: typeof INPUT_TYPES[keyof typeof INPUT_TYPES],

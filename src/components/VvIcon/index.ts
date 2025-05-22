@@ -1,4 +1,4 @@
-import type { IconifyIconOnLoad, IconifyRenderMode } from '@iconify/vue'
+import type { IconifyIcon, IconifyRenderMode } from '@iconify/vue'
 
 export const ACTION_ICONS = {
     showPassword: 'eye-on',
@@ -73,7 +73,7 @@ export type VvIconProps = {
     /**
      * A callback that is called when icon data has been loaded
      */
-    onLoad?: IconifyIconOnLoad
+    onLoad?: (icon: IconifyIcon) => void
     /**
      * SVG icon string
      */

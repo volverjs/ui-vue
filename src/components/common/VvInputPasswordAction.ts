@@ -7,6 +7,10 @@ export default defineComponent({
         VvIcon,
     },
     props: {
+        inputType: {
+            type: String as PropType<'input-text'>,
+            default: 'input-text',
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -55,14 +59,14 @@ export default defineComponent({
         const icon = this.hasIcon
             ? h(VvIcon, {
                     ...this.hasIcon,
-                    class: 'vv-input-text__icon',
+                    class: `vv-${this.inputType}__icon`,
                 })
             : undefined
         return h(
             'button',
             {
                 disabled: this.disabled,
-                class: 'vv-input-text__action',
+                class: `vv-${this.inputType}__action`,
                 ariaLabel: this.active ? this.labelHide : this.labelShow,
                 type: 'button',
                 onClick: this.onClick,

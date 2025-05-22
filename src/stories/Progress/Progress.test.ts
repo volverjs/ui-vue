@@ -1,6 +1,6 @@
 import type { PlayAttributes } from '@/test/types'
-import { expect } from '@/test/expect'
 import { within } from '@storybook/test'
+import { expect } from '@/test/expect'
 
 export async function defaultTest({ canvasElement }: PlayAttributes) {
     const progress = await within(canvasElement).findByRole('progressbar')

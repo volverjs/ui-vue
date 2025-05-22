@@ -4,6 +4,7 @@ import type { VvSelectEmits } from '.'
 import type { Option } from '../../types/generic'
 import { useVvSelectProps } from '.'
 import HintSlotFactory from '../common/HintSlot'
+import VvInputClearAction from '../common/VvInputClearAction'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 // props, emit and slots
@@ -88,6 +89,13 @@ const isDirty = computed(() => {
     return localModelValue.value !== undefined && localModelValue.value !== null
 })
 
+const isUnselectable = computed(() => {
+    if (isDisabledOrReadonly.value) {
+        return false
+    }
+    return props.unselectable
+})
+
 // visibility
 const isVisible = useElementVisibility(selectEl)
 watch(isVisible, (newValue) => {
@@ -150,6 +158,18 @@ watch(
     { immediate: true },
 )
 
+/**
+ * Function triggered on clear button click
+ */
+function onClear() {
+    if (Array.isArray(localModelValue.value)) {
+        localModelValue.value = []
+    } else {
+        localModelValue.value = undefined
+    }
+    emit('clear')
+}
+
 // attrs
 const hasAttrs: SelectHTMLAttributes = computed(() => {
     return {
@@ -194,56 +214,36 @@ export default {
                 <slot name="before" v-bind="slotProps" />
             </div>
             <div class="vv-select__inner">
-                <VvIcon
-                    v-if="hasIconBefore"
-                    v-bind="hasIconBefore"
-                    class="vv-select__icon"
-                />
-                <select
-                    :id="hasId"
-                    ref="selectEl"
-                    v-bind="hasAttrs"
-                    v-model="localModelValue"
-                >
-                    <option
-                        v-if="placeholder"
-                        :value="undefined"
-                        :disabled="!unselectable"
-                        :hidden="!unselectable"
-                    >
+                <VvIcon v-if="hasIconBefore" v-bind="hasIconBefore" class="vv-select__icon" />
+                <select :id="hasId" ref="selectEl" v-bind="hasAttrs" v-model="localModelValue">
+                    <option v-if="placeholder" :value="undefined" :disabled="!isUnselectable" :hidden="!isUnselectable">
                         {{ placeholder }}
                     </option>
                     <template v-for="(option, index) in options">
                         <option
-                            v-if="!isGroup(option)"
-                            :key="index"
-                            :disabled="isOptionDisabled(option)"
+                            v-if="!isGroup(option)" :key="index" :disabled="isOptionDisabled(option)"
                             :value="getOptionValue(option)"
                         >
                             {{ getOptionLabel(option) }}
                         </option>
                         <optgroup
-                            v-else
-                            :key="`group-${index}`"
-                            :disabled="isOptionDisabled(option)"
+                            v-else :key="`group-${index}`" :disabled="isOptionDisabled(option)"
                             :label="getOptionLabel(option)"
                         >
                             <option
-                                v-for="(item, i) in getOptionGrouped(option)"
-                                :key="`group-${index}-item-${i}`"
-                                :disabled="isOptionDisabled(item)"
-                                :value="getOptionValue(item)"
+                                v-for="(item, i) in getOptionGrouped(option)" :key="`group-${index}-item-${i}`"
+                                :disabled="isOptionDisabled(item)" :value="getOptionValue(item)"
                             >
                                 {{ getOptionLabel(item) }}
                             </option>
                         </optgroup>
                     </template>
                 </select>
-                <VvIcon
-                    v-if="hasIconAfter"
-                    v-bind="hasIconAfter"
-                    class="vv-select__icon vv-select__icon-after"
+                <VvInputClearAction
+                    v-if="isUnselectable" input-type="select" :label="labelClear" :icon="iconClear"
+                    @clear="onClear"
                 />
+                <VvIcon v-if="hasIconAfter" v-bind="hasIconAfter" class="vv-select__icon vv-select__icon-after" />
             </div>
             <div v-if="$slots.after" class="vv-select__input-after">
                 <!-- @slot Slot after input -->

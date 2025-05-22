@@ -1,5 +1,5 @@
-import type { VvButton } from '@/components'
 import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { VvButton } from '@/components'
 import normal from '@/assets/icons/normal.json'
 import {
     DefaultSlotArgTypes,

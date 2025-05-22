@@ -92,7 +92,7 @@ export const VvInputTextProps = {
     multiple: Boolean,
     /**
      * VvIcon name for show password button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconShowPassword: {
         type: [String, Object] as PropType<string | VvIconProps>,
@@ -100,7 +100,7 @@ export const VvInputTextProps = {
     },
     /**
      * VvIcon name for hide password button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconHidePassword: {
         type: [String, Object] as PropType<string | VvIconProps>,
@@ -108,7 +108,7 @@ export const VvInputTextProps = {
     },
     /**
      * VvIcon name for clear button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconClear: {
         type: [String, Object] as PropType<string | VvIconProps>,
@@ -116,7 +116,7 @@ export const VvInputTextProps = {
     },
     /**
      * VvIcon name for remove suggestion button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconRemoveSuggestion: {
         type: [String, Object] as PropType<string | VvIconProps>,
@@ -213,6 +213,15 @@ export const VvInputTextProps = {
         type: Number,
         default: 5,
     },
+    /**
+     * The input mode to use for the input
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode
+     */
+    inputMode: {
+        type: String,
+        default: 'text',
+    },
+
 }
 
 export type VvInputTextPropsTypes = ExtractPropTypes<typeof VvInputTextProps>

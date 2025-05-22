@@ -1,5 +1,5 @@
-import type { VvCombobox } from '@/components'
 import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { VvCombobox } from '@/components'
 import { VvComboboxProps } from '@/components/VvCombobox'
 import {
     DisabledArgTypes,
