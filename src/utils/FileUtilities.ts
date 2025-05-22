@@ -46,10 +46,9 @@ export function validateFileList(fileList: FileList, acceptValue?: string): bool
     const { mimeTypes, extensions, wildcards } = acceptedMimeTypes(acceptValue)
 
     // Check each file
-    for (let i = 0; i < fileList.length; i++) {
-        const file: File = fileList[i]
-        const fileType: string = file.type.toLowerCase()
-        const fileExtension: string = `.${file.name.split('.').pop()?.toLowerCase()}` || ''
+    for (const file of fileList) {
+        const fileType = file.type.toLowerCase()
+        const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`
 
         // Check MIME type
         const mimeMatches: boolean = mimeTypes.includes(fileType)
@@ -88,7 +87,7 @@ export function filterFileList(fileList: FileList, acceptValue?: string): File[]
     // Filter files based on the criteria
     return Array.from(fileList).filter((file) => {
         const fileType: string = file.type.toLowerCase()
-        const fileExtension: string = `.${file.name.split('.').pop()?.toLowerCase()}` || ''
+        const fileExtension: string = `.${file.name.split('.').pop()?.toLowerCase()}`
 
         // Check MIME type
         const mimeMatches: boolean = mimeTypes.includes(fileType)
