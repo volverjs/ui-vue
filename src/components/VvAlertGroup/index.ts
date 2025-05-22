@@ -1,5 +1,5 @@
-import type { Alert } from '@/types'
 import type { ExtractPropTypes } from 'vue'
+import type { Alert } from '@/types'
 import { ModifiersProps } from '@/props'
 
 export const VvAlertGroupProps = {

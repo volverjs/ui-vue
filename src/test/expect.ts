@@ -1,8 +1,8 @@
-import { sleep } from '@/test/sleep'
+import { expect, userEvent } from '@storybook/test'
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable ts/no-namespace */
-import { expect, userEvent } from '@storybook/test'
 import { axe } from 'jest-axe'
+import { sleep } from '@/test/sleep'
 
 declare global {
     namespace jest {

@@ -1,5 +1,5 @@
-import type { UploadedFile } from '@/types'
 import type { VvIconProps } from '../VvIcon'
+import type { UploadedFile } from '@/types'
 import {
     DisabledProps,
     HintProps,
@@ -100,7 +100,7 @@ export const VvInputFileProps = {
     },
     /**
      * VvIcon name for add button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconAdd: {
         type: [String, Object] as PropType<string | VvIconProps>,
@@ -115,7 +115,7 @@ export const VvInputFileProps = {
     },
     /**
      * VvIcon name for replace button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconReplace: {
         type: [String, Object] as PropType<string | VvIconProps>,
@@ -130,7 +130,7 @@ export const VvInputFileProps = {
     },
     /**
      * VvIcon name for download button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconDownload: {
         type: [String, Object] as PropType<string | VvIconProps>,

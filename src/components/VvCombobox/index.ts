@@ -1,6 +1,7 @@
 import type { MaybeElement } from '@vueuse/core'
 import type { PropType } from 'vue'
 import type { Option } from '../../types/generic'
+import type { VvIconProps } from '../VvIcon'
 import {
     DisabledProps,
     DropdownProps,
@@ -18,6 +19,7 @@ import {
     TabindexProps,
     ValidProps,
 } from '../../props'
+import { ACTION_ICONS } from '../VvIcon'
 
 export type VvComboboxEvents = {
     'update:modelValue': [any]
@@ -205,11 +207,19 @@ export const VvComboboxProps = {
         default: true,
     },
     /**
-     * Show clear button
+     * VvIcon name for clear button
+     * @see VvIcon
      */
-    clearable: {
-        type: Boolean,
-        default: false,
+    iconClear: {
+        type: [String, Object] as PropType<string | VvIconProps>,
+        default: ACTION_ICONS.clear,
+    },
+    /**
+     * Label for clear button
+     */
+    labelClear: {
+        type: String,
+        default: 'Clear',
     },
 }
 

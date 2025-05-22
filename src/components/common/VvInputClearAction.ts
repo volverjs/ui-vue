@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import type { VvIconProps } from '../VvIcon'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
@@ -6,6 +7,10 @@ export default defineComponent({
         VvIcon,
     },
     props: {
+        inputType: {
+            type: String as PropType<'input-text' | 'select'>,
+            default: 'input-text',
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -37,7 +42,7 @@ export default defineComponent({
         const icon = this.hasIcon
             ? h(VvIcon, {
                     ...this.hasIcon,
-                    class: 'vv-input-text__icon',
+                    class: `vv-${this.inputType}__icon`,
                 })
             : undefined
 
@@ -45,7 +50,7 @@ export default defineComponent({
             'button',
             {
                 disabled: this.disabled,
-                class: 'vv-input-text__action',
+                class: `vv-${this.inputType}__action`,
                 ariaLabel: this.label,
                 type: 'button',
                 onClick: this.onClick,

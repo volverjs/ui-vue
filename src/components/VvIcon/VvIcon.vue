@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { VvIconProps } from '.'
-import { addIcon, Icon, iconExists } from '@iconify/vue'
+import { addIcon, Icon, iconLoaded } from '@iconify/vue'
 import { VvIconPropsDefaults } from '.'
 
 // props
@@ -35,7 +35,7 @@ const icon = computed(() => {
     const iconName = `@${provider.value}:${props.prefix}:${name}`
 
     // Check if icon with prefix and provider exist
-    if (iconExists(iconName)) {
+    if (iconLoaded(iconName)) {
         return iconName
     }
 
@@ -43,7 +43,7 @@ const icon = computed(() => {
     const iconsCollection = volver?.iconsCollections.find(
         (iconsCollection) => {
             const icon = `@${provider.value}:${iconsCollection.prefix}:${name}`
-            return iconExists(icon)
+            return iconLoaded(icon)
         },
     )
     if (iconsCollection) {
@@ -92,7 +92,7 @@ function addIconFromSvg(svg: string) {
 if (volver) {
     if (
         props.src
-        && !iconExists(`@${provider.value}:${props.prefix}:${props.name}`)
+        && !iconLoaded(`@${provider.value}:${props.prefix}:${props.name}`)
     ) {
         show.value = false
         volver
@@ -133,8 +133,8 @@ export default {
             flip,
             rotate: hasRotate,
             color,
-            onLoad,
             icon,
         }"
+        @load="onLoad"
     />
 </template>

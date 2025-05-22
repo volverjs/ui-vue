@@ -5,6 +5,10 @@ export default defineComponent({
         VvIcon,
     },
     props: {
+        inputType: {
+            type: String as PropType<'input-text'>,
+            default: 'input-text',
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -37,8 +41,9 @@ export default defineComponent({
     render() {
         return h('button', {
             class: [
-                'vv-input-text__action vv-input-text__action-chevron',
-                this.isUp && 'vv-input-text__action-chevron-up',
+                `vv-${this.inputType}__action`,
+                `vv-${this.inputType}__action-chevron`,
+                this.isUp ? `vv-${this.inputType}__action-chevron-up` : undefined,
             ],
             disabled: this.disabled,
             ariaLabel: this.label,

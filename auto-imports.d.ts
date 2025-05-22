@@ -38,6 +38,7 @@ declare global {
   const equals: typeof import('./src/utils/ObjectUtilities')['equals']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const filterArray: typeof import('./src/utils/ObjectUtilities')['filterArray']
+  const filterFileList: typeof import('./src/utils/FileUtilities')['filterFileList']
   const findIndexInList: typeof import('./src/utils/ObjectUtilities')['findIndexInList']
   const findScrollContainer: typeof import('./src/utils/DomUtilities')['findScrollContainer']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
@@ -316,6 +317,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
+  const validateFileList: typeof import('./src/utils/FileUtilities')['validateFileList']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -336,6 +338,6 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
 }

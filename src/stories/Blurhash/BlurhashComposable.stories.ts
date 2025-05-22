@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { ref } from 'vue'
 import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 import { useBlurhash } from '@/composables/useBlurhash'
-import { ref } from 'vue'
 
 const meta: Meta = {
     title: 'Composables/useBlurhash',

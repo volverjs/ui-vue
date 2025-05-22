@@ -1,5 +1,5 @@
-import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import type { Directive, DirectiveBinding } from 'vue'
+import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import { useDropdownContextmenu } from '@/composables'
 
 const contextmenu: Directive = {

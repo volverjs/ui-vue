@@ -46,7 +46,7 @@ export const VvTextareaProps = {
     spellcheck: { type: [Boolean, String], default: SPELLCHECK.default },
     /**
      * VvIcon name for remove suggestion button
-     * @see VVIcon
+     * @see VvIcon
      */
     iconRemoveSuggestion: {
         type: [String, Object] as PropType<string | VvIconProps>,

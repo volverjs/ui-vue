@@ -1,5 +1,6 @@
 import type { MaybeElement } from '@vueuse/core'
 import type { Option } from '../../types/generic'
+import type { VvIconProps } from '../VvIcon'
 import {
     AutocompleteProps,
     AutofocusProps,
@@ -18,11 +19,13 @@ import {
     UnselectableProps,
     ValidProps,
 } from '../../props'
+import { ACTION_ICONS } from '../VvIcon'
 
 export type VvSelectEmits = {
     'update:modelValue': [any]
     'focus': [MaybeElement]
     'blur': [MaybeElement]
+    'clear': []
 }
 
 export const VvSelectProps = {
@@ -79,6 +82,21 @@ export const VvSelectProps = {
      * Select placeholder
      */
     placeholder: String,
+    /**
+     * VvIcon name for clear button
+     * @see VvIcon
+     */
+    iconClear: {
+        type: [String, Object] as PropType<string | VvIconProps>,
+        default: ACTION_ICONS.clear,
+    },
+    /**
+     * Label for clear button
+     */
+    labelClear: {
+        type: String,
+        default: 'Clear',
+    },
 }
 
 // WARNING: This is a provisiaonal implementation, it may change in the future

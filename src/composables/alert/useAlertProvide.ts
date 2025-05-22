@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
-import { INJECTION_KEY_ALERT_GROUP } from '@/constants'
 import mitt from 'mitt'
+import { INJECTION_KEY_ALERT_GROUP } from '@/constants'
 
 /**
  * Share the alert group name with all its children.

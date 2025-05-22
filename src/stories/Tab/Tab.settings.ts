@@ -1,5 +1,5 @@
-import type { VvTab } from '@/components'
 import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { VvTab } from '@/components'
 import { VvTabProps } from '@/components/VvTab'
 
 export const defaultArgs: Meta<typeof VvTab>['args'] = {

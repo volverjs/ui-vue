@@ -1,6 +1,6 @@
 import type { PlayAttributes } from '@/test/types'
-import { expect } from '@/test/expect'
 import { within } from '@storybook/test'
+import { expect } from '@/test/expect'
 
 export async function defaulTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('card')
