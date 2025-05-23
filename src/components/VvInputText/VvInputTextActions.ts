@@ -1,4 +1,4 @@
-import type { Component } from 'vue'
+import type { Component, Ref } from 'vue'
 import type { VvInputTextPropsTypes } from '.'
 import { INPUT_TYPES } from '.'
 import VvInputClearAction from '../common/VvInputClearAction'
