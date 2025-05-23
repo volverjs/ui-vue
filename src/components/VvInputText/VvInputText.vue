@@ -557,14 +557,17 @@ const {
 const PasswordInputActions = VvInputTextActionsFactory(
     INPUT_TYPES.PASSWORD,
     props,
+    isDirty,
 )
 const NumberInputActions = VvInputTextActionsFactory(
     INPUT_TYPES.NUMBER,
     props,
+    isDirty,
 )
 const SearchInputActions = VvInputTextActionsFactory(
     INPUT_TYPES.SEARCH,
     props,
+    isDirty,
 )
 
 // auto-width

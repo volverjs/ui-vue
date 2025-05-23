@@ -239,12 +239,16 @@ export default {
                         </optgroup>
                     </template>
                 </select>
-                <VvInputClearAction
-                    v-if="isUnselectable" input-type="select" :label="labelClear" :icon="iconClear"
-                    @clear="onClear"
-                />
                 <VvIcon v-if="hasIconAfter" v-bind="hasIconAfter" class="vv-select__icon vv-select__icon-after" />
             </div>
+            <VvInputClearAction
+                v-if="isUnselectable"
+                input-type="select"
+                :label="labelClear"
+                :icon="iconClear"
+                :disabled="!isDirty"
+                @clear="onClear"
+            />
             <div v-if="$slots.after" class="vv-select__input-after">
                 <!-- @slot Slot after input -->
                 <slot name="after" v-bind="slotProps" />
