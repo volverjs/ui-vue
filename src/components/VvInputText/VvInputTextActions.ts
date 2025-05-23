@@ -9,6 +9,7 @@ import VvIcon from '../VvIcon/VvIcon.vue'
 export default function VvInputTextActionsFactory(
     type: typeof INPUT_TYPES[keyof typeof INPUT_TYPES],
     parentProps: VvInputTextPropsTypes,
+    isDirty: Ref<boolean>,
 ): Component {
     return {
         name: 'VvInputTextActions',
@@ -24,6 +25,7 @@ export default function VvInputTextActionsFactory(
             })
 
             return {
+                isDirty,
                 isDisabled,
                 labelStepUp: parentProps.labelStepUp,
                 labelStepDown: parentProps.labelStepDown,
@@ -41,7 +43,7 @@ export default function VvInputTextActionsFactory(
                     const { onClear } = this.$attrs
                     actions = [
                         h(VvInputClearAction, {
-                            disabled: this.isDisabled,
+                            disabled: this.isDisabled || !this.isDirty,
                             label: this.labelClear,
                             onClear,
                         }),
