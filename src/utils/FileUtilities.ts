@@ -38,7 +38,7 @@ function acceptedMimeTypes(acceptValue?: string) {
  */
 export function validateFileList(fileList: FileList, acceptValue?: string): boolean {
     // If there are no restrictions, accept any file
-    if (!acceptValue || acceptValue.trim() === '') {
+    if (!acceptValue || acceptValue.trim() === '' || acceptValue === '*') {
         return true
     }
 
@@ -77,7 +77,7 @@ export function validateFileList(fileList: FileList, acceptValue?: string): bool
  */
 export function filterFileList(fileList: FileList, acceptValue?: string): File[] {
     // If there are no restrictions, return all files
-    if (!acceptValue || acceptValue.trim() === '') {
+    if (!acceptValue || acceptValue.trim() === '' || acceptValue === '*') {
         return Array.from(fileList)
     }
 
