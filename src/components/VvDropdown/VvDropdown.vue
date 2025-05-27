@@ -48,10 +48,10 @@ const maxWidth = ref('auto')
 const maxHeight = ref('auto')
 
 // template elements
-const localReferenceEl = ref<HTMLElement>()
-const floatingEl: Ref = ref()
-const arrowEl = ref<HTMLElement>()
-const listEl = ref<HTMLElement>()
+const localReferenceEl = ref()
+const floatingEl = ref()
+const arrowEl = ref()
+const listEl = ref()
 const referenceEl = computed({
     get: () => props.reference ?? localReferenceEl.value,
     set: (newValue) => {
@@ -244,28 +244,6 @@ function toggle() {
 function init(el: HTMLElement) {
     referenceEl.value = el
 }
-defineExpose({
-    toggle,
-    show,
-    hide,
-    init,
-    customPosition: hasCustomPosition,
-})
-watch(expanded, (newValue) => {
-    if (newValue && props.autofocusFirst) {
-        nextTick(() => {
-            // focus first item
-            const focusableElements = getKeyboardFocusableElements(
-                floatingEl.value,
-            )
-            if (focusableElements.length > 0) {
-                focusableElements[0].focus({
-                    preventScroll: true,
-                })
-            }
-        })
-    }
-})
 onClickOutside(
     floatingEl,
     () => {
@@ -322,6 +300,30 @@ function getKeyboardFocusableElements(element: Element | null) {
             !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'),
     ) as HTMLElement[]
 }
+function focusFirst() {
+    nextTick(() => {
+        const focusableElements = getKeyboardFocusableElements(
+            floatingEl.value,
+        )
+        if (focusableElements.length > 0) {
+            focusableElements[0].focus({
+                preventScroll: true,
+            })
+        }
+    })
+}
+function focusFirstListElement() {
+    nextTick(() => {
+        const focusableElements = getKeyboardFocusableElements(
+            listEl.value,
+        )
+        if (focusableElements.length > 0) {
+            focusableElements[0].focus({
+                preventScroll: true,
+            })
+        }
+    })
+}
 function focusNext() {
     nextTick(() => {
         if (focused.value) {
@@ -370,6 +372,24 @@ function focusPrev() {
         }
     })
 }
+
+watch(expanded, (newValue) => {
+    if (newValue && props.autofocusFirst) {
+        focusFirst()
+    }
+})
+
+defineExpose({
+    toggle,
+    show,
+    hide,
+    init,
+    focusFirst,
+    focusFirstListElement,
+    focusNext,
+    focusPrev,
+    customPosition: hasCustomPosition,
+})
 
 // hover
 const hovered = useElementHover(floatingEl)

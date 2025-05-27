@@ -108,6 +108,15 @@ export const Searchable: Story = {
     },
 }
 
+export const Addable: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        searchable: true,
+        addable: true,
+    },
+}
+
 export const Floating: Story = {
     ...Default,
     args: {

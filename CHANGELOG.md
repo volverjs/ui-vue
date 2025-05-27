@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.10] - 2024-02-14
+## [0.0.10] - 2024-05-27
 
 ### Added
 
@@ -11,12 +11,14 @@ All notable changes to this project will be documented in this file.
 - `VvAction` prop for `current` class;
 - `VvNavItem` and `VvNavSeparator` components;
 - Inner types export;
-- `VvCombobox` event `update:search`;
+- `VvCombobox` events `update:search` and `update:options`;
 - `VvInputText` suggestions;
 - Storage selection for `VvAccordionGroup` persistence;
 - Scoped slot for items in `VvNav` and `VvTab`;
 - added `storageKey` and `storageType` props to `VvTextarea` for suggestions;
-- `VvCombobox` and `VvSelect` prop `autoselectFirst`;
+- `VvCombobox` and `VvSelect` prop `autoselectFirst` to automatically select the first option when the dropdown is opened;
+- `VvCombobox` and `VvSelect` prop `showClearAction` to show a clear action button when there is a value selected;
+- `VvCombobox` new prop `addable` to allow adding new items;
 - `VvInputText` add support for iso date format and date object for type `date`, `datetime-local`, `time` and `month`;
 - `--watch` flag for `generate-icons` script;
 - `--keepColors` flag for `generate-icons` script.

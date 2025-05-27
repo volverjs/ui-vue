@@ -1,9 +1,9 @@
 import type { MaybeElement } from '@vueuse/core'
 import type { Option } from '../../types/generic'
-import type { VvIconProps } from '../VvIcon'
 import {
     AutocompleteProps,
     AutofocusProps,
+    ClearProps,
     DisabledProps,
     FloatingLabelProps,
     HintProps,
@@ -19,7 +19,6 @@ import {
     UnselectableProps,
     ValidProps,
 } from '../../props'
-import { ACTION_ICONS } from '../VvIcon'
 
 export type VvSelectEmits = {
     'update:modelValue': [any]
@@ -45,6 +44,7 @@ export const VvSelectProps = {
     ...FloatingLabelProps,
     ...UnselectableProps,
     ...LabelProps,
+    ...ClearProps,
     /**
      * This Boolean attribute indicates that multiple options can be selected in the list.
      * If it is not specified, then only one option can be selected at a time.
@@ -82,21 +82,6 @@ export const VvSelectProps = {
      * Select placeholder
      */
     placeholder: String,
-    /**
-     * VvIcon name for clear button
-     * @see VvIcon
-     */
-    iconClear: {
-        type: [String, Object] as PropType<string | VvIconProps>,
-        default: ACTION_ICONS.clear,
-    },
-    /**
-     * Label for clear button
-     */
-    labelClear: {
-        type: String,
-        default: 'Clear',
-    },
 }
 
 // WARNING: This is a provisiaonal implementation, it may change in the future

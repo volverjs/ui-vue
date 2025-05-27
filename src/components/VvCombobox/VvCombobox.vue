@@ -215,12 +215,33 @@ const bemCssClasses = useModifiers(
 )
 
 // options
+const addedOptions = ref<Set<string | Option>>(new Set())
 const {
     getOptionLabel,
     getOptionValue,
     getOptionGrouped,
     isOptionDisabled,
 } = useOptions(props)
+const hasOptions = computed(() => {
+    const toReturn = [...props.options, ...addedOptions.value] as T[]
+    for (const localModelValueItem of localModelValue.value) {
+        if (!toReturn.some((option) => {
+            const optionValue = getOptionValue(option)
+            if (typeof optionValue === 'object') {
+                return JSON.stringify(optionValue) === JSON.stringify(localModelValueItem)
+            }
+            return optionValue === localModelValueItem
+        })) {
+            toReturn.push(localModelValueItem)
+        }
+    }
+    return toReturn
+})
+watch(addedOptions, (newValue) => {
+    if (newValue.size > 0) {
+        emit('update:options', hasOptions.value)
+    }
+})
 
 function isOptionDisabledOrNotSelectable(option: T) {
     return isOptionDisabled(option) || (!isSelectable.value && !isOptionSelected(option))
@@ -232,13 +253,13 @@ const filteredOptions = computedAsync(async () => {
         const toReturn = await Promise.resolve(
             propsDefaults.value.searchFunction(
                 debouncedSearchText.value,
-                props.options,
+                hasOptions.value,
             ),
         )
         localLoading.value = false
         return toReturn
     }
-    return props.options?.filter((option) => {
+    return hasOptions.value?.filter((option) => {
         return getOptionLabel(option)
             .toLowerCase()
             .includes(debouncedSearchText.value.toLowerCase().trim())
@@ -247,9 +268,9 @@ const filteredOptions = computedAsync(async () => {
 
 /**
  * Check if an option is selected
- * @param {T} option
+ * @param {string | Option} option
  */
-function isOptionSelected(option: T) {
+function isOptionSelected(option: string | Option): boolean {
     const optionValue = getOptionValue(option)
     if (typeof optionValue === 'object') {
         return localModelValue.value.some((item) => {
@@ -267,7 +288,7 @@ function isOptionSelected(option: T) {
  * Check if is multiple mode, object mode or "string" mode
  */
 const selectedOptions = computed(() => {
-    const options = props.options.reduce<T[]>(
+    const toReturn = hasOptions.value.reduce<T[]>(
         (acc, value) => {
             if (isGroup(value)) {
                 return [...acc, ...getOptionGrouped(value)]
@@ -276,7 +297,7 @@ const selectedOptions = computed(() => {
         },
         [],
     )
-    return options.filter((option) => {
+    return toReturn.filter((option) => {
         return isOptionSelected(option)
     })
 })
@@ -298,7 +319,7 @@ function onClickInput() {
  * Function triggered on option click
  * @param option {T} option value
  */
-function onInput(option: T) {
+function onInput(option: string | Option) {
     const isSelected = isOptionSelected(option)
     const optionValue = getOptionValue(option)
     if (isSelected && isUnselectable.value) {
@@ -333,7 +354,7 @@ function onClear() {
  * Auto select the first option if autoOpen is enabled
  */
 watch(
-    () => props.options,
+    hasOptions,
     (newValue) => {
         if (newValue?.length && props.autoselectFirst && !isDirty.value) {
             onInput(newValue[0])
@@ -410,6 +431,20 @@ onKeyStroke(
     },
     { target: inputEl },
 )
+function onKeyupEnterInputSearch() {
+    if (filteredOptions.value?.length) {
+        if (filteredOptions.value.length === 1) {
+            onInput(filteredOptions.value[0])
+            return
+        }
+        dropdownEl.value?.focusFirstListElement()
+        return
+    }
+    if (propsDefaults.value.addable) {
+        addedOptions.value.add(searchText.value)
+        onInput(searchText.value)
+    }
+}
 </script>
 
 <script lang="ts">
@@ -449,6 +484,7 @@ export default {
                         type="search"
                         class="vv-dropdown__search"
                         :placeholder="propsDefaults.searchPlaceholder"
+                        @keyup.enter="onKeyupEnterInputSearch"
                     >
                 </template>
                 <template #default="{ aria }">
@@ -500,7 +536,7 @@ export default {
                         />
                     </div>
                     <VvInputClearAction
-                        v-if="isUnselectable"
+                        v-if="isUnselectable && propsDefaults.showClearAction"
                         input-type="select"
                         :label="labelClear"
                         :icon="iconClear"
@@ -587,7 +623,7 @@ export default {
                     <VvDropdownOption v-else-if="!disabled" modifiers="inert">
                         <!-- @slot Slot for no results available -->
                         <slot name="no-results">
-                            {{ propsDefaults.noResultsLabel }}
+                            {{ propsDefaults.addable ? propsDefaults.addOptionHintLabel : propsDefaults.noResultsLabel }}
                         </slot>
                     </VvDropdownOption>
                 </template>
