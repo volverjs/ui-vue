@@ -440,9 +440,21 @@ function onKeyupEnterInputSearch() {
         dropdownEl.value?.focusFirstListElement()
         return
     }
+    // add option if addable
     if (propsDefaults.value.addable) {
-        addedOptions.value.add(searchText.value)
-        onInput(searchText.value)
+        const trimmedSearch = searchText.value.trim()
+        if (!trimmedSearch) {
+            return
+        }
+        // check if option with same label already exists
+        const exists = hasOptions.value.some(opt =>
+            getOptionLabel(opt).toLowerCase() === trimmedSearch.toLowerCase(),
+        )
+        if (exists) {
+            return
+        }
+        addedOptions.value.add(trimmedSearch)
+        onInput(trimmedSearch)
     }
 }
 </script>
