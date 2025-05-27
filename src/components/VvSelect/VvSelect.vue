@@ -242,7 +242,7 @@ export default {
                 <VvIcon v-if="hasIconAfter" v-bind="hasIconAfter" class="vv-select__icon vv-select__icon-after" />
             </div>
             <VvInputClearAction
-                v-if="isUnselectable"
+                v-if="isUnselectable && propsDefaults.showClearAction"
                 input-type="select"
                 :label="labelClear"
                 :icon="iconClear"

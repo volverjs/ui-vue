@@ -151,6 +151,17 @@ export const argTypes: ArgTypes = {
             },
         },
     },
+    'addOptionHintLabel': {
+        description: 'Label for add new option hint',
+        control: {
+            type: 'text',
+        },
+        table: {
+            defaultValue: {
+                summary: 'Press enter to add',
+            },
+        },
+    },
     'closeLabel': {
         description: 'Label for close button',
         control: {
@@ -177,6 +188,14 @@ export const argTypes: ArgTypes = {
         description: 'Text that appears when it has no value set.',
         control: {
             type: 'text',
+        },
+    },
+    'addable': {
+        description: 'Enable adding new options',
+        table: {
+            defaultValue: {
+                summary: 'false',
+            },
         },
     },
     'searchable': {

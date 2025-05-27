@@ -9,6 +9,7 @@ import type {
 } from '@/types/floating-ui'
 import type { Option } from '@/types/generic'
 import type { NavItem } from '@/types/nav'
+import { ACTION_ICONS } from '@/components/VvIcon'
 import {
     ActionTag,
     ButtonType,
@@ -133,6 +134,31 @@ export const CurrentProps = {
     current: {
         type: Boolean,
         default: false,
+    },
+}
+
+export const ClearProps = {
+    /**
+     * If true, the clear button will be shown
+     */
+    showClearAction: {
+        type: Boolean,
+        default: false,
+    },
+    /**
+     * VvIcon name for clear button
+     * @see VvIcon
+     */
+    iconClear: {
+        type: [String, Object] as PropType<string | VvIconProps>,
+        default: ACTION_ICONS.clear,
+    },
+    /**
+     * Label for clear button
+     */
+    labelClear: {
+        type: String,
+        default: 'Clear',
     },
 }
 

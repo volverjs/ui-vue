@@ -1,8 +1,8 @@
 import type { MaybeElement } from '@vueuse/core'
 import type { PropType } from 'vue'
 import type { Option } from '../../types/generic'
-import type { VvIconProps } from '../VvIcon'
 import {
+    ClearProps,
     DisabledProps,
     DropdownProps,
     FloatingLabelProps,
@@ -19,11 +19,11 @@ import {
     TabindexProps,
     ValidProps,
 } from '../../props'
-import { ACTION_ICONS } from '../VvIcon'
 
 export type VvComboboxEvents = {
     'update:modelValue': [any]
     'update:search': [string]
+    'update:options': [(Option | string)[]]
     'focus': [MaybeElement]
     'blur': [MaybeElement]
     'clear': []
@@ -49,6 +49,7 @@ export const VvComboboxProps = {
     ...DropdownProps,
     ...LabelProps,
     ...RequiredProps,
+    ...ClearProps,
     /**
      * Dropdown show / hide transition name
      */
@@ -88,6 +89,10 @@ export const VvComboboxProps = {
      */
     deselectHintLabel: { type: String, default: 'Press enter to remove' },
     /**
+     * Label for add new option hint
+     */
+    addOptionHintLabel: { type: String, default: 'Press enter to add' },
+    /**
      * Label close button
      */
     closeLabel: { type: String, default: 'Close' },
@@ -95,6 +100,10 @@ export const VvComboboxProps = {
      * Select input placeholder
      */
     placeholder: String,
+    /**
+     * The options to add new options
+     */
+    addable: Boolean,
     /**
      * Use input text to search on options
      */
@@ -205,21 +214,6 @@ export const VvComboboxProps = {
     focusOnHover: {
         type: Boolean,
         default: true,
-    },
-    /**
-     * VvIcon name for clear button
-     * @see VvIcon
-     */
-    iconClear: {
-        type: [String, Object] as PropType<string | VvIconProps>,
-        default: ACTION_ICONS.clear,
-    },
-    /**
-     * Label for clear button
-     */
-    labelClear: {
-        type: String,
-        default: 'Clear',
     },
 }
 
