@@ -11,8 +11,10 @@ export default {
 
 <template>
     <li class="vv-nav__item" role="presentation">
+        <slot name="before" />
         <VvAction v-bind="$attrs" class="vv-nav__item-label" role="menuitem">
             <slot />
         </VvAction>
+        <slot name="after" />
     </li>
 </template>
