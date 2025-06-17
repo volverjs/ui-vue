@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'

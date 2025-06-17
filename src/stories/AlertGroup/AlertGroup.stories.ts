@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
 import { argTypes, defaultArgs } from './AlertGroup.settings'
 import { defaultTest } from './AlertGroup.test'

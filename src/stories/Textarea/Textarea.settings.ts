@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvTextareaProps } from '@/components/VvTextarea'
 import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'
 

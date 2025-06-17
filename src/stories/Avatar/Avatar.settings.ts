@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/types'
+import type { ArgTypes } from 'storybook/internal/types'
 import { VvAvatarProps } from '@/components/VvAvatar'
 import { DefaultSlotArgTypes } from '@/stories/argTypes'
 

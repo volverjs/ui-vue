@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import normal from '@/assets/icons/normal.json'
 import { VvInputTextProps } from '@/components/VvInputText'
 import { HintArgTypes, InputTextareaArgTypes } from '@/stories/argTypes'

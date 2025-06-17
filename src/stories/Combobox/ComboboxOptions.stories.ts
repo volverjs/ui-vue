@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
 import { argTypes, defaultArgs } from './Combobox.settings'
 import { Default } from './Combobox.stories'

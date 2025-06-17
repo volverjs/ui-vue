@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref, watch } from 'vue'
 import { icons as NormalIcons } from '@/assets/icons/normal.json'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'

@@ -1,5 +1,5 @@
 // Replace vue3 with vue if you are using Storybook for Vue 2
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
 import { argTypes, defaultArgs } from './Avatar.settings'

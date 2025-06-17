@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvBadge from '@/components/VvBadge/VvBadge.vue'
 import { argTypes, defaultArgs } from './Badge.settings'
 import { Default as DefaultStory } from './Badge.stories'

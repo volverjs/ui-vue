@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvBreadcrumbProps } from '@/components/VvBreadcrumb'
 
 export const defaultArgs = {

@@ -1,5 +1,5 @@
-import { themes } from '@storybook/theming'
-import { setup } from '@storybook/vue3'
+import { setup } from '@storybook/vue3-vite'
+import { themes } from 'storybook/theming'
 import packageJson from '../package.json'
 import iconsDetailed from '../src/assets/icons/detailed.json'
 import iconsNormal from '../src/assets/icons/normal.json'

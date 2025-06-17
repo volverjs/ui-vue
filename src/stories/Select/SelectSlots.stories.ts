@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvSelect from '@/components/VvSelect/VvSelect.vue'
 import { argTypes, defaultArgs } from './Select.settings'
 import { Default } from './Select.stories'

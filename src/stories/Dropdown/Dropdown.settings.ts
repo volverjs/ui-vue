@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvDropdownProps } from '@/components/VvDropdown'
 import { DropdownRole } from '@/constants'
 import { DropdownArgTypes } from '../argTypes'

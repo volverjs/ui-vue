@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from '@storybook/test'
+import { within } from 'storybook/test'
 import { expect } from '@/test/expect'
 
 export async function defaulTest({ canvasElement, args }: PlayAttributes) {

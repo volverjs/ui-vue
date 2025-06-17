@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/types'
+import type { ArgTypes } from 'storybook/internal/types'
 import { DisabledArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {

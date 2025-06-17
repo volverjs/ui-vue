@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvNav from '@/components/VvNav/VvNav.vue'
 import { argTypes, defaultArgs } from './Nav.settings'
 import { defaultTest } from './Nav.test'

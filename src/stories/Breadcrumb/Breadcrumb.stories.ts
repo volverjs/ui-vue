@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvBreadcrumb from '@/components/VvBreadcrumb/VvBreadcrumb.vue'
 import { argTypes, defaultArgs } from './Breadcrumb.settings'
 import { defaultTest } from './Breadcrumb.test'

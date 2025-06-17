@@ -1,4 +1,4 @@
-import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3-vite'
 import type { VvTab } from '@/components'
 import { VvTabProps } from '@/components/VvTab'
 

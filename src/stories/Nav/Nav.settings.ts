@@ -1,4 +1,4 @@
-import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3-vite'
 import type { VvNav } from '@/components'
 import { VvNavProps } from '@/components/VvNav'
 import { ModifiersArgTypes } from '@/stories/argTypes'

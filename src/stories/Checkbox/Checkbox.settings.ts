@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { CheckboxRadioArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
