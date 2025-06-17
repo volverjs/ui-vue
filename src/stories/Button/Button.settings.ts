@@ -1,4 +1,4 @@
-import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3-vite'
 import type { VvButton } from '@/components'
 import normal from '@/assets/icons/normal.json'
 import {

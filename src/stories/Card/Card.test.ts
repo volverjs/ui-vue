@@ -1,8 +1,8 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from '@storybook/test'
+import { within } from 'storybook/test'
 import { expect } from '@/test/expect'
 
-export async function defaulTest({ canvasElement, args }: PlayAttributes) {
+export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('card')
     const modifiers
 		= !args.modifiers || Array.isArray(args.modifiers)

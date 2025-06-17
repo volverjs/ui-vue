@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/vue3'
+import type { Meta } from '@storybook/vue3-vite'
 import type { Story } from './AlertGroup.stories'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
 import VvButton from '@/components/VvButton/VvButton.vue'

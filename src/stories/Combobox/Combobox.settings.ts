@@ -1,4 +1,4 @@
-import type { ArgTypes, Meta } from '@storybook/vue3'
+import type { ArgTypes, Meta } from '@storybook/vue3-vite'
 import type { VvCombobox } from '@/components'
 import { VvComboboxProps } from '@/components/VvCombobox'
 import {

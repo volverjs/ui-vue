@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvAvatarGroupProps } from '@/components/VvAvatarGroup'
 import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 

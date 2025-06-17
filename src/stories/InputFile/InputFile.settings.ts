@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvInputFileProps } from '@/components/VvInputFile'
 import { HintArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 

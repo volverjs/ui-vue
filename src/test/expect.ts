@@ -1,7 +1,7 @@
-import { expect, userEvent } from '@storybook/test'
+import { axe } from 'jest-axe'
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable ts/no-namespace */
-import { axe } from 'jest-axe'
+import { expect, userEvent } from 'storybook/test'
 import { sleep } from '@/test/sleep'
 
 declare global {

@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { ModifiersArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {

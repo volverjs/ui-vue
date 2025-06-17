@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAvatar from '@/components/VvAvatar/VvAvatar.vue'
 import VvAvatarGroup from '@/components/VvAvatarGroup/VvAvatarGroup.vue'
 import { argTypes, defaultArgs } from './AvatarGroup.settings'

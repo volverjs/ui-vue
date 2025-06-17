@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 import VvCheckboxGroup from '@/components/VvCheckboxGroup/VvCheckboxGroup.vue'
 import { argTypes, defaultArgs } from './CheckboxGroup.settings'

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvCard from '@/components/VvCard/VvCard.vue'
 import { argTypes, defaultArgs } from './Card.settings'
-import { defaulTest } from './Card.test'
+import { defaultTest } from './Card.test'
 
 const meta: Meta<typeof VvCard> = {
     title: 'Components/Card',
@@ -33,7 +33,7 @@ const Template: Story = {
 			</vv-card>
 		`,
     }),
-    play: defaulTest,
+    play: defaultTest,
 }
 
 export const Default: Story = {

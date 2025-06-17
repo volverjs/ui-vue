@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvDialog from '@/components/VvDialog/VvDialog.vue'
 import { argTypes, defaultArgs } from './Dialog.settings'
 import { Default as DefaultStory } from './Dialog.stories'

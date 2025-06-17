@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 import { argTypes, defaultArgs } from './InputFile.settings'
 

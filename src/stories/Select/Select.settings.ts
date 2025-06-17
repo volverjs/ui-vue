@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/vue3'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvSelectProps } from '@/components/VvSelect'
 import {
     AutocompleteArgTypes,

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import { defaultArgs } from './Accordion.settings'
 import { Default as AccordionDefault } from './Accordion.stories'

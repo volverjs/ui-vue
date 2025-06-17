@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvTab from '@/components/VvTab/VvTab.vue'
 import { defaultArgs, defaultArgTypes } from './Tab.settings'
 import { defaultTest } from './Tab.test'

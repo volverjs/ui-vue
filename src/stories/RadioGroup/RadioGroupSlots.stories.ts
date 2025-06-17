@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import VvRadioGroup from '@/components/VvRadioGroup/VvRadioGroup.vue'
 import { argTypes, defaultArgs } from './RadioGroup.settings'
