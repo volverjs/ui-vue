@@ -40,16 +40,6 @@ export default ({ mode }: { mode: string }) => {
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, './src'),
-                /*
-				 * Replace jest-matcher-utils
-				 * (required by @storybook/jest) that
-				 * creates an error in production
-				 * because it use the commonjs module chalk
-				 */
-                'jest-matcher-utils': path.resolve(
-                    __dirname,
-                    './vendor/jest-matcher-utils/index.ts',
-                ),
             },
         },
         optimizeDeps: {
