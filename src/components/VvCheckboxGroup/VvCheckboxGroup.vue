@@ -34,7 +34,7 @@ useGroupStateProvide<InputGroupState>(INJECTION_KEY_CHECK_GROUP, {
 })
 
 // options
-const { getOptionLabel, getOptionValue } = useOptions(props)
+const { getOptionLabel, getOptionValue, isOptionDisabled } = useOptions(props)
 
 // stypes
 const bemCssClasses = useModifiers(
@@ -58,6 +58,7 @@ function getOptionProps(option: string | Option, index: number) {
         label: getOptionLabel(option),
         value: getOptionValue(option),
         required: props.required,
+        disabled: isOptionDisabled(option),
     }
 }
 const { HintSlot, hintSlotScope } = HintSlotFactory(propsDefaults, slots)
