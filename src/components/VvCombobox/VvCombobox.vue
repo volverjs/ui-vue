@@ -67,7 +67,11 @@ watch(focusedWithin, (newValue) => {
 })
 
 // search
-const searchText = ref('')
+const searchText = defineModel('search', {
+    type: String,
+    default: '',
+    required: false,
+})
 const debouncedSearchText = refDebounced(
     searchText,
     computed(() => Number(props.debounceSearch)),
@@ -105,7 +109,7 @@ function onAfterExpand() {
     }
 }
 function onAfterCollapse() {
-    if (propsDefaults.value.searchable) {
+    if (propsDefaults.value.searchable && !propsDefaults.value.isSearchPersistent) {
         searchText.value = ''
     }
 }

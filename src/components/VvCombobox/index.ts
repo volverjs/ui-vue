@@ -109,6 +109,13 @@ export const VvComboboxProps = {
      */
     searchable: Boolean,
     /**
+     * If true, the search input will retain its value even when the dropdown is closed
+     */
+    isSearchPersistent: {
+        type: Boolean,
+        default: false,
+    },
+    /**
      * Search function to filter options
      */
     searchFunction: {

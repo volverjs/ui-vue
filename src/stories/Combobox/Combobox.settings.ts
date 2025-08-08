@@ -206,6 +206,14 @@ export const argTypes: ArgTypes = {
             },
         },
     },
+    'isSearchPersistent': {
+        description: 'Enable search input persistence',
+        table: {
+            defaultValue: {
+                summary: 'false',
+            },
+        },
+    },
     'searchFunction': {
         description: 'Search function to filter options',
         table: {
