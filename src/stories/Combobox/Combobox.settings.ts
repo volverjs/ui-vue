@@ -206,8 +206,8 @@ export const argTypes: ArgTypes = {
             },
         },
     },
-    'isSearchPersistent': {
-        description: 'Enable search input persistence',
+    'keepSearch': {
+        description: 'If true, the search input will retain its value even when the dropdown is closed',
         table: {
             defaultValue: {
                 summary: 'false',

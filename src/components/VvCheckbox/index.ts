@@ -32,7 +32,7 @@ export function useGroupProps(
     emit: (event: (typeof VvCheckboxEvents)[number], value: unknown) => void,
 ) {
     const { group, isInGroup, getGroupOrLocalRef }
-		= useGroupStateInject<InputGroupState>(INJECTION_KEY_CHECK_GROUP)
+        = useGroupStateInject<InputGroupState>(INJECTION_KEY_CHECK_GROUP)
 
     // local props
     const { id, switch: propsSwitch, indeterminate } = toRefs(props)

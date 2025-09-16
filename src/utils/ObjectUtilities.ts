@@ -239,7 +239,7 @@ export function propsToObject(props: any) {
             }
             if ('default' in props[key]) {
                 accumulator[key]
-					= typeof props[key].default === 'function'
+                    = typeof props[key].default === 'function'
                         ? props[key].default()
                         : props[key].default
                 return accumulator

@@ -8,17 +8,17 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     expect(element).toHaveClass('vv-alert')
 
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : args.modifiers.split(' ')
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : args.modifiers.split(' ')
 
     const alertHeaderEl
-		= element.getElementsByClassName('vv-alert__header')?.[0]
+        = element.getElementsByClassName('vv-alert__header')?.[0]
     const closeButtonEl = element.getElementsByClassName('vv-alert__close')?.[0]
     const alertContentEl
-		= element.getElementsByClassName('vv-alert__content')?.[0]
+        = element.getElementsByClassName('vv-alert__content')?.[0]
     const alertFooterEl
-		= element.getElementsByClassName('vv-alert__footer')?.[0]
+        = element.getElementsByClassName('vv-alert__footer')?.[0]
 
     // modifiers
     if (modifiers) {

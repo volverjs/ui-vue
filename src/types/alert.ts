@@ -1,14 +1,14 @@
 import type { VvIconProps } from '@/components/VvIcon'
 import type { AlertRole } from '@/constants'
 
-export type AlertModifier =
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'brand'
-    | 'accent'
-    | string
+export type AlertModifier
+    = | 'success'
+        | 'info'
+        | 'warning'
+        | 'danger'
+        | 'brand'
+        | 'accent'
+        | string
 
 export type Alert = {
     id: string | number

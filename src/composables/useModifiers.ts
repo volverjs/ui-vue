@@ -11,9 +11,9 @@ export function useModifiers(
         }
         // props modifiers
         const modifiersArray
-			= typeof modifiers?.value === 'string'
-			    ? modifiers.value.split(' ')
-			    : modifiers?.value
+            = typeof modifiers?.value === 'string'
+                ? modifiers.value.split(' ')
+                : modifiers?.value
         if (modifiersArray) {
             if (Array.isArray(modifiersArray)) {
                 modifiersArray.forEach((modifier) => {

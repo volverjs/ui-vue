@@ -43,6 +43,7 @@ declare global {
   const findScrollContainer: typeof import('./src/utils/DomUtilities')['findScrollContainer']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getCurrentWatcher: typeof import('vue')['getCurrentWatcher']
   const getDateFromInputValue: typeof import('./src/utils/DateUtilities')['getDateFromInputValue']
   const getDateFromIsoWeek: typeof import('./src/utils/DateUtilities')['getDateFromIsoWeek']
   const getDateOfIsoWeek: typeof import('./src/utils/DateUtilities')['getDateOfIsoWeek']
@@ -61,6 +62,7 @@ declare global {
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
+  const isShallow: typeof import('vue')['isShallow']
   const isString: typeof import('./src/utils/ObjectUtilities')['isString']
   const makeDestructurable: typeof import('@vueuse/core')['makeDestructurable']
   const markRaw: typeof import('vue')['markRaw']
@@ -292,6 +294,7 @@ declare global {
   const useThrottleFn: typeof import('@vueuse/core')['useThrottleFn']
   const useThrottledRefHistory: typeof import('@vueuse/core')['useThrottledRefHistory']
   const useTimeAgo: typeof import('@vueuse/core')['useTimeAgo']
+  const useTimeAgoIntl: typeof import('@vueuse/core')['useTimeAgoIntl']
   const useTimeout: typeof import('@vueuse/core')['useTimeout']
   const useTimeoutFn: typeof import('@vueuse/core')['useTimeoutFn']
   const useTimeoutPoll: typeof import('@vueuse/core')['useTimeoutPoll']
@@ -338,6 +341,6 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
 }

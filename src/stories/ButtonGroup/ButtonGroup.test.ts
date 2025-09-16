@@ -8,9 +8,9 @@ export async function defaultTest(
     const buttonGroup = await within(canvasElement).findByTestId('button-group')
     const firstButton = await within(canvasElement).findByTestId('first-button')
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : [args.modifiers]
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : [args.modifiers]
 
     // check modifiers
     if (modifiers) {

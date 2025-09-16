@@ -8,9 +8,9 @@ export async function defaultTest(
     const element = await within(canvasElement).findByTestId('element')
 
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : [args.modifiers]
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : [args.modifiers]
 
     await expect(element).toHaveClass('vv-button')
 

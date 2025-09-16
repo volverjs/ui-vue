@@ -371,7 +371,7 @@ const iconAfter = computed(() => {
     return undefined
 })
 const { hasIcon: hasIconRemoveSuggestion }
-		= useComponentIcon(iconRemoveSuggestion)
+    = useComponentIcon(iconRemoveSuggestion)
 
 // count
 const { formatted: countFormatted } = useTextCount(localModelValue, {
@@ -505,7 +505,7 @@ const hasAttrs = computed(() => {
         toReturn.step = props.step
         toReturn.max = max !== undefined ? String(max) : undefined
         toReturn.min
-				= props.min !== undefined ? String(props.min) : undefined
+            = props.min !== undefined ? String(props.min) : undefined
     }
     if (
         type === INPUT_TYPES.TEXT

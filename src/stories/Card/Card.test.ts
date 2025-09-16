@@ -5,9 +5,9 @@ import { expect } from '@/test/expect'
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('card')
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : [args.modifiers]
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : [args.modifiers]
 
     // check modifiers
     if (modifiers) {

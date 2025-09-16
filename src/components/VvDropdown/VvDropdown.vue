@@ -67,7 +67,7 @@ onMounted(() => {
         floatingEl.value,
         () => {
             hasCustomPosition.value
-					= window
+                = window
                     .getComputedStyle(floatingEl.value)
                     .getPropertyValue('--dropdown-custom-position')
                     ?.trim() === 'true'
@@ -173,9 +173,9 @@ const dropdownPlacement = computed(() => {
         return undefined
     }
     const width
-			= props.triggerWidth && referenceEl.value
-			    ? `${referenceEl.value?.offsetWidth}px`
-			    : undefined
+        = props.triggerWidth && referenceEl.value
+            ? `${referenceEl.value?.offsetWidth}px`
+            : undefined
     return {
         position: strategy.value,
         top: `${y.value ?? 0}px`,
@@ -265,12 +265,12 @@ const referenceAria = computed(() => ({
 
 // provide to dropdown
 const { component: VvDropdownTriggerProvider, bus }
-		= useDropdownProvideTrigger({
-		    reference: referenceEl,
-		    id: hasId,
-		    expanded,
-		    aria: referenceAria,
-		})
+    = useDropdownProvideTrigger({
+        reference: referenceEl,
+        id: hasId,
+        expanded,
+        aria: referenceAria,
+    })
 bus.on('click', toggle)
 
 const { role, modifiers } = toRefs(props)

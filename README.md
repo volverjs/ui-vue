@@ -167,14 +167,14 @@ export default defineConfig({
 Used to show alert messages and notifications
 
 ```typescript
-export type AlertModifier =
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'brand'
-    | 'accent'
-    | string
+export type AlertModifier
+    = | 'success'
+        | 'info'
+        | 'warning'
+        | 'danger'
+        | 'brand'
+        | 'accent'
+        | string
 ```
 
 ```typescript

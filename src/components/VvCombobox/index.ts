@@ -73,6 +73,13 @@ export const VvComboboxProps = {
      */
     noOptionsLabel: { type: String, default: 'No options available' },
     /**
+     * Label for selected option not found
+     */
+    selectedOptionNotFoundLabel: {
+        type: String,
+        default: 'Selected option not found',
+    },
+    /**
      * Label for selected option hint
      */
     selectedHintLabel: { type: String, default: 'Selected' },
@@ -111,10 +118,7 @@ export const VvComboboxProps = {
     /**
      * If true, the search input will retain its value even when the dropdown is closed
      */
-    isSearchPersistent: {
-        type: Boolean,
-        default: false,
-    },
+    keepSearch: Boolean,
     /**
      * Search function to filter options
      */

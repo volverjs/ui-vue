@@ -60,7 +60,7 @@ const localModelValue = useDebouncedInput(modelValue, emit, debounce?.value)
 // icons
 const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
 const { hasIcon: hasIconRemoveSuggestion }
-		= useComponentIcon(iconRemoveSuggestion)
+    = useComponentIcon(iconRemoveSuggestion)
 
 // focus
 const { focused } = useComponentFocus(textareaEl, emit)

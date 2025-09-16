@@ -109,11 +109,11 @@ export const Searchable: Story = {
     },
 }
 
-export const SearchPersistent: Story = {
+export const KeepSearch: Story = {
     args: {
         ...defaultArgs,
         searchable: true,
-        isSearchPersistent: true,
+        keepSearch: true,
     },
     render: args => ({
         components: { VvInputText, VvCombobox },

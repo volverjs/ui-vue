@@ -1,14 +1,14 @@
 import type { ExtractPropTypes, PropType } from 'vue'
 
-type VueProp =
-    | StringConstructor
-    | NumberConstructor
-    | ObjectConstructor
-    | FunctionConstructor
-    | SymbolConstructor
-    | ArrayConstructor
-    | BooleanConstructor
-    | PropType<unknown>
+type VueProp
+    = | StringConstructor
+        | NumberConstructor
+        | ObjectConstructor
+        | FunctionConstructor
+        | SymbolConstructor
+        | ArrayConstructor
+        | BooleanConstructor
+        | PropType<unknown>
 
 export function useDefaults<Definition>(
     componentName: string,

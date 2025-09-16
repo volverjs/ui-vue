@@ -180,14 +180,14 @@ export class Volver implements VolverInterface {
     defaults: Ref<DefaultOptions> = ref({})
 
     constructor({
-		fetchWithCredentials,
-		fetchOptions,
-		iconsProvider,
-		nuxt,
-		iconsCollections,
-		defaults,
+        fetchWithCredentials,
+        fetchOptions,
+        iconsProvider,
+        nuxt,
+        iconsCollections,
+        defaults,
         experimentalFeatures,
-	}: VolverOptions = {}) {
+    }: VolverOptions = {}) {
         // fetch options
         if (fetchOptions) {
             this._fetchOptions = fetchOptions
@@ -241,7 +241,7 @@ export class Volver implements VolverInterface {
 
     addCollection(
         collection: IconifyJSON,
-		providerName: string = this._iconsProvider,
+        providerName: string = this._iconsProvider,
     ): boolean {
         this._iconsCollections.push(collection)
         return addCollection(collection, providerName)
@@ -260,7 +260,7 @@ export class Volver implements VolverInterface {
 
     fetchIcon(
         src: string,
-		options: RequestInit = { cache: 'force-cache' },
+        options: RequestInit = { cache: 'force-cache' },
     ): Promise<string | undefined> {
         return new Promise((resolve, reject) => {
             fetch(src, { ...this._fetchOptions, ...options })
