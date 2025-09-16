@@ -402,12 +402,12 @@
     "blurhash": "^2.0.5",
     "chokidar": "^4.0.3",
     "comlink": "^4.4.2",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "mitt": "^3.0.1",
     "pica": "^9.0.1",
     "ts-dot-prop": "^2.1.4",
     "vue-imask": "^7.6.1",
-    "vuedraggable": "^4.1.0",
+    "vuedraggable": "^2.24.3",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
