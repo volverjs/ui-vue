@@ -13,9 +13,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     )[0] as HTMLElement
 
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : [args.modifiers]
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : [args.modifiers]
 
     expect(element).toHaveClass('vv-accordion')
 

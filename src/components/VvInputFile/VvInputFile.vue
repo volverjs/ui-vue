@@ -22,7 +22,7 @@ const propsDefaults = useDefaults<typeof VvInputFileProps>(
     props,
 )
 const { modifiers, id, readonly, disabled, icon, iconPosition, iconDownload }
-		= toRefs(props)
+    = toRefs(props)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
 
@@ -31,9 +31,9 @@ const hasProgress = computed(() => {
         return false
     }
     const progress
-			= typeof props.progress === 'string'
-			    ? Number.parseInt(props.progress)
-			    : props.progress
+        = typeof props.progress === 'string'
+            ? Number.parseInt(props.progress)
+            : props.progress
     return progress > 0 && progress < 100
 })
 
@@ -152,7 +152,7 @@ function addFiles(uploadedFiles: FileList) {
         toReturn = [localModelValue.value]
     } else {
         toReturn
-				= localModelValue.value && Array.isArray(localModelValue.value)
+            = localModelValue.value && Array.isArray(localModelValue.value)
                 ? [...localModelValue.value]
                 : toReturn
     }

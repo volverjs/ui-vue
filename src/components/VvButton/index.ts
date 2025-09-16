@@ -71,7 +71,7 @@ export function useGroupProps(
     emit: (event: (typeof VvButtonEvents)[number], value: unknown) => void,
 ) {
     const { group, isInGroup, getGroupOrLocalRef }
-		= useGroupStateInject<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP)
+        = useGroupStateInject<ButtonGroupState>(INJECTION_KEY_BUTTON_GROUP)
 
     // local props
     const { id, iconPosition, icon, label, pressed } = toRefs(props)

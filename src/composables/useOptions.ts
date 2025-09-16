@@ -1,5 +1,5 @@
 import type { Option } from '../types/generic'
-import { get } from 'ts-dot-prop'
+import { getProperty } from 'dot-prop'
 
 export function useOptions(props: any) {
     const { options, labelKey, valueKey, disabledKey } = toRefs(props)
@@ -12,7 +12,7 @@ export function useOptions(props: any) {
             return labelKey.value(option)
         }
         return String(
-            labelKey.value ? get(option as object, labelKey.value) : option,
+            labelKey.value ? getProperty(option, labelKey.value) : option,
         )
     }
 
@@ -23,7 +23,7 @@ export function useOptions(props: any) {
         if (typeof valueKey.value === 'function') {
             return valueKey.value(option)
         }
-        return valueKey.value ? get(option as object, valueKey.value) : option
+        return valueKey.value ? getProperty(option, valueKey.value) : option
     }
 
     const isOptionDisabled = <T extends string | Option>(option: T): boolean => {
@@ -33,7 +33,7 @@ export function useOptions(props: any) {
         if (typeof disabledKey.value === 'function') {
             return disabledKey.value(option)
         }
-        return disabledKey.value ? get(option as object, disabledKey.value) : false
+        return disabledKey.value ? Boolean(getProperty(option, disabledKey.value)) : false
     }
 
     const getOptionGrouped = <T extends string | Option>(option: T) => {

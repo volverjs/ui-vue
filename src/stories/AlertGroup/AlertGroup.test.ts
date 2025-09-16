@@ -5,7 +5,7 @@ import { expect } from '@/test/expect'
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
     const buttons
-		= canvasElement.getElementsByClassName('buttons-container')?.[0]
+        = canvasElement.getElementsByClassName('buttons-container')?.[0]
 
     expect(element).toHaveClass('vv-alert-group')
 
@@ -16,9 +16,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     expect(alertGroupList).toBeTruthy()
 
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : args.modifiers.split(' ')
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : args.modifiers.split(' ')
 
     // modifiers
     if (modifiers) {

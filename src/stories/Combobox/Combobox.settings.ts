@@ -206,6 +206,14 @@ export const argTypes: ArgTypes = {
             },
         },
     },
+    'keepSearch': {
+        description: 'If true, the search input will retain its value even when the dropdown is closed',
+        table: {
+            defaultValue: {
+                summary: 'false',
+            },
+        },
+    },
     'searchFunction': {
         description: 'Search function to filter options',
         table: {

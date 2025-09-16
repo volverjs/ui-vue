@@ -18,7 +18,7 @@ const propsDefaults = useDefaults<typeof VvRadioProps>(
 
 // data
 const { id, disabled, readonly, modelValue, valid, invalid }
-		= useGroupProps(props, emit)
+    = useGroupProps(props, emit)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
 const tabindex = computed(() => (isDisabled.value ? -1 : props.tabindex))

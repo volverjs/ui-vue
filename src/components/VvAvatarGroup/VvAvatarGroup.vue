@@ -4,7 +4,7 @@ import { VvAvatarGroupProps } from '@/components/VvAvatarGroup'
 
 const props = defineProps(VvAvatarGroupProps)
 const { modifiers, items, toShow, totalItems, avatarModifiers }
-		= toRefs(props)
+    = toRefs(props)
 
 // bem css classes
 const bemCssClasses = useModifiers('vv-avatar-group', modifiers)

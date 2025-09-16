@@ -19,9 +19,11 @@ All notable changes to this project will be documented in this file.
 - `VvCombobox` and `VvSelect` prop `autoselectFirst` to automatically select the first option when the dropdown is opened;
 - `VvCombobox` and `VvSelect` prop `showClearAction` to show a clear action button when there is a value selected;
 - `VvCombobox` new prop `addable` to allow adding new items;
+- `VvCombobox` new prop `keepSearch` to retain the search input value when the dropdown is closed;
 - `VvInputText` add support for iso date format and date object for type `date`, `datetime-local`, `time` and `month`;
 - `--watch` flag for `generate-icons` script;
-- `--keepColors` flag for `generate-icons` script.
+- `--keepColors` flag for `generate-icons` script;
+- Replace `ts-dot-prop` with `dot-prop` for deprecation.
 
 ### Deprecated
 

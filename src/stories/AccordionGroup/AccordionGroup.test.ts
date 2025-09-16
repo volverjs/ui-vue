@@ -10,9 +10,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const value = await within(canvasElement).findByTestId('value')
 
     const modifiers
-		= !args.modifiers || Array.isArray(args.modifiers)
-		    ? args.modifiers
-		    : [args.modifiers]
+        = !args.modifiers || Array.isArray(args.modifiers)
+            ? args.modifiers
+            : [args.modifiers]
 
     expect(element).toHaveClass('vv-accordion-group')
 

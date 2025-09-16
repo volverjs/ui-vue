@@ -23,7 +23,7 @@ const propsDefaults = useDefaults<typeof VvCheckboxGroupProps>(
 // data
 const modelValue = useVModel(props, 'modelValue', emit)
 const { disabled, readonly, vertical, valid, invalid, modifiers }
-		= toRefs(props)
+    = toRefs(props)
 
 useGroupStateProvide<InputGroupState>(INJECTION_KEY_CHECK_GROUP, {
     modelValue,

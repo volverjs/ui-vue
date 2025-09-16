@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
+import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './Combobox.settings'
 import { defaultTest } from './Combobox.test'
 
@@ -34,7 +35,7 @@ export const Default: Story = {
 				<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
 				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
 			</vv-combobox>
-			<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+			<div>Value: <span data-testId="value">{{inputValue}}</span></div>
 		`,
     }),
     play: defaultTest,
@@ -106,6 +107,58 @@ export const Searchable: Story = {
         searchable: true,
         searchPlaceholder: 'Search...',
     },
+}
+
+export const KeepSearch: Story = {
+    args: {
+        ...defaultArgs,
+        searchable: true,
+        keepSearch: true,
+    },
+    render: args => ({
+        components: { VvInputText, VvCombobox },
+        setup() {
+            const searchValue = ref('Option 2')
+            return { args, searchValue }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+            <div class="flex flex-col gap-xs">
+                <vv-input-text
+                    v-model="searchValue"
+                    label="Search Input"
+                    placeholder="Type the initial value of the search"
+                />
+                <vv-combobox
+                    v-bind="args"
+                    v-model="inputValue"
+                    v-model:search="searchValue"
+                    :data-testData="inputValue"
+                    data-testId="element"
+                >
+                    <template #dropdown::before v-if="args['dropdown::before']">
+                        <div class="flex" v-html="args['dropdown::before']"></div>
+                    </template>
+                    <template #dropdown::after v-if="args['dropdown::after']">
+                        <div class="flex" v-html="args['dropdown::after']"></div>
+                    </template>
+                    <template #before v-if="args.before">
+                        <div class="flex" v-html="args.before"></div>
+                    </template>
+                    <template #after v-if="args.after">
+                        <div class="flex" v-html="args.after"></div>
+                    </template>
+                    <template #hint v-if="args.hint">
+                        <span v-html="args.hint"></span>
+                    </template>
+                </vv-combobox>
+                <div class="mt-4">
+                    <div>Selected Value: <span data-testId="value">{{inputValue}}</span></div>
+                    <div>Search Value: <span data-testId="search-value">{{searchValue}}</span></div>
+                </div>
+            </div>
+        `,
+    }),
 }
 
 export const Addable: Story = {

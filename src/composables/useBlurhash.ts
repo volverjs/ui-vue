@@ -42,11 +42,11 @@ export function useBlurhash() {
         const image = await loadImage(imageUrl)
         if ('width' in image && 'height' in image) {
             const { width: newWidth, height: newHeight }
-				= getWidthHeightFromMaxSize(
-				    image.width as number,
-				    image.height as number,
-				    32,
-				)
+                = getWidthHeightFromMaxSize(
+                    image.width as number,
+                    image.height as number,
+                    32,
+                )
             const imageData = await resizeImage(
                 image as ImageBitmap,
                 newWidth,

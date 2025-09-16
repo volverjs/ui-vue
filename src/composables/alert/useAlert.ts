@@ -55,7 +55,7 @@ export function useAlert() {
         }
         const groupMap = groups.get(group)
         const normalizedModifiers
-			= typeof modifiers === 'string' ? modifiers.split(' ') : modifiers
+            = typeof modifiers === 'string' ? modifiers.split(' ') : modifiers
 
         if (!icon) {
             const alertModifier = normalizedModifiers.find(modifier =>

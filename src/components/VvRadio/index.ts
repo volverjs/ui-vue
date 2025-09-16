@@ -18,7 +18,7 @@ export function useGroupProps(
 ) {
     const { id } = toRefs(props)
     const { group, isInGroup, getGroupOrLocalRef }
-		= useGroupStateInject<InputGroupState>(INJECTION_KEY_RADIO_GROUP)
+        = useGroupStateInject<InputGroupState>(INJECTION_KEY_RADIO_GROUP)
 
     // global props
     const modelValue = getGroupOrLocalRef('modelValue', props, emit)

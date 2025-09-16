@@ -15,7 +15,7 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
     // take firse and second elements
     const firstNavItemLabelEl
-		= element.getElementsByClassName('vv-nav__item-label')?.[0]
+        = element.getElementsByClassName('vv-nav__item-label')?.[0]
     await expect(firstNavItemLabelEl.classList.contains('current')).toBe(true)
 
     // check tab content to include "Tab 1"

@@ -14,9 +14,9 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
                 storageKey,
                 (newKey, oldKey) => {
                     const storage
-					= unref(storageType) === StorageType.session
-					    ? sessionStorage
-					    : localStorage
+                        = unref(storageType) === StorageType.session
+                            ? sessionStorage
+                            : localStorage
                     if (oldKey && oldKey !== newKey) {
                         storage.removeItem(oldKey)
                     }
@@ -43,9 +43,9 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
                 if (storageKey?.value) {
                     if (newType) {
                         const storage
-						= newType === StorageType.session
-						    ? sessionStorage
-						    : localStorage
+                            = newType === StorageType.session
+                                ? sessionStorage
+                                : localStorage
                         storageValue = useStorage(
                             storageKey.value,
                             storageValue?.value ?? localValue.value,
@@ -54,9 +54,9 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
                     }
                     if (oldType && oldType !== newType) {
                         const oldStorage
-						= oldType === StorageType.session
-						    ? sessionStorage
-						    : localStorage
+                            = oldType === StorageType.session
+                                ? sessionStorage
+                                : localStorage
                         oldStorage.removeItem(storageKey.value)
                     }
                 }

@@ -67,7 +67,11 @@ watch(focusedWithin, (newValue) => {
 })
 
 // search
-const searchText = ref('')
+const searchText = defineModel('search', {
+    type: String,
+    default: '',
+    required: false,
+})
 const debouncedSearchText = refDebounced(
     searchText,
     computed(() => Number(props.debounceSearch)),
@@ -105,7 +109,7 @@ function onAfterExpand() {
     }
 }
 function onAfterCollapse() {
-    if (propsDefaults.value.searchable) {
+    if (!propsDefaults.value.keepSearch) {
         searchText.value = ''
     }
 }
@@ -222,17 +226,18 @@ const {
     getOptionGrouped,
     isOptionDisabled,
 } = useOptions(props)
+
 const hasOptions = computed(() => {
     const toReturn = [...props.options, ...addedOptions.value] as T[]
-    for (const localModelValueItem of localModelValue.value) {
+    for (const item of localModelValue.value) {
         if (!toReturn.some((option) => {
             const optionValue = getOptionValue(option)
-            if (typeof optionValue === 'object') {
-                return JSON.stringify(optionValue) === JSON.stringify(localModelValueItem)
+            if (typeof optionValue === 'object' && typeof item === 'object') {
+                return JSON.stringify(optionValue) === JSON.stringify(item)
             }
-            return optionValue === localModelValueItem
+            return optionValue === item
         })) {
-            toReturn.push(localModelValueItem)
+            toReturn.push(item)
         }
     }
     return toReturn
@@ -242,7 +247,6 @@ watch(addedOptions, (newValue) => {
         emit('update:options', hasOptions.value)
     }
 })
-
 function isOptionDisabledOrNotSelectable(option: T) {
     return isOptionDisabled(option) || (!isSelectable.value && !isOptionSelected(option))
 }
@@ -485,18 +489,10 @@ export default {
                     <!-- @slot Slot before dropdown items -->
                     <slot name="dropdown::before" />
                     <input
-                        v-if="propsDefaults.searchable && !disabled"
-                        :id="hasSearchId"
-                        ref="inputSearchEl"
-                        v-model="searchText"
-                        aria-autocomplete="list"
-                        :aria-controls="hasDropdownId"
-                        autocomplete="off"
-                        spellcheck="false"
-                        type="search"
-                        class="vv-dropdown__search"
-                        :placeholder="propsDefaults.searchPlaceholder"
-                        @keyup.enter="onKeyupEnterInputSearch"
+                        v-if="propsDefaults.searchable && !disabled" :id="hasSearchId" ref="inputSearchEl"
+                        v-model="searchText" aria-autocomplete="list" :aria-controls="hasDropdownId" autocomplete="off"
+                        spellcheck="false" type="search" class="vv-dropdown__search"
+                        :placeholder="propsDefaults.searchPlaceholder" @keyup.enter="onKeyupEnterInputSearch"
                     >
                 </template>
                 <template #default="{ aria }">
@@ -505,11 +501,7 @@ export default {
                         <slot name="before" v-bind="slotProps" />
                     </div>
                     <div class="vv-select__inner">
-                        <VvIcon
-                            v-if="hasIconBefore"
-                            v-bind="hasIconBefore"
-                            class="vv-select__icon"
-                        />
+                        <VvIcon v-if="hasIconBefore" v-bind="hasIconBefore" class="vv-select__icon" />
                         <div
                             ref="inputEl" v-bind="aria" class="vv-select__input" role="combobox"
                             :aria-controls="hasDropdownId" :aria-expanded="expanded" :aria-labelledby="hasLabelId"
@@ -518,42 +510,35 @@ export default {
                             @click.passive="onClickInput"
                         >
                             <!-- @slot Slot for value customization -->
-                            <slot name="value" v-bind="{ selectedOptions, onInput }">
-                                <template v-if="hasValue">
-                                    <div v-if="!badges" class="vv-select__value">
-                                        {{ hasValue }}
-                                    </div>
-                                    <VvBadge
-                                        v-for="(option, index) in selectedOptions" v-else :key="index"
-                                        :modifiers="badgeModifiers" class="vv-select__badge"
+                            <slot v-if="hasValue" name="value" v-bind="{ selectedOptions, onInput }">
+                                <div v-if="!badges" class="vv-select__value">
+                                    {{ hasValue }}
+                                </div>
+                                <VvBadge
+                                    v-for="(option, index) in selectedOptions" v-else :key="index"
+                                    :modifiers="badgeModifiers" class="vv-select__badge"
+                                >
+                                    {{ getOptionLabel(option) }}
+                                    <button
+                                        v-if="isUnselectable" :aria-label="propsDefaults.deselectActionLabel"
+                                        type="button" @click.stop="onInput(option)"
                                     >
-                                        {{ getOptionLabel(option) }}
-                                        <button
-                                            v-if="isUnselectable" :aria-label="propsDefaults.deselectActionLabel"
-                                            type="button" @click.stop="onInput(option)"
-                                        >
-                                            <VvIcon name="close" />
-                                        </button>
-                                    </VvBadge>
-                                </template>
-                                <template v-else>
-                                    {{ placeholder }}
-                                </template>
+                                        <VvIcon name="close" />
+                                    </button>
+                                </VvBadge>
+                            </slot>
+                            <slot v-else name="placeholder">
+                                {{ placeholder }}
                             </slot>
                         </div>
                         <VvIcon
-                            v-if="hasIconAfter"
-                            v-bind="hasIconAfter"
+                            v-if="hasIconAfter" v-bind="hasIconAfter"
                             class="vv-select__icon vv-select__icon-after"
                         />
                     </div>
                     <VvInputClearAction
-                        v-if="isUnselectable && propsDefaults.showClearAction"
-                        input-type="select"
-                        :label="labelClear"
-                        :icon="iconClear"
-                        :disabled="!isDirty"
-                        @clear="onClear"
+                        v-if="isUnselectable && propsDefaults.showClearAction" input-type="select"
+                        :label="labelClear" :icon="iconClear" :disabled="!isDirty" @clear="onClear"
                     />
                     <div v-if="$slots.after" class="vv-select__input-after">
                         <!-- @slot Slot after input -->
@@ -579,10 +564,7 @@ export default {
                                         selectedHintLabel:
                                             propsDefaults.selectedHintLabel,
                                         focusOnHover,
-                                    }"
-                                    :key="i"
-                                    class="vv-dropdown-option"
-                                    @click.passive="onInput(item)"
+                                    }" :key="i" class="vv-dropdown-option" @click.passive="onInput(item)"
                                 >
                                     <!-- @slot Slot for option customization -->
                                     <slot
@@ -609,8 +591,7 @@ export default {
                                     selectedHintLabel:
                                         propsDefaults.selectedHintLabel,
                                     focusOnHover,
-                                }" class="vv-dropdown-option"
-                                @click.passive="onInput(option)"
+                                }" class="vv-dropdown-option" @click.passive="onInput(option)"
                             >
                                 <!-- @slot Slot for option customization -->
                                 <slot
@@ -629,13 +610,21 @@ export default {
                     <VvDropdownOption v-else-if="!options.length" modifiers="inert">
                         <!-- @slot Slot for no options available -->
                         <slot name="no-options">
-                            {{ propsDefaults.noOptionsLabel }}
+                            {{
+                                propsDefaults.addable && searchText.length
+                                    ? propsDefaults.addOptionHintLabel
+                                    : propsDefaults.noOptionsLabel
+                            }}
                         </slot>
                     </VvDropdownOption>
-                    <VvDropdownOption v-else-if="!disabled" modifiers="inert">
+                    <VvDropdownOption v-else modifiers="inert">
                         <!-- @slot Slot for no results available -->
                         <slot name="no-results">
-                            {{ propsDefaults.addable ? propsDefaults.addOptionHintLabel : propsDefaults.noResultsLabel }}
+                            {{
+                                propsDefaults.addable
+                                    ? propsDefaults.addOptionHintLabel
+                                    : propsDefaults.noResultsLabel
+                            }}
                         </slot>
                     </VvDropdownOption>
                 </template>
@@ -644,10 +633,8 @@ export default {
                     <slot name="dropdown::after">
                         <!-- Close button if dropdown custom position is enabled and floating-ui disabled -->
                         <VvButton
-                            v-if="dropdownEl?.customPosition"
-                            :label="propsDefaults.closeLabel"
-                            modifiers="secondary"
-                            @click="dropdownEl.hide()"
+                            v-if="dropdownEl?.customPosition" :label="propsDefaults.closeLabel"
+                            modifiers="secondary" @click="dropdownEl.hide()"
                         />
                     </slot>
                 </template>
