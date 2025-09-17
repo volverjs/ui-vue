@@ -427,7 +427,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/jest-axe": "^3.5.9",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^24.5.0",
+    "@types/node": "^24.5.1",
     "@types/pica": "^9.0.5",
     "@types/yargs": "^17.0.33",
     "@vitejs/plugin-vue": "^6.0.1",

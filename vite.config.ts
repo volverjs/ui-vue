@@ -12,28 +12,6 @@ export default ({ mode }: { mode: string }) => {
                 name: '@volverjs/ui-vue',
                 entry: path.resolve(__dirname, 'src/index.ts'),
             },
-            rollupOptions: {
-                external: ['node:fs', 'node:path', 'yargs', 'yargs/helpers', 'vue', '@vueuse/core', 'dot-prop', 'mitt', 'vue-imask', '@floating-ui/vue', '@iconify/vue', '@iconify/tools', '@iconify/utils', 'chokidar', 'comlink'],
-                output: {
-                    globals: {
-                        'vue': 'Vue',
-                        '@vueuse/core': 'VueUse',
-                        'dot-prop': 'dotProp',
-                        'mitt': 'mitt',
-                        'vue-imask': 'VueImask',
-                        '@floating-ui/vue': 'FloatingVue',
-                        '@iconify/vue': 'Iconify',
-                        'comlink': 'Comlink',
-                        'node:fs': 'fs',
-                        'node:path': 'path',
-                        'yargs': 'yargs',
-                        'yargs/helpers': 'yargsHelpers',
-                        '@iconify/tools': 'IconifyTools',
-                        '@iconify/utils': 'IconifyUtils',
-                        'chokidar': 'chokidar',
-                    },
-                },
-            },
         },
         base: mode === 'development' ? './' : '/ui-vue/',
         plugins: [
