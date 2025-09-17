@@ -51,30 +51,6 @@ const baseConfig = {
             '@': fileURLToPath(new URL('../src', import.meta.url)),
         },
     },
-    build: {
-        rollupOptions: {
-            external: ['node:fs', 'node:path', 'yargs', 'yargs/helpers', 'vue', '@vueuse/core', 'dot-prop', 'mitt', 'vue-imask', '@floating-ui/vue', '@iconify/vue', '@iconify/tools', '@iconify/utils', 'chokidar','comlink'],
-            output: {
-                globals: {
-                    vue: 'Vue',
-                    '@vueuse/core': 'VueUse',
-                    'dot-prop': 'dotProp',
-                    mitt: 'mitt',
-                    'vue-imask': 'VueImask',
-                    '@floating-ui/vue': 'FloatingVue',
-                    '@iconify/vue': 'Iconify',
-                    comlink: 'Comlink',
-                    'node:fs': 'fs',
-                    'node:path': 'path',
-                    yargs: 'yargs',
-                    'yargs/helpers': 'yargsHelpers',
-                    '@iconify/tools': 'IconifyTools',
-                    '@iconify/utils': 'IconifyUtils',
-                    chokidar: 'chokidar',
-                },
-            },
-        },
-    }
 }
 
 // build library
@@ -87,7 +63,6 @@ packageJson.typesVersions['*']['*'] = ['dist/index.d.ts']
 build({
     ...baseConfig,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -111,7 +86,6 @@ packageJson.typesVersions['*']['resolvers/unplugin'] = [
 build({
     ...baseConfig,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -133,7 +107,6 @@ packageJson.typesVersions['*'].icons = ['dist/icons.d.ts']
 build({
     configFile: false,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -147,7 +120,6 @@ build({
 build({
     configFile: false,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -171,7 +143,6 @@ packageJson.typesVersions['*'].directives = ['dist/directives/index.d.ts']
 build({
     ...baseConfig,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -207,7 +178,6 @@ directivesSources.forEach(({ name, entry }) => {
     build({
         ...baseConfig,
         build: {
-            ...baseConfig.build,
             watch: hot ? {} : undefined,
             minify,
             lib: {
@@ -230,7 +200,6 @@ packageJson.typesVersions['*'].composables = ['dist/composables/index.d.ts']
 build({
     ...baseConfig,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -252,7 +221,6 @@ packageJson.typesVersions['*'].components = ['dist/components/index.d.ts']
 build({
     ...baseConfig,
     build: {
-        ...baseConfig.build,
         watch,
         minify,
         emptyOutDir: false,
@@ -288,7 +256,6 @@ componentsSources.forEach(({ name, entry }) => {
     build({
         ...baseConfig,
         build: {
-            ...baseConfig.build,
             watch: hot ? {} : undefined,
             minify,
             lib: {
