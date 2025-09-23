@@ -1,34 +1,34 @@
-<script lang="ts">
-	export default {
-		name: 'VvProgress',
-	}
+<script setup lang="ts">
+import { VvProgressProps } from '.'
+
+// props
+const props = defineProps(VvProgressProps)
+
+const { value, max, label: ariaLabel } = toRefs(props)
+const indeterminate = computed(() => props.value === undefined)
+
+// styles
+const { modifiers } = toRefs(props)
+const bemCssClasses = useModifiers(
+    'vv-progress',
+    modifiers,
+    computed(() => ({ indeterminate: indeterminate.value })),
+)
 </script>
 
-<script setup lang="ts">
-	import { VvProgressProps } from '.'
-
-	// props
-	const props = defineProps(VvProgressProps)
-	const { value, max, label: ariaLabel } = toRefs(props)
-	const indeterminate = computed(() => props.value === undefined)
-
-	// styles
-	const { modifiers } = toRefs(props)
-	const bemCssClasses = useModifiers(
-		'vv-progress',
-		modifiers,
-		computed(() => ({ indeterminate: indeterminate.value })),
-	)
+<script lang="ts">
+export default {
+    name: 'VvProgress',
+}
 </script>
 
 <template>
-	<progress
-		role="progressbar"
-		v-bind="{
-			class: bemCssClasses,
-			ariaLabel,
-			max,
-			value,
-		}"
-	/>
+    <progress
+        v-bind="{
+            class: bemCssClasses,
+            ariaLabel,
+            max,
+            value,
+        }"
+    />
 </template>

@@ -38,6 +38,18 @@ Each file contains the icons with the `@vv` provider and the prefix `simple`, `n
 @vv:detailed:{fileName}
 ```
 
+By default, the script will replace the icon colors (for fill and stroke) with the `currentColor` value. If you want to keep the original colors, you can use the `--keepColors` flag.
+
+```bash
+generate-icons --srcPath=assets/icons --destPath=src/assets/icons --keepColors
+```
+
+If you want to automatically watch the source folder and regenerate the json files when a change is detected, you can use the `--watch` flag.
+
+```bash
+generate-icons --srcPath=assets/icons --destPath=src/assets/icons --watch
+```
+
 ### Example
 
 Put the SVG files inside a folder (ex. `assets/icons/custom/*.svg`).
@@ -47,7 +59,7 @@ Launch the script `generate-icons --srcPath=assets/icons/custom` to generate the
 import customIcons from '@/assets/icons/custom.json'
 
 app.use(VolverPlugin, {
-  iconsCollections: [customIcons]
+    iconsCollections: [customIcons]
 })
 ```
 

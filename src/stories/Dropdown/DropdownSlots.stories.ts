@@ -1,16 +1,16 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
-import type { Meta, StoryObj } from '@storybook/vue3'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
-import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
+import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import { argTypes, defaultArgs } from './Dropdown.settings'
 import { defaultTest } from './Dropdown.test'
-import { defaultArgs, argTypes } from './Dropdown.settings'
 
 const meta: Meta<typeof VvDropdown> = {
-	title: 'Components/Dropdown/Slots',
-	component: VvDropdown,
-	args: defaultArgs,
-	argTypes,
+    title: 'Components/Dropdown/Slots',
+    component: VvDropdown,
+    args: defaultArgs,
+    argTypes,
 }
 
 export default meta
@@ -18,37 +18,37 @@ export default meta
 type Story = StoryObj<typeof VvDropdown>
 
 export const Default: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvDropdown, VvDropdownAction, VvIcon },
-		setup() {
-			const expanded = ref(false)
-			return { expanded, args }
-		},
-		watch: {
-			expanded(newValue) {
-				if (!newValue) {
-					return
-				}
-				setTimeout(() => {
-					this.centerWrapper()
-				}, 300)
-			},
-		},
-		methods: {
-			centerWrapper() {
-				document.getElementById('toggle-button')?.scrollIntoView({
-					inline: 'center',
-					block: 'center',
-				})
-			},
-		},
-		mounted() {
-			this.centerWrapper()
-		},
-		template: /* html */ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvIcon },
+        setup() {
+            const expanded = ref(false)
+            return { expanded, args }
+        },
+        watch: {
+            expanded(newValue) {
+                if (!newValue) {
+                    return
+                }
+                setTimeout(() => {
+                    this.centerWrapper()
+                }, 300)
+            },
+        },
+        methods: {
+            centerWrapper() {
+                document.getElementById('toggle-button')?.scrollIntoView({
+                    inline: 'center',
+                    block: 'center',
+                })
+            },
+        },
+        mounted() {
+            this.centerWrapper()
+        },
+        template: /* html */ `
 			<div class="absolute inset-0 overflow-auto" ref="container">
 				<div style="width: 200%; height: 200%" ref="wrapper" data-testId="wrapper">
 					<vv-dropdown v-model="expanded" v-bind="args">
@@ -74,22 +74,22 @@ export const Default: Story = {
 				</div>
 			</div>
 		`,
-	}),
-	play: defaultTest,
+    }),
+    play: defaultTest,
 }
 
 export const Before: Story = {
-	...Default,
-	args: {
-		...Default.args,
-		before: '<div class="bg-warning p-xs text-center">Before</div>',
-	},
+    ...Default,
+    args: {
+        ...Default.args,
+        before: '<div class="bg-warning p-xs text-center">Before</div>',
+    },
 }
 
 export const After: Story = {
-	...Default,
-	args: {
-		...Default.args,
-		after: '<div class="bg-danger text-white p-xs text-center">After</div>',
-	},
+    ...Default,
+    args: {
+        ...Default.args,
+        after: '<div class="bg-danger text-white p-xs text-center">After</div>',
+    },
 }

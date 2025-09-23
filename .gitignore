@@ -1,15 +1,13 @@
 node_modules
 .DS_Store
+.eslintcache
 
 # Logs
 npm-debug.log*
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 
 # Project 
 storybook-static
 dist
 bin
 .vercel
+.eslintrc-auto-import.json

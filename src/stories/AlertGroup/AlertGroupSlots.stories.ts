@@ -1,23 +1,24 @@
-import type { Meta } from '@storybook/vue3'
+import type { Meta } from '@storybook/vue3-vite'
+import type { Story } from './AlertGroup.stories'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
-import { defaultArgs, argTypes } from './AlertGroup.settings'
-import { Default as DefaultStory, type Story } from './AlertGroup.stories'
+import { argTypes, defaultArgs } from './AlertGroup.settings'
+import { Default as DefaultStory } from './AlertGroup.stories'
 
 const meta: Meta<typeof VvAlertGroup> = {
-	title: 'Components/AlertGroup/Slots',
-	component: VvAlertGroup,
-	args: defaultArgs,
-	argTypes,
+    title: 'Components/AlertGroup/Slots',
+    component: VvAlertGroup,
+    args: defaultArgs,
+    argTypes,
 }
 
 export default meta
 
 export const Default: Story = {
-	...DefaultStory,
-	args: {
-		...defaultArgs,
-		modifiers: ['notification'],
-		default: /* html */ `
+    ...DefaultStory,
+    args: {
+        ...defaultArgs,
+        modifiers: ['notification'],
+        default: /* html */ `
 			<div class="vv-alert vv-alert--success" role="alert" aria-labelledby="Els38gSOH_Op3SFpzekW--title" style="--alert-duration:0ms;">
 				<div class="vv-alert__header">
 					<strong id="Els38gSOH_Op3SFpzekW--title" class="vv-alert__title">Success!</strong>
@@ -31,15 +32,15 @@ export const Default: Story = {
 				<div class="vv-alert__content">This is an accent message.</div>
 			</div>
 		`,
-	},
+    },
 }
 
 export const Before: Story = {
-	...DefaultStory,
-	args: {
-		...defaultArgs,
-		modifiers: ['notification'],
-		before: /* html */ `
+    ...DefaultStory,
+    args: {
+        ...defaultArgs,
+        modifiers: ['notification'],
+        before: /* html */ `
 			<div class="flex justify-center">
 				<button type="button" class="vv-button vv-button--action-quiet" id="y_Cl2wtJ8JJpDo-t6za2i">
 					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="vv-icon vv-button__icon iconify iconify--normal iconify--vv" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M6 18 18 6M6 6l12 12"></path></svg>
@@ -47,15 +48,15 @@ export const Before: Story = {
 				</button>
 			</div>
 		`,
-	},
+    },
 }
 
 export const After: Story = {
-	...DefaultStory,
-	args: {
-		...defaultArgs,
-		modifiers: ['notification'],
-		after: /* html */ `
+    ...DefaultStory,
+    args: {
+        ...defaultArgs,
+        modifiers: ['notification'],
+        after: /* html */ `
 			<div class="flex justify-center">
 				<button type="button" class="vv-button vv-button--action-quiet" id="y_Cl2wtJ8JJpDo-t6za2i">
 					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="vv-icon vv-button__icon iconify iconify--normal iconify--vv" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M6 18 18 6M6 6l12 12"></path></svg>
@@ -63,5 +64,5 @@ export const After: Story = {
 				</button>
 			</div>
 		`,
-	},
+    },
 }

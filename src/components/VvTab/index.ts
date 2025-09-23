@@ -1,13 +1,19 @@
+import type { NavItemTab } from '@/types/nav'
 import { ModifiersProps } from '@/props'
-import type { NavItem } from '../VvNav'
 
 export const VvTabProps = {
-	...ModifiersProps,
-	items: {
-		type: Array as PropType<NavItem[]>,
-		required: true,
-		default: () => [],
-	},
+    ...ModifiersProps,
+    navModifiers: {
+        type: [String, Array] as PropType<string | string[]>,
+    },
+    modelValue: {
+        type: String,
+        default: '',
+    },
+    items: {
+        type: Array as PropType<NavItemTab[]>,
+        default: () => [],
+    },
 }
 
-export const VvTabEvents = ['click']
+export const VvTabEvents = ['update:modelValue']

@@ -1,7 +1,4 @@
-import tooltip from '../directives/v-tooltip'
-import contextmenu from '../directives/v-contextmenu'
+import vContextmenu from '../directives/v-contextmenu'
+import vTooltip from '../directives/v-tooltip'
 
-export default {
-	tooltip,
-	contextmenu,
-}
+export { vContextmenu, vTooltip }

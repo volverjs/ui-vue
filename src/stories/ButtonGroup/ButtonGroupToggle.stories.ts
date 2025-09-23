@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvButtonGroup from '@/components/VvButtonGroup/VvButtonGroup.vue'
+import { argTypes, defaultArgs } from './ButtonGroup.settings'
 import { Default } from './ButtonGroup.stories'
-import { defaultArgs, argTypes } from './ButtonGroup.settings'
 
 const meta: Meta<typeof VvButtonGroup> = {
-	title: 'Components/ButtonGroup/Toggle',
-	component: VvButtonGroup,
-	args: defaultArgs,
-	argTypes,
+    title: 'Components/ButtonGroup/Toggle',
+    component: VvButtonGroup,
+    args: defaultArgs,
+    argTypes,
 }
 
 export default meta
@@ -15,27 +15,27 @@ export default meta
 type Story = StoryObj<typeof VvButtonGroup>
 
 export const Toggle: Story = {
-	...Default,
-	args: {
-		...Default.args,
-		toggle: true,
-	},
+    ...Default,
+    args: {
+        ...Default.args,
+        toggle: true,
+    },
 }
 
 export const Multiple: Story = {
-	...Default,
-	args: {
-		...Default.args,
-		toggle: true,
-		multiple: true,
-	},
+    ...Default,
+    args: {
+        ...Default.args,
+        toggle: true,
+        multiple: true,
+    },
 }
 
 export const Unselectable: Story = {
-	...Default,
-	args: {
-		...Default.args,
-		toggle: true,
-		unselectable: true,
-	},
+    ...Default,
+    args: {
+        ...Default.args,
+        toggle: true,
+        unselectable: true,
+    },
 }

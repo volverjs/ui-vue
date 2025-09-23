@@ -1,23 +1,21 @@
 import type { StorybookConfig } from '@storybook/vue3-vite'
 
 const config: StorybookConfig = {
-	stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
-	addons: [
-		'@storybook/addon-links',
-		'@storybook/addon-essentials',
-		'@storybook/addon-interactions',
-		'@storybook/addon-a11y',
-		'storybook-dark-mode',
-		'storybook-version',
-	],
-	framework: {
-		name: '@storybook/vue3-vite',
-		options: {},
-	},
-	staticDirs: ['./static'],
-	docs: {
-		autodocs: 'tag',
-	},
+    stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
+    addons: [
+        '@storybook/addon-links',
+        '@storybook/addon-a11y',
+        '@vueless/storybook-dark-mode',
+        '@storybook/addon-docs',
+    ],
+
+    framework: {
+        name: '@storybook/vue3-vite',
+        options: {},
+    },
+
+    staticDirs: ['./static'],
 }
 
 export default config

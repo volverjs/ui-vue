@@ -1,0 +1,77 @@
+import type { VvIconProps } from '../VvIcon'
+import { ACTION_ICONS } from '../VvIcon'
+import VvIcon from '../VvIcon/VvIcon.vue'
+
+export default defineComponent({
+    components: {
+        VvIcon,
+    },
+    props: {
+        inputType: {
+            type: String as PropType<'input-text'>,
+            default: 'input-text',
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        labelShow: {
+            type: String,
+            default: 'Show password',
+        },
+        labelHide: {
+            type: String,
+            default: 'Hide password',
+        },
+        iconShow: {
+            type: [String, Object] as PropType<string | VvIconProps>,
+            default: ACTION_ICONS.showPassword,
+        },
+        iconHide: {
+            type: [String, Object] as PropType<string | VvIconProps>,
+            default: ACTION_ICONS.hidePassword,
+        },
+    },
+    emits: ['toggle-password'],
+    setup(props, { emit }) {
+        const active = ref(false)
+        const activeIcon = computed(() =>
+            active.value ? props.iconHide : props.iconShow,
+        )
+        const { hasIcon } = useComponentIcon(activeIcon)
+
+        function onClick(e: Event) {
+            e?.stopPropagation()
+            if (!props.disabled) {
+                active.value = !active.value
+                emit('toggle-password', active.value)
+            }
+        }
+
+        return {
+            active,
+            activeIcon,
+            hasIcon,
+            onClick,
+        }
+    },
+    render() {
+        const icon = this.hasIcon
+            ? h(VvIcon, {
+                    ...this.hasIcon,
+                    class: `vv-${this.inputType}__icon`,
+                })
+            : undefined
+        return h(
+            'button',
+            {
+                disabled: this.disabled,
+                class: `vv-${this.inputType}__action`,
+                ariaLabel: this.active ? this.labelHide : this.labelShow,
+                type: 'button',
+                onClick: this.onClick,
+            },
+            icon,
+        )
+    },
+})

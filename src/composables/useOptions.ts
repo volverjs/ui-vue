@@ -1,47 +1,56 @@
 import type { Option } from '../types/generic'
-import { get } from 'ts-dot-prop'
+import { getProperty } from 'dot-prop'
 
-// eslint-disable-next-line
 export function useOptions(props: any) {
-	const { options, labelKey, valueKey, disabledKey } = toRefs(props)
+    const { options, labelKey, valueKey, disabledKey } = toRefs(props)
 
-	// eslint-disable-next-line
-	const getOptionLabel = (option: string | Option): string => {
-		if (typeof option !== 'object' && option !== null) return option
+    const getOptionLabel = <T extends string | Option>(option: T): string => {
+        if (typeof option === 'string') {
+            return option
+        }
+        if (typeof labelKey.value === 'function') {
+            return labelKey.value(option)
+        }
+        return String(
+            labelKey.value ? getProperty(option, labelKey.value) : option,
+        )
+    }
 
-		return String(
-			typeof labelKey.value === 'function'
-				? labelKey.value(option)
-				: get(option, labelKey.value),
-		)
-	}
+    const getOptionValue = <T extends string | Option>(option: T) => {
+        if (typeof option === 'string') {
+            return option
+        }
+        if (typeof valueKey.value === 'function') {
+            return valueKey.value(option)
+        }
+        return valueKey.value ? getProperty(option, valueKey.value) : option
+    }
 
-	const getOptionValue = (option: string | Option) => {
-		if (typeof option !== 'object' && option !== null) return option
+    const isOptionDisabled = <T extends string | Option>(option: T): boolean => {
+        if (typeof option === 'string') {
+            return false
+        }
+        if (typeof disabledKey.value === 'function') {
+            return disabledKey.value(option)
+        }
+        return disabledKey.value ? Boolean(getProperty(option, disabledKey.value)) : false
+    }
 
-		return typeof valueKey.value === 'function'
-			? valueKey.value(option)
-			: get(option, valueKey.value)
-	}
+    const getOptionGrouped = <T extends string | Option>(option: T) => {
+        if (typeof option == 'string') {
+            return []
+        }
+        if (typeof option === 'object' && option && 'options' in option) {
+            return option.options as T[]
+        }
+        return []
+    }
 
-	const getOptionDisabled = (option: string | Option): boolean => {
-		if (typeof option !== 'object' && option !== null) return false
-
-		return typeof disabledKey.value === 'function'
-			? disabledKey.value(option)
-			: get(option, disabledKey.value)
-	}
-
-	const getOptionGrouped = (option: string | Option) => {
-		if (typeof option !== 'object' && option !== null) return []
-		return option.options || []
-	}
-
-	return {
-		options,
-		getOptionLabel,
-		getOptionValue,
-		getOptionDisabled,
-		getOptionGrouped,
-	}
+    return {
+        options,
+        getOptionLabel,
+        getOptionValue,
+        isOptionDisabled,
+        getOptionGrouped,
+    }
 }

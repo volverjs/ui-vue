@@ -1,50 +1,82 @@
 import type { ExtractPropTypes } from 'vue'
-import { InputTextareaProps } from '../../props'
+import type { VvIconProps } from '../VvIcon'
+import { InputTextareaProps, StorageProps } from '../../props'
+import { ACTION_ICONS } from '../VvIcon'
 
 export const WRAP = {
-	hard: 'hard',
-	soft: 'soft',
+    hard: 'hard',
+    soft: 'soft',
 }
 
 export const SPELLCHECK = {
-	true: true,
-	false: false,
-	default: 'default',
+    true: true,
+    false: false,
+    default: 'default',
 }
 
-export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur', 'keyup']
+export const VvTextareaEvents = ['update:modelValue', 'focus', 'blur', 'keyup', 'suggestion:selected', 'suggestion:removed']
 
 export const VvTextareaProps = {
-	...InputTextareaProps,
-	/**
-	 * Textarea value
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#value
-	 */
-	modelValue: String,
-	/**
-	 * The visible width of the text control, in average character widths. If it is specified, it must be a positive integer. If it is not specified, the default value is 20.
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#cols
-	 */
-	cols: { type: [String, Number], default: 20 },
-	/**
-	 * The number of visible text lines for the control. If it is specified, it must be a positive integer. If it is not specified, the default value is 2.
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#rows
-	 */
-	rows: { type: [String, Number], default: 2 },
-	/**
-	 * Indicates how the control should wrap the value for form submission.
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#wrap
-	 */
-	wrap: { type: String, default: WRAP.soft },
-	/**
-	 * Specifies whether the <textarea> is subject to spell checking by the underlying browser/OS.
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#wrap
-	 */
-	spellcheck: { type: [Boolean, String], default: SPELLCHECK.default },
-	/**
-	 * If true, the textarea will be resizable
-	 */
-	resizable: Boolean,
+    ...InputTextareaProps,
+    ...StorageProps,
+    /**
+     * Textarea value
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#value
+     */
+    modelValue: String,
+    /**
+     * The visible width of the text control, in average character widths. If it is specified, it must be a positive integer. If it is not specified, the default value is 20.
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#cols
+     */
+    cols: { type: [String, Number], default: 20 },
+    /**
+     * The number of visible text lines for the control. If it is specified, it must be a positive integer. If it is not specified, the default value is 2.
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#rows
+     */
+    rows: { type: [String, Number], default: 2 },
+    /**
+     * Indicates how the control should wrap the value for form submission.
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#wrap
+     */
+    wrap: { type: String, default: WRAP.soft },
+    /**
+     * Specifies whether the <textarea> is subject to spell checking by the underlying browser/OS.
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#wrap
+     */
+    spellcheck: { type: [Boolean, String], default: SPELLCHECK.default },
+    /**
+     * VvIcon name for remove suggestion button
+     * @see VvIcon
+     */
+    iconRemoveSuggestion: {
+        type: [String, Object] as PropType<string | VvIconProps>,
+        default: ACTION_ICONS.remove,
+    },
+    /**
+     * Label for remove suggestion button
+     */
+    labelRemoveSuggestion: {
+        type: String,
+        default: 'Remove suggestion',
+    },
+    /**
+     * Maximum number of suggestions
+     */
+    maxSuggestions: {
+        type: Number,
+        default: 5,
+    },
+    /**
+     * Select input text on focus
+     */
+    selectOnFocus: {
+        type: Boolean,
+        default: false,
+    },
+    /**
+     * If true, the textarea will be resizable
+     */
+    resizable: Boolean,
 }
 
 export type VvTextareaPropsTypes = ExtractPropTypes<typeof VvTextareaProps>

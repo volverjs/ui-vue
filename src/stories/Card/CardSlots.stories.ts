@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvCard from '@/components/VvCard/VvCard.vue'
-import { defaulTest } from './Card.test'
-import { defaultArgs, argTypes } from './Card.settings'
+import { argTypes, defaultArgs } from './Card.settings'
+import { defaultTest } from './Card.test'
 
 const meta: Meta<typeof VvCard> = {
-	title: 'Components/Card/Slots',
-	component: VvCard,
-	args: defaultArgs,
-	argTypes,
+    title: 'Components/Card/Slots',
+    component: VvCard,
+    args: defaultArgs,
+    argTypes,
 }
 
 export default meta
@@ -15,15 +15,15 @@ export default meta
 type Story = StoryObj<typeof VvCard>
 
 const Template: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvCard },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvCard },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
 			<vv-card v-bind="args" data-testId="card">
 				<template #default v-if="args.default"><div v-html="args.default"></div></template>
 				<template #header v-if="args.header"><div v-html="args.header"></div></template>
@@ -31,51 +31,51 @@ const Template: Story = {
 				<template #footer v-if="args.footer"><div v-html="args.footer"></div></template>
 			</vv-card>
 		`,
-	}),
-	play: defaulTest,
+    }),
+    play: defaultTest,
 }
 
 export const Default: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvCard },
-		setup() {
-			return { args }
-		},
-		template: /*html*/ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvCard },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
 		<vv-card v-bind="args" class="max-w-max" data-testId="card">
 			<picture>
 				<img class="aspect-photo h-300" src="https://unsplash.it/300" alt="Card picture"/>
 			</picture>
 		</vv-card>
 	`,
-	}),
-	play: defaulTest,
+    }),
+    play: defaultTest,
 }
 
 export const Header: Story = {
-	...Template,
-	args: {
-		...defaultArgs,
-		header: 'Header <em class="italic">slot!</em>',
-	},
+    ...Template,
+    args: {
+        ...defaultArgs,
+        header: 'Header <em class="italic">slot!</em>',
+    },
 }
 
 export const Content: Story = {
-	...Template,
-	args: {
-		...defaultArgs,
-		content:
+    ...Template,
+    args: {
+        ...defaultArgs,
+        content:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean turpis diam, tempor non sem ut, suscipit gravida mi.',
-	},
+    },
 }
 
 export const Footer: Story = {
-	...Template,
-	args: {
-		...defaultArgs,
-		footer: 'Footer <em class="italic">slot!</em>',
-	},
+    ...Template,
+    args: {
+        ...defaultArgs,
+        footer: 'Footer <em class="italic">slot!</em>',
+    },
 }

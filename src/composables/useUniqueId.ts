@@ -1,5 +1,6 @@
-import { nanoid } from 'nanoid'
 import type { Ref } from 'vue'
+import { useId } from 'vue'
 
-export const useUniqueId = (id?: Ref<string | number | undefined>) =>
-	computed(() => String(id?.value || nanoid()))
+export function useUniqueId(id?: Ref<string | number | undefined>) {
+    return computed(() => String(id?.value || useId()))
+}

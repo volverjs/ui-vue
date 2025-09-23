@@ -1,40 +1,32 @@
 import type { Directive, DirectiveBinding } from 'vue'
+import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
+import { useDropdownContextmenu } from '@/composables'
 
 const contextmenu: Directive = {
-	beforeUpdate(el: HTMLElement, binding: DirectiveBinding) {
-		const clientX = ref(0)
-		const clientY = ref(0)
-		const virtualEl = {
-			getBoundingClientRect() {
-				return {
-					width: 0,
-					height: 0,
-					x: clientX.value,
-					y: clientY.value,
-					top: clientY.value,
-					left: clientX.value,
-					right: clientX.value,
-					bottom: clientY.value,
-				}
-			},
-		}
-		if (binding.value?.init) {
-			binding.value.init?.(virtualEl)
-		}
-		el.addEventListener(
-			'contextmenu',
-			function (ev) {
-				if (binding.value?.show) {
-					ev.preventDefault()
-					clientX.value = ev.clientX
-					clientY.value = ev.clientY
-					binding.value.show?.()
-					return false
-				}
-			},
-			false,
-		)
-	},
+    beforeUpdate(el, binding: DirectiveBinding) {
+        const { onContextmenu, onScroll, getBoundingClientRect } = useDropdownContextmenu(binding as unknown as Ref<typeof VvDropdown>)
+        binding.value.init({
+            getBoundingClientRect,
+        })
+        el.addEventListener(
+            'contextmenu',
+            onContextmenu,
+            false,
+        )
+        const scrollContainerEl = findScrollContainer(binding.value.$el)
+        if (scrollContainerEl) {
+            scrollContainerEl.addEventListener('scroll', onScroll)
+        }
+        el.additionalData = { onContextmenu, onScroll, scrollContainerEl }
+    },
+    beforeUnmount(el) {
+        if (el?.additionalData?.onContextmenu) {
+            el.removeEventListener('contextmenu', el.additionalData.onContextmenu)
+        }
+        if (el?.additionalData?.onScroll && el?.additionalData?.scrollContainerEl) {
+            el.additionalData.scrollContainerEl.removeEventListener('scroll', el.additionalData.onScroll)
+        }
+    },
 }
 
 export default contextmenu

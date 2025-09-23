@@ -1,16 +1,11 @@
 {
   "name": "@volverjs/ui-vue",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.17.1",
   "description": "@volverjs/ui-vue is a lightweight Vue 3 component library to accompany @volverjs/style.",
-  "author": "24/Consulting",
+  "author": "8 wave S.r.l.",
   "license": "MIT",
-  "keywords": [
-    "vue",
-    "design-system",
-    "volver",
-    "volverjs",
-    "components library",
-    "ui"
-  ],
   "homepage": "https://volverjs.github.io/ui-vue",
   "repository": {
     "type": "git",
@@ -19,251 +14,14 @@
   "bugs": {
     "url": "https://github.com/volverjs/ui-vue/issues"
   },
-  "version": "0.0.0",
-  "engines": {
-    "node": ">= 16.x"
-  },
-  "packageManager": "pnpm@8.7.0",
-  "scripts": {
-    "dev": "storybook dev -p 6006",
-    "styleguide": "storybook build",
-    "build": "npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
-    "hot": "node ./scripts/build.js --hot",
-    "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.ts,.mdx --fix",
-    "generate-icons": "ts-node-esm ./scripts/icons.ts --srcPath=src/assets/icons",
-    "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly",
-    "test-local": "test-storybook --stories-json",
-    "test-remote": "test-storybook --stories-json --url https://volver-ui-vue.vercel.app",
-    "credits": "npx @opengovsg/credits-generator"
-  },
-  "type": "module",
-  "main": "./dist/Volver.umd.js",
-  "module": "./dist/Volver.es.js",
-  "types": "./dist/index.d.ts",
-  "bin": {
-    "generate-icons": "./bin/icons.js"
-  },
-  "files": [
-    "bin",
-    "dist",
-    "src",
-    "*.d.ts"
+  "keywords": [
+    "vue",
+    "design-system",
+    "volver",
+    "volverjs",
+    "components library",
+    "ui"
   ],
-  "dependencies": {
-    "@floating-ui/vue": "^1.0.2",
-    "@iconify/tools": "^3.0.5",
-    "@iconify/vue": "^4.1.1",
-    "@vueuse/core": "^10.4.1",
-    "jsdom": "^22.1.0",
-    "mitt": "^3.0.1",
-    "nanoid": "^4.0.2",
-    "ts-dot-prop": "^2.1.3",
-    "vue": "^3.3.4",
-    "vue-imask": "^7.1.3"
-  },
-  "peerDependencies": {
-    "@volverjs/style": "0.*"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.22.11",
-    "@babel/preset-env": "^7.22.10",
-    "@babel/preset-typescript": "^7.22.11",
-    "@iconify/types": "^2.0.0",
-    "@iconify/utils": "^2.1.9",
-    "@mdx-js/react": "^2.3.0",
-    "@rushstack/eslint-patch": "^1.3.3",
-    "@storybook/addon-a11y": "^7.4.0",
-    "@storybook/addon-actions": "^7.4.0",
-    "@storybook/addon-docs": "^7.4.0",
-    "@storybook/addon-essentials": "^7.4.0",
-    "@storybook/addon-interactions": "^7.4.0",
-    "@storybook/addon-links": "^7.4.0",
-    "@storybook/channel-postmessage": "^7.4.0",
-    "@storybook/channel-websocket": "^7.4.0",
-    "@storybook/cli": "^7.4.0",
-    "@storybook/client-api": "^7.4.0",
-    "@storybook/client-logger": "^7.4.0",
-    "@storybook/core-common": "^7.4.0",
-    "@storybook/jest": "^0.2.2",
-    "@storybook/preview-api": "^7.4.0",
-    "@storybook/preview-web": "^7.4.0",
-    "@storybook/test-runner": "^0.13.0",
-    "@storybook/testing-library": "^0.2.0",
-    "@storybook/vue3": "^7.4.0",
-    "@storybook/vue3-vite": "^7.4.0",
-    "@tsconfig/node18": "^18.2.1",
-    "@types/jest-axe": "^3.5.5",
-    "@types/jsdom": "^21.1.2",
-    "@types/node": "^20.5.7",
-    "@types/react": "^18.2.21",
-    "@types/yargs": "^17.0.24",
-    "@vitejs/plugin-vue": "^4.3.4",
-    "@volverjs/style": "0.1.12-beta.4",
-    "@vue/compiler-sfc": "^3.3.4",
-    "@vue/eslint-config-prettier": "^8.0.0",
-    "@vue/eslint-config-typescript": "^11.0.3",
-    "@vue/test-utils": "^2.4.1",
-    "@vue/tsconfig": "^0.4.0",
-    "change-case": "^4.1.2",
-    "eslint": "^8.48.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-mdx": "^2.2.0",
-    "eslint-plugin-mdx": "^2.2.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-storybook": "^0.6.13",
-    "eslint-plugin-vue": "^9.17.0",
-    "glob": "7.2.3",
-    "jest-axe": "^8.0.0",
-    "jest-diff": "^29.6.4",
-    "jest-get-type": "^29.6.3",
-    "jsdom": "^22.1.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^3.0.3",
-    "pretty-format": "^29.6.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "remark": "^14.0.3",
-    "sass": "^1.66.1",
-    "storybook": "^7.4.0",
-    "storybook-addon-markdown-docs": "^2.0.0",
-    "storybook-dark-mode": "^3.0.1",
-    "storybook-version": "^0.1.1",
-    "terser": "^5.19.3",
-    "ts-node": "^10.9.1",
-    "typescript": "~5.2.2",
-    "unplugin-auto-import": "^0.16.6",
-    "unplugin-vue-components": "^0.25.1",
-    "vite": "^4.4.9",
-    "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-externalize-deps": "^0.7.0",
-    "vue-tsc": "^1.8.8",
-    "yargs": "^17.7.2"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dist/index.d.ts"
-      ],
-      "resolvers/unplugin": [
-        "dist/resolvers/unplugin.d.ts"
-      ],
-      "icons": [
-        "dist/icons.d.ts"
-      ],
-      "directives": [
-        "dist/directives/index.d.ts"
-      ],
-      "v-contextmenu": [
-        "dist/directives/v-contextmenu.d.ts"
-      ],
-      "v-tooltip": [
-        "dist/directives/v-tooltip.d.ts"
-      ],
-      "composables": [
-        "dist/composables/index.d.ts"
-      ],
-      "components": [
-        "dist/components/index.d.ts"
-      ],
-      "vv-accordion": [
-        "dist/components/VvAccordion/VvAccordion.vue.d.ts"
-      ],
-      "vv-accordion-group": [
-        "dist/components/VvAccordionGroup/VvAccordionGroup.vue.d.ts"
-      ],
-      "vv-action": [
-        "dist/components/VvAction/VvAction.vue.d.ts"
-      ],
-      "vv-alert": [
-        "dist/components/VvAlert/VvAlert.vue.d.ts"
-      ],
-      "vv-alert-group": [
-        "dist/components/VvAlertGroup/VvAlertGroup.vue.d.ts"
-      ],
-      "vv-avatar": [
-        "dist/components/VvAvatar/VvAvatar.vue.d.ts"
-      ],
-      "vv-avatar-group": [
-        "dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts"
-      ],
-      "vv-badge": [
-        "dist/components/VvBadge/VvBadge.vue.d.ts"
-      ],
-      "vv-breadcrumb": [
-        "dist/components/VvBreadcrumb/VvBreadcrumb.vue.d.ts"
-      ],
-      "vv-button": [
-        "dist/components/VvButton/VvButton.vue.d.ts"
-      ],
-      "vv-button-group": [
-        "dist/components/VvButtonGroup/VvButtonGroup.vue.d.ts"
-      ],
-      "vv-card": [
-        "dist/components/VvCard/VvCard.vue.d.ts"
-      ],
-      "vv-checkbox": [
-        "dist/components/VvCheckbox/VvCheckbox.vue.d.ts"
-      ],
-      "vv-checkbox-group": [
-        "dist/components/VvCheckboxGroup/VvCheckboxGroup.vue.d.ts"
-      ],
-      "vv-combobox": [
-        "dist/components/VvCombobox/VvCombobox.vue.d.ts"
-      ],
-      "vv-dialog": [
-        "dist/components/VvDialog/VvDialog.vue.d.ts"
-      ],
-      "vv-dropdown": [
-        "dist/components/VvDropdown/VvDropdown.vue.d.ts"
-      ],
-      "vv-dropdown-action": [
-        "dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts"
-      ],
-      "vv-dropdown-item": [
-        "dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts"
-      ],
-      "vv-dropdown-optgroup": [
-        "dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts"
-      ],
-      "vv-dropdown-option": [
-        "dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts"
-      ],
-      "vv-icon": [
-        "dist/components/VvIcon/VvIcon.vue.d.ts"
-      ],
-      "vv-input-text": [
-        "dist/components/VvInputText/VvInputText.vue.d.ts"
-      ],
-      "vv-nav": [
-        "dist/components/VvNav/VvNav.vue.d.ts"
-      ],
-      "vv-nav-item-title": [
-        "dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts"
-      ],
-      "vv-progress": [
-        "dist/components/VvProgress/VvProgress.vue.d.ts"
-      ],
-      "vv-radio": [
-        "dist/components/VvRadio/VvRadio.vue.d.ts"
-      ],
-      "vv-radio-group": [
-        "dist/components/VvRadioGroup/VvRadioGroup.vue.d.ts"
-      ],
-      "vv-select": [
-        "dist/components/VvSelect/VvSelect.vue.d.ts"
-      ],
-      "vv-tab": [
-        "dist/components/VvTab/VvTab.vue.d.ts"
-      ],
-      "vv-textarea": [
-        "dist/components/VvTextarea/VvTextarea.vue.d.ts"
-      ],
-      "vv-tooltip": [
-        "dist/components/VvTooltip/VvTooltip.vue.d.ts"
-      ]
-    }
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -287,15 +45,15 @@
       "import": "./dist/directives/index.es.js",
       "default": "./dist/directives/index.umd.js"
     },
-    "./v-contextmenu": {
-      "types": "./dist/directives/v-contextmenu.d.ts",
-      "import": "./dist/directives/v-contextmenu.es.js",
-      "default": "./dist/directives/v-contextmenu.umd.js"
-    },
     "./v-tooltip": {
       "types": "./dist/directives/v-tooltip.d.ts",
       "import": "./dist/directives/v-tooltip.es.js",
       "default": "./dist/directives/v-tooltip.umd.js"
+    },
+    "./v-contextmenu": {
+      "types": "./dist/directives/v-contextmenu.d.ts",
+      "import": "./dist/directives/v-contextmenu.es.js",
+      "default": "./dist/directives/v-contextmenu.umd.js"
     },
     "./composables": {
       "types": "./dist/composables/index.d.ts",
@@ -307,165 +65,398 @@
       "import": "./dist/components/index.es.js",
       "default": "./dist/components/index.umd.js"
     },
-    "./vv-accordion": {
-      "types": "./dist/components/VvAccordion/VvAccordion.vue.d.ts",
-      "import": "./dist/components/VvAccordion/VvAccordion.es.js",
-      "default": "./dist/components/VvAccordion/VvAccordion.umd.js"
-    },
-    "./vv-accordion-group": {
-      "types": "./dist/components/VvAccordionGroup/VvAccordionGroup.vue.d.ts",
-      "import": "./dist/components/VvAccordionGroup/VvAccordionGroup.es.js",
-      "default": "./dist/components/VvAccordionGroup/VvAccordionGroup.umd.js"
-    },
-    "./vv-action": {
-      "types": "./dist/components/VvAction/VvAction.vue.d.ts",
-      "import": "./dist/components/VvAction/VvAction.es.js",
-      "default": "./dist/components/VvAction/VvAction.umd.js"
-    },
-    "./vv-alert": {
-      "types": "./dist/components/VvAlert/VvAlert.vue.d.ts",
-      "import": "./dist/components/VvAlert/VvAlert.es.js",
-      "default": "./dist/components/VvAlert/VvAlert.umd.js"
-    },
-    "./vv-alert-group": {
-      "types": "./dist/components/VvAlertGroup/VvAlertGroup.vue.d.ts",
-      "import": "./dist/components/VvAlertGroup/VvAlertGroup.es.js",
-      "default": "./dist/components/VvAlertGroup/VvAlertGroup.umd.js"
-    },
-    "./vv-avatar": {
-      "types": "./dist/components/VvAvatar/VvAvatar.vue.d.ts",
-      "import": "./dist/components/VvAvatar/VvAvatar.es.js",
-      "default": "./dist/components/VvAvatar/VvAvatar.umd.js"
-    },
-    "./vv-avatar-group": {
-      "types": "./dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts",
-      "import": "./dist/components/VvAvatarGroup/VvAvatarGroup.es.js",
-      "default": "./dist/components/VvAvatarGroup/VvAvatarGroup.umd.js"
-    },
-    "./vv-badge": {
-      "types": "./dist/components/VvBadge/VvBadge.vue.d.ts",
-      "import": "./dist/components/VvBadge/VvBadge.es.js",
-      "default": "./dist/components/VvBadge/VvBadge.umd.js"
-    },
-    "./vv-breadcrumb": {
-      "types": "./dist/components/VvBreadcrumb/VvBreadcrumb.vue.d.ts",
-      "import": "./dist/components/VvBreadcrumb/VvBreadcrumb.es.js",
-      "default": "./dist/components/VvBreadcrumb/VvBreadcrumb.umd.js"
-    },
-    "./vv-button": {
-      "types": "./dist/components/VvButton/VvButton.vue.d.ts",
-      "import": "./dist/components/VvButton/VvButton.es.js",
-      "default": "./dist/components/VvButton/VvButton.umd.js"
-    },
-    "./vv-button-group": {
-      "types": "./dist/components/VvButtonGroup/VvButtonGroup.vue.d.ts",
-      "import": "./dist/components/VvButtonGroup/VvButtonGroup.es.js",
-      "default": "./dist/components/VvButtonGroup/VvButtonGroup.umd.js"
-    },
-    "./vv-card": {
-      "types": "./dist/components/VvCard/VvCard.vue.d.ts",
-      "import": "./dist/components/VvCard/VvCard.es.js",
-      "default": "./dist/components/VvCard/VvCard.umd.js"
-    },
-    "./vv-checkbox": {
-      "types": "./dist/components/VvCheckbox/VvCheckbox.vue.d.ts",
-      "import": "./dist/components/VvCheckbox/VvCheckbox.es.js",
-      "default": "./dist/components/VvCheckbox/VvCheckbox.umd.js"
-    },
-    "./vv-checkbox-group": {
-      "types": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.vue.d.ts",
-      "import": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.es.js",
-      "default": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.umd.js"
-    },
-    "./vv-combobox": {
-      "types": "./dist/components/VvCombobox/VvCombobox.vue.d.ts",
-      "import": "./dist/components/VvCombobox/VvCombobox.es.js",
-      "default": "./dist/components/VvCombobox/VvCombobox.umd.js"
-    },
-    "./vv-dialog": {
-      "types": "./dist/components/VvDialog/VvDialog.vue.d.ts",
-      "import": "./dist/components/VvDialog/VvDialog.es.js",
-      "default": "./dist/components/VvDialog/VvDialog.umd.js"
-    },
-    "./vv-dropdown": {
-      "types": "./dist/components/VvDropdown/VvDropdown.vue.d.ts",
-      "import": "./dist/components/VvDropdown/VvDropdown.es.js",
-      "default": "./dist/components/VvDropdown/VvDropdown.umd.js"
-    },
-    "./vv-dropdown-action": {
-      "types": "./dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts",
-      "import": "./dist/components/VvDropdownAction/VvDropdownAction.es.js",
-      "default": "./dist/components/VvDropdownAction/VvDropdownAction.umd.js"
-    },
-    "./vv-dropdown-item": {
-      "types": "./dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts",
-      "import": "./dist/components/VvDropdownItem/VvDropdownItem.es.js",
-      "default": "./dist/components/VvDropdownItem/VvDropdownItem.umd.js"
-    },
-    "./vv-dropdown-optgroup": {
-      "types": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts",
-      "import": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.es.js",
-      "default": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.umd.js"
-    },
-    "./vv-dropdown-option": {
-      "types": "./dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts",
-      "import": "./dist/components/VvDropdownOption/VvDropdownOption.es.js",
-      "default": "./dist/components/VvDropdownOption/VvDropdownOption.umd.js"
-    },
-    "./vv-icon": {
-      "types": "./dist/components/VvIcon/VvIcon.vue.d.ts",
-      "import": "./dist/components/VvIcon/VvIcon.es.js",
-      "default": "./dist/components/VvIcon/VvIcon.umd.js"
-    },
-    "./vv-input-text": {
-      "types": "./dist/components/VvInputText/VvInputText.vue.d.ts",
-      "import": "./dist/components/VvInputText/VvInputText.es.js",
-      "default": "./dist/components/VvInputText/VvInputText.umd.js"
-    },
-    "./vv-nav": {
-      "types": "./dist/components/VvNav/VvNav.vue.d.ts",
-      "import": "./dist/components/VvNav/VvNav.es.js",
-      "default": "./dist/components/VvNav/VvNav.umd.js"
-    },
-    "./vv-nav-item-title": {
-      "types": "./dist/components/VvNavItemTitle/VvNavItemTitle.vue.d.ts",
-      "import": "./dist/components/VvNavItemTitle/VvNavItemTitle.es.js",
-      "default": "./dist/components/VvNavItemTitle/VvNavItemTitle.umd.js"
-    },
-    "./vv-progress": {
-      "types": "./dist/components/VvProgress/VvProgress.vue.d.ts",
-      "import": "./dist/components/VvProgress/VvProgress.es.js",
-      "default": "./dist/components/VvProgress/VvProgress.umd.js"
-    },
-    "./vv-radio": {
-      "types": "./dist/components/VvRadio/VvRadio.vue.d.ts",
-      "import": "./dist/components/VvRadio/VvRadio.es.js",
-      "default": "./dist/components/VvRadio/VvRadio.umd.js"
-    },
-    "./vv-radio-group": {
-      "types": "./dist/components/VvRadioGroup/VvRadioGroup.vue.d.ts",
-      "import": "./dist/components/VvRadioGroup/VvRadioGroup.es.js",
-      "default": "./dist/components/VvRadioGroup/VvRadioGroup.umd.js"
-    },
-    "./vv-select": {
-      "types": "./dist/components/VvSelect/VvSelect.vue.d.ts",
-      "import": "./dist/components/VvSelect/VvSelect.es.js",
-      "default": "./dist/components/VvSelect/VvSelect.umd.js"
-    },
-    "./vv-tab": {
-      "types": "./dist/components/VvTab/VvTab.vue.d.ts",
-      "import": "./dist/components/VvTab/VvTab.es.js",
-      "default": "./dist/components/VvTab/VvTab.umd.js"
+    "./vv-tooltip": {
+      "types": "./dist/components/VvTooltip/VvTooltip.vue.d.ts",
+      "import": "./dist/components/VvTooltip/VvTooltip.es.js",
+      "default": "./dist/components/VvTooltip/VvTooltip.umd.js"
     },
     "./vv-textarea": {
       "types": "./dist/components/VvTextarea/VvTextarea.vue.d.ts",
       "import": "./dist/components/VvTextarea/VvTextarea.es.js",
       "default": "./dist/components/VvTextarea/VvTextarea.umd.js"
     },
-    "./vv-tooltip": {
-      "types": "./dist/components/VvTooltip/VvTooltip.vue.d.ts",
-      "import": "./dist/components/VvTooltip/VvTooltip.es.js",
-      "default": "./dist/components/VvTooltip/VvTooltip.umd.js"
+    "./vv-tab": {
+      "types": "./dist/components/VvTab/VvTab.vue.d.ts",
+      "import": "./dist/components/VvTab/VvTab.es.js",
+      "default": "./dist/components/VvTab/VvTab.umd.js"
+    },
+    "./vv-select": {
+      "types": "./dist/components/VvSelect/VvSelect.vue.d.ts",
+      "import": "./dist/components/VvSelect/VvSelect.es.js",
+      "default": "./dist/components/VvSelect/VvSelect.umd.js"
+    },
+    "./vv-radio-group": {
+      "types": "./dist/components/VvRadioGroup/VvRadioGroup.vue.d.ts",
+      "import": "./dist/components/VvRadioGroup/VvRadioGroup.es.js",
+      "default": "./dist/components/VvRadioGroup/VvRadioGroup.umd.js"
+    },
+    "./vv-radio": {
+      "types": "./dist/components/VvRadio/VvRadio.vue.d.ts",
+      "import": "./dist/components/VvRadio/VvRadio.es.js",
+      "default": "./dist/components/VvRadio/VvRadio.umd.js"
+    },
+    "./vv-progress": {
+      "types": "./dist/components/VvProgress/VvProgress.vue.d.ts",
+      "import": "./dist/components/VvProgress/VvProgress.es.js",
+      "default": "./dist/components/VvProgress/VvProgress.umd.js"
+    },
+    "./vv-nav-separator": {
+      "types": "./dist/components/VvNavSeparator/VvNavSeparator.vue.d.ts",
+      "import": "./dist/components/VvNavSeparator/VvNavSeparator.es.js",
+      "default": "./dist/components/VvNavSeparator/VvNavSeparator.umd.js"
+    },
+    "./vv-nav-item": {
+      "types": "./dist/components/VvNavItem/VvNavItem.vue.d.ts",
+      "import": "./dist/components/VvNavItem/VvNavItem.es.js",
+      "default": "./dist/components/VvNavItem/VvNavItem.umd.js"
+    },
+    "./vv-nav": {
+      "types": "./dist/components/VvNav/VvNav.vue.d.ts",
+      "import": "./dist/components/VvNav/VvNav.es.js",
+      "default": "./dist/components/VvNav/VvNav.umd.js"
+    },
+    "./vv-input-text": {
+      "types": "./dist/components/VvInputText/VvInputText.vue.d.ts",
+      "import": "./dist/components/VvInputText/VvInputText.es.js",
+      "default": "./dist/components/VvInputText/VvInputText.umd.js"
+    },
+    "./vv-input-file": {
+      "types": "./dist/components/VvInputFile/VvInputFile.vue.d.ts",
+      "import": "./dist/components/VvInputFile/VvInputFile.es.js",
+      "default": "./dist/components/VvInputFile/VvInputFile.umd.js"
+    },
+    "./vv-icon": {
+      "types": "./dist/components/VvIcon/VvIcon.vue.d.ts",
+      "import": "./dist/components/VvIcon/VvIcon.es.js",
+      "default": "./dist/components/VvIcon/VvIcon.umd.js"
+    },
+    "./vv-dropdown-option": {
+      "types": "./dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts",
+      "import": "./dist/components/VvDropdownOption/VvDropdownOption.es.js",
+      "default": "./dist/components/VvDropdownOption/VvDropdownOption.umd.js"
+    },
+    "./vv-dropdown-optgroup": {
+      "types": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts",
+      "import": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.es.js",
+      "default": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.umd.js"
+    },
+    "./vv-dropdown-item": {
+      "types": "./dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts",
+      "import": "./dist/components/VvDropdownItem/VvDropdownItem.es.js",
+      "default": "./dist/components/VvDropdownItem/VvDropdownItem.umd.js"
+    },
+    "./vv-dropdown-action": {
+      "types": "./dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts",
+      "import": "./dist/components/VvDropdownAction/VvDropdownAction.es.js",
+      "default": "./dist/components/VvDropdownAction/VvDropdownAction.umd.js"
+    },
+    "./vv-dropdown": {
+      "types": "./dist/components/VvDropdown/VvDropdown.vue.d.ts",
+      "import": "./dist/components/VvDropdown/VvDropdown.es.js",
+      "default": "./dist/components/VvDropdown/VvDropdown.umd.js"
+    },
+    "./vv-dialog": {
+      "types": "./dist/components/VvDialog/VvDialog.vue.d.ts",
+      "import": "./dist/components/VvDialog/VvDialog.es.js",
+      "default": "./dist/components/VvDialog/VvDialog.umd.js"
+    },
+    "./vv-combobox": {
+      "types": "./dist/components/VvCombobox/VvCombobox.vue.d.ts",
+      "import": "./dist/components/VvCombobox/VvCombobox.es.js",
+      "default": "./dist/components/VvCombobox/VvCombobox.umd.js"
+    },
+    "./vv-checkbox-group": {
+      "types": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.vue.d.ts",
+      "import": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.es.js",
+      "default": "./dist/components/VvCheckboxGroup/VvCheckboxGroup.umd.js"
+    },
+    "./vv-checkbox": {
+      "types": "./dist/components/VvCheckbox/VvCheckbox.vue.d.ts",
+      "import": "./dist/components/VvCheckbox/VvCheckbox.es.js",
+      "default": "./dist/components/VvCheckbox/VvCheckbox.umd.js"
+    },
+    "./vv-card": {
+      "types": "./dist/components/VvCard/VvCard.vue.d.ts",
+      "import": "./dist/components/VvCard/VvCard.es.js",
+      "default": "./dist/components/VvCard/VvCard.umd.js"
+    },
+    "./vv-button-group": {
+      "types": "./dist/components/VvButtonGroup/VvButtonGroup.vue.d.ts",
+      "import": "./dist/components/VvButtonGroup/VvButtonGroup.es.js",
+      "default": "./dist/components/VvButtonGroup/VvButtonGroup.umd.js"
+    },
+    "./vv-button": {
+      "types": "./dist/components/VvButton/VvButton.vue.d.ts",
+      "import": "./dist/components/VvButton/VvButton.es.js",
+      "default": "./dist/components/VvButton/VvButton.umd.js"
+    },
+    "./vv-breadcrumb": {
+      "types": "./dist/components/VvBreadcrumb/VvBreadcrumb.vue.d.ts",
+      "import": "./dist/components/VvBreadcrumb/VvBreadcrumb.es.js",
+      "default": "./dist/components/VvBreadcrumb/VvBreadcrumb.umd.js"
+    },
+    "./vv-badge": {
+      "types": "./dist/components/VvBadge/VvBadge.vue.d.ts",
+      "import": "./dist/components/VvBadge/VvBadge.es.js",
+      "default": "./dist/components/VvBadge/VvBadge.umd.js"
+    },
+    "./vv-avatar-group": {
+      "types": "./dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts",
+      "import": "./dist/components/VvAvatarGroup/VvAvatarGroup.es.js",
+      "default": "./dist/components/VvAvatarGroup/VvAvatarGroup.umd.js"
+    },
+    "./vv-avatar": {
+      "types": "./dist/components/VvAvatar/VvAvatar.vue.d.ts",
+      "import": "./dist/components/VvAvatar/VvAvatar.es.js",
+      "default": "./dist/components/VvAvatar/VvAvatar.umd.js"
+    },
+    "./vv-alert-group": {
+      "types": "./dist/components/VvAlertGroup/VvAlertGroup.vue.d.ts",
+      "import": "./dist/components/VvAlertGroup/VvAlertGroup.es.js",
+      "default": "./dist/components/VvAlertGroup/VvAlertGroup.umd.js"
+    },
+    "./vv-alert": {
+      "types": "./dist/components/VvAlert/VvAlert.vue.d.ts",
+      "import": "./dist/components/VvAlert/VvAlert.es.js",
+      "default": "./dist/components/VvAlert/VvAlert.umd.js"
+    },
+    "./vv-action": {
+      "types": "./dist/components/VvAction/VvAction.vue.d.ts",
+      "import": "./dist/components/VvAction/VvAction.es.js",
+      "default": "./dist/components/VvAction/VvAction.umd.js"
+    },
+    "./vv-accordion-group": {
+      "types": "./dist/components/VvAccordionGroup/VvAccordionGroup.vue.d.ts",
+      "import": "./dist/components/VvAccordionGroup/VvAccordionGroup.es.js",
+      "default": "./dist/components/VvAccordionGroup/VvAccordionGroup.umd.js"
+    },
+    "./vv-accordion": {
+      "types": "./dist/components/VvAccordion/VvAccordion.vue.d.ts",
+      "import": "./dist/components/VvAccordion/VvAccordion.es.js",
+      "default": "./dist/components/VvAccordion/VvAccordion.umd.js"
     }
+  },
+  "main": "./dist/Volver.umd.js",
+  "module": "./dist/Volver.es.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "resolvers/unplugin": [
+        "dist/resolvers/unplugin.d.ts"
+      ],
+      "icons": [
+        "dist/icons.d.ts"
+      ],
+      "directives": [
+        "dist/directives/index.d.ts"
+      ],
+      "v-tooltip": [
+        "dist/directives/v-tooltip.d.ts"
+      ],
+      "v-contextmenu": [
+        "dist/directives/v-contextmenu.d.ts"
+      ],
+      "composables": [
+        "dist/composables/index.d.ts"
+      ],
+      "components": [
+        "dist/components/index.d.ts"
+      ],
+      "vv-tooltip": [
+        "dist/components/VvTooltip/VvTooltip.vue.d.ts"
+      ],
+      "vv-textarea": [
+        "dist/components/VvTextarea/VvTextarea.vue.d.ts"
+      ],
+      "vv-tab": [
+        "dist/components/VvTab/VvTab.vue.d.ts"
+      ],
+      "vv-select": [
+        "dist/components/VvSelect/VvSelect.vue.d.ts"
+      ],
+      "vv-radio-group": [
+        "dist/components/VvRadioGroup/VvRadioGroup.vue.d.ts"
+      ],
+      "vv-radio": [
+        "dist/components/VvRadio/VvRadio.vue.d.ts"
+      ],
+      "vv-progress": [
+        "dist/components/VvProgress/VvProgress.vue.d.ts"
+      ],
+      "vv-nav-separator": [
+        "dist/components/VvNavSeparator/VvNavSeparator.vue.d.ts"
+      ],
+      "vv-nav-item": [
+        "dist/components/VvNavItem/VvNavItem.vue.d.ts"
+      ],
+      "vv-nav": [
+        "dist/components/VvNav/VvNav.vue.d.ts"
+      ],
+      "vv-input-text": [
+        "dist/components/VvInputText/VvInputText.vue.d.ts"
+      ],
+      "vv-input-file": [
+        "dist/components/VvInputFile/VvInputFile.vue.d.ts"
+      ],
+      "vv-icon": [
+        "dist/components/VvIcon/VvIcon.vue.d.ts"
+      ],
+      "vv-dropdown-option": [
+        "dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts"
+      ],
+      "vv-dropdown-optgroup": [
+        "dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts"
+      ],
+      "vv-dropdown-item": [
+        "dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts"
+      ],
+      "vv-dropdown-action": [
+        "dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts"
+      ],
+      "vv-dropdown": [
+        "dist/components/VvDropdown/VvDropdown.vue.d.ts"
+      ],
+      "vv-dialog": [
+        "dist/components/VvDialog/VvDialog.vue.d.ts"
+      ],
+      "vv-combobox": [
+        "dist/components/VvCombobox/VvCombobox.vue.d.ts"
+      ],
+      "vv-checkbox-group": [
+        "dist/components/VvCheckboxGroup/VvCheckboxGroup.vue.d.ts"
+      ],
+      "vv-checkbox": [
+        "dist/components/VvCheckbox/VvCheckbox.vue.d.ts"
+      ],
+      "vv-card": [
+        "dist/components/VvCard/VvCard.vue.d.ts"
+      ],
+      "vv-button-group": [
+        "dist/components/VvButtonGroup/VvButtonGroup.vue.d.ts"
+      ],
+      "vv-button": [
+        "dist/components/VvButton/VvButton.vue.d.ts"
+      ],
+      "vv-breadcrumb": [
+        "dist/components/VvBreadcrumb/VvBreadcrumb.vue.d.ts"
+      ],
+      "vv-badge": [
+        "dist/components/VvBadge/VvBadge.vue.d.ts"
+      ],
+      "vv-avatar-group": [
+        "dist/components/VvAvatarGroup/VvAvatarGroup.vue.d.ts"
+      ],
+      "vv-avatar": [
+        "dist/components/VvAvatar/VvAvatar.vue.d.ts"
+      ],
+      "vv-alert-group": [
+        "dist/components/VvAlertGroup/VvAlertGroup.vue.d.ts"
+      ],
+      "vv-alert": [
+        "dist/components/VvAlert/VvAlert.vue.d.ts"
+      ],
+      "vv-action": [
+        "dist/components/VvAction/VvAction.vue.d.ts"
+      ],
+      "vv-accordion-group": [
+        "dist/components/VvAccordionGroup/VvAccordionGroup.vue.d.ts"
+      ],
+      "vv-accordion": [
+        "dist/components/VvAccordion/VvAccordion.vue.d.ts"
+      ]
+    }
+  },
+  "bin": {
+    "generate-icons": "./bin/icons.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "styleguide": "storybook build",
+    "build": "npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
+    "hot": "node ./scripts/build.js --hot",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "generate-icons": "node --loader ts-node/esm ./scripts/icons.ts --srcPath=src/assets/icons",
+    "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly",
+    "test-local": "test-storybook --stories-json",
+    "test-remote": "test-storybook --stories-json --url https://volver-ui-vue.vercel.app",
+    "credits": "npx @opengovsg/credits-generator"
+  },
+  "peerDependencies": {
+    "@volverjs/style": "0.x",
+    "@vueuse/core": "^13.x",
+    "vue": "^3.5.x"
+  },
+  "dependencies": {
+    "@floating-ui/vue": "^1.1.9",
+    "@iconify/tools": "^4.1.3",
+    "@iconify/vue": "^5.0.0",
+    "blurhash": "^2.0.5",
+    "chokidar": "^4.0.3",
+    "comlink": "^4.4.2",
+    "dot-prop": "^10.0.0",
+    "jsdom": "^27.0.0",
+    "mitt": "^3.0.1",
+    "pica": "^9.0.1",
+    "vue-imask": "^7.6.1",
+    "vuedraggable": "^4.1.0",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "5.4.1",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-typescript": "^7.27.1",
+    "@iconify/types": "^2.0.0",
+    "@iconify/utils": "^3.0.2",
+    "@nabla/vite-plugin-eslint": "^2.0.6",
+    "@storybook/addon-a11y": "^9.1.8",
+    "@storybook/addon-docs": "^9.1.8",
+    "@storybook/addon-links": "^9.1.8",
+    "@storybook/cli": "^9.1.8",
+    "@storybook/test-runner": "^0.23.0",
+    "@storybook/vue3-vite": "^9.1.8",
+    "@tsconfig/node18": "^18.2.4",
+    "@types/jest-axe": "^3.5.9",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^24.5.2",
+    "@types/pica": "^9.0.5",
+    "@types/yargs": "^17.0.33",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@volverjs/style": "^0.1.22",
+    "@vue/compiler-sfc": "^3.5.21",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.8.1",
+    "@vueless/storybook-dark-mode": "^9.0.8",
+    "@vueuse/core": "^13.9.0",
+    "change-case": "^5.4.4",
+    "eslint": "^9.36.0",
+    "glob": "^11.0.3",
+    "jest-axe": "^10.0.0",
+    "jsdom": "^27.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.6.2",
+    "remark": "^15.0.1",
+    "sass-embedded": "1.93.1",
+    "storybook": "^9.1.8",
+    "storybook-addon-markdown-docs": "^2.0.0",
+    "terser": "^5.44.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.2",
+    "unplugin-auto-import": "^20.1.0",
+    "unplugin-vue-components": "^29.1.0",
+    "vite": "^7.1.7",
+    "vite-plugin-externalize-deps": "^0.9.0",
+    "vue": "^3.5.21",
+    "vue-tsc": "^3.0.8"
   }
 }

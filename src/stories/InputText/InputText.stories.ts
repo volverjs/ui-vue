@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
-import { defaultArgs, argTypes } from './InputText.settings'
-import { defaultTest } from './InputText.test'
 import { Position } from '@/constants'
+import { argTypes, defaultArgs } from './InputText.settings'
+import { checkNullTest, checkUndefinedTest, defaultTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
-	title: 'Components/InputText',
-	component: VvInputText,
-	args: defaultArgs,
-	argTypes,
-	tags: ['autodocs'],
+    title: 'Components/InputText',
+    component: VvInputText,
+    args: defaultArgs,
+    argTypes,
+    tags: ['autodocs'],
 }
 
 export default meta
@@ -17,16 +17,16 @@ export default meta
 type Story = StoryObj<typeof VvInputText>
 
 export const Default: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvInputText },
-		setup() {
-			return { args }
-		},
-		data: () => ({ inputValue: undefined, maskedInputValue: undefined }),
-		template: /* html */ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined, maskedInputValue: undefined }),
+        template: /* html */ `
 			<vv-input-text v-bind="args" v-model="inputValue" v-model:masked="maskedInputValue" :data-testData="inputValue" data-testId="element">
 				<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
 				<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
@@ -35,79 +35,115 @@ export const Default: Story = {
 			<div>Value: <span data-testId="value">{{ inputValue }}</span></div> 
 			<div v-if="args.iMask" class="mt-sm">Masked Value: <span data-testId="masked-value">{{ maskedInputValue }}</span></div> 
 		`,
-	}),
-	play: defaultTest,
+    }),
+    play: defaultTest,
+}
+
+export const Null: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: null, maskedInputValue: undefined }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" v-model:masked="maskedInputValue" :data-testData="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ JSON.stringify(inputValue) }}</span></div>
+		`,
+    }),
+    play: checkNullTest,
+}
+
+export const Undefined: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined, maskedInputValue: undefined }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" v-model:masked="maskedInputValue" :data-testData="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ inputValue === undefined ? 'undefined' : inputValue }}</span></div>
+		`,
+    }),
+    play: checkUndefinedTest,
 }
 
 export const Disabled: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		disabled: true,
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        disabled: true,
+    },
 }
 
 export const Readonly: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		readonly: true,
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        readonly: true,
+    },
 }
 
 export const Valid: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		valid: true,
-		validLabel: 'The field is valid.',
-		icon: 'check',
-		iconPosition: Position.after,
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        valid: true,
+        validLabel: 'The field is valid.',
+        icon: 'check',
+        iconPosition: Position.after,
+    },
 }
 
 export const Invalid: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		invalid: true,
-		invalidLabel: 'The field is required.',
-		icon: 'error-2',
-		iconPosition: Position.after,
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        invalid: true,
+        invalidLabel: 'The field is required.',
+        icon: 'error-2',
+        iconPosition: Position.after,
+    },
 }
 
 export const Hint: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		hintLabel: 'Please enter your name.',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        hintLabel: 'Please enter your name.',
+    },
 }
 
 export const Loading: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		loading: true,
-		loadingLabel: 'Loading...',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        loading: true,
+        loadingLabel: 'Loading...',
+    },
 }
 
 export const Floating: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		floating: true,
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        floating: true,
+    },
 }
 
 export const Unit: Story = {
-	...Default,
-	args: {
-		...defaultArgs,
-		unit: 'km',
-		autoWidth: true,
-		type: 'number',
-	},
+    ...Default,
+    args: {
+        ...defaultArgs,
+        unit: 'km',
+        autoWidth: true,
+        type: 'number',
+    },
 }

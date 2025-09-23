@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvTab from '@/components/VvTab/VvTab.vue'
 import { defaultArgs, defaultArgTypes } from './Tab.settings'
 import { defaultTest } from './Tab.test'
 
 const meta: Meta<typeof VvTab> = {
-	title: 'Components/Tab',
-	component: VvTab,
-	args: defaultArgs,
-	argTypes: defaultArgTypes,
-	tags: ['autodocs'],
+    title: 'Components/Tab',
+    component: VvTab,
+    args: defaultArgs,
+    argTypes: defaultArgTypes,
+    tags: ['autodocs'],
 }
 
 export default meta
@@ -16,18 +16,18 @@ export default meta
 type Story = StoryObj<typeof VvTab>
 
 export const Default: Story = {
-	args: {
-		...defaultArgs,
-	},
-	render: (args) => ({
-		components: { VvTab },
-		setup() {
-			return { args }
-		},
-		template: /* html */ `
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvTab },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
 			<div class="m-md w-1/2">
 				<vv-tab v-bind="args" data-testId="element">
-					<template #tab-item_0>
+					<template #panel::tab-1>
 						<span class="text-20 font-semibold">Tab 1</span>
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -39,7 +39,7 @@ export const Default: Story = {
 							elit libero, a pharetra augue.
 						</p>
 					</template>
-					<template #tab-item_1>
+					<template #panel::tab-2>
 						<span class="text-20 font-semibold">Tab 2</span>
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -65,6 +65,6 @@ export const Default: Story = {
 					</template>
 				</vv-tab>
 			</div>`,
-	}),
-	play: defaultTest,
+    }),
+    play: defaultTest,
 }

@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.10] - 2024-09-23
+
+### Added
+
+- `useBlurhash` composable;
+- `VvInputFile` component; 
+- `VvAction` prop for `current` class;
+- `VvNavItem` and `VvNavSeparator` components;
+- Inner types export;
+- `VvCombobox` events `update:search` and `update:options`;
+- `VvInputText` suggestions;
+- Storage selection for `VvAccordionGroup` persistence;
+- Scoped slot for items in `VvNav` and `VvTab`;
+- added `storageKey` and `storageType` props to `VvTextarea` for suggestions;
+- `VvCombobox` and `VvSelect` prop `autoselectFirst` to automatically select the first option when the dropdown is opened;
+- `VvCombobox` and `VvSelect` prop `showClearAction` to show a clear action button when there is a value selected;
+- `VvCombobox` new prop `addable` to allow adding new items;
+- `VvCombobox` new prop `keepSearch` to retain the search input value when the dropdown is closed;
+- `VvInputText` add support for iso date format and date object for type `date`, `datetime-local`, `time` and `month`;
+- `--watch` flag for `generate-icons` script;
+- `--keepColors` flag for `generate-icons` script;
+- Replace `ts-dot-prop` with `dot-prop` for deprecation.
+
+### Deprecated
+
+- Event `change:search` on `VvCombobox` (use `update:search`);
+- `VvCombobox` prop `unselectable` (use `minValues` instead).
+
+### Changed
+
+- `@volverjs/ui-vue/directives` now exports `vTooltip` and `vContextmenu` directives instead of `tooltip` and `contextmenu`;
+- `VvAccordionGroup` prop for storage key `storeKey` is now `storageKey`.
+- Align `VvNav` items prop with `VvAction` props;
+- Align `VvTab` items prop with `VvAction` and `VvNav` props;
+- Replace `uid` with `useId` from `vue`;
+
+### Fixed
+
+- `VvCombobox` keep an array `modelValue` also with `multiple: false`;
+- `VvCombobox` focus state;
+- `VvTextarea` focus state;
+- `v-tooltip` directive update on props change;
+- `VvInputText` force type number on stepUp/stepDown;
+- Removed `target` prop validation;
+- Improved `VvCombobox` support for object values;
+- Nuxt compatibility.
+
 ## [0.0.9] - 2023-08-30
 
 ### Fixed
@@ -24,8 +71,8 @@ All notable changes to this project will be documented in this file.
 - Default props by global plugin configuration for input components;
 - Emit of transition events on `VvDialog` and `VvDropdown`;
 - `useAlert` to manage alerts, story and test;
-- `VvCombobox` custom search function.
-- `VvInputText` add `select-on-focus` prop to select all text on focus;
+- `VvCombobox` custom search function;
+- `VvInputText` add `select-on-focus` prop to select all text on focus.
 
 ## [0.0.8] - 2023-05-22
 
@@ -172,6 +219,7 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.10]: https://github.com/volverjs/style/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/volverjs/style/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/volverjs/style/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/volverjs/style/compare/v0.0.6...v0.0.7
