@@ -14,6 +14,8 @@ export default {
 
 <template>
     <li class="vv-dropdown-optgroup" role="presentation" tabindex="-1">
-        {{ props.label }}
+        <slot>
+            {{ props.label }}
+        </slot>
     </li>
 </template>

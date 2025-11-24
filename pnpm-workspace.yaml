@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - unrs-resolver
+  - vue-demi
+
+packages:
+  - .
