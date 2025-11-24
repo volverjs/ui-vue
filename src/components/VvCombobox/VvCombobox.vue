@@ -227,10 +227,22 @@ const {
     isOptionDisabled,
 } = useOptions(props)
 
+const hasPlainOptions = computed(() => {
+    const toReturn = [...addedOptions.value] as T[]
+    for (const item of props.options) {
+        if (isGroup(item)) {
+            toReturn.push(...getOptionGrouped(item))
+        } else {
+            toReturn.push(item)
+        }
+    }
+    return toReturn
+})
+
 const hasOptions = computed(() => {
     const toReturn = [...props.options, ...addedOptions.value] as T[]
     for (const item of localModelValue.value) {
-        if (!toReturn.some((option) => {
+        if (!hasPlainOptions.value.some((option) => {
             const optionValue = getOptionValue(option)
             if (typeof optionValue === 'object' && typeof item === 'object') {
                 return JSON.stringify(optionValue) === JSON.stringify(item)
@@ -263,11 +275,47 @@ const filteredOptions = computedAsync(async () => {
         localLoading.value = false
         return toReturn
     }
-    return hasOptions.value?.filter((option) => {
-        return getOptionLabel(option)
-            .toLowerCase()
-            .includes(debouncedSearchText.value.toLowerCase().trim())
-    })
+
+    const searchTerm = debouncedSearchText.value.toLowerCase().trim()
+
+    // If no search term, return all options
+    if (!searchTerm) {
+        return hasOptions.value
+    }
+
+    return hasOptions.value?.reduce<T[]>((acc, option) => {
+        // If it's a group, filter its options
+        if (isGroup(option)) {
+            const groupLabel = getOptionLabel(option).toLowerCase()
+            const groupOptions = getOptionGrouped(option)
+
+            // Filter options within the group
+            const filteredGroupOptions = groupOptions.filter(item =>
+                getOptionLabel(item).toLowerCase().includes(searchTerm),
+            )
+
+            // Include the group if its label matches or if it has matching options
+            if (groupLabel.includes(searchTerm)) {
+                // If group label matches, include all its options
+                acc.push(option)
+            } else if (filteredGroupOptions.length > 0) {
+                // If only some options match, create a filtered group
+                const filteredGroup = typeof option === 'object'
+                    ? { ...option as object, options: filteredGroupOptions }
+                    : option
+                acc.push(filteredGroup as T)
+            }
+
+            return acc
+        }
+
+        // For normal options, search in the label
+        if (getOptionLabel(option).toLowerCase().includes(searchTerm)) {
+            acc.push(option)
+        }
+
+        return acc
+    }, [])
 })
 
 /**
@@ -301,9 +349,7 @@ const selectedOptions = computed(() => {
         },
         [],
     )
-    return toReturn.filter((option) => {
-        return isOptionSelected(option)
-    })
+    return toReturn.filter(option => isOptionSelected(option))
 })
 
 const hasValue = computed(() => {
@@ -361,7 +407,20 @@ watch(
     hasOptions,
     (newValue) => {
         if (newValue?.length && props.autoselectFirst && !isDirty.value) {
-            onInput(newValue[0])
+            // Find the first selectable option (skip groups)
+            const firstOption = newValue.find(opt => !isGroup(opt))
+            if (firstOption) {
+                onInput(firstOption)
+                return
+            }
+            // If all are groups, select first option from first group
+            const firstGroup = newValue.find(opt => isGroup(opt))
+            if (firstGroup) {
+                const groupOptions = getOptionGrouped(firstGroup)
+                if (groupOptions.length) {
+                    onInput(groupOptions[0])
+                }
+            }
         }
     },
     { immediate: true },
@@ -438,7 +497,16 @@ onKeyStroke(
 function onKeyupEnterInputSearch() {
     if (filteredOptions.value?.length) {
         if (filteredOptions.value.length === 1) {
-            onInput(filteredOptions.value[0])
+            const singleResult = filteredOptions.value[0]
+            // If it's a group, select the first option from the group
+            if (isGroup(singleResult)) {
+                const groupOptions = getOptionGrouped(singleResult)
+                if (groupOptions.length) {
+                    onInput(groupOptions[0])
+                }
+                return
+            }
+            onInput(singleResult)
             return
         }
         dropdownEl.value?.focusFirstListElement()
@@ -450,8 +518,8 @@ function onKeyupEnterInputSearch() {
         if (!trimmedSearch) {
             return
         }
-        // check if option with same label already exists
-        const exists = hasOptions.value.some(opt =>
+        // check if option with same label already exists (including options in groups)
+        const exists = hasPlainOptions.value.some(opt =>
             getOptionLabel(opt).toLowerCase() === trimmedSearch.toLowerCase(),
         )
         if (exists) {
@@ -549,7 +617,16 @@ export default {
                     <template v-if="!disabled && filteredOptions?.length">
                         <template v-for="(option, index) in filteredOptions" :key="index">
                             <template v-if="isGroup(option)">
-                                <VvDropdownOptgroup :label="getOptionLabel(option)" />
+                                <VvDropdownOptgroup :label="getOptionLabel(option)">
+                                    <slot
+                                        name="option-group" v-bind="{
+                                            option,
+                                            selectedOptions,
+                                        }"
+                                    >
+                                        {{ getOptionLabel(option) }}
+                                    </slot>
+                                </VvDropdownOptgroup>
                                 <VvDropdownOption
                                     v-for="(item, i) in getOptionGrouped(
                                         option,
@@ -569,7 +646,7 @@ export default {
                                     <!-- @slot Slot for option customization -->
                                     <slot
                                         name="option" v-bind="{
-                                            option,
+                                            option: item,
                                             selectedOptions,
                                             selected: isOptionSelected(item),
                                             disabled: isOptionDisabledOrNotSelectable(item),

@@ -2,12 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.11] - 2024-10-02
+## [0.0.12] - 2025-11-02
+
+### Added
+
+- `VvCombobox` new slot `option-group` for customizing group labels.
+
+### Changed
+
+- Updated dependencies to latest versions.
+
+### Fixed
+
+- `VvCombobox` option groups filtering and selection handling.
+
+## [0.0.11] - 2025-10-02
 
 ### Fixed
 - Dependencies upgrade to fix `@iconify/tools` security issue in `axios` package.
 
-## [0.0.10] - 2024-09-23
+## [0.0.10] - 2025-09-23
 
 ### Added
 
