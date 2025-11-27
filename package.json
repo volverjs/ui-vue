@@ -400,14 +400,14 @@
     "@iconify/tools": "^4.1.4",
     "@iconify/vue": "^5.0.0",
     "blurhash": "^2.0.5",
-    "chokidar": "^4.0.3",
+    "chokidar": "^5.0.0",
     "comlink": "^4.4.2",
     "dot-prop": "^10.1.0",
     "jsdom": "^27.2.0",
     "mitt": "^3.0.1",
     "pica": "^9.0.1",
     "vue-imask": "^7.6.1",
-    "vuedraggable": "^4.1.0",
+    "vuedraggable": "^2.24.3",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
