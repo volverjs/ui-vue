@@ -379,14 +379,26 @@ watch(expanded, (newValue) => {
 })
 
 defineExpose({
+    /** Toggle the dropdown */
     toggle,
+    /** Show the dropdown */
     show,
+    /** Hide the dropdown */
     hide,
+    /**
+     * Initialize the dropdown
+     * @param {HTMLElement} el - The dropdown reference element to attach to
+     */
     init,
+    /** Focus the first focusable element */
     focusFirst,
+    /** Focus the first focusable element in the list */
     focusFirstListElement,
+    /** Focus the next focusable element */
     focusNext,
+    /** Focus the previous focusable element */
     focusPrev,
+    /** The dropdown has custom position */
     customPosition: hasCustomPosition,
 })
 

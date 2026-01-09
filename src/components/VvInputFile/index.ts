@@ -92,6 +92,10 @@ export const VvInputFileProps = {
      */
     sortable: { type: Boolean, default: false },
     /**
+     * Hide preview
+     */
+    hidePreview: { type: Boolean, default: false },
+    /**
      * Label for add button
      */
     labelAdd: {

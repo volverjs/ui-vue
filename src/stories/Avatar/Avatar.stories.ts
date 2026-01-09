@@ -38,5 +38,6 @@ export const Image: Story = {
     ...Default,
     args: {
         ...defaultArgs,
+        imgSrc: 'https://i.pravatar.cc/300',
     },
 }

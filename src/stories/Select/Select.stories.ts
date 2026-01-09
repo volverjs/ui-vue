@@ -16,25 +16,29 @@ export default meta
 
 type Story = StoryObj<typeof VvSelect>
 
-export const Default: Story = {
-    args: {
-        ...defaultArgs,
-    },
-    render: args => ({
+function createRender(args: any) {
+    return {
         components: { VvSelect },
         setup() {
             return { args }
         },
-        data: () => ({ inputValue: undefined }),
+        data: () => ({ inputValue: args.multiple ? [] : undefined }),
         template: /* html */ `
-			<vv-select v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
-				<template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
-				<template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
-				<template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
-			</vv-select>
-			<div>Value: <span data-testId="value">{{inputValue}}</span></div> 
-		`,
-    }),
+        <vv-select v-bind="args" v-model="inputValue" :data-testData="inputValue" data-testId="element">
+            <template #before v-if="args.before"><div class="flex" v-html="args.before"></div></template>
+            <template #after v-if="args.after"><div class="flex" v-html="args.after"></div></template>
+            <template #hint v-if="args.hint"><span v-html="args.hint"></span></template>
+        </vv-select>
+        <div>Value: <span data-testId="value">{{inputValue}}</span></div> 
+    `,
+    }
+}
+
+export const Default: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: createRender,
     play: defaultTest,
 }
 

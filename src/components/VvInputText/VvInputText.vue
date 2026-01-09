@@ -265,7 +265,14 @@ const innerEl = ref<HTMLInputElement>()
 const wrapperEl = ref<HTMLDivElement>()
 const suggestionsDropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
-defineExpose({ $inner: innerEl })
+defineExpose({
+    /** Reference to the input element */
+    $input: inputEl,
+    /** Reference to the inner element */
+    $inner: innerEl,
+    /** Reference to the wrapper element */
+    $wrapper: wrapperEl,
+})
 
 // focus
 const { focused } = useComponentFocus(inputEl, emit)
