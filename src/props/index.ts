@@ -580,11 +580,18 @@ export const NavProps = {
 }
 
 export const StorageProps = {
+    /**
+     * Storage type
+     * @default StorageType.local
+     */
     storageType: {
         type: String as PropType<`${StorageType}`>,
         default: StorageType.local,
         validator: (value: StorageType) =>
             Object.values(StorageType).includes(value),
     },
+    /**
+     * Storage key
+     */
     storageKey: String,
 }

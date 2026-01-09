@@ -127,6 +127,7 @@ export const KeepSearch: Story = {
                 <vv-input-text
                     v-model="searchValue"
                     label="Search Input"
+                    name="search-input"
                     placeholder="Type the initial value of the search"
                 />
                 <vv-combobox

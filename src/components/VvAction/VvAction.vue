@@ -12,8 +12,11 @@ const instance = getCurrentInstance()
 // inject plugin
 const volver = useVolver()
 
-const element = ref<HTMLElement | null>(null)
-defineExpose({ $el: element })
+const rootEl = ref<HTMLElement | null>(null)
+defineExpose({
+    /** Reference to the root element */
+    $el: rootEl,
+})
 
 // drowpdown trigger
 const {
@@ -23,7 +26,7 @@ const {
     expanded: dropdownExpanded,
 } = useInjectedDropdownTrigger()
 watch(
-    () => element.value,
+    () => rootEl.value,
     (newValue) => {
         if (dropdownTriggerReference) {
             dropdownTriggerReference.value = newValue
@@ -141,7 +144,7 @@ export default {
     <component
         v-bind="hasProps"
         :is="hasTag"
-        ref="element"
+        ref="rootEl"
         :class="{
             active,
             pressed,

@@ -173,7 +173,14 @@ function collapse(name?: string | string[]) {
 bus.on('collapse', ({ name }) => collapse(name))
 
 // expose
-defineExpose({ expandedAccordions, expand, collapse })
+defineExpose({
+    /** Expanded accordions names */
+    expandedAccordions,
+    /** Expand accordion by name, expand all if no name is provided */
+    expand,
+    /** Collapse accordion by name, collapse all if no name is provided */
+    collapse,
+})
 
 // styles
 const bemCssClasses = useModifiers(

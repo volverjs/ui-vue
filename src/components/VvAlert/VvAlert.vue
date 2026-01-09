@@ -7,7 +7,10 @@ const props = defineProps(VvAlertProps)
 const emit = defineEmits(VvAlertEvents)
 
 const { hasProps, hasTitleId, hasIcon, close } = useVvAlert(props, emit)
-defineExpose({ close })
+defineExpose({
+    /** Close the alert */
+    close,
+})
 </script>
 
 <script lang="ts">

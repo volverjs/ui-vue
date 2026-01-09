@@ -72,7 +72,6 @@
     "isShallow": true,
     "isString": true,
     "makeDestructurable": true,
-    "manualResetRef": true,
     "markRaw": true,
     "nextTick": true,
     "onActivated": true,

@@ -4,7 +4,6 @@ import { DefaultSlotArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
     ...propsToObject(VvAvatarProps),
-    imgSrc: 'https://i.pravatar.cc/300',
 }
 
 export const argTypes: ArgTypes = {

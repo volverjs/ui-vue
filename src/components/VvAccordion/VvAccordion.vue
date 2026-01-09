@@ -109,10 +109,15 @@ function groupCollapse(name?: string | string[]) {
 
 // expose
 defineExpose({
+    /** Whether the accordion is expanded */
     isExpanded,
+    /** Expand the accordion */
     expand,
+    /** Collapse the accordion */
     collapse,
+    /** Expand accordions in the same group */
     groupExpand,
+    /** Collapse accordions in the same group */
     groupCollapse,
 })
 

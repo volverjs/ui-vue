@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.13] - 2026-01-09
+
+### Added
+
+- `VvInputFile` new prop `hidePreview` to hide the file preview.
+- `VvInputFile` new scoped slots `drop-area`, `file-list`, and `file-item` for better customization and control.
+- `VvInputText` now exposes `$input` and `$wrapper` refs in addition to `$inner`.
+
 ## [0.0.12] - 2025-11-02
 
 ### Added
@@ -238,6 +246,8 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.13]: https://github.com/volverjs/style/compare/v0.0.12...v0.0.13
+[0.0.12]: https://github.com/volverjs/style/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/volverjs/style/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/volverjs/style/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/volverjs/style/compare/v0.0.8...v0.0.9
