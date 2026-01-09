@@ -385,7 +385,10 @@ defineExpose({
     show,
     /** Hide the dropdown */
     hide,
-    /** Initialize the dropdown */
+    /**
+     * Initialize the dropdown
+     * @param {HTMLElement} el - The dropdown reference element to attach to
+     */
     init,
     /** Focus the first focusable element */
     focusFirst,
