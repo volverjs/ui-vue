@@ -48,7 +48,7 @@ const preview: Preview = {
             container: ThemedDocsContainer,
         },
         darkMode: {
-            current: 'dark',
+            current: 'light',
             classTarget: 'html',
             darkClass: ['theme', 'theme--dark'],
             lightClass: ['theme', 'theme--light'],

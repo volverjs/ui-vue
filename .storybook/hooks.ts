@@ -12,14 +12,14 @@ export function useOnDarkModeEvent(callback: Listener) {
     useEffect(() => {
         channel.on(DARK_MODE_EVENT_NAME, callback)
         return () => channel.off(DARK_MODE_EVENT_NAME, callback)
-    })
+    }, [channel, callback])
 }
 
 /**
  * Use this hook if you only need to know whether dark mode is toggled on
  */
 export function useIsDarkMode() {
-    const [isDarkMode, setIsDarkMode] = useState()
+    const [isDarkMode, setIsDarkMode] = useState(false)
     useOnDarkModeEvent(setIsDarkMode)
     return isDarkMode
 }

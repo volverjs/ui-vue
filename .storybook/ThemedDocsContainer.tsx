@@ -3,7 +3,7 @@ import * as React from 'react'
 import { themes } from 'storybook/theming'
 import { useIsDarkMode } from './hooks'
 
-function ThemedDocsContainer(props: any) {
+function ThemedDocsContainer(props: React.PropsWithChildren<{ context: unknown }>) {
     const isDarkMode = useIsDarkMode()
 
     return (

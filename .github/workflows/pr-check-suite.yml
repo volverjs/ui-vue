@@ -27,17 +27,12 @@ jobs:
     build:
         uses: ./.github/workflows/build.yml
 
-    # Vercel deploy env for storybook test
-    vercel-deploy:
-        uses: ./.github/workflows/vercel-deploy.yml
-        secrets: inherit
-
     # Storybook test on vercel env
-    vercel-test:
-        needs: vercel-deploy
+    test:
+        needs: build
         uses: ./.github/workflows/test.yml
 
     # Trigger depfu merge
     trigger-automerge:
-        needs: [vercel-test, build, analysis]
+        needs: [analysis, build, test]
         uses: ./.github/workflows/pr-depfu-merge.yml

@@ -36,7 +36,7 @@ jobs:
         uses: ./.github/workflows/build.yml
 
     deploy-styleguide:
-        needs: [build, build-styleguide, test, analysis]
+        needs: [analysis, test, build-styleguide, build]
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
@@ -52,7 +52,7 @@ jobs:
 
     # Publish package to NPM
     publish-npm:
-        needs: [build, build-styleguide, test, analysis]
+        needs: [analysis, test, build-styleguide, build]
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
@@ -69,7 +69,7 @@ jobs:
 
     # Publish package to GPR
     publish-gpr:
-        needs: [build, build-styleguide, test, analysis]
+        needs: [analysis, test, build-styleguide, build]
         runs-on: ubuntu-latest
         permissions:
             contents: read
