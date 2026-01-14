@@ -2,6 +2,16 @@ import type { PlayAttributes } from '@/test/types'
 import { within } from 'storybook/test'
 import { expect } from '@/test/expect'
 
+function parseItemClasses(itemClass: any): string[] {
+    if (Array.isArray(itemClass)) {
+        return itemClass
+    }
+    if (typeof itemClass === 'string') {
+        return itemClass.split(' ').filter(Boolean)
+    }
+    return []
+}
+
 export async function defaultTest(
     { canvasElement, args }: PlayAttributes = {} as PlayAttributes,
 ) {
@@ -27,11 +37,7 @@ export async function defaultTest(
     // check itemProps class applied on items when provided
     const itemClass = typeof args?.itemProps === 'object' ? args.itemProps?.class : undefined
     if (itemClass && liItems[0]) {
-        const classes = Array.isArray(itemClass)
-            ? itemClass
-            : typeof itemClass === 'string'
-                ? itemClass.split(' ').filter(Boolean)
-                : []
+        const classes = parseItemClasses(itemClass)
         if (classes.length) {
             await expect(liItems[0]).toHaveClass(classes)
         }

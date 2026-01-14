@@ -11,10 +11,12 @@ function pxToNumber(value: string | number) {
     return Number.parseInt(value.replace('px', ''), 10)
 }
 
-function getSpacerStyle(size: number, horizontal = false) {
-    return horizontal
-        ? { width: `${size}px` }
-        : { height: `${size}px` }
+function getHorizontalStyle(size: number) {
+    return { width: `${size}px` }
+}
+
+function getVerticalStyle(size: number) {
+    return { height: `${size}px` }
 }
 
 export function useVirtualScroll(settings: {
@@ -55,7 +57,7 @@ export function useVirtualScroll(settings: {
         return {
             show: size > 0,
             size,
-            style: getSpacerStyle(size, unref(settings.horizontal)),
+            style: unref(settings.horizontal) ? getHorizontalStyle(size) : getVerticalStyle(size),
         }
     })
     const endSpacer = computed(() => {
@@ -64,7 +66,7 @@ export function useVirtualScroll(settings: {
         return {
             show: size > 0,
             size,
-            style: getSpacerStyle(size, unref(settings.horizontal)),
+            style: unref(settings.horizontal) ? getHorizontalStyle(size) : getVerticalStyle(size),
         }
     })
 
