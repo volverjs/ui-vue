@@ -1,4 +1,6 @@
+import type { Ref } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
+import { computed, unref } from 'vue'
 
 export type { ScrollToOptions } from '@tanstack/vue-virtual'
 
