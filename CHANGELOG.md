@@ -2,10 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.13] - 2026-01-09
+## [0.0.13] - 2026-01-14
 
 ### Added
 
+- `useVirtualScroll` composable for virtualized lists.
+- `VvVirtualScroll` component built on `useVirtualScroll`.
 - `VvInputFile` new prop `hidePreview` to hide the file preview.
 - `VvInputFile` new scoped slots `drop-area`, `file-list`, and `file-item` for better customization and control.
 - `VvInputText` now exposes `$input` and `$wrapper` refs in addition to `$inner`.

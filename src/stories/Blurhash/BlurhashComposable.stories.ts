@@ -11,6 +11,105 @@ const meta: Meta = {
 export default meta
 
 export const Default: StoryObj = {
+    parameters: {
+        docs: {
+            canvas: {
+                sourceState: 'shown',
+            },
+            source: {
+                code: `<script setup lang="ts">
+    import { ref } from 'vue'
+    import { useBlurhash } from '@volverjs/ui-vue/composables'
+    import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
+
+    const isLoading = ref(false)
+    const { encode, decode, loadImage } = useBlurhash()
+    const file = ref({})
+    const canvas = ref()
+    const isImgLoaded = ref(false)
+    const blurhash = ref('')
+    const imageUrl = ref('')
+    const image = ref()
+
+    const handleFileChange = async (newValue) => {
+        if (!newValue?.size) {
+            image.value = null
+            imageUrl.value = ''
+            blurhash.value = ''
+            return
+        }
+        isLoading.value = true
+        imageUrl.value = URL.createObjectURL(newValue)
+        image.value = await loadImage(imageUrl.value)
+        blurhash.value = await encode(newValue)
+        isLoading.value = false
+    }
+
+    const handleBlurhashChange = async (newValue) => {
+    if (image.value) {
+        isLoading.value = true
+        const blurhashDecoded = await decode(
+            newValue,
+            image.value.width,
+            image.value.height,
+        )
+        isLoading.value = false
+
+        if (canvas.value) {
+        canvas.value.width = image.value.width
+        canvas.value.height = image.value.height
+        const ctx = canvas.value.getContext('2d')
+        const imageData = ctx.createImageData(
+            canvas.value.width,
+            canvas.value.height,
+        )
+        imageData.data.set(blurhashDecoded)
+        ctx.putImageData(imageData, 0, 0)
+        }
+    }
+    }
+
+    watch(file, handleFileChange, { immediate: true })
+    watch(blurhash, handleBlurhashChange)
+</script>
+
+<template>
+  <div class="w-full lg:w-10/12 xl:w-8/12 grid gap-md sm:grid-cols-3 mb-md">
+    <div>
+      <div class="text-lg font-bold mb-md">Upload</div>
+      <vv-input-file v-model="file" name="input-file" modifiers="square hidden" drop-area accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png" />
+    </div>
+    <div v-if="image">
+      <div class="text-lg font-bold mb-md">Blurhash</div>
+      <div class="vv-skeleton bg-chessboard flex items-center relative aspect-square">
+        <div v-if="isLoading" class="vv-skeleton__item inset-0 absolute h-full" />
+        <canvas
+          v-show="blurhash"
+          ref="canvas"
+          class="w-full block object-cover"
+          :width="image.width"
+          :height="image.height"
+        />
+      </div>
+    </div>
+    <div v-if="image">
+      <div class="text-lg font-bold mb-md">Original</div>
+      <div class="vv-skeleton bg-chessboard flex items-center relative aspect-square">
+        <div v-if="isLoading" class="vv-skeleton__item inset-0 absolute h-full" />
+        <img
+          class="w-full block h-auto"
+          :src="imageUrl"
+          alt="image"
+          :width="image.width"
+          :height="image.height"
+        />
+      </div>
+    </div>
+  </div>
+</template>`,
+            },
+        },
+    },
     render: args => ({
         components: { VvInputFile },
         setup() {
