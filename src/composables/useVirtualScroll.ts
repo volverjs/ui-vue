@@ -4,7 +4,13 @@ import { computed, unref } from 'vue'
 
 export type { ScrollToOptions } from '@tanstack/vue-virtual'
 
-function pxToNumber(value: string | number) {
+function pxToNumber(value: undefined): undefined
+function pxToNumber(value: string | number): number
+function pxToNumber(value: string | number | undefined): number | undefined
+function pxToNumber(value: string | number | undefined): number | undefined {
+    if (value === undefined) {
+        return undefined
+    }
     if (typeof value === 'number') {
         return value
     }
@@ -24,7 +30,7 @@ export function useVirtualScroll(settings: {
     count: number | Ref<number>
     estimateSize: string | number | ((index: number) => number) | Ref<string | number | ((index: number) => number)>
     getItemKey?: (index: number) => number | string | bigint
-    overscan: string | number | Ref<string | number>
+    overscan?: string | number | Ref<string | number>
     horizontal?: boolean | Ref<boolean>
 }) {
     const virtualizer = useVirtualizer({
@@ -40,7 +46,7 @@ export function useVirtualScroll(settings: {
             }
             return pxToNumber(estimateSize)
         },
-        overscan: settings.overscan ? pxToNumber(unref(settings.overscan)) : undefined,
+        overscan: pxToNumber(unref(settings.overscan)),
         horizontal: unref(settings.horizontal),
     })
 

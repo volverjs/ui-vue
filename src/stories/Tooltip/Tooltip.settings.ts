@@ -1,4 +1,4 @@
-import type { ArgTypes } from 'storybook/internal/types'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvTooltipProps } from '@/components/VvTooltip'
 import { DefaultSlotArgTypes, ModifiersArgTypes } from '@/stories/argTypes'
 

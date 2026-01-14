@@ -18,7 +18,7 @@ export const Default: StoryObj = {
             },
             source: {
                 code: `<script setup lang="ts">
-    import { ref } from 'vue'
+    import { ref, watch } from 'vue'
     import { useBlurhash } from '@volverjs/ui-vue/composables'
     import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 
