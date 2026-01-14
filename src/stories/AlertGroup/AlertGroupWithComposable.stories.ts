@@ -1,68 +1,65 @@
-import type { Meta } from '@storybook/vue3-vite'
-import type { Story } from './AlertGroup.stories'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAlertGroup from '@/components/VvAlertGroup/VvAlertGroup.vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import { useAlert } from '@/composables/alert/useAlert'
-import { argTypes, defaultArgs } from './AlertGroup.settings'
-import { Default as DefaultStory } from './AlertGroup.stories'
 
-const meta: Meta<typeof VvAlertGroup> = {
+const meta: Meta = {
     title: 'Composables/useAlert',
-    component: VvAlertGroup,
-    args: defaultArgs,
-    argTypes,
     tags: ['autodocs'],
 }
 
 export default meta
 
-export const Default: Story = {
-    ...DefaultStory,
+export const Default: StoryObj = {
     parameters: {
         docs: {
+            canvas: {
+                sourceState: 'shown',
+            },
             source: {
-                type: 'code',
-                language: 'html',
-                code: /* html */ `
-<div class="flex gap-md">
-	<vv-button label="Show success" modifiers="secondary" @click="showSuccess" class="mb-lg" />
-	<vv-button label="Show danger" modifiers="secondary" @click="showDanger" class="mb-lg" />
-	<vv-button label="Show warning" modifiers="secondary" @click="showWarning" class="mb-lg" />
-	<vv-button label="Show info" modifiers="secondary" @click="showInfo" class="mb-lg" />
-</div>
-<vv-alert-group v-bind="args" :items="alerts" :onClose="removeAlert" data-testId="element" />
+                code: `<script setup lang="ts">
+    import { useAlert } from '@volverjs/ui-vue/composables'
 
-<script setup lang='ts'>
-	import { useAlert } from '@volverjs/ui-vue/composables'
+    const { addAlert, removeAlert, alerts } = useAlert()
 
-	const { addAlert, removeAlert, alerts } = useAlert()
+    function showSuccess() {
+        addAlert({
+            title: 'Success!',
+            modifiers: 'success',
+        })
+    }
 
-	function showSuccess() {
-		addAlert({
-			title: 'Success!',
-			modifiers: 'success',
-		})
-	}
-	function showDanger() {
-		addAlert({
-			title: 'Danger!',
-			modifiers: 'danger',
-		})
-	}
-	function showWarning() {
-		addAlert({
-			title: 'Warning!',
-			modifiers: 'warning',
-		})
-	}
-	function showInfo() {
-		addAlert({
-			title: 'Info!',
-			modifiers: 'info',
-		})
-	}
+    function showDanger() {
+        addAlert({
+            title: 'Danger!',
+            modifiers: 'danger',
+        })
+    }
+
+    function showWarning() {
+        addAlert({
+            title: 'Warning!',
+            modifiers: 'warning',
+        })
+    }
+
+    function showInfo() {
+        addAlert({
+            title: 'Info!',
+            modifiers: 'info',
+        })
+    }
 </script>
-				`,
+
+<template>
+  <div class="flex gap-md">
+    <vv-button label="Show success" modifiers="secondary" @click="showSuccess" class="mb-lg" />
+    <vv-button label="Show danger" modifiers="secondary" @click="showDanger" class="mb-lg" />
+    <vv-button label="Show warning" modifiers="secondary" @click="showWarning" class="mb-lg" />
+    <vv-button label="Show info" modifiers="secondary" @click="showInfo" class="mb-lg" />
+  </div>
+  <vv-alert-group :items="alerts" :on-close="removeAlert" />
+</template>`,
             },
         },
     },
