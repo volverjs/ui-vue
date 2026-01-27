@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.13] - 2026-01-14
+## [0.0.13] - 2026-01-27
 
 ### Added
 
@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - `VvInputFile` new prop `hidePreview` to hide the file preview.
 - `VvInputFile` new scoped slots `drop-area`, `file-list`, and `file-item` for better customization and control.
 - `VvInputText` now exposes `$input` and `$wrapper` refs in addition to `$inner`.
+- `VvInputText` new prop `suggestions` to provide external suggestions (storage-based suggestions are removable, external ones are permanent).
 
 ## [0.0.12] - 2025-11-02
 
