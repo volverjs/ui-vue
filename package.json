@@ -7,6 +7,9 @@
   "author": "8 wave S.r.l.",
   "license": "MIT",
   "homepage": "https://volverjs.github.io/ui-vue",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/volverjs/ui-vue"
