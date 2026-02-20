@@ -111,10 +111,12 @@ if (volver) {
             .then((svg?: string) => {
                 if (svg) {
                     addIconFromSvg(svg)
-                    show.value = true
                 }
+                // restore visibility even if jsdom is unavailable in SSR
+                show.value = true
             })
             .catch((e) => {
+                show.value = true
                 throw new Error(`Error during fetch icon: ${e?.message}`)
             })
     }
