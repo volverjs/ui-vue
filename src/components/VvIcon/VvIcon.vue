@@ -62,11 +62,22 @@ function getSvgContent(svg: string): SVGSVGElement | undefined {
     let dom
     if (typeof window === 'undefined') {
         // SSR
-        // eslint-disable-next-line ts/no-require-imports
-        const { JSDOM } = require('jsdom')
-        dom = new JSDOM().window
+        try {
+            // eslint-disable-next-line ts/no-require-imports
+            const { JSDOM } = require('jsdom')
+            dom = new JSDOM().window
+        } catch {
+            // jsdom not available, SVG parsing will be skipped in SSR
+        }
     }
-    const domParser = dom ? new dom.DOMParser() : new window.DOMParser()
+    const domParser = dom
+        ? new dom.DOMParser()
+        : typeof window !== 'undefined'
+            ? new window.DOMParser()
+            : null
+    if (!domParser) {
+        return undefined
+    }
     const svgDomString = domParser.parseFromString(svg, 'text/html')
     const svgEl = svgDomString.querySelector('svg')
     return svgEl
