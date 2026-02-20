@@ -10,7 +10,7 @@ import { kebabCase } from 'change-case'
 
 const hot = process.argv.includes('--hot')
 const watch = hot ? {} : undefined
-const minify = hot ? false : 'terser'
+const minify = hot ? false : 'esbuild'
 
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))

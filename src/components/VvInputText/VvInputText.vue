@@ -139,8 +139,7 @@ const { el, mask, typed, masked, unmasked } = useIMask(
             if (type.value === INPUT_TYPES.DATETIME_LOCAL
                 || type.value === INPUT_TYPES.DATE
                 || type.value === INPUT_TYPES.TIME
-                || type.value === INPUT_TYPES.MONTH
-            ) {
+                || type.value === INPUT_TYPES.MONTH) {
                 if (!typed.value) {
                     if (!localModelValue.value) {
                         return
@@ -165,14 +164,12 @@ const { el, mask, typed, masked, unmasked } = useIMask(
                     const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
                     if (type.value === INPUT_TYPES.DATETIME_LOCAL
                         || type.value === INPUT_TYPES.DATE
-                        || type.value === INPUT_TYPES.MONTH
-                    ) {
+                        || type.value === INPUT_TYPES.MONTH) {
                         toReturn.setFullYear(date.getFullYear())
                         toReturn.setMonth(date.getMonth())
                     }
                     if (type.value === INPUT_TYPES.DATETIME_LOCAL
-                        || type.value === INPUT_TYPES.DATE
-                    ) {
+                        || type.value === INPUT_TYPES.DATE) {
                         toReturn.setDate(date.getDate())
                     }
                     if (type.value === INPUT_TYPES.DATETIME_LOCAL
@@ -594,7 +591,7 @@ const hasAttrs = computed(() => {
     }
 
     // Text-like types with placeholder
-    if (isTextLike.value || typeValue === INPUT_TYPES.NUMBER) {
+    if (isTextLike.value || (typeValue === INPUT_TYPES.TEXT || typeValue === INPUT_TYPES.NUMBER)) {
         toReturn.placeholder = inputTextPlaceholder.value
     }
 
