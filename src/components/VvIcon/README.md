@@ -2,6 +2,22 @@
 
 VvIcon use [Iconify](https://iconify.design/) library and [Iconify Vue Component](https://docs.iconify.design/icon-components/vue/) under the hood.
 
+## SSR support
+
+The `svg` and `src` props parse SVG strings using the DOM API (`DOMParser`). In a browser environment this is available natively. In a **Node.js / SSR** environment (Nuxt, Vite SSR, etc.) there is no native DOM, so `jsdom` is used as a polyfill.
+
+`jsdom` is an **optional** peer dependency — it is not installed automatically. If you use `svg` or `src` props server-side, install it manually:
+
+```bash
+npm install jsdom
+# or
+pnpm add jsdom
+# or
+yarn add jsdom
+```
+
+Without `jsdom`, the `svg`/`src` props are silently ignored during SSR and the icon will be rendered once the page is hydrated on the client.
+
 ## Props
 
 `VvIcon` provide `name`, `provider` and `prefix` props.

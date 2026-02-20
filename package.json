@@ -402,9 +402,15 @@
     "credits": "npx @opengovsg/credits-generator"
   },
   "peerDependencies": {
-    "@volverjs/style": "0.x",
-    "@vueuse/core": "^14.x",
-    "vue": "^3.5.x"
+    "@volverjs/style": ">=0",
+    "@vueuse/core": ">=14",
+    "jsdom": ">=27",
+    "vue": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "jsdom": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.10",
@@ -422,7 +428,6 @@
     "@iconify/tools": "^5.0.3",
     "@iconify/utils": "^3.1.0",
     "chokidar": "^5.0.0",
-    "jsdom": "^28.1.0",
     "yargs": "^18.0.0"
   },
   "devDependencies": {

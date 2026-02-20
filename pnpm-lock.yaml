@@ -11,12 +11,6 @@ importers:
       '@floating-ui/vue':
         specifier: ^1.1.10
         version: 1.1.10(vue@3.5.28(typescript@5.9.3))
-      '@iconify/tools':
-        specifier: ^5.0.3
-        version: 5.0.3
-      '@iconify/utils':
-        specifier: ^3.1.0
-        version: 3.1.0
       '@iconify/vue':
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.28(typescript@5.9.3))
@@ -26,18 +20,12 @@ importers:
       blurhash:
         specifier: ^2.0.5
         version: 2.0.5
-      chokidar:
-        specifier: ^5.0.0
-        version: 5.0.0
       comlink:
         specifier: ^4.4.2
         version: 4.4.2
       dot-prop:
         specifier: ^10.1.0
         version: 10.1.0
-      jsdom:
-        specifier: ^28.1.0
-        version: 28.1.0
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
@@ -50,9 +38,6 @@ importers:
       vuedraggable:
         specifier: ^4.1.0
         version: 4.1.0(vue@3.5.28(typescript@5.9.3))
-      yargs:
-        specifier: ^18.0.0
-        version: 18.0.0
     devDependencies:
       '@antfu/eslint-config':
         specifier: 7.4.3
@@ -213,6 +198,19 @@ importers:
       vue-tsc:
         specifier: ^3.2.4
         version: 3.2.4(typescript@5.9.3)
+    optionalDependencies:
+      '@iconify/tools':
+        specifier: ^5.0.3
+        version: 5.0.3
+      '@iconify/utils':
+        specifier: ^3.1.0
+        version: 3.1.0
+      chokidar:
+        specifier: ^5.0.0
+        version: 5.0.0
+      yargs:
+        specifier: ^18.0.0
+        version: 18.0.0
 
 packages:
 
@@ -5675,7 +5673,8 @@ packages:
 
 snapshots:
 
-  '@acemir/cssom@0.9.31': {}
+  '@acemir/cssom@0.9.31':
+    optional: true
 
   '@adobe/css-tools@4.4.1': {}
 
@@ -5737,6 +5736,7 @@ snapshots:
       '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
       '@csstools/css-tokenizer': 4.0.0
       lru-cache: 11.2.6
+    optional: true
 
   '@asamuzakjp/dom-selector@6.8.1':
     dependencies:
@@ -5745,8 +5745,10 @@ snapshots:
       css-tree: 3.1.0
       is-potential-custom-element-name: 1.0.1
       lru-cache: 11.2.6
+    optional: true
 
-  '@asamuzakjp/nwsapi@2.3.9': {}
+  '@asamuzakjp/nwsapi@2.3.9':
+    optional: true
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -6719,6 +6721,7 @@ snapshots:
   '@bramus/specificity@2.4.2':
     dependencies:
       css-tree: 3.1.0
+    optional: true
 
   '@bufbuild/protobuf@2.5.1': {}
 
@@ -6737,12 +6740,14 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@csstools/color-helpers@6.0.1': {}
+  '@csstools/color-helpers@6.0.1':
+    optional: true
 
   '@csstools/css-calc@3.1.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)':
     dependencies:
       '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
       '@csstools/css-tokenizer': 4.0.0
+    optional: true
 
   '@csstools/css-color-parser@4.0.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)':
     dependencies:
@@ -6750,18 +6755,23 @@ snapshots:
       '@csstools/css-calc': 3.1.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)
       '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
       '@csstools/css-tokenizer': 4.0.0
+    optional: true
 
   '@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0)':
     dependencies:
       '@csstools/css-tokenizer': 4.0.0
+    optional: true
 
-  '@csstools/css-syntax-patches-for-csstree@1.0.27': {}
+  '@csstools/css-syntax-patches-for-csstree@1.0.27':
+    optional: true
 
-  '@csstools/css-tokenizer@4.0.0': {}
+  '@csstools/css-tokenizer@4.0.0':
+    optional: true
 
   '@cyberalien/svg-utils@1.1.4':
     dependencies:
       '@iconify/types': 2.0.0
+    optional: true
 
   '@es-joy/jsdoccomment@0.78.0':
     dependencies:
@@ -6946,7 +6956,8 @@ snapshots:
       '@eslint/core': 1.1.0
       levn: 0.4.1
 
-  '@exodus/bytes@1.14.1': {}
+  '@exodus/bytes@1.14.1':
+    optional: true
 
   '@floating-ui/core@1.7.4':
     dependencies:
@@ -6990,6 +7001,7 @@ snapshots:
       modern-tar: 0.7.3
       pathe: 2.0.3
       svgo: 4.0.0
+    optional: true
 
   '@iconify/types@2.0.0': {}
 
@@ -6998,6 +7010,7 @@ snapshots:
       '@antfu/install-pkg': 1.1.0
       '@iconify/types': 2.0.0
       mlly: 1.8.0
+    optional: true
 
   '@iconify/vue@5.0.0(vue@3.5.28(typescript@5.9.3))':
     dependencies:
@@ -8060,7 +8073,8 @@ snapshots:
 
   acorn@8.15.0: {}
 
-  agent-base@7.1.3: {}
+  agent-base@7.1.3:
+    optional: true
 
   ajv@6.12.6:
     dependencies:
@@ -8192,6 +8206,7 @@ snapshots:
   bidi-js@1.0.3:
     dependencies:
       require-from-string: 2.0.2
+    optional: true
 
   blurhash@2.0.5: {}
 
@@ -8326,6 +8341,7 @@ snapshots:
       string-width: 7.2.0
       strip-ansi: 7.1.0
       wrap-ansi: 9.0.0
+    optional: true
 
   clone-deep@4.0.1:
     dependencies:
@@ -8355,7 +8371,8 @@ snapshots:
 
   commander@10.0.1: {}
 
-  commander@11.1.0: {}
+  commander@11.1.0:
+    optional: true
 
   commander@14.0.2: {}
 
@@ -8432,6 +8449,7 @@ snapshots:
       domhandler: 5.0.3
       domutils: 3.1.0
       nth-check: 2.1.1
+    optional: true
 
   css-selector-parser@1.4.1: {}
 
@@ -8439,13 +8457,16 @@ snapshots:
     dependencies:
       mdn-data: 2.0.28
       source-map-js: 1.2.1
+    optional: true
 
   css-tree@3.1.0:
     dependencies:
       mdn-data: 2.12.2
       source-map-js: 1.2.1
+    optional: true
 
-  css-what@6.1.0: {}
+  css-what@6.1.0:
+    optional: true
 
   css.escape@1.5.1: {}
 
@@ -8454,6 +8475,7 @@ snapshots:
   csso@5.0.5:
     dependencies:
       css-tree: 2.2.1
+    optional: true
 
   cssstyle@6.0.1:
     dependencies:
@@ -8461,6 +8483,7 @@ snapshots:
       '@csstools/css-syntax-patches-for-csstree': 1.0.27
       css-tree: 3.1.0
       lru-cache: 11.2.6
+    optional: true
 
   csstype@3.2.3: {}
 
@@ -8470,6 +8493,7 @@ snapshots:
       whatwg-url: 16.0.1
     transitivePeerDependencies:
       - '@noble/hashes'
+    optional: true
 
   data-view-buffer@1.0.1:
     dependencies:
@@ -8499,7 +8523,8 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  decimal.js@10.6.0: {}
+  decimal.js@10.6.0:
+    optional: true
 
   decode-named-character-reference@1.0.2:
     dependencies:
@@ -8560,18 +8585,22 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
       entities: 4.5.0
+    optional: true
 
-  domelementtype@2.3.0: {}
+  domelementtype@2.3.0:
+    optional: true
 
   domhandler@5.0.3:
     dependencies:
       domelementtype: 2.3.0
+    optional: true
 
   domutils@3.1.0:
     dependencies:
       dom-serializer: 2.0.0
       domelementtype: 2.3.0
       domhandler: 5.0.3
+    optional: true
 
   dot-prop@10.1.0:
     dependencies:
@@ -8590,7 +8619,8 @@ snapshots:
 
   electron-to-chromium@1.5.302: {}
 
-  emoji-regex@10.4.0: {}
+  emoji-regex@10.4.0:
+    optional: true
 
   emoji-regex@8.0.0: {}
 
@@ -8603,7 +8633,8 @@ snapshots:
       graceful-fs: 4.2.11
       tapable: 2.2.1
 
-  entities@4.5.0: {}
+  entities@4.5.0:
+    optional: true
 
   entities@6.0.1: {}
 
@@ -9066,7 +9097,8 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.3
 
-  fflate@0.8.2: {}
+  fflate@0.8.2:
+    optional: true
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -9134,9 +9166,11 @@ snapshots:
 
   gensync@1.0.0-beta.2: {}
 
-  get-caller-file@2.0.5: {}
+  get-caller-file@2.0.5:
+    optional: true
 
-  get-east-asian-width@1.3.0: {}
+  get-east-asian-width@1.3.0:
+    optional: true
 
   get-intrinsic@1.2.4:
     dependencies:
@@ -9343,6 +9377,7 @@ snapshots:
       '@exodus/bytes': 1.14.1
     transitivePeerDependencies:
       - '@noble/hashes'
+    optional: true
 
   html-entities@2.6.0: {}
 
@@ -9354,6 +9389,7 @@ snapshots:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   https-proxy-agent@7.0.6:
     dependencies:
@@ -9361,6 +9397,7 @@ snapshots:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   ignore@5.3.2: {}
 
@@ -9486,7 +9523,8 @@ snapshots:
     dependencies:
       isobject: 3.0.1
 
-  is-potential-custom-element-name@1.0.1: {}
+  is-potential-custom-element-name@1.0.1:
+    optional: true
 
   is-promise@2.2.2: {}
 
@@ -9665,6 +9703,7 @@ snapshots:
     transitivePeerDependencies:
       - '@noble/hashes'
       - supports-color
+    optional: true
 
   jsesc@3.1.0: {}
 
@@ -9759,7 +9798,8 @@ snapshots:
 
   lru-cache@11.2.4: {}
 
-  lru-cache@11.2.6: {}
+  lru-cache@11.2.6:
+    optional: true
 
   lru-cache@5.1.1:
     dependencies:
@@ -9991,9 +10031,11 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
 
-  mdn-data@2.0.28: {}
+  mdn-data@2.0.28:
+    optional: true
 
-  mdn-data@2.12.2: {}
+  mdn-data@2.12.2:
+    optional: true
 
   mdurl@1.0.1: {}
 
@@ -10279,7 +10321,8 @@ snapshots:
       pkg-types: 1.3.1
       ufo: 1.6.1
 
-  modern-tar@0.7.3: {}
+  modern-tar@0.7.3:
+    optional: true
 
   mrmime@2.0.1: {}
 
@@ -10432,6 +10475,7 @@ snapshots:
   parse5@8.0.0:
     dependencies:
       entities: 6.0.1
+    optional: true
 
   path-browserify@1.0.1: {}
 
@@ -10858,7 +10902,8 @@ snapshots:
 
   repeat-string@1.6.1: {}
 
-  require-from-string@2.0.2: {}
+  require-from-string@2.0.2:
+    optional: true
 
   reserved-identifiers@1.2.0: {}
 
@@ -11036,11 +11081,13 @@ snapshots:
       '@parcel/watcher': 2.5.0
     optional: true
 
-  sax@1.4.3: {}
+  sax@1.4.3:
+    optional: true
 
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
+    optional: true
 
   scheduler@0.27.0: {}
 
@@ -11222,6 +11269,7 @@ snapshots:
       emoji-regex: 10.4.0
       get-east-asian-width: 1.3.0
       strip-ansi: 7.1.0
+    optional: true
 
   string.prototype.padend@3.1.6:
     dependencies:
@@ -11304,8 +11352,10 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.4.3
+    optional: true
 
-  symbol-tree@3.2.4: {}
+  symbol-tree@3.2.4:
+    optional: true
 
   sync-child-process@1.0.2:
     dependencies:
@@ -11351,11 +11401,13 @@ snapshots:
 
   tinyspy@4.0.3: {}
 
-  tldts-core@7.0.14: {}
+  tldts-core@7.0.14:
+    optional: true
 
   tldts@7.0.14:
     dependencies:
       tldts-core: 7.0.14
+    optional: true
 
   to-regex-range@5.0.1:
     dependencies:
@@ -11377,10 +11429,12 @@ snapshots:
   tough-cookie@6.0.0:
     dependencies:
       tldts: 7.0.14
+    optional: true
 
   tr46@6.0.0:
     dependencies:
       punycode: 2.3.1
+    optional: true
 
   trim-trailing-lines@1.1.4: {}
 
@@ -11491,7 +11545,8 @@ snapshots:
 
   undici-types@7.18.2: {}
 
-  undici@7.22.0: {}
+  undici@7.22.0:
+    optional: true
 
   unherit@1.1.3:
     dependencies:
@@ -11877,16 +11932,19 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
+    optional: true
 
   web-namespaces@1.1.4: {}
 
-  webidl-conversions@8.0.1: {}
+  webidl-conversions@8.0.1:
+    optional: true
 
   webpack-virtual-modules@0.6.2: {}
 
   webworkify@1.5.0: {}
 
-  whatwg-mimetype@5.0.0: {}
+  whatwg-mimetype@5.0.0:
+    optional: true
 
   whatwg-url@16.0.1:
     dependencies:
@@ -11895,6 +11953,7 @@ snapshots:
       webidl-conversions: 8.0.1
     transitivePeerDependencies:
       - '@noble/hashes'
+    optional: true
 
   which-boxed-primitive@1.0.2:
     dependencies:
@@ -11951,6 +12010,7 @@ snapshots:
       ansi-styles: 6.2.1
       string-width: 7.2.0
       strip-ansi: 7.1.0
+    optional: true
 
   wrappy@1.0.2: {}
 
@@ -11968,13 +12028,16 @@ snapshots:
 
   xml-name-validator@4.0.0: {}
 
-  xml-name-validator@5.0.0: {}
+  xml-name-validator@5.0.0:
+    optional: true
 
-  xmlchars@2.2.0: {}
+  xmlchars@2.2.0:
+    optional: true
 
   xtend@4.0.2: {}
 
-  y18n@5.0.8: {}
+  y18n@5.0.8:
+    optional: true
 
   yallist@3.1.1: {}
 
@@ -11985,7 +12048,8 @@ snapshots:
 
   yaml@2.8.2: {}
 
-  yargs-parser@22.0.0: {}
+  yargs-parser@22.0.0:
+    optional: true
 
   yargs@18.0.0:
     dependencies:
@@ -11995,6 +12059,7 @@ snapshots:
       string-width: 7.2.0
       y18n: 5.0.8
       yargs-parser: 22.0.0
+    optional: true
 
   yn@3.1.1: {}
 
