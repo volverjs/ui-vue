@@ -363,11 +363,11 @@ function focusPrev() {
                 focusableElements[activeElementIndex - 1].focus({
                     preventScroll: true,
                 })
-            } else {
-                focusableElements.at(-1).focus({
-                    preventScroll: true,
-                })
+                return
             }
+            focusableElements.at(-1)?.focus({
+                preventScroll: true,
+            })
         }
     })
 }
