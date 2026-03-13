@@ -31,7 +31,7 @@ export default defineConfig({
                     storybookTest({
                         configDir: '.storybook',
                         tags: {
-                            include: ['test'],
+                            include: [],
                         },
                     }),
                 ],
