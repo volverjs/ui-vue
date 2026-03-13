@@ -95,7 +95,7 @@ onMounted(() => {
     if (props.not && localModelValue.value === undefined) {
         localModelValue.value = props.collapse
             ? []
-            : [...accordionNames.values()].splice(1, accordionNames.size)
+            : [...accordionNames.values()].toSpliced(0, 1)
     }
     nextTick(() => {
         for (const name of accordionNames) {

@@ -17,7 +17,6 @@
             "node",
             "vite/client",
             "@iconify/types",
-            "@types/jsdom",
             "@floating-ui/vue",
             "./auto-imports"
         ],

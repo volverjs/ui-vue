@@ -192,7 +192,7 @@ export type Alert = {
 }
 ```
 
-##### Usage
+#### Usage
 
 ```typescript
 import { useAlert } from '@volverjs/ui-vue/composables'
@@ -224,7 +224,7 @@ function showSuccess() {
 
 Used to create blurred preview image ([blurhash](https://blurha.sh/))
 
-##### Example
+#### Example
 
 ```typescript
 import { useBlurhash } from '@volverjs/ui-vue/composables'

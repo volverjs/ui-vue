@@ -78,14 +78,14 @@ export function validateFileList(fileList: FileList, acceptValue?: string): bool
 export function filterFileList(fileList: FileList, acceptValue?: string): File[] {
     // If there are no restrictions, return all files
     if (!acceptValue || acceptValue.trim() === '' || acceptValue === '*') {
-        return Array.from(fileList)
+        return [...fileList]
     }
 
     // Arrays to store MIME types and accepted extensions
     const { mimeTypes, extensions, wildcards } = acceptedMimeTypes(acceptValue)
 
     // Filter files based on the criteria
-    return Array.from(fileList).filter((file) => {
+    return [...fileList].filter((file) => {
         const fileType: string = file.type.toLowerCase()
         const fileExtension: string = `.${file.name.split('.').pop()?.toLowerCase()}`
 

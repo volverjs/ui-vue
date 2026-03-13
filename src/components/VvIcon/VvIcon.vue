@@ -56,27 +56,14 @@ const icon = computed(() => {
 /**
  * Get SVG content from SVG string
  * @param {string} svg
- * @return {SVGSVGElement | undefined} https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement
+ * @return {SVGSVGElement | null} https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement
  */
-function getSvgContent(svg: string): SVGSVGElement | undefined {
-    let dom
-    if (typeof window === 'undefined') {
-        // SSR
-        try {
-            // eslint-disable-next-line ts/no-require-imports
-            const { JSDOM } = require('jsdom')
-            dom = new JSDOM().window
-        } catch {
-            // jsdom not available, SVG parsing will be skipped in SSR
-        }
-    }
-    const domParser = dom
-        ? new dom.DOMParser()
-        : typeof window !== 'undefined'
-            ? new window.DOMParser()
-            : null
+function getSvgContent(svg: string): SVGSVGElement | null {
+    const domParser = typeof window !== 'undefined'
+        ? new window.DOMParser()
+        : null
     if (!domParser) {
-        return undefined
+        return null
     }
     const svgDomString = domParser.parseFromString(svg, 'text/html')
     const svgEl = svgDomString.querySelector('svg')

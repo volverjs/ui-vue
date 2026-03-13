@@ -89,7 +89,7 @@ export function useAlert() {
         return computed(() => {
             const groupMap = groups.get(group)
             return groupMap && groupMap instanceof Map
-                ? Array.from(groupMap?.values()).sort(
+                ? [...groupMap.values()].toSorted(
                         (a, b) => a.timestamp - b.timestamp,
                     )
                 : []

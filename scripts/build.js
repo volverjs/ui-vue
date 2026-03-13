@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 import { globSync } from 'glob'
-import { build } from 'vite'
+import { build, mergeConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { externalizeDeps } from 'vite-plugin-externalize-deps'
 import ESLint from '@nabla/vite-plugin-eslint'
@@ -51,6 +51,25 @@ const baseConfig = {
             '@': fileURLToPath(new URL('../src', import.meta.url)),
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                globals: {
+                    'vue': 'Vue',
+                    '@vueuse/core': 'VueuseCore',
+                    '@iconify/vue': 'IconifyVue',
+                    '@floating-ui/vue': 'FloatingUiVue',
+                    '@tanstack/vue-virtual': 'TanstackVueVirtual',
+                    'mitt': 'mitt',
+                    'dot-prop': 'dotProp',
+                    'vuedraggable': 'vuedraggable',
+                    'vue-imask': 'vueImask',
+                    'comlink': 'comlink',
+                    'pica': 'pica',
+                },
+            },
+        },
+    },
 }
 
 // build library
@@ -60,8 +79,7 @@ packageJson.exports['.'] = {
     default: './dist/index.umd.js',
 }
 packageJson.typesVersions['*']['*'] = ['dist/index.d.ts']
-build({
-    ...baseConfig,
+build(mergeConfig(baseConfig, {
     build: {
         watch,
         minify,
@@ -72,7 +90,7 @@ build({
             fileName: format => `index.${format}.js`,
         },
     },
-})
+}))
 
 // build resolvers
 packageJson.exports['./resolvers/unplugin'] = {
@@ -83,8 +101,7 @@ packageJson.exports['./resolvers/unplugin'] = {
 packageJson.typesVersions['*']['resolvers/unplugin'] = [
     'dist/resolvers/unplugin.d.ts',
 ]
-build({
-    ...baseConfig,
+build(mergeConfig(baseConfig, {
     build: {
         watch,
         minify,
@@ -95,7 +112,7 @@ build({
             fileName: format => `resolvers/unplugin.${format}.js`,
         },
     },
-})
+}))
 
 // build icons
 packageJson.exports[`./icons`] = {
@@ -114,6 +131,11 @@ build({
             name: 'icons',
             entry: './src/icons.ts',
             fileName: format => `icons.${format}.js`,
+        },
+        rollupOptions: {
+            output: {
+                exports: 'named',
+            },
         },
     },
 })
@@ -140,8 +162,7 @@ packageJson.exports['./directives'] = {
     default: './dist/directives/index.umd.js',
 }
 packageJson.typesVersions['*'].directives = ['dist/directives/index.d.ts']
-build({
-    ...baseConfig,
+build(mergeConfig(baseConfig, {
     build: {
         watch,
         minify,
@@ -152,7 +173,7 @@ build({
             fileName: format => `directives/index.${format}.js`,
         },
     },
-})
+}))
 
 // build single directives
 const directives = globSync('./src/directives/v-!(_*).ts')
@@ -175,8 +196,7 @@ directivesSources.forEach(({ name, entry }) => {
     }
     packageJson.typesVersions['*'][paramCaseName] = [`dist/${subPath}.d.ts`]
 
-    build({
-        ...baseConfig,
+    build(mergeConfig(baseConfig, {
         build: {
             watch: hot ? {} : undefined,
             minify,
@@ -187,7 +207,7 @@ directivesSources.forEach(({ name, entry }) => {
             },
             emptyOutDir: false,
         },
-    })
+    }))
 })
 
 // build composables library
@@ -197,8 +217,7 @@ packageJson.exports['./composables'] = {
     default: './dist/composables/index.umd.js',
 }
 packageJson.typesVersions['*'].composables = ['dist/composables/index.d.ts']
-build({
-    ...baseConfig,
+build(mergeConfig(baseConfig, {
     build: {
         watch,
         minify,
@@ -209,7 +228,7 @@ build({
             fileName: format => `composables/index.${format}.js`,
         },
     },
-})
+}))
 
 // build components library
 packageJson.exports['./components'] = {
@@ -218,8 +237,7 @@ packageJson.exports['./components'] = {
     default: './dist/components/index.umd.js',
 }
 packageJson.typesVersions['*'].components = ['dist/components/index.d.ts']
-build({
-    ...baseConfig,
+build(mergeConfig(baseConfig, {
     build: {
         watch,
         minify,
@@ -230,7 +248,7 @@ build({
             fileName: format => `components/index.${format}.js`,
         },
     },
-})
+}))
 
 // build single components
 const components = globSync('./src/components/**/!(_*).vue')
@@ -253,8 +271,7 @@ componentsSources.forEach(({ name, entry }) => {
     }
     packageJson.typesVersions['*'][paramCaseName] = [`dist/${subPath}.vue.d.ts`]
 
-    build({
-        ...baseConfig,
+    build(mergeConfig(baseConfig, {
         build: {
             watch: hot ? {} : undefined,
             minify,
@@ -265,7 +282,7 @@ componentsSources.forEach(({ name, entry }) => {
             },
             emptyOutDir: false,
         },
-    })
+    }))
 })
 
 // sort exports

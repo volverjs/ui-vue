@@ -99,7 +99,7 @@ export function useGroupProps(
             }
             groupModifiers.forEach(modifier => toReturn.add(modifier))
         }
-        return Array.from(toReturn)
+        return [...toReturn]
     })
     const disabled = computed(() =>
         Boolean(props.disabled || group?.disabled.value),
