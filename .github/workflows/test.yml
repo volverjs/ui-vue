@@ -12,7 +12,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20.19
+                  node-version: 24
 
             - uses: pnpm/action-setup@v4
 
@@ -23,7 +23,7 @@ jobs:
                   cache: 'pnpm'
 
             - name: Install dependencies
-              run: pnpm install --no-frozen-lockfile
+              run: pnpm install --frozen-lockfile
 
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps

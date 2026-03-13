@@ -21,7 +21,7 @@ const propsDefaults = useDefaults<typeof VvInputFileProps>(
     VvInputFileProps,
     props,
 )
-const { modifiers, id, readonly, disabled, icon, iconPosition, iconDownload }
+const { modifiers, id, readonly, disabled, icon, iconPosition, iconDownload, sortable }
     = toRefs(props)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)

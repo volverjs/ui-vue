@@ -363,11 +363,11 @@ function focusPrev() {
                 focusableElements[activeElementIndex - 1].focus({
                     preventScroll: true,
                 })
-            } else {
-                focusableElements[focusableElements.length - 1].focus({
-                    preventScroll: true,
-                })
+                return
             }
+            focusableElements.at(-1)?.focus({
+                preventScroll: true,
+            })
         }
     })
 }
@@ -496,7 +496,7 @@ export default {
                 :style="arrowPlacement"
                 class="vv-dropdown__arrow"
             />
-            <slot name="before" v-bind="{ expanded }" />
+            <slot name="before" v-bind="{ show, hide, toggle, expanded }" />
             <div
                 v-bind="attrs"
                 :id="hasId"
@@ -509,11 +509,15 @@ export default {
                 <slot
                     name="items"
                     v-bind="{
+                        show,
+                        hide,
+                        toggle,
+                        expanded,
                         role: itemRole,
                     }"
                 />
             </div>
-            <slot name="after" v-bind="{ expanded }" />
+            <slot name="after" v-bind="{ show, hide, toggle, expanded }" />
         </div>
     </Transition>
 </template>

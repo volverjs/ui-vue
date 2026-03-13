@@ -83,6 +83,8 @@ const hasSeconds = computed(() => {
 
 // mask
 const NEGATIVE_ZERO_REGEX = /^-0?[.,]?[0*]?$/
+const MASK_REGEX = /./
+const MASK_NUMBER_REGEX = /^-$|^$/
 const maskReady = ref(false)
 const modelValueDate = ref<Date>()
 const modelValueDateIsoString = ref<string>()
@@ -91,7 +93,7 @@ const { el, mask, typed, masked, unmasked } = useIMask(
         () => {
             if (!props.iMask) {
                 return {
-                    mask: /./,
+                    mask: MASK_REGEX,
                 }
             }
             if (props.iMask.mask === Number) {
@@ -115,7 +117,7 @@ const { el, mask, typed, masked, unmasked } = useIMask(
             }
             emit('update:masked', masked.value)
             if (type.value === INPUT_TYPES.NUMBER) {
-                if (/^-$|^$/.test(unmasked.value)) {
+                if (MASK_NUMBER_REGEX.test(unmasked.value)) {
                     if (
                         localModelValue.value === null
                         || localModelValue.value === undefined

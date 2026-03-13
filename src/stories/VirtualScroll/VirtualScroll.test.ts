@@ -28,7 +28,7 @@ export async function defaultTest(
     await expect(['UL', 'OL', 'MENU'].includes(wrapper.tagName)).toBe(true)
 
     // check visible items are rendered and are virtualized
-    const liItems = Array.from(wrapper.querySelectorAll('li'))
+    const liItems = [...wrapper.querySelectorAll('li')]
     await expect(liItems.length).toBeGreaterThan(0)
     if (Array.isArray(args?.items)) {
         await expect(liItems.length).toBeLessThan(args.items.length)

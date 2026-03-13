@@ -3,7 +3,14 @@ import { wrap } from 'comlink'
 import Pica from 'pica'
 import BlurhashWorker from '@/workers/blurhash?worker&inline'
 
-const remoteFunction = wrap<BlurhashWorkerType>(new BlurhashWorker())
+let remoteFunction: ReturnType<typeof wrap<BlurhashWorkerType>>
+
+function getRemoteFunction() {
+    if (!remoteFunction) {
+        remoteFunction = wrap<BlurhashWorkerType>(new BlurhashWorker())
+    }
+    return remoteFunction
+}
 
 function loadImage(src: string): Promise<CanvasImageSource> {
     return new Promise((resolve, reject) => {
@@ -53,7 +60,7 @@ export function useBlurhash() {
                 newHeight,
             )
             if (imageData) {
-                return remoteFunction.encode(
+                return getRemoteFunction().encode(
                     imageData,
                     newWidth,
                     newHeight,
@@ -64,5 +71,5 @@ export function useBlurhash() {
         }
     }
 
-    return { encode, decode: remoteFunction.decode, loadImage }
+    return { encode, decode: (...args: Parameters<BlurhashWorkerType['decode']>) => getRemoteFunction().decode(...args), loadImage }
 }

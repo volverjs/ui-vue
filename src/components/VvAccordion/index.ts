@@ -67,7 +67,7 @@ export function useGroupProps(props: VvAccordionPropsTypes) {
             }
             groupModifiers.forEach(modifier => toReturn.add(modifier))
         }
-        return Array.from(toReturn)
+        return [...toReturn]
     })
 
     return {

@@ -33,11 +33,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
             if (args.not) {
                 expect(JSON.stringify(JSON.parse(value.textContent ?? ''))).toBe(
                     JSON.stringify(
-                        [
-                            ...args.items.map(
-                                (item: { name: string }) => item.name,
-                            ),
-                        ].splice(1),
+                        args.items.map(
+                            (item: { name: string }) => item.name,
+                        ).toSpliced(0, 1),
                     ),
                 )
             } else if (args.collapse) {

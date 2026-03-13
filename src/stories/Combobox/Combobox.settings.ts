@@ -16,6 +16,7 @@ import {
     UnselectableArgTypes,
     ValidArgTypes,
 } from '@/stories/argTypes'
+import { propsToObject } from '@/utils/ObjectUtilities'
 
 export const defaultArgs: Meta<typeof VvCombobox>['args'] = {
     ...propsToObject(VvComboboxProps),
