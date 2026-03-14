@@ -20,14 +20,6 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src'),
         },
     },
-    server: {
-        warmup: {
-            clientFiles: [
-                '.storybook/vitest.setup.ts',
-                'src/stories/InputText/InputText.stories.ts',
-            ],
-        },
-    },
     test: {
         onConsoleLog(log) {
             if (log.includes('decodeEntities'))
