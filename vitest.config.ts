@@ -27,9 +27,10 @@ export default defineConfig({
         projects: [
             {
                 extends: true,
+                root: __dirname,
                 plugins: [
                     storybookTest({
-                        configDir: '.storybook',
+                        configDir: path.resolve(__dirname, '.storybook'),
                         tags: {
                             include: [],
                         },
