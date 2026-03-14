@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import vue from '@vitejs/plugin-vue'
 import { playwright } from '@vitest/browser-playwright'
@@ -46,6 +47,8 @@ export default defineConfig({
                 ],
                 test: {
                     name: 'storybook',
+                    maxWorkers: process.env.CI ? 2 : undefined,
+                    fileParallelism: !process.env.CI,
                     browser: {
                         enabled: true,
                         instances: [

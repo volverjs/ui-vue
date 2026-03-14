@@ -29,4 +29,6 @@ jobs:
               run: npx playwright install --with-deps
 
             - name: Run Storybook tests
+              env:
+                  NODE_OPTIONS: --max-old-space-size=4096
               run: pnpm test-storybook
