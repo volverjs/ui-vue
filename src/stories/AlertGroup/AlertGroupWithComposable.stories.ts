@@ -110,7 +110,7 @@ export const Default: StoryObj = {
 				<vv-button id="warning" label="Show warning" modifiers="secondary" @click="showWarning" class="mb-lg" />
 				<vv-button id="info" label="Show info" modifiers="secondary" @click="showInfo" class="mb-lg" />
 			</div>
-			<vv-alert-group v-bind="args" :items="alerts" :onClose="removeAlert" data-testId="element" />
+			<vv-alert-group name="test" v-bind="args" :items="alerts" :onClose="removeAlert" data-testId="element" />
         `,
     }),
 }
