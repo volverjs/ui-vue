@@ -32,10 +32,9 @@
         "skipLibCheck": true
     },
     "include": [
-        "./env.d.ts",
+        "./auto-imports.d.ts",
         "./src/**/*",
         "./src/**/*.vue",
-        "./src/stories/**/*.test.ts",
-        "./assets/auto-imports.d.ts"
+        "./src/stories/**/*.test.ts"
     ]
 }

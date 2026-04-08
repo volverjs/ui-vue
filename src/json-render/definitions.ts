@@ -24,9 +24,9 @@ import { z } from 'zod'
 // Shared sub-schemas
 // ---------------------------------------------------------------------------
 
-const modifiers = z.union([z.string(), z.array(z.string())]).nullable()
+const modifiers = z.union([z.string(), z.array(z.string())]).nullish()
 
-const iconPosition = z.enum(['before', 'after']).nullable()
+const iconPosition = z.enum(['before', 'after']).nullish()
 
 const labelValueOption = z.object({
     label: z.string(),
@@ -35,16 +35,16 @@ const labelValueOption = z.object({
 
 const navItem = z.object({
     label: z.string(),
-    to: z.string().nullable(),
-    href: z.string().nullable(),
+    to: z.string().nullish(),
+    href: z.string().nullish(),
 })
 
 /** Common form field props shared across input components. */
 const formFieldProps = {
     name: z.string(),
-    label: z.string().nullable(),
-    required: z.boolean().nullable(),
-    disabled: z.boolean().nullable(),
+    label: z.string().nullish(),
+    required: z.boolean().nullish(),
+    disabled: z.boolean().nullish(),
     modifiers,
 } as const
 
@@ -54,7 +54,7 @@ const formFieldProps = {
 
 export const CardDefinition = {
     props: z.object({
-        title: z.string().nullable(),
+        title: z.string().nullish(),
         modifiers,
     }),
     slots: ['default', 'header', 'footer'],
@@ -65,7 +65,7 @@ export const CardDefinition = {
 export const AccordionDefinition = {
     props: z.object({
         title: z.string(),
-        content: z.string().nullable(),
+        content: z.string().nullish(),
         modifiers,
     }),
     slots: ['summary', 'default'],
@@ -77,7 +77,7 @@ export const AccordionGroupDefinition = {
     props: z.object({
         collapse: z
             .boolean()
-            .nullable()
+            .nullish()
             .describe('Close other accordions when one opens'),
         modifiers,
     }),
@@ -88,7 +88,7 @@ export const AccordionGroupDefinition = {
 
 export const DialogDefinition = {
     props: z.object({
-        title: z.string().nullable(),
+        title: z.string().nullish(),
         modifiers,
     }),
     slots: ['default', 'header', 'footer'],
@@ -117,8 +117,8 @@ export const TabDefinition = {
 
 export const AlertDefinition = {
     props: z.object({
-        title: z.string().nullable(),
-        content: z.string().nullable(),
+        title: z.string().nullish(),
+        content: z.string().nullish(),
         modifiers: z
             .union([
                 z.enum(['success', 'info', 'warning', 'danger', 'brand', 'accent']),
@@ -126,9 +126,9 @@ export const AlertDefinition = {
                     z.enum(['success', 'info', 'warning', 'danger', 'brand', 'accent']),
                 ),
             ])
-            .nullable(),
-        dismissable: z.boolean().nullable(),
-        role: z.enum(['alert', 'alertdialog']).nullable(),
+            .nullish(),
+        dismissable: z.boolean().nullish(),
+        role: z.enum(['alert', 'alertdialog']).nullish(),
     }),
     slots: ['default', 'header', 'footer'],
     description:
@@ -137,10 +137,10 @@ export const AlertDefinition = {
 
 export const AlertGroupDefinition = {
     props: z.object({
-        stack: z.boolean().nullable().describe('Stack alerts vertically'),
+        stack: z.boolean().nullish().describe('Stack alerts vertically'),
         position: z
             .enum(['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'])
-            .nullable(),
+            .nullish(),
         modifiers,
     }),
     slots: ['default'],
@@ -150,7 +150,7 @@ export const AlertGroupDefinition = {
 
 export const BadgeDefinition = {
     props: z.object({
-        value: z.union([z.string(), z.number()]).nullable(),
+        value: z.union([z.string(), z.number()]).nullish(),
         modifiers,
     }),
     slots: ['default'],
@@ -160,7 +160,7 @@ export const BadgeDefinition = {
 
 export const AvatarDefinition = {
     props: z.object({
-        imgSrc: z.string().nullable(),
+        imgSrc: z.string().nullish(),
         modifiers,
     }),
     slots: ['default'],
@@ -170,10 +170,10 @@ export const AvatarDefinition = {
 
 export const AvatarGroupDefinition = {
     props: z.object({
-        toShow: z.number().nullable().describe('Max number of avatars to display (default: 3)'),
+        toShow: z.number().nullish().describe('Max number of avatars to display (default: 3)'),
         totalItems: z
             .number()
-            .nullable()
+            .nullish()
             .describe('Override total count shown in the overflow badge'),
         modifiers,
     }),
@@ -186,7 +186,7 @@ export const ProgressDefinition = {
     props: z.object({
         label: z.string(),
         value: z.number(),
-        max: z.number().nullable(),
+        max: z.number().nullish(),
         modifiers,
     }),
     description:
@@ -196,8 +196,8 @@ export const ProgressDefinition = {
 export const IconDefinition = {
     props: z.object({
         name: z.string().describe('Iconify icon name, e.g. "mdi:home" or "heroicons:star"'),
-        color: z.string().nullable(),
-        size: z.number().nullable(),
+        color: z.string().nullish(),
+        size: z.number().nullish(),
     }),
     description:
         'Icon using the Iconify icon system. Use the format "collection:icon-name" for the name prop.',
@@ -206,7 +206,7 @@ export const IconDefinition = {
 export const TooltipDefinition = {
     props: z.object({
         value: z.string().describe('Tooltip text content'),
-        position: z.enum(['top', 'bottom', 'left', 'right']).nullable(),
+        position: z.enum(['top', 'bottom', 'left', 'right']).nullish(),
         modifiers,
     }),
     slots: ['default'],
@@ -220,14 +220,14 @@ export const TooltipDefinition = {
 
 export const ButtonDefinition = {
     props: z.object({
-        label: z.string().nullable(),
+        label: z.string().nullish(),
         modifiers,
-        disabled: z.boolean().nullable(),
-        loading: z.boolean().nullable(),
-        icon: z.string().nullable().describe('Iconify icon name'),
+        disabled: z.boolean().nullish(),
+        loading: z.boolean().nullish(),
+        icon: z.string().nullish().describe('Iconify icon name'),
         iconPosition,
-        type: z.enum(['button', 'submit', 'reset']).nullable(),
-        href: z.string().nullable(),
+        type: z.enum(['button', 'submit', 'reset']).nullish(),
+        href: z.string().nullish(),
     }),
     slots: ['default'],
     description:
@@ -238,11 +238,11 @@ export const ButtonGroupDefinition = {
     props: z.object({
         toggle: z
             .boolean()
-            .nullable()
+            .nullish()
             .describe('Enable toggle mode for child buttons'),
         multiple: z
             .boolean()
-            .nullable()
+            .nullish()
             .describe('Allow multiple buttons selected at once'),
         modifiers,
     }),
@@ -269,10 +269,10 @@ export const NavDefinition = {
         items: z
             .array(
                 navItem.extend({
-                    items: z.array(navItem).nullable(),
+                    items: z.array(navItem).nullish(),
                 }),
             )
-            .nullable(),
+            .nullish(),
         modifiers,
     }),
     slots: ['default'],
@@ -289,12 +289,12 @@ export const InputTextDefinition = {
         ...formFieldProps,
         type: z
             .enum(['text', 'email', 'password', 'tel', 'url', 'search', 'date', 'time', 'number'])
-            .nullable(),
-        placeholder: z.string().nullable(),
-        readonly: z.boolean().nullable(),
-        icon: z.string().nullable().describe('Iconify icon name'),
+            .nullish(),
+        placeholder: z.string().nullish(),
+        readonly: z.boolean().nullish(),
+        icon: z.string().nullish().describe('Iconify icon name'),
         iconPosition,
-        floating: z.boolean().nullable().describe('Floating label animation'),
+        floating: z.boolean().nullish().describe('Floating label animation'),
     }),
     description:
         'Text input field. Supports types: text, email, password, tel, url, search, date, time, number. Use $bindState for two-way binding.',
@@ -303,10 +303,10 @@ export const InputTextDefinition = {
 export const TextareaDefinition = {
     props: z.object({
         ...formFieldProps,
-        placeholder: z.string().nullable(),
-        rows: z.number().nullable(),
-        readonly: z.boolean().nullable(),
-        floating: z.boolean().nullable().describe('Floating label animation'),
+        placeholder: z.string().nullish(),
+        rows: z.number().nullish(),
+        readonly: z.boolean().nullish(),
+        floating: z.boolean().nullish().describe('Floating label animation'),
     }),
     description:
         'Multi-line text input. Use $bindState for two-way binding.',
@@ -316,9 +316,9 @@ export const SelectDefinition = {
     props: z.object({
         ...formFieldProps,
         options: z.array(labelValueOption),
-        multiple: z.boolean().nullable(),
-        placeholder: z.string().nullable(),
-        floating: z.boolean().nullable().describe('Floating label animation'),
+        multiple: z.boolean().nullish(),
+        placeholder: z.string().nullish(),
+        floating: z.boolean().nullish().describe('Floating label animation'),
     }),
     description:
         'Native select dropdown. Pass options as an array of {label, value} objects. Use $bindState for two-way binding.',
@@ -326,13 +326,13 @@ export const SelectDefinition = {
 
 export const CheckboxDefinition = {
     props: z.object({
-        name: z.string().nullable(),
-        label: z.string().nullable(),
-        value: z.union([z.string(), z.number(), z.boolean()]).nullable(),
-        disabled: z.boolean().nullable(),
+        name: z.string().nullish(),
+        label: z.string().nullish(),
+        value: z.union([z.string(), z.number(), z.boolean()]).nullish(),
+        disabled: z.boolean().nullish(),
         switch: z
             .boolean()
-            .nullable()
+            .nullish()
             .describe('Render as a toggle switch instead of checkbox'),
         modifiers,
     }),
@@ -344,7 +344,7 @@ export const CheckboxGroupDefinition = {
     props: z.object({
         ...formFieldProps,
         options: z.array(labelValueOption),
-        vertical: z.boolean().nullable(),
+        vertical: z.boolean().nullish(),
     }),
     slots: ['default'],
     description:
@@ -354,9 +354,9 @@ export const CheckboxGroupDefinition = {
 export const RadioDefinition = {
     props: z.object({
         name: z.string(),
-        label: z.string().nullable(),
-        value: z.union([z.string(), z.number(), z.boolean()]).nullable(),
-        disabled: z.boolean().nullable(),
+        label: z.string().nullish(),
+        value: z.union([z.string(), z.number(), z.boolean()]).nullish(),
+        disabled: z.boolean().nullish(),
         modifiers,
     }),
     description:
@@ -367,7 +367,7 @@ export const RadioGroupDefinition = {
     props: z.object({
         ...formFieldProps,
         options: z.array(labelValueOption),
-        vertical: z.boolean().nullable(),
+        vertical: z.boolean().nullish(),
     }),
     slots: ['default'],
     description:
@@ -378,9 +378,9 @@ export const ComboboxDefinition = {
     props: z.object({
         ...formFieldProps,
         options: z.array(labelValueOption),
-        placeholder: z.string().nullable(),
-        searchable: z.boolean().nullable(),
-        multiple: z.boolean().nullable(),
+        placeholder: z.string().nullish(),
+        searchable: z.boolean().nullish(),
+        multiple: z.boolean().nullish(),
     }),
     description:
         'Combobox dropdown with optional search and multi-select. Use $bindState for two-way binding.',
@@ -389,9 +389,9 @@ export const ComboboxDefinition = {
 export const InputFileDefinition = {
     props: z.object({
         ...formFieldProps,
-        accept: z.string().nullable().describe('MIME types or file extensions, e.g. "image/*" or ".pdf"'),
-        multiple: z.boolean().nullable(),
-        max: z.number().nullable().describe('Maximum number of files'),
+        accept: z.string().nullish().describe('MIME types or file extensions, e.g. "image/*" or ".pdf"'),
+        multiple: z.boolean().nullish(),
+        max: z.number().nullish().describe('Maximum number of files'),
     }),
     description:
         'File upload input with optional drag-and-drop area. Use accept to restrict file types.',

@@ -52,7 +52,13 @@ function render(
     extra?: Record<string, unknown>,
     children?: unknown,
 ) {
-    return h(component as any, { ...pick(props, keys), ...extra }, children === null ? undefined : { default: () => children })
+    const slots
+        = children == null
+            ? undefined
+            : typeof children === 'object' && !Array.isArray(children)
+                ? (children as Record<string, () => unknown>)
+                : { default: () => children }
+    return h(component as any, { ...pick(props, keys), ...extra }, slots)
 }
 
 // ---------------------------------------------------------------------------
@@ -71,8 +77,8 @@ export function AccordionGroupComponent({ props, children }: BaseComponentProps)
     return render(VvAccordionGroup, props, ['collapse', 'modifiers'], undefined, children)
 }
 
-export function DialogComponent({ props, children }: BaseComponentProps) {
-    return render(VvDialog, props, ['title', 'modifiers'], { modelValue: true }, children)
+export function DialogComponent({ props, children, bindings }: BaseComponentProps) {
+    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, children)
 }
 
 export function TabComponent({ props }: BaseComponentProps) {
