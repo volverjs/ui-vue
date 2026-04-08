@@ -52,7 +52,7 @@ function render(
     extra?: Record<string, unknown>,
     children?: unknown,
 ) {
-    return h(component as any, { ...pick(props, keys), ...extra }, children != null ? { default: () => children } : undefined)
+    return h(component as any, { ...pick(props, keys), ...extra }, children === null ? undefined : { default: () => children })
 }
 
 // ---------------------------------------------------------------------------
@@ -155,7 +155,7 @@ export function NavComponent({ props, children }: BaseComponentProps) {
 // ---------------------------------------------------------------------------
 
 /** Render a form component with two-way binding via useBoundProp. */
-function renderBound<T>(
+function useRenderBound<T>(
     component: object,
     props: Record<string, unknown>,
     keys: string[],
@@ -168,7 +168,7 @@ function renderBound<T>(
 }
 
 export function InputTextComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<string | number>(
+    return useRenderBound<string | number>(
         VvInputText,
         props,
         ['name', 'label', 'type', 'placeholder', 'required', 'disabled', 'readonly', 'icon', 'iconPosition', 'floating', 'modifiers'],
@@ -177,7 +177,7 @@ export function InputTextComponent({ props, bindings }: BaseComponentProps) {
 }
 
 export function TextareaComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<string>(
+    return useRenderBound<string>(
         VvTextarea,
         props,
         ['name', 'label', 'placeholder', 'rows', 'required', 'disabled', 'readonly', 'floating', 'modifiers'],
@@ -186,7 +186,7 @@ export function TextareaComponent({ props, bindings }: BaseComponentProps) {
 }
 
 export function SelectComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<unknown>(
+    return useRenderBound<unknown>(
         VvSelect,
         props,
         ['name', 'label', 'options', 'multiple', 'placeholder', 'required', 'disabled', 'floating', 'modifiers'],
@@ -195,7 +195,7 @@ export function SelectComponent({ props, bindings }: BaseComponentProps) {
 }
 
 export function CheckboxComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<boolean>(
+    return useRenderBound<boolean>(
         VvCheckbox,
         props,
         ['name', 'label', 'value', 'disabled', 'switch', 'modifiers'],
@@ -204,7 +204,7 @@ export function CheckboxComponent({ props, bindings }: BaseComponentProps) {
 }
 
 export function CheckboxGroupComponent({ props, children, bindings }: BaseComponentProps) {
-    return renderBound<unknown[]>(
+    return useRenderBound<unknown[]>(
         VvCheckboxGroup,
         props,
         ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers'],
@@ -215,7 +215,7 @@ export function CheckboxGroupComponent({ props, children, bindings }: BaseCompon
 }
 
 export function RadioComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<string | number | boolean>(
+    return useRenderBound<string | number | boolean>(
         VvRadio,
         props,
         ['name', 'label', 'value', 'disabled', 'modifiers'],
@@ -224,7 +224,7 @@ export function RadioComponent({ props, bindings }: BaseComponentProps) {
 }
 
 export function RadioGroupComponent({ props, children, bindings }: BaseComponentProps) {
-    return renderBound<string | number | boolean>(
+    return useRenderBound<string | number | boolean>(
         VvRadioGroup,
         props,
         ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers'],
@@ -235,7 +235,7 @@ export function RadioGroupComponent({ props, children, bindings }: BaseComponent
 }
 
 export function ComboboxComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<unknown>(
+    return useRenderBound<unknown>(
         VvCombobox,
         props,
         ['name', 'label', 'options', 'placeholder', 'searchable', 'multiple', 'modifiers'],
@@ -244,7 +244,7 @@ export function ComboboxComponent({ props, bindings }: BaseComponentProps) {
 }
 
 export function InputFileComponent({ props, bindings }: BaseComponentProps) {
-    return renderBound<File[]>(
+    return useRenderBound<File[]>(
         VvInputFile,
         props,
         ['name', 'label', 'accept', 'multiple', 'max', 'modifiers'],
