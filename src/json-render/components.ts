@@ -52,10 +52,16 @@ function render(
     extra?: Record<string, unknown>,
     children?: unknown,
 ) {
+    const isSlotMap
+        = children != null
+            && typeof children === 'object'
+            && !Array.isArray(children)
+            && Object.values(children as Record<string, unknown>).every(value => typeof value === 'function')
+
     const slots
         = children == null
             ? undefined
-            : typeof children === 'object' && !Array.isArray(children)
+            : isSlotMap
                 ? (children as Record<string, () => unknown>)
                 : { default: () => children }
     return h(component as any, { ...pick(props, keys), ...extra }, slots)
