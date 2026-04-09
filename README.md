@@ -328,11 +328,90 @@ The following features are planned for the next releases:
 - [x] (v0.0.6) Alerts, notifications and toasts with `VvAlert` and `VvAlertGroup` component;
 - [x] (v0.0.10) Multiple uploads with `VvInputFile`;
 - [x] (v0.0.10) `useBlurhash` composable;
+- [x] (v0.0.13) Generative UI with [json-render](https://json-render.dev) catalog & registry;
 - [ ] Image crop and file previews;
 - [ ] Loaders with `VvLoader` and `VvSkeleton`;
 - [ ] `VvTable` component with sort, filters, pagination and cell editing;
 - [ ] Carousel and galleries with `VvCarousel` component;
 - [ ] Calendar and date picker with `VvCalendar` component.
+
+## Generative UI (json-render)
+
+`@volverjs/ui-vue` ships with a built-in [json-render](https://json-render.dev) catalog and registry, enabling LLMs to generate UIs using Volver components.
+
+### Quick start
+
+```typescript
+import { catalog, registry } from '@volverjs/ui-vue/json-render'
+
+// Generate a system prompt for your AI model
+const systemPrompt = catalog.prompt()
+```
+
+The `catalog` declares **26 components** (layout, data display, actions, navigation, forms) with Zod-validated props and AI-friendly descriptions. The `registry` maps each catalog type to the real Vue component.
+
+### Rendering AI-generated specs
+
+```vue
+<script setup lang="ts">
+import {
+    Renderer,
+    StateProvider,
+    VisibilityProvider,
+} from '@json-render/vue'
+import { registry } from '@volverjs/ui-vue/json-render'
+
+const spec = ref(null)
+</script>
+
+<template>
+    <StateProvider :initial-state="{}">
+        <VisibilityProvider>
+            <Renderer :spec="spec" :registry="registry" />
+        </VisibilityProvider>
+    </StateProvider>
+</template>
+```
+
+### Custom catalog (subset of components)
+
+You can build a custom catalog with only the components you need:
+
+```typescript
+import { defineCatalog } from '@json-render/core'
+import { defineRegistry, schema } from '@json-render/vue'
+import {
+    volverComponentDefinitions,
+    volverComponents,
+} from '@volverjs/ui-vue/json-render'
+
+// Pick only the components you need
+const myCatalog = defineCatalog(schema, {
+    components: {
+        Button: volverComponentDefinitions.Button,
+        Card: volverComponentDefinitions.Card,
+        InputText: volverComponentDefinitions.InputText,
+    },
+    actions: {},
+})
+
+// Create a matching registry
+const { registry } = defineRegistry(myCatalog, {
+    components: {
+        Button: volverComponents.Button,
+        Card: volverComponents.Card,
+        InputText: volverComponents.InputText,
+    },
+})
+```
+
+### Peer dependencies
+
+To use the json-render integration, install the required peer dependencies:
+
+```bash
+pnpm add @json-render/core @json-render/vue zod
+```
 
 ## Documentation
 

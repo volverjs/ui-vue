@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.13] - 2026-03-13
+## [0.0.13] - 2026-04-08
 
 ### Added
 
@@ -12,6 +12,14 @@ All notable changes to this project will be documented in this file.
 - `VvInputFile` new scoped slots `drop-area`, `file-list`, and `file-item` for better customization and control.
 - `VvInputText` now exposes `$input` and `$wrapper` refs in addition to `$inner`.
 - `VvInputText` new prop `suggestions` to provide external suggestions (storage-based suggestions are removable, external ones are permanent).
+
+- **Generative UI**: json-render catalog and registry (`@volverjs/ui-vue/json-render`) enabling LLMs to generate UIs using Volver components.
+  - `catalog` — Pre-built `defineCatalog` with 26 curated components (layout, data display, actions, navigation, forms) and Zod-validated props.
+  - `registry` — Pre-built `defineRegistry` mapping catalog types to Vue components.
+  - `volverComponentDefinitions` — Individual Zod component definitions for building custom catalogs.
+  - `volverComponents` — Individual registry component entries for building custom registries.
+  - Form components integrate with `$bindState` two-way binding via `useBoundProp`.
+- New export entry: `./json-render`.
 
 ## [0.0.12] - 2025-11-02
 

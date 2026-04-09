@@ -230,6 +230,35 @@ build(mergeConfig(baseConfig, {
     },
 }))
 
+// build json-render catalog & registry
+packageJson.exports['./json-render'] = {
+    types: './dist/json-render/index.d.ts',
+    import: './dist/json-render/index.es.js',
+    default: './dist/json-render/index.umd.js',
+}
+packageJson.typesVersions['*']['json-render'] = ['dist/json-render/index.d.ts']
+build(mergeConfig(baseConfig, {
+    build: {
+        watch,
+        minify,
+        emptyOutDir: false,
+        lib: {
+            name: 'jsonRender',
+            entry: './src/json-render/index.ts',
+            fileName: format => `json-render/index.${format}.js`,
+        },
+        rollupOptions: {
+            output: {
+                globals: {
+                    '@json-render/core': 'JsonRenderCore',
+                    '@json-render/vue': 'JsonRenderVue',
+                    'zod': 'Zod',
+                },
+            },
+        },
+    },
+}))
+
 // build components library
 packageJson.exports['./components'] = {
     types: './dist/components/index.d.ts',

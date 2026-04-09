@@ -6,7 +6,7 @@
         // Other
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "useDefineForClassFields": true,
-        "baseUrl": ".",
+        "rootDir": "./src",
         "module": "ESNext",
         "moduleResolution": "Bundler",
         "paths": {
@@ -22,7 +22,7 @@
         ],
         "strict": true,
         "noImplicitThis": true,
-        "outDir": "dist",
+        "outDir": "./dist",
         // Recommended
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
@@ -32,10 +32,9 @@
         "skipLibCheck": true
     },
     "include": [
-        "env.d.ts",
-        "src/**/*",
-        "src/**/*.vue",
-        "src/stories/**/*.test.ts",
-        "assets/auto-imports.d.ts"
+        "./auto-imports.d.ts",
+        "./src/**/*",
+        "./src/**/*.vue",
+        "./src/stories/**/*.test.ts"
     ]
 }
