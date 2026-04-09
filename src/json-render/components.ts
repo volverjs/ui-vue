@@ -78,7 +78,7 @@ export function AccordionGroupComponent({ props, children }: BaseComponentProps)
 }
 
 export function DialogComponent({ props, children, bindings }: BaseComponentProps) {
-    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, children)
+    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, children, bindings?.value ? undefined : true)
 }
 
 export function TabComponent({ props }: BaseComponentProps) {
@@ -168,8 +168,9 @@ function useRenderBound<T>(
     bindings: Record<string, string> | undefined,
     extra?: Record<string, unknown>,
     children?: unknown,
+    defaultValue?: T,
 ) {
-    const [value, setValue] = useBoundProp<T>(undefined, bindings?.value)
+    const [value, setValue] = useBoundProp<T>(defaultValue, bindings?.value)
     return render(component, props, keys, { ...extra, 'modelValue': value, 'onUpdate:modelValue': setValue }, children)
 }
 
@@ -244,7 +245,7 @@ export function ComboboxComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<unknown>(
         VvCombobox,
         props,
-        ['name', 'label', 'options', 'placeholder', 'searchable', 'multiple', 'modifiers'],
+        ['name', 'label', 'options', 'placeholder', 'searchable', 'multiple', 'required', 'disabled', 'modifiers'],
         bindings,
     )
 }
@@ -253,7 +254,7 @@ export function InputFileComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<File[]>(
         VvInputFile,
         props,
-        ['name', 'label', 'accept', 'multiple', 'max', 'modifiers'],
+        ['name', 'label', 'accept', 'multiple', 'max', 'required', 'disabled', 'modifiers'],
         bindings,
     )
 }
