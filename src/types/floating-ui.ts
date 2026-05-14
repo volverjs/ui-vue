@@ -1,5 +1,6 @@
 import type { autoPlacement, flip, offset, shift, size } from '@floating-ui/vue'
 
+export type { Middleware, MiddlewareState } from '@floating-ui/vue'
 export type AutoPlacementOptions = Parameters<typeof autoPlacement>[0]
 export type FlipOptions = Parameters<typeof flip>[0]
 export type ShiftOptions = Parameters<typeof shift>[0]

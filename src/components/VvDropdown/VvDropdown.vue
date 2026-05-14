@@ -2,6 +2,8 @@
 import type {
     AutoPlacementOptions,
     FlipOptions,
+    Middleware,
+    MiddlewareState,
     OffsetOptions,
     ShiftOptions,
     SizeOptions,
@@ -80,8 +82,8 @@ onMounted(() => {
 })
 
 // floating ui
-const middleware = computed(() => {
-    const toReturn = []
+const middleware = computed<Middleware[]>(() => {
+    const toReturn: Middleware[] = []
 
     if (props.autoPlacement) {
         if (typeof props.autoPlacement === 'boolean') {
@@ -111,7 +113,7 @@ const middleware = computed(() => {
         const apply = ({
             availableWidth,
             availableHeight,
-        }: {
+        }: MiddlewareState & {
             availableWidth: number
             availableHeight: number
         }) => {
