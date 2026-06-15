@@ -429,16 +429,16 @@
     }
   },
   "dependencies": {
-    "@floating-ui/vue": "^1.1.11",
+    "@floating-ui/vue": "^2.0.0",
     "@iconify/vue": "^5.0.0",
     "@tanstack/vue-virtual": "^3.13.23",
     "blurhash": "^2.0.5",
     "comlink": "^4.4.2",
     "dot-prop": "^10.1.0",
     "mitt": "^3.0.1",
-    "pica": "^9.0.1",
+    "pica": "^10.0.1",
     "vue-imask": "^7.6.1",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^2.24.3"
   },
   "optionalDependencies": {
     "@iconify/tools": "^5.0.11",
