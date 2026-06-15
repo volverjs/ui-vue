@@ -45,6 +45,7 @@ const baseConfig = {
             // Auto import for module exports under directories
             // by default it only scan one level of modules under the directory
             dirs: ['./src/composables/**', './src/utils/'],
+            ignore: ['**/composables/index'],
             dts: true,
             eslintrc: {
                 enabled: true,

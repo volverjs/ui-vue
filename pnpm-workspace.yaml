@@ -23,6 +23,7 @@ minimumReleaseAgeExclude:
   - baseline-browser-mapping@2.10.36
   - create-storybook@10.4.4
   - storybook@10.4.4
+  - '@volverjs/style@0.1.24-beta.4'
 
 onlyBuiltDependencies:
   - '@parcel/watcher'

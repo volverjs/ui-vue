@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file.
 - `Volver.fetchIcon` now throws on HTTP errors instead of returning the error body.
 - `useBlurhash` `encode` failed with `pica` v10 and leaked the created object URL.
 - Memory leaks: `VvAccordion` event bus listener and `VvAlert` auto-close timer were not cleared on unmount.
+- `VvCombobox` searchable dropdown closed prematurely on iOS Safari (focus briefly moves to `document.body` during transitions), preventing search; collapse on focus loss is now debounced.
+- Floating-UI option types leaked a non-portable `Derivable` callback variant into the generated type declarations, breaking declaration emit (TS2883).
 
 ## [0.0.12] - 2025-11-02
 
