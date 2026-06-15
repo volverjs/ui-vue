@@ -12,6 +12,12 @@ const hot = process.argv.includes('--hot')
 const watch = hot ? {} : undefined
 const minify = hot ? false : 'esbuild'
 
+// clean the output directory once before the (parallel) builds run,
+// since every build() below uses `emptyOutDir: false`
+if (!hot) {
+    fs.rmSync('./dist', { recursive: true, force: true })
+}
+
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 packageJson.exports = {
@@ -39,6 +45,7 @@ const baseConfig = {
             // Auto import for module exports under directories
             // by default it only scan one level of modules under the directory
             dirs: ['./src/composables/**', './src/utils/'],
+            ignore: ['**/composables/index'],
             dts: true,
             eslintrc: {
                 enabled: true,

@@ -35,7 +35,7 @@ function getWidthHeightFromMaxSize(width: number,	height: number,	maxSize: numbe
 }
 
 async function resizeImage(image: ImageBitmap | HTMLImageElement | HTMLCanvasElement, width: number, height: number) {
-    const resizer = new Pica()
+    const resizer = Pica()
     const canvas = document.createElement('canvas')
     canvas.width = width
     canvas.height = height
@@ -46,28 +46,32 @@ async function resizeImage(image: ImageBitmap | HTMLImageElement | HTMLCanvasEle
 export function useBlurhash() {
     async function encode(file: File) {
         const imageUrl = URL.createObjectURL(file)
-        const image = await loadImage(imageUrl)
-        if ('width' in image && 'height' in image) {
-            const { width: newWidth, height: newHeight }
-                = getWidthHeightFromMaxSize(
-                    image.width as number,
-                    image.height as number,
-                    32,
-                )
-            const imageData = await resizeImage(
-                image as ImageBitmap,
-                newWidth,
-                newHeight,
-            )
-            if (imageData) {
-                return getRemoteFunction().encode(
-                    imageData,
+        try {
+            const image = await loadImage(imageUrl)
+            if ('width' in image && 'height' in image) {
+                const { width: newWidth, height: newHeight }
+                    = getWidthHeightFromMaxSize(
+                        image.width as number,
+                        image.height as number,
+                        32,
+                    )
+                const imageData = await resizeImage(
+                    image as ImageBitmap,
                     newWidth,
                     newHeight,
-                    4,
-                    4,
                 )
+                if (imageData) {
+                    return getRemoteFunction().encode(
+                        imageData,
+                        newWidth,
+                        newHeight,
+                        4,
+                        4,
+                    )
+                }
             }
+        } finally {
+            URL.revokeObjectURL(imageUrl)
         }
     }
 

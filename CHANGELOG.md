@@ -21,6 +21,21 @@ All notable changes to this project will be documented in this file.
   - Form components integrate with `$bindState` two-way binding via `useBoundProp`.
 - New export entry: `./json-render`.
 
+### Changed
+
+- `package.json` `main`/`module` now point to the generated `index` bundles, added `sideEffects: false` and `src` to published `files`.
+- Build now cleans the `dist` folder before running.
+
+### Fixed
+
+- `VvDropdown` applied the `offset` middleware twice.
+- `VvTextarea`/`VvInputText` countdown counter returned a ref instead of its value and now counts past the upper limit.
+- `Volver.fetchIcon` now throws on HTTP errors instead of returning the error body.
+- `useBlurhash` `encode` failed with `pica` v10 and leaked the created object URL.
+- Memory leaks: `VvAccordion` event bus listener and `VvAlert` auto-close timer were not cleared on unmount.
+- `VvCombobox` searchable dropdown closed prematurely on iOS Safari (focus briefly moves to `document.body` during transitions), preventing search; collapse on focus loss is now debounced.
+- Floating-UI option types leaked a non-portable `Derivable` callback variant into the generated type declarations, breaking declaration emit (TS2883).
+
 ## [0.0.12] - 2025-11-02
 
 ### Added

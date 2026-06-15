@@ -258,16 +258,20 @@ export class Volver implements VolverInterface {
         return addAPIProvider(provider, customConfig)
     }
 
-    fetchIcon(
+    async fetchIcon(
         src: string,
         options: RequestInit = { cache: 'force-cache' },
     ): Promise<string | undefined> {
-        return new Promise((resolve, reject) => {
-            fetch(src, { ...this._fetchOptions, ...options })
-                .catch(e => reject(e))
-                .then(response => response?.text())
-                .then((svg?: string) => resolve(svg))
+        const response = await fetch(src, {
+            ...this._fetchOptions,
+            ...options,
         })
+        if (!response.ok) {
+            throw new Error(
+                `Cannot fetch icon "${src}": ${response.status} ${response.statusText}`,
+            )
+        }
+        return response.text()
     }
 }
 

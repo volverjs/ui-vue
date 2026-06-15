@@ -11,3 +11,7 @@ dist
 bin
 .vercel
 .eslintrc-auto-import.json
+
+# Agent
+.agents
+.claude
