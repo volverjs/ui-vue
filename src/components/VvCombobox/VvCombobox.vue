@@ -47,22 +47,40 @@ const {
 const { focused } = useComponentFocus(inputEl, emit)
 const { focused: focusedWithin } = useFocusWithin(wrapperEl)
 
+// Debounced collapse to avoid premature closing on iOS Safari,
+// where focus briefly moves to document.body during element transitions
+let collapseTimer: ReturnType<typeof setTimeout> | undefined
+function scheduleCollapse() {
+    clearTimeout(collapseTimer)
+    collapseTimer = setTimeout(() => {
+        if (!focused.value && !focusedWithin.value && expanded.value) {
+            collapse()
+        }
+    }, 50)
+}
+onBeforeUnmount(() => clearTimeout(collapseTimer))
+
 watch(focused, (newValue) => {
     if (!props.autoOpen) {
         return
     }
     if (newValue && !expanded.value) {
+        clearTimeout(collapseTimer)
         expand()
         return
     }
     if (!newValue && expanded.value && !focusedWithin.value) {
-        collapse()
+        scheduleCollapse()
     }
 })
 
 watch(focusedWithin, (newValue) => {
-    if (!focused.value && !newValue && expanded.value) {
-        collapse()
+    if (newValue) {
+        clearTimeout(collapseTimer)
+        return
+    }
+    if (!focused.value && expanded.value) {
+        scheduleCollapse()
     }
 })
 
