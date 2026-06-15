@@ -70,7 +70,7 @@ export function deepEquals(a: any, b: any) {
             return false
 
         for (i = length; i-- !== 0;) {
-            if (!Object.prototype.hasOwnProperty.call(b, keys[i]))
+            if (!Object.hasOwn(b, keys[i]))
                 return false
         }
 

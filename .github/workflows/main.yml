@@ -23,14 +23,8 @@ jobs:
         uses: ./.github/workflows/sonarcloud.yml
         secrets: inherit
 
-    # Vercel deploy for storybook test
-    vercel-deploy:
-        uses: ./.github/workflows/vercel-deploy.yml
-        secrets: inherit
-
-    # Styleguide test on Vercel env
+    # Storybook tests
     test:
-        needs: vercel-deploy
         uses: ./.github/workflows/test.yml
 
     # Publish styleguide to GitHub Pages
@@ -42,7 +36,7 @@ jobs:
         uses: ./.github/workflows/build.yml
 
     deploy-styleguide:
-        needs: [build, build-styleguide, test, analysis]
+        needs: [analysis, test, build-styleguide, build]
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
@@ -58,7 +52,7 @@ jobs:
 
     # Publish package to NPM
     publish-npm:
-        needs: [build, build-styleguide, test, analysis]
+        needs: [analysis, test, build-styleguide, build]
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
@@ -67,7 +61,7 @@ jobs:
                   name: package
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 24
                   registry-url: https://registry.npmjs.org/
             - run: npm publish $(ls *.tgz) --access=public --tag ${{ github.event.release.prerelease && 'next' || 'latest'}}
               env:
@@ -75,7 +69,7 @@ jobs:
 
     # Publish package to GPR
     publish-gpr:
-        needs: [build, build-styleguide, test, analysis]
+        needs: [analysis, test, build-styleguide, build]
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -87,7 +81,7 @@ jobs:
                   name: package
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 24
                   registry-url: https://npm.pkg.github.com/
             - run: npm publish $(ls *.tgz) --access=public --tag ${{ github.event.release.prerelease && 'next' || 'latest'}}
               env:

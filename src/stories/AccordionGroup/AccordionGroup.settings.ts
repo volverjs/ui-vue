@@ -75,6 +75,15 @@ export const argTypes: ArgTypes = {
         control: 'check',
         options: ['marker-right', 'bordered', 'square'],
     },
+    'storageType': {
+        description: 'Type of storage to use for state persistence',
+        control: 'select',
+        options: ['local', 'session'],
+    },
+    'storageKey': {
+        description: 'Storage key to use for state persistence',
+        control: 'text',
+    },
     ...DisabledArgTypes,
     ...DefaultSlotArgTypes,
 }

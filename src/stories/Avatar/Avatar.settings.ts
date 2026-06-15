@@ -1,10 +1,9 @@
-import type { ArgTypes } from 'storybook/internal/types'
+import type { ArgTypes } from '@storybook/vue3-vite'
 import { VvAvatarProps } from '@/components/VvAvatar'
 import { DefaultSlotArgTypes } from '@/stories/argTypes'
 
 export const defaultArgs = {
     ...propsToObject(VvAvatarProps),
-    imgSrc: 'https://i.pravatar.cc/300',
 }
 
 export const argTypes: ArgTypes = {

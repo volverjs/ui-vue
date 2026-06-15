@@ -29,5 +29,5 @@ export default antfu({
         '**/icons/**',
     ],
 }, {
-    ignores: ['dist', 'bin', 'node_modules', 'storybook-static', 'vendor', 'scripts', 'package.json', 'pnpm-lock.yaml'],
+    ignores: ['dist', 'bin', 'node_modules', 'storybook-static', 'vendor', 'scripts', 'package.json', 'pnpm-lock.yaml', 'skills-lock.json', 'skills/**'],
 })

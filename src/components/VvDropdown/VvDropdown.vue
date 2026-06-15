@@ -2,6 +2,8 @@
 import type {
     AutoPlacementOptions,
     FlipOptions,
+    Middleware,
+    MiddlewareState,
     OffsetOptions,
     ShiftOptions,
     SizeOptions,
@@ -80,68 +82,75 @@ onMounted(() => {
 })
 
 // floating ui
-const middleware = computed(() => {
-    const toReturn = []
+
+// Resolve the common "boolean enables defaults, object provides options" pattern
+function resolveMiddleware<T>(
+    value: boolean | T,
+    whenEnabled: () => Middleware,
+    whenConfigured: (options: T) => Middleware,
+): Middleware {
+    return typeof value === 'boolean' ? whenEnabled() : whenConfigured(value)
+}
+
+const middleware = computed<Middleware[]>(() => {
+    const toReturn: Middleware[] = []
 
     if (props.autoPlacement) {
-        if (typeof props.autoPlacement === 'boolean') {
-            toReturn.push(autoPlacement())
-        } else {
-            toReturn.push(
-                autoPlacement(props.autoPlacement as AutoPlacementOptions),
-            )
-        }
+        toReturn.push(
+            resolveMiddleware(
+                props.autoPlacement,
+                () => autoPlacement(),
+                options =>
+                    autoPlacement(options as AutoPlacementOptions),
+            ),
+        )
     } else if (props.flip) {
-        if (typeof props.flip === 'boolean') {
-            toReturn.push(flip({ fallbackStrategy: 'initialPlacement' }))
-        } else {
-            toReturn.push(flip(props.flip as FlipOptions))
-        }
+        toReturn.push(
+            resolveMiddleware(
+                props.flip,
+                () => flip({ fallbackStrategy: 'initialPlacement' }),
+                options => flip(options as FlipOptions),
+            ),
+        )
     }
 
     if (props.shift) {
-        if (typeof props.shift === 'boolean') {
-            toReturn.push(shift())
-        } else {
-            toReturn.push(shift(props.shift as ShiftOptions))
-        }
+        toReturn.push(
+            resolveMiddleware(
+                props.shift,
+                () => shift(),
+                options => shift(options as ShiftOptions),
+            ),
+        )
     }
 
     if (props.size) {
         const apply = ({
             availableWidth,
             availableHeight,
-        }: {
+        }: MiddlewareState & {
             availableWidth: number
             availableHeight: number
         }) => {
             maxWidth.value = `${availableWidth}px`
             maxHeight.value = `${availableHeight}px`
         }
-        if (typeof props.size === 'boolean') {
-            toReturn.push(
-                size({
-                    apply,
-                }),
-            )
-        } else {
-            toReturn.push(
-                size({
-                    ...(props.size as SizeOptions),
-                    apply,
-                }),
-            )
-        }
+        toReturn.push(
+            resolveMiddleware(
+                props.size,
+                () => size({ apply }),
+                options =>
+                    size({ ...(options as SizeOptions), apply }),
+            ),
+        )
     }
 
     if (props.offset) {
-        toReturn.push(offset(Number(props.offset)))
-
-        if (['string', 'number'].includes(typeof props.offset)) {
-            toReturn.push(offset(Number(props.offset)))
-        } else {
-            toReturn.push(offset(props.offset as OffsetOptions))
-        }
+        toReturn.push(
+            ['string', 'number'].includes(typeof props.offset)
+                ? offset(Number(props.offset))
+                : offset(props.offset as OffsetOptions),
+        )
     }
 
     if (props.arrow) {
@@ -363,11 +372,11 @@ function focusPrev() {
                 focusableElements[activeElementIndex - 1].focus({
                     preventScroll: true,
                 })
-            } else {
-                focusableElements[focusableElements.length - 1].focus({
-                    preventScroll: true,
-                })
+                return
             }
+            focusableElements.at(-1)?.focus({
+                preventScroll: true,
+            })
         }
     })
 }
@@ -379,14 +388,26 @@ watch(expanded, (newValue) => {
 })
 
 defineExpose({
+    /** Toggle the dropdown */
     toggle,
+    /** Show the dropdown */
     show,
+    /** Hide the dropdown */
     hide,
+    /**
+     * Initialize the dropdown
+     * @param {HTMLElement} el - The dropdown reference element to attach to
+     */
     init,
+    /** Focus the first focusable element */
     focusFirst,
+    /** Focus the first focusable element in the list */
     focusFirstListElement,
+    /** Focus the next focusable element */
     focusNext,
+    /** Focus the previous focusable element */
     focusPrev,
+    /** The dropdown has custom position */
     customPosition: hasCustomPosition,
 })
 
@@ -484,7 +505,7 @@ export default {
                 :style="arrowPlacement"
                 class="vv-dropdown__arrow"
             />
-            <slot name="before" v-bind="{ expanded }" />
+            <slot name="before" v-bind="{ show, hide, toggle, expanded }" />
             <div
                 v-bind="attrs"
                 :id="hasId"
@@ -497,11 +518,15 @@ export default {
                 <slot
                     name="items"
                     v-bind="{
+                        show,
+                        hide,
+                        toggle,
+                        expanded,
                         role: itemRole,
                     }"
                 />
             </div>
-            <slot name="after" v-bind="{ expanded }" />
+            <slot name="after" v-bind="{ show, hide, toggle, expanded }" />
         </div>
     </Transition>
 </template>

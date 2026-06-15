@@ -2,11 +2,14 @@
   "name": "@volverjs/ui-vue",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@11.7.0",
   "description": "@volverjs/ui-vue is a lightweight Vue 3 component library to accompany @volverjs/style.",
   "author": "8 wave S.r.l.",
   "license": "MIT",
   "homepage": "https://volverjs.github.io/ui-vue",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/volverjs/ui-vue"
@@ -60,10 +63,20 @@
       "import": "./dist/composables/index.es.js",
       "default": "./dist/composables/index.umd.js"
     },
+    "./json-render": {
+      "types": "./dist/json-render/index.d.ts",
+      "import": "./dist/json-render/index.es.js",
+      "default": "./dist/json-render/index.umd.js"
+    },
     "./components": {
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.es.js",
       "default": "./dist/components/index.umd.js"
+    },
+    "./vv-virtual-scroll": {
+      "types": "./dist/components/VvVirtualScroll/VvVirtualScroll.vue.d.ts",
+      "import": "./dist/components/VvVirtualScroll/VvVirtualScroll.es.js",
+      "default": "./dist/components/VvVirtualScroll/VvVirtualScroll.umd.js"
     },
     "./vv-tooltip": {
       "types": "./dist/components/VvTooltip/VvTooltip.vue.d.ts",
@@ -236,9 +249,10 @@
       "default": "./dist/components/VvAccordion/VvAccordion.umd.js"
     }
   },
-  "main": "./dist/Volver.umd.js",
-  "module": "./dist/Volver.es.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "typesVersions": {
     "*": {
       "*": [
@@ -262,8 +276,14 @@
       "composables": [
         "dist/composables/index.d.ts"
       ],
+      "json-render": [
+        "dist/json-render/index.d.ts"
+      ],
       "components": [
         "dist/components/index.d.ts"
+      ],
+      "vv-virtual-scroll": [
+        "dist/components/VvVirtualScroll/VvVirtualScroll.vue.d.ts"
       ],
       "vv-tooltip": [
         "dist/components/VvTooltip/VvTooltip.vue.d.ts"
@@ -374,7 +394,8 @@
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "dev": "storybook dev -p 6006",
@@ -386,77 +407,105 @@
     "lint:fix": "eslint . --fix",
     "generate-icons": "node --loader ts-node/esm ./scripts/icons.ts --srcPath=src/assets/icons",
     "generate-tsd": "vue-tsc --declaration --emitDeclarationOnly",
-    "test-local": "test-storybook --stories-json",
-    "test-remote": "test-storybook --stories-json --url https://volver-ui-vue.vercel.app",
+    "test-storybook": "vitest --run",
+    "test-storybook:watch": "vitest",
     "credits": "npx @opengovsg/credits-generator"
   },
   "peerDependencies": {
-    "@volverjs/style": "0.x",
-    "@vueuse/core": "^14.x",
-    "vue": "^3.5.x"
+    "@json-render/core": ">=0.19.0",
+    "@json-render/vue": ">=0.19.0",
+    "@volverjs/style": ">=0",
+    "@vueuse/core": ">=14",
+    "vue": ">=3",
+    "zod": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "@json-render/core": {
+      "optional": true
+    },
+    "@json-render/vue": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
   "dependencies": {
-    "@floating-ui/vue": "^1.1.9",
-    "@iconify/tools": "^4.1.4",
-    "@iconify/vue": "^5.0.0",
+    "@floating-ui/core": "^1.7.5",
+    "@floating-ui/dom": "^1.7.6",
+    "@floating-ui/vue": "^2.0.0",
+    "@iconify/vue": "^5.0.1",
+    "@tanstack/vue-virtual": "^3.13.28",
     "blurhash": "^2.0.5",
-    "chokidar": "^4.0.3",
     "comlink": "^4.4.2",
     "dot-prop": "^10.1.0",
-    "jsdom": "^27.2.0",
+    "imask": "^7.6.1",
     "mitt": "^3.0.1",
-    "pica": "^9.0.1",
+    "pica": "^10.0.1",
     "vue-imask": "^7.6.1",
-    "vuedraggable": "^4.1.0",
+    "vuedraggable": "^4.1.0"
+  },
+  "optionalDependencies": {
+    "@iconify/tools": "^5.0.12",
+    "@iconify/utils": "^3.1.3",
+    "chokidar": "^5.0.0",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "6.2.0",
-    "@babel/core": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@babel/preset-typescript": "^7.28.5",
+    "@antfu/eslint-config": "9.0.0",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@iconify/types": "^2.0.0",
-    "@iconify/utils": "^3.0.2",
-    "@nabla/vite-plugin-eslint": "^2.0.6",
-    "@storybook/addon-a11y": "^10.0.8",
-    "@storybook/addon-docs": "^10.0.8",
-    "@storybook/addon-links": "^10.0.8",
-    "@storybook/cli": "^10.0.8",
-    "@storybook/test-runner": "^0.24.1",
-    "@storybook/vue3-vite": "^10.0.8",
+    "@json-render/core": "^0.19.0",
+    "@json-render/vue": "^0.19.0",
+    "@nabla/vite-plugin-eslint": "^3.0.1",
+    "@storybook/addon-a11y": "^10.4.5",
+    "@storybook/addon-docs": "^10.4.5",
+    "@storybook/addon-links": "^10.4.5",
+    "@storybook/addon-themes": "^10.4.5",
+    "@storybook/addon-vitest": "^10.4.5",
+    "@storybook/cli": "^10.4.5",
+    "@storybook/vue3-vite": "^10.4.5",
     "@tsconfig/node18": "^18.2.6",
     "@types/jest-axe": "^3.5.9",
-    "@types/jsdom": "^27.0.0",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.9.3",
     "@types/pica": "^9.0.5",
     "@types/yargs": "^17.0.35",
-    "@vitejs/plugin-vue": "^6.0.2",
-    "@volverjs/style": "^0.1.23",
-    "@vue/compiler-sfc": "^3.5.25",
-    "@vue/eslint-config-typescript": "^14.6.0",
-    "@vue/test-utils": "^2.4.6",
-    "@vue/tsconfig": "^0.8.1",
-    "@vueless/storybook-dark-mode": "^10.0.3",
-    "@vueuse/core": "^14.0.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vitest/browser": "^4.1.9",
+    "@vitest/browser-playwright": "^4.1.9",
+    "@volverjs/style": "0.1.24",
+    "@vue/compiler-sfc": "^3.5.38",
+    "@vue/eslint-config-typescript": "^14.8.0",
+    "@vue/test-utils": "^2.4.11",
+    "@vue/tsconfig": "^0.9.1",
+    "@vueless/storybook-dark-mode": "^10.0.8",
+    "@vueuse/core": "^14.3.0",
+    "baseline-browser-mapping": "^2.10.37",
     "change-case": "^5.4.4",
-    "eslint": "^9.39.1",
-    "glob": "^13.0.0",
+    "eslint": "^10.5.0",
+    "glob": "^13.0.6",
     "jest-axe": "^10.0.0",
-    "jsdom": "^27.2.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.6.2",
+    "playwright": "^1.61.0",
+    "prettier": "^3.8.4",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "remark": "^15.0.1",
-    "sass-embedded": "1.93.3",
-    "storybook": "^10.0.8",
+    "sass-embedded": "1.100.0",
+    "storybook": "^10.4.5",
     "storybook-addon-markdown-docs": "^2.0.0",
-    "terser": "^5.44.1",
+    "terser": "^5.48.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.9.3",
-    "unplugin-auto-import": "^20.2.0",
-    "unplugin-vue-components": "^30.0.0",
-    "vite": "^7.2.4",
+    "typescript": "~6.0.3",
+    "unplugin-auto-import": "^21.0.0",
+    "unplugin-vue-components": "^32.1.0",
+    "vite": "^8.0.16",
     "vite-plugin-externalize-deps": "^0.10.0",
-    "vue": "^3.5.25",
-    "vue-tsc": "^3.1.5"
+    "vitest": "^4.1.9",
+    "vue": "^3.5.38",
+    "vue-tsc": "^3.3.5",
+    "zod": "^4.4.3"
   }
 }

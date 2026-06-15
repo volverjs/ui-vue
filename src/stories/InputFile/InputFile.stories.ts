@@ -29,7 +29,7 @@ export const Default: Story = {
         },
         template: /* html */ `
 			<vv-input-file v-bind="args" v-model="files">
-				<template #drop-area v-if="args['drop-area']"><div v-html="args['drop-area']"></div></template>
+				<template #drop-area v-if="args.dropAreaSlot"><div v-html="args.dropAreaSlot"></div></template>
 				<template #hint v-if="args['hint']"><div v-html="args['hint']"></div></template>
 			</vv-input-file>
 		`,

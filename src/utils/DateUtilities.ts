@@ -14,12 +14,13 @@ const padTwoDigits = (num: number) => num.toString().padStart(2, '0')
  * @example
  * isDateIsoString('2021-12-31T23:59:59') // true
  */
+const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:?\d{2})?$/
 export function isDateIsoString(dateString: unknown) {
     if (typeof dateString !== 'string') {
         return false
     }
     // Support both with/without milliseconds and timezone variations
-    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:?\d{2})?$/.test(dateString)) {
+    if (!ISO_DATE_REGEX.test(dateString)) {
         return false
     }
     const d = new Date(dateString)
@@ -74,6 +75,10 @@ export function getInputValueFromDate(date: Date | string, typeOfInput: 'date' |
  * getDateFromInputValue('2021-12-31', 'date') // Date('2021-12-31T00:00:00')
  * getDateFromInputValue('23:59', 'time') // Date('2021-12-31T23:59:00')
  */
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
+const MONTH_REGEX = /^\d{4}-\d{2}$/
+const TIME_REGEX = /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/
+const DATETIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/
 export function getDateFromInputValue(value: string, typeOfInput: 'date' | 'time' | 'month' | 'datetime-local' = 'date') {
     if (!value?.trim()) {
         return null
@@ -85,19 +90,19 @@ export function getDateFromInputValue(value: string, typeOfInput: 'date' | 'time
     const currentDate = today.getDate()
 
     if (typeOfInput === 'date') {
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        if (!DATE_REGEX.test(value)) {
             throw new Error('Invalid date format. Expected: YYYY-MM-DD')
         }
         return new Date(`${value}T00:00:00`)
     }
     if (typeOfInput === 'month') {
-        if (!/^\d{4}-\d{2}$/.test(value)) {
+        if (!MONTH_REGEX.test(value)) {
             throw new Error('Invalid month format. Expected: YYYY-MM')
         }
         return new Date(`${value}-01T00:00:00`)
     }
     if (typeOfInput === 'time') {
-        if (!/^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(value)) {
+        if (!TIME_REGEX.test(value)) {
             throw new Error('Invalid time format. Expected: HH:mm or HH:mm:ss')
         }
         if (value.length === 8) {
@@ -105,7 +110,7 @@ export function getDateFromInputValue(value: string, typeOfInput: 'date' | 'time
         }
         return new Date(`${currentYear}-${padTwoDigits(currentMonth + 1)}-${padTwoDigits(currentDate)}T${value}:00`)
     }
-    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/.test(value)) {
+    if (!DATETIME_REGEX.test(value)) {
         throw new Error('Invalid datetime format. Expected: YYYY-MM-DDThh:mm or YYYY-MM-DDThh:mm:ss')
     }
     if (value.length === 16) {

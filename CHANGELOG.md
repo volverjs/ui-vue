@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.13] - 2026-04-08
+
+### Added
+
+- `useVirtualScroll` composable for virtualized lists.
+- `VvVirtualScroll` component built on `useVirtualScroll`.
+- `VvInputFile` new prop `hidePreview` to hide the file preview.
+- `VvInputFile` new scoped slots `drop-area`, `file-list`, and `file-item` for better customization and control.
+- `VvInputText` now exposes `$input` and `$wrapper` refs in addition to `$inner`.
+- `VvInputText` new prop `suggestions` to provide external suggestions (storage-based suggestions are removable, external ones are permanent).
+
+- **Generative UI**: json-render catalog and registry (`@volverjs/ui-vue/json-render`) enabling LLMs to generate UIs using Volver components.
+  - `catalog` — Pre-built `defineCatalog` with 26 curated components (layout, data display, actions, navigation, forms) and Zod-validated props.
+  - `registry` — Pre-built `defineRegistry` mapping catalog types to Vue components.
+  - `volverComponentDefinitions` — Individual Zod component definitions for building custom catalogs.
+  - `volverComponents` — Individual registry component entries for building custom registries.
+  - Form components integrate with `$bindState` two-way binding via `useBoundProp`.
+- New export entry: `./json-render`.
+
+### Changed
+
+- `package.json` `main`/`module` now point to the generated `index` bundles, added `sideEffects: false` and `src` to published `files`.
+- Build now cleans the `dist` folder before running.
+
+### Fixed
+
+- `VvDropdown` applied the `offset` middleware twice.
+- `VvTextarea`/`VvInputText` countdown counter returned a ref instead of its value and now counts past the upper limit.
+- `Volver.fetchIcon` now throws on HTTP errors instead of returning the error body.
+- `useBlurhash` `encode` failed with `pica` v10 and leaked the created object URL.
+- Memory leaks: `VvAccordion` event bus listener and `VvAlert` auto-close timer were not cleared on unmount.
+- `VvCombobox` searchable dropdown closed prematurely on iOS Safari (focus briefly moves to `document.body` during transitions), preventing search; collapse on focus loss is now debounced.
+- Floating-UI option types leaked a non-portable `Derivable` callback variant into the generated type declarations, breaking declaration emit (TS2883).
+
 ## [0.0.12] - 2025-11-02
 
 ### Added
@@ -238,13 +272,15 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
-[0.0.11]: https://github.com/volverjs/style/compare/v0.0.10...v0.0.11
-[0.0.10]: https://github.com/volverjs/style/compare/v0.0.9...v0.0.10
-[0.0.9]: https://github.com/volverjs/style/compare/v0.0.8...v0.0.9
-[0.0.8]: https://github.com/volverjs/style/compare/v0.0.7...v0.0.8
-[0.0.7]: https://github.com/volverjs/style/compare/v0.0.6...v0.0.7
-[0.0.6]: https://github.com/volverjs/style/compare/v0.0.5...v0.0.6
-[0.0.5]: https://github.com/volverjs/style/compare/v0.0.4...v0.0.5
-[0.0.4]: https://github.com/volverjs/style/compare/v0.0.3...v0.0.4
-[0.0.3]: https://github.com/volverjs/style/compare/v0.0.2...v0.0.3
-[0.0.2]: https://github.com/volverjs/style/compare/v0.0.1...v0.0.2
+[0.0.13]: https://github.com/volverjs/ui-vue/compare/v0.0.12...v0.0.13
+[0.0.12]: https://github.com/volverjs/ui-vue/compare/v0.0.11...v0.0.12
+[0.0.11]: https://github.com/volverjs/ui-vue/compare/v0.0.10...v0.0.11
+[0.0.10]: https://github.com/volverjs/ui-vue/compare/v0.0.9...v0.0.10
+[0.0.9]: https://github.com/volverjs/ui-vue/compare/v0.0.8...v0.0.9
+[0.0.8]: https://github.com/volverjs/ui-vue/compare/v0.0.7...v0.0.8
+[0.0.7]: https://github.com/volverjs/ui-vue/compare/v0.0.6...v0.0.7
+[0.0.6]: https://github.com/volverjs/ui-vue/compare/v0.0.5...v0.0.6
+[0.0.5]: https://github.com/volverjs/ui-vue/compare/v0.0.4...v0.0.5
+[0.0.4]: https://github.com/volverjs/ui-vue/compare/v0.0.3...v0.0.4
+[0.0.3]: https://github.com/volverjs/ui-vue/compare/v0.0.2...v0.0.3
+[0.0.2]: https://github.com/volverjs/ui-vue/compare/v0.0.1...v0.0.2

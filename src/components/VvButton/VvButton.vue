@@ -26,10 +26,13 @@ const {
 const hasId = useUniqueId(id)
 const name = computed(() => (attrs?.name as string) || hasId.value)
 
-// expose el
-const element = ref<{ $el: HTMLElement } | null>(null)
-const $el = computed(() => element.value?.$el)
-defineExpose({ $el })
+// expose root element
+const rootEl = ref<{ $el: HTMLElement } | null>(null)
+const $el = computed(() => rootEl.value?.$el)
+defineExpose({
+    /** Reference to the root element */
+    $el,
+})
 
 /**
  * @description The component pressed state by prop or group.
@@ -131,7 +134,7 @@ export default {
             ariaLabel,
         }"
         :id="hasId"
-        ref="element"
+        ref="rootEl"
         :class="bemCssClasses"
     >
         <!-- @slot Default slot -->

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { MaskedNumberOptions } from 'imask'
 import type { InputHTMLAttributes } from 'vue'
+import type { InputType } from '../VvInputText'
 import { useIMask } from 'vue-imask'
 import {
     getDateFromInputValue,
@@ -46,6 +47,7 @@ const {
     id,
     invalid,
     label,
+    labelRemoveSuggestion,
     loading,
     maxlength,
     minlength,
@@ -53,6 +55,7 @@ const {
     step,
     storageType,
     type,
+    unit,
     valid,
 } = toRefs(props)
 const hasId = useUniqueId(id)
@@ -80,6 +83,8 @@ const hasSeconds = computed(() => {
 
 // mask
 const NEGATIVE_ZERO_REGEX = /^-0?[.,]?[0*]?$/
+const MASK_REGEX = /./
+const MASK_NUMBER_REGEX = /^-$|^$/
 const maskReady = ref(false)
 const modelValueDate = ref<Date>()
 const modelValueDateIsoString = ref<string>()
@@ -88,7 +93,7 @@ const { el, mask, typed, masked, unmasked } = useIMask(
         () => {
             if (!props.iMask) {
                 return {
-                    mask: /./,
+                    mask: MASK_REGEX,
                 }
             }
             if (props.iMask.mask === Number) {
@@ -112,7 +117,7 @@ const { el, mask, typed, masked, unmasked } = useIMask(
             }
             emit('update:masked', masked.value)
             if (type.value === INPUT_TYPES.NUMBER) {
-                if (/^-$|^$/.test(unmasked.value)) {
+                if (MASK_NUMBER_REGEX.test(unmasked.value)) {
                     if (
                         localModelValue.value === null
                         || localModelValue.value === undefined
@@ -136,8 +141,7 @@ const { el, mask, typed, masked, unmasked } = useIMask(
             if (type.value === INPUT_TYPES.DATETIME_LOCAL
                 || type.value === INPUT_TYPES.DATE
                 || type.value === INPUT_TYPES.TIME
-                || type.value === INPUT_TYPES.MONTH
-            ) {
+                || type.value === INPUT_TYPES.MONTH) {
                 if (!typed.value) {
                     if (!localModelValue.value) {
                         return
@@ -162,14 +166,12 @@ const { el, mask, typed, masked, unmasked } = useIMask(
                     const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
                     if (type.value === INPUT_TYPES.DATETIME_LOCAL
                         || type.value === INPUT_TYPES.DATE
-                        || type.value === INPUT_TYPES.MONTH
-                    ) {
+                        || type.value === INPUT_TYPES.MONTH) {
                         toReturn.setFullYear(date.getFullYear())
                         toReturn.setMonth(date.getMonth())
                     }
                     if (type.value === INPUT_TYPES.DATETIME_LOCAL
-                        || type.value === INPUT_TYPES.DATE
-                    ) {
+                        || type.value === INPUT_TYPES.DATE) {
                         toReturn.setDate(date.getDate())
                     }
                     if (type.value === INPUT_TYPES.DATETIME_LOCAL
@@ -199,15 +201,20 @@ const { el, mask, typed, masked, unmasked } = useIMask(
     },
 )
 function updateMaskValue(newValue: string | number | Date | undefined | null) {
+    // Handle empty values
     if (newValue === undefined || newValue === null) {
         typed.value = ''
         unmasked.value = ''
         return
     }
+
+    // Handle Date mask
     if (props.iMask?.mask === Date) {
         typed.value = newValue instanceof Date ? newValue : new Date(newValue)
         return
     }
+
+    // Handle negative zero for numbers
     if (
         type.value === INPUT_TYPES.NUMBER
         && NEGATIVE_ZERO_REGEX.test(unmasked.value)
@@ -215,11 +222,11 @@ function updateMaskValue(newValue: string | number | Date | undefined | null) {
     ) {
         return
     }
-    if (type.value === INPUT_TYPES.DATE
-        || type.value === INPUT_TYPES.MONTH
-        || type.value === INPUT_TYPES.DATETIME_LOCAL
-        || type.value === INPUT_TYPES.TIME) {
+
+    // Handle date/time types
+    if (isDateTimeLike.value) {
         if (newValue instanceof Date || isDateIsoString(newValue)) {
+            // Store the date reference
             if (newValue instanceof Date) {
                 modelValueDate.value = newValue
                 modelValueDateIsoString.value = undefined
@@ -227,14 +234,23 @@ function updateMaskValue(newValue: string | number | Date | undefined | null) {
                 modelValueDateIsoString.value = newValue as string
                 modelValueDate.value = undefined
             }
-            const newDate = new Date(newValue)
-            typed.value = getInputValueFromDate(newDate, type.value, hasSeconds.value)
-            unmasked.value = typed.value
+
+            // Format for display (skip week type as it's not supported by getInputValueFromDate)
+            if (type.value !== INPUT_TYPES.WEEK) {
+                const newDate = new Date(newValue)
+                const dateType = type.value as 'date' | 'time' | 'datetime-local' | 'month'
+                typed.value = getInputValueFromDate(newDate, dateType, hasSeconds.value)
+                unmasked.value = typed.value
+            }
             return
         }
+
+        // Clear date references if not a valid date
         modelValueDate.value = undefined
         modelValueDateIsoString.value = undefined
     }
+
+    // Default case
     typed.value = newValue
     unmasked.value = `${typed.value}`
 }
@@ -265,36 +281,64 @@ const innerEl = ref<HTMLInputElement>()
 const wrapperEl = ref<HTMLDivElement>()
 const suggestionsDropdownEl = ref<InstanceType<typeof VvDropdown>>()
 
-defineExpose({ $inner: innerEl })
+defineExpose({
+    /** Reference to the input element */
+    $input: inputEl,
+    /** Reference to the inner element */
+    $inner: innerEl,
+    /** Reference to the wrapper element */
+    $wrapper: wrapperEl,
+})
 
 // focus
 const { focused } = useComponentFocus(inputEl, emit)
 const isFocused = computed(
     () => focused.value && !props.disabled && !props.readonly,
 )
-watch(isFocused, (newValue) => {
-    if (newValue && propsDefaults.value.selectOnFocus && inputEl.value) {
+function handleFocusChange(isFocused: boolean) {
+    if (isFocused) {
+        handleInputFocus()
+    } else {
+        handleInputBlur()
+    }
+}
+
+function handleInputFocus() {
+    if (propsDefaults.value.selectOnFocus && inputEl.value) {
         inputEl.value.select()
     }
-    if (newValue && suggestions.value?.size) {
+    if (allSuggestions.value.size) {
         suggestionsDropdownEl.value?.show()
+    }
+}
+
+function handleInputBlur() {
+    if (!isDirty.value || !storageSuggestions.value) {
         return
     }
-    if (isDirty.value && suggestions.value) {
-        const suggestionsLimit = props.maxSuggestions
-        if (
-            suggestions.value.size >= suggestionsLimit
-            && !suggestions.value.has(localModelValue.value)
-        ) {
-            suggestions.value = new Set(
-                [...suggestions.value].slice(
-                    suggestions.value.size - suggestionsLimit + 1,
-                ),
-            )
-        }
-        suggestions.value.add(localModelValue.value)
+
+    const suggestionsLimit = props.maxSuggestions
+    const hasValue = localModelValue.value !== undefined && localModelValue.value !== null && localModelValue.value !== ''
+
+    if (!hasValue) {
+        return
     }
-})
+
+    // Remove oldest if limit reached and value not already present
+    if (
+        storageSuggestions.value.size >= suggestionsLimit
+        && !storageSuggestions.value.has(localModelValue.value)
+    ) {
+        storageSuggestions.value = new Set(
+            [...storageSuggestions.value].slice(
+                storageSuggestions.value.size - suggestionsLimit + 1,
+            ),
+        )
+    }
+    storageSuggestions.value.add(localModelValue.value)
+}
+
+watch(isFocused, handleFocusChange)
 
 // visibility
 const isVisible = useElementVisibility(inputEl)
@@ -312,14 +356,7 @@ function onTogglePassword() {
 }
 
 // time, datetime and date
-const isDateTime = computed(
-    () =>
-        props.type === INPUT_TYPES.TIME
-        || props.type === INPUT_TYPES.DATETIME_LOCAL
-        || props.type === INPUT_TYPES.DATE
-        || props.type === INPUT_TYPES.WEEK
-        || props.type === INPUT_TYPES.MONTH,
-)
+const isDateTime = computed(() => isDateTimeLike.value)
 
 // number
 const isNumber = computed(() => props.type === INPUT_TYPES.NUMBER)
@@ -330,7 +367,7 @@ function onStepUp() {
             return
         }
         inputEl.value.stepUp()
-        localModelValue.value = Number(unref(inputEl).value)
+        localModelValue.value = Number(inputEl.value.value)
     }
 }
 function onStepDown() {
@@ -340,7 +377,7 @@ function onStepDown() {
             return
         }
         inputEl.value.stepDown()
-        localModelValue.value = Number(unref(inputEl).value)
+        localModelValue.value = Number(inputEl.value.value)
     }
 }
 
@@ -387,7 +424,7 @@ const hasTabindex = computed(() => {
 })
 
 // dirty
-const isDirty = computed(() => !isEmpty(modelValue))
+const isDirty = computed(() => !isEmpty(modelValue?.value))
 
 // invalid
 const isInvalid = computed(() => {
@@ -402,18 +439,37 @@ const isInvalid = computed(() => {
 
 // suggestions
 const storageKey = computed(() => props.storageKey ?? (volver?.experimentalFeatures.forceInputSuggestions ? props.name : undefined))
-const suggestions = usePersistence<Set<string>>(
+const storageSuggestions = usePersistence<Set<string | number | Date>>(
     storageKey,
     storageType,
     new Set(),
 )
+const allSuggestions = computed(() => {
+    const merged = new Map<string | number | Date, { isFromStorage: boolean }>()
+
+    // Add storage suggestions
+    if (storageSuggestions.value) {
+        for (const suggestion of storageSuggestions.value) {
+            merged.set(suggestion, { isFromStorage: true })
+        }
+    }
+
+    // Add external suggestions (overwrite if exists, mark as not from storage)
+    if (props.suggestions) {
+        for (const suggestion of props.suggestions) {
+            merged.set(suggestion, { isFromStorage: false })
+        }
+    }
+
+    return merged
+})
 const filteredSuggestions = computed(() => {
-    if (!suggestions.value) {
+    if (allSuggestions.value.size === 0) {
         return []
     }
-    return [...suggestions.value]
+    return [...allSuggestions.value.entries()]
         .filter(
-            suggestion =>
+            ([suggestion]) =>
                 isEmpty(localModelValue.value)
                 || (`${suggestion}`
                     .toLowerCase()
@@ -421,21 +477,23 @@ const filteredSuggestions = computed(() => {
                     && suggestion !== localModelValue.value),
         )
         .reverse()
+        .map(([suggestion]) => suggestion)
 })
 const hasSuggestions = computed(
     () =>
-        storageKey?.value
-        && suggestions.value
-        && suggestions.value.size > 0,
+        allSuggestions.value.size > 0,
 )
-function onSuggestionSelect(suggestion: string) {
+function onSuggestionSelect(suggestion: string | number | Date) {
     localModelValue.value = suggestion
     suggestionsDropdownEl.value?.hide()
     emit('suggestion:selected', suggestion)
 }
-function onSuggestionRemove(suggestion: string) {
-    suggestions.value?.delete(suggestion)
-    emit('suggestion:removed', suggestion)
+function onSuggestionRemove(suggestion: string | number | Date) {
+    // Only remove from storage if it came from storage
+    if (allSuggestions.value.get(suggestion)?.isFromStorage) {
+        storageSuggestions.value?.delete(suggestion)
+        emit('suggestion:removed', suggestion)
+    }
 }
 
 // styles
@@ -460,8 +518,40 @@ const bemCssClasses = useModifiers(
 )
 
 // attrs
+const isTextLike = computed(() => {
+    const textLikeTypes: InputType[] = [
+        INPUT_TYPES.TEXT,
+        INPUT_TYPES.SEARCH,
+        INPUT_TYPES.URL,
+        INPUT_TYPES.TEL,
+        INPUT_TYPES.EMAIL,
+        INPUT_TYPES.PASSWORD,
+    ]
+    return textLikeTypes.includes(type.value)
+})
+const isDateTimeLike = computed(() => {
+    const dateTimeTypes: InputType[] = [
+        INPUT_TYPES.DATE,
+        INPUT_TYPES.MONTH,
+        INPUT_TYPES.WEEK,
+        INPUT_TYPES.TIME,
+        INPUT_TYPES.DATETIME_LOCAL,
+    ]
+    return dateTimeTypes.includes(type.value)
+})
+const isTextWithConstraints = computed(() => {
+    const textConstraintTypes: InputType[] = [
+        INPUT_TYPES.TEXT,
+        INPUT_TYPES.SEARCH,
+        INPUT_TYPES.URL,
+        INPUT_TYPES.TEL,
+        INPUT_TYPES.EMAIL,
+        INPUT_TYPES.PASSWORD,
+    ]
+    return textConstraintTypes.includes(type.value)
+})
 const hasAttrs = computed(() => {
-    const type = (() => {
+    const typeValue = (() => {
         if (isPassword.value && showPassword.value) {
             return INPUT_TYPES.TEXT
         }
@@ -474,7 +564,7 @@ const hasAttrs = computed(() => {
         return props.type
     })()
     const toReturn: InputHTMLAttributes = {
-        type,
+        'type': typeValue,
         'name': props.name,
         'tabindex': hasTabindex.value,
         'disabled': props.disabled,
@@ -490,49 +580,35 @@ const hasAttrs = computed(() => {
             : undefined,
         'inputMode': props.inputMode,
     } as InputHTMLAttributes
-    if (
-        type === INPUT_TYPES.DATE
-        || type === INPUT_TYPES.MONTH
-        || type === INPUT_TYPES.WEEK
-        || type === INPUT_TYPES.TIME
-        || type === INPUT_TYPES.DATETIME_LOCAL
-        || type === INPUT_TYPES.NUMBER
-    ) {
+
+    // Date/time/number attributes
+    if (isDateTimeLike.value || typeValue === INPUT_TYPES.NUMBER) {
         let max = props.max
-        if (type === INPUT_TYPES.DATE && !max) {
+        if (typeValue === INPUT_TYPES.DATE && !max) {
             max = '9999-12-31'
         }
         toReturn.step = props.step
         toReturn.max = max !== undefined ? String(max) : undefined
-        toReturn.min
-            = props.min !== undefined ? String(props.min) : undefined
+        toReturn.min = props.min !== undefined ? String(props.min) : undefined
     }
-    if (
-        type === INPUT_TYPES.TEXT
-        || type === INPUT_TYPES.SEARCH
-        || type === INPUT_TYPES.URL
-        || type === INPUT_TYPES.TEL
-        || type === INPUT_TYPES.EMAIL
-        || type === INPUT_TYPES.PASSWORD
-        || type === INPUT_TYPES.NUMBER
-    ) {
+
+    // Text-like types with placeholder
+    if (isTextLike.value || (typeValue === INPUT_TYPES.TEXT || typeValue === INPUT_TYPES.NUMBER)) {
         toReturn.placeholder = inputTextPlaceholder.value
     }
-    if (
-        type === INPUT_TYPES.TEXT
-        || type === INPUT_TYPES.SEARCH
-        || type === INPUT_TYPES.URL
-        || type === INPUT_TYPES.TEL
-        || type === INPUT_TYPES.EMAIL
-        || type === INPUT_TYPES.PASSWORD
-    ) {
+
+    // Text-like types with constraints
+    if (isTextWithConstraints.value) {
         toReturn.minlength = props.minlength
         toReturn.maxlength = props.maxlength
         toReturn.pattern = props.pattern
     }
-    if (type === INPUT_TYPES.EMAIL) {
+
+    // Email multiple
+    if (typeValue === INPUT_TYPES.EMAIL) {
         toReturn.multiple = props.multiple
     }
+
     return toReturn
 })
 
@@ -708,7 +784,7 @@ export default {
             <template #items>
                 <VvDropdownOption
                     v-for="value in filteredSuggestions"
-                    :key="value"
+                    :key="String(value)"
                     @click.stop="onSuggestionSelect(value)"
                 >
                     <div class="flex-1">
@@ -717,7 +793,7 @@ export default {
                         </slot>
                     </div>
                     <button
-                        v-if="suggestions && hasIconRemoveSuggestion"
+                        v-if="allSuggestions.get(value)?.isFromStorage && hasIconRemoveSuggestion"
                         type="button"
                         tabindex="-1"
                         class="cursor-pointer"

@@ -214,6 +214,13 @@ export const VvInputTextProps = {
         default: 5,
     },
     /**
+     * External suggestions to display
+     */
+    suggestions: {
+        type: Array as PropType<(string | number | Date)[]>,
+        default: undefined,
+    },
+    /**
      * The input mode to use for the input
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode
      */

@@ -18,9 +18,10 @@ export const DropArea: Story = {
     ...DefaultStory,
     args: {
         ...DefaultStory.args,
-        'class': 'max-w-320',
-        'drop-area': 'Drag one or more files to this drop zone.',
-        'dropArea': true,
+        class: 'max-w-320',
+        dropArea: true,
+        // @ts-expect-error - dropAreaSlot is a Storybook control for slot content
+        dropAreaSlot: 'Drag one or more files to this drop zone.',
     },
 }
 

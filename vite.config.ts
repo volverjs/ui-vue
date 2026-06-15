@@ -23,6 +23,7 @@ export default ({ mode }: { mode: string }) => {
                 // Auto import for module exports under directories
                 // by default it only scan one level of modules under the directory
                 dirs: ['./src/composables/**', './src/utils/'],
+                ignore: ['**/composables/index'],
                 dts: true,
                 eslintrc: {
                     enabled: true,
@@ -37,6 +38,13 @@ export default ({ mode }: { mode: string }) => {
         optimizeDeps: {
             exclude: ['@volverjs/style'],
             force: true,
+        },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    quietDeps: true,
+                },
+            },
         },
         // https://github.com/storybookjs/storybook/issues/25256
         assetsInclude: ['/sb-preview/runtime.js'],

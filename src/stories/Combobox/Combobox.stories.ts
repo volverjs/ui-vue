@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { ref } from 'vue'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './Combobox.settings'
@@ -127,6 +128,7 @@ export const KeepSearch: Story = {
                 <vv-input-text
                     v-model="searchValue"
                     label="Search Input"
+                    name="search-input"
                     placeholder="Type the initial value of the search"
                 />
                 <vv-combobox

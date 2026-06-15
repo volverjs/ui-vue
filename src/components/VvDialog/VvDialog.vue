@@ -102,7 +102,12 @@ function open() {
     isOpened.value = true
 }
 
-defineExpose({ close, open })
+defineExpose({
+    /** Close the dialog */
+    close,
+    /** Open the dialog */
+    open,
+})
 
 function onCancel() {
     if (!props.keepOpen) {

@@ -21,7 +21,7 @@ const propsDefaults = useDefaults<typeof VvInputFileProps>(
     VvInputFileProps,
     props,
 )
-const { modifiers, id, readonly, disabled, icon, iconPosition, iconDownload }
+const { modifiers, id, readonly, disabled, icon, iconPosition, iconDownload, sortable }
     = toRefs(props)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -175,7 +175,7 @@ function onClickDropArea() {
     }
 }
 
-function onClickRemoveFile(index: number) {
+function onRemoveIndex(index: number) {
     const toRemove = !Array.isArray(localModelValue.value) ? localModelValue.value : localModelValue.value[index]
     if (!toRemove) {
         return
@@ -196,6 +196,9 @@ function onClickRemoveFile(index: number) {
 const selectedFileIndex = ref(0)
 const PREVIEW_MIME_TYPES = ['image/jpeg', 'image/png']
 const previewSrc = computed(() => {
+    if (props.hidePreview) {
+        return undefined
+    }
     if (files.value.length === 0) {
         return
     }
@@ -244,7 +247,7 @@ function formatBytes(bytes?: number, decimals?: number) {
     return `${Number.parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`
 }
 
-function onClickDownloadFile(file: File | UploadedFile) {
+function onDownloadFile(file: File | UploadedFile) {
     emit('download', file)
     const href = file instanceof File ? URL.createObjectURL(file) : file.url
     if (!href) {
@@ -259,7 +262,7 @@ function onClickDownloadFile(file: File | UploadedFile) {
     URL.revokeObjectURL(link.href)
 }
 
-function onClickSelectFile(index: number) {
+function onSelectIndex(index: number) {
     selectedFileIndex.value = index
 }
 
@@ -304,7 +307,7 @@ export default {
             @dragover.prevent.stop
             @click.stop="onClickDropArea"
         >
-            <slot name="drop-area">
+            <slot name="drop-area" v-bind="{ previewSrc, onClickDropArea }">
                 <picture class="vv-input-file__preview">
                     <img
                         v-if="previewSrc"
@@ -357,52 +360,56 @@ export default {
             </progress>
             <VvIcon v-if="hasIconAfter" v-bind="hasIconAfter" />
         </div>
-        <Sortable
-            v-model="files"
-            tag="ul"
-            class="vv-input-file__list"
-            item-key="name"
-            :move="() => sortable"
-            @end="onSortEnd"
-        >
-            <template #item="{ element: file, index }">
-                <li
-                    class="vv-input-file__item"
-                    :class="{
-                        'active':
-                            index === selectedFileIndex
-                            && hasDropArea
-                            && files.length > 1,
-                        'cursor-move': sortable,
-                    }"
-                    @click.stop="onClickSelectFile(index)"
-                >
-                    <button
-                        v-if="hasIconDownload"
-                        type="button"
-                        class="vv-input-file__item-action"
-                        :title="labelDownload"
-                        @click.stop="onClickDownloadFile(file)"
+        <slot name="file-list" v-bind="{ files, selectedFileIndex, onSelectIndex, onRemoveIndex, onDownloadFile, formatBytes }">
+            <Sortable
+                v-model="files"
+                tag="ul"
+                class="vv-input-file__list"
+                item-key="name"
+                :move="() => sortable"
+                @end="onSortEnd"
+            >
+                <template #item="{ element: file, index }">
+                    <li
+                        class="vv-input-file__item"
+                        :class="{
+                            'active':
+                                index === selectedFileIndex
+                                && hasDropArea
+                                && files.length > 1,
+                            'cursor-move': sortable,
+                        }"
+                        @click.stop="onSelectIndex(index)"
                     >
-                        <VvIcon v-bind="hasIconDownload" />
-                    </button>
-                    <div class="vv-input-file__item-name">
-                        {{ file.name }}
-                    </div>
-                    <small class="vv-input-file__item-info">
-                        {{ formatBytes(file.size) }}
-                    </small>
-                    <button
-                        v-if="!readonly"
-                        type="button"
-                        class="vv-input-file__item-remove"
-                        :title="labelRemove"
-                        :disabled="disabled"
-                        @click.stop="onClickRemoveFile(index)"
-                    />
-                </li>
-            </template>
-        </Sortable>
+                        <slot name="file-item" v-bind="{ file, index, isSelected: index === selectedFileIndex, onRemoveIndex, onDownloadFile, formatBytes }">
+                            <button
+                                v-if="hasIconDownload"
+                                type="button"
+                                class="vv-input-file__item-action"
+                                :title="labelDownload"
+                                @click.stop="onDownloadFile(file)"
+                            >
+                                <VvIcon v-bind="hasIconDownload" />
+                            </button>
+                            <div class="vv-input-file__item-name">
+                                {{ file.name }}
+                            </div>
+                            <small class="vv-input-file__item-info">
+                                {{ formatBytes(file.size) }}
+                            </small>
+                            <button
+                                v-if="!readonly"
+                                type="button"
+                                class="vv-input-file__item-remove"
+                                :title="labelRemove"
+                                :disabled
+                                @click.stop="onRemoveIndex(index)"
+                            />
+                        </slot>
+                    </li>
+                </template>
+            </Sortable>
+        </slot>
         <HintSlot :id="hasHintId" class="vv-input-file__hint">
             <template v-if="$slots.hint" #hint>
                 <slot name="hint" v-bind="hintSlotScope" />

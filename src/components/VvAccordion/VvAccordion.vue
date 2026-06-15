@@ -31,11 +31,15 @@ watch(
 watch(isExpanded, (newValue) => {
     modelValue.value = not.value ? !newValue : newValue
 })
-bus?.on('toggle', ({ name, value }) => {
+function onBusToggle({ name, value }: { name: string, value: boolean }) {
     if (name !== accordionName.value) {
         return
     }
     isExpanded.value = value
+}
+bus?.on('toggle', onBusToggle)
+onBeforeUnmount(() => {
+    bus?.off('toggle', onBusToggle)
 })
 function onClick() {
     if (disabled.value) {
@@ -109,10 +113,15 @@ function groupCollapse(name?: string | string[]) {
 
 // expose
 defineExpose({
+    /** Whether the accordion is expanded */
     isExpanded,
+    /** Expand the accordion */
     expand,
+    /** Collapse the accordion */
     collapse,
+    /** Expand accordions in the same group */
     groupExpand,
+    /** Collapse accordions in the same group */
     groupCollapse,
 })
 
