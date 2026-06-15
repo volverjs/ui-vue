@@ -19,10 +19,7 @@ export function useTextCount(
         ) {
             return length.value - options.lowerLimit
         }
-        if (
-            options?.upperLimit !== undefined
-            && length.value < options?.upperLimit
-        ) {
+        if (options?.upperLimit !== undefined) {
             return options.upperLimit - length.value
         }
         return 0
@@ -43,7 +40,7 @@ export function useTextCount(
             if (gap.value === 0) {
                 return undefined
             }
-            return gap
+            return gap.value
         }
 
         return length.value

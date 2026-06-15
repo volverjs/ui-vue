@@ -137,8 +137,6 @@ const middleware = computed<Middleware[]>(() => {
     }
 
     if (props.offset) {
-        toReturn.push(offset(Number(props.offset)))
-
         if (['string', 'number'].includes(typeof props.offset)) {
             toReturn.push(offset(Number(props.offset)))
         } else {

@@ -12,6 +12,12 @@ const hot = process.argv.includes('--hot')
 const watch = hot ? {} : undefined
 const minify = hot ? false : 'esbuild'
 
+// clean the output directory once before the (parallel) builds run,
+// since every build() below uses `emptyOutDir: false`
+if (!hot) {
+    fs.rmSync('./dist', { recursive: true, force: true })
+}
+
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 packageJson.exports = {

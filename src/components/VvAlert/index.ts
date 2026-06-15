@@ -116,6 +116,12 @@ export function useVvAlert(props: Readonly<ExtractPropTypes<typeof VvAlertProps>
         },
     )
 
+    onBeforeUnmount(() => {
+        if (timeout) {
+            clearTimeout(timeout)
+        }
+    })
+
     // listeners
     const isMouseover = ref(false)
     const onMouseover = () => {

@@ -35,7 +35,6 @@ import { volverComponents } from './components'
  * </template>
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const { registry } = defineRegistry(catalog, {
     components: volverComponents as any,
 })
