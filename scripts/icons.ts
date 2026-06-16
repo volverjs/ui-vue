@@ -130,23 +130,6 @@ async function generateIcons(
     // release `pnpm version` step). It's metadata only and not needed at runtime.
     delete iconifyJson.lastModified
 
-    // Sort icon (and alias) names so the serialized output is fully deterministic
-    // regardless of the order in which icons were inserted. Without this the JSON
-    // key order tracks the filesystem readdir order, which differs across
-    // platforms (macOS locally vs Linux in CI) and dirties the working tree.
-    iconifyJson.icons = Object.fromEntries(
-        Object.keys(iconifyJson.icons)
-            .sort()
-            .map(name => [name, iconifyJson.icons[name]]),
-    )
-    if (iconifyJson.aliases) {
-        iconifyJson.aliases = Object.fromEntries(
-            Object.keys(iconifyJson.aliases)
-                .sort()
-                .map(name => [name, iconifyJson.aliases![name]]),
-        )
-    }
-
     // Validate the IconifyJSON object
     try {
         validateIconSet(iconifyJson)
