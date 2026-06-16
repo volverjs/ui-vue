@@ -400,7 +400,8 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "styleguide": "storybook build",
-    "build": "npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
+    "build": "npm run clean && npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
+    "clean": "node ./scripts/clean.js",
     "hot": "node ./scripts/build.js --hot",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
