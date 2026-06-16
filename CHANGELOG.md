@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.13] - 2026-04-08
+## [0.0.14] - 2026-06-16
+
+### Fixed
+
+- TypeScript declarations (`.d.ts`) were missing from the published package. The `dist` clean step introduced in `0.0.13` ran inside `scripts/build.js`, _after_ `generate-tsd` had emitted the declarations, deleting them before the Vite bundles were generated. Cleaning now runs as a separate `clean` step before `generate-tsd`, so declarations are preserved (fixes `Could not find a declaration file for module '@volverjs/ui-vue/...'`).
+
+## [0.0.13] - 2026-06-16
 
 ### Added
 

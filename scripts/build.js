@@ -12,11 +12,11 @@ const hot = process.argv.includes('--hot')
 const watch = hot ? {} : undefined
 const minify = hot ? false : 'esbuild'
 
-// clean the output directory once before the (parallel) builds run,
-// since every build() below uses `emptyOutDir: false`
-if (!hot) {
-    fs.rmSync('./dist', { recursive: true, force: true })
-}
+// NOTE: do NOT clean ./dist here. `generate-tsd` runs before this script and
+// emits the .d.ts declarations into ./dist; wiping the directory at this point
+// would delete them (every build() below uses `emptyOutDir: false`, so the .js
+// bundles are added alongside the declarations). The clean step runs as a
+// separate `clean` npm script before `generate-tsd` instead.
 
 // load package.json and reset exports
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
