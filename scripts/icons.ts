@@ -121,6 +121,12 @@ async function generateIcons(
     // Get the IconifyJSON object from iconSet
     const iconifyJson: IconifyJSON = iconSet.export()
 
+    // Drop the auto-generated `lastModified` timestamp: IconSet.export() sets it
+    // to the current time on every run, which would make the committed icon JSON
+    // files differ on each build (dirtying the working tree and breaking the
+    // release `pnpm version` step). It's metadata only and not needed at runtime.
+    delete iconifyJson.lastModified
+
     // Validate the IconifyJSON object
     try {
         validateIconSet(iconifyJson)
