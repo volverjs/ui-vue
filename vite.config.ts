@@ -5,7 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
-export default ({ mode }: { mode: string }) => {
+export default function viteConfig({ mode }: { mode: string }) {
     return defineConfig({
         build: {
             lib: {

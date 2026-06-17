@@ -8,7 +8,7 @@ export type AlertModifier
         | 'danger'
         | 'brand'
         | 'accent'
-        | string
+        | (string & {})
 
 export type Alert = {
     id: string | number

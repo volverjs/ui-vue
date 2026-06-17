@@ -176,7 +176,7 @@ function onClickDropArea() {
 }
 
 function onRemoveIndex(index: number) {
-    const toRemove = !Array.isArray(localModelValue.value) ? localModelValue.value : localModelValue.value[index]
+    const toRemove = Array.isArray(localModelValue.value) ? localModelValue.value[index] : localModelValue.value
     if (!toRemove) {
         return
     }
@@ -194,7 +194,7 @@ function onRemoveIndex(index: number) {
 }
 
 const selectedFileIndex = ref(0)
-const PREVIEW_MIME_TYPES = ['image/jpeg', 'image/png']
+const PREVIEW_MIME_TYPES = new Set(['image/jpeg', 'image/png'])
 const previewSrc = computed(() => {
     if (props.hidePreview) {
         return undefined
@@ -207,7 +207,7 @@ const previewSrc = computed(() => {
     }
     if (files.value[selectedFileIndex.value] instanceof File) {
         const currentFile = files.value[selectedFileIndex.value] as File
-        if (!PREVIEW_MIME_TYPES.includes(currentFile.type)) {
+        if (!PREVIEW_MIME_TYPES.has(currentFile.type)) {
             return undefined
         }
         return URL.createObjectURL(currentFile)
@@ -216,7 +216,7 @@ const previewSrc = computed(() => {
     if (currentFile.thumbnailUrl) {
         return currentFile.thumbnailUrl
     }
-    if (!PREVIEW_MIME_TYPES.includes(currentFile.type)) {
+    if (!PREVIEW_MIME_TYPES.has(currentFile.type)) {
         return undefined
     }
     return currentFile.url
@@ -241,7 +241,7 @@ function formatBytes(bytes?: number, decimals?: number) {
     if (bytes === 0)
         return '0 Bytes'
     const k = 1024
-    const dm = !decimals ? 2 : decimals <= 0 ? 0 : decimals
+    const dm = Math.max(0, decimals ?? 2)
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return `${Number.parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`
@@ -258,7 +258,7 @@ function onDownloadFile(file: File | UploadedFile) {
     link.setAttribute('download', file.name)
     document.body.appendChild(link)
     link.click()
-    document.body.removeChild(link)
+    link.remove()
     URL.revokeObjectURL(link.href)
 }
 

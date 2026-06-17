@@ -20,6 +20,8 @@ import {
 } from '../VvInputText'
 import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 
+type SuggestionValue = string | number | Date
+
 // props, emit, slots and attrs
 const props = defineProps(VvInputTextProps)
 
@@ -117,80 +119,14 @@ const { el, mask, typed, masked, unmasked } = useIMask(
             }
             emit('update:masked', masked.value)
             if (type.value === INPUT_TYPES.NUMBER) {
-                if (MASK_NUMBER_REGEX.test(unmasked.value)) {
-                    if (
-                        localModelValue.value === null
-                        || localModelValue.value === undefined
-                    ) {
-                        return
-                    }
-                    localModelValue.value = undefined
-                    return
-                }
-                if (NEGATIVE_ZERO_REGEX.test(unmasked.value)) {
-                    localModelValue.value = 0
-                    return
-                }
-                if (typeof typed.value !== 'number') {
-                    localModelValue.value = Number(typed.value)
-                    return
-                }
-                localModelValue.value = typed.value
+                handleNumberAccept()
                 return
             }
             if (type.value === INPUT_TYPES.DATETIME_LOCAL
                 || type.value === INPUT_TYPES.DATE
                 || type.value === INPUT_TYPES.TIME
                 || type.value === INPUT_TYPES.MONTH) {
-                if (!typed.value) {
-                    if (!localModelValue.value) {
-                        return
-                    }
-                    if (modelValueDate.value) {
-                        localModelValue.value = undefined
-                        return
-                    }
-                    localModelValue.value = ''
-                    return
-                }
-                if (!(typed.value instanceof Date) && !modelValueDate.value && !modelValueDateIsoString.value) {
-                    localModelValue.value = typed.value
-                    return
-                }
-
-                let date = typed.value
-                if (!(date instanceof Date)) {
-                    date = getDateFromInputValue(typed.value, type.value)
-                }
-                if (modelValueDate.value || modelValueDateIsoString.value) {
-                    const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
-                    if (type.value === INPUT_TYPES.DATETIME_LOCAL
-                        || type.value === INPUT_TYPES.DATE
-                        || type.value === INPUT_TYPES.MONTH) {
-                        toReturn.setFullYear(date.getFullYear())
-                        toReturn.setMonth(date.getMonth())
-                    }
-                    if (type.value === INPUT_TYPES.DATETIME_LOCAL
-                        || type.value === INPUT_TYPES.DATE) {
-                        toReturn.setDate(date.getDate())
-                    }
-                    if (type.value === INPUT_TYPES.DATETIME_LOCAL
-                        || type.value === INPUT_TYPES.TIME) {
-                        toReturn.setHours(date.getHours())
-                        toReturn.setMinutes(date.getMinutes())
-                        toReturn.setSeconds(date.getSeconds())
-                    }
-                    if (modelValueDate.value instanceof Date) {
-                        if (localModelValue.value?.getTime() === toReturn.getTime()) {
-                            return
-                        }
-                        localModelValue.value = toReturn
-                        return
-                    }
-                    localModelValue.value = toReturn.toISOString()
-                    return
-                }
-                localModelValue.value = getInputValueFromDate(date, type.value, hasSeconds.value)
+                handleDateAccept()
                 return
             }
             if (!localModelValue.value && !unmasked.value) {
@@ -200,7 +136,88 @@ const { el, mask, typed, masked, unmasked } = useIMask(
         },
     },
 )
-function updateMaskValue(newValue: string | number | Date | undefined | null) {
+
+function handleNumberAccept() {
+    if (MASK_NUMBER_REGEX.test(unmasked.value)) {
+        if (
+            localModelValue.value === null
+            || localModelValue.value === undefined
+        ) {
+            return
+        }
+        localModelValue.value = undefined
+        return
+    }
+    if (NEGATIVE_ZERO_REGEX.test(unmasked.value)) {
+        localModelValue.value = 0
+        return
+    }
+    if (typeof typed.value !== 'number') {
+        localModelValue.value = Number(typed.value)
+        return
+    }
+    localModelValue.value = typed.value
+}
+
+function mergeDateIntoModelValue(date: Date) {
+    const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
+    if (type.value === INPUT_TYPES.DATETIME_LOCAL
+        || type.value === INPUT_TYPES.DATE
+        || type.value === INPUT_TYPES.MONTH) {
+        toReturn.setFullYear(date.getFullYear())
+        toReturn.setMonth(date.getMonth())
+    }
+    if (type.value === INPUT_TYPES.DATETIME_LOCAL
+        || type.value === INPUT_TYPES.DATE) {
+        toReturn.setDate(date.getDate())
+    }
+    if (type.value === INPUT_TYPES.DATETIME_LOCAL
+        || type.value === INPUT_TYPES.TIME) {
+        toReturn.setHours(date.getHours())
+        toReturn.setMinutes(date.getMinutes())
+        toReturn.setSeconds(date.getSeconds())
+    }
+    if (modelValueDate.value instanceof Date) {
+        if (localModelValue.value?.getTime() === toReturn.getTime()) {
+            return
+        }
+        localModelValue.value = toReturn
+        return
+    }
+    localModelValue.value = toReturn.toISOString()
+}
+
+function handleDateAccept() {
+    // onAccept only calls this for date-like input types
+    const dateType = type.value as 'date' | 'time' | 'month' | 'datetime-local'
+    if (!typed.value) {
+        if (!localModelValue.value) {
+            return
+        }
+        if (modelValueDate.value) {
+            localModelValue.value = undefined
+            return
+        }
+        localModelValue.value = ''
+        return
+    }
+    if (!(typed.value instanceof Date) && !modelValueDate.value && !modelValueDateIsoString.value) {
+        localModelValue.value = typed.value
+        return
+    }
+
+    let date = typed.value
+    if (!(date instanceof Date)) {
+        date = getDateFromInputValue(typed.value, dateType)
+    }
+    if (modelValueDate.value || modelValueDateIsoString.value) {
+        mergeDateIntoModelValue(date)
+        return
+    }
+    localModelValue.value = getInputValueFromDate(date, dateType, hasSeconds.value)
+}
+
+function updateMaskValue(newValue: SuggestionValue | undefined | null) {
     // Handle empty values
     if (newValue === undefined || newValue === null) {
         typed.value = ''
@@ -439,13 +456,13 @@ const isInvalid = computed(() => {
 
 // suggestions
 const storageKey = computed(() => props.storageKey ?? (volver?.experimentalFeatures.forceInputSuggestions ? props.name : undefined))
-const storageSuggestions = usePersistence<Set<string | number | Date>>(
+const storageSuggestions = usePersistence<Set<SuggestionValue>>(
     storageKey,
     storageType,
     new Set(),
 )
 const allSuggestions = computed(() => {
-    const merged = new Map<string | number | Date, { isFromStorage: boolean }>()
+    const merged = new Map<SuggestionValue, { isFromStorage: boolean }>()
 
     // Add storage suggestions
     if (storageSuggestions.value) {
@@ -483,12 +500,12 @@ const hasSuggestions = computed(
     () =>
         allSuggestions.value.size > 0,
 )
-function onSuggestionSelect(suggestion: string | number | Date) {
+function onSuggestionSelect(suggestion: SuggestionValue) {
     localModelValue.value = suggestion
     suggestionsDropdownEl.value?.hide()
     emit('suggestion:selected', suggestion)
 }
-function onSuggestionRemove(suggestion: string | number | Date) {
+function onSuggestionRemove(suggestion: SuggestionValue) {
     // Only remove from storage if it came from storage
     if (allSuggestions.value.get(suggestion)?.isFromStorage) {
         storageSuggestions.value?.delete(suggestion)
@@ -588,8 +605,8 @@ const hasAttrs = computed(() => {
             max = '9999-12-31'
         }
         toReturn.step = props.step
-        toReturn.max = max !== undefined ? String(max) : undefined
-        toReturn.min = props.min !== undefined ? String(props.min) : undefined
+        toReturn.max = max === undefined ? undefined : String(max)
+        toReturn.min = props.min === undefined ? undefined : String(props.min)
     }
 
     // Text-like types with placeholder
@@ -657,9 +674,9 @@ const hasStyle = computed(() => {
         return undefined
     }
     return {
-        width: localModelValue.value !== undefined
-            ? `${String(localModelValue.value).length + 1}ch`
-            : undefined,
+        width: localModelValue.value === undefined
+            ? undefined
+            : `${String(localModelValue.value).length + 1}ch`,
     }
 })
 
