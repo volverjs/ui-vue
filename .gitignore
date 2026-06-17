@@ -15,3 +15,4 @@ bin
 # Agent
 .agents
 .claude
+.mcp.json
