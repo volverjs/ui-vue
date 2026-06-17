@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.15] - 2026-06-17
+
+### Fixed
+
+- `useDefaults`: component defaults declared as an array of prop types (e.g. `type: [String, Number]`) are now matched and applied correctly; previously only single-type definitions were honored.
+- Object comparison by dotted field path (`equals(a, b, 'a.b.c')` via `resolveFieldData`) no longer throws when an intermediate property is `null`/`undefined`, and returns safely instead.
+- `VvInputFile`: `formatBytes` (exposed through the `file-list` and `file-item` slots) now honors an explicit `decimals = 0` instead of falling back to `2`.
+- Dropdown and `v-contextmenu` scroll-container lookup (`findScrollContainer`) now guards DOM globals and is safe in non-browser/SSR environments.
+- `isDateIsoString` now validates strictly against the canonical UTC form produced by `toISOString()`, aligning the regex pre-check with the equality check.
+- `useBlurhash`: image load failures now reject with an `Error` instead of a raw event-arguments array.
+
+### Changed
+
+- `AlertModifier` and `NavItem.on` keys keep their literal autocomplete suggestions while still accepting any string.
+- Internal code-quality cleanup addressing SonarCloud findings (`readonly` members, `globalThis` usage, `Set`-based lookups, optional chaining, reduced cognitive complexity in `deepEquals`/`useDefaults`/`VvInputText`). No public behavior changes.
+
 ## [0.0.14] - 2026-06-16
 
 ### Fixed
