@@ -30,7 +30,7 @@ function resolveDefaultedProp(
     // array of types
     if (Array.isArray(definition) && definition.length) {
         const typeFunction = definition[0] as <T>() => T
-        if (typeFunction === propValue) {
+        if (typeFunction() === propValue) {
             value = componentDefault
         }
     }

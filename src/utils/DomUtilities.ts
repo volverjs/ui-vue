@@ -2,6 +2,12 @@ export function findScrollContainer(element: HTMLElement | null) {
     if (!element) {
         return undefined
     }
+    if (
+        typeof globalThis.getComputedStyle !== 'function'
+        || typeof document === 'undefined'
+    ) {
+        return undefined
+    }
     let parent = element.parentElement
     while (parent) {
         const { overflow } = globalThis.getComputedStyle(parent)

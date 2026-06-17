@@ -102,7 +102,7 @@ export function resolveFieldData(data: Record<string, unknown>, field: string) {
         let value = data
 
         for (let i = 0, len = fields.length; i < len; ++i) {
-            if (data == null) {
+            if (value == null) {
                 return null
             }
 
