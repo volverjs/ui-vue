@@ -8,20 +8,19 @@ on:
 jobs:
     build:
         permissions:
-            contents: write # to create release (yyx990803/release-tag)
+            contents: write # to create release via gh CLI
 
         name: Create Release for Tag
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@master
+              uses: actions/checkout@v5
 
             - name: Create Release for Tag
-              id: release_tag
-              uses: yyx990803/release-tag@master
               env:
-                  GITHUB_TOKEN: ${{ secrets.RELEASE_TAG_GITHUB_TOKEN }}
-              with:
-                  tag_name: ${{ github.ref }}
-                  body: |
-                      Please refer to [CHANGELOG.md](https://github.com/volverjs/ui-vue/blob/${{ contains(github.ref, 'beta') && 'develop' || 'main'}}/CHANGELOG.md) for details.
+                  GH_TOKEN: ${{ secrets.RELEASE_TAG_GITHUB_TOKEN }}
+              run: |
+                  gh release create "${{ github.ref_name }}" \
+                    --title "${{ github.ref_name }}" \
+                    --prerelease="${{ contains(github.ref, 'beta') }}" \
+                    --notes "Please refer to [CHANGELOG.md](https://github.com/volverjs/ui-vue/blob/${{ contains(github.ref, 'beta') && 'develop' || 'main' }}/CHANGELOG.md) for details."
