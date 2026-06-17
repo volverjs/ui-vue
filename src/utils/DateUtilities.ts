@@ -14,7 +14,7 @@ const padTwoDigits = (num: number) => num.toString().padStart(2, '0')
  * @example
  * isDateIsoString('2021-12-31T23:59:59') // true
  */
-const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:?\d{2})?$/
+const ISO_DATE_REGEX = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,3})?(?:Z|[+-]\d\d:?\d\d)?$/
 export function isDateIsoString(dateString: unknown) {
     if (typeof dateString !== 'string') {
         return false

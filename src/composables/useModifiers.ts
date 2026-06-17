@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 
 export function useModifiers(
     prefix: string,
-    modifiers?: Ref<string | string[] | unknown | unknown[] | undefined>,
+    modifiers?: Ref<unknown>,
     others?: Ref<Record<string, boolean>>,
 ) {
     return computed(() => {

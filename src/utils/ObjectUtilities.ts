@@ -22,67 +22,69 @@ export function equals(obj1: any, obj2: any, field?: string) {
  * @returns {boolean}
  */
 
+function deepEqualsArray(a: any[], b: any[]) {
+    if (a.length !== b.length)
+        return false
+    for (let i = a.length; i-- !== 0;) {
+        if (!deepEquals(a[i], b[i]))
+            return false
+    }
+    return true
+}
+
+function deepEqualsObject(a: any, b: any) {
+    const keys = Object.keys(a)
+    const { length } = keys
+
+    if (length !== Object.keys(b).length)
+        return false
+
+    for (let i = length; i-- !== 0;) {
+        if (!Object.hasOwn(b, keys[i]))
+            return false
+    }
+
+    for (let i = length; i-- !== 0;) {
+        const key = keys[i]
+        if (!deepEquals(a[key], b[key]))
+            return false
+    }
+
+    return true
+}
+
 export function deepEquals(a: any, b: any) {
     if (a === b)
         return true
 
-    if (a && b && typeof a == 'object' && typeof b == 'object') {
-        const arrA = Array.isArray(a)
-        const arrB = Array.isArray(b)
-        let i, length, key
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object')
+        return Number.isNaN(a) && Number.isNaN(b)
 
-        if (arrA && arrB) {
-            length = a.length
-            if (length !== b.length)
-                return false
-            for (i = length; i-- !== 0;) {
-                if (!deepEquals(a[i], b[i]))
-                    return false
-            }
+    const arrA = Array.isArray(a)
+    const arrB = Array.isArray(b)
 
-            return true
-        }
+    if (arrA !== arrB)
+        return false
+    if (arrA && arrB)
+        return deepEqualsArray(a, b)
 
-        if (arrA !== arrB)
-            return false
+    const dateA = a instanceof Date
+    const dateB = b instanceof Date
 
-        const dateA = a instanceof Date
-        const dateB = b instanceof Date
+    if (dateA !== dateB)
+        return false
+    if (dateA && dateB)
+        return a.getTime() === b.getTime()
 
-        if (dateA !== dateB)
-            return false
-        if (dateA && dateB)
-            return a.getTime() === b.getTime()
+    const regexpA = a instanceof RegExp
+    const regexpB = b instanceof RegExp
 
-        const regexpA = a instanceof RegExp
-        const regexpB = b instanceof RegExp
+    if (regexpA !== regexpB)
+        return false
+    if (regexpA && regexpB)
+        return a.toString() === b.toString()
 
-        if (regexpA !== regexpB)
-            return false
-        if (regexpA && regexpB)
-            return a.toString() === b.toString()
-
-        const keys = Object.keys(a)
-
-        length = keys.length
-
-        if (length !== Object.keys(b).length)
-            return false
-
-        for (i = length; i-- !== 0;) {
-            if (!Object.hasOwn(b, keys[i]))
-                return false
-        }
-
-        for (i = length; i-- !== 0;) {
-            key = keys[i]
-            if (!deepEquals(a[key], b[key]))
-                return false
-        }
-
-        return true
-    }
-    return Number.isNaN(a) && Number.isNaN(b)
+    return deepEqualsObject(a, b)
 }
 
 /**
@@ -95,20 +97,19 @@ export function resolveFieldData(data: Record<string, unknown>, field: string) {
     if (data && Object.keys(data).length && field) {
         if (!field.includes('.')) {
             return data[field]
-        } else {
-            const fields = field.split('.')
-            let value = data
+        }
+        const fields = field.split('.')
+        let value = data
 
-            for (let i = 0, len = fields.length; i < len; ++i) {
-                if (data == null) {
-                    return null
-                }
-
-                value = value[fields[i]] as Record<string, unknown>
+        for (let i = 0, len = fields.length; i < len; ++i) {
+            if (data == null) {
+                return null
             }
 
-            return value
+            value = value[fields[i]] as Record<string, unknown>
         }
+
+        return value
     } else {
         return null
     }
@@ -120,7 +121,7 @@ export function resolveFieldData(data: Record<string, unknown>, field: string) {
  */
 
 export function isFunction(obj: any) {
-    return !!(obj && obj.constructor && obj.call && obj.apply)
+    return !!(obj?.constructor && obj.call && obj.apply)
 }
 
 /**
@@ -151,7 +152,7 @@ export function findIndexInList<Type = unknown>(value: Type, list: Type[]) {
  * @returns {boolean} the index
  */
 export function contains<Type = unknown>(value: Type, list: Type[]) {
-    if (value != null && list && list.length) {
+    if (value != null && list?.length) {
         for (const val of list) {
             if (equals(value, val)) {
                 return true

@@ -10,6 +10,53 @@ type VueProp
         | BooleanConstructor
         | PropType<unknown>
 
+type PropDefinition
+    = | VueProp
+        | VueProp[]
+        | { type: VueProp | VueProp[], default?: unknown }
+
+/**
+ * Returns the value a prop should take: either the provided `propValue` or the
+ * `componentDefault` when `propValue` still matches the prop definition default.
+ * The three checks are intentionally independent (an array definition satisfies
+ * both `Array.isArray` and `typeof === 'object'`).
+ */
+function resolveDefaultedProp(
+    definition: PropDefinition,
+    propValue: unknown,
+    componentDefault: unknown,
+): unknown {
+    let value = propValue
+    // array of types
+    if (Array.isArray(definition) && definition.length) {
+        const typeFunction = definition[0] as <T>() => T
+        if (typeFunction === propValue) {
+            value = componentDefault
+        }
+    }
+    // single type
+    if (typeof definition === 'function') {
+        const typeFunction = definition as <T>() => T
+        if (typeFunction() === propValue) {
+            value = componentDefault
+        }
+    }
+    // object with type and default
+    if (typeof definition === 'object') {
+        let defaultValue = (definition as { default: unknown }).default
+        if (typeof defaultValue === 'function') {
+            defaultValue = defaultValue()
+        }
+        const matches = typeof defaultValue === 'object'
+            ? JSON.stringify(defaultValue) === JSON.stringify(propValue)
+            : defaultValue === propValue
+        if (matches) {
+            value = componentDefault
+        }
+    }
+    return value
+}
+
 export function useDefaults<Definition>(
     componentName: string,
     propsDefinition: Definition,
@@ -18,7 +65,7 @@ export function useDefaults<Definition>(
     const volver = useVolver()
 
     const volverComponentDefaults = computed(() => {
-        if (!volver || !volver.defaults.value?.[componentName]) {
+        if (!volver?.defaults.value?.[componentName]) {
             return undefined
         }
         return volver.defaults.value[componentName]
@@ -38,49 +85,13 @@ export function useDefaults<Definition>(
         const simplifiedProps = props as Record<string, unknown>
         return Object.keys(simplifiedPropsDefinition).reduce((acc, key) => {
             const propValue = simplifiedProps[key]
-            acc[key] = propValue
-            if (key in componentDefaults) {
-                // array of types
-                if (Array.isArray(simplifiedPropsDefinition[key])) {
-                    const typeArray = simplifiedPropsDefinition[
-                        key
-                    ] as VueProp[]
-                    if (typeArray.length) {
-                        const typeFunction = typeArray[0] as <T>() => T
-                        if (typeFunction === propValue) {
-                            acc[key] = componentDefaults[key]
-                        }
-                    }
-                }
-                // single type
-                if (typeof simplifiedPropsDefinition[key] === 'function') {
-                    const typeFunction = simplifiedPropsDefinition[key] as <
-                        T,
-                    >() => T
-                    if (typeFunction() === propValue) {
-                        acc[key] = componentDefaults[key]
-                    }
-                }
-                // object with type and default
-                if (typeof simplifiedPropsDefinition[key] === 'object') {
-                    let defaultValue = (
-                        simplifiedPropsDefinition[key] as { default: unknown }
-                    ).default
-                    if (typeof defaultValue === 'function') {
-                        defaultValue = defaultValue()
-                    }
-                    if (typeof defaultValue === 'object') {
-                        if (
-                            JSON.stringify(defaultValue)
-                            === JSON.stringify(propValue)
-                        ) {
-                            acc[key] = componentDefaults[key]
-                        }
-                    } else if (defaultValue === propValue) {
-                        acc[key] = componentDefaults[key]
-                    }
-                }
-            }
+            acc[key] = key in componentDefaults
+                ? resolveDefaultedProp(
+                        simplifiedPropsDefinition[key],
+                        propValue,
+                        componentDefaults[key],
+                    )
+                : propValue
             return acc
         }, {} as Record<string, unknown>) as Readonly<
             ExtractPropTypes<Definition>

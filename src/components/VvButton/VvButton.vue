@@ -78,7 +78,7 @@ const { hasIcon } = useComponentIcon(icon)
  * @description Catch click event
  */
 const toggleValue = computed(() => {
-    return props.value !== undefined ? props.value : name.value
+    return props.value === undefined ? name.value : props.value
 })
 const hasListeners = computed(() => {
     if (!toggle.value) {
