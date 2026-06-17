@@ -59,7 +59,7 @@ const icon = computed(() => {
  * @return {SVGSVGElement | null} https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement
  */
 function getSvgContent(svg: string): SVGSVGElement | null {
-    if (typeof globalThis.window === 'undefined') {
+    if (globalThis.window === undefined) {
         return null
     }
     const domParser = new globalThis.DOMParser()
