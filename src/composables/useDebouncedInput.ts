@@ -26,7 +26,7 @@ export function useDebouncedInput(
             }
             timeout = setTimeout(() => {
                 emit('update:modelValue', setter(value))
-            }, ms as number)
+            }, ms)
         },
     })
 }

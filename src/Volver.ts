@@ -9,6 +9,8 @@ import {
 import { kebabCase } from 'change-case'
 import { DEFAULT_ICONIFY_PROVIDER, INJECTION_KEY_VOLVER } from './constants'
 
+const DEFAULT_FETCH_ICON_OPTIONS: RequestInit = { cache: 'force-cache' }
+
 export function useDefaultProps(
     component: Component,
     defaults?: Record<string, unknown>,
@@ -171,11 +173,11 @@ export interface VolverInterface {
 }
 
 export class Volver implements VolverInterface {
-    private _fetchOptions: RequestInit = {}
-    private _iconsCollections: IconifyJSON[] = []
-    private _iconsProvider = DEFAULT_ICONIFY_PROVIDER
-    private _nuxt = false
-    private _experimentalFeatures: VolverExperimentalFeatures = {}
+    private readonly _fetchOptions: RequestInit = {}
+    private readonly _iconsCollections: IconifyJSON[] = []
+    private readonly _iconsProvider: string = DEFAULT_ICONIFY_PROVIDER
+    private readonly _nuxt: boolean = false
+    private readonly _experimentalFeatures: VolverExperimentalFeatures = {}
 
     defaults: Ref<DefaultOptions> = ref({})
 
@@ -260,7 +262,7 @@ export class Volver implements VolverInterface {
 
     async fetchIcon(
         src: string,
-        options: RequestInit = { cache: 'force-cache' },
+        options: RequestInit = DEFAULT_FETCH_ICON_OPTIONS,
     ): Promise<string | undefined> {
         const response = await fetch(src, {
             ...this._fetchOptions,

@@ -69,14 +69,14 @@ onMounted(() => {
         floatingEl.value,
         () => {
             hasCustomPosition.value
-                = window
+                = globalThis
                     .getComputedStyle(floatingEl.value)
                     .getPropertyValue('--dropdown-custom-position')
                     ?.trim() === 'true'
         },
         {
             attributeFilter: ['style'],
-            window,
+            window: globalThis.window,
         },
     )
 })
@@ -216,13 +216,13 @@ const arrowPlacement = computed(() => {
     }[side.value]
     return {
         left:
-				middlewareData.value.arrow?.x !== undefined
-				    ? `${middlewareData.value.arrow?.x}px`
-				    : undefined,
+				middlewareData.value.arrow?.x === undefined
+				    ? undefined
+				    : `${middlewareData.value.arrow?.x}px`,
         top:
-				middlewareData.value.arrow?.y !== undefined
-				    ? `${middlewareData.value.arrow?.y}px`
-				    : undefined,
+				middlewareData.value.arrow?.y === undefined
+				    ? undefined
+				    : `${middlewareData.value.arrow?.y}px`,
         [staticSide]: `${-(arrowEl.value?.offsetWidth ?? 0) / 2}px`,
     }
 })

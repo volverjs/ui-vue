@@ -1,5 +1,3 @@
-import { CheckboxRadioGroupProps } from '../../props'
-
-export const VvRadioGroupProps = CheckboxRadioGroupProps
+export { CheckboxRadioGroupProps as VvRadioGroupProps } from '../../props'
 
 export const VvRadioGroupEvents = ['update:modelValue', 'change']

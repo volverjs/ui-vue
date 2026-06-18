@@ -9,7 +9,7 @@ export type NavItem = {
     disabled?: boolean
     current?: boolean
     class?: string | string[]
-    on?: Record<'click' | string, () => void>
+    on?: Record<'click' | (string & {}), () => void>
     data?: Record<string, unknown>
 }
 

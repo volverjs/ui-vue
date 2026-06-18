@@ -16,7 +16,7 @@ function loadImage(src: string): Promise<CanvasImageSource> {
     return new Promise((resolve, reject) => {
         const img = new Image()
         img.onload = () => resolve(img)
-        img.onerror = (...args) => reject(args)
+        img.onerror = () => reject(new Error(`Failed to load image: ${src}`))
         img.src = src
     })
 }

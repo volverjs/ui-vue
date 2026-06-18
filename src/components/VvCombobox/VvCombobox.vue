@@ -398,10 +398,10 @@ function onInput(option: string | Option) {
             return item !== optionValue
         })
     } else if (!isSelected && isSelectable.value) {
-        if (!props.multiple) {
-            localModelValue.value = [optionValue]
-        } else {
+        if (props.multiple) {
             localModelValue.value = [...localModelValue.value, optionValue]
+        } else {
+            localModelValue.value = [optionValue]
         }
     }
     if (!props.multiple && !props.keepOpen) {

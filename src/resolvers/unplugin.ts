@@ -35,12 +35,12 @@ export interface VolverResolverOptions {
     cherryPick?: boolean
 }
 
-const STYLE_EXCLUDE = ['vv-icon', 'vv-action']
+const STYLE_EXCLUDE = new Set(['vv-icon', 'vv-action'])
 const VOLVER_PREFIX = 'vv'
-const DIRECTIVES = ['v-tooltip', 'v-contextmenu']
+const DIRECTIVES = new Set(['v-tooltip', 'v-contextmenu'])
 
 export function getStyleNames(kebabName: string) {
-    if (STYLE_EXCLUDE.includes(kebabName)) {
+    if (STYLE_EXCLUDE.has(kebabName)) {
         return undefined
     }
     if (kebabName === 'vv-dropdown') {
@@ -125,7 +125,7 @@ export function VolverResolver({
                     `${VOLVER_PREFIX}-`,
                 )
 
-                if (ignore && ignore.includes(kebabName)) {
+                if (ignore?.includes(kebabName)) {
                     return
                 }
 
@@ -153,11 +153,11 @@ export function VolverResolver({
                 const kebabName = `v-${kebabCase(name)}`
 
                 // filter directive
-                if (!DIRECTIVES.includes(kebabName)) {
+                if (!DIRECTIVES.has(kebabName)) {
                     return
                 }
 
-                if (ignore && ignore.includes(kebabName)) {
+                if (ignore?.includes(kebabName)) {
                     return
                 }
 
