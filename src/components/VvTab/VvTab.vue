@@ -46,6 +46,24 @@ const navItems = computed(() =>
     })),
 )
 
+// lazy panels: track visited tabs to support the 'once' strategy
+const visitedTabs = ref(new Set<string>())
+watch(
+    activeTabKey,
+    (newValue) => {
+        if (newValue) {
+            visitedTabs.value.add(newValue)
+        }
+    },
+    { immediate: true },
+)
+function isPanelRendered(tab: string) {
+    if (!props.lazy || activeTabKey.value === tab) {
+        return true
+    }
+    return props.lazy === 'once' && visitedTabs.value.has(tab)
+}
+
 // bem css classes
 const bemCssClasses = useModifiers('vv-tab', modifiers)
 </script>
@@ -75,7 +93,7 @@ export default {
         <!-- #region panels -->
         <template v-for="(item, index) in items" :key="index">
             <article
-                v-if="item.tab"
+                v-if="item.tab && isPanelRendered(item.tab)"
                 :class="{ target: activeTabKey === item.tab }"
                 class="vv-tab__panel"
             >
