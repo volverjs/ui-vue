@@ -84,3 +84,28 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // check accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function debouncedTest({ canvasElement, args }: PlayAttributes) {
+    const storageKey = args.storageKey as string
+    localStorage.removeItem(storageKey)
+
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const outside = await canvas.findByTestId('outside')
+    const value = await canvas.findByTestId('value')
+    const textarea = element.getElementsByTagName('textarea')[0]
+
+    // The debounce (300ms) holds the value back.
+    textarea.focus()
+    textarea.value = 'Lorem ipsum'
+    textarea.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(50)
+    await expect(value.innerHTML).toEqual('')
+
+    // Leaving the field commits it, and the suggestion stored is the flushed
+    // value, not the prop the component was still reading during the blur.
+    outside.focus()
+    await sleep(50)
+    await expect(value.innerHTML).toEqual('Lorem ipsum')
+    await expect(localStorage.getItem(storageKey)).toEqual('["Lorem ipsum"]')
+}

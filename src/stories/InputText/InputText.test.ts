@@ -209,6 +209,32 @@ export async function debouncedTest({ canvasElement }: PlayAttributes) {
     await expect(value.innerHTML).toEqual('Lorem ipsum')
 }
 
+export async function debouncedSuggestionTest({
+    canvasElement,
+    args,
+}: PlayAttributes) {
+    const storageKey = args.storageKey as string
+    localStorage.removeItem(storageKey)
+
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const outside = await canvas.findByTestId('outside')
+    const value = await canvas.findByTestId('value')
+    const input = element.getElementsByTagName('input')[0]
+
+    input.focus()
+    input.value = 'Lorem'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(50)
+    outside.focus()
+    await sleep(50)
+
+    // Blur stores the flushed value, not the prop the component was still
+    // reading while handling the blur.
+    await expect(value.innerHTML).toEqual('Lorem')
+    await expect(localStorage.getItem(storageKey)).toEqual('["Lorem"]')
+}
+
 export async function isoTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
     const input = element.getElementsByTagName('input')[0] as HTMLInputElement

@@ -63,8 +63,8 @@ const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
 
 defineExpose({
     /**
-     * Emit a debounced value immediately, without waiting for its timer.
-     * Useful before reading the model on a custom submit.
+     * Emit a debounced value immediately, without waiting for its timer, and
+     * return it. Useful before reading the model on a custom submit.
      */
     flush: flushModelValue,
 })
@@ -80,11 +80,15 @@ const isFocused = computed(
     () => focused.value && !props.disabled && !props.readonly,
 )
 watch(isFocused, (newValue) => {
+    // Leaving the field commits it: a debounced value must not be lost, and the
+    // suggestion stored below has to be the final one. The emit is synchronous
+    // but `localModelValue` keeps reading the previous prop until the parent
+    // re-renders, so the committed value comes from `flush()` itself.
+    let committed = localModelValue.value
     if (!newValue) {
-        // Leaving the field commits it: a debounced value must not be lost, and
-        // the suggestion stored below has to be the final one.
-        flushModelValue()
+        committed = flushModelValue() ?? committed
     }
+
     if (newValue && propsDefaults.value.selectOnFocus && textareaEl.value) {
         textareaEl.value.select()
     }
@@ -92,12 +96,12 @@ watch(isFocused, (newValue) => {
         suggestionsDropdownEl.value?.show()
         return
     }
-    if (isDirty.value && suggestions.value) {
+    if (suggestions.value && !isEmpty(committed)) {
         const suggestionsLimit = props.maxSuggestions
 
         if (
             suggestions.value.size >= suggestionsLimit
-            && !suggestions.value.has(localModelValue.value)
+            && !suggestions.value.has(committed)
         ) {
             suggestions.value = new Set(
                 [...suggestions.value].slice(
@@ -105,7 +109,7 @@ watch(isFocused, (newValue) => {
                 ),
             )
         }
-        suggestions.value.add(localModelValue.value)
+        suggestions.value.add(committed)
     }
 })
 

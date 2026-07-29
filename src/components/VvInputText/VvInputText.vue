@@ -306,8 +306,8 @@ defineExpose({
     /** Reference to the wrapper element */
     $wrapper: wrapperEl,
     /**
-     * Emit a debounced value immediately, without waiting for its timer.
-     * Useful before reading the model on a custom submit.
+     * Emit a debounced value immediately, without waiting for its timer, and
+     * return it. Useful before reading the model on a custom submit.
      */
     flush: flushModelValue,
 })
@@ -336,24 +336,21 @@ function handleInputFocus() {
 
 function handleInputBlur() {
     // Leaving the field commits it: a debounced value must not be lost, and the
-    // suggestion stored below has to be the final one.
-    flushModelValue()
+    // suggestion stored below has to be the final one. The emit is synchronous
+    // but `localModelValue` keeps reading the previous prop until the parent
+    // re-renders, so the committed value comes from `flush()` itself.
+    const committed = flushModelValue() ?? localModelValue.value
 
-    if (!isDirty.value || !storageSuggestions.value) {
+    if (!storageSuggestions.value || isEmpty(committed)) {
         return
     }
 
     const suggestionsLimit = props.maxSuggestions
-    const hasValue = localModelValue.value !== undefined && localModelValue.value !== null && localModelValue.value !== ''
-
-    if (!hasValue) {
-        return
-    }
 
     // Remove oldest if limit reached and value not already present
     if (
         storageSuggestions.value.size >= suggestionsLimit
-        && !storageSuggestions.value.has(localModelValue.value)
+        && !storageSuggestions.value.has(committed)
     ) {
         storageSuggestions.value = new Set(
             [...storageSuggestions.value].slice(
@@ -361,7 +358,7 @@ function handleInputBlur() {
             ),
         )
     }
-    storageSuggestions.value.add(localModelValue.value)
+    storageSuggestions.value.add(committed)
 }
 
 watch(isFocused, handleFocusChange)

@@ -6,8 +6,13 @@ export interface DebouncedInput {
     /**
      * Emit a value that is still waiting for its timer. Call it wherever the
      * value has to be readable right away: blur, Enter, submit.
+     *
+     * Returns the emitted value, or `undefined` when nothing was pending. The
+     * emit is synchronous but `model` keeps reading the prop until the parent
+     * re-renders, so whoever needs the committed value in the same task has to
+     * read it from here.
      */
-    flush: () => void
+    flush: () => string | number | undefined
     /** Drop a pending value without emitting it. */
     cancel: () => void
 }
@@ -43,11 +48,12 @@ export function useDebouncedInput(
 
     function flush() {
         if (!pending) {
-            return
+            return undefined
         }
-        const { value } = pending
+        const committed = setter(pending.value)
         cancel()
-        emit('update:modelValue', setter(value))
+        emit('update:modelValue', committed)
+        return committed
     }
 
     // A timer surviving the component would emit into whatever the parent
