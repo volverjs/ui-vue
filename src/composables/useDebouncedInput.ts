@@ -1,9 +1,26 @@
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
+
+export interface DebouncedInput {
+    /** Two-way model: reads the prop, writes through the debounce. */
+    model: Ref
+    /**
+     * Emit a value that is still waiting for its timer. Call it wherever the
+     * value has to be readable right away: blur, Enter, submit.
+     *
+     * Returns the emitted value, or `undefined` when nothing was pending. The
+     * emit is synchronous but `model` keeps reading the prop until the parent
+     * re-renders, so whoever needs the committed value in the same task has to
+     * read it from here.
+     */
+    flush: () => string | number | undefined
+    /** Drop a pending value without emitting it. */
+    cancel: () => void
+}
 
 export function useDebouncedInput(
     modelValue: Ref | undefined,
     emit: (event: string, value: string | number) => void,
-    ms: string | number = 0,
+    ms: MaybeRefOrGetter<string | number | undefined> = 0,
     {
         getter = value => value,
         setter = value => value,
@@ -11,22 +28,57 @@ export function useDebouncedInput(
         getter?: (value: string | number) => string | number
         setter?: (value: string | number) => string | number
     } = {},
-): Ref {
-    let timeout: NodeJS.Timeout
+): DebouncedInput {
+    let timeout: ReturnType<typeof setTimeout> | undefined
+    let pending: { value: string | number } | undefined
 
-    if (typeof ms === 'string') {
-        ms = Number.parseInt(ms)
+    const delay = computed(() => {
+        const raw = toValue(ms) ?? 0
+        const parsed = typeof raw === 'string' ? Number.parseInt(raw) : raw
+        return Number.isNaN(parsed) ? 0 : parsed
+    })
+
+    function cancel() {
+        if (timeout) {
+            clearTimeout(timeout)
+            timeout = undefined
+        }
+        pending = undefined
     }
 
-    return computed({
+    function flush() {
+        if (!pending) {
+            return undefined
+        }
+        const committed = setter(pending.value)
+        cancel()
+        emit('update:modelValue', committed)
+        return committed
+    }
+
+    // A timer surviving the component would emit into whatever the parent
+    // renders next.
+    onScopeDispose(cancel)
+
+    const model = computed({
         get: () => getter(modelValue?.value),
         set: (value) => {
+            // Without a debounce the update stays synchronous: a click, an
+            // Enter or a submit handled in the same task as the keystroke has
+            // to read the value just typed, and a `setTimeout(0)` is already a
+            // task too late for that.
+            if (delay.value <= 0) {
+                cancel()
+                emit('update:modelValue', setter(value))
+                return
+            }
+            pending = { value }
             if (timeout) {
                 clearTimeout(timeout)
             }
-            timeout = setTimeout(() => {
-                emit('update:modelValue', setter(value))
-            }, ms)
+            timeout = setTimeout(flush, delay.value)
         },
     })
+
+    return { model, flush, cancel }
 }

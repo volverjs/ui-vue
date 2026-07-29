@@ -8,50 +8,13 @@ allowBuilds:
   vue-demi: true
 
 minimumReleaseAge: 0
-minimumReleaseAgeExclude:
-  - '@storybook/addon-a11y@10.4.4'
-  - '@storybook/addon-docs@10.4.4'
-  - '@storybook/addon-links@10.4.4'
-  - '@storybook/addon-themes@10.4.4'
-  - '@storybook/addon-vitest@10.4.4'
-  - '@storybook/builder-vite@10.4.4'
-  - '@storybook/cli@10.4.4'
-  - '@storybook/codemod@10.4.4'
-  - '@storybook/csf-plugin@10.4.4'
-  - '@storybook/react-dom-shim@10.4.4'
-  - '@storybook/vue3-vite@10.4.4'
-  - '@storybook/vue3@10.4.4'
-  - baseline-browser-mapping@2.10.36
-  - create-storybook@10.4.4
-  - storybook@10.4.4
-  - '@volverjs/style@0.1.24-beta.4'
-  - '@storybook/addon-a11y@10.4.5'
-  - '@storybook/addon-docs@10.4.5'
-  - '@storybook/addon-links@10.4.5'
-  - '@storybook/addon-themes@10.4.5'
-  - '@storybook/addon-vitest@10.4.5'
-  - '@storybook/builder-vite@10.4.5'
-  - '@storybook/cli@10.4.5'
-  - '@storybook/codemod@10.4.5'
-  - '@storybook/csf-plugin@10.4.5'
-  - '@storybook/react-dom-shim@10.4.5'
-  - '@storybook/vue3-vite@10.4.5'
-  - '@storybook/vue3@10.4.5'
-  - '@vitest/browser-playwright@4.1.9'
-  - '@vitest/browser@4.1.9'
-  - '@vitest/expect@4.1.9'
-  - '@vitest/mocker@4.1.9'
-  - '@vitest/pretty-format@4.1.9'
-  - '@vitest/runner@4.1.9'
-  - '@vitest/snapshot@4.1.9'
-  - '@vitest/spy@4.1.9'
-  - '@vitest/utils@4.1.9'
-  - '@volverjs/style@0.1.24'
-  - create-storybook@10.4.5
-  - playwright-core@1.61.0
-  - playwright@1.61.0
-  - storybook@10.4.5
-  - vitest@4.1.9
+
+# Dependencies deliberately held back, also for transitive resolutions.
+overrides:
+  # TypeScript 7 is the native (Go) compiler: it dropped the classic compiler
+  # API that vue-tsc, ts-node and typescript-eslint still rely on.
+  # Revisit once Volar and typescript-eslint ship native support.
+  typescript: ^6.0.3
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
