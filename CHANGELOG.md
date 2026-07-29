@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.17] - 2026-07-29
+## [0.0.16] - 2026-07-29
 
 ### Fixed
 
@@ -13,13 +13,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- `VvInputText` and `VvTextarea` expose `flush()`, to commit a debounced value on demand before reading the model (custom submit, programmatic validation). It returns the committed value, because the emit is synchronous while the prop only comes back on the next parent render.
-
-## [0.0.16] - 2026-07-20
-
-### Added
-
 - `VvTab` new prop `lazy` to control panel rendering: `false` (default) renders every panel eagerly, `true` renders only the currently active panel, `'once'` renders a panel on first activation and keeps it mounted afterwards.
+- `VvInputText` and `VvTextarea` expose `flush()`, to commit a debounced value on demand before reading the model (custom submit, programmatic validation). It returns the committed value, because the emit is synchronous while the prop only comes back on the next parent render.
 
 ## [0.0.15] - 2026-06-17
 
@@ -313,7 +308,6 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
-[0.0.17]: https://github.com/volverjs/ui-vue/compare/v0.0.16...v0.0.17
 [0.0.16]: https://github.com/volverjs/ui-vue/compare/v0.0.15...v0.0.16
 [0.0.15]: https://github.com/volverjs/ui-vue/compare/v0.0.14...v0.0.15
 [0.0.14]: https://github.com/volverjs/ui-vue/compare/v0.0.13...v0.0.14
