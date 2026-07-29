@@ -158,6 +158,57 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function syncUpdateTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const submit = await canvas.findByTestId('submit')
+    const submitted = await canvas.findByTestId('submitted')
+    const input = element.getElementsByTagName('input')[0]
+
+    // Deliberately not awaiting between the two: the click has to be handled in
+    // the same task as the keystroke, the way a real click right after the last
+    // character is. `userEvent` yields in between and would hide a model that is
+    // only committed one task later.
+    input.focus()
+    input.value = 'Lorem ipsum'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    submit.click()
+
+    await sleep()
+    await expect(submitted.innerHTML).toEqual('Lorem ipsum')
+}
+
+export async function debouncedTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const outside = await canvas.findByTestId('outside')
+    const value = await canvas.findByTestId('value')
+    const input = element.getElementsByTagName('input')[0]
+
+    // The debounce (300ms) holds the value back.
+    input.focus()
+    input.value = 'Lorem'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(50)
+    await expect(value.innerHTML).toEqual('')
+
+    // Enter commits it without waiting for the rest of the debounce.
+    input.dispatchEvent(
+        new KeyboardEvent('keydown', { code: 'Enter', bubbles: true }),
+    )
+    await sleep(50)
+    await expect(value.innerHTML).toEqual('Lorem')
+
+    // So does leaving the field.
+    input.value = 'Lorem ipsum'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(50)
+    await expect(value.innerHTML).toEqual('Lorem')
+    outside.focus()
+    await sleep(50)
+    await expect(value.innerHTML).toEqual('Lorem ipsum')
+}
+
 export async function isoTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
     const input = element.getElementsByTagName('input')[0] as HTMLInputElement

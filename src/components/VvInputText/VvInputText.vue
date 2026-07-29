@@ -68,10 +68,10 @@ const inputTextPlaceholder = computed(() =>
 )
 
 // debounce
-const localModelValue = useDebouncedInput(
+const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
     modelValue,
     emit,
-    debounce?.value ?? 0,
+    debounce,
 )
 
 // seconds
@@ -305,6 +305,11 @@ defineExpose({
     $inner: innerEl,
     /** Reference to the wrapper element */
     $wrapper: wrapperEl,
+    /**
+     * Emit a debounced value immediately, without waiting for its timer.
+     * Useful before reading the model on a custom submit.
+     */
+    flush: flushModelValue,
 })
 
 // focus
@@ -330,6 +335,10 @@ function handleInputFocus() {
 }
 
 function handleInputBlur() {
+    // Leaving the field commits it: a debounced value must not be lost, and the
+    // suggestion stored below has to be the final one.
+    flushModelValue()
+
     if (!isDirty.value || !storageSuggestions.value) {
         return
     }
@@ -695,6 +704,13 @@ function onKeyDown(event: KeyboardEvent) {
                 onStepDown()
                 event.preventDefault()
             }
+            break
+
+        case 'Enter':
+        case 'NumpadEnter':
+            // Enter submits: whoever listens below, or on the surrounding form,
+            // must see the value already committed.
+            flushModelValue()
             break
     }
     emit('keydown', event)

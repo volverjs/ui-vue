@@ -55,7 +55,19 @@ const hasPlaceholder = computed(() =>
 )
 
 // debounce
-const localModelValue = useDebouncedInput(modelValue, emit, debounce?.value)
+const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
+    modelValue,
+    emit,
+    debounce,
+)
+
+defineExpose({
+    /**
+     * Emit a debounced value immediately, without waiting for its timer.
+     * Useful before reading the model on a custom submit.
+     */
+    flush: flushModelValue,
+})
 
 // icons
 const { hasIconBefore, hasIconAfter } = useComponentIcon(icon, iconPosition)
@@ -68,6 +80,11 @@ const isFocused = computed(
     () => focused.value && !props.disabled && !props.readonly,
 )
 watch(isFocused, (newValue) => {
+    if (!newValue) {
+        // Leaving the field commits it: a debounced value must not be lost, and
+        // the suggestion stored below has to be the final one.
+        flushModelValue()
+    }
     if (newValue && propsDefaults.value.selectOnFocus && textareaEl.value) {
         textareaEl.value.select()
     }
