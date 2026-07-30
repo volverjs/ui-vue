@@ -1,0 +1,6 @@
+# Packages excluded from `ncu` suggestions, kept in sync with the `overrides`
+# block in pnpm-workspace.yaml.
+reject:
+  # TypeScript 7 is the native (Go) compiler and dropped the classic compiler
+  # API required by vue-tsc, ts-node and typescript-eslint.
+  - typescript

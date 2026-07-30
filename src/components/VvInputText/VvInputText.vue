@@ -68,10 +68,10 @@ const inputTextPlaceholder = computed(() =>
 )
 
 // debounce
-const localModelValue = useDebouncedInput(
+const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
     modelValue,
     emit,
-    debounce?.value ?? 0,
+    debounce,
 )
 
 // seconds
@@ -305,6 +305,11 @@ defineExpose({
     $inner: innerEl,
     /** Reference to the wrapper element */
     $wrapper: wrapperEl,
+    /**
+     * Emit a debounced value immediately, without waiting for its timer, and
+     * return it. Useful before reading the model on a custom submit.
+     */
+    flush: flushModelValue,
 })
 
 // focus
@@ -330,21 +335,22 @@ function handleInputFocus() {
 }
 
 function handleInputBlur() {
-    if (!isDirty.value || !storageSuggestions.value) {
+    // Leaving the field commits it: a debounced value must not be lost, and the
+    // suggestion stored below has to be the final one. The emit is synchronous
+    // but `localModelValue` keeps reading the previous prop until the parent
+    // re-renders, so the committed value comes from `flush()` itself.
+    const committed = flushModelValue() ?? localModelValue.value
+
+    if (!storageSuggestions.value || isEmpty(committed)) {
         return
     }
 
     const suggestionsLimit = props.maxSuggestions
-    const hasValue = localModelValue.value !== undefined && localModelValue.value !== null && localModelValue.value !== ''
-
-    if (!hasValue) {
-        return
-    }
 
     // Remove oldest if limit reached and value not already present
     if (
         storageSuggestions.value.size >= suggestionsLimit
-        && !storageSuggestions.value.has(localModelValue.value)
+        && !storageSuggestions.value.has(committed)
     ) {
         storageSuggestions.value = new Set(
             [...storageSuggestions.value].slice(
@@ -352,7 +358,7 @@ function handleInputBlur() {
             ),
         )
     }
-    storageSuggestions.value.add(localModelValue.value)
+    storageSuggestions.value.add(committed)
 }
 
 watch(isFocused, handleFocusChange)
@@ -695,6 +701,13 @@ function onKeyDown(event: KeyboardEvent) {
                 onStepDown()
                 event.preventDefault()
             }
+            break
+
+        case 'Enter':
+        case 'NumpadEnter':
+            // Enter submits: whoever listens below, or on the surrounding form,
+            // must see the value already committed.
+            flushModelValue()
             break
     }
     emit('keydown', event)

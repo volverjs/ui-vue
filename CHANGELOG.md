@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.16] - 2026-07-29
+
+### Fixed
+
+- `VvInputText` and `VvTextarea` now commit the model synchronously when no `debounce` is set. `useDebouncedInput` always went through a `setTimeout`, so anything handled in the same task as the keystroke (a click on a submit button, an Enter, a step change in a multi-step form) read the previous value: the last thing typed was either lost or applied after the consumer had already moved on.
+- `VvInputText` and `VvTextarea` flush a pending debounced value when the field loses focus, and `VvInputText` also on Enter, instead of dropping it. The value added to the suggestions history is now the final one.
+- `VvInputText` and `VvTextarea` read the `debounce` prop reactively: it was captured once during setup, so changing it at runtime had no effect.
+- `useDebouncedInput` clears a pending timer when its scope is disposed, so it can no longer emit `update:modelValue` after the component is gone (the emit landed on whatever the parent rendered next).
+
+### Added
+
+- `VvTab` new prop `lazy` to control panel rendering: `false` (default) renders every panel eagerly, `true` renders only the currently active panel, `'once'` renders a panel on first activation and keeps it mounted afterwards.
+- `VvInputText` and `VvTextarea` expose `flush()`, to commit a debounced value on demand before reading the model (custom submit, programmatic validation). It returns the committed value, because the emit is synchronous while the prop only comes back on the next parent render.
+
 ## [0.0.15] - 2026-06-17
 
 ### Fixed
@@ -294,6 +308,9 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.16]: https://github.com/volverjs/ui-vue/compare/v0.0.15...v0.0.16
+[0.0.15]: https://github.com/volverjs/ui-vue/compare/v0.0.14...v0.0.15
+[0.0.14]: https://github.com/volverjs/ui-vue/compare/v0.0.13...v0.0.14
 [0.0.13]: https://github.com/volverjs/ui-vue/compare/v0.0.12...v0.0.13
 [0.0.12]: https://github.com/volverjs/ui-vue/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/volverjs/ui-vue/compare/v0.0.10...v0.0.11
