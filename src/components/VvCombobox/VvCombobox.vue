@@ -487,6 +487,7 @@ const dropdownProps = computed(() => ({
         ? true
         : propsDefaults.value.autofocusFirst,
     triggerWidth: propsDefaults.value.triggerWidth,
+    topLayer: propsDefaults.value.topLayer,
     modifiers: propsDefaults.value.dropdownModifiers,
 }))
 

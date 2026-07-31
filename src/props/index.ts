@@ -400,6 +400,18 @@ export const DropdownProps = {
         type: Boolean,
         default: false,
     },
+    /**
+     * Render the dropdown in the top layer through the Popover API, so that it is
+     * not trapped by the stacking context nor clipped by the overflow of an
+     * ancestor. It implies the `fixed` strategy, because an element in the top
+     * layer is positioned against the viewport. Ignored by browsers without the
+     * Popover API, which fall back to the in-flow rendering.
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Popover_API
+     */
+    topLayer: {
+        type: Boolean,
+        default: false,
+    },
 }
 
 export const IdNameProps = {

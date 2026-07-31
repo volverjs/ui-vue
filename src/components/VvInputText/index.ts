@@ -1,7 +1,7 @@
 import type { FactoryOpts } from 'imask'
 import type { ExtractPropTypes, PropType } from 'vue'
 import type { VvIconProps } from '../VvIcon'
-import { InputTextareaProps, StorageProps } from '../../props'
+import { DropdownProps, InputTextareaProps, StorageProps } from '../../props'
 import { ACTION_ICONS } from '../VvIcon'
 
 export const INPUT_TYPES = {
@@ -220,6 +220,10 @@ export const VvInputTextProps = {
         type: Array as PropType<(string | number | Date)[]>,
         default: undefined,
     },
+    /**
+     * Render the suggestions dropdown in the top layer through the Popover API
+     */
+    topLayer: DropdownProps.topLayer,
     /**
      * The input mode to use for the input
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode

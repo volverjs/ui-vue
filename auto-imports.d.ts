@@ -303,6 +303,7 @@ declare global {
   const useToNumber: typeof import('@vueuse/core').useToNumber
   const useToString: typeof import('@vueuse/core').useToString
   const useToggle: typeof import('@vueuse/core').useToggle
+  const useTopLayer: typeof import('./src/composables/useTopLayer').useTopLayer
   const useTransition: typeof import('@vueuse/core').useTransition
   const useUniqueId: typeof import('./src/composables/useUniqueId').useUniqueId
   const useUrlSearchParams: typeof import('@vueuse/core').useUrlSearchParams

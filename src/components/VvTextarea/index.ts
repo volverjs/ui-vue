@@ -1,6 +1,6 @@
 import type { ExtractPropTypes } from 'vue'
 import type { VvIconProps } from '../VvIcon'
-import { InputTextareaProps, StorageProps } from '../../props'
+import { DropdownProps, InputTextareaProps, StorageProps } from '../../props'
 import { ACTION_ICONS } from '../VvIcon'
 
 export const WRAP = {
@@ -77,6 +77,10 @@ export const VvTextareaProps = {
      * If true, the textarea will be resizable
      */
     resizable: Boolean,
+    /**
+     * Render the suggestions dropdown in the top layer through the Popover API
+     */
+    topLayer: DropdownProps.topLayer,
 }
 
 export type VvTextareaPropsTypes = ExtractPropTypes<typeof VvTextareaProps>

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- `VvDropdown` new prop `topLayer`: the floating element is promoted to the top layer through the Popover API, so it is no longer trapped by the stacking context of an ancestor nor clipped by its `overflow`. `strategy: fixed` alone does not help: a `position: fixed` element still belongs to the nearest ancestor stacking context, so an ancestor with a `z-index` (a sliding panel, a sticky toolbar) paints over the dropdown whatever `z-index` the dropdown declares. The popover is created as `manual`, so light dismiss and escape handling stay with the component, and browsers without the Popover API keep rendering the dropdown in flow. It implies `strategy: fixed`, because an element in the top layer is positioned against the viewport.
+- `VvCombobox`, `VvInputText` and `VvTextarea` expose `topLayer` too, and forward it to the dropdown they own.
+
+  `topLayer` needs a `@volverjs/style` that ships the `popover` state on `vv-dropdown`: it neutralizes the user agent styles applied to `[popover]` elements, which would otherwise center the promoted dropdown in the viewport through `inset: 0` and `margin: auto`.
+
 ## [0.0.16] - 2026-07-29
 
 ### Fixed

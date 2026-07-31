@@ -60,6 +60,20 @@ const referenceEl = computed({
     },
 })
 
+// top layer, through the Popover API
+const {
+    isTopLayer,
+    popover: hasPopover,
+    show: showInTopLayer,
+    hide: hideFromTopLayer,
+} = useTopLayer(floatingEl, () => props.topLayer)
+
+// an element in the top layer has no offset parent to be positioned against,
+// so the coordinates have to be computed on the viewport
+const hasStrategy = computed(() =>
+    isTopLayer.value ? Strategy.fixed : props.strategy,
+)
+
 // ref to store the value of css-var "--dropdown-custom-position"
 const hasCustomPosition = ref(false)
 
@@ -169,11 +183,11 @@ const { x, y, middlewareData, placement, strategy } = useFloating(
     {
         whileElementsMounted: (...args) => {
             return autoUpdate(...args, {
-                animationFrame: props.strategy === Strategy.fixed,
+                animationFrame: hasStrategy.value === Strategy.fixed,
             })
         },
         placement: computed(() => props.placement),
-        strategy: computed(() => props.strategy),
+        strategy: hasStrategy,
         middleware,
     },
 )
@@ -239,6 +253,16 @@ const expanded = computed({
         }
         modelValue.value = newValue
     },
+})
+// promote the dropdown after the DOM is updated and before the browser paints,
+// so it is never shown in place first. A post effect also covers a dropdown
+// expanded on mount, and one whose "topLayer" is turned on while it is open. It
+// goes back to the document flow at the end of the leave transition, see
+// "after-leave"
+watchPostEffect(() => {
+    if (expanded.value) {
+        showInTopLayer()
+    }
 })
 function show() {
     expanded.value = true
@@ -455,6 +479,9 @@ const dropdownTransitionHandlers = {
         emit('beforeEnter')
     },
     'after-leave': () => {
+        if (!expanded.value) {
+            hideFromTopLayer()
+        }
         emit(expanded.value ? 'afterExpand' : 'afterCollapse')
         emit('afterLeave')
     },
@@ -496,6 +523,7 @@ export default {
         <div
             v-show="expanded"
             ref="floatingEl"
+            :popover="hasPopover"
             :style="dropdownPlacement"
             :class="bemCssClasses"
         >
