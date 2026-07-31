@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 
   `topLayer` needs a `@volverjs/style` that ships the `popover` state on `vv-dropdown`: it neutralizes the user agent styles applied to `[popover]` elements, which would otherwise center the promoted dropdown in the viewport through `inset: 0` and `margin: auto`.
 
+- `docs/specs/floating-elements.md` documents why a floating element is trapped by the stacking context of its ancestors, and the findings collected around it: the label only option filter, the option list kept in the DOM while the dropdown is closed, the plugin defaults being a static snapshot read through two different paths, the hardcoded English labels, the suggestions dropdown duplicated between `VvInputText` and `VvTextarea`, and the `absolute` default strategy.
+
+### Fixed
+
+- `VvInputFile`: the `labelDownload` default said `Downlaod file`, and it is used as the `title` of the download button.
+
 ## [0.0.16] - 2026-07-29
 
 ### Fixed
