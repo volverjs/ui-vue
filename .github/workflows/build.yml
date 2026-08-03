@@ -21,6 +21,11 @@ jobs:
             # request that changes package.json alone still goes green, because
             # the install resolves the new ranges and rewrites the lockfile
             # inside the job, leaving the committed one stale.
+            #
+            # No `--ignore-scripts` on purpose: pnpm already refuses to run the
+            # scripts of any dependency that is not listed under `allowBuilds`
+            # in pnpm-workspace.yaml, and the packages listed there need their
+            # build step.
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
