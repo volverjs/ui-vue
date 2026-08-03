@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- The three icon sets (`normal`, `simple`, `detailed`) are regenerated: same 200/199/199 icons, a handful of paths shortened by the newer `svgo` (a no-op `h0` dropped, a curve written as its shorthand). Equivalent shapes, smaller payload. They were committed out of sync with what the generator produces, which also left the working tree dirty after every build.
+- Development dependencies updated, and the vulnerable transitive ones raised through `overrides`: `pnpm audit` goes from 28 advisories (1 critical, 17 high) to none. `npm-run-all` is gone, it was declared but no script used it, and it was the only thing pulling the critical `shell-quote`. Nothing here is reachable from the published package.
+- The release workflows no longer break on their own build output: the version bump uses `npm pkg set` instead of `pnpm version`, which refuses to run on an unclean working tree, and the install keeps the lockfile frozen so a stale one fails the pull request rather than the release.
+
 ## [0.0.16] - 2026-07-29
 
 ### Fixed

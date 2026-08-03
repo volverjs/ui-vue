@@ -17,15 +17,25 @@ jobs:
                   node-version: 24
                   cache: 'pnpm'
 
+            # Keep the lockfile frozen: with `--no-frozen-lockfile` a pull
+            # request that changes package.json alone still goes green, because
+            # the install resolves the new ranges and rewrites the lockfile
+            # inside the job, leaving the committed one stale.
             - name: Install dependencies
-              run: pnpm install --no-frozen-lockfile
+              run: pnpm install --frozen-lockfile
 
             - name: Build release
               run: pnpm build
 
+            # `pnpm version` refuses to run on an unclean working tree, and the
+            # build leaves it unclean: it regenerates `auto-imports.d.ts` and
+            # `src/assets/icons/*.json`, all tracked. `npm pkg set` only
+            # rewrites the field, with no git checks.
             - name: Bump version with release tag name
               if: ${{ github.event_name == 'release' }}
-              run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
+              env:
+                  TAG_NAME: ${{ github.event.release.tag_name }}
+              run: npm pkg set version="${TAG_NAME#v}"
 
             - name: Pack package
               run: pnpm pack

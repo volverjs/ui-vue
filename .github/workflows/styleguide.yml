@@ -18,11 +18,15 @@ jobs:
                   cache: 'pnpm'
 
             - name: Install dependencies
-              run: pnpm install --no-frozen-lockfile
+              run: pnpm install --frozen-lockfile
 
+            # `npm pkg set` instead of `pnpm version`, which refuses to run on an
+            # unclean working tree: see the same step in build.yml
             - name: Bump version with release tag name
               if: ${{ github.event_name == 'release' }}
-              run: pnpm version --no-git-tag-version ${{ github.event.release.tag_name }}
+              env:
+                  TAG_NAME: ${{ github.event.release.tag_name }}
+              run: npm pkg set version="${TAG_NAME#v}"
 
             - name: Build styleguide
               env:
