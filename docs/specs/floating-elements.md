@@ -95,7 +95,7 @@ While listing them, one turned out to be a typo: `labelDownload` defaulted to `'
 
 ## 8. The default positioning strategy is `absolute`
 
-**What happens.** `strategy` defaults to `undefined`, so floating-ui uses `absolute`. With an `absolute` strategy the coordinates are relative to the offset parent, which breaks as soon as an ancestor scrolls or clips: the dropdown drifts away from the trigger, or is cut off by an `overflow`.
+**What happens.** `strategy` defaults to `undefined`, so floating-ui uses `absolute` and the coordinates are relative to the offset parent. Tracking is not the issue: `autoUpdate` observes the scroll of the overflow ancestors and repositions. Clipping is: an absolutely positioned element is clipped by the `overflow` of its ancestors, so a dropdown taller than the panel hosting it gets cut off. `fixed` avoids that clipping, without being a cure for everything: it does not leave the stacking context (#1), and an ancestor with a `transform`, a `filter` or `will-change` becomes its containing block, which brings the clipping back.
 
 **Evidence.** `strategy` in [`src/props/index.ts`](../../src/props/index.ts), `DropdownProps`.
 
