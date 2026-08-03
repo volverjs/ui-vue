@@ -406,6 +406,10 @@ export const DropdownProps = {
      * ancestor. It implies the `fixed` strategy, because an element in the top
      * layer is positioned against the viewport. Ignored by browsers without the
      * Popover API, which fall back to the in-flow rendering.
+     *
+     * Needs `@volverjs/style` >= 0.1.25, which neutralizes the user agent styles
+     * applied to `[popover]` elements: without it the promoted dropdown keeps the
+     * user agent border, padding and background.
      * @see https://developer.mozilla.org/en-US/docs/Web/API/Popover_API
      */
     topLayer: {

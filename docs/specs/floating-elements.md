@@ -3,7 +3,7 @@
 > **Status**: Partial. #1 is mitigated by the `topLayer` prop, #2 is fixed in `@volverjs/style`. Everything else is open.
 > **Date**: 2026-07-31
 > **Scope**: Findings collected while investigating a `VvCombobox` dropdown painted under a fixed application header. The root cause is #1, but reading the surrounding code brought up a set of independent issues on the dropdown, the option list and the plugin defaults. Each one is described with the evidence, the impact and a proposal, so they can be picked up separately.
-> **Related**: [volverjs/style#98](https://github.com/volverjs/style/pull/98) (the z-index scale and the `[popover]` reset), [volverjs/ui-vue#156](https://github.com/volverjs/ui-vue/pull/156) (the `topLayer` prop)
+> **Related**: [volverjs/style#98](https://github.com/volverjs/style/pull/98), released in `@volverjs/style` 0.1.25 (the z-index scale and the `[popover]` reset), [volverjs/ui-vue#156](https://github.com/volverjs/ui-vue/pull/156) (the `topLayer` prop)
 
 ---
 
@@ -36,7 +36,7 @@ The other findings are unrelated to layering, they simply surfaced along the way
 
 **Evidence.** `$z-index` in `@volverjs/style`, `src/settings/_layout.scss`.
 
-**Status.** Fixed in [volverjs/style#98](https://github.com/volverjs/style/pull/98): `--z-dropdown` moves to `1025`, between `--z-fixed` and `--z-modal-backdrop`. The same PR adds the `popover` state that neutralizes the user agent styles of `[popover]` elements, which `topLayer` depends on.
+**Status.** Fixed in `@volverjs/style` 0.1.25 ([volverjs/style#98](https://github.com/volverjs/style/pull/98)): `--z-dropdown` moves to `1025`, between `--z-fixed` and `--z-modal-backdrop`. The same release adds the `popover` state that neutralizes the user agent styles of `[popover]` elements, which `topLayer` depends on, so that is the minimum version for #1.
 
 ## 3. The option filter only matches the label
 
