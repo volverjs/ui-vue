@@ -325,6 +325,7 @@ export default {
             :reference="wrapperEl"
             :autofocus-first="false"
             :trigger-width="true"
+            :top-layer="propsDefaults.topLayer"
         >
             <template #items>
                 <VvDropdownOption

@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.17] - 2026-08-03
+
+### Added
+
+- `VvDropdown` new prop `topLayer`: the floating element is promoted to the top layer through the Popover API, so it is no longer trapped by the stacking context of an ancestor nor clipped by its `overflow`. `strategy: fixed` alone does not help: a `position: fixed` element still belongs to the nearest ancestor stacking context, so an ancestor with a `z-index` (a sliding panel, a sticky toolbar) paints over the dropdown whatever `z-index` the dropdown declares. The popover is created as `manual`, so light dismiss and escape handling stay with the component, and browsers without the Popover API keep rendering the dropdown in flow. It implies `strategy: fixed`, because an element in the top layer is positioned against the viewport, and with it the `animationFrame` update of floating-ui, since the dropdown stops moving with the scroll of an ancestor.
+- `VvCombobox`, `VvInputText` and `VvTextarea` expose `topLayer` too, and forward it to the dropdown they own.
+
+  `topLayer` needs `@volverjs/style` >= 0.1.25, which ships the `popover` state on `vv-dropdown`: it neutralizes the user agent styles applied to `[popover]` elements, which would otherwise give the promoted dropdown the user agent border, padding and background. The development dependency moves to that version, so the stories and the tests run against it.
+
+- `docs/specs/floating-elements.md` documents why a floating element is trapped by the stacking context of its ancestors, and the findings collected around it: the label-only option filter, the option list kept in the DOM while the dropdown is closed, the plugin defaults being a static snapshot read through two different paths, the hardcoded English labels, the suggestions dropdown duplicated between `VvInputText` and `VvTextarea`, and the `absolute` default strategy.
+
+### Changed
+
+- The three icon sets (`normal`, `simple`, `detailed`) are regenerated: same 200/199/199 icons, a handful of paths shortened by the newer `svgo` (a no-op `h0` dropped, a curve written as its shorthand). Equivalent shapes, smaller payload. They were committed out of sync with what the generator produces, which also left the working tree dirty after every build.
+- Development dependencies updated, and the vulnerable transitive ones raised through `overrides`: `pnpm audit` goes from 28 advisories (1 critical, 17 high) to none. `npm-run-all` is gone, it was declared but no script used it, and it was the only thing pulling the critical `shell-quote`. Nothing here is reachable from the published package.
+- The release workflows no longer break on their own build output: the version bump uses `npm pkg set` instead of `pnpm version`, which refuses to run on an unclean working tree, and the install keeps the lockfile frozen so a stale one fails the pull request rather than the release.
+
+### Fixed
+
+- `VvInputFile`: the `labelDownload` default said `Downlaod file`, and it is used as the `title` of the download button.
+
 ## [0.0.16] - 2026-07-29
 
 ### Fixed

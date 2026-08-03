@@ -314,6 +314,7 @@
     "useToNumber": true,
     "useToString": true,
     "useToggle": true,
+    "useTopLayer": true,
     "useTransition": true,
     "useUniqueId": true,
     "useUrlSearchParams": true,
