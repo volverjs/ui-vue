@@ -400,6 +400,26 @@ export const DropdownProps = {
         type: Boolean,
         default: false,
     },
+    /**
+     * Render the dropdown in the top layer through the Popover API, so that it is
+     * not trapped by the stacking context nor clipped by the overflow of an
+     * ancestor. Ignored by browsers without the Popover API, which fall back to
+     * the in-flow rendering.
+     *
+     * It implies the `fixed` strategy, because an element in the top layer is
+     * positioned against the viewport, and with it the `animationFrame` update of
+     * floating-ui: the dropdown stops moving with the scroll of an ancestor, so
+     * its position has to be recomputed on every frame while it is open.
+     *
+     * Needs `@volverjs/style` >= 0.1.25, which neutralizes the user agent styles
+     * applied to `[popover]` elements: without it the promoted dropdown keeps the
+     * user agent border, padding and background.
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Popover_API
+     */
+    topLayer: {
+        type: Boolean,
+        default: false,
+    },
 }
 
 export const IdNameProps = {

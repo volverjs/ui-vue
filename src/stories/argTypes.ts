@@ -394,6 +394,21 @@ export const DropdownArgTypes: ArgTypes = {
             },
         },
     },
+    topLayer: {
+        description:
+			'Render the dropdown in the top layer through the Popover API, so that it is not trapped by the stacking context nor clipped by the overflow of an ancestor. It implies the fixed strategy and the animationFrame update of floating-ui',
+        control: {
+            type: 'boolean',
+        },
+        table: {
+            defaultValue: {
+                summary: 'false',
+            },
+            type: {
+                summary: 'boolean',
+            },
+        },
+    },
 }
 
 export const UnselectableArgTypes: ArgTypes = {

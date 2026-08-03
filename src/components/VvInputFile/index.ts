@@ -130,7 +130,7 @@ export const VvInputFileProps = {
      */
     labelDownload: {
         type: String,
-        default: 'Downlaod file',
+        default: 'Download file',
     },
     /**
      * VvIcon name for download button

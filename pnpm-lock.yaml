@@ -135,8 +135,8 @@ importers:
         specifier: ^4.1.10
         version: 4.1.10(playwright@1.62.1)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(sass-embedded@1.100.0)(sass@1.100.0)(terser@5.49.0)(yaml@2.9.0))(vitest@4.1.10)
       '@volverjs/style':
-        specifier: 0.1.24
-        version: 0.1.24
+        specifier: 0.1.25
+        version: 0.1.25
       '@vue/compiler-sfc':
         specifier: ^3.5.40
         version: 3.5.40
@@ -2493,8 +2493,8 @@ packages:
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
 
-  '@volverjs/style@0.1.24':
-    resolution: {integrity: sha512-UbkTBLytnzUZ9RlWyvHh0vCz3+/gmbRMVHD0J3fEWqFalcOjChVZRAbj5XmHn1+guuNsI8tR+23U0c8fHoj2dQ==}
+  '@volverjs/style@0.1.25':
+    resolution: {integrity: sha512-6W03KO9VPpr+UvyGMlOYCpU3pzASz4K0CJ/LpEi3jKPA80qwsSadwl9qKHnQVfTSk8sls4iNF5eOlAUP3lBKXA==}
     engines: {node: '>= 20.x'}
 
   '@vue/compiler-core@3.5.40':
@@ -8126,7 +8126,7 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
 
-  '@volverjs/style@0.1.24': {}
+  '@volverjs/style@0.1.25': {}
 
   '@vue/compiler-core@3.5.40':
     dependencies:
