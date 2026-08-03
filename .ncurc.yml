@@ -1,5 +1,10 @@
-# Packages excluded from `ncu` suggestions, kept in sync with the `overrides`
-# block in pnpm-workspace.yaml.
+# Packages excluded from `ncu` suggestions, kept in sync with the versions the
+# `overrides` block in pnpm-workspace.yaml deliberately holds back. The security
+# floors in that same block do not belong here: they raise transitive
+# dependencies, which `ncu` never suggests.
+#
+# Careful, `--reject` on the command line replaces this list rather than adding
+# to it, so repeat it: `ncu -u --reject typescript,<other>`.
 reject:
   # TypeScript 7 is the native (Go) compiler and dropped the classic compiler
   # API required by vue-tsc, ts-node and typescript-eslint.
