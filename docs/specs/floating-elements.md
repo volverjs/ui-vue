@@ -1,4 +1,4 @@
-# Floating elements: layering and follow ups
+# Floating elements: layering and follow-ups
 
 > **Status**: Partial. #1 is mitigated by the `topLayer` prop, #2 is fixed in `@volverjs/style`. Everything else is open.
 > **Date**: 2026-07-31
@@ -44,7 +44,7 @@ The other findings are unrelated to layering, they simply surfaced along the way
 
 **Evidence.** [`VvCombobox.vue`](../../src/components/VvCombobox/VvCombobox.vue), `filteredOptions`.
 
-**Impact.** Every application that needs a broader match has to pass a `searchFunction`, reimplementing tokenization and case folding, and loses the grouping logic the built in filter already handles.
+**Impact.** Every application that needs a broader match has to pass a `searchFunction`, reimplementing tokenization and case folding, and loses the grouping logic the built-in filter already handles.
 
 **Proposal.** A `searchKeys` prop, defaulting to the label key, so `['label', 'value']` is one line instead of a custom function. The current `searchFunction` stays as the escape hatch for remote search.
 
@@ -73,11 +73,11 @@ An application that reassigns `volver.defaults.value` therefore updates one path
 
 ## 6. Default labels are hardcoded English strings
 
-**What happens.** Twenty five user visible strings are declared as English defaults across the components: `'Search...'`, `'No results'`, `'No options available'`, `'Press enter to select'`, `'Press enter to remove'`, `'Selected option not found'`, `'Remove suggestion'`, `'Show password'`, `'Loading...'` and so on.
+**What happens.** Twenty-five user-visible strings are declared as English defaults across the components: `'Search...'`, `'No results'`, `'No options available'`, `'Press enter to select'`, `'Press enter to remove'`, `'Selected option not found'`, `'Remove suggestion'`, `'Show password'`, `'Loading...'` and so on.
 
 **Evidence.** `default: '...'` in `src/components/*/index.ts` and in [`src/props/index.ts`](../../src/props/index.ts).
 
-**Impact.** A non English application has to override every one of them, one by one, and #5 makes those overrides insensitive to a runtime language change. Anything missed shows up in production in the wrong language, in a `title` or an `aria` attribute where it is easy to overlook.
+**Impact.** A non-English application has to override every one of them, one by one, and #5 makes those overrides insensitive to a runtime language change. Anything missed shows up in production in the wrong language, in a `title` or an `aria` attribute where it is easy to overlook.
 
 **Proposal.** Keep the English strings as the fallback, but document them as one set and make them overridable in one place, which is #5. A locale bundle shipped with the library, opt-in through the plugin, would go further and is worth a separate discussion.
 

@@ -24,7 +24,7 @@ export function useTopLayer(
     enabled: MaybeRefOrGetter<boolean>,
 ) {
     const isSupported
-        = typeof globalThis.HTMLElement !== 'undefined'
+        = globalThis.HTMLElement !== undefined
             && 'popover' in globalThis.HTMLElement.prototype
 
     const isTopLayer = computed(() => isSupported && toValue(enabled))
