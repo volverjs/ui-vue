@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- `VvInputFile` loads `vuedraggable` on demand instead of importing it at the top of the component. That package ships as a UMD bundle, so bundling it also resolves its `require('vue')`, which pulls in the CJS build of Vue with the template compiler inside. Every application importing anything at all from the components barrel paid for it, whether or not it ever rendered a file input: measured on a chat widget that has none, `vuedraggable`, `sortablejs`, `vue.cjs.prod.js` and `@vue/compiler-core` together weighed 77 kB gzipped of its initial payload, and they now leave the bundle entirely. Applications that do use `VvInputFile` load the sortable list from a separate chunk when the component mounts.
+
 ## [0.0.17] - 2026-08-03
 
 ### Added
