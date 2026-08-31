@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.18] - 2026-08-31
+
+### Changed
+
+- `VvInputFile` loads `vuedraggable` on demand instead of importing it at the top of the component. That package ships as a UMD bundle, so bundling it also resolves its `require('vue')`, which pulls in the CJS build of Vue with the template compiler inside. Every application importing anything at all from the components barrel paid for it, whether or not it ever rendered a file input: measured on a chat widget that has none, `vuedraggable`, `sortablejs`, `vue.cjs.prod.js` and `@vue/compiler-core` together weighed 77 kB gzipped of its initial payload, and they now leave the bundle entirely. Applications that do use `VvInputFile` load the sortable list from a separate chunk when the component mounts.
+- Runtime dependencies updated: `@tanstack/vue-virtual` to 3.13.36 and `pica` to 10.0.3, both patch releases.
+- Development dependencies updated, among them `storybook` and its addons to 10.5.10, `vite` to 8.2.2, `vitest` to 4.1.11, `eslint` to 10.9.1, `vue` to 3.5.42, `vue-tsc` to 3.3.11, `zod` to 4.5.4, `sass-embedded` to 1.103.1, `@json-render/core` and `@json-render/vue` to 0.20.0, and `pnpm` to 11.24.0. `typescript` stays on 6: the `overrides` block holds it back until Volar and typescript-eslint support the native compiler.
+- Two new advisories on transitive development dependencies are closed through `overrides`: the `brace-expansion` floor moves to `^5.0.9`, because 5.0.8 is still open to the denial of service that bypasses the mitigation of CVE-2026-14257, and `nanoid` gains a `^3.3.18` floor, because the `postcss` resolved through `@vue/compiler-sfc` still installs 3.3.16. `pnpm audit` reports no vulnerabilities again. Neither package is reachable from the published bundle.
+
 ## [0.0.17] - 2026-08-03
 
 ### Added
@@ -329,6 +338,8 @@ All notable changes to this project will be documented in this file.
 - `VvTextarea` component;
 - `VvRadioGroup` component.
 
+[0.0.18]: https://github.com/volverjs/ui-vue/compare/v0.0.17...v0.0.18
+[0.0.17]: https://github.com/volverjs/ui-vue/compare/v0.0.16...v0.0.17
 [0.0.16]: https://github.com/volverjs/ui-vue/compare/v0.0.15...v0.0.16
 [0.0.15]: https://github.com/volverjs/ui-vue/compare/v0.0.14...v0.0.15
 [0.0.14]: https://github.com/volverjs/ui-vue/compare/v0.0.13...v0.0.14
