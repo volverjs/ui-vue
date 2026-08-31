@@ -36,8 +36,12 @@ jobs:
             - name: Setup GitHub Pages
               uses: actions/configure-pages@v6
 
+            # v4 pins actions/upload-artifact 4.6.2 internally, which still
+            # targets Node.js 20 and makes every run of this job warn about the
+            # deprecation. v5 is the same composite action with the pin moved to
+            # upload-artifact 7, so it runs on Node.js 24. Same inputs.
             - name: Upload styleguide
-              uses: actions/upload-pages-artifact@v4
+              uses: actions/upload-pages-artifact@v5
               with:
                   name: 'github-pages'
                   path: './storybook-static'
