@@ -2,8 +2,7 @@
 import type { VvInputFileEvents } from '.'
 import type { UploadedFile } from '../../types'
 import { useVModel } from '@vueuse/core'
-import { computed, onBeforeUnmount, ref } from 'vue'
-import Sortable from 'vuedraggable'
+import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { VvInputFileProps } from '.'
 import { filterFileList } from '../../utils/FileUtilities'
 import HintSlotFactory from '../common/HintSlot'
@@ -14,6 +13,15 @@ import VvIcon from '../VvIcon/VvIcon.vue'
 const props = defineProps(VvInputFileProps)
 const emit = defineEmits<VvInputFileEvents>()
 const slots = useSlots()
+
+/**
+ * Loaded on demand, because `vuedraggable` ships as a UMD bundle: a consumer
+ * that imports anything from the components barrel would otherwise bundle it,
+ * and its `require('vue')` drags in the CJS build of Vue with the template
+ * compiler inside. That is around 90 kB gzipped, paid by every application
+ * using this library, whether or not it has a file input on the page.
+ */
+const Sortable = defineAsyncComponent(() => import('vuedraggable'))
 
 // props merged with volver defaults (now only for labels)
 const propsDefaults = useDefaults<typeof VvInputFileProps>(
