@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- The styleguide workflow uploads the Pages artifact with `actions/upload-pages-artifact@v5`. Version 4 pins `actions/upload-artifact` 4.6.2 inside itself, which still targets Node.js 20, so every run of that job ended with the runner deprecation warning. It was the only one left in the pipeline. Version 5 is the same composite action with the pin moved to `actions/upload-artifact` 7, and it takes the same inputs.
+
 ## [0.0.18] - 2026-08-31
 
 ### Changed
