@@ -70,7 +70,8 @@ const hasUnit = computed(() => propsDefaults.value.unit)
 
 // value
 // While a debounced drag waits for its timer the model still holds the previous
-// value: what the readout and the fill have to follow is the slider itself.
+// value: what the readout has to follow is the slider itself. The browser draws
+// the filled part of the track by itself, so nothing else needs this.
 const draggedValue = ref<number>()
 function onInput(event: Event) {
     draggedValue.value = Number.parseFloat(
@@ -85,7 +86,7 @@ watch(
 )
 
 // A range input has no empty state: with no value of its own it reports the
-// middle of its track, and both the fill and the readout have to say the same.
+// middle of its track, which is what the readout has to show.
 const hasValue = computed(() => {
     const parsed = Number.parseFloat(
         String(draggedValue.value ?? localModelValue.value),
@@ -95,17 +96,6 @@ const hasValue = computed(() => {
 const hasFormattedValue = computed(() => {
     const format = propsDefaults.value.formatValue
     return format ? format(hasValue.value) : String(hasValue.value)
-})
-
-// CSS cannot read the value of a range input, so the filled part of the track
-// is drawn from the share this writes on the block element.
-const hasProgress = computed(() => {
-    if (hasMax.value <= hasMin.value) {
-        return '0%'
-    }
-    const ratio = (hasValue.value - hasMin.value) / (hasMax.value - hasMin.value)
-    const percentage = Math.min(Math.max(ratio, 0), 1) * 100
-    return `${Math.round(percentage * 100) / 100}%`
 })
 
 onMounted(() => {
@@ -200,7 +190,7 @@ export default {
 </script>
 
 <template>
-    <div :class="bemCssClasses" :style="{ '--input-range-progress': hasProgress }">
+    <div :class="bemCssClasses">
         <label v-if="label" :for="hasId" class="vv-input-range__label">
             {{ label }}
         </label>
