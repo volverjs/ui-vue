@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
 
   The failure is not the platform slider showing through. The reset of `@volverjs/style` applies `all: unset` to every element outside a short exclusion list, and `input[type="range"]` is not in it, so a control the library does not dress keeps no appearance of its own. The 0.0.19 entry said otherwise and is corrected there.
 
-  Nothing changes for an application that already installs `@volverjs/style` 0.1.26: the published package never carried the style, which stays a peer dependency. What this release rebuilds is the styleguide.
+  The published package never carried the style, so what this release rebuilds is the styleguide, and an application already on 0.1.26 has nothing to do.
+- The `@volverjs/style` peer dependency declares a floor for the first time, `>=0.1.26` in place of `>=0`. A component whose style is missing does not fail loudly, it renders undressed, and the changelog was the only place saying which release it needed. An application still on an older style now hears about it while installing rather than while looking at a slider with no track. Package managers configured to refuse unmet peers will hold the upgrade until `@volverjs/style` moves too, which is the intent: the two are one design system.
 - A story asserts that the enabled slider computes `cursor: pointer`, which the dressed control sets and `all: unset` does not, so the suite fails if a component is ever released ahead of its style again.
 
 ## [0.0.19] - 2026-09-07
