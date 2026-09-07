@@ -107,7 +107,39 @@ export async function ariaLabelTest({ canvasElement }: PlayAttributes) {
     // user never reaches.
     await expect(element).not.toHaveAttribute('aria-label')
     await expect(input).toHaveAttribute('aria-label', 'Volume')
+
+    // With no hint of its own the field has nothing to add, so the reference
+    // the caller passed reaches the control untouched.
+    await expect(input).toHaveAttribute('aria-describedby', 'extra-help')
     await expect(element).toHaveNoViolations()
+}
+
+export async function ariaDescribedbyTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const input = element.getElementsByTagName('input')[0]
+    const hint = element.getElementsByClassName('vv-input-range__hint')[0]
+
+    // `aria-describedby` is a list of ids, so the hint joins what the caller
+    // pointed at rather than taking its place.
+    const describedBy
+        = input.getAttribute('aria-describedby')?.split(' ') ?? []
+    await expect(describedBy).toContain('extra-help')
+    await expect(describedBy).toContain(hint.id)
+    await expect(element).toHaveNoViolations()
+}
+
+export async function tinyStepTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const value = await canvas.findByTestId('value')
+    const readout = element.getElementsByClassName('vv-input-range__value')[0]
+
+    // A step below 1e-6 stringifies in exponent form, where its decimals live
+    // in the exponent: read as text alone the step looks like an integer and
+    // the middle of this track rounds to zero.
+    await expect(value.innerHTML).toEqual('5e-7')
+    await expect(readout.textContent?.trim()).toContain('5e-7')
 }
 
 export async function debouncedTest({ canvasElement }: PlayAttributes) {

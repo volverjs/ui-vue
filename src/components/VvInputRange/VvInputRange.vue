@@ -87,12 +87,14 @@ const hasSnap = computed(() => {
  * surface the error of the binary representation in the readout.
  */
 function decimalsOf(value: number) {
-    const text = String(value)
-    if (text.includes('e')) {
-        return 0
-    }
-    const separator = text.indexOf('.')
-    return separator === -1 ? 0 : text.length - separator - 1
+    // Anything below 1e-6 stringifies in exponent form, so the decimals a step
+    // like 0.0000001 carries are in the exponent and not in the mantissa: read
+    // as text alone it would look like an integer and round the value to one.
+    const [mantissa, exponent] = String(value).split('e')
+    const separator = mantissa.indexOf('.')
+    const digits = separator === -1 ? 0 : mantissa.length - separator - 1
+    // `toFixed` takes 100 digits at most.
+    return Math.min(100, Math.max(0, digits - Number(exponent ?? 0)))
 }
 const hasPrecision = computed(() =>
     Math.max(decimalsOf(hasMin.value), decimalsOf(hasSnap.value)),
@@ -258,7 +260,25 @@ const hasInputAttrs = computed(() => {
             toReturn[key] = attrs[key]
         }
     })
-    return { ...toReturn, ...hasAttrs.value }
+    // What the component computes wins, but only where it has something to
+    // say: an undefined value would erase the reference the caller passed.
+    Object.entries(hasAttrs.value).forEach(([key, value]) => {
+        if (value !== undefined) {
+            toReturn[key] = value
+        }
+    })
+    // `aria-describedby` takes a list of ids, so the hint joins what the caller
+    // pointed at instead of taking its place.
+    const describedBy = [
+        attrs['aria-describedby'],
+        hasAttrs.value['aria-describedby'],
+    ]
+        .filter(Boolean)
+        .join(' ')
+    if (describedBy) {
+        toReturn['aria-describedby'] = describedBy
+    }
+    return toReturn
 })
 const hasRootAttrs = computed(() => {
     const toReturn = { ...attrs }

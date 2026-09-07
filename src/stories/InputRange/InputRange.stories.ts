@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputRange from '@/components/VvInputRange/VvInputRange.vue'
 import { argTypes, defaultArgs } from './InputRange.settings'
-import { ariaLabelTest, debouncedTest, defaultTest } from './InputRange.test'
+import {
+    ariaDescribedbyTest,
+    ariaLabelTest,
+    debouncedTest,
+    defaultTest,
+    tinyStepTest,
+} from './InputRange.test'
 
 const meta: Meta<typeof VvInputRange> = {
     title: 'Components/InputRange',
@@ -114,10 +120,45 @@ export const AriaLabel: Story = {
         },
         data: () => ({ inputValue: undefined }),
         template: /* html */ `
-			<vv-input-range v-bind="args" v-model="inputValue" aria-label="Volume" data-testId="element" />
+			<div>
+				<span id="extra-help">Between silence and the neighbours complaining.</span>
+				<vv-input-range v-bind="args" v-model="inputValue" aria-label="Volume" aria-describedby="extra-help" data-testId="element" />
+			</div>
 		`,
     }),
     play: ariaLabelTest,
+}
+
+export const AriaDescribedby: Story = {
+    args: {
+        ...defaultArgs,
+        hintLabel: 'Drag the slider to set the value.',
+    },
+    render: args => ({
+        components: { VvInputRange },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+			<div>
+				<span id="extra-help">Between silence and the neighbours complaining.</span>
+				<vv-input-range v-bind="args" v-model="inputValue" aria-describedby="extra-help" data-testId="element" />
+			</div>
+		`,
+    }),
+    play: ariaDescribedbyTest,
+}
+
+export const TinyStep: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        min: 0,
+        max: 0.000001,
+        step: 0.0000001,
+    },
+    play: tinyStepTest,
 }
 
 export const Debounce: Story = {
