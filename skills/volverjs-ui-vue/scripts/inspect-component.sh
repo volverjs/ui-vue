@@ -57,10 +57,25 @@ for NAME in "$@"; do
         echo
         echo "## Props and events ($DIR/index.ts)"
         # Print the exported props / events / emits blocks with their JSDoc.
+        # The name has to end there, so that a `VvFooPropsTypes` alias does not
+        # open a block that runs on into the helpers below it, and a block ends
+        # on either bracket, because the events are an array and the props an
+        # object. An export that opens neither is a one liner, printed as is.
+        # Some components only re-export their props: that line is the pointer
+        # to where they are actually defined.
         awk '
-            /^export (const|type) Vv[A-Za-z]+(Props|Events|Emits)/ { p = 1 }
+            /^export \{[^}]*\} from/ { print; print ""; next }
+            /^export (const|type) Vv[A-Za-z]+(Props|Events|Emits)[[:space:]=]/ {
+                print
+                p = 1
+                if ($0 !~ /[[{][[:space:]]*$/) {
+                    p = 0
+                    print ""
+                }
+                next
+            }
             p { print }
-            p && /^}$/ { p = 0; print "" }
+            p && /^[]}][,;]?[[:space:]]*$/ { p = 0; print "" }
         ' "$DIR/index.ts"
     fi
 

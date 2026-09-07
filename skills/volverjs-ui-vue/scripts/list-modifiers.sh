@@ -4,7 +4,8 @@
 # something only if @volverjs/style declares it, so this is the list to trust.
 #
 # Usage: list-modifiers.sh            # every component
-#        list-modifiers.sh vv-button  # one component
+#        list-modifiers.sh vv-button  # that component alone
+#        list-modifiers.sh vv-input   # every component whose name starts so
 
 set -eu
 
@@ -29,9 +30,21 @@ SETTINGS="$(find_style)" || {
     exit 1
 }
 
-PATTERN="${1:-vv-}"
-for f in "$SETTINGS"/_"$PATTERN"*.scss; do
+# A name that matches a component exactly selects that one, so that vv-button
+# does not also print vv-button-group; anything else is taken as a prefix.
+REQUESTED="${1:-}"
+if [ "$#" -eq 0 ]; then
+    set -- "$SETTINGS"/_vv-*.scss
+elif [ -f "$SETTINGS/_$1.scss" ]; then
+    set -- "$SETTINGS/_$1.scss"
+else
+    set -- "$SETTINGS"/_"$1"*.scss
+fi
+
+found=0
+for f in "$@"; do
     [ -f "$f" ] || continue
+    found=1
     name="$(basename "$f" .scss | sed 's/^_//')"
     keys="$(awk '
         /^\tmodifier: \(/ { f = 1; next }
@@ -40,3 +53,8 @@ for f in "$SETTINGS"/_"$PATTERN"*.scss; do
     ' "$f")"
     echo "$name: ${keys:-(none)}"
 done
+
+if [ "$found" -eq 0 ]; then
+    echo "no component matches \"$REQUESTED\" in $SETTINGS" >&2
+    exit 1
+fi
