@@ -41,6 +41,7 @@ for NAME in "$@"; do
     case "$NAME" in
         VvNavItem|VvNavSeparator) DIR="$ROOT/src/components/VvNav" ;;
         VvDropdownAction|VvDropdownItem|VvDropdownOption|VvDropdownOptgroup) DIR="$ROOT/src/components/VvDropdown" ;;
+        *) ;; # every other component owns the folder named after it
     esac
     VUE="$DIR/$NAME.vue"
     if [ ! -f "$VUE" ]; then
