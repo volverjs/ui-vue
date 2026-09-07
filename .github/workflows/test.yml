@@ -10,7 +10,11 @@ jobs:
         steps:
             - uses: actions/checkout@v5
 
-            - uses: pnpm/action-setup@v6
+            # v6.1.0 is the first release that bootstraps pnpm 12, which
+            # ships as a native binary instead of the `@pnpm/exe` package
+            # the older path expects. The floating `v6` tag still points at
+            # v6.0.10, so the version has to be pinned until the tag moves.
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Use Node.js 24
               uses: actions/setup-node@v5

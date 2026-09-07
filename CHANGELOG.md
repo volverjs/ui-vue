@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- The three workflows pin `pnpm/action-setup@v6.1.0`. It is the first release that bootstraps pnpm 12, which ships as a native binary instead of the `@pnpm/exe` package the older path expects, and the floating `v6` tag still points at v6.0.10, so the version has to stay pinned until that tag moves.
 - The styleguide workflow uploads the Pages artifact with `actions/upload-pages-artifact@v5`. Version 4 pins `actions/upload-artifact` 4.6.2 inside itself, which still targets Node.js 20, so every run of that job ended with the runner deprecation warning. It was the only one left in the pipeline. Version 5 is the same composite action with the pin moved to `actions/upload-artifact` 7, and it takes the same inputs.
 
 ## [0.0.18] - 2026-08-31
