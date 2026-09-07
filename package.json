@@ -133,6 +133,11 @@
       "import": "./dist/components/VvInputText/VvInputText.es.js",
       "default": "./dist/components/VvInputText/VvInputText.umd.js"
     },
+    "./vv-input-range": {
+      "types": "./dist/components/VvInputRange/VvInputRange.vue.d.ts",
+      "import": "./dist/components/VvInputRange/VvInputRange.es.js",
+      "default": "./dist/components/VvInputRange/VvInputRange.umd.js"
+    },
     "./vv-input-file": {
       "types": "./dist/components/VvInputFile/VvInputFile.vue.d.ts",
       "import": "./dist/components/VvInputFile/VvInputFile.es.js",
@@ -317,6 +322,9 @@
       ],
       "vv-input-text": [
         "dist/components/VvInputText/VvInputText.vue.d.ts"
+      ],
+      "vv-input-range": [
+        "dist/components/VvInputRange/VvInputRange.vue.d.ts"
       ],
       "vv-input-file": [
         "dist/components/VvInputFile/VvInputFile.vue.d.ts"
