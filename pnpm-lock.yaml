@@ -237,8 +237,8 @@ importers:
         specifier: ^4.1.11
         version: 4.1.11(playwright@1.63.0)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(yaml@2.9.0))(vitest@4.1.11)
       '@volverjs/style':
-        specifier: 0.1.25
-        version: 0.1.25
+        specifier: 0.1.26
+        version: 0.1.26
       '@vue/compiler-sfc':
         specifier: ^3.5.42
         version: 3.5.42
@@ -2611,8 +2611,8 @@ packages:
       typescript:
         optional: true
 
-  '@volverjs/style@0.1.25':
-    resolution: {integrity: sha512-6W03KO9VPpr+UvyGMlOYCpU3pzASz4K0CJ/LpEi3jKPA80qwsSadwl9qKHnQVfTSk8sls4iNF5eOlAUP3lBKXA==}
+  '@volverjs/style@0.1.26':
+    resolution: {integrity: sha512-4YZ/ABE5S9xwu7FBDEdtyH/5aXr2CIFO9TFjuLGCqWnvfZZfqKkDi660FxOiMz2P+XjLEvrNJVv4J/im2rSUYA==}
     engines: {node: '>= 20.x'}
 
   '@vue/compiler-core@3.5.40':
@@ -2838,11 +2838,6 @@ packages:
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
-
-  baseline-browser-mapping@2.11.20:
-    resolution: {integrity: sha512-H0ulySigv6icDJ1F7SjtdCD6PrhTpdYCmP0CactWy1+ekh0AFd0o1Wn5T8b+hnTmdBx19u9yhL6wvCylXMY7zw==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   baseline-browser-mapping@2.11.21:
     resolution: {integrity: sha512-uh8vpY/1/YyFkunIDFH/12p7/7VdPKA1hejMVEbdkEaWnUz0Hesvx5EbiU6XxjyHZIOju+ZMbQJkRh+es3/spQ==}
@@ -8192,7 +8187,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@volverjs/style@0.1.25': {}
+  '@volverjs/style@0.1.26': {}
 
   '@vue/compiler-core@3.5.40':
     dependencies:
@@ -8418,8 +8413,6 @@ snapshots:
 
   balanced-match@4.0.4: {}
 
-  baseline-browser-mapping@2.11.20: {}
-
   baseline-browser-mapping@2.11.21: {}
 
   blurhash@2.0.5: {}
@@ -8457,7 +8450,7 @@ snapshots:
 
   browserslist@4.28.9:
     dependencies:
-      baseline-browser-mapping: 2.11.20
+      baseline-browser-mapping: 2.11.21
       caniuse-lite: 1.0.30001810
       electron-to-chromium: 1.5.422
       node-releases: 2.0.54

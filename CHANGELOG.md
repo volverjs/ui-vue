@@ -14,11 +14,12 @@ All notable changes to this project will be documented in this file.
 
   It takes no `readonly` attribute either, so `readonly` disables the native control and adds the `--readonly` modifier, the same shape `VvCheckbox`, `VvRadio` and `VvSelect` already use.
 
-  CSS cannot read the value of a range input, so the component writes the filled share of the track on the block as `--input-range-progress`. It needs the `@volverjs/style` release that ships `vv-input-range`: without it the field renders as the platform slider.
+  CSS cannot read the value of a range input, so the component writes the filled share of the track on the block as `--input-range-progress`. It needs `@volverjs/style` 0.1.26, the release that ships `vv-input-range`. Not as a nicety: the reset of the style library unsets the user agent appearance of every control it does not dress itself, so without that release the field renders as a bare thumb with no track under it.
 - `InputRange` in the json-render catalog and registry, which now declare 27 components.
 
 ### Changed
 
+- `@volverjs/style` moves to 0.1.26 among the development dependencies, the release that ships `vv-input-range`. The styleguide was drawing the new field as a bare thumb, because the component was there and the style that dresses it was not.
 - Development dependencies updated, among them `storybook` and its addons to 10.6.0, `@antfu/eslint-config` to 9.5.1, `eslint` to 10.10.0, `playwright` to 1.63.0, `sass-embedded` to 1.104.0, `@iconify/utils` to 3.1.7 and `@types/node` to 26.4.1, and `packageManager` moves to pnpm 12.3.4.
 
   `vitest` and the two `@vitest/browser` packages join `typescript` in the reject list of `.ncurc.yml`: Vitest 5 is not supported by `@storybook/addon-vitest`, which peers on `vitest ^3 || ^4` up to and including its 11.0.0 alpha, and installing it makes the storybook project fail to import `.storybook/vitest.setup.ts`, so the suite collects its files and runs no test. They need no `overrides` entry, because nothing pulls vitest transitively.
