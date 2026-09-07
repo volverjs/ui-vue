@@ -1,444 +1,382 @@
 ---
 name: volverjs-ui-vue
 description: |
-  Build Vue 3 UIs with @volverjs/ui-vue. Covers components, props, slots, composables, plugin setup, BEM modifiers, group patterns, JSON Render, and auto-import.
-  Use when users ask for forms, pages, layouts, dialogs, dropdowns, alerts, navigation, icons, or any Vv-prefixed component (for example VvButton, VvInputText, VvSelect, VvDialog, VvCombobox, VvCard, VvTooltip, VvVirtualScroll).
-  Trigger on @volverjs/ui-vue mentions, Volver components, plugin/defaults configuration, group components, options mapping, and JSON-rendered UI generation.
+  Build Vue 3 interfaces with @volverjs/ui-vue, the component library of the Volver design system (paired with @volverjs/style for CSS). Covers the 35 Vv components with their real prop, slot and event names, shared props, BEM modifiers, group components, options mapping, icons, plugin setup, auto-import resolver, composables and the json-render catalog for AI-generated UI.
+  Use this skill whenever a project depends on @volverjs/ui-vue or renders Vv-prefixed components (VvButton, VvInputText, VvCombobox, VvDialog, VvDropdown, VvAlert, VvTab, VvNav, VvCard, VvInputRange...), even when the user only says "form", "modal", "select", "dropdown menu", "tabs", "notifications" or "the design system" without naming the library. Also use it when contributing to the ui-vue library itself, when configuring VolverPlugin or VolverResolver, when writing useAlert/useDropdownContextmenu code, and when generating UI from JSON with the Volver catalog.
 ---
 
-# @volverjs/ui-vue — Component Library Skill
+# @volverjs/ui-vue
 
-This skill helps you build UIs using @volverjs/ui-vue, a Vue 3 component library with 34 components, composables, directives, and a JSON Render system for AI-driven UI generation.
+Vue 3 component library of the Volver design system. Components are unstyled shells that emit BEM
+classes (`vv-button`, `vv-button--primary`, `vv-button__label`); the CSS comes from `@volverjs/style`.
+The single most common mistake when writing Volver code is guessing a prop name (`clearable`,
+`floatingLabel`, `iconPosition="left"`...). Prop names here are specific and the library does not warn
+on unknown props, so a wrong name fails silently at runtime. Verify before writing.
 
-The library is paired with `@volverjs/style` for CSS (BEM convention). Components are designed for composability via shared props, group patterns, and slot architecture.
+## 1. Source of truth: read the code, not your memory
 
-## Quick Reference
+The package ships its `src/` folder, so the same paths work in the library repo and in any project
+that installed it (prefix with `node_modules/@volverjs/ui-vue/` in the latter):
 
-Before writing any code, check the actual component source for the latest props and slots:
-- Components live in `src/components/Vv<Name>/Vv<Name>.vue`
-- Shared props are defined in `src/props/index.ts`
-- Types are in `src/types/`
-- Constants/enums in `src/constants.ts`
+| What | Where |
+|------|-------|
+| Props with JSDoc, events | `src/components/Vv<Name>/index.ts` (`VvNavItem`/`VvNavSeparator` are in `VvNav/`, `VvDropdown*` in `VvDropdown/`) |
+| Slots, scope and dynamic modifiers | `src/components/Vv<Name>/Vv<Name>.vue` |
+| Shared prop objects (`ClearProps`, `IconProps`, `DropdownProps`...) | `src/props/index.ts` |
+| Enums (`Side`, `Placement`, `Position`, `ButtonType`...) | `src/constants.ts` |
+| Working examples for every component | `src/stories/<Name>/*.stories.ts` |
+| Plugin, icons, resolver, composables, json-render | `README.md` of the package |
+| Which modifiers exist per component | `node_modules/@volverjs/style/src/settings/components/_vv-<name>.scss`, key `modifier` |
 
-When in doubt, **read the component source file** — it's the canonical reference.
+Fast path, from the project root. The scripts live in the `scripts/` folder next to this file and
+locate the package on their own:
 
-## Component Catalog
-
-### Form Controls
-| Component | Purpose | Key Features |
-|-----------|---------|--------------|
-| `VvInputText` | Text input (text, password, email, date, color, search, etc.) | Input masking (iMask), debounce, suggestions, password toggle, count, clear action, floating label |
-| `VvTextarea` | Multi-line text | Count support (limit/countdown), debounce |
-| `VvSelect` | Native select | Multiple mode, option groups, generic `<T>`, clear action |
-| `VvCombobox` | Searchable select with dropdown | Async search, multi-select, addable options, grouped options, badges display, virtual scroll |
-| `VvCheckbox` | Checkbox | Binary/group mode, indeterminate, switch variant |
-| `VvRadio` | Radio button | Group integration |
-| `VvInputFile` | File upload | Drag-drop, preview, resize (pica) |
-| `VvCheckboxGroup` | Checkbox container | Shared modelValue, valid/invalid state propagation |
-| `VvRadioGroup` | Radio container | Same as CheckboxGroup |
-
-### Presentation
-| Component | Purpose | Key Features |
-|-----------|---------|--------------|
-| `VvButton` | Action button | Toggle mode, icon support, loading state, group integration |
-| `VvCard` | Article wrapper | Slots: header, content, footer |
-| `VvBadge` | Status indicator | Inline badge with modifiers |
-| `VvAvatar` | User avatar | Image with fallback |
-| `VvAvatarGroup` | Avatar collection | Grouped display |
-| `VvProgress` | Progress bar | Determinate/indeterminate |
-| `VvIcon` | Iconify icon | Provider-based icon system |
-| `VvButtonGroup` | Button container | Shared toggle, multiple selection, unselectable |
-
-### Layout & Navigation
-| Component | Purpose |
-|-----------|---------|
-| `VvBreadcrumb` | Breadcrumb item |
-| `VvNav` | Navigation container |
-| `VvNavItem` | Navigation item (extends VvAction) |
-| `VvNavSeparator` | Navigation separator |
-| `VvTab` | Tab panel |
-
-### Overlays
-| Component | Purpose | Key Features |
-|-----------|---------|--------------|
-| `VvDialog` | Modal dialog | Native `<dialog>`, transitions, click-outside close, keepOpen |
-| `VvDropdown` | Floating popover | Floating UI positioning, keyboard nav, focus management |
-| `VvTooltip` | Tooltip | Floating UI, directive alternative (`v-tooltip`) |
-| `VvAlert` | Notification | Dismissable, auto-close, role-based ARIA |
-| `VvAlertGroup` | Alert container | Event bus for close coordination |
-
-### Advanced
-| Component | Purpose |
-|-----------|---------|
-| `VvAccordion` | Collapsible section (details/summary) |
-| `VvAccordionGroup` | Mutual exclusivity container |
-| `VvVirtualScroll` | Virtual scrolling (@tanstack/vue-virtual) |
-| `VvAction` | Base action (button/link abstraction) |
-
-## Core Patterns
-
-### 1. BEM Modifiers
-
-Every component supports `modifiers` prop for BEM styling. Modifiers generate CSS classes like `vv-button--primary`.
-
-```vue
-<!-- Single modifier -->
-<VvButton modifiers="primary">Save</VvButton>
-<!-- output class: vv-button vv-button--primary -->
-
-<!-- Multiple modifiers (space-separated string or array) -->
-<VvButton :modifiers="['primary', 'large']">Save</VvButton>
-<!-- output class: vv-button vv-button--primary vv-button--large -->
+```bash
+sh scripts/inspect-component.sh VvCombobox VvDialog   # props, events, slots, stories
+sh scripts/list-modifiers.sh vv-button                 # valid modifiers, from @volverjs/style
 ```
 
-Dynamic modifiers are added internally by components (e.g. `--disabled`, `--reverse`, `--icon-only`). The available modifier values depend on `@volverjs/style` — check the style library for valid modifiers per component.
+Run the inspect script for every component you are about to use for the first time in a session. It
+is cheaper than debugging a silent prop mismatch.
 
-### 2. Group Pattern
+## 2. Component catalog (35 components)
 
-Groups synchronize state across child components. The child automatically reads from the group's state instead of its own props when nested inside a group.
+**Form controls**: `VvInputText` (types text, password, number, email, tel, url, color, search, date,
+time, datetime-local, month, week; iMask masking, suggestions, step actions, password toggle, clear
+action, unit, count), `VvTextarea`, `VvInputRange` (slider with `min`/`max`/`step`, `showValue`,
+`unit`, `formatValue`), `VvInputFile` (drop area, preview, sortable, progress), `VvSelect` (native
+select, optgroups, `multiple`), `VvCombobox` (dropdown select: `searchable`, `multiple`, `addable`,
+`badges`, async `searchFunction`, `native` fallback), `VvCheckbox` (binary or array mode, `switch`,
+`indeterminate`), `VvRadio`, `VvCheckboxGroup`, `VvRadioGroup`.
+
+**Actions**: `VvAction` (renders `button`, `a`, `router-link` or `nuxt-link` from `href`/`to`),
+`VvButton` (extends VvAction: `label`, `icon`, `loading`, `toggle`/`value`), `VvButtonGroup`
+(`toggle`, `multiple`, shared `modelValue`).
+
+**Display**: `VvCard` (`title`, slots header/default/content/footer), `VvBadge` (`value`), `VvAvatar`
+(`imgSrc`), `VvAvatarGroup` (`items`, `toShow`, `totalItems`), `VvProgress` (`value`, `max`,
+required `label`), `VvIcon` (`name`, `prefix`, `provider`), `VvAlert`, `VvAlertGroup`, `VvTooltip`
+(CSS-only, `value` + `position`).
+
+**Navigation**: `VvNav` (`items: NavItem[]`), `VvNavItem`, `VvNavSeparator`, `VvBreadcrumb`
+(`routes: NavItem[]`), `VvTab` (`items: NavItemTab[]`, `panel::<tab>` slots, `lazy`).
+
+**Overlays and containers**: `VvDialog` (native `<dialog>`, top layer), `VvDropdown` (Floating UI,
+`topLayer` opt-in) with `VvDropdownAction`, `VvDropdownItem`, `VvDropdownOption`,
+`VvDropdownOptgroup`, `VvAccordion` (`<details>`), `VvAccordionGroup`, `VvVirtualScroll`
+(@tanstack/vue-virtual).
+
+## 3. Shared props: the names that actually exist
+
+Most components spread these objects from `src/props/index.ts`. Learn the exact names.
+
+| Concern | Props | Notes |
+|--------|-------|-------|
+| Identity | `id`, `name` | `name` is **required** on every input, checkbox, radio, select, combobox, file and on the groups |
+| Label and hint | `label`, `hintLabel`, `placeholder` | hint family slots: `hint`, `loading`, `valid`, `invalid` |
+| Validation | `valid`, `validLabel`, `invalid`, `invalidLabel` | labels accept a string or an array of strings |
+| State | `disabled`, `readonly`, `required`, `loading`, `loadingLabel` | |
+| Icon | `icon`, `iconPosition` | position is `before` or `after` (enum `Position`), never left/right |
+| Floating label | `floating` | not `floatingLabel` |
+| Clear action | `showClearAction`, `iconClear`, `labelClear` | not `clearable` |
+| Count | `count` = `true`, `'limit'` or `'countdown'` | with `maxlength` |
+| Debounce | `debounce` (ms) | input, textarea, range |
+| Options | `options`, `labelKey`, `valueKey`, `disabledKey` | see section 6 |
+| Links | `to`, `href`, `target`, `rel` | on VvAction, VvButton, nav items, breadcrumb routes |
+| BEM | `modifiers` | string (space separated) or string array |
+| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox |
+
+## 4. Modifiers: the class is free, the style is not
+
+`modifiers="primary rounded"` produces `vv-button--primary vv-button--rounded`. Any string is accepted,
+but only the modifiers declared by `@volverjs/style` do anything. Components also add dynamic ones on
+their own (`--disabled`, `--icon-only`, `--reverse`, `--floating`, `--valid`, `--invalid`,
+`--readonly`), so do not pass those by hand.
+
+Declared by `@volverjs/style` 0.1.25 (regenerate with `scripts/list-modifiers.sh` when the version changes):
+
+| Component | Modifiers |
+|-----------|-----------|
+| vv-button | `primary` `secondary` `danger` `ghost` `link` `action` `action-quiet` `static-light` `static-dark` `rounded` `block` `full-bleed` |
+| vv-button-group | `block` `vertical` `compact` |
+| vv-alert | `success` `danger` `warning` `info` `accent` `brand` `notification` `callout` `nowrap` |
+| vv-alert-group | `stack` `reverse` `fixed` `absolute` `top-start` ... `bottom-end` `full-bleed` |
+| vv-badge | `sm` `rounded` `outline` `ghost` `action` `white` `black` `gray` `danger` `success` `warning` `info` `accent` |
+| vv-avatar | `rounded` `square` `bordered` `ring` `md` `lg` `transparent` `surface` `gray` `danger` `success` `warning` `info` `accent` |
+| vv-avatar-group | `tight` `relaxed` |
+| vv-card | `glass` |
+| vv-dialog | `small` `fullscreen` |
+| vv-dropdown | `rounded` `block` `full-bleed` `dialog` `mobile` |
+| vv-accordion | `bordered` `square` `marker-right` |
+| vv-accordion-group | `condensed` |
+| vv-checkbox-group | `horizontal` |
+| vv-input-file | `drop-area` `square` `circle` `hidden` `with-progress` |
+| vv-textarea | `resizable` |
+| vv-nav | `sidebar` `aside` `tabs` `full` |
+| vv-tooltip | `visible` `top` `bottom` `left` |
+| vv-breadcrumb | `multiline` |
+
+Default button (no modifier) is the brand color. There is no `large`/`small` on buttons: sizing comes
+from utility classes of `@volverjs/style` (see the `volverjs-style` skill when available).
+
+## 5. Icons: the design system ships its own set
+
+`VvIcon` wraps Iconify. The plugin registers the Volver collections under provider `vv` with prefixes
+`normal` (default), `detailed` and `simple`, each with about 200 icons. A bare name resolves inside
+those collections:
 
 ```vue
-<!-- ButtonGroup: toggles with single selection -->
-<VvButtonGroup v-model="selected" toggle>
-  <VvButton value="a">Option A</VvButton>
-  <VvButton value="b">Option B</VvButton>
-  <VvButton value="c">Option C</VvButton>
+<VvIcon name="search" />                 <!-- @vv:normal:search -->
+<VvIcon name="search" prefix="simple" /> <!-- @vv:simple:search -->
+<VvButton icon="trash" modifiers="danger" label="Delete" />
+<VvInputText name="q" icon="search" icon-position="after" label="Search" />
+```
+
+Names that exist in the bundled set include `add`, `edit`, `trash`, `close`, `search`, `check`,
+`check-circle`, `warning`, `error`, `information`, `calendar`, `time`, `email`, `phone`, `user`,
+`home`, `settings`, `download`, `upload`, `copy`, `filter`, `menu`, `more-vertical`,
+`chevron-down/up/left/right`, `arrow-down/up/left/right`, `eye-on`, `eye-off`, `lock`, `unlock`,
+`external-link`, `star`, `heart`, `bell`, `logout`, `login`, `reload`, `image`, `file`, `pdf`.
+List the full set with `node -e "console.log(Object.keys(require('@volverjs/ui-vue/src/assets/icons/normal.json').icons).join(' '))"`.
+
+A name with an Iconify prefix (`mdi:home`) falls through to the public Iconify API and is fetched
+over the network at runtime. Do not use it in a design-system project unless the user asks for it;
+prefer the bundled names or a custom collection generated with the package's `generate-icons` bin
+(see `src/components/VvIcon/README.md`).
+
+## 6. Core patterns
+
+### Links and buttons: VvAction decides the tag
+
+`disabled` forces `<button>`; `to` renders `router-link` (or `nuxt-link` with the plugin's `nuxt`
+option); `href` renders `<a>`; otherwise `defaultTag` (button). VvButton, VvNavItem, VvBreadcrumb
+items and VvDropdownAction all follow this rule, so a menu entry becomes a link by adding `to`.
+
+```vue
+<VvButton label="Save" modifiers="primary" type="submit" :loading="saving" />
+<VvButton :to="{ name: 'home' }" icon="home" label="Home" modifiers="ghost" />
+<VvButton href="https://example.com" target="_blank" icon="external-link" icon-position="after" label="Docs" />
+<VvButton icon="trash" aria-label="Delete" modifiers="action-quiet" />   <!-- icon-only: no label, no default slot -->
+```
+
+Slots: `default` (replaces the whole inner content), `before`, `label`, `after`, `loading`.
+
+### Groups: the parent owns the state
+
+Children read `modelValue`, `disabled`, `readonly`, `valid`/`invalid` (inputs) or `toggle`,
+`multiple`, `modifiers` (buttons) from the group through provide/inject. Set those on the group, not
+on the children. Groups need a `name`.
+
+```vue
+<VvButtonGroup v-model="view" toggle :item-modifiers="'secondary'">
+  <VvButton value="list" icon="view-list" label="List" />
+  <VvButton value="grid" icon="grid" label="Grid" />
 </VvButtonGroup>
 
-<!-- CheckboxGroup: shared validation state -->
-<VvCheckboxGroup v-model="choices" :invalid="hasError" invalid-label="Select at least one">
-  <VvCheckbox value="email" label="Email" />
-  <VvCheckbox value="sms" label="SMS" />
-</VvCheckboxGroup>
+<VvCheckboxGroup v-model="channels" name="channels" label="Notify me by"
+  :options="[{ label: 'Email', value: 'email' }, { label: 'SMS', value: 'sms' }]"
+  :invalid="!channels.length" invalid-label="Pick at least one" />
 
-<!-- AccordionGroup: mutual exclusion (only one open at a time) -->
-<VvAccordionGroup>
-  <VvAccordion title="Section 1">Content 1</VvAccordion>
-  <VvAccordion title="Section 2">Content 2</VvAccordion>
+<VvRadioGroup v-model="plan" name="plan" vertical>
+  <VvRadio name="plan" value="free" label="Free" />
+  <VvRadio name="plan" value="pro" label="Pro" />
+</VvRadioGroup>
+
+<VvAccordionGroup v-model="openSection">          <!-- one open at a time unless `collapse` -->
+  <VvAccordion name="a" title="Shipping">...</VvAccordion>
+  <VvAccordion name="b" title="Returns">...</VvAccordion>
 </VvAccordionGroup>
 ```
 
-### 3. Action Component (VvAction)
+A standalone `VvCheckbox` bound to a boolean needs both values, otherwise the unchecked state is
+`undefined`: `<VvCheckbox v-model="agree" name="agree" :value="true" :unchecked-value="false" label="I agree" switch />`.
 
-`VvAction` is the base for clickable elements. It renders as `<button>`, `<a>`, `<router-link>`, or `<nuxt-link>` based on props. VvButton, VvNavItem, and VvBreadcrumb all extend it.
+### Options: strings or objects, keys as path or function
+
+`VvSelect`, `VvCombobox`, `VvCheckboxGroup`, `VvRadioGroup` share `OptionsProps`. Default keys are
+`label`, `value`, `disabled`. Keys accept a dot path (`'meta.id'`) or a function
+`(option) => string`. An option with an `options` array becomes an optgroup.
 
 ```vue
-<!-- Renders as <button> -->
-<VvAction label="Click me" />
-
-<!-- Renders as <a> -->
-<VvAction href="https://example.com" label="Visit" />
-
-<!-- Renders as <router-link> -->
-<VvAction :to="{ name: 'home' }" label="Home" />
+<VvSelect v-model="fruit" name="fruit" label="Fruit" :options="['Apple', 'Banana']" />
+<VvCombobox v-model="userId" name="user" label="User" :options="users"
+  label-key="fullName" value-key="id" disabled-key="inactive" searchable show-clear-action />
+<VvCombobox v-model="tags" name="tags" label="Tags" :options="allTags" multiple badges addable />
 ```
 
-### 4. Shared Props
+`VvCombobox` emits `update:search` (use `v-model:search`), debounced by `debounceSearch`; pass a
+`searchFunction` for async filtering. It renders a `VvSelect` when `native` is true. Slots:
+`option` (`{ option, selectedOptions, selected, disabled }`), `option-group`, `value`,
+`placeholder`, `no-results`, `no-options`, `dropdown::before`, `dropdown::after`, `before`, `after`
+and the hint family.
 
-Components compose their props from shared prop objects. Knowing these helps predict what a component accepts:
+### Dropdown: trigger in the default slot, entries in `#items`
 
-- **LinkProps**: `to`, `href`, `target`, `rel` — navigation
-- **ValidProps / InvalidProps**: `valid`, `validLabel` / `invalid`, `invalidLabel` — validation feedback
-- **LoadingProps**: `loading`, `loadingLabel` — loading state
-- **DisabledProps**: `disabled` — disabled state
-- **IconProps**: `icon`, `iconPosition` (before/after) — icon display
-- **ModifiersProps**: `modifiers` — BEM classes
-- **HintProps**: `hintLabel` — hint text
-- **OptionsProps**: `options`, `labelKey`, `valueKey`, `disabledKey` — option lists
-- **CountProps**: `count` (true | 'limit' | 'countdown') — character counting
-- **DebounceProps**: `debounce` (ms) — input debounce
-- **ClearProps**: `clearable`, `clearIcon`, `clearLabel` — clear action
-- **FloatingLabelProps**: `floatingLabel` — floating label style
-- **DropdownProps**: `placement`, `strategy`, `offset`, `shift`, `flip`, etc. — Floating UI positioning
-
-### 5. Options Pattern
-
-For VvSelect, VvCombobox, VvCheckboxGroup, VvRadioGroup — options can be simple strings or objects:
+The first `VvAction`/`VvButton` inside the default slot registers itself as the Floating UI
+reference and gets `aria-expanded`. Menus use `VvDropdownAction` (an action, so `to`/`href` work);
+listboxes use `VvDropdownOption` with `role="listbox"`.
 
 ```vue
-<!-- Simple string options -->
-<VvSelect :options="['Apple', 'Banana', 'Cherry']" v-model="fruit" />
-
-<!-- Object options with custom keys -->
-<VvSelect
-  :options="users"
-  label-key="fullName"
-  value-key="id"
-  disabled-key="isInactive"
-  v-model="selectedUser"
-/>
-
-<!-- Nested dot-path keys -->
-<VvSelect
-  :options="items"
-  label-key="meta.displayName"
-  value-key="meta.id"
-  v-model="selectedItem"
-/>
-
-<!-- Function keys for computed values -->
-<VvSelect
-  :options="items"
-  :label-key="(item) => `${item.name} (${item.code})`"
-  :value-key="(item) => item.id"
-  v-model="selectedItem"
-/>
-```
-
-### 6. Slot Architecture
-
-Components expose named slots for customization. Common patterns:
-
-```vue
-<VvButton>
-  <template #before>🔒</template>
-  <template #label>Custom Label</template>
-  <template #after>→</template>
-</VvButton>
-
-<VvCard>
-  <template #header>Card Title</template>
-  <template #content>Main content</template>
-  <template #footer>
-    <VvButton modifiers="primary">Action</VvButton>
+<VvDropdown v-model="open" placement="bottom-end" top-layer>
+  <VvButton icon="more-vertical" aria-label="Actions" modifiers="action-quiet" />
+  <template #items="{ hide }">
+    <VvDropdownAction @click="edit(); hide()"><VvIcon name="edit" /> Edit</VvDropdownAction>
+    <VvDropdownAction :to="{ name: 'detail', params: { id } }"><VvIcon name="view" /> Open</VvDropdownAction>
+    <VvDropdownAction @click="remove(); hide()"><VvIcon name="trash" /> Delete</VvDropdownAction>
   </template>
-</VvCard>
+</VvDropdown>
+```
 
-<VvDialog v-model="isOpen" title="Confirm">
-  <template #default>Are you sure?</template>
+`VvDropdownAction` takes the action props (`label`, `to`, `href`, `disabled`...) but no `icon`: put a
+`VvIcon` in its slot.
+
+Use `top-layer` when the trigger sits inside a panel with its own stacking context (sticky header,
+transformed card), otherwise the menu is painted underneath (`docs/specs/floating-elements.md`).
+For a right-click menu use `useDropdownContextmenu` or the `v-contextmenu` directive.
+
+### Tabs and navigation: items arrays, panel slots
+
+```vue
+<VvTab v-model="tab" :items="[{ label: 'Profile', tab: 'profile' }, { label: 'Billing', tab: 'billing' }]" lazy="once">
+  <template #panel::profile>...</template>
+  <template #panel::billing>...</template>
+</VvTab>
+
+<VvNav modifiers="sidebar" :items="[{ label: 'Home', to: '/' }, { label: 'Docs', href: '/docs', current: true }]" />
+<VvBreadcrumb :routes="[{ label: 'Home', to: '/' }, { label: 'Orders' }]" />
+```
+
+`NavItem` fields: `label`, `to`, `href`, `target`, `rel`, `title`, `ariaLabel`, `disabled`,
+`current`, `class`, `on` (event handlers), `data` (passed to the `item` slot).
+
+### Alerts: a reactive list rendered by VvAlertGroup
+
+```vue
+<script setup lang="ts">
+import { useAlert } from '@volverjs/ui-vue/composables'
+const { alerts, addAlert, removeAlert } = useAlert()   // no arguments, module-level state
+function saved() {
+  addAlert({ title: 'Saved', content: 'Your changes are live.', modifiers: 'success', autoClose: 5000 })
+}
+</script>
+<template>
+  <VvAlertGroup name="default" :items="alerts" position="fixed" block="top" inline="end" @close="removeAlert" />
+</template>
+```
+
+`addAlert` accepts the `Alert` type (`id`, `title`, `content`, `footer`, `icon`, `modifiers`,
+`dismissable`, `autoClose`, `closeLabel`, `role`) plus `group` for a second list; read another
+group with `getAlerts('name')`. Standalone `<VvAlert>` takes the same props plus slots `header`,
+`title`, `title::before`, `title::after`, `close`, `default`, `footer`. The `info` icon is the
+default; `success`/`warning`/`danger` pick their icon from the modifier.
+
+### Dialog and card
+
+```vue
+<VvDialog v-model="confirmOpen" title="Delete order?" modifiers="small">
+  <p>This cannot be undone.</p>
   <template #footer>
-    <VvButton @click="isOpen = false">Cancel</VvButton>
-    <VvButton modifiers="primary" @click="confirm">OK</VvButton>
+    <VvButton label="Cancel" modifiers="secondary" @click="confirmOpen = false" />
+    <VvButton label="Delete" modifiers="danger" :loading="deleting" @click="destroy" />
   </template>
 </VvDialog>
 
-<VvCombobox :options="users" v-model="selected">
-  <template #option="{ option }">
-    <VvAvatar :src="option.avatar" /> {{ option.name }}
-  </template>
-  <template #no-results>No users found</template>
-</VvCombobox>
+<VvCard title="Invoice">
+  <template #content>...</template>
+  <template #footer><VvButton label="Download" icon="download" modifiers="secondary" /></template>
+</VvCard>
 ```
 
-### 7. Icon System
+`VvDialog` is a native `<dialog>` opened with `showModal()`: `Esc` and click outside close it unless
+`keepOpen`; it emits `open`, `close` and the transition hooks. The `header` slot replaces title and
+close button together. `VvCard` puts the default slot straight into the article; `content` and
+`footer` add the wrapped sections.
 
-Icons use Iconify. Register collections via the Volver plugin, then reference by name:
+## 7. Setup
 
-```vue
-<VvIcon name="mdi:home" />
-<VvButton icon="mdi:save" modifiers="primary">Save</VvButton>
-<VvInputText icon="mdi:search" icon-position="before" />
-```
+Three ways to bring components in; do not mix them in the same project without a reason.
 
-### 8. Directives
+1. **Explicit imports** (tree-shakable): `import { VvButton } from '@volverjs/ui-vue/components'`
+   or `import VvButton from '@volverjs/ui-vue/vv-button'`, plus the style
+   `import '@volverjs/style/vv-button'` (or `@volverjs/style/scss/vv-button`).
+2. **Global registration** through the plugin `components` option.
+3. **Auto-import** with `unplugin-vue-components`:
 
-```vue
-<!-- Tooltip directive -->
-<button v-tooltip="'Helpful tip'">Hover me</button>
-
-<!-- Context menu directive -->
-<div v-contextmenu="menuHandler">Right-click me</div>
-```
-
-## Plugin Setup
-
-```typescript
-import { createApp } from 'vue'
-import { VolverPlugin } from '@volverjs/ui-vue'
-import type { VolverOptions } from '@volverjs/ui-vue'
-
-// Icon collections (optional)
-import customIcons from './icons'
-
-const app = createApp(App)
-
-app.use(VolverPlugin, {
-  // Auto-register components (enables <VvButton> in templates without importing)
-  components: { VvButton, VvDialog, VvInputText },
-
-  // Global prop defaults per component
-  defaults: {
-    VvButton: { modifiers: 'primary' },
-    VvInputText: { floatingLabel: true, debounce: 300 }
-  },
-
-  // Icon configuration
-  iconsCollections: [customIcons],
-  iconsProvider: 'vv',
-
-  // Fetch options for icon HTTP requests
-  fetchWithCredentials: true,
-
-  // Directives
-  directives: { tooltip: vTooltip, contextmenu: vContextmenu },
-
-  // Aliases
-  aliases: { Btn: VvButton },
-
-  // Experimental
-  experimentalFeatures: { forceInputSuggestions: true }
-} satisfies VolverOptions)
-```
-
-### Auto-Import (unplugin-vue-components)
-
-```typescript
+```ts
 // vite.config.ts
 import Components from 'unplugin-vue-components/vite'
 import { VolverResolver } from '@volverjs/ui-vue/resolvers/unplugin'
+Components({ resolvers: [VolverResolver({ importStyle: 'scss', directives: true })] })
+// options: importStyle (false | 'css' | 'scss'), directives, prefix ('vv'), ignore: string[], cherryPick
+```
 
-export default defineConfig({
-  plugins: [
-    Components({
-      resolvers: [
-        VolverResolver({
-          prefix: 'vv',
-          importStyle: 'scss',  // or 'css'
-          directives: true,
-          cherryPick: false     // true for individual component imports
-        })
-      ]
-    })
-  ]
+The plugin is always needed for icons and defaults:
+
+```ts
+import { VolverPlugin } from '@volverjs/ui-vue'
+import iconsCollections from '@volverjs/ui-vue/icons'
+import { vTooltip, vContextmenu } from '@volverjs/ui-vue/directives'
+import '@volverjs/style/base'
+
+app.use(VolverPlugin, {
+  iconsCollections,                              // IconifyJSON[]; add your own generated collections here
+  iconsProvider: 'vv',                           // default
+  nuxt: false,                                   // true makes `to` render <nuxt-link>
+  components: { VvButton, VvInputText },         // optional global registration
+  aliases: { BtnDanger: VvButton },              // extra names for the same component
+  defaults: {                                    // default props per component name or alias
+    VvInputText: { floating: true, debounce: 300 },
+    BtnDanger: { modifiers: 'danger' },
+  },
+  directives: { tooltip: vTooltip, contextmenu: vContextmenu },
+  fetchWithCredentials: false, fetchOptions: undefined,   // for fetchIcon()
+  experimentalFeatures: { forceInputSuggestions: false },
 })
 ```
 
-## Composables
+`defaults` are baked into the prop definitions of components registered through `components` and
+`aliases`. The form components (`VvInputText`, `VvTextarea`, `VvSelect`, `VvCombobox`, `VvCheckbox`,
+`VvRadio`, the two groups, `VvInputFile`, `VvInputRange`) also read them at runtime, so their
+defaults work with explicit imports and auto-import too; for `VvButton`, `VvDialog` and the rest they
+apply only to globally registered components. The instance is available as `$vv` in templates.
 
-Five exported composables for advanced use:
+## 8. Composables (`@volverjs/ui-vue/composables`)
 
-| Composable | Purpose |
-|-----------|---------|
-| `useAlert()` | Add/remove alerts in an AlertGroup programmatically |
-| `useDropdownContextmenu()` | Attach a dropdown as context menu to an element |
-| `useDropdownVirtualElement()` | Position dropdown on a virtual/computed element |
-| `useBlurhash()` | Generate blurhash placeholder images |
-| `useVirtualScroll()` | Manage virtual scroll state |
+| Composable | Signature | Use |
+|-----------|-----------|-----|
+| `useAlert()` | returns `{ alerts, groups, addAlert, removeAlert, getAlerts }` | notifications, see section 6 |
+| `useDropdownContextmenu(dropdownRef, targetEl?)` | `Ref<VvDropdown>`, optional element | open a dropdown at the pointer on right click |
+| `useDropdownVirtualElement(dropdownRef)` | `Ref<VvDropdown>` | anchor a dropdown to arbitrary coordinates |
+| `useBlurhash()` | returns `{ encode, decode, loadImage }` | blurred image placeholders |
+| `useVirtualScroll({ scrollEl, count, estimateSize, getItemKey?, overscan?, horizontal? })` | | custom virtual lists; `VvVirtualScroll` covers the common case |
 
-Access the Volver instance in composables via `useVolver()`.
+Directives: `v-tooltip="'text'"` and `v-tooltip:top="'text'"` (argument is the `Side`),
+`v-contextmenu`. Import from `@volverjs/ui-vue/directives`.
 
-## JSON Render System
+## 9. Generative UI (json-render)
 
-The JSON Render system lets AI models generate UIs from JSON definitions. It provides a Zod-validated catalog of all components with their props and slots.
+`@volverjs/ui-vue/json-render` exports `catalog` (27 Zod-validated component definitions),
+`registry` (mapping to the real components), plus `volverComponentDefinitions` and
+`volverComponents` to build a subset. Peer dependencies: `@json-render/core`, `@json-render/vue`,
+`zod`. Form components support `$bindState` for two-way binding.
 
-For detailed JSON Render usage, read `src/json-render/index.ts` and `src/json-render/catalog.ts`. Key concepts:
-
-```typescript
+```ts
 import { catalog, registry } from '@volverjs/ui-vue/json-render'
-
-// Generate an LLM system prompt describing available components
-const prompt = catalog.prompt({ customRules: ['Use primary buttons for CTAs'] })
-
-// Use the registry with @json-render/vue <Renderer> component
+const systemPrompt = catalog.prompt({ customRules: ['Use the primary modifier for the main call to action'] })
+// <Renderer :spec="spec" :registry="registry" /> inside StateProvider and VisibilityProvider from @json-render/vue
 ```
 
-Components support `$bindState` for two-way binding in JSON render mode.
+The package `README.md` has the full rendering and custom-catalog examples.
 
-## Common Recipes
+## 10. Before you finish: the checklist that catches real bugs
 
-### Login Form
-```vue
-<template>
-  <form @submit.prevent="handleLogin">
-    <VvInputText
-      v-model="email"
-      type="email"
-      label="Email"
-      floating-label
-      icon="mdi:email"
-      icon-position="before"
-      required
-      :invalid="errors.email"
-      :invalid-label="errors.email"
-    />
-    <VvInputText
-      v-model="password"
-      type="password"
-      label="Password"
-      floating-label
-      icon="mdi:lock"
-      icon-position="before"
-      required
-      :invalid="errors.password"
-      :invalid-label="errors.password"
-    />
-    <VvCheckbox v-model="rememberMe" label="Remember me" switch />
-    <VvButton type="submit" modifiers="primary" :loading="isLoading">
-      Login
-    </VvButton>
-  </form>
-</template>
-```
-
-### Confirmation Dialog
-```vue
-<template>
-  <VvDialog v-model="showConfirm" title="Delete Item?">
-    <p>This action cannot be undone.</p>
-    <template #footer>
-      <VvButton @click="showConfirm = false">Cancel</VvButton>
-      <VvButton modifiers="danger" @click="handleDelete" :loading="deleting">
-        Delete
-      </VvButton>
-    </template>
-  </VvDialog>
-</template>
-```
-
-### Searchable Select
-```vue
-<template>
-  <VvCombobox
-    v-model="selectedUser"
-    v-model:search="searchQuery"
-    :options="users"
-    label-key="fullName"
-    value-key="id"
-    label="Select User"
-    floating-label
-    clearable
-    :debounce-search="300"
-  >
-    <template #option="{ option }">
-      <VvAvatar :src="option.avatar" modifiers="small" />
-      <span>{{ option.fullName }}</span>
-    </template>
-    <template #no-results>
-      No users match "{{ searchQuery }}"
-    </template>
-  </VvCombobox>
-</template>
-```
-
-### Alert Notifications
-```vue
-<template>
-  <VvAlertGroup name="notifications" />
-</template>
-
-<script setup>
-import { useAlert } from '@volverjs/ui-vue/composables'
-
-const { add } = useAlert('notifications')
-
-function showSuccess(message: string) {
-  add({
-    title: 'Success',
-    content: message,
-    modifiers: 'success',
-    dismissable: true,
-    autoClose: 5000
-  })
-}
-</script>
-```
-
-## Important Conventions
-
-1. **Always check component source** for the latest props — read `src/components/Vv<Name>/Vv<Name>.vue`
-2. **BEM modifiers** depend on `@volverjs/style` — not all modifier strings are valid for all components
-3. **Group components** propagate state downward — child props are overridden by group state when nested
-4. **VvAction** is the base for links/buttons — use `href`/`to` for links, nothing for buttons
-5. **Options** support string paths, functions, or simple strings for flexible data binding
-6. **Floating UI** positioning is handled by VvDropdown/VvTooltip — configure via `placement`, `offset`, `shift`, `flip` props
-7. **Transitions** on VvDialog and VvDropdown emit lifecycle events (beforeEnter, afterLeave, etc.)
+- Every input, select, combobox, checkbox, radio, file and group has a `name`.
+- No invented props: `floating` not `floatingLabel`, `showClearAction` not `clearable`,
+  `iconPosition` is `before`/`after`, `imgSrc` on avatars, `routes` on breadcrumbs, `items` on
+  nav/tab/accordion group, `labelClose` on dialogs, `closeLabel` on alerts.
+- Every modifier you wrote appears in the table of section 4 (or in `list-modifiers.sh` output).
+- Icons use bundled names or a registered collection, not random Iconify prefixes.
+- Boolean checkboxes have `:value="true" :unchecked-value="false"`.
+- Dropdowns inside sticky/transformed containers have `top-layer`.
+- Alerts go through `useAlert` and one `VvAlertGroup` with `:items` and `@close`.
+- For anything not covered here, you ran `inspect-component.sh` and read the story instead of guessing.
