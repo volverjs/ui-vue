@@ -14,10 +14,14 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     await expect(input).toHaveAttribute('type', 'range')
     await expect(Boolean(readout)).toEqual(Boolean(args.showValue))
 
-    // The field reports the middle of its track until it has a value.
+    // The field reports the middle of its track until it has a value, and the
+    // fill has to say the same.
     if (args.showValue) {
         await expect(readout.textContent?.trim()).toContain('50')
     }
+    await expect(
+        element.style.getPropertyValue('--input-range-progress'),
+    ).toEqual('50%')
 
     // value
     if (!args.disabled && !args.readonly) {
@@ -28,6 +32,9 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         if (args.showValue) {
             await expect(readout.textContent?.trim()).toContain('75')
         }
+        await expect(
+            element.style.getPropertyValue('--input-range-progress'),
+        ).toEqual('75%')
     }
 
     // disabled
@@ -91,13 +98,16 @@ export async function debouncedTest({ canvasElement }: PlayAttributes) {
     const input = element.getElementsByTagName('input')[0]
     const readout = element.getElementsByClassName('vv-input-range__value')[0]
 
-    // The debounce (300ms) holds the value back, but the readout follows the
-    // slider right away.
+    // The debounce (300ms) holds the value back, but the readout and the fill
+    // follow the slider right away.
     input.value = '80'
     input.dispatchEvent(new Event('input', { bubbles: true }))
     await sleep(50)
     await expect(value.innerHTML).toEqual('')
     await expect(readout.textContent?.trim()).toContain('80')
+    await expect(
+        element.style.getPropertyValue('--input-range-progress'),
+    ).toEqual('80%')
 
     // Once the timer fires the model catches up.
     await sleep(350)

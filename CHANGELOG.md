@@ -8,11 +8,11 @@ All notable changes to this project will be documented in this file.
 
 - `VvInputRange`, a slider for a numeric value between `min` and `max`, with the value picked shown next to it. It takes the props the other fields take (`name`, `label`, `disabled`, `readonly`, `valid`, `invalid`, `hintLabel`, `loading`, `modifiers`, `debounce`, `tabindex`, `autofocus`) and adds `min`, `max`, `step`, `defaultValue`, `showValue`, `unit` and `formatValue`, which localizes the readout without pulling an i18n library into the component. Slots are `before`, `value`, `after` and the hint family, and `flush()` is exposed as on `VvTextarea`, for a debounced value a custom submit has to read before its timer fires.
 
-  A range input has no empty state: with no value of its own it reports the middle of its track. `defaultValue` emits that value on mount, so a form model does not stay empty behind a field that already shows a number, and the readout follows the slider rather than the model while a debounced drag waits for its timer.
+  A range input has no empty state: with no value of its own it reports the middle of its track. `defaultValue` emits that value on mount, so a form model does not stay empty behind a field that already shows a number, and both the readout and the filled part of the track follow the slider rather than the model while a debounced drag waits for its timer.
 
   It takes no `readonly` attribute either, so `readonly` disables the native control and adds the `--readonly` modifier, the same shape `VvCheckbox`, `VvRadio` and `VvSelect` already use.
 
-  The slider is the native control, drawn and filled by the browser, so the component writes no geometry at all: it renders the field, keeps the readout in step and leaves the track to CSS. It needs the `@volverjs/style` release that ships `vv-input-range` to be visible, because the reset of the current one switches the appearance of every control off and only that release turns the slider back on.
+  CSS cannot read the value of a range input, so the component writes the filled share of the track on the block as `--input-range-progress`. It needs the `@volverjs/style` release that ships `vv-input-range`: without it the field renders as the platform slider.
 - `InputRange` in the json-render catalog and registry, which now declare 27 components.
 
 ### Changed
