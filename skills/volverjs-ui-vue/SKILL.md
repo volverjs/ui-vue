@@ -93,7 +93,7 @@ but only the modifiers declared by `@volverjs/style` do anything. Components als
 their own (`--disabled`, `--icon-only`, `--reverse`, `--floating`, `--valid`, `--invalid`,
 `--readonly`), so do not pass those by hand.
 
-Declared by `@volverjs/style` 0.1.25 (regenerate with `scripts/list-modifiers.sh` when the version changes):
+Declared by `@volverjs/style` 0.1.26 (regenerate with `scripts/list-modifiers.sh` when the version changes):
 
 | Component | Modifiers |
 |-----------|-----------|
@@ -111,6 +111,7 @@ Declared by `@volverjs/style` 0.1.25 (regenerate with `scripts/list-modifiers.sh
 | vv-accordion-group | `condensed` |
 | vv-checkbox-group | `horizontal` |
 | vv-input-file | `drop-area` `square` `circle` `hidden` `with-progress` |
+| vv-input-range | `valid` `invalid` `readonly`, all three set by the component |
 | vv-textarea | `resizable` |
 | vv-nav | `sidebar` `aside` `tabs` `full` |
 | vv-tooltip | `visible` `top` `bottom` `left` |
