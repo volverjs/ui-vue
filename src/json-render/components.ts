@@ -18,6 +18,7 @@ import VvCombobox from '../components/VvCombobox/VvCombobox.vue'
 import VvDialog from '../components/VvDialog/VvDialog.vue'
 import VvIcon from '../components/VvIcon/VvIcon.vue'
 import VvInputFile from '../components/VvInputFile/VvInputFile.vue'
+import VvInputRange from '../components/VvInputRange/VvInputRange.vue'
 import VvInputText from '../components/VvInputText/VvInputText.vue'
 import VvNav from '../components/VvNav/VvNav.vue'
 import VvProgress from '../components/VvProgress/VvProgress.vue'
@@ -189,6 +190,15 @@ export function InputTextComponent({ props, bindings }: BaseComponentProps) {
     )
 }
 
+export function InputRangeComponent({ props, bindings }: BaseComponentProps) {
+    return useRenderBound<number>(
+        VvInputRange,
+        props,
+        ['name', 'label', 'min', 'max', 'step', 'unit', 'showValue', 'disabled', 'readonly', 'modifiers'],
+        bindings,
+    )
+}
+
 export function TextareaComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<string>(
         VvTextarea,
@@ -304,5 +314,6 @@ export const volverComponents = {
     Radio: RadioComponent,
     RadioGroup: RadioGroupComponent,
     Combobox: ComboboxComponent,
+    InputRange: InputRangeComponent,
     InputFile: InputFileComponent,
 } as const

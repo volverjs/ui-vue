@@ -75,6 +75,7 @@ export {
     DialogComponent,
     IconComponent,
     InputFileComponent,
+    InputRangeComponent,
     // Forms
     InputTextComponent,
     NavComponent,
@@ -112,6 +113,7 @@ export {
     DialogDefinition,
     IconDefinition,
     InputFileDefinition,
+    InputRangeDefinition,
     // Forms
     InputTextDefinition,
     NavDefinition,
