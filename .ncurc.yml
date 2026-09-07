@@ -1,11 +1,22 @@
-# Packages excluded from `ncu` suggestions, kept in sync with the versions the
-# `overrides` block in pnpm-workspace.yaml deliberately holds back. The security
-# floors in that same block do not belong here: they raise transitive
-# dependencies, which `ncu` never suggests.
+# Packages excluded from `ncu` suggestions: majors this project deliberately
+# stays behind on. A hold that also has to reach transitive resolutions is
+# mirrored by the `overrides` block in pnpm-workspace.yaml. The security floors
+# in that same block do not belong here: they raise transitive dependencies,
+# which `ncu` never suggests.
 #
 # Careful, `--reject` on the command line replaces this list rather than adding
-# to it, so repeat it: `ncu -u --reject typescript,<other>`.
+# to it, so repeat it:
+# `ncu -u --reject typescript,vitest,@vitest/browser,@vitest/browser-playwright`.
 reject:
   # TypeScript 7 is the native (Go) compiler and dropped the classic compiler
   # API required by vue-tsc, ts-node and typescript-eslint.
   - typescript
+
+  # Vitest 5 is not supported by `@storybook/addon-vitest`, which peers on
+  # `vitest ^3 || ^4` up to and including the 11.0.0 alpha. Installing it makes
+  # the storybook project fail to import `.storybook/vitest.setup.ts`, so the
+  # whole suite collects 93 files and runs no test. Revisit once Storybook
+  # widens the range. No `overrides` entry: nothing pulls vitest transitively.
+  - vitest
+  - '@vitest/browser'
+  - '@vitest/browser-playwright'

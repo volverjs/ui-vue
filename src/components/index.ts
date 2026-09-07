@@ -21,6 +21,7 @@ export { default as VvDropdownOptgroup } from './VvDropdown/VvDropdownOptgroup.v
 export { default as VvDropdownOption } from './VvDropdown/VvDropdownOption.vue'
 export { default as VvIcon } from './VvIcon/VvIcon.vue'
 export { default as VvInputFile } from './VvInputFile/VvInputFile.vue'
+export { default as VvInputRange } from './VvInputRange/VvInputRange.vue'
 export { default as VvInputText } from './VvInputText/VvInputText.vue'
 export { default as VvNav } from './VvNav/VvNav.vue'
 export { default as VvNavItem } from './VvNav/VvNavItem.vue'

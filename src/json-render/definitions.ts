@@ -312,6 +312,26 @@ export const TextareaDefinition = {
         'Multi-line text input. Use $bindState for two-way binding.',
 }
 
+export const InputRangeDefinition = {
+    props: z.object({
+        name: z.string(),
+        label: z.string().nullish(),
+        disabled: z.boolean().nullish(),
+        readonly: z.boolean().nullish(),
+        modifiers,
+        min: z.number().nullish(),
+        max: z.number().nullish(),
+        step: z.number().nullish(),
+        unit: z.string().nullish().describe('Unit shown next to the value'),
+        showValue: z
+            .boolean()
+            .nullish()
+            .describe('Show the current value next to the slider'),
+    }),
+    description:
+        'Slider for a numeric value between min and max, with the value picked shown next to it. Use $bindState for two-way binding.',
+}
+
 export const SelectDefinition = {
     props: z.object({
         ...formFieldProps,
@@ -436,5 +456,6 @@ export const volverComponentDefinitions = {
     Radio: RadioDefinition,
     RadioGroup: RadioGroupDefinition,
     Combobox: ComboboxDefinition,
+    InputRange: InputRangeDefinition,
     InputFile: InputFileDefinition,
 } as const

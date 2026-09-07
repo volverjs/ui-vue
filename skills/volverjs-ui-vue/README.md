@@ -1,6 +1,6 @@
-# Volver UI Vue Skill for Claude Code
+# Volver UI Vue skill for Claude Code
 
-Agent skill that helps Claude Code build interfaces with [Volver UI Vue](https://github.com/volverjs/ui-vue), the Vue 3 component library based on `@volverjs/ui-vue`.
+Agent skill that teaches Claude Code to build interfaces with [@volverjs/ui-vue](https://github.com/volverjs/ui-vue), the Vue 3 component library of the Volver design system.
 
 ## Installation
 
@@ -8,66 +8,43 @@ Agent skill that helps Claude Code build interfaces with [Volver UI Vue](https:/
 npx skills add volverjs/ui-vue
 ```
 
-This adds the skill to your Claude Code configuration.
+## What the skill does
 
-## What This Skill Covers
+The library has specific prop names (`floating`, `showClearAction`, `iconPosition="before"`, a required `name` on every field) and Vue does not warn when a prop is misspelled, so a guessed name fails silently. The skill fixes that in two ways:
 
-The skill is specialized for real Volver UI Vue implementation patterns:
+- **Verified reference in `SKILL.md`**: the 35 components, the shared props with their exact names, the BEM modifiers that `@volverjs/style` actually declares, the bundled icon set, the group/options/dropdown/tab/alert patterns, plugin and resolver setup, composables, json-render. Every snippet is checked against the library source.
+- **Scripts that read the installed package** instead of relying on memory:
+  - `scripts/inspect-component.sh VvCombobox` prints props with JSDoc, events, slots with their scope and the stories that show real usage.
+  - `scripts/list-modifiers.sh vv-button` prints the modifiers defined by the installed `@volverjs/style`.
 
-- **Components**: VvButton, VvInputText, VvSelect, VvCombobox, VvDialog, VvDropdown, VvCheckbox, VvRadio, VvTab, VvAlert, VvTooltip, VvVirtualScroll, and more.
-- **Shared Props**: loading, validation, disabled state, icon support, options mapping, debounce, clearable inputs, floating labels.
-- **Group Patterns**: VvButtonGroup, VvCheckboxGroup, VvRadioGroup, VvAccordionGroup state coordination.
-- **BEM Modifiers**: `modifiers` prop usage aligned with `@volverjs/style` classes.
-- **Plugin Setup**: Volver plugin registration, defaults, icons collections/providers, directives, aliases, and experimental features.
-- **Auto-Import**: resolver setup via `@volverjs/ui-vue/resolvers/unplugin`.
-- **Composables**: `useAlert`, dropdown composables, `useBlurhash`, `useVirtualScroll`, `useVolver`.
-- **JSON Render**: catalog/registry usage to support AI-generated UIs from validated JSON.
+Both scripts work inside the library repository and inside any project that installed the package (it ships its `src/` folder).
 
-## Usage
+## When it triggers
 
-Once installed, Claude Code should automatically use this skill when you ask to:
+Any request involving `@volverjs/ui-vue` or `Vv*` components, also when the user just says "form", "modal", "dropdown menu", "tabs", "notifications" in a project that depends on the library. Also for `VolverPlugin`/`VolverResolver` configuration, `useAlert` and the other composables, and JSON-rendered UI with the Volver catalog.
 
-- Build forms, dialogs, dropdowns, tabs, alerts, or navigation with Volver components.
-- Configure Volver plugin options in a Vue app.
-- Compose groups and shared validation/loading patterns.
-- Use Volver composables or JSON Render integration.
-
-### Example Prompts
+### Example prompts
 
 ```text
-Create a login form with VvInputText, VvCheckbox, and a loading VvButton using Volver UI Vue.
+Add a login form to LoginView.vue with email, password and a "remember me" switch, using the design system components.
 ```
 
 ```text
-Set up VolverPlugin with global defaults, custom icon collection, and tooltip/contextmenu directives.
+Set up VolverPlugin with our custom icon collection and floating labels by default on every VvInputText.
 ```
 
 ```text
-Build a searchable VvCombobox with custom option slot and async search debounce.
+Turn the actions column of this table into a VvDropdown menu with edit, open and delete entries.
 ```
 
 ```text
-Show how to render a confirmation modal with VvDialog and footer action buttons.
+Show a success notification after the save call using the Volver alert system.
 ```
 
-```text
-Generate a JSON Render example using the Volver catalog and registry.
-```
+## Keeping it up to date
 
-## Source of Truth
-
-When coding, verify APIs directly from the library source:
-
-- `src/components/Vv<Name>/Vv<Name>.vue`
-- `src/props/index.ts`
-- `src/types/`
-- `src/constants.ts`
-- `src/json-render/`
-
-## Documentation
-
-- [Volver UI Vue Repository](https://github.com/volverjs/ui-vue)
-- [Skill Specification](./SKILL.md)
+- New component or renamed prop: update the catalog and the shared props table in `SKILL.md`.
+- New `@volverjs/style` release: run `scripts/list-modifiers.sh` and refresh the modifiers table (the version is noted above the table).
 
 ## License
 
