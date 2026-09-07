@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.19] - 2026-09-07
+
+### Added
+
+- `VvInputRange`, a slider for a numeric value between `min` and `max`, with the value picked shown next to it. It takes the props the other fields take (`name`, `label`, `disabled`, `readonly`, `valid`, `invalid`, `hintLabel`, `loading`, `modifiers`, `debounce`, `tabindex`, `autofocus`) and adds `min`, `max`, `step`, `defaultValue`, `showValue`, `unit` and `formatValue`, which localizes the readout without pulling an i18n library into the component. Slots are `before`, `value`, `after` and the hint family, and `flush()` is exposed as on `VvTextarea`, for a debounced value a custom submit has to read before its timer fires.
+
+  A range input has no empty state: with no value of its own it reports the middle of its track, and a native form submits it. The field says the same, publishing that value on mount when the model is undefined, with `defaultValue` choosing it in place of the middle: a form model does not stay empty behind a field that already shows a number, and a schema that wants a number does not reject what the user is looking at. The value the component reports is always the one the thumb sits on, so a model out of range or off the step is clamped and snapped the way the native control does, and both the readout and the filled part of the track follow the slider rather than the model while a debounced drag waits for its timer.
+
+  An `aria-` attribute the component does not declare reaches the slider instead of the block, `aria-label` above all, which is the accessible name of a field used without a visible label. Every other attribute keeps addressing the block, where `class`, `style` and the `data-` hooks a page puts on a field are expected to land.
+
+  It takes no `readonly` attribute either, so `readonly` disables the native control and adds the `--readonly` modifier, the same shape `VvCheckbox`, `VvRadio` and `VvSelect` already use.
+
+  CSS cannot read the value of a range input, so the component writes the filled share of the track on the block as `--input-range-progress`. It needs the `@volverjs/style` release that ships `vv-input-range`: without it the field renders as the platform slider.
+- `InputRange` in the json-render catalog and registry, which now declare 27 components.
+
+### Changed
+
+- Development dependencies updated, among them `storybook` and its addons to 10.6.0, `@antfu/eslint-config` to 9.5.1, `eslint` to 10.10.0, `playwright` to 1.63.0, `sass-embedded` to 1.104.0, `@iconify/utils` to 3.1.7 and `@types/node` to 26.4.1, and `packageManager` moves to pnpm 12.3.4.
+
+  `vitest` and the two `@vitest/browser` packages join `typescript` in the reject list of `.ncurc.yml`: Vitest 5 is not supported by `@storybook/addon-vitest`, which peers on `vitest ^3 || ^4` up to and including its 11.0.0 alpha, and installing it makes the storybook project fail to import `.storybook/vitest.setup.ts`, so the suite collects its files and runs no test. They need no `overrides` entry, because nothing pulls vitest transitively.
+- The three workflows pin `pnpm/action-setup` to the commit v6.1.0 points at. That is the first release which bootstraps pnpm 12, shipping as a native binary instead of the `@pnpm/exe` package the older path expects, and the floating `v6` tag still points at v6.0.10. The reference is a commit and not a tag because a tag can be moved under the workflow, which the analysis rates as a supply chain risk on a third party action.
+- The styleguide workflow uploads the Pages artifact with `actions/upload-pages-artifact@v5`. Version 4 pins `actions/upload-artifact` 4.6.2 inside itself, which still targets Node.js 20, so every run of that job ended with the runner deprecation warning. It was the only one left in the pipeline. Version 5 is the same composite action with the pin moved to `actions/upload-artifact` 7, and it takes the same inputs.
+
 ## [0.0.18] - 2026-08-31
 
 ### Changed

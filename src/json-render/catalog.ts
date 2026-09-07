@@ -3,7 +3,7 @@ import { schema } from '@json-render/vue'
 import { volverComponentDefinitions } from './definitions'
 
 /**
- * Pre-built json-render catalog containing all 26 curated Volver UI components.
+ * Pre-built json-render catalog containing all 27 curated Volver UI components.
  *
  * Use this catalog to generate a system prompt for AI models and validate
  * generated specs against the Volver component library.

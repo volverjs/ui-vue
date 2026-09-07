@@ -348,7 +348,7 @@ import { catalog, registry } from '@volverjs/ui-vue/json-render'
 const systemPrompt = catalog.prompt()
 ```
 
-The `catalog` declares **26 components** (layout, data display, actions, navigation, forms) with Zod-validated props and AI-friendly descriptions. The `registry` maps each catalog type to the real Vue component.
+The `catalog` declares **27 components** (layout, data display, actions, navigation, forms) with Zod-validated props and AI-friendly descriptions. The `registry` maps each catalog type to the real Vue component.
 
 ### Rendering AI-generated specs
 
