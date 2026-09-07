@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.20] - 2026-09-07
+
+### Fixed
+
+- `VvInputRange` is dressed again. `@volverjs/style` moves to 0.1.26 among the development dependencies, the release that ships `vv-input-range`: 0.0.19 published the component while the style that draws it was still missing, and the styleguide rendered the field as a bare thumb sitting on no track.
+
+  The failure is not the platform slider showing through. The reset of `@volverjs/style` applies `all: unset` to every element outside a short exclusion list, and `input[type="range"]` is not in it, so a control the library does not dress keeps no appearance of its own. The 0.0.19 entry said otherwise and is corrected there.
+
+  Nothing changes for an application that already installs `@volverjs/style` 0.1.26: the published package never carried the style, which stays a peer dependency. What this release rebuilds is the styleguide.
+- A story asserts that the enabled slider computes `cursor: pointer`, which the dressed control sets and `all: unset` does not, so the suite fails if a component is ever released ahead of its style again.
+
 ## [0.0.19] - 2026-09-07
 
 ### Added
@@ -19,7 +30,6 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- `@volverjs/style` moves to 0.1.26 among the development dependencies, the release that ships `vv-input-range`. The styleguide was drawing the new field as a bare thumb, because the component was there and the style that dresses it was not.
 - Development dependencies updated, among them `storybook` and its addons to 10.6.0, `@antfu/eslint-config` to 9.5.1, `eslint` to 10.10.0, `playwright` to 1.63.0, `sass-embedded` to 1.104.0, `@iconify/utils` to 3.1.7 and `@types/node` to 26.4.1, and `packageManager` moves to pnpm 12.3.4.
 
   `vitest` and the two `@vitest/browser` packages join `typescript` in the reject list of `.ncurc.yml`: Vitest 5 is not supported by `@storybook/addon-vitest`, which peers on `vitest ^3 || ^4` up to and including its 11.0.0 alpha, and installing it makes the storybook project fail to import `.storybook/vitest.setup.ts`, so the suite collects its files and runs no test. They need no `overrides` entry, because nothing pulls vitest transitively.
