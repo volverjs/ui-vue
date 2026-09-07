@@ -19,6 +19,14 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     await expect(element).toHaveClass('vv-input-range')
     await expect(element.tagName).toEqual('DIV')
 
+    // The field is dressed by the `vv-input-range` of @volverjs/style. The
+    // reset of that library unsets the user agent appearance of every control
+    // it does not dress, so a release without it leaves a bare thumb and no
+    // track: this is what that looks like from here.
+    if (!args.disabled && !args.readonly) {
+        await expect(getComputedStyle(input).cursor).toEqual('pointer')
+    }
+
     // The field reports the middle of its track until it has a value, and the
     // fill, the readout and the model have to say the same.
     await expect(value.innerHTML).toEqual('50')

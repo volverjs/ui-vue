@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.20] - 2026-09-07
+
+### Fixed
+
+- `VvInputRange` is dressed again. `@volverjs/style` moves to 0.1.26 among the development dependencies, the release that ships `vv-input-range`: 0.0.19 published the component while the style that draws it was still missing, and the styleguide rendered the field as a bare thumb sitting on no track.
+
+  The failure is not the platform slider showing through. The reset of `@volverjs/style` applies `all: unset` to every element outside a short exclusion list, and `input[type="range"]` is not in it, so a control the library does not dress keeps no appearance of its own. The 0.0.19 entry said otherwise and is corrected there.
+
+  The published package never carried the style, so what this release rebuilds is the styleguide, and an application already on 0.1.26 has nothing to do.
+- The `@volverjs/style` peer dependency declares a floor for the first time, `>=0.1.26` in place of `>=0`. A component whose style is missing does not fail loudly, it renders undressed, and the changelog was the only place saying which release it needed. An application still on an older style now hears about it while installing rather than while looking at a slider with no track. Package managers configured to refuse unmet peers will hold the upgrade until `@volverjs/style` moves too, which is the intent: the two are one design system.
+- A story asserts that the enabled slider computes `cursor: pointer`, which the dressed control sets and `all: unset` does not, so the suite fails if a component is ever released ahead of its style again.
+
 ## [0.0.19] - 2026-09-07
 
 ### Added
@@ -14,7 +26,7 @@ All notable changes to this project will be documented in this file.
 
   It takes no `readonly` attribute either, so `readonly` disables the native control and adds the `--readonly` modifier, the same shape `VvCheckbox`, `VvRadio` and `VvSelect` already use.
 
-  CSS cannot read the value of a range input, so the component writes the filled share of the track on the block as `--input-range-progress`. It needs the `@volverjs/style` release that ships `vv-input-range`: without it the field renders as the platform slider.
+  CSS cannot read the value of a range input, so the component writes the filled share of the track on the block as `--input-range-progress`. It needs `@volverjs/style` 0.1.26, the release that ships `vv-input-range`. Not as a nicety: the reset of the style library unsets the user agent appearance of every control it does not dress itself, so without that release the field renders as a bare thumb with no track under it.
 - `InputRange` in the json-render catalog and registry, which now declare 27 components.
 
 ### Changed
