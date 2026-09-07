@@ -67,9 +67,9 @@ export const VvInputRangeProps = {
         default: undefined,
     },
     /**
-     * Value emitted on mount when `modelValue` is undefined. A range input has
-     * no empty state: without it the field shows the middle of its track while
-     * the form model stays empty.
+     * The value published on mount when `modelValue` is undefined, in place of
+     * the middle of the track. A range input has no empty state, so the field
+     * always starts on a value and always reports it.
      */
     defaultValue: {
         type: [Number, String],

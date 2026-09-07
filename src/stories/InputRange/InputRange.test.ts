@@ -14,8 +14,14 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     await expect(input).toHaveAttribute('type', 'range')
     await expect(Boolean(readout)).toEqual(Boolean(args.showValue))
 
+    // An attribute the component does not declare stays on the block, which is
+    // what the page addresses, while the `aria-` ones name the control.
+    await expect(element).toHaveClass('vv-input-range')
+    await expect(element.tagName).toEqual('DIV')
+
     // The field reports the middle of its track until it has a value, and the
-    // fill has to say the same.
+    // fill, the readout and the model have to say the same.
+    await expect(value.innerHTML).toEqual('50')
     if (args.showValue) {
         await expect(readout.textContent?.trim()).toContain('50')
     }
@@ -91,6 +97,19 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function ariaLabelTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const input = element.getElementsByTagName('input')[0]
+
+    // Without a visible label the field is named by its `aria-label`, and the
+    // name has to sit on the control: on the block it would name a wrapper the
+    // user never reaches.
+    await expect(element).not.toHaveAttribute('aria-label')
+    await expect(input).toHaveAttribute('aria-label', 'Volume')
+    await expect(element).toHaveNoViolations()
+}
+
 export async function debouncedTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')
@@ -98,12 +117,16 @@ export async function debouncedTest({ canvasElement }: PlayAttributes) {
     const input = element.getElementsByTagName('input')[0]
     const readout = element.getElementsByClassName('vv-input-range__value')[0]
 
+    // The field has no empty state: the middle of the track reaches the model
+    // on mount, before anything is dragged.
+    await expect(value.innerHTML).toEqual('50')
+
     // The debounce (300ms) holds the value back, but the readout and the fill
     // follow the slider right away.
     input.value = '80'
     input.dispatchEvent(new Event('input', { bubbles: true }))
     await sleep(50)
-    await expect(value.innerHTML).toEqual('')
+    await expect(value.innerHTML).toEqual('50')
     await expect(readout.textContent?.trim()).toContain('80')
     await expect(
         element.style.getPropertyValue('--input-range-progress'),

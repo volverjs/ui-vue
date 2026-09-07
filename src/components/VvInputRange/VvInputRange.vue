@@ -68,6 +68,58 @@ const hasStep = computed(() => propsDefaults.value.step)
 const hasShowValue = computed(() => propsDefaults.value.showValue)
 const hasUnit = computed(() => propsDefaults.value.unit)
 
+// The step the native control snaps to: 1 when the prop is not set, none at
+// all on "any", which is the only value that leaves the slider continuous.
+const hasSnap = computed(() => {
+    const { step } = propsDefaults.value
+    if (step === undefined) {
+        return 1
+    }
+    if (String(step) === 'any') {
+        return 0
+    }
+    const parsed = Number.parseFloat(String(step))
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 1
+})
+
+/**
+ * The number of decimals to keep, so that snapping a fractional step does not
+ * surface the error of the binary representation in the readout.
+ */
+function decimalsOf(value: number) {
+    const text = String(value)
+    if (text.includes('e')) {
+        return 0
+    }
+    const separator = text.indexOf('.')
+    return separator === -1 ? 0 : text.length - separator - 1
+}
+const hasPrecision = computed(() =>
+    Math.max(decimalsOf(hasMin.value), decimalsOf(hasSnap.value)),
+)
+
+/**
+ * The value the thumb sits on: the native control clamps what it is given to
+ * its bounds and snaps it to the step counted from `min`, so a model out of
+ * range or off the step would otherwise read one value and show another.
+ */
+function normalize(value: number) {
+    if (hasMax.value <= hasMin.value) {
+        return hasMin.value
+    }
+    const clamped = Math.min(Math.max(value, hasMin.value), hasMax.value)
+    if (!hasSnap.value) {
+        return clamped
+    }
+    const steps = Math.round((clamped - hasMin.value) / hasSnap.value)
+    const snapped = hasMin.value + steps * hasSnap.value
+    return Number(
+        (snapped > hasMax.value ? snapped - hasSnap.value : snapped).toFixed(
+            hasPrecision.value,
+        ),
+    )
+}
+
 // value
 // While a debounced drag waits for its timer the model still holds the previous
 // value: what the readout and the fill have to follow is the slider itself.
@@ -90,7 +142,9 @@ const hasValue = computed(() => {
     const parsed = Number.parseFloat(
         String(draggedValue.value ?? localModelValue.value),
     )
-    return Number.isNaN(parsed) ? (hasMin.value + hasMax.value) / 2 : parsed
+    return normalize(
+        Number.isNaN(parsed) ? (hasMin.value + hasMax.value) / 2 : parsed,
+    )
 })
 const hasFormattedValue = computed(() => {
     const format = propsDefaults.value.formatValue
@@ -108,11 +162,23 @@ const hasProgress = computed(() => {
     return `${Math.round(percentage * 100) / 100}%`
 })
 
+// The control the component wraps has no empty state: a range with no value of
+// its own reports the middle of its track and submits it with the form. A model
+// left undefined would then contradict a field that already shows a number, and
+// a schema that wants one would reject what the user sees. So the value on the
+// track is published on mount, `defaultValue` choosing it in place of the
+// middle.
 onMounted(() => {
-    const { defaultValue } = propsDefaults.value
-    if (props.modelValue === undefined && defaultValue !== undefined) {
-        emit('update:modelValue', toNumber(defaultValue, hasValue.value))
+    if (props.modelValue !== undefined) {
+        return
     }
+    const { defaultValue } = propsDefaults.value
+    emit(
+        'update:modelValue',
+        defaultValue === undefined
+            ? hasValue.value
+            : normalize(toNumber(defaultValue, hasValue.value)),
+    )
 })
 
 // focus
@@ -179,6 +245,38 @@ const hasAttrs = computed(
         }) as InputHTMLAttributes,
 )
 
+// An `aria-` attribute names or describes the field, so it belongs to the
+// control the user operates: left on the block it would name a wrapper, and a
+// field used without a visible label would stay unnamed. Everything else keeps
+// addressing the block, where `class`, `style` and the `data-` hooks a page
+// puts on a field are expected to land.
+const attrs = useAttrs()
+const hasInputAttrs = computed(() => {
+    const toReturn: Record<string, unknown> = {}
+    Object.keys(attrs).forEach((key) => {
+        if (key.startsWith('aria-')) {
+            toReturn[key] = attrs[key]
+        }
+    })
+    return { ...toReturn, ...hasAttrs.value }
+})
+const hasRootAttrs = computed(() => {
+    const toReturn = { ...attrs }
+    Object.keys(toReturn).forEach((key) => {
+        if (key.startsWith('aria-')) {
+            delete toReturn[key]
+        }
+    })
+    delete toReturn.class
+    delete toReturn.style
+    return toReturn
+})
+const hasRootClass = computed(() => [bemCssClasses.value, attrs.class])
+const hasRootStyle = computed(() => [
+    { '--input-range-progress': hasProgress.value },
+    attrs.style,
+])
+
 // slots props
 const slotProps = computed(() => ({
     valid: props.valid,
@@ -196,11 +294,12 @@ const slotProps = computed(() => ({
 <script lang="ts">
 export default {
     name: 'VvInputRange',
+    inheritAttrs: false,
 }
 </script>
 
 <template>
-    <div :class="bemCssClasses" :style="{ '--input-range-progress': hasProgress }">
+    <div v-bind="hasRootAttrs" :class="hasRootClass" :style="hasRootStyle">
         <label v-if="label" :for="hasId" class="vv-input-range__label">
             {{ label }}
         </label>
@@ -214,7 +313,7 @@ export default {
                 ref="inputEl"
                 v-model="localModelValue"
                 type="range"
-                v-bind="hasAttrs"
+                v-bind="hasInputAttrs"
                 @input="onInput"
                 @change="emit('change', $event)"
             >

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputRange from '@/components/VvInputRange/VvInputRange.vue'
 import { argTypes, defaultArgs } from './InputRange.settings'
-import { debouncedTest, defaultTest } from './InputRange.test'
+import { ariaLabelTest, debouncedTest, defaultTest } from './InputRange.test'
 
 const meta: Meta<typeof VvInputRange> = {
     title: 'Components/InputRange',
@@ -100,6 +100,24 @@ export const WithoutValue: Story = {
         ...defaultArgs,
         showValue: false,
     },
+}
+
+export const AriaLabel: Story = {
+    args: {
+        ...defaultArgs,
+        label: undefined,
+    },
+    render: args => ({
+        components: { VvInputRange },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+			<vv-input-range v-bind="args" v-model="inputValue" aria-label="Volume" data-testId="element" />
+		`,
+    }),
+    play: ariaLabelTest,
 }
 
 export const Debounce: Story = {
