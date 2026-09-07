@@ -17,6 +17,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Development dependencies updated, among them `storybook` and its addons to 10.6.0, `@antfu/eslint-config` to 9.5.1, `eslint` to 10.10.0, `playwright` to 1.63.0, `sass-embedded` to 1.104.0, `@iconify/utils` to 3.1.7 and `@types/node` to 26.4.1, and `packageManager` moves to pnpm 12.3.4.
+
+  `vitest` and the two `@vitest/browser` packages join `typescript` in the reject list of `.ncurc.yml`: Vitest 5 is not supported by `@storybook/addon-vitest`, which peers on `vitest ^3 || ^4` up to and including its 11.0.0 alpha, and installing it makes the storybook project fail to import `.storybook/vitest.setup.ts`, so the suite collects its files and runs no test. They need no `overrides` entry, because nothing pulls vitest transitively.
 - The three workflows pin `pnpm/action-setup@v6.1.0`. It is the first release that bootstraps pnpm 12, which ships as a native binary instead of the `@pnpm/exe` package the older path expects, and the floating `v6` tag still points at v6.0.10, so the version has to stay pinned until that tag moves.
 - The styleguide workflow uploads the Pages artifact with `actions/upload-pages-artifact@v5`. Version 4 pins `actions/upload-artifact` 4.6.2 inside itself, which still targets Node.js 20, so every run of that job ended with the runner deprecation warning. It was the only one left in the pipeline. Version 5 is the same composite action with the pin moved to `actions/upload-artifact` 7, and it takes the same inputs.
 
