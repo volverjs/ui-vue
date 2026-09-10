@@ -110,11 +110,15 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // precedence the template does: a caller's `ariaLabelledby` is a deliberate
     // override and wins over the component's own label, so asserting the
     // internal id unconditionally would fail on a legitimate usage.
+    //
+    // `||` and not `??`, to keep matching the template: an empty string is
+    // falsy but not nullish, and the component falls back to its own label
+    // rather than emitting an empty reference.
     const comboboxEl = element.querySelector('[role="combobox"]')
     const labelEl = element.querySelector('label')
     await expect(labelEl === null).toEqual(!args.label)
     const expectedLabelledby
-        = args.ariaLabelledby ?? (args.label ? labelEl?.id : undefined)
+        = args.ariaLabelledby || (args.label ? labelEl?.id : undefined)
     if (expectedLabelledby) {
         await expect(comboboxEl?.getAttribute('aria-labelledby')).toEqual(
             expectedLabelledby,
