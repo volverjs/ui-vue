@@ -180,10 +180,25 @@ const hasAttrs: SelectHTMLAttributes = computed(() => {
         'size': props.size,
         'autocomplete': props.autocomplete,
         'multiple': props.multiple,
+        // `label` is optional, so a select can be drawn with no <label> to be
+        // associated with: these give it a name anyway. They sit on the control
+        // and not on the block for the same reason every other `aria-` here
+        // does, and they take precedence over a visible label, which is why the
+        // prop documents when not to use them.
+        // `|| undefined` and not the raw prop: Vue keeps an empty string and
+        // renders a bare attribute, i.e. an empty name or reference.
+        'aria-label': props.ariaLabel || undefined,
+        'aria-labelledby': props.ariaLabelledby || undefined,
         'aria-invalid': isInvalid.value,
-        'aria-describedby': hasHintLabelOrSlot.value
-            ? hasHintId.value
-            : undefined,
+        // A list of ids, so the field's own hint joins what the caller pointed
+        // at instead of replacing it. Caller first: that is the reading order.
+        'aria-describedby':
+            [
+                props.ariaDescribedby,
+                hasHintLabelOrSlot.value ? hasHintId.value : undefined,
+            ]
+                .filter(Boolean)
+                .join(' ') || undefined,
         'aria-errormessage': hasInvalidLabelOrSlot.value
             ? hasHintId.value
             : undefined,

@@ -1,6 +1,7 @@
 import type { MaybeElement } from '@vueuse/core'
 import type { Option } from '../../types/generic'
 import {
+    AriaProps,
     AutocompleteProps,
     AutofocusProps,
     ClearProps,
@@ -44,6 +45,7 @@ export const VvSelectProps = {
     ...FloatingLabelProps,
     ...UnselectableProps,
     ...LabelProps,
+    ...AriaProps,
     ...ClearProps,
     /**
      * This Boolean attribute indicates that multiple options can be selected in the list.

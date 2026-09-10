@@ -74,6 +74,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 |--------|-------|-------|
 | Identity | `id`, `name` | `name` is **required** on every input, checkbox, radio, select, combobox, file and on the groups |
 | Label and hint | `label`, `hintLabel`, `placeholder` | hint family slots: `hint`, `loading`, `valid`, `invalid` |
+| Accessible name | `ariaLabel`, `ariaLabelledby`, `ariaDescribedby` | input, textarea, select, combobox. `label` is optional, so a field drawn without one needs these to be named at all. Write them as attributes (`aria-label="Ward"`): they reach the control, not the block. `aria-describedby` appends the field's own hint rather than replacing it. VvInputRange takes any `aria-` attribute instead |
 | Validation | `valid`, `validLabel`, `invalid`, `invalidLabel` | labels accept a string or an array of strings |
 | State | `disabled`, `readonly`, `required`, `loading`, `loadingLabel` | |
 | Icon | `icon`, `iconPosition` | position is `before` or `after` (enum `Position`), never left/right |

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvSelect from '@/components/VvSelect/VvSelect.vue'
 import { argTypes, defaultArgs } from './Select.settings'
-import { defaultTest } from './Select.test'
+import { ariaDescribedbyTest, ariaLabelTest, defaultTest } from './Select.test'
 
 const meta: Meta<typeof VvSelect> = {
     title: 'Components/Select',
@@ -123,4 +123,57 @@ export const AutoselectFirst: Story = {
         ...defaultArgs,
         autoselectFirst: true,
     },
+}
+
+/**
+ * A select with no visible label, named by `aria-label` instead. `label` is
+ * optional, so this is a shape the other stories never draw: the attribute is
+ * written in kebab-case at the call site, as it is on `VvInputRange`, and
+ * reaches the <select> because the component declares it as a prop.
+ */
+export const AriaLabel: Story = {
+    args: {
+        ...defaultArgs,
+        label: undefined,
+    },
+    render: args => ({
+        components: { VvSelect },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+        <vv-select v-bind="args" v-model="inputValue" aria-label="Reparto" data-testId="element" />
+        <div>Value: <span data-testId="value">{{inputValue}}</span></div>
+    `,
+    }),
+    play: ariaLabelTest,
+}
+
+/**
+ * Help text the page already draws, pointed at from the field. The one of the
+ * three aria props that does not override: the field's own `hintLabel` is
+ * appended to the caller's ids rather than replacing them, because
+ * `aria-describedby` takes a list.
+ */
+export const AriaDescribedby: Story = {
+    args: {
+        ...defaultArgs,
+        hintLabel: 'Pick the ward you were referred to.',
+    },
+    render: args => ({
+        components: { VvSelect },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+        <div>
+            <span id="extra-help">Ask at the desk if the ward is not listed.</span>
+            <vv-select v-bind="args" v-model="inputValue" aria-describedby="extra-help" data-testId="element" />
+        </div>
+        <div>Value: <span data-testId="value">{{inputValue}}</span></div>
+    `,
+    }),
+    play: ariaDescribedbyTest,
 }

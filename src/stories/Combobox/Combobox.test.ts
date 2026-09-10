@@ -103,6 +103,68 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         await expect(hint.innerHTML).toEqual(args.hintLabel)
     }
 
+    // aria-labelledby
+    // It may only be there when the element it names is, or the combobox points
+    // at an id that is not in the document and ends up with no accessible name
+    // while appearing to have one. The expected value follows the same
+    // precedence the template does: a caller's `ariaLabelledby` is a deliberate
+    // override and wins over the component's own label, so asserting the
+    // internal id unconditionally would fail on a legitimate usage.
+    //
+    // `||` and not `??`, to keep matching the template: an empty string is
+    // falsy but not nullish, and the component falls back to its own label
+    // rather than emitting an empty reference.
+    const comboboxEl = element.querySelector('[role="combobox"]')
+    const labelEl = element.querySelector('label')
+    await expect(labelEl === null).toEqual(!args.label)
+    const expectedLabelledby
+        = args.ariaLabelledby || (args.label ? labelEl?.id : undefined)
+    if (expectedLabelledby) {
+        await expect(comboboxEl?.getAttribute('aria-labelledby')).toEqual(
+            expectedLabelledby,
+        )
+    } else {
+        await expect(comboboxEl?.hasAttribute('aria-labelledby')).toEqual(false)
+    }
+
     // check accessibility
-    // await expect(element).toHaveNoViolations()
+    await expect(element).toHaveNoViolations()
+}
+
+export async function ariaLabelTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const combobox = element.querySelector('[role="combobox"]')
+
+    // Written as a kebab-case attribute at the call site, it binds to the
+    // camelCase prop, so it reaches the control instead of naming the block the
+    // user never operates. Declaring the prop is also what takes it out of
+    // `$attrs`, which is why the block does not carry a copy.
+    await expect(element).not.toHaveAttribute('aria-label')
+    await expect(combobox).toHaveAttribute('aria-label', 'Reparto')
+
+    // No visible label means no element to point at, so the reference has to be
+    // absent rather than dangling.
+    await expect(element.querySelector('label')).toBeNull()
+    await expect(combobox).not.toHaveAttribute('aria-labelledby')
+
+    // The point of all of it: axe agrees the combobox has a name.
+    await expect(element).toHaveNoViolations()
+}
+
+export async function ariaDescribedbyTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const combobox = element.querySelector('[role="combobox"]')
+    const hint = element.getElementsByClassName('vv-select__hint')[0]
+
+    // `aria-describedby` is a list of ids, so the hint joins what the caller
+    // pointed at rather than taking its place. This is the one of the three that
+    // merges instead of overriding.
+    const describedBy
+        = combobox?.getAttribute('aria-describedby')?.split(' ') ?? []
+    await expect(describedBy).toContain('extra-help')
+    await expect(describedBy).toContain(hint.id)
+    await expect(element).not.toHaveAttribute('aria-describedby')
+    await expect(element).toHaveNoViolations()
 }

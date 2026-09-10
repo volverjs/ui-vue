@@ -58,3 +58,17 @@ export const Icon: Story = {
         icon: 'warning',
     },
 }
+
+/**
+ * An alert is often just a line of text, with nothing to head it. Every other
+ * story passes a title, which is why this one exists: without a title there is
+ * no element for `aria-labelledby` to point at, and the attribute has to be
+ * left off rather than left dangling.
+ */
+export const ContentOnly: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        title: undefined,
+    },
+}
