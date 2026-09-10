@@ -594,10 +594,23 @@ const hasAttrs = computed(() => {
         'readonly': props.readonly,
         'required': props.required,
         'autocomplete': props.autocomplete,
+        // For an input drawn without a visible `label`, which is allowed: see
+        // the note on `AriaProps` in ../../props. A search field with only a
+        // placeholder is the usual case.
+        // `|| undefined`: Vue keeps an empty string and renders a bare
+        // attribute, i.e. an empty name or reference.
+        'aria-label': props.ariaLabel || undefined,
+        'aria-labelledby': props.ariaLabelledby || undefined,
         'aria-invalid': isInvalid.value,
-        'aria-describedby': hasHintLabelOrSlot.value
-            ? hasHintId.value
-            : undefined,
+        // A list of ids, so the field's own hint joins what the caller pointed
+        // at instead of replacing it. Caller first: that is the reading order.
+        'aria-describedby':
+            [
+                props.ariaDescribedby,
+                hasHintLabelOrSlot.value ? hasHintId.value : undefined,
+            ]
+                .filter(Boolean)
+                .join(' ') || undefined,
         'aria-errormessage': hasInvalidLabelOrSlot.value
             ? hasHintId.value
             : undefined,

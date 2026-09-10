@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- `ariaLabel`, `ariaLabelledby` and `ariaDescribedby` on `VvCombobox`, `VvSelect`, `VvInputText` and `VvTextarea`, so a field can be named and described from outside. `label` is optional on every one of them, and until now a field drawn without one had no way to be named at all: the attribute a caller wrote landed on the block, where it named a wrapper nobody operates, and left the control the user reaches anonymous.
+
+  They are declared props rather than attributes read out of `$attrs`, which is the other way to do it and the way `VvInputRange` does it. Declaring them is what moves them off the block, since Vue takes a declared prop out of `$attrs`, and it leaves the routing of everything else exactly as it was: `class`, `style` and the `data-` hooks a page puts on a field keep addressing the block. The call site does not change shape either, because Vue matches the kebab-case attribute to the camelCase prop, so `<VvSelect aria-label="Ward" />` reads the same here as it does on the slider.
+
+  Note what this moves in the DOM: an application that already writes `aria-label` on one of these four components will find it on the control instead of on the block. It did nothing useful on the block, but a selector or a snapshot that expected it there needs updating.
+
+  `aria-describedby` is the one of the three that does not override. It takes a list of ids, so a field with a hint of its own appends the hint to what the caller pointed at instead of dropping either, the caller's ids first, which is the order the two are read in. The list is not deduplicated, matching `VvInputRange`: a caller that includes the field's own hint id gets it announced twice.
+
+  The two mechanisms now sit side by side, and they are not equivalent. `VvInputRange` forwards every `aria-` attribute to its control, these four forward exactly these three, so something like `aria-details` reaches the slider and stays on the block everywhere else.
+
+### Fixed
+
+- `VvAlert` and `VvCombobox` bound `aria-labelledby` unconditionally while the element carrying that id is conditional, so both pointed at an id that is not in the document whenever it was absent. A reference to a missing element names nothing, which left the control looking named while it was not: for `VvCombobox` that is a `role="combobox"`, which does require an accessible name, and for an `alertdialog` it hid that nothing named the dialog.
+
+  On the alert the condition is a title and no `header` slot, which is the half that is easy to miss: the header slot replaces the whole default header, title included, so an alert with a custom header renders no title element even when `title` is set. The attribute moved out of `useVvAlert`'s `hasProps` and into the template for that reason, since whether a slot was passed is a render-time question and a computed does not track it.
+
+  Neither was caught by the suite because every `Alert` story passes a title and every `Combobox` story passes a label, so the shape with neither was never drawn. Both now have a story that draws it, and the accessibility assertion in `Combobox.test.ts`, which had been commented out, runs again.
+
 ## [0.0.20] - 2026-09-07
 
 ### Fixed

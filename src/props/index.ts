@@ -182,6 +182,55 @@ export const LabelProps = {
     },
 }
 
+/**
+ * Naming and describing a field from outside. The name matters because `label`
+ * is optional: with neither, the control the user operates has no accessible
+ * name at all.
+ *
+ * These are declared props and not left to `$attrs` on purpose. An attribute
+ * lands on the component's block, so it would name a wrapper the user never
+ * touches and leave the control anonymous. Declaring them takes them out of
+ * `$attrs` as well, so nothing ends up duplicated on the block, while `class`,
+ * `style` and the `data-` hooks a page puts on a field keep addressing it
+ * exactly as before. Vue matches the kebab-case attribute to the camelCase
+ * prop, so the call site is the usual `<VvSelect aria-label="…" />` and reads
+ * the same as it does on `VvInputRange`, which reaches the control by splitting
+ * `$attrs` instead.
+ */
+export const AriaProps = {
+    /**
+     * Accessible name of the control. Use it when no visible label is drawn:
+     * with one on screen, a different `aria-label` replaces the name assistive
+     * technology reads and breaks WCAG 2.5.3 (Label in Name).
+     */
+    ariaLabel: {
+        type: String,
+        default: undefined,
+    },
+    /**
+     * Ids of the elements whose text names the control, for a name that is
+     * already written on the page. Takes precedence over the component's own
+     * `label`, per the accessible name computation.
+     */
+    ariaLabelledby: {
+        type: String,
+        default: undefined,
+    },
+    /**
+     * Ids of the elements that describe the control, for help text the page
+     * already draws elsewhere.
+     *
+     * Unlike the two above this one does not replace what the component has to
+     * say: `aria-describedby` takes a *list* of ids, so a field with a hint of
+     * its own appends the hint rather than dropping either. The caller's ids
+     * come first, which is the order they are read in.
+     */
+    ariaDescribedby: {
+        type: String,
+        default: undefined,
+    },
+}
+
 export const ReadonlyProps = {
     /**
      * The value is not editable
@@ -468,6 +517,7 @@ export const InputTextareaProps = {
     ...IconProps,
     ...FloatingLabelProps,
     ...LabelProps,
+    ...AriaProps,
     /**
      * Input / Textarea minlength
      * Minimum length (number of characters) of value

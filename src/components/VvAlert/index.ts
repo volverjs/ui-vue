@@ -158,13 +158,21 @@ export function useVvAlert(props: Readonly<ExtractPropTypes<typeof VvAlertProps>
         close,
         hasIcon,
         hasTitleId,
+        // NB `aria-labelledby` is deliberately not in here. The element holding
+        // `hasTitleId` only renders when a `title` prop or slot is given, so
+        // binding the attribute unconditionally left a content-only alert
+        // pointing at an id that does not exist: invalid ARIA that names
+        // nothing, and for `role="alertdialog"` it hid the fact that the dialog
+        // has no name at all. Whether the title renders is a question about
+        // slots, which are read at render time and not tracked by a computed,
+        // so VvAlert.vue binds the attribute where it also decides to draw the
+        // title.
         hasProps: computed(() => ({
             onMouseover,
             onMouseleave,
-            'class': hasClass.value,
-            'style': hasStyle.value,
-            'role': props.role,
-            'aria-labelledby': hasTitleId.value,
+            class: hasClass.value,
+            style: hasStyle.value,
+            role: props.role,
         })),
     }
 }

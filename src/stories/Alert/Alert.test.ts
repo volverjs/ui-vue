@@ -92,6 +92,23 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
         )
     }
 
+    // aria-labelledby
+    // The id it points at belongs to the title element, so the attribute may
+    // only be there when that element is: a reference to an id that is not in
+    // the document names nothing, and axe reports it as `aria-valid-attr-value`.
+    // A `header` slot is the case that is easy to miss, since it replaces the
+    // default header and takes the title with it even when `title` is set.
+    const alertTitleEl = element.getElementsByClassName('vv-alert__title')?.[0]
+    if (args.title && !args.header) {
+        expect(alertTitleEl).not.toBeUndefined()
+        expect(element.getAttribute('aria-labelledby')).toEqual(
+            alertTitleEl?.id,
+        )
+    } else {
+        expect(alertTitleEl).toBeUndefined()
+        expect(element.hasAttribute('aria-labelledby')).toEqual(false)
+    }
+
     // check accessibility
     await expect(element).toHaveNoViolations()
 }

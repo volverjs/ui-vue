@@ -160,6 +160,20 @@ const hasDropdownId = computed(() => `${hasId.value}-dropdown`)
 const hasSearchId = computed(() => `${hasId.value}-search`)
 const hasLabelId = computed(() => `${hasId.value}-label`)
 
+// `aria-describedby` takes a list of ids, so the field's own hint joins what the
+// caller pointed at instead of replacing it. Caller first: that is the order the
+// two are read in. A computed and not a template expression only because the
+// template has no room for it.
+const hasDescribedby = computed(
+    () =>
+        [
+            props.ariaDescribedby,
+            hasHintLabelOrSlot.value ? hasHintId.value : undefined,
+        ]
+            .filter(Boolean)
+            .join(' ') || undefined,
+)
+
 // tabindex
 const isDisabledOrReadonly = computed(() => props.disabled || props.readonly)
 const hasTabindex = computed(() => {
@@ -468,6 +482,13 @@ const selectProps = computed(() => ({
     autoselectFirst: propsDefaults.value.autoselectFirst,
     multiple: propsDefaults.value.multiple,
     label: propsDefaults.value.label,
+    // The native fallback is a VvSelect, so the name and the description have
+    // to travel with the rest: a `native` combobox with no visible label would
+    // otherwise be the one shape left anonymous. VvSelect does its own hint
+    // merging, so `ariaDescribedby` goes over raw rather than pre-joined.
+    ariaLabel: props.ariaLabel,
+    ariaLabelledby: props.ariaLabelledby,
+    ariaDescribedby: props.ariaDescribedby,
     placeholder: propsDefaults.value.placeholder,
     modelValue: props.modelValue,
 }))
@@ -589,10 +610,35 @@ export default {
                     </div>
                     <div class="vv-select__inner">
                         <VvIcon v-if="hasIconBefore" v-bind="hasIconBefore" class="vv-select__icon" />
+                        <!--
+                            A `role="combobox"` needs an accessible name, and
+                            this is where it comes from. Three notes, in the
+                            order they bite:
+
+                            `aria-labelledby` mirrors the `v-if` on the <label>
+                            above and has to keep mirroring it: bound
+                            unconditionally it pointed at an id that is not in
+                            the document whenever no `label` was given, which
+                            left the control anonymous while looking named. It
+                            reads the raw `label` prop, exactly as the <label>
+                            does, and not `propsDefaults.label`.
+
+                            An explicit `ariaLabelledby` wins over that, since
+                            passing it is a deliberate override. Falsy and not
+                            nullish: Vue keeps an empty string and renders a
+                            bare `aria-labelledby`, which is the same empty
+                            reference this whole block exists to avoid.
+
+                            These are props and not attributes because an
+                            attribute would land on the block: see the note on
+                            `AriaProps` in ../../props.
+                        -->
                         <div
                             ref="inputEl" v-bind="aria" class="vv-select__input" role="combobox"
-                            :aria-controls="hasDropdownId" :aria-expanded="expanded" :aria-labelledby="hasLabelId"
-                            :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
+                            :aria-controls="hasDropdownId" :aria-expanded="expanded"
+                            :aria-label="ariaLabel || undefined"
+                            :aria-labelledby="ariaLabelledby || (label ? hasLabelId : undefined)"
+                            :aria-describedby="hasDescribedby"
                             :aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined" :tabindex="hasTabindex"
                             @click.passive="onClickInput"
                         >
