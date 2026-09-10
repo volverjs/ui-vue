@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './Combobox.settings'
-import { defaultTest } from './Combobox.test'
+import { ariaDescribedbyTest, ariaLabelTest, defaultTest } from './Combobox.test'
 
 const meta: Meta<typeof VvCombobox> = {
     title: 'Components/Combobox',
@@ -246,4 +246,61 @@ export const Size: Story = {
             value: String(i + 1),
         })),
     },
+}
+
+/**
+ * A combobox with no visible label, named by `aria-label` instead. `label` is
+ * optional while a `role="combobox"` needs a name, so this is the shape that
+ * had neither: every other story here passes a label, which is why nothing
+ * caught it. The attribute is written in kebab-case at the call site, as it is
+ * on `VvInputRange`, and reaches the control because the component declares it
+ * as a prop.
+ */
+export const AriaLabel: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        label: undefined,
+    },
+    render: args => ({
+        components: { VvCombobox },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+			<vv-combobox v-bind="args" v-model="inputValue" aria-label="Reparto" data-testId="element" />
+			<div>Value: <span data-testId="value">{{inputValue}}</span></div>
+		`,
+    }),
+    play: ariaLabelTest,
+}
+
+/**
+ * Help text the page already draws, pointed at from the field. This is the one
+ * of the three that does not override: the field's own `hintLabel` is appended
+ * to the caller's ids rather than replacing them, because `aria-describedby`
+ * takes a list.
+ */
+export const AriaDescribedby: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        hintLabel: 'Pick the ward you were referred to.',
+    },
+    render: args => ({
+        components: { VvCombobox },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        template: /* html */ `
+			<div>
+				<span id="extra-help">Ask at the desk if the ward is not listed.</span>
+				<vv-combobox v-bind="args" v-model="inputValue" aria-describedby="extra-help" data-testId="element" />
+			</div>
+			<div>Value: <span data-testId="value">{{inputValue}}</span></div>
+		`,
+    }),
+    play: ariaDescribedbyTest,
 }

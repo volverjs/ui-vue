@@ -231,10 +231,22 @@ const hasAttrs = computed(
             'rows': props.rows,
             'wrap': props.wrap,
             'spellcheck': props.spellcheck,
+            // For a textarea drawn without a visible `label`, which is allowed:
+            // see the note on `AriaProps` in ../../props.
+            // `|| undefined`: Vue keeps an empty string and renders a bare
+            // attribute, i.e. an empty name or reference.
+            'aria-label': props.ariaLabel || undefined,
+            'aria-labelledby': props.ariaLabelledby || undefined,
             'aria-invalid': isInvalid.value,
-            'aria-describedby': hasHintLabelOrSlot.value
-                ? hasHintId.value
-                : undefined,
+            // A list of ids, so the field's own hint joins what the caller
+            // pointed at instead of replacing it. Caller first: reading order.
+            'aria-describedby':
+                [
+                    props.ariaDescribedby,
+                    hasHintLabelOrSlot.value ? hasHintId.value : undefined,
+                ]
+                    .filter(Boolean)
+                    .join(' ') || undefined,
             'aria-errormessage': hasInvalidLabelOrSlot.value
                 ? hasHintId.value
                 : undefined,

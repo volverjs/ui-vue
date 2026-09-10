@@ -20,7 +20,25 @@ export default {
 </script>
 
 <template>
-    <div v-bind="hasProps">
+    <!--
+        `aria-labelledby` may only be bound when the `vv-alert__title` element
+        below actually renders, or it points at an id that is not in the
+        document. That means a title, and no `header` slot: the header slot
+        replaces the whole default header, title included, and it takes no slot
+        prop for the id, so an alert with a custom header cannot say what names
+        it. Leaving the attribute off is right in both cases: `role=alert` is a
+        live region, so its content is announced when it appears whether or not
+        the container carries a name, and the role does not require one. An
+        `alertdialog` does, and there the absence is the honest signal: a
+        reference to a missing id would not have named it either, it would only
+        have hidden that nothing does.
+    -->
+    <div
+        v-bind="hasProps"
+        :aria-labelledby="
+            !$slots.header && ($slots.title || title) ? hasTitleId : undefined
+        "
+    >
         <div
             v-if="
                 $slots.header
