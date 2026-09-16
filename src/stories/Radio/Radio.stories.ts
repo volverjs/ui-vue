@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { argTypes, defaultArgs } from './Radio.settings'
-import { defaultTest } from './Radio.test'
+import { defaultTest, longLabelTest } from './Radio.test'
 
 const meta: Meta<typeof VvRadio> = {
     title: 'Components/Radio',
@@ -78,4 +78,26 @@ export const Hint: Story = {
         ...defaultArgs,
         hintLabel: 'Please accept terms and conditions',
     },
+}
+
+export const LongLabel: Story = {
+    args: {
+        ...defaultArgs,
+        label: 'I agree to the terms and conditions, the privacy policy and the processing of my personal data',
+    },
+    render: args => ({
+        components: { VvRadio },
+        setup() {
+            return { args }
+        },
+        data: () => ({ inputValue: undefined }),
+        // Narrow enough that the label cannot fit on the line of the control,
+        // which is the width at which it used to drop below it.
+        template: /* html */ `
+			<div style="max-width: 220px">
+				<vv-radio v-bind="args" v-model="inputValue" data-testId="element" />
+			</div>
+		`,
+    }),
+    play: longLabelTest,
 }

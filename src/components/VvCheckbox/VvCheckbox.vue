@@ -174,10 +174,12 @@ export default {
             :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
             :aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined"
         >
-        <!-- @slot Use this slot for check label -->
-        <slot :value="modelValue">
-            {{ label }}
-        </slot>
+        <span class="vv-checkbox__label">
+            <!-- @slot Use this slot for check label -->
+            <slot :value="modelValue">
+                {{ label }}
+            </slot>
+        </span>
         <HintSlot :id="hasHintId" class="vv-checkbox__hint">
             <template v-if="$slots.hint" #hint>
                 <slot name="hint" v-bind="hintSlotScope" />
