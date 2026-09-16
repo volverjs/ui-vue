@@ -105,9 +105,11 @@ export default {
             :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
             :aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined"
         >
-        <slot :value="modelValue">
-            {{ label }}
-        </slot>
+        <span class="vv-radio__label">
+            <slot :value="modelValue">
+                {{ label }}
+            </slot>
+        </span>
         <HintSlot :id="hasHintId" class="vv-radio__hint">
             <template v-if="$slots.hint" #hint>
                 <slot name="hint" v-bind="hintSlotScope" />
