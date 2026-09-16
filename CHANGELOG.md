@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.22] - 2026-09-16
+
+### Added
+
+- `VvCheckbox` and `VvRadio` wrap their label in a `vv-checkbox__label` and a `vv-radio__label` span. The label was an anonymous text node sitting between the control and the hint, and no selector reaches a text node, so the CSS had nothing to hold the label beside the control once the flex line wraps: a flex item whose max-content width does not fit starts a new line, so a label longer than the control dropped below the box. Measured in Chrome, the centre of the box ended up 22px above the centre of the first line of the text, with the control left dangling on a row of its own. With an element of its own the label can take `flex: 1; min-width: 0` and wrap inside itself instead.
+
+  The span wraps the slot outlet and not just the `label` prop it falls back to, so content passed through the default slot gets the element too. Nothing else moves: the `<input>`, the `HintSlot` and the `<small>` it renders, the props and the modifier classes are untouched, and both a bare text node and a span are blockified as flex items, so this change on its own draws what it drew before. It pairs with the `label` element added to the `$vv-checkbox` and `$vv-radio` maps in `@volverjs/style` 0.1.28, which is what makes the class do something. That element is written as `:where(.vv-checkbox__label, .vv-checkbox > span:not([class]))`, so plain markup that writes a bare span around its own label is dressed too, while a span carrying a class of its own, a badge or an icon set next to the label, is left where it is instead of being stretched by `flex: 1`.
+
+### Changed
+
+- `@volverjs/style` moves to 0.1.28, and the peer dependency floor with it, `>=0.1.28` in place of `>=0.1.26`. The two releases are one change: this one grows the element, that one dresses it, and a checkbox or a radio with a label longer than its control stays misaligned until both are installed. As with 0.0.19 and its slider, nothing fails loudly on the old style, the label simply keeps dropping below the box, so the floor is what says so at install time.
+- The `Checkbox` and `Radio` stories assert that the label element computes `flex-grow: 1` and `min-width: 0`, which holds only when the component renders the span and the installed style dresses it, so the suite fails if either half of the pair goes missing again. It is the same guard the enabled slider got in 0.0.20 with its `cursor: pointer`.
+- A `LongLabel` story draws both fields at 220px with a label that cannot fit on the line of the control, which is the width the defect showed at and which no story drew. Its test measures the geometry rather than the declarations: the label wraps onto more than one line, its left edge stays past the right edge of the control instead of starting a row of its own, and the centre of the control lands on the first line of the label to within 2px. That covers what reading `flex-grow` alone cannot, a wrong `flex-basis` or a control that stops being offset onto the first line.
+
 ## [0.0.21] - 2026-09-10
 
 ### Added
