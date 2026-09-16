@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- Development dependencies updated, among them `vite` to 8.3.0, `zod` to 4.6.5, `@babel/core` and `@babel/preset-env` to 8.0.5, `sass-embedded` to 1.104.1, `@vitejs/plugin-vue` to 6.0.9, `@vue/test-utils` to 2.5.1, `prettier` to 3.9.7, `react` and `react-dom` to 19.3.0, and `baseline-browser-mapping` to 2.11.24. `@tanstack/vue-virtual`, the one runtime dependency among them, moves to 3.13.39.
+- `@vueuse/core` moves to 15.0.0, a major, and the peer dependency stays `>=14`. The library reads nothing that release takes away: `templateRef` is dropped and was never used, the deprecated timer options give way to `scheduler` and the single `refDebounced` call in `VvCombobox` passes a delay and no options, and `useThrottleFn`, `useEventSource` and `useIDBKeyval`, the three whose behaviour changed, appear nowhere. Nothing here needs 15, so raising the floor would force the upgrade on applications and buy them nothing.
+
+  The auto-import declarations regenerate with it: `templateRef` leaves `auto-imports.d.ts` and `.eslintrc-auto-import.json`, `useLiveAnnouncer`, `useTemporalNow` and `useWebMCP` join them. That the type check and the build pass with `templateRef` gone from the global surface is the evidence that nothing was reaching for it.
+- `pnpm` stays at 12.3.4 and `packageManager` with it, although 12.4.2 is out. Switching to it locally fails: pnpm fetches the package but the postinstall that replaces the launcher with the native binary does not run, so `.tools/pnpm/12.4.2/bin/pnpm` is left as the text placeholder the tarball ships and `spawnSync` reports `ENOEXEC`. The same path resolves 12.3.4 to a real Mach-O binary. It is the toolchain and not the repository, and it needs a `pnpm self-update` on the machine rather than a change here, so the bump waits for a version that installs rather than being carried as a `packageManager` nobody can run.
+
+  No entry in `.ncurc.yml` either: that list is for majors the project deliberately stays behind on, and this is a broken install, not a decision.
+
 ## [0.0.21] - 2026-09-10
 
 ### Added
