@@ -45,6 +45,15 @@ function pick(props: Record<string, unknown>, keys: string[]): Record<string, un
     return result
 }
 
+/**
+ * A spec lists `children` on every element, empty for a leaf, and an empty
+ * list is no default slot: a component that checks for one would otherwise
+ * draw an empty content box, or a button would never be icon only.
+ */
+function hasChildren(children: unknown) {
+    return children != null && !(Array.isArray(children) && children.length === 0)
+}
+
 /** Render a Volver component with picked props and an optional default slot. */
 function render(
     component: object,
@@ -54,13 +63,13 @@ function render(
     children?: unknown,
 ) {
     const isSlotMap
-        = children != null
+        = hasChildren(children)
             && typeof children === 'object'
             && !Array.isArray(children)
             && Object.values(children as Record<string, unknown>).every(value => typeof value === 'function')
 
     const slots
-        = children == null
+        = !hasChildren(children)
             ? undefined
             : isSlotMap
                 ? (children as Record<string, () => unknown>)
@@ -82,7 +91,7 @@ function slotsOf(children: unknown, slots?: Record<string, unknown>) {
     if (Object.keys(named).length === 0) {
         return children
     }
-    return children == null ? named : { default: () => children, ...named }
+    return hasChildren(children) ? { default: () => children, ...named } : named
 }
 
 // ---------------------------------------------------------------------------

@@ -21,6 +21,10 @@ export async function namedSlotsTest({ canvasElement }: PlayAttributes) {
         alert.getElementsByClassName('vv-alert__footer')[0]?.textContent?.trim(),
     ).toBe('Retry')
 
+    // a spec always lists `children`, empty for a leaf: that is no default
+    // slot, so the alert, with neither children nor content, draws no content box
+    expect(alert.getElementsByClassName('vv-alert__content')).toHaveLength(0)
+
     // accessibility
     await expect(element).toHaveNoViolations()
 }
