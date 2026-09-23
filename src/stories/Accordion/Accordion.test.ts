@@ -93,6 +93,22 @@ export async function notWithoutModelTest({ canvasElement }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function nameClearedTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = (await canvas.findByTestId('element')) as HTMLDetailsElement
+    const summary = element.getElementsByTagName('summary')[0]
+    expect(element.id).toBe('a-1')
+
+    // without a name the accordion falls back to an id of its own
+    expect(await canvas.findByTestId('clear')).toBeClicked()
+    await sleep()
+    expect(element.id).not.toBe('')
+    expect(summary.getAttribute('aria-controls')).toBe(element.id)
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
 export async function notInGroupTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')

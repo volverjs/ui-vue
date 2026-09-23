@@ -31,6 +31,9 @@ All notable changes to this project will be documented in this file.
 - `VvAccordionGroup` keeps both accordions registered when two of them swap their names, as a `v-for` keyed by index does when its list is reordered. The group held the registered names in a set, and a swap briefly gives two accordions the same name: the first one to move registered a name the second still held, and the second, moving on, unregistered it for both. The group then ignored the first accordion from there on, so expanding all left it closed. Registrations are now counted by name, and a name leaves the group only when no accordion holds it any more.
 
   A `SwapNames` story swaps the names of two accordions and expands all, and finds both open.
+- `VvAccordion` keeps an id when its `name` is cleared after mount. The name fell back to `useId()` inside a computed, and the computed runs again when the name changes, from the watch that registers the accordion, where there is no component instance: `useId()` warned and returned an empty string, so the `details` lost its id and `aria-controls` pointed at nothing. The fallback is now taken once, in setup.
+
+  Every accordion now takes that id, named or not, and Vue counts these ids across the whole tree, so the ids it generates for the components rendered after an accordion move by one. They carry no meaning, but a snapshot that recorded them changes. A `NameCleared` story clears the name and finds the id still set and still the target of `aria-controls`.
 
 ## [0.0.22] - 2026-09-16
 

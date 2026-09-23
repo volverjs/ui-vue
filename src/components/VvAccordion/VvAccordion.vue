@@ -10,9 +10,10 @@ const emit = defineEmits(VvAccordionEvents)
 const attrs = useAttrs() as Record<string, unknown>
 const modelValue = useVModel(props, 'modelValue', emit)
 
-// data
+// data, useId() works only in setup and the name can change later
+const fallbackName = useId()
 const accordionName = computed(
-    () => props.name || (attrs?.id as string) || useId(),
+    () => props.name || (attrs?.id as string) || fallbackName,
 )
 const { title, content, not } = toRefs(props)
 const { isInGroup, modifiers, disabled, bus } = useGroupProps(props)

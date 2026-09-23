@@ -5,6 +5,7 @@ import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './Accordion.settings'
 import {
     defaultTest,
+    nameClearedTest,
     notInGroupTest,
     notWithoutModelTest,
 } from './Accordion.test'
@@ -67,6 +68,22 @@ export const NotWithoutModel: Story = {
             <div class="mt-24">
                 update:modelValue: <span data-testId="emitted">{{ emitted }}</span>
             </div>
+    `,
+    }),
+}
+
+export const NameCleared: Story = {
+    args: defaultArgs,
+    play: nameClearedTest,
+    render: args => ({
+        components: { VvAccordion, VvButton },
+        setup() {
+            const name = ref('a-1')
+            return { args, name }
+        },
+        template: /* html */ `
+            <vv-accordion data-testId="element" v-bind="args" :name="name" />
+            <vv-button data-testId="clear" class="mt-24" label="Clear the name" modifiers="secondary" :disabled="!name" @click="name = ''" />
     `,
     }),
 }
