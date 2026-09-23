@@ -106,9 +106,15 @@ const expandedAccordions = computed<Set<string>>({
     },
     set: (newValue) => {
         if (props.not) {
-            localModelValue.value = [...accordionNames].filter(
-                name => !newValue.has(name),
-            )
+            // a closed accordion that is not registered, one removed for
+            // now, keeps its place in the model
+            const closed = localModelValue.value ?? []
+            localModelValue.value = [
+                ...(typeof closed === 'string' ? [closed] : closed).filter(
+                    name => !accordionNames.has(name),
+                ),
+                ...[...accordionNames].filter(name => !newValue.has(name)),
+            ]
             return
         }
         if (props.collapse) {

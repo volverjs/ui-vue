@@ -3,7 +3,12 @@ import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './AccordionGroup.settings'
-import { defaultTest, lateItemsTest, renameTest } from './AccordionGroup.test'
+import {
+    defaultTest,
+    lateItemsTest,
+    notRemountTest,
+    renameTest,
+} from './AccordionGroup.test'
 
 const meta: Meta<typeof VvAccordionGroup> = {
     title: 'Components/AccordionGroup',
@@ -116,6 +121,40 @@ export const LateItemsNot: Story = {
         ...defaultArgs,
         not: true,
     },
+}
+
+export const NotCollapseRemount: Story = {
+    args: {
+        ...defaultArgs,
+        collapse: true,
+        not: true,
+    },
+    play: notRemountTest,
+    render: args => ({
+        components: { VvAccordion, VvAccordionGroup, VvButton },
+        setup() {
+            const shown = ref(['a-1', 'a-2'])
+            const selected = ref<string[]>(['a-2'])
+            const emitted = ref<unknown[]>([])
+            return { args, shown, selected, emitted }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" @update:model-value="emitted.push($event)">
+			<vv-accordion v-for="name in shown" :key="name" :name="name" :title="name" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+		</vv-accordion-group>
+		<div class="flex gap-md mt-24">
+			<vv-button data-testId="remove" label="Remove a-2" modifiers="secondary" :disabled="!shown.includes('a-2')" @click="shown = shown.filter(name => name !== 'a-2')" />
+			<vv-button data-testId="add" label="Add a-3" modifiers="secondary" :disabled="shown.includes('a-3')" @click="shown = [...shown, 'a-3']" />
+			<vv-button data-testId="restore" label="Put a-2 back" modifiers="secondary" :disabled="shown.includes('a-2')" @click="shown = [...shown, 'a-2']" />
+		</div>
+		<div class="mt-24">
+			Closed: <span data-testId="value">{{ selected }}</span>
+		</div>
+		<div>
+			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
+		</div>
+	`,
+    }),
 }
 
 export const Rename: Story = {

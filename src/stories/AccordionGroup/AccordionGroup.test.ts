@@ -99,6 +99,38 @@ export async function lateItemsTest({ canvasElement, args }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function notRemountTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const value = await canvas.findByTestId('value')
+    const emitted = await canvas.findByTestId('emitted')
+    const accordion = (name: string) =>
+        element.querySelector(`[id="${name}"]`) as HTMLDetailsElement | null
+
+    // the model lists a-2 as closed
+    await sleep()
+    expect(accordion('a-1')?.open).toBe(true)
+    expect(accordion('a-2')?.open).toBe(false)
+
+    // a-2 leaves, and a-3 arrives open while it is away
+    expect(await canvas.findByTestId('remove')).toBeClicked()
+    await sleep()
+    expect(accordion('a-2')).toBeNull()
+    expect(await canvas.findByTestId('add')).toBeClicked()
+    await sleep()
+    expect(accordion('a-3')?.open).toBe(true)
+
+    // a-2 comes back closed, as the model still says
+    expect(await canvas.findByTestId('restore')).toBeClicked()
+    await sleep()
+    expect(accordion('a-2')?.open).toBe(false)
+    expect(JSON.parse(value.textContent ?? '')).toEqual(['a-2'])
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
 export async function renameTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')
