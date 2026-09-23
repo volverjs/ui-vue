@@ -17,20 +17,44 @@ export default meta
 
 type Story = StoryObj
 
+// the schema asks for `children` on every element, but a spec may leave it out
+const bareAlert = {
+    type: 'Alert',
+    props: { title: 'Bare' },
+} as unknown as Spec['elements'][string]
+
 const namedSlotsSpec: Spec = {
     root: 'card',
     elements: {
         card: {
             type: 'Card',
             props: { title: 'Invoice' },
-            children: ['accordion', 'alert'],
-            slots: { footer: ['download'] },
+            children: ['accordion', 'alert', 'plain', 'bare'],
+            slots: { header: ['heading'], footer: ['download'] },
         },
+        heading: {
+            type: 'Badge',
+            props: { value: 'Invoice 42' },
+            children: [],
+        },
+        bare: bareAlert,
         alert: {
             type: 'Alert',
             props: { title: 'Heads up' },
             children: [],
-            slots: { footer: ['retry'] },
+            // `header` is not a slot the catalog declares for an alert
+            slots: { footer: ['retry'], header: ['stray'] },
+        },
+        stray: {
+            type: 'Badge',
+            props: { value: 'Stray header' },
+            children: [],
+        },
+        plain: {
+            type: 'Card',
+            props: { title: 'Plain' },
+            children: [],
+            slots: { footer: [] },
         },
         retry: {
             type: 'Button',
@@ -56,13 +80,8 @@ const namedSlotsSpec: Spec = {
     },
 }
 
-/**
- * A spec that fills the named slots the catalog declares, `footer` on the card
- * and on the alert and `summary` on the accordion, rendered through the Volver
- * registry.
- */
-export const NamedSlots: Story = {
-    render: () => ({
+function renderSpec(spec: Spec) {
+    return () => ({
         components: {
             ActionProvider,
             Renderer,
@@ -70,7 +89,7 @@ export const NamedSlots: Story = {
             VisibilityProvider,
         },
         setup() {
-            return { spec: namedSlotsSpec, registry }
+            return { spec, registry }
         },
         template: /* html */ `
 			<div data-testId="element">
@@ -83,6 +102,15 @@ export const NamedSlots: Story = {
 				</StateProvider>
 			</div>
 		`,
-    }),
+    })
+}
+
+/**
+ * A spec that fills the named slots the catalog declares, `footer` on the card
+ * and on the alert and `summary` on the accordion, rendered through the Volver
+ * registry.
+ */
+export const NamedSlots: Story = {
+    render: renderSpec(namedSlotsSpec),
     play: namedSlotsTest,
 }

@@ -91,7 +91,8 @@ export const DialogDefinition = {
         title: z.string().nullish(),
         modifiers,
     }),
-    slots: ['default', 'header', 'footer'],
+    // no `header`: on VvDialog it replaces the close button with the title
+    slots: ['default', 'footer'],
     description:
         'Modal dialog overlay. Use for confirmations, forms, or detailed views that require user attention.',
 }
@@ -130,7 +131,9 @@ export const AlertDefinition = {
         dismissable: z.boolean().nullish(),
         role: z.enum(['alert', 'alertdialog']).nullish(),
     }),
-    slots: ['default', 'header', 'footer'],
+    // no `header`: on VvAlert it replaces the title, which is what names the
+    // alert, so an `alertdialog` would lose its accessible name
+    slots: ['default', 'footer'],
     description:
         'Alert notification with variant modifiers: success, info, warning, danger, brand, accent. Can be dismissable.',
 }

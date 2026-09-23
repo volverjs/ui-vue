@@ -1,6 +1,6 @@
 import type { BaseComponentProps } from '@json-render/vue'
 import { useBoundProp } from '@json-render/vue'
-import { h } from 'vue'
+import { Comment, h, isVNode } from 'vue'
 import VvAccordion from '../components/VvAccordion/VvAccordion.vue'
 import VvAccordionGroup from '../components/VvAccordionGroup/VvAccordionGroup.vue'
 import VvAlert from '../components/VvAlert/VvAlert.vue'
@@ -28,6 +28,12 @@ import VvSelect from '../components/VvSelect/VvSelect.vue'
 import VvTab from '../components/VvTab/VvTab.vue'
 import VvTextarea from '../components/VvTextarea/VvTextarea.vue'
 import VvTooltip from '../components/VvTooltip/VvTooltip.vue'
+import {
+    AccordionDefinition,
+    AlertDefinition,
+    CardDefinition,
+    DialogDefinition,
+} from './definitions'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -46,15 +52,22 @@ function pick(props: Record<string, unknown>, keys: string[]): Record<string, un
 }
 
 /**
- * A spec lists `children` on every element, empty for a leaf, and an empty
- * list is no default slot: a component that checks for one would otherwise
- * draw an empty content box, or a button would never be icon only.
+ * A spec lists `children` on every element, empty for a leaf, and Vue hands a
+ * missing one on as a comment: neither is a slot, since a component that
+ * checks for one would draw an empty box, or a button would never be icon only.
  */
 function hasChildren(children: unknown) {
-    return children != null && !(Array.isArray(children) && children.length === 0)
+    const isComment = (child: unknown) => isVNode(child) && child.type === Comment
+    if (Array.isArray(children)) {
+        return children.some(child => !isComment(child))
+    }
+    return children != null && !isComment(children)
 }
 
-/** Render a Volver component with picked props and an optional default slot. */
+/**
+ * Render a Volver component with picked props. `children` becomes its default
+ * slot, unless it is already a map of slots, as `slotsOf` builds.
+ */
 function render(
     component: object,
     props: Record<string, unknown>,
@@ -78,16 +91,34 @@ function render(
 }
 
 /**
- * Slots for a component the catalog gives named slots: the default one from
- * `children`, as for every component, plus the named ones json-render delivers
- * in `slots` from 0.21 on. Its `slots` always holds a default, children or
- * not, while the default one is decided from `children` like for every other
- * component, so only the named ones are taken from it.
+ * Slots for a component the catalog gives named slots. json-render delivers
+ * them in `slots` from 0.21 on, next to a default one that is there even
+ * without children, so the default one keeps coming from `children`, as for
+ * every other component. Of the named ones only those the catalog declares
+ * are taken, since a spec can name any, and only when they list an element
+ * that exists, so an empty or not yet streamed list draws no empty footer. An
+ * element hidden by `visible` still counts: whether it shows is only known
+ * when it renders, after the slot has been handed on.
+ *
+ * `slots` is read from the context rather than destructured in the signature
+ * of each component, since the declarations would then require it of the
+ * json-render types, which have it only from 0.21 on.
  */
-function slotsOf(children: unknown, slots?: Record<string, unknown>) {
-    const named = Object.fromEntries(
-        Object.entries(slots ?? {}).filter(([name]) => name !== 'default'),
-    )
+function slotsOf(
+    { children, slots }: { children?: unknown, slots?: Record<string, unknown> },
+    declared: readonly string[],
+) {
+    const named: Record<string, () => unknown> = {}
+    for (const name of declared) {
+        const slot = slots?.[name]
+        if (name === 'default' || typeof slot !== 'function') {
+            continue
+        }
+        const content = slot()
+        if (hasChildren(content)) {
+            named[name] = () => content
+        }
+    }
     if (Object.keys(named).length === 0) {
         return children
     }
@@ -98,20 +129,20 @@ function slotsOf(children: unknown, slots?: Record<string, unknown>) {
 // Layout & Container
 // ---------------------------------------------------------------------------
 
-export function CardComponent({ props, children, slots }: BaseComponentProps) {
-    return render(VvCard, props, ['title', 'modifiers'], undefined, slotsOf(children, slots))
+export function CardComponent({ props, ...context }: BaseComponentProps) {
+    return render(VvCard, props, ['title', 'modifiers'], undefined, slotsOf(context, CardDefinition.slots))
 }
 
-export function AccordionComponent({ props, children, slots }: BaseComponentProps) {
-    return render(VvAccordion, props, ['title', 'content', 'modifiers'], undefined, slotsOf(children, slots))
+export function AccordionComponent({ props, ...context }: BaseComponentProps) {
+    return render(VvAccordion, props, ['title', 'content', 'modifiers'], undefined, slotsOf(context, AccordionDefinition.slots))
 }
 
 export function AccordionGroupComponent({ props, children }: BaseComponentProps) {
     return render(VvAccordionGroup, props, ['collapse', 'modifiers'], undefined, children)
 }
 
-export function DialogComponent({ props, children, slots, bindings }: BaseComponentProps) {
-    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, slotsOf(children, slots), bindings?.value ? undefined : true)
+export function DialogComponent({ props, bindings, ...context }: BaseComponentProps) {
+    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, slotsOf(context, DialogDefinition.slots), bindings?.value ? undefined : true)
 }
 
 export function TabComponent({ props }: BaseComponentProps) {
@@ -122,8 +153,8 @@ export function TabComponent({ props }: BaseComponentProps) {
 // Data Display
 // ---------------------------------------------------------------------------
 
-export function AlertComponent({ props, children, slots, emit }: BaseComponentProps) {
-    return render(VvAlert, props, ['title', 'content', 'modifiers', 'dismissable', 'role'], { onClose: () => emit('close') }, slotsOf(children, slots))
+export function AlertComponent({ props, emit, ...context }: BaseComponentProps) {
+    return render(VvAlert, props, ['title', 'content', 'modifiers', 'dismissable', 'role'], { onClose: () => emit('close') }, slotsOf(context, AlertDefinition.slots))
 }
 
 export function AlertGroupComponent({ props, children }: BaseComponentProps) {
