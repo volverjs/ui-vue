@@ -28,6 +28,9 @@ All notable changes to this project will be documented in this file.
 - A `not` group keeps a closed accordion in its model while that accordion is not registered. The model of a `not` group lists the closed accordions, and every write rebuilt it from the registered ones, so an accordion removed for a while, by a `v-if` or by a list that filters it out, fell off the list at the next write and came back open: with `v-model` set to `['a-2']` in a `not collapse` group, removing `a-2`, adding `a-3` and putting `a-2` back opened it. In 0.0.22 that next write took a click, while the late registrations of this release write on their own, so it now happened with no click at all. The names of the model that are not registered keep their place ahead of the registered ones.
 
   A `NotCollapseRemount` story plays that sequence and finds `a-2` back closed, with the model still `['a-2']` and nothing emitted.
+- `VvAccordionGroup` keeps both accordions registered when two of them swap their names, as a `v-for` keyed by index does when its list is reordered. The group held the registered names in a set, and a swap briefly gives two accordions the same name: the first one to move registered a name the second still held, and the second, moving on, unregistered it for both. The group then ignored the first accordion from there on, so expanding all left it closed. Registrations are now counted by name, and a name leaves the group only when no accordion holds it any more.
+
+  A `SwapNames` story swaps the names of two accordions and expands all, and finds both open.
 
 ## [0.0.22] - 2026-09-16
 

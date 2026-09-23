@@ -131,6 +131,27 @@ export async function notRemountTest({ canvasElement }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function swapNamesTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const accordions = [...element.children] as HTMLDetailsElement[]
+
+    // two accordions swap their names in the same update
+    await sleep()
+    expect(accordions.map(accordion => accordion.id)).toEqual(['a-1', 'a-2'])
+    expect(await canvas.findByTestId('swap')).toBeClicked()
+    await sleep()
+    expect(accordions.map(accordion => accordion.id)).toEqual(['a-2', 'a-1'])
+
+    // the group still knows both, so expanding all opens both
+    expect(await canvas.findByTestId('expand')).toBeClicked()
+    await sleep()
+    expect(accordions.map(accordion => accordion.open)).toEqual([true, true])
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
 export async function renameTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')

@@ -8,6 +8,7 @@ import {
     lateItemsTest,
     notRemountTest,
     renameTest,
+    swapNamesTest,
 } from './AccordionGroup.test'
 
 const meta: Meta<typeof VvAccordionGroup> = {
@@ -152,6 +153,31 @@ export const NotCollapseRemount: Story = {
 		</div>
 		<div>
 			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
+		</div>
+	`,
+    }),
+}
+
+export const SwapNames: Story = {
+    args: {
+        ...defaultArgs,
+        collapse: true,
+    },
+    play: swapNamesTest,
+    render: args => ({
+        components: { VvAccordion, VvAccordionGroup, VvButton },
+        setup() {
+            const names = ref(['a-1', 'a-2'])
+            const group = ref()
+            return { args, names, group }
+        },
+        template: /* html */ `
+		<vv-accordion-group ref="group" data-testId="element" v-bind="args">
+			<vv-accordion v-for="(name, index) in names" :key="index" :name="name" :title="name" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+		</vv-accordion-group>
+		<div class="flex gap-md mt-24">
+			<vv-button data-testId="swap" label="Swap the names" modifiers="secondary" @click="names = [...names].reverse()" />
+			<vv-button data-testId="expand" label="Expand all" modifiers="secondary" @click="group.expand()" />
 		</div>
 	`,
     }),

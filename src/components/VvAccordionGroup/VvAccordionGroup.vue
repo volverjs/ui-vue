@@ -145,7 +145,11 @@ useGroupStateProvide<AccordionGroupState>(INJECTION_KEY_ACCORDION_GROUP, {
     modifiers: itemModifiers,
     bus,
 })
+// two accordions share a name for a moment while they swap names, so a name
+// leaves the group only when no accordion holds it any more
+const registrations = new Map<string, number>()
 bus.on('register', ({ name }) => {
+    registrations.set(name, (registrations.get(name) ?? 0) + 1)
     accordionNames.add(name)
     if (!isSynced) {
         return
@@ -162,6 +166,12 @@ bus.on('register', ({ name }) => {
     })
 })
 bus.on('unregister', ({ name }) => {
+    const count = (registrations.get(name) ?? 0) - 1
+    if (count > 0) {
+        registrations.set(name, count)
+        return
+    }
+    registrations.delete(name)
     accordionNames.delete(name)
 })
 bus.on('toggle', ({ name, value }) => {
