@@ -8,6 +8,9 @@ export async function stableKeysTest({ canvasElement }: PlayAttributes) {
     const element = await canvas.findByTestId('element')
     const avatars = [...element.getElementsByClassName('vv-avatar')]
     expect(avatars.length).toBeGreaterThan(0)
+    expect(
+        avatars.every(avatar => avatar.classList.contains('vv-avatar--rounded')),
+    ).toBe(true)
 
     // new modifiers restyle the avatars in place instead of drawing them again
     expect(await canvas.findByTestId('square')).toBeClicked()
@@ -16,6 +19,9 @@ export async function stableKeysTest({ canvasElement }: PlayAttributes) {
     expect(
         restyled.every(avatar => avatar.classList.contains('vv-avatar--square')),
     ).toBe(true)
+    expect(
+        restyled.some(avatar => avatar.classList.contains('vv-avatar--rounded')),
+    ).toBe(false)
     expect(restyled.map((avatar, index) => avatar === avatars[index])).toEqual(
         avatars.map(() => true),
     )

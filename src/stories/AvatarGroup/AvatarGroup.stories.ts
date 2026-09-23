@@ -38,6 +38,8 @@ export const Default: Story = {
 export const StableKeys: Story = {
     args: {
         ...defaultArgs,
+        // no modifiers of their own, so the avatars show only those of the group
+        items: defaultArgs.items.map(({ modifiers: _modifiers, ...item }) => item),
     },
     render: args => ({
         components: { VvAvatarGroup, VvButton },
