@@ -99,6 +99,33 @@ export async function lateItemsTest({ canvasElement, args }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function externalModelTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const emitted = await canvas.findByTestId('emitted')
+    const accordions = [...element.children] as HTMLDetailsElement[]
+    const last = accordions.length - 1
+
+    // the model opens the first accordion on mount
+    await sleep()
+    expect(accordions.map(accordion => accordion.open)).toEqual(
+        accordions.map((_, index) => index === 0),
+    )
+
+    // the parent changes the model to open the last one
+    expect(await canvas.findByTestId('change')).toBeClicked()
+    await sleep()
+    expect(accordions.map(accordion => accordion.open)).toEqual(
+        accordions.map((_, index) => index === last),
+    )
+
+    // the model came from the parent, so the group has nothing to emit
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
 export async function notModelMountTest({
     canvasElement,
     args,

@@ -5,6 +5,7 @@ import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './AccordionGroup.settings'
 import {
     defaultTest,
+    externalModelTest,
     lateItemsTest,
     notModelMountTest,
     notRemountTest,
@@ -126,6 +127,43 @@ export const LateItems: Story = {
 
 export const LateItemsNot: Story = {
     ...LateItems,
+    args: {
+        ...defaultArgs,
+        not: true,
+    },
+}
+
+export const ExternalModel: Story = {
+    args: defaultArgs,
+    play: externalModelTest,
+    render: args => ({
+        components: { VvAccordionGroup, VvButton },
+        setup() {
+            const names = ['a-1', 'a-2', 'a-3']
+            const selected = ref<string | string[]>(
+                args.not ? names.slice(1) : names[0],
+            )
+            const emitted = ref<unknown[]>([])
+            function openLast() {
+                selected.value = args.not ? names.slice(0, -1) : names[2]
+            }
+            return { args, selected, emitted, openLast }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" @update:model-value="emitted.push($event)" />
+		<vv-button data-testId="change" class="mt-24" label="Open the last one from outside" modifiers="secondary" @click="openLast" />
+		<div class="mt-24">
+			{{ args.not ? 'Closed' : 'Opened'}}: <span data-testId="value">{{ selected }}</span>
+		</div>
+		<div>
+			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
+		</div>
+	`,
+    }),
+}
+
+export const ExternalModelNot: Story = {
+    ...ExternalModel,
     args: {
         ...defaultArgs,
         not: true,

@@ -38,6 +38,8 @@ const storageModelValue = usePersistence<string | string[] | undefined>(
 // a toggle can write the model several times before the parent passes it
 // back, so until the next tick the group reads its own last write
 const writtenModelValue = shallowRef<{ value?: string | string[] }>()
+// a copy of that write, to tell its echo from a change made outside
+let lastModelValue: string | string[] | undefined
 const localModelValue = computed({
     get: () => {
         if (writtenModelValue.value) {
@@ -50,6 +52,7 @@ const localModelValue = computed({
     },
     set: (newValue): void => {
         batch(() => {
+            lastModelValue = Array.isArray(newValue) ? [...newValue] : newValue
             storageModelValue.value = newValue
             if (!writtenModelValue.value) {
                 nextTick(() => {
@@ -141,21 +144,38 @@ const expandedAccordions = computed<Set<string>>({
         localModelValue.value = newValue.values().next().value
     },
 })
+// send every accordion the state the model gives it
+function syncAccordions() {
+    batch(() => {
+        for (const name of accordionNames) {
+            bus.emit('toggle', {
+                name,
+                value: expandedAccordions.value.has(name),
+            })
+        }
+    })
+}
 // accordions registered after this point get their state on register
 let isSynced = false
 onMounted(() => {
     nextTick(() => {
         isSynced = true
-        batch(() => {
-            for (const name of accordionNames) {
-                bus.emit('toggle', {
-                    name,
-                    value: expandedAccordions.value.has(name),
-                })
-            }
-        })
+        syncAccordions()
     })
 })
+// a model changed by the parent, or in the storage, reaches the accordions
+watch(
+    () => props.modelValue ?? storageModelValue.value,
+    (newValue) => {
+        if (!isSynced || isSameModelValue(newValue, lastModelValue)) {
+            return
+        }
+        // the change supersedes a write the parent has not passed back
+        writtenModelValue.value = undefined
+        syncAccordions()
+    },
+    { deep: true },
+)
 
 // provide
 const bus = mitt<AccordionGroupBusEvents>()
