@@ -54,3 +54,36 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function lateItemsTest({ canvasElement, args }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const value = await canvas.findByTestId('value')
+    const names = args.items.map((item: { name: string }) => item.name)
+
+    // the items arrive after the group has mounted
+    expect(element.children).toHaveLength(0)
+    expect(await canvas.findByTestId('load')).toBeClicked()
+    await sleep()
+    const accordions = [...element.children] as HTMLDetailsElement[]
+    expect(accordions).toHaveLength(names.length)
+
+    if (args.not) {
+        // only the first one opens, as on mount, and the model lists the others as closed
+        expect(accordions.map(accordion => accordion.open)).toEqual(
+            names.map((_: string, index: number) => index === 0),
+        )
+        expect(JSON.parse(value.textContent ?? '')).toEqual(
+            names.toSpliced(0, 1),
+        )
+    } else {
+        // the one named by the model opens
+        expect(accordions.map(accordion => accordion.open)).toEqual(
+            names.map((_: string, index: number) => index === 1),
+        )
+        expect(value.textContent).toBe(names[1])
+    }
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}

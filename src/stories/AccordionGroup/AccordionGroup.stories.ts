@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './AccordionGroup.settings'
-import { defaultTest } from './AccordionGroup.test'
+import { defaultTest, lateItemsTest } from './AccordionGroup.test'
 
 const meta: Meta<typeof VvAccordionGroup> = {
     title: 'Components/AccordionGroup',
@@ -59,6 +60,34 @@ export const CollapseNot: Story = {
     args: {
         ...defaultArgs,
         collapse: true,
+        not: true,
+    },
+}
+
+export const LateItems: Story = {
+    args: defaultArgs,
+    play: lateItemsTest,
+    render: args => ({
+        components: { VvAccordionGroup, VvButton },
+        setup() {
+            const items = ref<typeof args.items>([])
+            const selected = ref(args.not ? undefined : 'a-2')
+            return { args, items, selected }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" v-bind="args" :items="items" v-model="selected" />
+		<vv-button data-testId="load" class="mt-24" label="Load the items" modifiers="secondary" :disabled="items.length > 0" @click="items = args.items" />
+		<div class="mt-24">
+			{{ args.not ? 'Closed' : 'Opened'}}: <span data-testId="value">{{ selected }}</span>
+		</div>
+	`,
+    }),
+}
+
+export const LateItemsNot: Story = {
+    ...LateItems,
+    args: {
+        ...defaultArgs,
         not: true,
     },
 }

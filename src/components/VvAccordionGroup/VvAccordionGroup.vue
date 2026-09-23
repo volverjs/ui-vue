@@ -91,6 +91,8 @@ const expandedAccordions = computed<Set<string>>({
         localModelValue.value = newValue.values().next().value
     },
 })
+// accordions registered after this point get their state on register
+let isSynced = false
 onMounted(() => {
     if (props.not && localModelValue.value === undefined) {
         localModelValue.value = props.collapse
@@ -98,6 +100,7 @@ onMounted(() => {
             : [...accordionNames.values()].toSpliced(0, 1)
     }
     nextTick(() => {
+        isSynced = true
         for (const name of accordionNames) {
             bus.emit('toggle', {
                 name,
@@ -116,6 +119,14 @@ useGroupStateProvide<AccordionGroupState>(INJECTION_KEY_ACCORDION_GROUP, {
 })
 bus.on('register', ({ name }) => {
     accordionNames.add(name)
+    if (!isSynced || !expandedAccordions.value.has(name)) {
+        return
+    }
+    // where only one can be open, the one already open wins, as on mount
+    const isOtherExpanded = [...expandedAccordions.value].some(
+        item => item !== name,
+    )
+    bus.emit('toggle', { name, value: props.collapse || !isOtherExpanded })
 })
 bus.on('unregister', ({ name }) => {
     accordionNames.delete(name)
