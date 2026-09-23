@@ -109,11 +109,6 @@ const expandedAccordions = computed<Set<string>>({
 // accordions registered after this point get their state on register
 let isSynced = false
 onMounted(() => {
-    if (props.not && localModelValue.value === undefined) {
-        localModelValue.value = props.collapse
-            ? []
-            : [...accordionNames.values()].toSpliced(0, 1)
-    }
     nextTick(() => {
         isSynced = true
         for (const name of accordionNames) {
