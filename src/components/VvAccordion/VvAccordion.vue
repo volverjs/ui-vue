@@ -17,8 +17,8 @@ const accordionName = computed(
 const { title, content, not } = toRefs(props)
 const { isInGroup, modifiers, disabled, bus } = useGroupProps(props)
 
-// state
-const isExpanded = ref(false)
+// state, in a group it comes from the group
+const isExpanded = ref(!isInGroup.value && not.value)
 watch(
     modelValue,
     (newValue) => {

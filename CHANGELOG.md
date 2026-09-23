@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.23] - 2026-09-23
+
+### Fixed
+
+- `VvAccordion` opens on mount when it has `not` and no model, which is what its documentation always said. The state started from `false` and `not` was read only by the watch on `modelValue`, and only for a boolean, so without a v-model that watch did nothing and `<VvAccordion not />` rendered closed, while `VvAccordionGroup` with `not` and no model already opened its items on mount. The state now starts from `not`. With a boolean model the immediate watch overwrites it before the watch that emits is registered, so `not` keeps inverting the model as before, and no `update:modelValue` leaves on mount with or without a model. A v-model bound to `undefined` counts as no model, and opens too.
+
+  Inside a `VvAccordionGroup` the accordion still starts closed whatever its own `not` says, because the group owns the state. Starting from `not` there as well would have kept the final state, since the group toggles every accordion once it mounts, but not the rest: the accordion would have emitted `update:modelValue` when the group closed it instead of when the group opened it, and one added after the group mounted, which gets no toggle, would have stayed open without the group knowing.
+
+  None of it was caught because every `Accordion` story binds a v-model. A `NotWithoutModel` story draws the accordion with `not` and no model and finds it open on arrival, with `aria-expanded="true"` and nothing emitted, then closed after a click on the summary. A `NotInGroup` story draws it inside a group, adds a second one after the group has mounted, and finds both closed with nothing emitted. The JSDoc of `not` and its description in the stories say what it does in each case.
+
 ## [0.0.22] - 2026-09-16
 
 ### Added

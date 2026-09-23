@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
+import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './Accordion.settings'
-import { defaultTest } from './Accordion.test'
+import {
+    defaultTest,
+    notInGroupTest,
+    notWithoutModelTest,
+} from './Accordion.test'
 
 const meta: Meta<typeof VvAccordion> = {
     title: 'Components/Accordion',
@@ -42,4 +48,51 @@ export const Not: Story = {
         ...defaultArgs,
         not: true,
     },
+}
+
+export const NotWithoutModel: Story = {
+    args: {
+        ...defaultArgs,
+        not: true,
+    },
+    play: notWithoutModelTest,
+    render: args => ({
+        components: { VvAccordion },
+        setup() {
+            const emitted = ref(0)
+            return { args, emitted }
+        },
+        template: /* html */ `
+            <vv-accordion data-testId="element" v-bind="args" @update:model-value="emitted++" />
+            <div class="mt-24">
+                update:modelValue: <span data-testId="emitted">{{ emitted }}</span>
+            </div>
+    `,
+    }),
+}
+
+export const NotInGroup: Story = {
+    args: {
+        ...defaultArgs,
+        not: true,
+    },
+    play: notInGroupTest,
+    render: args => ({
+        components: { VvAccordion, VvAccordionGroup, VvButton },
+        setup() {
+            const added = ref(false)
+            const emitted = ref(0)
+            return { args, added, emitted }
+        },
+        template: /* html */ `
+            <vv-accordion-group data-testId="element">
+                <vv-accordion name="first" data-testId="first" v-bind="args" @update:model-value="emitted++" />
+                <vv-accordion v-if="added" name="second" data-testId="second" v-bind="args" @update:model-value="emitted++" />
+            </vv-accordion-group>
+            <vv-button data-testId="add" class="mt-24" label="Add an accordion" modifiers="secondary" :disabled="added" @click="added = true" />
+            <div class="mt-24">
+                update:modelValue: <span data-testId="emitted">{{ emitted }}</span>
+            </div>
+    `,
+    }),
 }

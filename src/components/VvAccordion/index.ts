@@ -29,7 +29,9 @@ export const VvAccordionProps = {
      */
     disabled: Boolean,
     /**
-     * If true, the accordion will be opened by default
+     * If true, without a modelValue the accordion is opened on mount,
+     * with a modelValue the state is inverted (modelValue is true when the accordion is closed).
+     * Inside a VvAccordionGroup the initial state comes from the group
      */
     not: Boolean,
 }
