@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.23] - 2026-09-23
 
+### Changed
+
+- Dependencies updated within their majors, the patch and minor releases `ncu` offered: `@babel/core` and `@babel/preset-env` to 8.0.6, `@vue/compiler-sfc` and `vue` to 3.5.43, `@types/node` to 26.6.2, `eslint` to 10.11.0, `prettier` to 3.9.9, `sass-embedded` to 1.105.0 and `baseline-browser-mapping` to 2.11.25 among the development dependencies, `@iconify/vue` to 5.0.3 among the runtime ones and `yargs` to 18.2.0 among the optional ones. The peer dependency floors do not move, since nothing here needs the new releases.
+- `pnpm` moves to 12.6.0, and `packageManager` with it. The switch failed with the same `ENOEXEC` as the move to 12.4.2, and the repair recorded for 0.0.22 fixed it again: `node install.js` inside `.tools/pnpm/12.6.0/node_modules/pnpm`.
+- `@json-render/core` and `@json-render/vue` stay on 0.20 although 0.21 is out. Below 1.0 a minor release may break, and the `json-render` entry point is built against both, so the move waits for a round of its own. They get no `.ncurc.yml` entry, since that list is for majors the project deliberately stays behind on.
+
 ### Fixed
 
 - `VvAccordion` opens on mount when it has `not` and no model, which is what its documentation always said. The state started from `false` and `not` was read only by the watch on `modelValue`, and only for a boolean, so without a v-model that watch did nothing and `<VvAccordion not />` rendered closed, while `VvAccordionGroup` with `not` and no model already opened its first item on mount, or all of them with `collapse`. The state now starts from `not`. With a boolean model the immediate watch overwrites it before the watch that emits is registered, so `not` keeps inverting the model as before, and no `update:modelValue` leaves on mount with or without a model. A v-model bound to `undefined` counts as no model, and opens too.
