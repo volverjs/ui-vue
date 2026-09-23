@@ -49,19 +49,36 @@ const localModelValue = computed({
         return storageModelValue.value
     },
     set: (newValue): void => {
-        // every toggle writes the model back, changed or not
-        if (!isSameModelValue(newValue, localModelValue.value)) {
-            emit('update:modelValue', newValue)
-        }
-        storageModelValue.value = newValue
-        if (!writtenModelValue.value) {
-            nextTick(() => {
-                writtenModelValue.value = undefined
-            })
-        }
-        writtenModelValue.value = { value: newValue }
+        batch(() => {
+            storageModelValue.value = newValue
+            if (!writtenModelValue.value) {
+                nextTick(() => {
+                    writtenModelValue.value = undefined
+                })
+            }
+            writtenModelValue.value = { value: newValue }
+        })
     },
 })
+// a toggle writes the model back for every accordion it touches, changed or
+// not, so the parent hears the result once, when the outermost toggle is over
+let batchDepth = 0
+let batchModelValue: string | string[] | undefined
+function batch(callback: () => void) {
+    if (batchDepth++ === 0) {
+        batchModelValue = localModelValue.value
+    }
+    try {
+        callback()
+    } finally {
+        if (
+            --batchDepth === 0
+            && !isSameModelValue(localModelValue.value, batchModelValue)
+        ) {
+            emit('update:modelValue', localModelValue.value)
+        }
+    }
+}
 function isSameModelValue(
     value?: string | string[],
     otherValue?: string | string[],
@@ -129,12 +146,14 @@ let isSynced = false
 onMounted(() => {
     nextTick(() => {
         isSynced = true
-        for (const name of accordionNames) {
-            bus.emit('toggle', {
-                name,
-                value: expandedAccordions.value.has(name),
-            })
-        }
+        batch(() => {
+            for (const name of accordionNames) {
+                bus.emit('toggle', {
+                    name,
+                    value: expandedAccordions.value.has(name),
+                })
+            }
+        })
     })
 })
 
@@ -174,7 +193,7 @@ bus.on('unregister', ({ name }) => {
     registrations.delete(name)
     accordionNames.delete(name)
 })
-bus.on('toggle', ({ name, value }) => {
+bus.on('toggle', ({ name, value }) => batch(() => {
     const newValue = new Set<string>(expandedAccordions.value)
     if (value) {
         if (!props.collapse) {
@@ -191,38 +210,42 @@ bus.on('toggle', ({ name, value }) => {
     }
     newValue.delete(name)
     expandedAccordions.value = newValue
-})
+}))
 function expand(name?: string | string[]) {
-    if (typeof name === 'string') {
-        bus.emit('toggle', { name, value: true })
-        return
-    }
-    if (Array.isArray(name)) {
-        for (const item of name) {
+    batch(() => {
+        if (typeof name === 'string') {
+            bus.emit('toggle', { name, value: true })
+            return
+        }
+        if (Array.isArray(name)) {
+            for (const item of name) {
+                bus.emit('toggle', { name: item, value: true })
+            }
+            return
+        }
+        for (const item of accordionNames) {
             bus.emit('toggle', { name: item, value: true })
         }
-        return
-    }
-    for (const item of accordionNames) {
-        bus.emit('toggle', { name: item, value: true })
-    }
+    })
 }
 bus.on('expand', ({ name }) => expand(name))
 
 function collapse(name?: string | string[]) {
-    if (typeof name === 'string') {
-        bus.emit('toggle', { name, value: false })
-        return
-    }
-    if (Array.isArray(name)) {
-        for (const item of name) {
+    batch(() => {
+        if (typeof name === 'string') {
+            bus.emit('toggle', { name, value: false })
+            return
+        }
+        if (Array.isArray(name)) {
+            for (const item of name) {
+                bus.emit('toggle', { name: item, value: false })
+            }
+            return
+        }
+        for (const item of accordionNames) {
             bus.emit('toggle', { name: item, value: false })
         }
-        return
-    }
-    for (const item of accordionNames) {
-        bus.emit('toggle', { name: item, value: false })
-    }
+    })
 }
 bus.on('collapse', ({ name }) => collapse(name))
 

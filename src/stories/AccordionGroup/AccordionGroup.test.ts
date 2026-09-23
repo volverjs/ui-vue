@@ -99,6 +99,18 @@ export async function lateItemsTest({ canvasElement, args }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function notModelMountTest({
+    canvasElement,
+    args,
+}: PlayAttributes) {
+    const emitted = await within(canvasElement).findByTestId('emitted')
+    const names = args.items.map((item: { name: string }) => item.name)
+
+    // the first accordion wins, and the parent hears the result once
+    await sleep()
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([names.slice(1)])
+}
+
 export async function notRemountTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')

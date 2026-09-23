@@ -6,6 +6,7 @@ import { argTypes, defaultArgs } from './AccordionGroup.settings'
 import {
     defaultTest,
     lateItemsTest,
+    notModelMountTest,
     notRemountTest,
     renameTest,
     swapNamesTest,
@@ -59,17 +60,24 @@ export const NotModel: Story = {
         ...defaultArgs,
         not: true,
     },
-    play: defaultTest,
+    play: async (context) => {
+        await notModelMountTest(context)
+        await defaultTest(context)
+    },
     render: args => ({
         components: { VvAccordionGroup },
         setup() {
             const selected = ref<string[]>([])
-            return { args, selected }
+            const emitted = ref<unknown[]>([])
+            return { args, selected, emitted }
         },
         template: /* html */ `
-		<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" />
+		<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" @update:model-value="emitted.push($event)" />
 		<div class="mt-24">
 			Closed: <span data-testId="value">{{ selected }}</span>
+		</div>
+		<div>
+			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
 		</div>
 	`,
     }),
