@@ -231,10 +231,14 @@ export const ButtonDefinition = {
         iconPosition,
         type: z.enum(['button', 'submit', 'reset']).nullish(),
         href: z.string().nullish(),
+        ariaLabel: z
+            .string()
+            .nullish()
+            .describe('Accessible name, required when the button shows an icon and no label'),
     }),
     slots: ['default'],
     description:
-        'Action button. Supports text label, icon, loading state, and link mode (href). Use type=submit inside forms.',
+        'Action button. Supports text label, icon, loading state, and link mode (href). Use type=submit inside forms. An icon without a label needs ariaLabel.',
 }
 
 export const ButtonGroupDefinition = {

@@ -7,7 +7,7 @@ import {
     VisibilityProvider,
 } from '@json-render/vue'
 import { registry } from '@/json-render'
-import { namedSlotsTest } from './JsonRender.test'
+import { iconOnlyButtonTest, namedSlotsTest } from './JsonRender.test'
 
 const meta: Meta = {
     title: 'JsonRender/Registry',
@@ -113,4 +113,22 @@ function renderSpec(spec: Spec) {
 export const NamedSlots: Story = {
     render: renderSpec(namedSlotsSpec),
     play: namedSlotsTest,
+}
+
+/**
+ * A button with an icon and no label, named for assistive technologies by its
+ * `ariaLabel`.
+ */
+export const IconOnlyButton: Story = {
+    render: renderSpec({
+        root: 'button',
+        elements: {
+            button: {
+                type: 'Button',
+                props: { icon: 'add', ariaLabel: 'Add an item' },
+                children: [],
+            },
+        },
+    }),
+    play: iconOnlyButtonTest,
 }

@@ -2,6 +2,19 @@ import type { PlayAttributes } from '@/test/types'
 import { within } from 'storybook/test'
 import { expect } from '@/test/expect'
 
+export async function iconOnlyButtonTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const button = element.getElementsByClassName('vv-button')[0] as HTMLElement
+
+    // an empty `children` is no default slot, so the button is icon only,
+    // and the spec gives it the accessible name it has no label for
+    expect(button).toHaveClass('vv-button--icon-only')
+    expect(button.getAttribute('aria-label')).toBe('Add an item')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
 export async function namedSlotsTest({ canvasElement }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
     const card = element.getElementsByClassName('vv-card')[0] as HTMLElement

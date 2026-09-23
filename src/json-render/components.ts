@@ -198,7 +198,7 @@ export function ButtonComponent({ props, children, emit }: BaseComponentProps) {
     return render(
         VvButton,
         props,
-        ['label', 'modifiers', 'disabled', 'loading', 'icon', 'iconPosition', 'type', 'href'],
+        ['label', 'modifiers', 'disabled', 'loading', 'icon', 'iconPosition', 'type', 'href', 'ariaLabel'],
         { type: props.type ?? 'button', onClick: () => emit('press') },
         children,
     )
