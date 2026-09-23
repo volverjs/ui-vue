@@ -126,6 +126,22 @@ export async function externalModelTest({ canvasElement }: PlayAttributes) {
     await expect(element).toHaveNoViolations()
 }
 
+export async function sortedModelTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const emitted = await canvas.findByTestId('emitted')
+
+    // the group lists the names in another order than the parent keeps them,
+    // which is not a change, so the two do not answer each other for ever
+    await sleep(1000)
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
+
+    // a real change is still emitted, once
+    expect(element.querySelector('[id="a-1"] summary')).toBeClicked()
+    await sleep(1000)
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([['a-2']])
+}
+
 export async function notModelMountTest({
     canvasElement,
     args,

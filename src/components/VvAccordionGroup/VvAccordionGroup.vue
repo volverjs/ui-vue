@@ -82,15 +82,17 @@ function batch(callback: () => void) {
         }
     }
 }
+// an array model is a set of names: the group writes them in the order they
+// registered, and a parent that keeps them in another order has not changed
+// anything, so the two must not rewrite each other for ever
 function isSameModelValue(
     value?: string | string[],
     otherValue?: string | string[],
 ) {
     if (Array.isArray(value) && Array.isArray(otherValue)) {
-        return (
-            value.length === otherValue.length
-            && value.every((item, index) => item === otherValue[index])
-        )
+        const names = new Set(otherValue)
+        const isSameSize = new Set(value).size === names.size
+        return isSameSize && value.every(name => names.has(name))
     }
     return value === otherValue
 }

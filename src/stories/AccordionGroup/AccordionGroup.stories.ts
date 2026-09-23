@@ -10,6 +10,7 @@ import {
     notModelMountTest,
     notRemountTest,
     renameTest,
+    sortedModelTest,
     swapNamesTest,
 } from './AccordionGroup.test'
 
@@ -168,6 +169,39 @@ export const ExternalModelNot: Story = {
         ...defaultArgs,
         not: true,
     },
+}
+
+export const SortedModel: Story = {
+    args: {
+        ...defaultArgs,
+        collapse: true,
+        not: true,
+    },
+    play: sortedModelTest,
+    render: args => ({
+        components: { VvAccordion, VvAccordionGroup },
+        setup() {
+            const selected = ref<string[]>(['a-1', 'a-2'])
+            const emitted = ref<unknown[]>([])
+            function onUpdate(value: string[]) {
+                emitted.value.push(value)
+                selected.value = [...value].sort()
+            }
+            return { args, selected, emitted, onUpdate }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" v-bind="args" :model-value="selected" @update:model-value="onUpdate">
+			<vv-accordion name="a-2" title="a-2" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+			<vv-accordion name="a-1" title="a-1" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+		</vv-accordion-group>
+		<div class="mt-24">
+			Closed, sorted by the parent: <span data-testId="value">{{ selected }}</span>
+		</div>
+		<div>
+			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
+		</div>
+	`,
+    }),
 }
 
 export const NotCollapseRemount: Story = {
