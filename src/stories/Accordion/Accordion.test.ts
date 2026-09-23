@@ -80,14 +80,15 @@ export async function notWithoutModelTest({ canvasElement }: PlayAttributes) {
     expect(element.open).toBe(true)
     expect(summary.getAttribute('aria-expanded')).toBe('true')
     expect(content.getAttribute('aria-hidden')).toBe('false')
-    expect(emitted.textContent).toBe('0')
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
 
-    // closed by a click on the summary
+    // closed by a click on the summary, which `not` emits as true
     expect(summary).toBeClicked()
     await sleep()
     expect(element.open).toBe(false)
     expect(summary.getAttribute('aria-expanded')).toBe('false')
     expect(content.getAttribute('aria-hidden')).toBe('true')
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([true])
 
     // accessibility
     await expect(element).toHaveNoViolations()

@@ -60,13 +60,13 @@ export const NotWithoutModel: Story = {
     render: args => ({
         components: { VvAccordion },
         setup() {
-            const emitted = ref(0)
+            const emitted = ref<unknown[]>([])
             return { args, emitted }
         },
         template: /* html */ `
-            <vv-accordion data-testId="element" v-bind="args" @update:model-value="emitted++" />
+            <vv-accordion data-testId="element" v-bind="args" @update:model-value="emitted.push($event)" />
             <div class="mt-24">
-                update:modelValue: <span data-testId="emitted">{{ emitted }}</span>
+                update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
             </div>
     `,
     }),
