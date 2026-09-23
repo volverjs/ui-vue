@@ -35,8 +35,14 @@ const storageModelValue = usePersistence<string | string[] | undefined>(
     storageType,
     [],
 )
+// a toggle can write the model several times before the parent passes it
+// back, so until the next tick the group reads its own last write
+const writtenModelValue = shallowRef<{ value?: string | string[] }>()
 const localModelValue = computed({
     get: () => {
+        if (writtenModelValue.value) {
+            return writtenModelValue.value.value
+        }
         if (props.modelValue !== null && props.modelValue !== undefined) {
             return props.modelValue
         }
@@ -48,6 +54,12 @@ const localModelValue = computed({
             emit('update:modelValue', newValue)
         }
         storageModelValue.value = newValue
+        if (!writtenModelValue.value) {
+            nextTick(() => {
+                writtenModelValue.value = undefined
+            })
+        }
+        writtenModelValue.value = { value: newValue }
     },
 })
 function isSameModelValue(

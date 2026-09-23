@@ -48,6 +48,27 @@ export const Not: Story = {
     },
 }
 
+export const NotModel: Story = {
+    args: {
+        ...defaultArgs,
+        not: true,
+    },
+    play: defaultTest,
+    render: args => ({
+        components: { VvAccordionGroup },
+        setup() {
+            const selected = ref<string[]>([])
+            return { args, selected }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" v-bind="args" v-model="selected" />
+		<div class="mt-24">
+			Closed: <span data-testId="value">{{ selected }}</span>
+		</div>
+	`,
+    }),
+}
+
 export const Collapse: Story = {
     ...Default,
     args: {
@@ -72,7 +93,7 @@ export const LateItems: Story = {
         components: { VvAccordionGroup, VvButton },
         setup() {
             const items = ref<typeof args.items>(args.items?.slice(0, 1))
-            const selected = ref(args.not ? undefined : 'a-2')
+            const selected = ref<string | string[]>(args.not ? [] : 'a-2')
             const emitted = ref<unknown[]>([])
             return { args, items, selected, emitted }
         },
