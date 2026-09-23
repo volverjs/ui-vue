@@ -121,7 +121,8 @@ export async function notInGroupTest({ canvasElement }: PlayAttributes) {
     expect(first.open).toBe(false)
     expect(emitted.textContent).toBe('0')
 
-    // an accordion added after the group has mounted gets no toggle, and stays closed too
+    // an accordion added after the group has mounted takes the state of its
+    // name from the group, closed too, without emitting
     expect(await canvas.findByTestId('add')).toBeClicked()
     const second = (await canvas.findByTestId('second')) as HTMLDetailsElement
     await sleep()

@@ -78,12 +78,12 @@ export const AccordionGroupDefinition = {
         collapse: z
             .boolean()
             .nullish()
-            .describe('Close other accordions when one opens'),
+            .describe('Keep the other accordions open when one opens'),
         modifiers,
     }),
     slots: ['default'],
     description:
-        'Container for multiple Accordion components. Set collapse=true to allow only one accordion open at a time.',
+        'Container for multiple Accordion components. Only one accordion is open at a time, unless collapse=true lets several stay open.',
 }
 
 export const DialogDefinition = {

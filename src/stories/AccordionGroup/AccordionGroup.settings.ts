@@ -49,7 +49,8 @@ export const argTypes: ArgTypes = {
         description: 'Accordion group items',
     },
     'collapse': {
-        description: 'Enables accordion group collapse',
+        description:
+            'Accordion items stay open when another one opens, and the model is an array',
         control: 'boolean',
         table: {
             defaultValue: {
@@ -58,7 +59,8 @@ export const argTypes: ArgTypes = {
         },
     },
     'not': {
-        description: 'Inverts the accordion group state',
+        description:
+            'The model lists the closed accordions instead of the open ones, so without a model they start open: all of them with collapse, the first one without',
         control: 'boolean',
         table: {
             defaultValue: {
