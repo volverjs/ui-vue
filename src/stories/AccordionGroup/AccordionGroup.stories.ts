@@ -70,15 +70,19 @@ export const LateItems: Story = {
     render: args => ({
         components: { VvAccordionGroup, VvButton },
         setup() {
-            const items = ref<typeof args.items>([])
+            const items = ref<typeof args.items>(args.items?.slice(0, 1))
             const selected = ref(args.not ? undefined : 'a-2')
-            return { args, items, selected }
+            const emitted = ref<unknown[]>([])
+            return { args, items, selected, emitted }
         },
         template: /* html */ `
-		<vv-accordion-group data-testId="element" v-bind="args" :items="items" v-model="selected" />
-		<vv-button data-testId="load" class="mt-24" label="Load the items" modifiers="secondary" :disabled="items.length > 0" @click="items = args.items" />
+		<vv-accordion-group data-testId="element" v-bind="args" :items="items" v-model="selected" @update:model-value="emitted.push($event)" />
+		<vv-button data-testId="load" class="mt-24" label="Load the other items" modifiers="secondary" :disabled="items.length > 1" @click="items = args.items" />
 		<div class="mt-24">
 			{{ args.not ? 'Closed' : 'Opened'}}: <span data-testId="value">{{ selected }}</span>
+		</div>
+		<div>
+			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
 		</div>
 	`,
     }),

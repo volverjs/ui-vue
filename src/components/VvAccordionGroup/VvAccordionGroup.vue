@@ -42,11 +42,26 @@ const localModelValue = computed({
         }
         return storageModelValue.value
     },
-    set: (newValue) => {
-        emit('update:modelValue', newValue)
+    set: (newValue): void => {
+        // every toggle writes the model back, changed or not
+        if (!isSameModelValue(newValue, localModelValue.value)) {
+            emit('update:modelValue', newValue)
+        }
         storageModelValue.value = newValue
     },
 })
+function isSameModelValue(
+    value?: string | string[],
+    otherValue?: string | string[],
+) {
+    if (Array.isArray(value) && Array.isArray(otherValue)) {
+        return (
+            value.length === otherValue.length
+            && value.every((item, index) => item === otherValue[index])
+        )
+    }
+    return value === otherValue
+}
 const expandedAccordions = computed<Set<string>>({
     get: () => {
         if (localModelValue.value === undefined) {

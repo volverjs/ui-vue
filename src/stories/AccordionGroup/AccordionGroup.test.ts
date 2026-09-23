@@ -59,29 +59,40 @@ export async function lateItemsTest({ canvasElement, args }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')
     const value = await canvas.findByTestId('value')
+    const emitted = await canvas.findByTestId('emitted')
     const names = args.items.map((item: { name: string }) => item.name)
 
-    // the items arrive after the group has mounted
-    expect(element.children).toHaveLength(0)
+    // one item on mount, open only in the `not` group
+    await sleep()
+    expect(element.children).toHaveLength(1)
+    expect((element.children[0] as HTMLDetailsElement).open).toBe(!!args.not)
+
+    // the other items arrive after the group has mounted
     expect(await canvas.findByTestId('load')).toBeClicked()
     await sleep()
     const accordions = [...element.children] as HTMLDetailsElement[]
     expect(accordions).toHaveLength(names.length)
 
     if (args.not) {
-        // only the first one opens, as on mount, and the model lists the others as closed
+        // the one already open stays open, and the model lists the others
+        // as closed, emitted once for each change
         expect(accordions.map(accordion => accordion.open)).toEqual(
             names.map((_: string, index: number) => index === 0),
         )
         expect(JSON.parse(value.textContent ?? '')).toEqual(
             names.toSpliced(0, 1),
         )
+        expect(JSON.parse(emitted.textContent ?? '')).toEqual([
+            names.slice(1, 2),
+            names.slice(1),
+        ])
     } else {
-        // the one named by the model opens
+        // the one named by the model opens, and the model never changes
         expect(accordions.map(accordion => accordion.open)).toEqual(
             names.map((_: string, index: number) => index === 1),
         )
         expect(value.textContent).toBe(names[1])
+        expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
     }
 
     // accessibility
