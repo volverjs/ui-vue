@@ -68,24 +68,41 @@ function render(
     return h(component as any, { ...pick(props, keys), ...extra }, slots)
 }
 
+/**
+ * Slots for a component the catalog gives named slots: the default one from
+ * `children`, as for every component, plus the named ones json-render delivers
+ * in `slots` from 0.21 on. Its `slots` always holds a default, children or
+ * not, while the default one is decided from `children` like for every other
+ * component, so only the named ones are taken from it.
+ */
+function slotsOf(children: unknown, slots?: Record<string, unknown>) {
+    const named = Object.fromEntries(
+        Object.entries(slots ?? {}).filter(([name]) => name !== 'default'),
+    )
+    if (Object.keys(named).length === 0) {
+        return children
+    }
+    return children == null ? named : { default: () => children, ...named }
+}
+
 // ---------------------------------------------------------------------------
 // Layout & Container
 // ---------------------------------------------------------------------------
 
-export function CardComponent({ props, children }: BaseComponentProps) {
-    return render(VvCard, props, ['title', 'modifiers'], undefined, children)
+export function CardComponent({ props, children, slots }: BaseComponentProps) {
+    return render(VvCard, props, ['title', 'modifiers'], undefined, slotsOf(children, slots))
 }
 
-export function AccordionComponent({ props, children }: BaseComponentProps) {
-    return render(VvAccordion, props, ['title', 'content', 'modifiers'], undefined, children)
+export function AccordionComponent({ props, children, slots }: BaseComponentProps) {
+    return render(VvAccordion, props, ['title', 'content', 'modifiers'], undefined, slotsOf(children, slots))
 }
 
 export function AccordionGroupComponent({ props, children }: BaseComponentProps) {
     return render(VvAccordionGroup, props, ['collapse', 'modifiers'], undefined, children)
 }
 
-export function DialogComponent({ props, children, bindings }: BaseComponentProps) {
-    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, children, bindings?.value ? undefined : true)
+export function DialogComponent({ props, children, slots, bindings }: BaseComponentProps) {
+    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, slotsOf(children, slots), bindings?.value ? undefined : true)
 }
 
 export function TabComponent({ props }: BaseComponentProps) {
@@ -96,8 +113,8 @@ export function TabComponent({ props }: BaseComponentProps) {
 // Data Display
 // ---------------------------------------------------------------------------
 
-export function AlertComponent({ props, children, emit }: BaseComponentProps) {
-    return render(VvAlert, props, ['title', 'content', 'modifiers', 'dismissable', 'role'], { onClose: () => emit('close') }, children)
+export function AlertComponent({ props, children, slots, emit }: BaseComponentProps) {
+    return render(VvAlert, props, ['title', 'content', 'modifiers', 'dismissable', 'role'], { onClose: () => emit('close') }, slotsOf(children, slots))
 }
 
 export function AlertGroupComponent({ props, children }: BaseComponentProps) {

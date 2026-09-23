@@ -240,11 +240,11 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@json-render/core':
-        specifier: ^0.20.0
-        version: 0.20.0(zod@4.6.5)
+        specifier: ^0.21.0
+        version: 0.21.0(zod@4.6.5)
       '@json-render/vue':
-        specifier: ^0.20.0
-        version: 0.20.0(vue@3.5.43(typescript@6.0.3))(zod@4.6.5)
+        specifier: ^0.21.0
+        version: 0.21.0(vue@3.5.43(typescript@6.0.3))(zod@4.6.5)
       '@nabla/vite-plugin-eslint':
         specifier: ^3.0.1
         version: 3.0.1(eslint@10.11.0(supports-color@8.1.1))(supports-color@8.1.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.1)(sass-embedded@1.105.0)(sass@1.104.0)(terser@5.51.2)(yaml@2.9.0))
@@ -1692,13 +1692,13 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@json-render/core@0.20.0':
-    resolution: {integrity: sha512-cXAXn7h3QaylefQgh85AEGPuVq4C8SJ3k9JqigWLJhaBSozF1Fmsrm43DP16RmkqNiVgj5pBRdmB48lEO5qlow==}
+  '@json-render/core@0.21.0':
+    resolution: {integrity: sha512-vysEbTjO1y8mEgAsp0tztRyaWCkNsBrG8MhAqbndGK3qmMXjMRdCNtk21+AQRNKdRelFGVAwBgtUNW8tfjQlsw==}
     peerDependencies:
       zod: ^4.0.0
 
-  '@json-render/vue@0.20.0':
-    resolution: {integrity: sha512-vASy4ygzrv/h2yxwiEUkX/HomYcJ30T3oYL1LMknvAdNu4bwljDHEkx0tLxvYiogmwDQfT9nfFI5UzpbpHtVEQ==}
+  '@json-render/vue@0.21.0':
+    resolution: {integrity: sha512-6tG6A5mYX4QP2lvh51R/Y83dTUWVHK0RTxK0YN5bRNpj2QrN3Qy/yDD/XNtjlAGdWeHjhLsuEILJVEM1VMWcQw==}
     peerDependencies:
       vue: ^3.5.0
       zod: ^4.0.0
@@ -7370,13 +7370,13 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@json-render/core@0.20.0(zod@4.6.5)':
+  '@json-render/core@0.21.0(zod@4.6.5)':
     dependencies:
       zod: 4.6.5
 
-  '@json-render/vue@0.20.0(vue@3.5.43(typescript@6.0.3))(zod@4.6.5)':
+  '@json-render/vue@0.21.0(vue@3.5.43(typescript@6.0.3))(zod@4.6.5)':
     dependencies:
-      '@json-render/core': 0.20.0(zod@4.6.5)
+      '@json-render/core': 0.21.0(zod@4.6.5)
       vue: 3.5.43(typescript@6.0.3)
       zod: 4.6.5
 

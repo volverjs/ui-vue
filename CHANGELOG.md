@@ -8,7 +8,9 @@ All notable changes to this project will be documented in this file.
 
 - Dependencies updated within their majors, the patch and minor releases `ncu` offered: `@babel/core` and `@babel/preset-env` to 8.0.6, `@vue/compiler-sfc` and `vue` to 3.5.43, `@types/node` to 26.6.2, `eslint` to 10.11.0, `prettier` to 3.9.9, `sass-embedded` to 1.105.0 and `baseline-browser-mapping` to 2.11.25 among the development dependencies, `@iconify/vue` to 5.0.3 among the runtime ones and `yargs` to 18.2.0 among the optional ones. The peer dependency floors do not move, since nothing here needs the new releases.
 - `pnpm` moves to 12.6.0, and `packageManager` with it. The switch failed with the same `ENOEXEC` as the move to 12.4.2, and the repair recorded for 0.0.22 fixed it again: `node install.js` inside `.tools/pnpm/12.6.0/node_modules/pnpm`.
-- `@json-render/core` and `@json-render/vue` stay on 0.20 although 0.21 is out. Below 1.0 a minor release may break, and the `json-render` entry point is built against both, so the move waits for a round of its own. They get no `.ncurc.yml` entry, since that list is for majors the project deliberately stays behind on.
+- `@json-render/core` and `@json-render/vue` move to 0.21.0 among the development dependencies, and the peer dependency floors stay at `>=0.19.0`. The release lists no breaking change, but it lets a Vue spec fill named slots, and `catalog.prompt()` now lists the named slots of the catalog and tells the model how to fill them: `summary` on `Accordion`, `header` and `footer` on `Card`, `Dialog` and `Alert`. The registry handed only `children` on, as the default slot, so the slots the prompt offered were dropped without a word. Those four components now also pass on the named slots json-render delivers in `slots`, while the default slot still comes from `children`, since json-render's `slots` always holds a default, children or not. With 0.20 or 0.19 there is no `slots` and nothing changes.
+
+  A `NamedSlots` story, the first for the `json-render` entry point, renders a spec through the registry with a `footer` on a card and on an alert and a `summary` on an accordion, and finds all three drawn.
 
 ### Fixed
 
