@@ -16,8 +16,10 @@ const stringModifiers = computed(() => {
     return avatarModifiers?.value || ''
 })
 
+// taken once, so an item without a key keeps it when the list is computed again
+const keyPrefix = useId()
 const avatarItems = computed(() => {
-    return items.value.slice(0, toShow.value).map((item) => {
+    return items.value.slice(0, toShow.value).map((item, index) => {
         let modifiers: string[] = []
         let itemModifiers: string[] = []
 
@@ -35,7 +37,7 @@ const avatarItems = computed(() => {
 
         return {
             ...item,
-            key: item.key || useUniqueId().value,
+            key: item.key || `${keyPrefix}-${index}`,
             modifiers: [...modifiers, ...itemModifiers],
         }
     })

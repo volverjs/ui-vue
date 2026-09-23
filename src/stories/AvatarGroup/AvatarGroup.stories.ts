@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvAvatarGroup from '@/components/VvAvatarGroup/VvAvatarGroup.vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './AvatarGroup.settings'
-import { defaultTest } from './AvatarGroup.test'
+import { defaultTest, stableKeysTest } from './AvatarGroup.test'
 
 const meta: Meta<typeof VvAvatarGroup> = {
     title: 'Components/AvatarGroup',
@@ -32,4 +33,23 @@ export const Default: Story = {
 	</div>`,
     }),
     play: defaultTest,
+}
+
+export const StableKeys: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvAvatarGroup, VvButton },
+        setup() {
+            const avatarModifiers = ref('rounded')
+            return { args, avatarModifiers }
+        },
+        template: /* html */ `
+		<div class="m-md">
+			<vv-avatar-group v-bind="args" :avatar-modifiers="avatarModifiers" data-testId="element" />
+			<vv-button data-testId="square" class="mt-24" label="Square avatars" modifiers="secondary" :disabled="avatarModifiers === 'square'" @click="avatarModifiers = 'square'" />
+		</div>`,
+    }),
+    play: stableKeysTest,
 }
