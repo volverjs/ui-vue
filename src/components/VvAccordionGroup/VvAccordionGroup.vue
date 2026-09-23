@@ -8,6 +8,8 @@ import { VvAccordionGroupEvents, VvAccordionGroupProps } from '.'
 import { INJECTION_KEY_ACCORDION_GROUP } from '../../constants'
 import VvAccordion from '../VvAccordion/VvAccordion.vue'
 
+type ModelValue = string | string[] | undefined
+
 // props and emit
 const props = defineProps(VvAccordionGroupProps)
 const emit = defineEmits(VvAccordionGroupEvents)
@@ -30,16 +32,16 @@ watchEffect(() => {
 })
 
 const accordionNames = reactive(new Set<string>())
-const storageModelValue = usePersistence<string | string[] | undefined>(
+const storageModelValue = usePersistence<ModelValue>(
     storageKey,
     storageType,
     [],
 )
 // a toggle can write the model several times before the parent passes it
 // back, so until the next tick the group reads its own last write
-const writtenModelValue = shallowRef<{ value?: string | string[] }>()
+const writtenModelValue = shallowRef<{ value: ModelValue }>()
 // a copy of that write, to tell its echo from a change made outside
-let lastModelValue: string | string[] | undefined
+let lastModelValue: ModelValue
 const localModelValue = computed({
     get: () => {
         if (writtenModelValue.value) {
@@ -66,7 +68,7 @@ const localModelValue = computed({
 // a toggle writes the model back for every accordion it touches, changed or
 // not, so the parent hears the result once, when the outermost toggle is over
 let batchDepth = 0
-let batchModelValue: string | string[] | undefined
+let batchModelValue: ModelValue
 function batch(callback: () => void) {
     if (batchDepth++ === 0) {
         batchModelValue = localModelValue.value
@@ -85,10 +87,7 @@ function batch(callback: () => void) {
 // an array model is a set of names: the group writes them in the order they
 // registered, and a parent that keeps them in another order has not changed
 // anything, so the two must not rewrite each other for ever
-function isSameModelValue(
-    value?: string | string[],
-    otherValue?: string | string[],
-) {
+function isSameModelValue(value: ModelValue, otherValue: ModelValue) {
     if (Array.isArray(value) && Array.isArray(otherValue)) {
         const names = new Set(otherValue)
         const isSameSize = new Set(value).size === names.size

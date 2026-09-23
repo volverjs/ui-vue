@@ -185,7 +185,7 @@ export const SortedModel: Story = {
             const emitted = ref<unknown[]>([])
             function onUpdate(value: string[]) {
                 emitted.value.push(value)
-                selected.value = [...value].sort()
+                selected.value = [...value].sort((a, b) => a.localeCompare(b))
             }
             return { args, selected, emitted, onUpdate }
         },
