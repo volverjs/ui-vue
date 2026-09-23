@@ -37,6 +37,9 @@ All notable changes to this project will be documented in this file.
 - `VvAccordion` keeps an id when its `name` is cleared after mount. The name fell back to `useId()` inside a computed, and the computed runs again when the name changes, from the watch that registers the accordion, where there is no component instance: `useId()` warned and returned an empty string, so the `details` lost its id and `aria-controls` pointed at nothing. The fallback is now taken once, in setup.
 
   Every accordion now takes that id, named or not, and Vue counts these ids across the whole tree, so the ids it generates for the components rendered after an accordion move by one. They carry no meaning, but a snapshot that recorded them changes. A `NameCleared` story clears the name and finds the id still set and still the target of `aria-controls`.
+- `VvDropdown` keeps an id when its `id` is cleared after mount. `useUniqueId`, which gives twelve components their fallback id, called `useId()` inside a computed, with the same flaw as the accordion above: for `VvDropdown` the first to read the computed after the change is not the render, so the list lost its id and the trigger's `aria-controls` pointed at nothing. Ten of the others read it in render, where an instance is active, and got a new id each time their `id` changed. `useUniqueId` now takes the fallback once, when it is called, and the computed only picks it, so a component keeps the same fallback for its whole life.
+
+  As with the accordion, every component that calls `useUniqueId` now takes that id whether it has an `id` or not, so the ids Vue generates move for the components rendered after them. An `IdCleared` story clears the id of a dropdown and finds the list still carrying one, still the target of the trigger's `aria-controls`.
 
 ## [0.0.22] - 2026-09-16
 

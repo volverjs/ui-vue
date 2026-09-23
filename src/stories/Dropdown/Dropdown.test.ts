@@ -48,6 +48,23 @@ async function expectAboveTheBar(
     ).toBe(dropdown)
 }
 
+export async function idClearedTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const list = () =>
+        canvasElement.getElementsByClassName(
+            'vv-dropdown__list',
+        )[0] as HTMLElement
+    expect(list().id).toBe('menu')
+    expect(trigger.getAttribute('aria-controls')).toBe('menu')
+
+    // without an id the dropdown falls back to one of its own
+    expect(await canvas.findByTestId('clear')).toBeClicked()
+    await sleep()
+    expect(list().id).not.toBe('')
+    expect(trigger.getAttribute('aria-controls')).toBe(list().id)
+}
+
 export async function topLayerTest({ canvasElement }: PlayAttributes) {
     const wrapper = await within(canvasElement).findByTestId('wrapper')
     const trigger = await within(canvasElement).findByTestId('trigger')
