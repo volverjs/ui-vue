@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import VvAccordion from '@/components/VvAccordion/VvAccordion.vue'
 import VvAccordionGroup from '@/components/VvAccordionGroup/VvAccordionGroup.vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import { argTypes, defaultArgs } from './AccordionGroup.settings'
-import { defaultTest, lateItemsTest } from './AccordionGroup.test'
+import { defaultTest, lateItemsTest, renameTest } from './AccordionGroup.test'
 
 const meta: Meta<typeof VvAccordionGroup> = {
     title: 'Components/AccordionGroup',
@@ -94,4 +95,30 @@ export const LateItemsNot: Story = {
         ...defaultArgs,
         not: true,
     },
+}
+
+export const Rename: Story = {
+    args: defaultArgs,
+    play: renameTest,
+    render: () => ({
+        components: { VvAccordion, VvAccordionGroup, VvButton },
+        setup() {
+            const name = ref('a-1')
+            const selected = ref('a-1')
+            const emitted = ref<unknown[]>([])
+            return { name, selected, emitted }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" v-model="selected" @update:model-value="emitted.push($event)">
+			<vv-accordion :name="name" :title="name" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+		</vv-accordion-group>
+		<vv-button data-testId="rename" class="mt-24" :label="name === 'a-1' ? 'Rename to b-1' : 'Rename to a-1'" modifiers="secondary" @click="name = name === 'a-1' ? 'b-1' : 'a-1'" />
+		<div class="mt-24">
+			Opened: <span data-testId="value">{{ selected }}</span>
+		</div>
+		<div>
+			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
+		</div>
+	`,
+    }),
 }

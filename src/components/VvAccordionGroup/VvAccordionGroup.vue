@@ -134,14 +134,19 @@ useGroupStateProvide<AccordionGroupState>(INJECTION_KEY_ACCORDION_GROUP, {
 })
 bus.on('register', ({ name }) => {
     accordionNames.add(name)
-    if (!isSynced || !expandedAccordions.value.has(name)) {
+    if (!isSynced) {
         return
     }
+    // added or renamed, the accordion takes the state of its name, and
     // where only one can be open, the one already open wins, as on mount
+    const isExpanded = expandedAccordions.value.has(name)
     const isOtherExpanded = [...expandedAccordions.value].some(
         item => item !== name,
     )
-    bus.emit('toggle', { name, value: props.collapse || !isOtherExpanded })
+    bus.emit('toggle', {
+        name,
+        value: isExpanded && (props.collapse || !isOtherExpanded),
+    })
 })
 bus.on('unregister', ({ name }) => {
     accordionNames.delete(name)

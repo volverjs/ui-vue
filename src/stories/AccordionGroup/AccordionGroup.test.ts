@@ -98,3 +98,33 @@ export async function lateItemsTest({ canvasElement, args }: PlayAttributes) {
     // accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function renameTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const rename = await canvas.findByTestId('rename')
+    const value = await canvas.findByTestId('value')
+    const emitted = await canvas.findByTestId('emitted')
+    const accordion = element.children[0] as HTMLDetailsElement
+
+    // the model names the accordion, which opens on mount
+    await sleep()
+    expect(accordion.open).toBe(true)
+
+    // renamed, it takes the state the model gives its new name
+    expect(rename).toBeClicked()
+    await sleep()
+    expect(accordion.open).toBe(false)
+
+    // and back
+    expect(rename).toBeClicked()
+    await sleep()
+    expect(accordion.open).toBe(true)
+
+    // the model never changed, so nothing was emitted
+    expect(value.textContent).toBe('a-1')
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
