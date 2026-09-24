@@ -71,7 +71,7 @@ export const Default: Story = {
 
 /**
  * Items drawn by the `nav-item` slot, whose markup sits inside the element
- * that carries the index of the item.
+ * that carries the index of the item, and has a `data-index` of its own.
  */
 export const NavItemSlot: Story = {
     args: {
@@ -86,7 +86,7 @@ export const NavItemSlot: Story = {
 			<div class="m-md w-1/2">
 				<vv-tab v-bind="args" data-testId="element">
 					<template #nav-item="{ item }">
-						<span data-testId="nav-label">{{ item.label }}</span>
+						<span data-testId="nav-label" data-index="label">{{ item.label }}</span>
 					</template>
 					<template #panel::tab-1><p>First panel</p></template>
 					<template #panel::tab-2><p>Second panel</p></template>

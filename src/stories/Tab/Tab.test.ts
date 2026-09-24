@@ -32,7 +32,8 @@ export async function navItemSlotTest({ canvasElement }: PlayAttributes) {
     const panels = element.getElementsByClassName('vv-tab__panel')
 
     // a click on the markup of the slot, inside the item, switches the tab:
-    // it is not the element that carries the index of the item
+    // it is not the element that carries the index of the item, and its own
+    // `data-index` is not taken for it
     await userEvent.click(labels[1])
     await expect(panels[1]).toHaveClass('target')
     await expect(panels[0]).not.toHaveClass('target')
