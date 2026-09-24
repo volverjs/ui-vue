@@ -30,7 +30,7 @@ const modalWrapper = ref(null)
  * @description Define component classes with BEM style.
  * @returns {Array} The component classes.
  */
-const { modifiers } = toRefs(props)
+const { id, modifiers } = toRefs(props)
 const bemCssClasses = useModifiers(
     'vv-dialog',
     modifiers,
@@ -50,14 +50,18 @@ const dialogAttrs = computed(() => {
     } as DialogHTMLAttributes
 })
 
-// transitions
+// the dialog is named by its title, unless the header slot replaces it: the
+// caller then names it, with `aria-labelledby` or `aria-label`
+const hasId = useUniqueId(id)
+const hasTitleId = computed(() => `${hasId.value}-title`)
+
+// transitions: with `appear` on the <Transition>, a dialog mounted open runs
+// these hooks too. `showModal()` is called on `enter` and not before: for a
+// dialog mounted open `before-enter` runs while it is not in the document yet,
+// and `showModal()` needs it to be.
 const transitioName = computed(() => `vv-dialog--${props.transition}`)
 const dialogTransitionHandlers = {
     'before-enter': () => {
-        if (!dialogEl.value?.open) {
-            dialogEl.value?.showModal()
-        }
-        emit('open')
         emit('beforeEnter')
     },
     'after-leave': () => {
@@ -67,7 +71,12 @@ const dialogTransitionHandlers = {
         emit('close')
         emit('afterLeave')
     },
-    'enter': () => {
+    'enter': (el: Element) => {
+        const dialog = el as HTMLDialogElement
+        if (!dialog.open) {
+            dialog.showModal()
+        }
+        emit('open')
         emit('enter')
     },
     'after-enter': () => {
@@ -123,11 +132,12 @@ export default {
 </script>
 
 <template>
-    <Transition :name="transitioName" v-on="dialogTransitionHandlers">
+    <Transition :name="transitioName" appear v-on="dialogTransitionHandlers">
         <dialog
             v-show="isOpened"
             v-bind="dialogAttrs"
             ref="dialogEl"
+            :aria-labelledby="title && !$slots.header ? hasTitleId : undefined"
             :class="bemCssClasses"
             @cancel.stop.prevent="onCancel"
         >
@@ -135,7 +145,7 @@ export default {
                 <header v-if="$slots.header || title" class="vv-dialog__header">
                     <!-- @slot Header slot -->
                     <slot name="header">
-                        {{ title }}
+                        <span :id="hasTitleId">{{ title }}</span>
                         <button
                             type="button"
                             :aria-label="labelClose"

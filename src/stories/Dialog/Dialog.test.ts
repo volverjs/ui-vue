@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { userEvent, within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
@@ -15,6 +15,16 @@ export async function defaultTest(
     // open
     await userEvent.click(button)
     await expect(element).toHaveProperty('open', true)
+
+    // named by its title, unless the header slot replaces it, and with it the
+    // element the name points at
+    if (args.header) {
+        await expect(element).not.toHaveAttribute('aria-labelledby')
+    } else if (args.title) {
+        await expect(
+            within(canvasElement).getByRole('dialog', { name: args.title }),
+        ).toBe(element)
+    }
 
     // check accessibility
     await expect(element).toHaveNoViolations()
@@ -61,4 +71,20 @@ export async function defaultTest(
         await expect(element).toHaveProperty('open', false)
         await expect(element?.style.display).toEqual('none')
     }
+}
+
+export async function openOnMountTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+
+    // mounted with its model already true, it opens as a modal like a dialog
+    // opened later: `showModal()` was never called, and the browser kept a
+    // <dialog> with no `open` hidden
+    await waitFor(() => expect(element).toHaveProperty('open', true))
+    await expect(element.matches(':modal')).toBe(true)
+    await expect(
+        within(canvasElement).getByRole('dialog', { name: args.title }),
+    ).toBe(element)
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
 }
