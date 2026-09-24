@@ -19,7 +19,7 @@ export const INPUT_TYPES = {
     MONTH: 'month',
     WEEK: 'week',
 } as const
-export type InputType = ValueOf<typeof INPUT_TYPES>
+export type InputType = (typeof INPUT_TYPES)[keyof typeof INPUT_TYPES]
 
 export const VvInputTextEvents = [
     'update:modelValue',

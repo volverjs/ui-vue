@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import { DisabledProps, ModifiersProps, UnselectableProps } from '../../props'
 
 export const VvButtonGroupProps = {

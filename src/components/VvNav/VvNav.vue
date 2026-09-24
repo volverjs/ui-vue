@@ -7,9 +7,17 @@ const emit = defineEmits(VvNavEvents)
 
 const { modifiers } = toRefs(props)
 
+// One listener for every item. Nothing to add for the keyboard: the items are
+// links and buttons, and activating one from the keyboard, with Enter or with
+// Space on a button, fires the click that lands here.
+// The index is on the link or button of the item, and the click can land on
+// markup inside it, from the `item` slot, so the item is looked up from there,
+// never past the list itself. By its class, since that markup may have a
+// `data-index` of its own.
 function onClick(event: Event) {
-    const target = event.target as HTMLElement
-    if (target?.dataset.index) {
+    const list = event.currentTarget as HTMLElement
+    const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('.vv-nav__item-label')
+    if (target && list.contains(target) && target.dataset.index) {
         const index = Number.parseInt(target.dataset.index)
         const item = props.items?.[index]
         if (!item || item?.disabled) {

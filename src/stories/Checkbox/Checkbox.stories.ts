@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvCheckbox from '@/components/VvCheckbox/VvCheckbox.vue'
 import { argTypes, defaultArgs } from './Checkbox.settings'
-import { defaultTest, longLabelTest } from './Checkbox.test'
+import { ariaLabelTest, defaultTest, longLabelTest } from './Checkbox.test'
 
 const meta: Meta<typeof VvCheckbox> = {
     title: 'Components/Checkbox',
@@ -116,4 +116,29 @@ export const LongLabel: Story = {
 		`,
     }),
     play: longLabelTest,
+}
+
+/**
+ * A checkbox with no visible label, such as the one that selects a table row,
+ * named by `aria-label` instead, with help text the page already draws.
+ */
+export const AriaLabel: Story = {
+    args: {
+        ...defaultArgs,
+        label: undefined,
+        hintLabel: 'Selected rows can be exported.',
+    },
+    render: args => ({
+        components: { VvCheckbox },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div>
+				<span id="extra-help">Up to 50 rows at a time.</span>
+				<vv-checkbox v-bind="args" aria-label="Select the row" aria-describedby="extra-help" data-testId="element" />
+			</div>
+		`,
+    }),
+    play: ariaLabelTest,
 }

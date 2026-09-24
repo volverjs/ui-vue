@@ -73,6 +73,19 @@ const {
     hintSlotScope,
 } = HintSlotFactory(propsDefaults, slots)
 
+// `aria-describedby` takes a list of ids, so the field's own hint joins what
+// the caller pointed at instead of replacing it, see the note on `AriaProps` in
+// ../../props. Caller first: that is the reading order.
+const hasDescribedby = computed(
+    () =>
+        [
+            props.ariaDescribedby,
+            hasHintLabelOrSlot.value ? hasHintId.value : undefined,
+        ]
+            .filter(Boolean)
+            .join(' ') || undefined,
+)
+
 const localModelValue = useVModel(props, 'modelValue', emit)
 const files = computed({
     get: () => {
@@ -174,6 +187,9 @@ function addFiles(uploadedFiles: FileList) {
     selectedFileIndex.value = toReturn.length - 1
 }
 
+// The whole drop area opens the file picker on click, a shortcut for the
+// pointer: from the keyboard the button inside it does the same, and so does
+// the control a `drop-area` slot binds this to.
 function onClickDropArea() {
     if (!inputEl.value) {
         return
@@ -352,7 +368,9 @@ export default {
                 :disabled
                 :required
                 :placeholder
-                :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
+                :aria-label="ariaLabel || undefined"
+                :aria-labelledby="ariaLabelledby || undefined"
+                :aria-describedby="hasDescribedby"
                 :aria-invalid="invalid"
                 :aria-errormessage="
                     hasInvalidLabelOrSlot ? hasHintId : undefined

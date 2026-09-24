@@ -1,9 +1,32 @@
-import type { Directive, DirectiveBinding } from 'vue'
+import type { Directive, DirectiveBinding, Ref } from 'vue'
 import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import { useDropdownContextmenu } from '@/composables'
 
+function unbind(el: HTMLElement & { additionalData?: Record<string, any> }) {
+    if (el?.additionalData?.onContextmenu) {
+        el.removeEventListener('contextmenu', el.additionalData.onContextmenu)
+    }
+    if (el?.additionalData?.onScroll && el?.additionalData?.scrollContainerEl) {
+        el.additionalData.scrollContainerEl.removeEventListener('scroll', el.additionalData.onScroll)
+    }
+    delete el.additionalData
+}
+
 const contextmenu: Directive = {
+    // Bound on update and not on mount, since the dropdown is usually a
+    // template ref, still empty on the first render. Every later render of the
+    // host calls this again, and each call added another pair of listeners:
+    // only a different dropdown binds anew now, and one that is gone leaves
+    // nothing listening for it.
     beforeUpdate(el, binding: DirectiveBinding) {
+        if (!binding.value) {
+            unbind(el)
+            return
+        }
+        if (el.additionalData?.dropdown === binding.value) {
+            return
+        }
+        unbind(el)
         const { onContextmenu, onScroll, getBoundingClientRect } = useDropdownContextmenu(binding as unknown as Ref<typeof VvDropdown>)
         binding.value.init({
             getBoundingClientRect,
@@ -17,16 +40,9 @@ const contextmenu: Directive = {
         if (scrollContainerEl) {
             scrollContainerEl.addEventListener('scroll', onScroll)
         }
-        el.additionalData = { onContextmenu, onScroll, scrollContainerEl }
+        el.additionalData = { dropdown: binding.value, onContextmenu, onScroll, scrollContainerEl }
     },
-    beforeUnmount(el) {
-        if (el?.additionalData?.onContextmenu) {
-            el.removeEventListener('contextmenu', el.additionalData.onContextmenu)
-        }
-        if (el?.additionalData?.onScroll && el?.additionalData?.scrollContainerEl) {
-            el.additionalData.scrollContainerEl.removeEventListener('scroll', el.additionalData.onScroll)
-        }
-    },
+    beforeUnmount: unbind,
 }
 
 export default contextmenu

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvRadio from '@/components/VvRadio/VvRadio.vue'
 import { argTypes, defaultArgs } from './Radio.settings'
-import { defaultTest, longLabelTest } from './Radio.test'
+import { ariaLabelTest, defaultTest, longLabelTest } from './Radio.test'
 
 const meta: Meta<typeof VvRadio> = {
     title: 'Components/Radio',
@@ -100,4 +100,29 @@ export const LongLabel: Story = {
 		`,
     }),
     play: longLabelTest,
+}
+
+/**
+ * A radio with no visible label, whose option is drawn elsewhere in the row,
+ * named by `aria-label` instead, with help text the page already draws.
+ */
+export const AriaLabel: Story = {
+    args: {
+        ...defaultArgs,
+        label: undefined,
+        hintLabel: 'Delivered in 3 to 5 days.',
+    },
+    render: args => ({
+        components: { VvRadio },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div>
+				<span id="extra-help">Free above 50 euros.</span>
+				<vv-radio v-bind="args" aria-label="Standard shipping" aria-describedby="extra-help" data-testId="element" />
+			</div>
+		`,
+    }),
+    play: ariaLabelTest,
 }

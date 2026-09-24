@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
 import { argTypes, defaultArgs } from './InputFile.settings'
+import { ariaLabelTest } from './InputFile.test'
 
 const meta: Meta = {
     title: 'Components/InputFile',
@@ -94,4 +95,30 @@ export const Progress: Story = {
         progress: 30,
         hintLabel: '30%',
     },
+}
+
+/**
+ * A file input with no visible label, next to a heading that already says
+ * what to attach, named by `aria-label` instead, with help text the page
+ * already draws.
+ */
+export const AriaLabel: Story = {
+    args: {
+        ...defaultArgs,
+        label: undefined,
+        hintLabel: 'PDF, up to 10 MB.',
+    },
+    render: args => ({
+        components: { VvInputFile },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div>
+				<span id="extra-help">The invoice of the order you are returning.</span>
+				<vv-input-file v-bind="args" aria-label="Attach the invoice" aria-describedby="extra-help" data-testId="element" />
+			</div>
+		`,
+    }),
+    play: ariaLabelTest,
 }

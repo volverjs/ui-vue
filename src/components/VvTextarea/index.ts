@@ -1,4 +1,4 @@
-import type { ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, PropType } from 'vue'
 import type { VvIconProps } from '../VvIcon'
 import { DropdownProps, InputTextareaProps, StorageProps } from '../../props'
 import { ACTION_ICONS } from '../VvIcon'

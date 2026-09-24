@@ -18,7 +18,9 @@ export const VvDialogProps = {
     ...ModifiersProps,
     ...IdProps,
     /**
-     * Dialog title
+     * Dialog title, which is also the name assistive technology reads for the
+     * dialog. The `header` slot replaces it, name included: give the dialog an
+     * `aria-labelledby` or an `aria-label` then.
      */
     title: String,
     /**
