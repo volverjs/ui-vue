@@ -345,15 +345,3 @@ declare global {
   const watchWithFilter: typeof import('@vueuse/core').watchWithFilter
   const whenever: typeof import('@vueuse/core').whenever
 }
-// for type re-export
-declare global {
-  // @ts-ignore
-  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
-  import('vue')
-  // @ts-ignore
-  export type { DebouncedInput } from './src/composables/useDebouncedInput'
-  import('./src/composables/useDebouncedInput')
-  // @ts-ignore
-  export type { ScrollToOptions } from './src/composables/useVirtualScroll'
-  import('./src/composables/useVirtualScroll')
-}

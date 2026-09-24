@@ -8,5 +8,3 @@ declare module '*.vue' {
 	const component: DefineComponent<{}, {}, any>
     export default component
 }
-
-type ValueOf<T> = T[keyof T]

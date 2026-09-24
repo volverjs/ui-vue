@@ -150,6 +150,19 @@ const {
     hasInvalidLabelOrSlot,
     hintSlotScope,
 } = HintSlotFactory(propsDefaults, slots)
+
+// `aria-describedby` takes a list of ids, so the field's own hint joins what
+// the caller pointed at instead of replacing it, see the note on `AriaProps` in
+// ../../props. Caller first: that is the reading order.
+const hasDescribedby = computed(
+    () =>
+        [
+            props.ariaDescribedby,
+            hasHintLabelOrSlot.value ? hasHintId.value : undefined,
+        ]
+            .filter(Boolean)
+            .join(' ') || undefined,
+)
 </script>
 
 <script lang="ts">
@@ -170,8 +183,10 @@ export default {
             :disabled="isDisabled"
             :value="hasValue"
             :tabindex
+            :aria-label="ariaLabel || undefined"
+            :aria-labelledby="ariaLabelledby || undefined"
             :aria-invalid="isInvalid"
-            :aria-describedby="hasHintLabelOrSlot ? hasHintId : undefined"
+            :aria-describedby="hasDescribedby"
             :aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined"
         >
         <span class="vv-checkbox__label">

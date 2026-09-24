@@ -28,6 +28,12 @@ const modifiers = z.union([z.string(), z.array(z.string())]).nullish()
 
 const iconPosition = z.enum(['before', 'after']).nullish()
 
+/** The name of a field drawn without a visible label. */
+const ariaLabel = z
+    .string()
+    .nullish()
+    .describe('Accessible name, required when there is no label')
+
 const labelValueOption = z.object({
     label: z.string(),
     value: z.union([z.string(), z.number(), z.boolean()]),
@@ -43,6 +49,7 @@ const navItem = z.object({
 const formFieldProps = {
     name: z.string(),
     label: z.string().nullish(),
+    ariaLabel,
     required: z.boolean().nullish(),
     disabled: z.boolean().nullish(),
     modifiers,
@@ -89,6 +96,10 @@ export const AccordionGroupDefinition = {
 export const DialogDefinition = {
     props: z.object({
         title: z.string().nullish(),
+        ariaLabel: z
+            .string()
+            .nullish()
+            .describe('Accessible name, required when there is no title'),
         modifiers,
     }),
     // no `header`: on VvDialog it replaces the close button with the title
@@ -323,6 +334,7 @@ export const InputRangeDefinition = {
     props: z.object({
         name: z.string(),
         label: z.string().nullish(),
+        ariaLabel,
         disabled: z.boolean().nullish(),
         readonly: z.boolean().nullish(),
         modifiers,
@@ -355,6 +367,7 @@ export const CheckboxDefinition = {
     props: z.object({
         name: z.string().nullish(),
         label: z.string().nullish(),
+        ariaLabel,
         value: z.union([z.string(), z.number(), z.boolean()]).nullish(),
         disabled: z.boolean().nullish(),
         switch: z
@@ -382,6 +395,7 @@ export const RadioDefinition = {
     props: z.object({
         name: z.string(),
         label: z.string().nullish(),
+        ariaLabel,
         value: z.union([z.string(), z.number(), z.boolean()]).nullish(),
         disabled: z.boolean().nullish(),
         modifiers,

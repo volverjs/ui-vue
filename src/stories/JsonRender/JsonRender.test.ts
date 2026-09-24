@@ -59,3 +59,38 @@ export async function namedSlotsTest({ canvasElement }: PlayAttributes) {
     // accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function fieldsWithoutLabelTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const canvas = within(element)
+
+    // no field draws a label, so each name comes from `ariaLabel` alone, on
+    // the element assistive technology announces
+    expect(canvas.getByRole('textbox', { name: 'Search the catalog' })).toBeTruthy()
+    expect(canvas.getByRole('textbox', { name: 'Notes' })).toBeTruthy()
+    expect(canvas.getByRole('combobox', { name: 'Country' })).toBeTruthy()
+    expect(canvas.getByRole('combobox', { name: 'Ward' })).toBeTruthy()
+    expect(canvas.getByRole('checkbox', { name: 'Accept the terms' })).toBeTruthy()
+    expect(canvas.getByRole('radio', { name: 'Pro plan' })).toBeTruthy()
+    expect(canvas.getByRole('group', { name: 'Channels' })).toBeTruthy()
+    expect(canvas.getByRole('group', { name: 'Size' })).toBeTruthy()
+    expect(canvas.getByRole('slider', { name: 'Volume' })).toBeTruthy()
+    // a file input has no role of its own to look it up by
+    expect(canvas.getByLabelText('Invoice')).toHaveAttribute('type', 'file')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function dialogWithoutTitleTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const dialog = element.getElementsByTagName('dialog')[0]
+
+    // with no title to point at, the name is the `ariaLabel` of the spec
+    expect(dialog).toHaveProperty('open', true)
+    expect(dialog).not.toHaveAttribute('aria-labelledby')
+    expect(within(element).getByRole('dialog', { name: 'Confirm the order' })).toBe(dialog)
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}

@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import path from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 import { globSync } from 'glob'
 import { build, mergeConfig } from 'vite'
@@ -45,11 +46,11 @@ const baseConfig = {
             // Auto import for module exports under directories
             // by default it only scan one level of modules under the directory
             dirs: ['./src/composables/**', './src/utils/'],
-            ignore: ['**/composables/index'],
-            dts: true,
-            eslintrc: {
-                enabled: true,
-            },
+            // the builds below run in parallel, each with its own plugin, and
+            // writing the same file from all of them left it corrupted. It is
+            // kept up to date by the dev server, and `generate-tsd` has
+            // already read it by now.
+            dts: false,
         }),
     ],
     configFile: false,
@@ -300,12 +301,15 @@ const componentsSources = components.map((entry) => {
 componentsSources.forEach(({ name, entry }) => {
     const paramCaseName = kebabCase(name)
     const subPath = `components/${name}/${name}`
+    // vue-tsc mirrors the sources, so the declaration of a component that
+    // shares a folder, such as VvDropdownAction, is in that folder
+    const types = `dist/${path.posix.relative('src', entry)}.d.ts`
     packageJson.exports[`./${paramCaseName}`] = {
-        types: `./dist/${subPath}.vue.d.ts`,
+        types: `./${types}`,
         import: `./dist/${subPath}.es.js`,
         default: `./dist/${subPath}.umd.js`,
     }
-    packageJson.typesVersions['*'][paramCaseName] = [`dist/${subPath}.vue.d.ts`]
+    packageJson.typesVersions['*'][paramCaseName] = [types]
 
     build(mergeConfig(baseConfig, {
         build: {

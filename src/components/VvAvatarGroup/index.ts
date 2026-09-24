@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import { ModifiersProps } from '@/props'
 
 export type AvatarItem = {

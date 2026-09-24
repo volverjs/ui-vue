@@ -114,12 +114,12 @@
       "default": "./dist/components/VvProgress/VvProgress.umd.js"
     },
     "./vv-nav-separator": {
-      "types": "./dist/components/VvNavSeparator/VvNavSeparator.vue.d.ts",
+      "types": "./dist/components/VvNav/VvNavSeparator.vue.d.ts",
       "import": "./dist/components/VvNavSeparator/VvNavSeparator.es.js",
       "default": "./dist/components/VvNavSeparator/VvNavSeparator.umd.js"
     },
     "./vv-nav-item": {
-      "types": "./dist/components/VvNavItem/VvNavItem.vue.d.ts",
+      "types": "./dist/components/VvNav/VvNavItem.vue.d.ts",
       "import": "./dist/components/VvNavItem/VvNavItem.es.js",
       "default": "./dist/components/VvNavItem/VvNavItem.umd.js"
     },
@@ -149,22 +149,22 @@
       "default": "./dist/components/VvIcon/VvIcon.umd.js"
     },
     "./vv-dropdown-option": {
-      "types": "./dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts",
+      "types": "./dist/components/VvDropdown/VvDropdownOption.vue.d.ts",
       "import": "./dist/components/VvDropdownOption/VvDropdownOption.es.js",
       "default": "./dist/components/VvDropdownOption/VvDropdownOption.umd.js"
     },
     "./vv-dropdown-optgroup": {
-      "types": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts",
+      "types": "./dist/components/VvDropdown/VvDropdownOptgroup.vue.d.ts",
       "import": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.es.js",
       "default": "./dist/components/VvDropdownOptgroup/VvDropdownOptgroup.umd.js"
     },
     "./vv-dropdown-item": {
-      "types": "./dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts",
+      "types": "./dist/components/VvDropdown/VvDropdownItem.vue.d.ts",
       "import": "./dist/components/VvDropdownItem/VvDropdownItem.es.js",
       "default": "./dist/components/VvDropdownItem/VvDropdownItem.umd.js"
     },
     "./vv-dropdown-action": {
-      "types": "./dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts",
+      "types": "./dist/components/VvDropdown/VvDropdownAction.vue.d.ts",
       "import": "./dist/components/VvDropdownAction/VvDropdownAction.es.js",
       "default": "./dist/components/VvDropdownAction/VvDropdownAction.umd.js"
     },
@@ -312,10 +312,10 @@
         "dist/components/VvProgress/VvProgress.vue.d.ts"
       ],
       "vv-nav-separator": [
-        "dist/components/VvNavSeparator/VvNavSeparator.vue.d.ts"
+        "dist/components/VvNav/VvNavSeparator.vue.d.ts"
       ],
       "vv-nav-item": [
-        "dist/components/VvNavItem/VvNavItem.vue.d.ts"
+        "dist/components/VvNav/VvNavItem.vue.d.ts"
       ],
       "vv-nav": [
         "dist/components/VvNav/VvNav.vue.d.ts"
@@ -333,16 +333,16 @@
         "dist/components/VvIcon/VvIcon.vue.d.ts"
       ],
       "vv-dropdown-option": [
-        "dist/components/VvDropdownOption/VvDropdownOption.vue.d.ts"
+        "dist/components/VvDropdown/VvDropdownOption.vue.d.ts"
       ],
       "vv-dropdown-optgroup": [
-        "dist/components/VvDropdownOptgroup/VvDropdownOptgroup.vue.d.ts"
+        "dist/components/VvDropdown/VvDropdownOptgroup.vue.d.ts"
       ],
       "vv-dropdown-item": [
-        "dist/components/VvDropdownItem/VvDropdownItem.vue.d.ts"
+        "dist/components/VvDropdown/VvDropdownItem.vue.d.ts"
       ],
       "vv-dropdown-action": [
-        "dist/components/VvDropdownAction/VvDropdownAction.vue.d.ts"
+        "dist/components/VvDropdown/VvDropdownAction.vue.d.ts"
       ],
       "vv-dropdown": [
         "dist/components/VvDropdown/VvDropdown.vue.d.ts"
@@ -408,7 +408,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "styleguide": "storybook build",
-    "build": "npm run clean && npm run generate-icons && npm run generate-tsd && node ./scripts/build.js",
+    "build": "npm run clean && npm run generate-icons && npm run generate-tsd && node ./scripts/build.js && node ./scripts/declarations.js",
     "clean": "node ./scripts/clean.js",
     "hot": "node ./scripts/build.js --hot",
     "type-check": "vue-tsc --noEmit",
@@ -507,6 +507,7 @@
     "terser": "^5.51.2",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
+    "unimport": "^6.4.0",
     "unplugin-auto-import": "^21.1.0",
     "unplugin-vue-components": "^32.1.0",
     "vite": "^8.3.0",

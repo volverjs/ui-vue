@@ -74,7 +74,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 |--------|-------|-------|
 | Identity | `id`, `name` | `name` is **required** on every input, checkbox, radio, select, combobox, file and on the groups |
 | Label and hint | `label`, `hintLabel`, `placeholder` | hint family slots: `hint`, `loading`, `valid`, `invalid` |
-| Accessible name | `ariaLabel`, `ariaLabelledby`, `ariaDescribedby` | input, textarea, select, combobox. `label` is optional, so a field drawn without one needs these to be named at all. Write them as attributes (`aria-label="Ward"`): they reach the control, not the block. `aria-describedby` appends the field's own hint rather than replacing it. VvInputRange takes any `aria-` attribute instead |
+| Accessible name | `ariaLabel`, `ariaLabelledby`, `ariaDescribedby` | input, textarea, select, combobox, checkbox, radio, file. `label` is optional, so a field drawn without one needs these to be named at all. Write them as attributes (`aria-label="Ward"`): they reach the control, not the block. `aria-describedby` appends the field's own hint rather than replacing it. VvInputRange takes any `aria-` attribute instead |
 | Validation | `valid`, `validLabel`, `invalid`, `invalidLabel` | labels accept a string or an array of strings |
 | State | `disabled`, `readonly`, `required`, `loading`, `loadingLabel` | |
 | Icon | `icon`, `iconPosition` | position is `before` or `after` (enum `Position`), never left/right |
@@ -290,8 +290,10 @@ default; `success`/`warning`/`danger` pick their icon from the modifier.
 ```
 
 `VvDialog` is a native `<dialog>` opened with `showModal()`: `Esc` and click outside close it unless
-`keepOpen`; it emits `open`, `close` and the transition hooks. The `header` slot replaces title and
-close button together. `VvCard` puts the default slot straight into the article; `content` and
+`keepOpen`; it emits `open`, `close` and the transition hooks, and a dialog mounted with its model
+already `true` opens too. The `title` names the dialog. The `header` slot replaces title and close
+button together, and with them the name: give the dialog an `aria-labelledby` or an `aria-label`
+then. `VvCard` puts the default slot straight into the article; `content` and
 `footer` add the wrapped sections.
 
 ## 7. Setup
@@ -366,7 +368,8 @@ With `@json-render/vue` 0.21 or later a spec also fills named slots, through a t
 object next to `children`. The catalog declares `summary` on `Accordion`, `header` and `footer` on
 `Card`, and `footer` on `Dialog` and `Alert`. The registry passes on only those, and only when they
 list an element that exists. A `Button` that shows an icon and no label needs `ariaLabel`, since
-that is its only accessible name.
+that is its only accessible name, and so does every form field without a `label`, and a `Dialog`
+without a `title`. A `Dialog` with no `$bindState` opens as soon as the spec renders.
 
 ```ts
 import { catalog, registry } from '@volverjs/ui-vue/json-render'

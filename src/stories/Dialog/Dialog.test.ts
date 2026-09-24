@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { userEvent, within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
@@ -15,6 +15,25 @@ export async function defaultTest(
     // open
     await userEvent.click(button)
     await expect(element).toHaveProperty('open', true)
+
+    // named by its title, unless the header slot replaces it, and with it the
+    // element the name points at: the caller names the dialog then, and its
+    // reference is the only one
+    if (args.header) {
+        const labelledby = args['aria-labelledby']
+        await expect(element.getAttribute('aria-labelledby')).toBe(labelledby ?? null)
+        if (labelledby) {
+            await expect(
+                within(canvasElement).getByRole('dialog', {
+                    name: document.getElementById(labelledby)?.textContent ?? '',
+                }),
+            ).toBe(element)
+        }
+    } else if (args.title) {
+        await expect(
+            within(canvasElement).getByRole('dialog', { name: args.title }),
+        ).toBe(element)
+    }
 
     // check accessibility
     await expect(element).toHaveNoViolations()
@@ -61,4 +80,25 @@ export async function defaultTest(
         await expect(element).toHaveProperty('open', false)
         await expect(element?.style.display).toEqual('none')
     }
+}
+
+export async function openOnMountTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+
+    // mounted with its model already true, it opens as a modal like a dialog
+    // opened later: `showModal()` was never called, and the browser kept a
+    // <dialog> with no `open` hidden
+    await waitFor(() => expect(element).toHaveProperty('open', true))
+    await expect(element.matches(':modal')).toBe(true)
+
+    // `open` once, after `beforeEnter`: it is emitted where `showModal()` runs
+    await expect(
+        within(canvasElement).getByTestId('events'),
+    ).toHaveTextContent(/^beforeEnter open$/)
+    await expect(
+        within(canvasElement).getByRole('dialog', { name: args.title }),
+    ).toBe(element)
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
 }

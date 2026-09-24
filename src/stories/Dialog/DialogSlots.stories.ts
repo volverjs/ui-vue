@@ -22,12 +22,18 @@ export const Default: Story = {
     },
 }
 
+/**
+ * The header slot replaces the title, which named the dialog, so the dialog
+ * points at the header it draws instead.
+ */
 export const HeaderSlot: Story = {
     ...DefaultStory,
     args: {
         ...defaultArgs,
-        header: 'Header <em class="italic">slot!</em>',
-    },
+        'header': '<span id="dialog-header">Header <em class="italic">slot!</em></span>',
+        // an attribute and not a prop: it falls through to the <dialog>
+        'aria-labelledby': 'dialog-header',
+    } as Story['args'],
 }
 
 export const FooterSlot: Story = {
