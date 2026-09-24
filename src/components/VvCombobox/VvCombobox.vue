@@ -519,21 +519,17 @@ const slotProps = computed(() => ({
     modelValue: props.modelValue,
 }))
 
-// keyboard
-onKeyStroke(
-    [' ', 'Enter'],
-    (e) => {
-        if (props.autoOpen) {
-            return
-        }
-        if (!expanded.value && focused.value) {
-            e.preventDefault()
-            e.stopImmediatePropagation()
-            toggleExpanded()
-        }
-    },
-    { target: inputEl },
-)
+// keyboard, bound in the template next to the click it mirrors
+function onKeydownInput(e: KeyboardEvent) {
+    if ((e.key !== ' ' && e.key !== 'Enter') || props.autoOpen) {
+        return
+    }
+    if (!expanded.value && focused.value) {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        toggleExpanded()
+    }
+}
 function onKeyupEnterInputSearch() {
     if (filteredOptions.value?.length) {
         if (filteredOptions.value.length === 1) {
@@ -641,6 +637,7 @@ export default {
                             :aria-describedby="hasDescribedby"
                             :aria-errormessage="hasInvalidLabelOrSlot ? hasHintId : undefined" :tabindex="hasTabindex"
                             @click.passive="onClickInput"
+                            @keydown="onKeydownInput"
                         >
                             <!-- @slot Slot for value customization -->
                             <slot v-if="hasValue" name="value" v-bind="{ selectedOptions, onInput }">
