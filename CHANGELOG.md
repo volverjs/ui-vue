@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.24] - 2026-09-24
+
+### Changed
+
+- `pnpm build` ends by checking the published declarations as an application would compile them. `scripts/declarations.js` compiles the declarations of every entry point in `exports`, 45 of them, with `skipLibCheck` off, and fails the build on any error in a file of the package, leaving the declarations of the dependencies alone. It found four of the five defects in the first entry under Fixed, none of which shows from inside the repository, where the names they lack exist.
+- `VvDialog` emits `open` from the `enter` hook of its transition instead of `before-enter`, since that is where `showModal()` now runs (see Fixed). `open` still comes after the dialog is open, but now after `beforeEnter` rather than before it.
+- `unimport` joins the development dependencies, at the version `unplugin-auto-import` already installed, so the auto-import configuration can take the `vue` preset without its types.
+- An `AGENTS.md` file lists what a change has to pass before it is done: `pnpm type-check`, `CI=true pnpm lint`, `pnpm test-storybook` and `pnpm build`. It also records where things are and the release procedure. `CI=true` matters: in a terminal inside an editor, `@antfu/eslint-config` downgrades `unused-imports/no-unused-imports`, `prefer-const` and `test/no-only-tests` to warnings, so the lint passes locally and fails in CI. A one-line `CLAUDE.md` imports it.
+
+### Fixed
+
+- The published declarations resolve in an application. Compiled as a consumer compiles them, the declarations of 0.0.23 held 137 errors in 41 files. With `skipLibCheck` on, as most applications have it, the errors were not reported and the types they named silently became `any`, props included.
+  - 57 files named `globalThis.ExtractPropTypes`, `globalThis.ComputedRef`, `globalThis.VNode` and other Vue types. The `vue` preset of the auto-import declared the types of Vue as globals in `auto-imports.d.ts`, which is not published, and `vue-tsc` wrote every type it inferred from them as `globalThis.<Name>`. The preset is now taken without its types, the `dirs` types are off too, and the fourteen files that used `PropType` or `Ref` without importing it import it.
+  - 13 files imported through `@/`, the path alias of the repository. The build now rewrites each one as the relative path it means.
+  - The `InputType` of `VvInputText` used `ValueOf`, a global type of `src/shims.d.ts`, which is not published either. It is written out, and the global is gone.
+  - `icons.d.ts` copied the whole icon set, 37 KB, and imported three JSON files that are not in `dist`. The collections are typed as `IconifyJSON`.
+  - Six subpath exports had no types at all: `vv-dropdown-action`, `vv-dropdown-item`, `vv-dropdown-optgroup`, `vv-dropdown-option`, `vv-nav-item` and `vv-nav-separator`. Their `types` pointed to a folder named after the component, where the build writes the JavaScript, while `vue-tsc` writes the declaration next to the source, in the folder of `VvDropdown` or `VvNav`. The path now comes from the source.
+- `pnpm build` no longer rewrites `auto-imports.d.ts`. Every build the script starts runs in parallel with its own auto-import plugin, and all of them wrote the same file, which once came out with a duplicated tail. The build does not need to write it, since `generate-tsd` has already read it, and `pnpm dev` keeps it up to date.
+- `VvCheckbox`, `VvRadio` and `VvInputFile` take `ariaLabel`, `ariaLabelledby` and `ariaDescribedby`, as `VvInputText`, `VvTextarea`, `VvSelect` and `VvCombobox` already do. Their `label` is optional, and with none drawn the control had no name at all: an `aria-label` written on the component landed on its block, the `<label>` that wraps the checkbox or the `<div>` around the file input, and named nothing. They now reach the control, and `aria-describedby` joins the field's own hint instead of replacing it. An `AriaLabel` story for each finds the control by its name and runs the accessibility check.
+- `VvDialog` is named by its title. The title was a bare text node in the header, so a dialog with a title had no accessible name. It is now wrapped in an element the dialog points at with `aria-labelledby`, a `<span>` that the flex header lays out as it did the text. With the `header` slot the title is gone, and so is the reference: the caller names the dialog then. Every `Dialog` story with a title now finds the dialog by it.
+- `VvDialog` opens when it mounts with its model already `true`. The dialog is opened by `showModal()` in a hook of its transition, and a `<Transition>` runs no hook on the first render without `appear`, so the dialog was never opened, and the browser keeps a `<dialog>` without `open` hidden. The transition now has `appear`, and `showModal()` moved to the `enter` hook: on mount `before-enter` runs while the dialog is not in the document yet, and `showModal()` needs it to be. An `OpenOnMount` story finds the dialog open, as a modal, and named by its title.
+- The json-render catalog can name every field. `ariaLabel` is on every form field and on `Dialog`, described to the model as required when there is no `label`, or no `title`, and the registry passes it on. A `FieldsWithoutLabel` story renders the ten form fields without a label and finds each by its name, and a `DialogWithoutTitle` story finds the dialog by its `ariaLabel`.
+
+  A `Dialog` with no `$bindState` starts open, as it always meant to, and with the fix above it is now shown as soon as the spec renders: before it was in the page, but hidden.
+- `useDropdownContextmenu` registers its listeners only when a target is passed. The check read the `computed` that wraps the target, which is always truthy, so it never checked anything. With no target the listeners did nothing anyway, so nothing changes on screen.
+
 ## [0.0.23] - 2026-09-24
 
 ### Changed
