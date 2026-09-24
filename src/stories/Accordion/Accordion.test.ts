@@ -65,3 +65,70 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     // accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function notWithoutModelTest({ canvasElement }: PlayAttributes) {
+    const element = (await within(canvasElement).findByTestId(
+        'element',
+    )) as HTMLDetailsElement
+    const summary = element.getElementsByTagName('summary')[0]
+    const content = element.getElementsByClassName(
+        'vv-accordion__content',
+    )[0] as HTMLElement
+    const emitted = await within(canvasElement).findByTestId('emitted')
+
+    // opened on arrival, without emitting
+    expect(element.open).toBe(true)
+    expect(summary.getAttribute('aria-expanded')).toBe('true')
+    expect(content.getAttribute('aria-hidden')).toBe('false')
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([])
+
+    // closed by a click on the summary, which `not` emits as true
+    expect(summary).toBeClicked()
+    await sleep()
+    expect(element.open).toBe(false)
+    expect(summary.getAttribute('aria-expanded')).toBe('false')
+    expect(content.getAttribute('aria-hidden')).toBe('true')
+    expect(JSON.parse(emitted.textContent ?? '')).toEqual([true])
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function nameClearedTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = (await canvas.findByTestId('element')) as HTMLDetailsElement
+    const summary = element.getElementsByTagName('summary')[0]
+    expect(element.id).toBe('a-1')
+
+    // without a name the accordion falls back to an id of its own
+    expect(await canvas.findByTestId('clear')).toBeClicked()
+    await sleep()
+    expect(element.id).not.toBe('')
+    expect(summary.getAttribute('aria-controls')).toBe(element.id)
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function notInGroupTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const first = (await canvas.findByTestId('first')) as HTMLDetailsElement
+    const emitted = await canvas.findByTestId('emitted')
+
+    // the group opens nothing, so the accordion stays closed, without emitting
+    await sleep()
+    expect(first.open).toBe(false)
+    expect(emitted.textContent).toBe('0')
+
+    // an accordion added after the group has mounted takes the state of its
+    // name from the group, closed too, without emitting
+    expect(await canvas.findByTestId('add')).toBeClicked()
+    const second = (await canvas.findByTestId('second')) as HTMLDetailsElement
+    await sleep()
+    expect(second.open).toBe(false)
+    expect(emitted.textContent).toBe('0')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}

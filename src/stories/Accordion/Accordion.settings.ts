@@ -46,7 +46,8 @@ export const argTypes: ArgTypes = {
         options: ['marker-right', 'bordered'],
     },
     not: {
-        description: 'Inverts the accordion state',
+        description:
+            'Without a model, opens the accordion on mount. With a model, inverts the state: the model is true when the accordion is closed. Inside a group the initial state comes from the group',
         control: 'boolean',
         table: {
             defaultValue: {

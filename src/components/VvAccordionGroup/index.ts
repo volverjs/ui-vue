@@ -42,7 +42,8 @@ export const VvAccordionGroupProps = {
      */
     disabled: Boolean,
     /**
-     * If true, the accordion items will be opened by default
+     * If true, the model lists the closed accordions instead of the open ones,
+     * so without a model they start open: all of them with collapse, the first one without
      */
     not: Boolean,
 }

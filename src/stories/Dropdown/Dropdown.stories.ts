@@ -7,6 +7,7 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
     defaultTest,
+    idClearedTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
 } from './Dropdown.test'
@@ -181,4 +182,29 @@ export const TopLayerExpandedOnMount: Story = {
     args: topLayerArgs,
     render: topLayerRender(true),
     play: topLayerExpandedOnMountTest,
+}
+
+/**
+ * The `id` is cleared after mount: the dropdown falls back to an id of its own,
+ * which the trigger keeps pointing at.
+ */
+export const IdCleared: Story = {
+    args: defaultArgs,
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const id = ref('menu')
+            return { args, id }
+        },
+        template: /* html */ `
+			<vv-dropdown v-bind="args" :id="id">
+				<vv-button data-testId="trigger" label="Menu" />
+				<template #items>
+					<vv-dropdown-action>Action</vv-dropdown-action>
+				</template>
+			</vv-dropdown>
+			<vv-button data-testId="clear" class="mt-24" label="Clear the id" modifiers="secondary" :disabled="!id" @click="id = ''" />
+		`,
+    }),
+    play: idClearedTest,
 }

@@ -1,6 +1,31 @@
 import type { PlayAttributes } from '@/test/types'
 import { within } from 'storybook/test'
 import { expect } from '@/test/expect'
+import { sleep } from '@/test/sleep'
+
+export async function stableKeysTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const avatars = [...element.getElementsByClassName('vv-avatar')]
+    expect(avatars.length).toBeGreaterThan(0)
+    expect(
+        avatars.every(avatar => avatar.classList.contains('vv-avatar--rounded')),
+    ).toBe(true)
+
+    // new modifiers restyle the avatars in place instead of drawing them again
+    expect(await canvas.findByTestId('square')).toBeClicked()
+    await sleep()
+    const restyled = [...element.getElementsByClassName('vv-avatar')]
+    expect(
+        restyled.every(avatar => avatar.classList.contains('vv-avatar--square')),
+    ).toBe(true)
+    expect(
+        restyled.some(avatar => avatar.classList.contains('vv-avatar--rounded')),
+    ).toBe(false)
+    expect(restyled.map((avatar, index) => avatar === avatars[index])).toEqual(
+        avatars.map(() => true),
+    )
+}
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
