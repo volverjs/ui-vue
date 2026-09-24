@@ -10,8 +10,9 @@ export async function selectFromKeyboardTest({ canvasElement }: PlayAttributes) 
     const items = () =>
         [...element.getElementsByClassName('vv-input-file__item')] as HTMLElement[]
     // the list is `vuedraggable`, loaded on demand, so a fixed pause is not
-    // enough under load: wait for the items themselves
-    await waitFor(() => expect(items()).toHaveLength(2))
+    // enough under load: wait for the items themselves, and for longer than
+    // the default second, which a full run in the browser can exceed
+    await waitFor(() => expect(items()).toHaveLength(2), { timeout: 5000 })
 
     // with a preview to pick, every file can be reached from the keyboard
     expect(items().map(item => item.getAttribute('tabindex'))).toEqual(['0', '0'])
