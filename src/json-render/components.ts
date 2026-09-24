@@ -52,6 +52,15 @@ function pick(props: Record<string, unknown>, keys: string[]): Record<string, un
 }
 
 /**
+ * `ariaLabel` for a component that has no such prop and hands `aria-`
+ * attributes on to its element instead. `|| undefined`, since an empty string
+ * would render as an empty name.
+ */
+function ariaLabelAttr(props: Record<string, unknown>) {
+    return { 'aria-label': (props.ariaLabel as string | null | undefined) || undefined }
+}
+
+/**
  * A spec lists `children` on every element, empty for a leaf, and Vue hands a
  * missing one on as a comment: neither is a slot, since a component that
  * checks for one would draw an empty box, or a button would never be icon only.
@@ -142,7 +151,7 @@ export function AccordionGroupComponent({ props, children }: BaseComponentProps)
 }
 
 export function DialogComponent({ props, bindings, ...context }: BaseComponentProps) {
-    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, undefined, slotsOf(context, DialogDefinition.slots), bindings?.value ? undefined : true)
+    return useRenderBound<boolean>(VvDialog, props, ['title', 'modifiers'], bindings, ariaLabelAttr(props), slotsOf(context, DialogDefinition.slots), bindings?.value ? undefined : true)
 }
 
 export function TabComponent({ props }: BaseComponentProps) {
@@ -242,7 +251,7 @@ export function InputTextComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<string | number>(
         VvInputText,
         props,
-        ['name', 'label', 'type', 'placeholder', 'required', 'disabled', 'readonly', 'icon', 'iconPosition', 'floating', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'type', 'placeholder', 'required', 'disabled', 'readonly', 'icon', 'iconPosition', 'floating', 'modifiers'],
         bindings,
     )
 }
@@ -253,6 +262,7 @@ export function InputRangeComponent({ props, bindings }: BaseComponentProps) {
         props,
         ['name', 'label', 'min', 'max', 'step', 'unit', 'showValue', 'disabled', 'readonly', 'modifiers'],
         bindings,
+        ariaLabelAttr(props),
     )
 }
 
@@ -260,7 +270,7 @@ export function TextareaComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<string>(
         VvTextarea,
         props,
-        ['name', 'label', 'placeholder', 'rows', 'required', 'disabled', 'readonly', 'floating', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'placeholder', 'rows', 'required', 'disabled', 'readonly', 'floating', 'modifiers'],
         bindings,
     )
 }
@@ -269,7 +279,7 @@ export function SelectComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<unknown>(
         VvSelect,
         props,
-        ['name', 'label', 'options', 'multiple', 'placeholder', 'required', 'disabled', 'floating', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'options', 'multiple', 'placeholder', 'required', 'disabled', 'floating', 'modifiers'],
         bindings,
     )
 }
@@ -278,7 +288,7 @@ export function CheckboxComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<boolean>(
         VvCheckbox,
         props,
-        ['name', 'label', 'value', 'disabled', 'switch', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'value', 'disabled', 'switch', 'modifiers'],
         bindings,
     )
 }
@@ -289,7 +299,7 @@ export function CheckboxGroupComponent({ props, children, bindings }: BaseCompon
         props,
         ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers'],
         bindings,
-        undefined,
+        ariaLabelAttr(props),
         children,
     )
 }
@@ -298,7 +308,7 @@ export function RadioComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<string | number | boolean>(
         VvRadio,
         props,
-        ['name', 'label', 'value', 'disabled', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'value', 'disabled', 'modifiers'],
         bindings,
     )
 }
@@ -309,7 +319,7 @@ export function RadioGroupComponent({ props, children, bindings }: BaseComponent
         props,
         ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers'],
         bindings,
-        undefined,
+        ariaLabelAttr(props),
         children,
     )
 }
@@ -318,7 +328,7 @@ export function ComboboxComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<unknown>(
         VvCombobox,
         props,
-        ['name', 'label', 'options', 'placeholder', 'searchable', 'multiple', 'required', 'disabled', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'options', 'placeholder', 'searchable', 'multiple', 'required', 'disabled', 'modifiers'],
         bindings,
     )
 }
@@ -327,7 +337,7 @@ export function InputFileComponent({ props, bindings }: BaseComponentProps) {
     return useRenderBound<File[]>(
         VvInputFile,
         props,
-        ['name', 'label', 'accept', 'multiple', 'max', 'required', 'disabled', 'modifiers'],
+        ['name', 'label', 'ariaLabel', 'accept', 'multiple', 'max', 'required', 'disabled', 'modifiers'],
         bindings,
     )
 }

@@ -7,7 +7,12 @@ import {
     VisibilityProvider,
 } from '@json-render/vue'
 import { registry } from '@/json-render'
-import { iconOnlyButtonTest, namedSlotsTest } from './JsonRender.test'
+import {
+    dialogWithoutTitleTest,
+    fieldsWithoutLabelTest,
+    iconOnlyButtonTest,
+    namedSlotsTest,
+} from './JsonRender.test'
 
 const meta: Meta = {
     title: 'JsonRender/Registry',
@@ -131,4 +136,97 @@ export const IconOnlyButton: Story = {
         },
     }),
     play: iconOnlyButtonTest,
+}
+
+// every form field of the catalog, none of them with a label
+const fieldsWithoutLabelSpec: Spec = {
+    root: 'card',
+    elements: {
+        card: {
+            type: 'Card',
+            props: { title: 'Filters' },
+            children: ['search', 'notes', 'country', 'ward', 'terms', 'plan', 'channels', 'size', 'volume', 'invoice'],
+        },
+        search: {
+            type: 'InputText',
+            props: { name: 'search', ariaLabel: 'Search the catalog', placeholder: 'Search' },
+            children: [],
+        },
+        notes: {
+            type: 'Textarea',
+            props: { name: 'notes', ariaLabel: 'Notes' },
+            children: [],
+        },
+        country: {
+            type: 'Select',
+            props: { name: 'country', ariaLabel: 'Country', options: [{ label: 'Italy', value: 'it' }] },
+            children: [],
+        },
+        ward: {
+            type: 'Combobox',
+            props: { name: 'ward', ariaLabel: 'Ward', options: [{ label: 'Cardiology', value: 'cardiology' }] },
+            children: [],
+        },
+        terms: {
+            type: 'Checkbox',
+            props: { name: 'terms', ariaLabel: 'Accept the terms', value: true },
+            children: [],
+        },
+        plan: {
+            type: 'Radio',
+            props: { name: 'plan', ariaLabel: 'Pro plan', value: 'pro' },
+            children: [],
+        },
+        channels: {
+            type: 'CheckboxGroup',
+            props: { name: 'channels', ariaLabel: 'Channels', options: [{ label: 'Email', value: 'email' }] },
+            children: [],
+        },
+        size: {
+            type: 'RadioGroup',
+            props: { name: 'size', ariaLabel: 'Size', options: [{ label: 'Small', value: 's' }] },
+            children: [],
+        },
+        volume: {
+            type: 'InputRange',
+            props: { name: 'volume', ariaLabel: 'Volume', min: 0, max: 10 },
+            children: [],
+        },
+        invoice: {
+            type: 'InputFile',
+            props: { name: 'invoice', ariaLabel: 'Invoice' },
+            children: [],
+        },
+    },
+}
+
+/**
+ * Every form field of the catalog drawn without a label, each named by its
+ * `ariaLabel` alone.
+ */
+export const FieldsWithoutLabel: Story = {
+    render: renderSpec(fieldsWithoutLabelSpec),
+    play: fieldsWithoutLabelTest,
+}
+
+/**
+ * A dialog with no title, named by its `ariaLabel`.
+ */
+export const DialogWithoutTitle: Story = {
+    render: renderSpec({
+        root: 'dialog',
+        elements: {
+            dialog: {
+                type: 'Dialog',
+                props: { ariaLabel: 'Confirm the order' },
+                children: ['text'],
+            },
+            text: {
+                type: 'Badge',
+                props: { value: 'Two items, 42 euros' },
+                children: [],
+            },
+        },
+    }),
+    play: dialogWithoutTitleTest,
 }
