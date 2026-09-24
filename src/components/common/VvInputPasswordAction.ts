@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import type { VvIconProps } from '../VvIcon'
 import { ACTION_ICONS } from '../VvIcon'
 import VvIcon from '../VvIcon/VvIcon.vue'

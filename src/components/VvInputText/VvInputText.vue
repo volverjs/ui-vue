@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MaskedNumberOptions } from 'imask'
-import type { InputHTMLAttributes } from 'vue'
+import type { InputHTMLAttributes, Ref } from 'vue'
 import type { InputType } from '../VvInputText'
 import { useIMask } from 'vue-imask'
 import {

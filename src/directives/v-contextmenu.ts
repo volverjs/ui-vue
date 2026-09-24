@@ -1,4 +1,4 @@
-import type { Directive, DirectiveBinding } from 'vue'
+import type { Directive, DirectiveBinding, Ref } from 'vue'
 import type VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import { useDropdownContextmenu } from '@/composables'
 

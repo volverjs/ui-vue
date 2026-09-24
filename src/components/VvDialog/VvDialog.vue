@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DialogHTMLAttributes } from 'vue'
+import type { DialogHTMLAttributes, Ref } from 'vue'
 import { VvDialogEvents, VvDialogProps } from '.'
 
 // props, emit and template refs

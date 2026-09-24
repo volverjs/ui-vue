@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import { ModifiersProps, StorageProps } from '@/props'
 
 export interface VvAccordionGroupItem {

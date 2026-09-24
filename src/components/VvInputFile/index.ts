@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import type { VvIconProps } from '../VvIcon'
 import type { UploadedFile } from '@/types'
 import {

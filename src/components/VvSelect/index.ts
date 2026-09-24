@@ -1,4 +1,5 @@
 import type { MaybeElement } from '@vueuse/core'
+import type { PropType } from 'vue'
 import type { Option } from '../../types/generic'
 import {
     AriaProps,

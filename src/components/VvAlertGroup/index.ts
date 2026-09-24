@@ -1,4 +1,4 @@
-import type { ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, PropType } from 'vue'
 import type { Alert } from '@/types'
 import { ModifiersProps } from '@/props'
 

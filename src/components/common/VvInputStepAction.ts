@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import VvIcon from '../VvIcon/VvIcon.vue'
 
 export default defineComponent({

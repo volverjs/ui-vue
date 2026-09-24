@@ -1,3 +1,4 @@
+import type { PropType } from 'vue'
 import type { NavItemTab } from '@/types/nav'
 import { ModifiersProps } from '@/props'
 
