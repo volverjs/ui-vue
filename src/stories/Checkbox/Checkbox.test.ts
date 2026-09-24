@@ -114,3 +114,27 @@ export async function longLabelTest({ canvasElement }: PlayAttributes) {
     const controlCentre = inputRect.top + inputRect.height / 2
     await expect(Math.abs(controlCentre - firstLineCentre)).toBeLessThan(2)
 }
+
+export async function ariaLabelTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const input = element.getElementsByTagName('input')[0]
+    const hint = element.getElementsByClassName('vv-checkbox__hint')[0]
+
+    // With no label drawn the name has to come from `aria-label`, and it
+    // reaches the control: as a plain attribute it named the <label> that wraps it
+    // instead, which left the control anonymous.
+    await expect(canvas.getByRole('checkbox', { name: 'Select the row' })).toBe(input)
+    await expect(element).not.toHaveAttribute('aria-label')
+
+    // `aria-describedby` is a list of ids, so the hint joins what the caller
+    // pointed at instead of replacing it. Caller first: the reading order.
+    await expect(input.getAttribute('aria-describedby')?.split(' ')).toEqual([
+        'extra-help',
+        hint.id,
+    ])
+    await expect(element).not.toHaveAttribute('aria-describedby')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}

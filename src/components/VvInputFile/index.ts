@@ -2,6 +2,7 @@ import type { PropType } from 'vue'
 import type { VvIconProps } from '../VvIcon'
 import type { UploadedFile } from '@/types'
 import {
+    AriaProps,
     DisabledProps,
     HintProps,
     IconProps,
@@ -35,6 +36,7 @@ export const VvInputFileProps = {
     ...InvalidProps,
     ...HintProps,
     ...LabelProps,
+    ...AriaProps,
     ...LoadingProps,
     ...ReadonlyProps,
     ...DisabledProps,

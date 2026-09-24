@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { userEvent, waitFor } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
@@ -31,6 +31,30 @@ export async function selectFromKeyboardTest({ canvasElement }: PlayAttributes) 
     await userEvent.keyboard(' ')
     await sleep()
     expect(items()[0]).toHaveClass('active')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function ariaLabelTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const input = element.getElementsByTagName('input')[0]
+    const hint = element.getElementsByClassName('vv-input-file__hint')[0]
+
+    // With no label drawn the name has to come from `aria-label`, and it
+    // reaches the control: as a plain attribute it named the block around it
+    // instead, which left the control anonymous.
+    await expect(canvas.getByLabelText('Attach the invoice')).toBe(input)
+    await expect(element).not.toHaveAttribute('aria-label')
+
+    // `aria-describedby` is a list of ids, so the hint joins what the caller
+    // pointed at instead of replacing it. Caller first: the reading order.
+    await expect(input.getAttribute('aria-describedby')?.split(' ')).toEqual([
+        'extra-help',
+        hint.id,
+    ])
+    await expect(element).not.toHaveAttribute('aria-describedby')
 
     // accessibility
     await expect(element).toHaveNoViolations()

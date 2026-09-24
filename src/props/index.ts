@@ -561,6 +561,7 @@ export const CheckboxRadioProps = {
     ...ReadonlyProps,
     ...ModifiersProps,
     ...LabelProps,
+    ...AriaProps,
     ...LoadingProps,
     /**
      * Input value
