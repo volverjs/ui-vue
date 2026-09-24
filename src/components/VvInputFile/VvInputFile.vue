@@ -274,6 +274,11 @@ function onSelectIndex(index: number) {
     selectedFileIndex.value = index
 }
 
+// the drop area previews one file, picked from the list, when it holds several
+const isPreviewSelectable = computed(
+    () => hasDropArea.value && files.value.length > 1,
+)
+
 const dropdAreaActionLabel = computed(() => {
     if (files.value.length === 0 || isMultiple.value) {
         return props.labelAdd
@@ -383,11 +388,13 @@ export default {
                         :class="{
                             'active':
                                 index === selectedFileIndex
-                                && hasDropArea
-                                && files.length > 1,
+                                && isPreviewSelectable,
                             'cursor-move': sortable,
                         }"
+                        :tabindex="isPreviewSelectable ? 0 : undefined"
+                        :aria-current="isPreviewSelectable && index === selectedFileIndex ? 'true' : undefined"
                         @click.stop="onSelectIndex(index)"
+                        @keydown.enter.space.self.prevent="onSelectIndex(index)"
                     >
                         <slot name="file-item" v-bind="{ file, index, isSelected: index === selectedFileIndex, onRemoveIndex, onDownloadFile, formatBytes }">
                             <button
