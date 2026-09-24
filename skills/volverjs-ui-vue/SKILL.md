@@ -362,6 +362,12 @@ Directives: `v-tooltip="'text'"` and `v-tooltip:top="'text'"` (argument is the `
 `volverComponents` to build a subset. Peer dependencies: `@json-render/core`, `@json-render/vue`,
 `zod`. Form components support `$bindState` for two-way binding.
 
+With `@json-render/vue` 0.21 or later a spec also fills named slots, through a top-level `slots`
+object next to `children`. The catalog declares `summary` on `Accordion`, `header` and `footer` on
+`Card`, and `footer` on `Dialog` and `Alert`. The registry passes on only those, and only when they
+list an element that exists. A `Button` that shows an icon and no label needs `ariaLabel`, since
+that is its only accessible name.
+
 ```ts
 import { catalog, registry } from '@volverjs/ui-vue/json-render'
 const systemPrompt = catalog.prompt({ customRules: ['Use the primary modifier for the main call to action'] })
