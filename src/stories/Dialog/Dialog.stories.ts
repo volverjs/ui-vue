@@ -63,11 +63,18 @@ export const OpenOnMount: Story = {
         setup() {
             return { args }
         },
-        data: () => ({ open: true }),
+        data: () => ({ open: true, events: [] as string[] }),
         template: /* html */ `
-			<vv-dialog v-bind="args" v-model="open" data-testId="element">
+			<vv-dialog
+				v-bind="args"
+				v-model="open"
+				data-testId="element"
+				@before-enter="events.push('beforeEnter')"
+				@open="events.push('open')"
+			>
 				<div v-html="args.default"></div>
 			</vv-dialog>
+			<div>Events: <span data-testId="events">{{ events.join(' ') }}</span></div>
 		`,
     }),
     play: openOnMountTest,

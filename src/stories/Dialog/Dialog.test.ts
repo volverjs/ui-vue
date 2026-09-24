@@ -17,9 +17,18 @@ export async function defaultTest(
     await expect(element).toHaveProperty('open', true)
 
     // named by its title, unless the header slot replaces it, and with it the
-    // element the name points at
+    // element the name points at: the caller names the dialog then, and its
+    // reference is the only one
     if (args.header) {
-        await expect(element).not.toHaveAttribute('aria-labelledby')
+        const labelledby = args['aria-labelledby']
+        await expect(element.getAttribute('aria-labelledby')).toBe(labelledby ?? null)
+        if (labelledby) {
+            await expect(
+                within(canvasElement).getByRole('dialog', {
+                    name: document.getElementById(labelledby)?.textContent ?? '',
+                }),
+            ).toBe(element)
+        }
     } else if (args.title) {
         await expect(
             within(canvasElement).getByRole('dialog', { name: args.title }),
@@ -81,6 +90,11 @@ export async function openOnMountTest({ canvasElement, args }: PlayAttributes) {
     // <dialog> with no `open` hidden
     await waitFor(() => expect(element).toHaveProperty('open', true))
     await expect(element.matches(':modal')).toBe(true)
+
+    // `open` once, after `beforeEnter`: it is emitted where `showModal()` runs
+    await expect(
+        within(canvasElement).getByTestId('events'),
+    ).toHaveTextContent(/^beforeEnter open$/)
     await expect(
         within(canvasElement).getByRole('dialog', { name: args.title }),
     ).toBe(element)
