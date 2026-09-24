@@ -11,10 +11,22 @@ import ts from 'typescript'
 
 const dist = path.resolve('dist')
 
+function fail(message) {
+    console.error(message)
+    process.exit(1)
+}
+
+// A global type in auto-imports.d.ts reaches the declarations as
+// `globalThis.<Name>`, a name the consumers do not have. vite.config.ts keeps
+// the types out; this is what tells if they come back, whatever the cause.
+if (/^\s*export type \{/m.test(fs.readFileSync('auto-imports.d.ts', 'utf-8'))) {
+    fail('auto-imports.d.ts declares global types: see `vueValues` in vite.config.ts')
+}
+
 // The sources import through the `@/` alias of tsconfig.json, and the
 // declarations keep it, but a consumer has no such alias. Point each one at
 // the declaration it means, relative to the file that imports it.
-const aliasRE = /(\bfrom\s+|\bimport\s*\(\s*)(['"])@\/([^'"]+)\2/g
+const aliasRE = /(\bfrom\s+|\bimport\s*\(\s*|\bimport\s+)(['"])@\/([^'"]+)\2/g
 for (const file of globSync('dist/**/*.d.ts', { posix: true })) {
     const source = fs.readFileSync(file, 'utf-8')
     const rewritten = source.replace(aliasRE, (_, prefix, quote, target) => {
@@ -26,15 +38,23 @@ for (const file of globSync('dist/**/*.d.ts', { posix: true })) {
     }
 }
 
-// Every entry point in `exports`, compiled with the options of an application
-// that checks its libraries: a name that exists only in this repository, such
-// as a global of auto-imports.d.ts or of a shim, fails here and not there.
-const { exports } = JSON.parse(fs.readFileSync('./package.json', 'utf-8'))
-const entries = Object.values(exports)
-    .map(entry => entry.types)
-    .filter(Boolean)
-    .map(types => path.resolve(types))
-const program = ts.createProgram(entries, {
+// What an application compiles: every subpath of `exports`, imported by its
+// name so the `types` of each entry is the file it resolves to, and every
+// declaration `./dist/*` publishes, apart from those of the stories and the
+// tests. With `skipLibCheck` off, as an application that checks its libraries
+// has it, a name that exists only in this repository, such as a global of
+// auto-imports.d.ts or of a shim, fails here and not there.
+const { name, exports } = JSON.parse(fs.readFileSync('./package.json', 'utf-8'))
+const specifiers = Object.entries(exports)
+    .filter(([, entry]) => entry.types)
+    .map(([subpath]) => (subpath === '.' ? name : `${name}/${subpath.slice(2)}`))
+// never written to disk, and inside the package, so its imports resolve
+// through `exports` the way they do from `node_modules`
+const consumer = path.resolve('declarations-consumer.ts')
+const consumerSource = specifiers
+    .map((specifier, index) => `import type * as entry${index} from '${specifier}'\n`)
+    .join('')
+const options = {
     noEmit: true,
     strict: true,
     skipLibCheck: false,
@@ -43,17 +63,34 @@ const program = ts.createProgram(entries, {
     moduleResolution: ts.ModuleResolutionKind.Bundler,
     lib: ['lib.esnext.d.ts', 'lib.dom.d.ts', 'lib.dom.iterable.d.ts'],
     types: [],
+}
+const host = ts.createCompilerHost(options)
+const { fileExists, readFile, getSourceFile } = host
+host.fileExists = fileName => fileName === consumer || fileExists(fileName)
+host.readFile = fileName => (fileName === consumer ? consumerSource : readFile(fileName))
+host.getSourceFile = (fileName, languageVersion, ...rest) =>
+    fileName === consumer
+        ? ts.createSourceFile(fileName, consumerSource, languageVersion)
+        : getSourceFile(fileName, languageVersion, ...rest)
+const declarations = globSync('dist/**/*.d.ts', {
+    ignore: ['dist/stories/**', 'dist/test/**'],
+    absolute: true,
 })
-// the declarations of the dependencies are not ours to fix
+const program = ts.createProgram([consumer, ...declarations], options, host)
+// the declarations of the dependencies are not ours to fix. TypeScript does
+// not report every name it cannot resolve, one inside some type arguments for
+// one, so this catches what it reports and not more.
 const diagnostics = ts.getPreEmitDiagnostics(program)
-    .filter(diagnostic => !diagnostic.file || path.resolve(diagnostic.file.fileName).startsWith(dist + path.sep))
+    .filter((diagnostic) => {
+        const fileName = diagnostic.file && path.resolve(diagnostic.file.fileName)
+        return !fileName || fileName === consumer || fileName.startsWith(dist + path.sep)
+    })
 if (diagnostics.length) {
     console.error(ts.formatDiagnostics(diagnostics, {
         getCanonicalFileName: fileName => fileName,
         getCurrentDirectory: () => process.cwd(),
         getNewLine: () => '\n',
     }))
-    console.error(`${diagnostics.length} errors in the declarations of ${entries.length} entry points`)
-    process.exit(1)
+    fail(`${diagnostics.length} errors in the declarations`)
 }
-console.log(`Declarations of ${entries.length} entry points checked`)
+console.log(`Declarations checked: ${specifiers.length} entry points, ${declarations.length} files`)
