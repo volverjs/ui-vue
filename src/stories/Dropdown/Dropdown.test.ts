@@ -129,4 +129,14 @@ export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes)
     // more listener and keep the others
     await expect(rerender).toHaveTextContent('3')
     await expect(listeners).toBe(0)
+
+    // with the dropdown removed nothing is left listening for it, and drawn
+    // again it is bound once more, and only once
+    const toggle = canvas.getByTestId('toggle')
+    await userEvent.click(toggle)
+    await waitFor(() => expect(listeners).toBe(-1))
+    await userEvent.click(toggle)
+    await waitFor(() => expect(listeners).toBe(0))
+    target.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 20, clientY: 20 }))
+    await waitFor(() => expect(list()).toBeVisible())
 }

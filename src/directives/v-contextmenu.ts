@@ -16,9 +16,14 @@ const contextmenu: Directive = {
     // Bound on update and not on mount, since the dropdown is usually a
     // template ref, still empty on the first render. Every later render of the
     // host calls this again, and each call added another pair of listeners:
-    // only a different dropdown binds anew now.
+    // only a different dropdown binds anew now, and one that is gone leaves
+    // nothing listening for it.
     beforeUpdate(el, binding: DirectiveBinding) {
-        if (!binding.value || el.additionalData?.dropdown === binding.value) {
+        if (!binding.value) {
+            unbind(el)
+            return
+        }
+        if (el.additionalData?.dropdown === binding.value) {
             return
         }
         unbind(el)

@@ -50,7 +50,7 @@ export const Default: Story = {
 
 /**
  * The host of the directive renders again after the menu is bound, as any
- * component with state does.
+ * component with state does, and removes the dropdown and draws it again.
  */
 export const Rerender: Story = {
     args: {
@@ -61,14 +61,16 @@ export const Rerender: Story = {
         setup() {
             const dropdownEl = ref<typeof VvDropdown>()
             const renders = ref(0)
-            return { args, dropdownEl, renders }
+            const shown = ref(true)
+            return { args, dropdownEl, renders, shown }
         },
         template: /* html */ `
 			<button class="vv-button" data-testId="rerender" @click="renders++">Renders: {{ renders }}</button>
+			<button class="vv-button" data-testId="toggle" @click="shown = !shown">Toggle the dropdown</button>
 			<div v-contextmenu="dropdownEl" data-testId="target" class="w-full h-320 bg-surface-1 flex items-center justify-center">
 				<div class="text-word-2 text-18 uppercase w-150 text-center">Right click context menu</div>
 			</div>
-			<vv-dropdown v-bind="args" ref="dropdownEl" placement="right-start">
+			<vv-dropdown v-if="shown" v-bind="args" ref="dropdownEl" placement="right-start">
 				<template #items>
 					<vv-dropdown-action>Create</vv-dropdown-action>
 					<vv-dropdown-action>Delete</vv-dropdown-action>
