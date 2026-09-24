@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from 'storybook/test'
+import { userEvent, within } from 'storybook/test'
 import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
@@ -129,6 +129,27 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
 
     // check accessibility
     await expect(element).toHaveNoViolations()
+}
+
+export async function keyboardTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const combobox = element.querySelector('[role="combobox"]') as HTMLElement
+    await expect(combobox).toHaveAttribute('aria-expanded', 'false')
+
+    // Enter opens the list from the focused combobox
+    combobox.focus()
+    await userEvent.keyboard('{Enter}')
+    await sleep()
+    await expect(combobox).toHaveAttribute('aria-expanded', 'true')
+
+    // Escape closes it, and Space opens it again
+    await userEvent.keyboard('{Escape}')
+    await sleep()
+    await expect(combobox).toHaveAttribute('aria-expanded', 'false')
+    combobox.focus()
+    await userEvent.keyboard(' ')
+    await sleep()
+    await expect(combobox).toHaveAttribute('aria-expanded', 'true')
 }
 
 export async function ariaLabelTest({ canvasElement }: PlayAttributes) {

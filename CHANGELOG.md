@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
   `Dialog` and `Alert` no longer declare a `header` slot, which the prompt would now have offered: on `VvDialog` it replaces the close button along with the title, and on `VvAlert` it replaces the title, which is what names the alert, so an `alertdialog` would lose its accessible name. The components read `slots` from their context instead of destructuring it in their signature, so the published declarations still type check against the 0.19 and 0.20 types, which have no `slots`, and at runtime there is none there either, so nothing changes on those versions.
 
   A `NamedSlots` story, the first for the `json-render` entry point, renders a spec through the registry with a `footer` on a card and on an alert and a `summary` on an accordion, and finds all three drawn, while an undeclared `header` on the alert and an empty `footer` on a second card draw nothing.
+- The keyboard handler of `VvCombobox`, which opens the list on Enter and Space from the focused control, is bound in the template with `@keydown` next to the `@click` it mirrors, instead of from the script with `onKeyStroke`. The behaviour does not change. SonarCloud reads keyboard support from the template only, so it took the control for mouse only, and that issue and the one on `VvInputFile` below were the two new reliability bugs that failed the quality gate of `main`. A `Keyboard` story, the first to drive the combobox from the keyboard, opens it with Enter, closes it with Escape and opens it again with Space.
 
 ### Fixed
 

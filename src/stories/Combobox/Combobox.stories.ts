@@ -3,7 +3,12 @@ import { ref } from 'vue'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './Combobox.settings'
-import { ariaDescribedbyTest, ariaLabelTest, defaultTest } from './Combobox.test'
+import {
+    ariaDescribedbyTest,
+    ariaLabelTest,
+    defaultTest,
+    keyboardTest,
+} from './Combobox.test'
 
 const meta: Meta<typeof VvCombobox> = {
     title: 'Components/Combobox',
@@ -40,6 +45,11 @@ export const Default: Story = {
 		`,
     }),
     play: defaultTest,
+}
+
+export const Keyboard: Story = {
+    ...Default,
+    play: keyboardTest,
 }
 
 export const Disabled: Story = {
