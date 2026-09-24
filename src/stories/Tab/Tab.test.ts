@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from 'storybook/test'
+import { userEvent, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
@@ -23,5 +23,25 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     await expect(firstTabPanelEl.classList.contains('target')).toBe(true)
 
     // check accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function navItemSlotTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const labels = within(element).getAllByTestId('nav-label')
+    const panels = element.getElementsByClassName('vv-tab__panel')
+
+    // a click on the markup of the slot, inside the item, switches the tab:
+    // it is not the element that carries the index of the item
+    await userEvent.click(labels[1])
+    await expect(panels[1]).toHaveClass('target')
+    await expect(panels[0]).not.toHaveClass('target')
+
+    // and so does the keyboard, on the item itself
+    within(element).getByRole('menuitem', { name: 'Item 1' }).focus()
+    await userEvent.keyboard('{Enter}')
+    await expect(panels[0]).toHaveClass('target')
+
+    // accessibility
     await expect(element).toHaveNoViolations()
 }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvTab from '@/components/VvTab/VvTab.vue'
 import { defaultArgs, defaultArgTypes } from './Tab.settings'
-import { defaultTest } from './Tab.test'
+import { defaultTest, navItemSlotTest } from './Tab.test'
 
 const meta: Meta<typeof VvTab> = {
     title: 'Components/Tab',
@@ -67,4 +67,31 @@ export const Default: Story = {
 			</div>`,
     }),
     play: defaultTest,
+}
+
+/**
+ * Items drawn by the `nav-item` slot, whose markup sits inside the element
+ * that carries the index of the item.
+ */
+export const NavItemSlot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvTab },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div class="m-md w-1/2">
+				<vv-tab v-bind="args" data-testId="element">
+					<template #nav-item="{ item }">
+						<span data-testId="nav-label">{{ item.label }}</span>
+					</template>
+					<template #panel::tab-1><p>First panel</p></template>
+					<template #panel::tab-2><p>Second panel</p></template>
+				</vv-tab>
+			</div>`,
+    }),
+    play: navItemSlotTest,
 }

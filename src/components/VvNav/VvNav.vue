@@ -10,9 +10,13 @@ const { modifiers } = toRefs(props)
 // One listener for every item. Nothing to add for the keyboard: the items are
 // links and buttons, and activating one from the keyboard, with Enter or with
 // Space on a button, fires the click that lands here.
+// The index is on the link or button of the item, and the click can land on
+// markup inside it, from the `item` slot, so it is looked up from there, never
+// past the list itself.
 function onClick(event: Event) {
-    const target = event.target as HTMLElement
-    if (target?.dataset.index) {
+    const list = event.currentTarget as HTMLElement
+    const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-index]')
+    if (target && list.contains(target) && target.dataset.index) {
         const index = Number.parseInt(target.dataset.index)
         const item = props.items?.[index]
         if (!item || item?.disabled) {
