@@ -91,7 +91,8 @@ export const DialogDefinition = {
         title: z.string().nullish(),
         modifiers,
     }),
-    slots: ['default', 'header', 'footer'],
+    // no `header`: on VvDialog it replaces the close button with the title
+    slots: ['default', 'footer'],
     description:
         'Modal dialog overlay. Use for confirmations, forms, or detailed views that require user attention.',
 }
@@ -130,7 +131,9 @@ export const AlertDefinition = {
         dismissable: z.boolean().nullish(),
         role: z.enum(['alert', 'alertdialog']).nullish(),
     }),
-    slots: ['default', 'header', 'footer'],
+    // no `header`: on VvAlert it replaces the title, which is what names the
+    // alert, so an `alertdialog` would lose its accessible name
+    slots: ['default', 'footer'],
     description:
         'Alert notification with variant modifiers: success, info, warning, danger, brand, accent. Can be dismissable.',
 }
@@ -228,10 +231,14 @@ export const ButtonDefinition = {
         iconPosition,
         type: z.enum(['button', 'submit', 'reset']).nullish(),
         href: z.string().nullish(),
+        ariaLabel: z
+            .string()
+            .nullish()
+            .describe('Accessible name, required when the button shows an icon and no label'),
     }),
     slots: ['default'],
     description:
-        'Action button. Supports text label, icon, loading state, and link mode (href). Use type=submit inside forms.',
+        'Action button. Supports text label, icon, loading state, and link mode (href). Use type=submit inside forms. An icon without a label needs ariaLabel.',
 }
 
 export const ButtonGroupDefinition = {
