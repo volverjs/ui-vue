@@ -11,7 +11,9 @@ export function useDropdownContextmenu(dropdownEl: Ref<typeof VvDropdown>, targe
         dropdownEl.value.show()
     }
     const target = computed(() => unref(targetEl))
-    if (target && getCurrentInstance()) {
+    // whether a target was passed at all: a computed is always truthy, and a
+    // template ref still holds null while setup runs
+    if (targetEl && getCurrentInstance()) {
         onMounted(() => {
             target.value?.addEventListener('contextmenu', onContextmenu, false)
         })

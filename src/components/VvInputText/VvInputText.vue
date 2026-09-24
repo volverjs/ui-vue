@@ -682,12 +682,15 @@ const SearchInputActions = VvInputTextActionsFactory(
     isDirty,
 )
 
-// auto-width
+// A click anywhere in the box, on the icon or the unit too, focuses the input.
+// A shortcut for the pointer only: the keyboard reaches the input itself.
 function onClickInner() {
     if (!isDisabledOrReadonly.value) {
         focused.value = true
     }
 }
+
+// auto-width
 const hasStyle = computed(() => {
     if (!props.autoWidth) {
         return undefined

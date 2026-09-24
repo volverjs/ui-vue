@@ -187,6 +187,9 @@ function addFiles(uploadedFiles: FileList) {
     selectedFileIndex.value = toReturn.length - 1
 }
 
+// The whole drop area opens the file picker on click, a shortcut for the
+// pointer: from the keyboard the button inside it does the same, and so does
+// the control a `drop-area` slot binds this to.
 function onClickDropArea() {
     if (!inputEl.value) {
         return

@@ -7,6 +7,9 @@ const emit = defineEmits(VvNavEvents)
 
 const { modifiers } = toRefs(props)
 
+// One listener for every item. Nothing to add for the keyboard: the items are
+// links and buttons, and activating one from the keyboard, with Enter or with
+// Space on a button, fires the click that lands here.
 function onClick(event: Event) {
     const target = event.target as HTMLElement
     if (target?.dataset.index) {
