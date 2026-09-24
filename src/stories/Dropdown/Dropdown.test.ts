@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
@@ -94,4 +94,39 @@ export async function topLayerExpandedOnMountTest({
     // expanded through the model, so the promotion happens on mount without any
     // interaction
     await expectAboveTheBar(canvasElement, getDropdown(wrapper))
+}
+
+export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const target = await canvas.findByTestId('target')
+    const rerender = canvas.getByTestId('rerender')
+    const list = () =>
+        canvasElement.getElementsByClassName('vv-dropdown__list')[0] as HTMLElement
+
+    // bound once the dropdown ref is filled: a right click opens the menu
+    target.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 20, clientY: 20 }))
+    await waitFor(() => expect(list()).toBeVisible())
+    await userEvent.keyboard('{Escape}')
+
+    // count the listeners each later render of the host adds and removes
+    let listeners = 0
+    const add = target.addEventListener.bind(target)
+    const remove = target.removeEventListener.bind(target)
+    target.addEventListener = ((type: string, ...rest: [EventListener]) => {
+        listeners += type === 'contextmenu' ? 1 : 0
+        return add(type, ...rest)
+    }) as typeof target.addEventListener
+    target.removeEventListener = ((type: string, ...rest: [EventListener]) => {
+        listeners -= type === 'contextmenu' ? 1 : 0
+        return remove(type, ...rest)
+    }) as typeof target.removeEventListener
+    for (let render = 0; render < 3; render++) {
+        await userEvent.click(rerender)
+        await sleep()
+    }
+
+    // the same dropdown stays bound as it was: every render used to add one
+    // more listener and keep the others
+    await expect(rerender).toHaveTextContent('3')
+    await expect(listeners).toBe(0)
 }
