@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.25]
+
+### Fixed
+
+- `VvInputText` keeps the year to four digits in every input type that has one. Without a `max` the browser takes a longer year, up to 275760 in Chrome, so a `datetime-local` let the user type `222222`. Only `date` had a default `max`, `9999-12-31`: `datetime-local` now defaults to `9999-12-31T23:59:59.999`, the last instant of 9999 so that no `step` goes past it, `month` to `9999-12` and `week` to `9999-W52`. A `max` passed to the component still wins. `DefaultMaxDate`, `DefaultMaxDateTime`, `DefaultMaxMonth` and `DefaultMaxWeek` stories set a six digit year on the input and find it out of range; without the fix the last three find it in range.
+- `VvInputText` writes a `min` or a `max` given as a `Date` or an ISO string, the form `toISOString()` writes, in the format of the input, as it already writes the model. Both props declare `Date`, but the attribute was `String(value)`, `Wed Jan 02 2030 18:45:00 GMT+0100` or `2030-01-02T17:45:00.000Z`, which a date input does not read, so the limit was silently dropped. They now become `2030-01-02` for `date`, `2030-01-02T18:45` for `datetime-local`, `2030-01` for `month` and `18:45` for `time`, in local time and with the seconds when the `step` asks for them, like the value. `week` still takes only a string, since the model cannot format a week either. An empty `min` is no longer written as `min=""` or `min="null"`, and a `max` that cannot be formatted, such as an invalid `Date`, leaves the default `max` in place. An `EmptyLimits` story checks both. `DateLimitsDate`, `DateLimitsDateTime`, `DateLimitsMonth` and `DateLimitsTime` stories pass a `Date` or an ISO string and find the attributes in the format of the input.
+
 ## [0.0.24] - 2026-09-24
 
 ### Changed

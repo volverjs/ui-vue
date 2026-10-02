@@ -63,12 +63,18 @@ export const VvInputTextProps = {
     /**
      * Minimum value
      * Available for input types: date, month, week, time, datetime-local, number, range.
+     * A Date or an ISO string as `toISOString()` writes it is turned into the format
+     * of the input, except for week.
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#min
      */
     min: [Number, Date, String],
     /**
      * Maximum value
      * Available for input types: date, month, week, time, datetime-local, number, range.
+     * A Date or an ISO string as `toISOString()` writes it is turned into the format
+     * of the input, except for week.
+     * Without one, date, datetime-local, month and week stop at the end of the
+     * year 9999, so the year takes four digits at most.
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#max
      */
     max: [Number, Date, String],

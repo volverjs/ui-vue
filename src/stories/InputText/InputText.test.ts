@@ -259,3 +259,54 @@ export async function isoTest({ canvasElement, args }: PlayAttributes) {
         expect(inputDate.getDate()).toEqual(valueDate.getDate())
     }
 }
+
+export async function defaultMaxTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.getElementsByTagName('input')[0] as HTMLInputElement
+    const yearOverflow: Partial<Record<InputType, string>> = {
+        [INPUT_TYPES.DATE]: '222222-02-05',
+        [INPUT_TYPES.DATETIME_LOCAL]: '222222-02-05T22:22',
+        [INPUT_TYPES.MONTH]: '222222-02',
+        [INPUT_TYPES.WEEK]: '222222-W05',
+    }
+
+    // until it is focused an empty date input is drawn as text
+    await expect(input).toBeClicked()
+    await expect(input).toHaveProperty('type', args.type)
+
+    // a six digit year is a valid value for the browser, only a max rejects it
+    input.value = yearOverflow[args.type as InputType] as string
+    await expect(input.validity.rangeOverflow).toBe(true)
+
+    await expect(element).toHaveNoViolations()
+}
+
+// local times, so the input formats them the same in every time zone
+export const DATE_MIN = new Date(2030, 0, 1, 12, 30)
+export const DATE_MAX = new Date(2030, 0, 2, 18, 45)
+
+export async function dateLimitsTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.getElementsByTagName('input')[0] as HTMLInputElement
+    const limits: Partial<Record<InputType, [string, string]>> = {
+        [INPUT_TYPES.DATE]: ['2030-01-01', '2030-01-02'],
+        [INPUT_TYPES.DATETIME_LOCAL]: ['2030-01-01T12:30', '2030-01-02T18:45'],
+        [INPUT_TYPES.MONTH]: ['2030-01', '2030-01'],
+        [INPUT_TYPES.TIME]: ['12:30:00', '18:45:00'],
+    }
+    const [min, max] = limits[args.type as InputType] as [string, string]
+
+    await expect(input).toBeClicked()
+    await expect(input).toHaveProperty('min', min)
+    await expect(input).toHaveProperty('max', max)
+}
+
+export async function emptyLimitsTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.getElementsByTagName('input')[0] as HTMLInputElement
+
+    // an empty min is no min, a max that cannot be formatted leaves the default
+    await expect(input).toBeClicked()
+    await expect(input.hasAttribute('min')).toBe(false)
+    await expect(input).toHaveProperty('max', '9999-12-31')
+}
