@@ -21,6 +21,8 @@ import {
 import VvInputTextActionsFactory from '../VvInputText/VvInputTextActions'
 
 type SuggestionValue = string | number | Date
+// the input types `getInputValueFromDate` formats: all the date-like ones but week
+type DateInputType = 'date' | 'time' | 'month' | 'datetime-local'
 
 // props, emit, slots and attrs
 const props = defineProps(VvInputTextProps)
@@ -76,7 +78,8 @@ const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
 
 // seconds
 const hasSeconds = computed(() => {
-    const stepValue = typeof step.value === 'number' ? step.value : Number.parseInt(step.value)
+    // `Number`, not `parseInt`: a step of "0.5" asks for seconds too
+    const stepValue = Number(step.value)
     if (Number.isNaN(stepValue)) {
         return false
     }
@@ -189,7 +192,7 @@ function mergeDateIntoModelValue(date: Date) {
 
 function handleDateAccept() {
     // onAccept only calls this for date-like input types
-    const dateType = type.value as 'date' | 'time' | 'month' | 'datetime-local'
+    const dateType = type.value as DateInputType
     if (!typed.value) {
         if (!localModelValue.value) {
             return
@@ -253,10 +256,9 @@ function updateMaskValue(newValue: SuggestionValue | undefined | null) {
             }
 
             // Format for display (skip week type as it's not supported by getInputValueFromDate)
-            if (type.value !== INPUT_TYPES.WEEK) {
+            if (dateInputType.value) {
                 const newDate = new Date(newValue)
-                const dateType = type.value as 'date' | 'time' | 'datetime-local' | 'month'
-                typed.value = getInputValueFromDate(newDate, dateType, hasSeconds.value)
+                typed.value = getInputValueFromDate(newDate, dateInputType.value, hasSeconds.value)
                 unmasked.value = typed.value
             }
             return
@@ -562,6 +564,11 @@ const isDateTimeLike = computed(() => {
     ]
     return dateTimeTypes.includes(type.value)
 })
+const dateInputType = computed(() =>
+    isDateTimeLike.value && type.value !== INPUT_TYPES.WEEK
+        ? type.value as DateInputType
+        : undefined,
+)
 const isTextWithConstraints = computed(() => {
     const textConstraintTypes: InputType[] = [
         INPUT_TYPES.TEXT,
@@ -573,6 +580,31 @@ const isTextWithConstraints = computed(() => {
     ]
     return textConstraintTypes.includes(type.value)
 })
+
+// Without a `max` the browser takes a year of more than four digits in every
+// input that has one, up to 275760 in Chrome. The last instant of 9999 keeps
+// the year to four digits whatever the step.
+const DEFAULT_MAX: Partial<Record<InputType, string>> = {
+    [INPUT_TYPES.DATE]: '9999-12-31',
+    [INPUT_TYPES.DATETIME_LOCAL]: '9999-12-31T23:59:59.999',
+    [INPUT_TYPES.MONTH]: '9999-12',
+    [INPUT_TYPES.WEEK]: '9999-W52',
+}
+
+// `min` and `max` take a Date or an ISO string, like the model, but the
+// browser reads them only in the format of the input, as it reads the value.
+// An empty limit, or a Date that cannot be formatted, is no limit.
+function getLimitAttribute(limit: string | number | Date | null | undefined) {
+    if (isEmpty(limit)) {
+        return undefined
+    }
+    if ((limit instanceof Date || (typeof limit === 'string' && isDateIsoString(limit)))
+        && dateInputType.value) {
+        return getInputValueFromDate(limit, dateInputType.value, hasSeconds.value) || undefined
+    }
+    return String(limit)
+}
+
 const hasAttrs = computed(() => {
     const typeValue = (() => {
         if (isPassword.value && showPassword.value) {
@@ -619,13 +651,9 @@ const hasAttrs = computed(() => {
 
     // Date/time/number attributes
     if (isDateTimeLike.value || typeValue === INPUT_TYPES.NUMBER) {
-        let max = props.max
-        if (typeValue === INPUT_TYPES.DATE && !max) {
-            max = '9999-12-31'
-        }
         toReturn.step = props.step
-        toReturn.max = max === undefined ? undefined : String(max)
-        toReturn.min = props.min === undefined ? undefined : String(props.min)
+        toReturn.max = getLimitAttribute(props.max) ?? DEFAULT_MAX[typeValue]
+        toReturn.min = getLimitAttribute(props.min)
     }
 
     // Text-like types with placeholder
