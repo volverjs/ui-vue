@@ -78,7 +78,8 @@ const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
 
 // seconds
 const hasSeconds = computed(() => {
-    const stepValue = typeof step.value === 'number' ? step.value : Number.parseInt(step.value)
+    // `Number`, not `parseInt`: a step of "0.5" asks for seconds too
+    const stepValue = Number(step.value)
     if (Number.isNaN(stepValue)) {
         return false
     }

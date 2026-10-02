@@ -282,7 +282,7 @@ export async function defaultMaxTest({ canvasElement, args }: PlayAttributes) {
 }
 
 // local times, so the input formats them the same in every time zone
-export const DATE_MIN = new Date(2030, 0, 1, 12, 30)
+export const DATE_MIN = new Date(2030, 0, 1, 12, 30, 15)
 export const DATE_MAX = new Date(2030, 0, 2, 18, 45)
 
 export async function dateLimitsTest({ canvasElement, args }: PlayAttributes) {
@@ -292,7 +292,7 @@ export async function dateLimitsTest({ canvasElement, args }: PlayAttributes) {
         [INPUT_TYPES.DATE]: ['2030-01-01', '2030-01-02'],
         [INPUT_TYPES.DATETIME_LOCAL]: ['2030-01-01T12:30', '2030-01-02T18:45'],
         [INPUT_TYPES.MONTH]: ['2030-01', '2030-01'],
-        [INPUT_TYPES.TIME]: ['12:30:00', '18:45:00'],
+        [INPUT_TYPES.TIME]: ['12:30:15', '18:45:00'],
     }
     const [min, max] = limits[args.type as InputType] as [string, string]
 

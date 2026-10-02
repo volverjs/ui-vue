@@ -126,6 +126,17 @@ export const DateLimitsTime: Story = {
     },
 }
 
+export const DateLimitsTimeFractionalStep: Story = {
+    ...DateLimitsDate,
+    args: {
+        ...Default.args,
+        type: 'time',
+        step: '0.5',
+        min: DATE_MIN,
+        max: DATE_MAX,
+    },
+}
+
 export const EmptyLimits: Story = {
     ...Default,
     args: {
