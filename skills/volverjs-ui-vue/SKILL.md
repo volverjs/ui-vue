@@ -10,7 +10,8 @@ description: |
 Vue 3 component library of the Volver design system. Components are unstyled shells that emit BEM
 classes (`vv-button`, `vv-button--primary`, `vv-button__label`); the CSS comes from `@volverjs/style`.
 The single most common mistake when writing Volver code is guessing a prop name (`clearable`,
-`floatingLabel`, `iconPosition="left"`...). Prop names here are specific and the library does not warn
+`floatingLabel`...) or carrying a value from one component to another (`iconPosition="after"` is right
+on an input and wrong on a button). Prop names here are specific and the library does not warn
 on unknown props, so a wrong name fails silently at runtime. Verify before writing.
 
 ## 1. Source of truth: read the code, not your memory
@@ -77,7 +78,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 | Accessible name | `ariaLabel`, `ariaLabelledby`, `ariaDescribedby` | input, textarea, select, combobox, checkbox, radio, file. `label` is optional, so a field drawn without one needs these to be named at all. Write them as attributes (`aria-label="Ward"`): they reach the control, not the block. `aria-describedby` appends the field's own hint rather than replacing it. VvInputRange takes any `aria-` attribute instead |
 | Validation | `valid`, `validLabel`, `invalid`, `invalidLabel` | labels accept a string or an array of strings |
 | State | `disabled`, `readonly`, `required`, `loading`, `loadingLabel` | |
-| Icon | `icon`, `iconPosition` | position is `before` or `after` (enum `Position`), never left/right |
+| Icon | `icon`, `iconPosition` | the values depend on the component. VvInputText, VvTextarea, VvSelect, VvCombobox, VvInputFile: `before` (default) or `after`, enum `Position`. VvButton redefines it: `left` (default), `right`, `top` or `bottom`, enum `Side`. A value from the other set warns, and on a field it hides the icon. VvAlert takes the prop and ignores it |
 | Floating label | `floating` | not `floatingLabel` |
 | Clear action | `showClearAction`, `iconClear`, `labelClear` | not `clearable` |
 | Count | `count` = `true`, `'limit'` or `'countdown'` | with `maxlength` |
@@ -85,7 +86,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 | Options | `options`, `labelKey`, `valueKey`, `disabledKey` | see section 6 |
 | Links | `to`, `href`, `target`, `rel` | on VvAction, VvButton, nav items, breadcrumb routes |
 | BEM | `modifiers` | string (space separated) or string array |
-| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox |
+| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox. On VvCombobox `keepOpen` is its own prop: it keeps the list open after a single selection, and a click outside still closes it |
 
 ## 4. Modifiers: the class is free, the style is not
 
@@ -157,7 +158,7 @@ items and VvDropdownAction all follow this rule, so a menu entry becomes a link 
 ```vue
 <VvButton label="Save" modifiers="primary" type="submit" :loading="saving" />
 <VvButton :to="{ name: 'home' }" icon="home" label="Home" modifiers="ghost" />
-<VvButton href="https://example.com" target="_blank" icon="external-link" icon-position="after" label="Docs" />
+<VvButton href="https://example.com" target="_blank" icon="external-link" icon-position="right" label="Docs" />
 <VvButton icon="trash" aria-label="Delete" modifiers="action-quiet" />   <!-- icon-only: no label, no default slot -->
 ```
 
@@ -383,8 +384,9 @@ The package `README.md` has the full rendering and custom-catalog examples.
 
 - Every input, select, combobox, checkbox, radio, file and group has a `name`.
 - No invented props: `floating` not `floatingLabel`, `showClearAction` not `clearable`,
-  `iconPosition` is `before`/`after`, `imgSrc` on avatars, `routes` on breadcrumbs, `items` on
-  nav/tab/accordion group, `labelClose` on dialogs, `closeLabel` on alerts.
+  `iconPosition` is `before`/`after` on fields and `left`/`right`/`top`/`bottom` on VvButton,
+  `imgSrc` on avatars, `routes` on breadcrumbs, `items` on nav/tab/accordion group, `labelClose` on
+  dialogs, `closeLabel` on alerts.
 - Every modifier you wrote appears in the table of section 4 (or in `list-modifiers.sh` output).
 - Icons use bundled names or a registered collection, not random Iconify prefixes.
 - Boolean checkboxes have `:value="true" :unchecked-value="false"`.
