@@ -26,7 +26,17 @@ import { z } from 'zod'
 
 const modifiers = z.union([z.string(), z.array(z.string())]).nullish()
 
-const iconPosition = z.enum(['before', 'after']).nullish()
+/** Where a field draws its icon: VvInputText and the other inputs take `before`/`after`. */
+const iconPosition = z
+    .enum(['before', 'after'])
+    .nullish()
+    .describe('Icon placement in the field: before (default) or after')
+
+/** VvButton redefines `iconPosition` with the sides, never `before`/`after`. */
+const buttonIconPosition = z
+    .enum(['left', 'right', 'top', 'bottom'])
+    .nullish()
+    .describe('Icon side: left (default), right, top or bottom')
 
 /** The name of a field drawn without a visible label. */
 const ariaLabel = z
@@ -239,7 +249,7 @@ export const ButtonDefinition = {
         disabled: z.boolean().nullish(),
         loading: z.boolean().nullish(),
         icon: z.string().nullish().describe('Iconify icon name'),
-        iconPosition,
+        iconPosition: buttonIconPosition,
         type: z.enum(['button', 'submit', 'reset']).nullish(),
         href: z.string().nullish(),
         ariaLabel: z
