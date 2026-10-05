@@ -309,12 +309,12 @@ export const IconProps = {
         default: undefined,
     },
     /**
-     * VvIcon position
+     * VvIcon position, before or after the content (VvButton redefines it with the sides)
      */
     iconPosition: {
         type: String as PropType<`${Position}`>,
         default: Position.before,
-        validation: (value: Position) =>
+        validator: (value: Position) =>
             Object.values(Position).includes(value),
     },
 }

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputFile from '@/components/VvInputFile/VvInputFile.vue'
+import { recordWarnings } from '@/test/warnings'
 import { argTypes, defaultArgs } from './InputFile.settings'
-import { ariaLabelTest } from './InputFile.test'
+import { ariaLabelTest, invalidCaptureTest } from './InputFile.test'
 
 const meta: Meta = {
     title: 'Components/InputFile',
@@ -95,6 +96,21 @@ export const Progress: Story = {
         progress: 30,
         hintLabel: '30%',
     },
+}
+
+/**
+ * `capture` names a camera, `user` or `environment`: the validator warns on
+ * any other value.
+ */
+export const InvalidCapture: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        // @ts-expect-error not a camera
+        capture: 'front',
+    },
+    beforeEach: recordWarnings,
+    play: invalidCaptureTest,
 }
 
 /**

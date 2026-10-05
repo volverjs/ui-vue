@@ -4,6 +4,7 @@ import { userEvent, within } from 'storybook/test'
 import { INPUT_TYPES } from '@/components/VvInputText'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
+import { invalidPropWarnings } from '@/test/warnings'
 
 function valueByType(type: InputType, mask?: string, id?: string) {
     if (mask) {
@@ -309,4 +310,13 @@ export async function emptyLimitsTest({ canvasElement }: PlayAttributes) {
     await expect(input).toBeClicked()
     await expect(input.hasAttribute('min')).toBe(false)
     await expect(input).toHaveProperty('max', '9999-12-31')
+}
+
+export async function invalidIconPositionTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+
+    // the validator refuses a value that is not a position
+    expect(invalidPropWarnings('iconPosition')).not.toHaveLength(0)
+    // and neither `before` nor `after` places the icon
+    expect(element.getElementsByClassName('vv-input-text__icon')).toHaveLength(0)
 }
