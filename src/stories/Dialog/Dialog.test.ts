@@ -139,3 +139,23 @@ export async function closedByBrowserTest({ canvasElement }: PlayAttributes) {
     // check accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function reopenOnCloseTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element') as HTMLDialogElement
+    const model = within(canvasElement).getByTestId('model')
+    const events = within(canvasElement).getByTestId('events')
+    await waitFor(() => expect(element).toHaveProperty('open', true))
+
+    // the close button closes the dialog, and the listener of `close` opens it
+    // again
+    await userEvent.click(within(element).getByRole('button', { name: 'Close' }))
+    await waitFor(() => expect(events).toHaveTextContent(/^open close open$/))
+
+    // the native `close` of the first close comes after the reopen, and leaves
+    // the dialog open
+    await sleep(500)
+    await expect(events).toHaveTextContent(/^open close open$/)
+    await expect(element).toHaveProperty('open', true)
+    await expect(element.matches(':modal')).toBe(true)
+    await expect(model).toHaveTextContent('true')
+}
