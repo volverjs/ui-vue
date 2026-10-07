@@ -291,8 +291,10 @@ default; `success`/`warning`/`danger` pick their icon from the modifier.
 ```
 
 `VvDialog` is a native `<dialog>` opened with `showModal()`: `Esc` and click outside close it unless
-`keepOpen`; it emits `open`, `close` and the transition hooks, and a dialog mounted with its model
-already `true` opens too. The `title` names the dialog. The `header` slot replaces title and close
+`keepOpen`. The browser holds `Esc` back only once per user interaction, so a second `Esc` in a row
+closes a `keepOpen` dialog anyway; the model follows any close, the browser's included. It emits
+`open`, `close` and the transition hooks, and a dialog mounted with its model already `true` opens
+too. The `title` names the dialog. The `header` slot replaces title and close
 button together, and with them the name: give the dialog an `aria-labelledby` or an `aria-label`
 then. `VvCard` puts the default slot straight into the article; `content` and
 `footer` add the wrapped sections.

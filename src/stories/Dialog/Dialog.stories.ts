@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvDialog from '@/components/VvDialog/VvDialog.vue'
 import { argTypes, defaultArgs } from './Dialog.settings'
-import { defaultTest, openOnMountTest } from './Dialog.test'
+import { closedByBrowserTest, defaultTest, openOnMountTest, reopenOnCloseTest } from './Dialog.test'
 
 const meta: Meta<typeof VvDialog> = {
     title: 'Components/Dialog',
@@ -78,4 +78,76 @@ export const OpenOnMount: Story = {
 		`,
     }),
     play: openOnMountTest,
+}
+
+/**
+ * A `keepOpen` dialog that the browser closes anyway, as on a second `Esc` in
+ * a row, opened again by a button that sets the model to `true`.
+ */
+export const KeepOpenClosedByBrowser: Story = {
+    args: {
+        ...defaultArgs,
+        keepOpen: true,
+    },
+    render: args => ({
+        components: { VvDialog },
+        setup() {
+            return { args }
+        },
+        data: () => ({ open: false, events: [] as string[] }),
+        template: /* html */ `
+			<vv-dialog
+				v-bind="args"
+				v-model="open"
+				data-testId="element"
+				@close="events.push('close')"
+			>
+				<div v-html="args.default"></div>
+			</vv-dialog>
+			<button class="vv-button" @click="open = true" data-testId="button">Open</button>
+			<div>Model: <span data-testId="model">{{ open }}</span></div>
+			<div>Events: <span data-testId="events">{{ events.join(' ') }}</span></div>
+		`,
+    }),
+    play: closedByBrowserTest,
+}
+
+/**
+ * A dialog opened again by a listener of its `close` event, as a wizard that
+ * moves to its next step.
+ */
+export const ReopenOnClose: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDialog },
+        setup() {
+            return { args }
+        },
+        data: () => ({ open: true, step: 1, events: [] as string[] }),
+        methods: {
+            onClose() {
+                this.events.push('close')
+                if (this.step === 1) {
+                    this.step = 2
+                    this.open = true
+                }
+            },
+        },
+        template: /* html */ `
+			<vv-dialog
+				v-bind="args"
+				v-model="open"
+				data-testId="element"
+				@open="events.push('open')"
+				@close="onClose"
+			>
+				<div>Step {{ step }}</div>
+			</vv-dialog>
+			<div>Model: <span data-testId="model">{{ open }}</span></div>
+			<div>Events: <span data-testId="events">{{ events.join(' ') }}</span></div>
+		`,
+    }),
+    play: reopenOnCloseTest,
 }
