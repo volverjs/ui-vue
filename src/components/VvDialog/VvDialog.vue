@@ -123,6 +123,14 @@ function onCancel() {
         close()
     }
 }
+
+// the browser can still close a `keepOpen` dialog: a second `Esc`, `dialog.close()`,
+// <form method="dialog">` will close it, and the model updates accordingly.
+function onClose() {
+    if (isOpened.value) {
+        close()
+    }
+}
 </script>
 
 <script lang="ts">
@@ -140,6 +148,7 @@ export default {
             :aria-labelledby="title && !$slots.header ? hasTitleId : undefined"
             :class="bemCssClasses"
             @cancel.stop.prevent="onCancel"
+            @close="onClose"
         >
             <article ref="modalWrapper" class="vv-dialog__wrapper">
                 <header v-if="$slots.header || title" class="vv-dialog__header">
