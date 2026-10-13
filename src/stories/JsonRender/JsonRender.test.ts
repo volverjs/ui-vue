@@ -144,3 +144,26 @@ export async function groupItemModifiersTest(
     // accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function feedbackBlocksTest(
+    { canvasElement }: PlayAttributes,
+    spec: Spec,
+) {
+    const element = await within(canvasElement).findByTestId('element')
+    const [empty] = element.getElementsByClassName('vv-empty')
+    const [actions] = empty.getElementsByClassName('vv-empty__actions')
+
+    expect(catalog.validate(spec).success).toBe(true)
+
+    // the children of an Empty are its actions
+    await expect(empty).toHaveClass('vv-empty--compact')
+    expect(within(actions as HTMLElement).getByRole('button', { name: 'New message' })).toBeDefined()
+
+    // a labelled separator, a combination of keys and a named spinner
+    expect(element.getElementsByClassName('vv-separator__label')[0]?.textContent?.trim()).toBe('or')
+    expect(element.getElementsByClassName('vv-kbd-group')[0]?.textContent).toBe('Ctrl+K')
+    await expect(within(element).getByRole('status', { name: 'Loading the messages' })).toHaveClass('vv-spinner')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}

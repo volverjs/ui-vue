@@ -1,6 +1,6 @@
 # Vue components for the new blocks of @volverjs/style
 
-> **Status**: Partial (phase 0 implemented: the bump to 0.1.31, `itemModifiers` on the groups, the stories of the new modifiers)
+> **Status**: Partial (phase 0 and wave 1 implemented: the bump to 0.1.31, `itemModifiers` on the groups, the stories of the new modifiers, `VvSpinner`, `VvSeparator`, `VvEmpty`, `VvSkeleton`, `VvKbd`, `VvMarker`)
 > **Date**: 2026-10-13
 > **Scope**: The counterparts in this library of the blocks `@volverjs/style` added in 0.1.30 and 0.1.31, plus `vv-skeleton` and `vv-table`, which were already there, and the changes the two releases ask of the components that exist: the behaviour, the ARIA and the props that each block leaves to a script.
 > **Related specs**: [`floating-elements.md`](./floating-elements.md) (the top layer, which `VvPopover` builds on), [`published-api-follow-ups.md`](./published-api-follow-ups.md) (the roles of `VvNav`, which `VvSidebar` holds)
@@ -72,12 +72,12 @@ The definition of done of `AGENTS.md`, and:
 
 | Component | Block | Props and slots | What the component adds |
 | --- | --- | --- | --- |
-| `VvSpinner` | `vv-spinner` | `label` | `role="status"` named by `label` when it stands alone, `aria-hidden="true"` when a visible text sits next to it |
-| `VvSeparator` | `vv-separator` | `label`, default slot, `vertical` | `<hr>` without a label, `role="separator"` on a `div` with one (an `hr` holds no content), `aria-orientation` when vertical |
-| `VvEmpty` | `vv-empty` | `title`, `description`, `icon`, `titleTag`; slots `media`, `title`, `description`, `actions` | the structure, and the `compact` and `bordered` modifiers |
-| `VvSkeleton` | `vv-skeleton` | `items` (number of bars), `label` | the bars, and a busy region named for assistive technology |
+| `VvSpinner` | `vv-spinner` | `label`, `decorative` | `role="status"` named by `label` when it stands alone, `aria-hidden="true"` with `decorative`, when a visible text sits next to it |
+| `VvSeparator` | `vv-separator` | `label`, default slot, `vertical` | `<hr>` without a label, `role="separator"` with `aria-orientation` when vertical; with a label, no separator role, since the children of a separator are presentational and the label would not be read |
+| `VvEmpty` | `vv-empty` | `title`, `description`, `icon`, `titleTag` (a paragraph by default); slots `media`, `title`, `description`, and the default slot as the actions | the structure, each part drawn only when given |
+| `VvSkeleton` | `vv-skeleton` | `loading`, `items`, `itemClass`, `label`; slots `skeleton` and default (the content) | the bars in place of the content it wraps, as `PkSkeleton` does, and a `role="status"` named by `label` while loading |
 | `VvKbd` | `vv-kbd`, `vv-kbd-group` | `keys` (a string or an array), `separator` | one `kbd` per key, the group when there is more than one |
-| `VvMarker` | `vv-marker` | `icon`, default slot, `bordered` | the structure (it belongs to the conversation family, but has no behaviour) |
+| `VvMarker` | `vv-marker` | `label`, `icon`, default slot; the `bordered` modifier | the structure (it belongs to the conversation family, but has no behaviour) |
 
 `VvButton` keeps its `loadingIcon`. Drawing its loading state with `VvSpinner` changes how every loading button looks, so it is an open decision rather than part of this wave.
 
@@ -137,6 +137,7 @@ Led by the move of the 8bot chat, widget included.
 - A component only where it adds behaviour, ARIA, structure or a catalog entry: `vv-prose`, `vv-text`, `vv-attachment-group` stay classes, and `vv-kbd-group` is drawn by `VvKbd`.
 - `VvTable` is a small data table, not a bare wrapper.
 - `itemModifiers` on the groups rather than deriving `segment` from `segmented`.
+- Wave 1 in the json-render catalog: `Spinner`, `Separator`, `Empty` and `Kbd`. `VvSkeleton` stays out, since a generated interface has no loading state of its own, and so does `VvMarker`, which belongs to a conversation.
 - Phase 0 and wave 1 ship in 0.0.25, then one release per wave.
 
 ### Open decisions

@@ -244,6 +244,69 @@ export const TooltipDefinition = {
         'Floating tooltip. Wraps any content via default slot and shows the tooltip on hover.',
 }
 
+export const SpinnerDefinition = {
+    props: z.object({
+        label: z
+            .string()
+            .nullish()
+            .describe('Accessible name announced while it turns (default: Loading)'),
+        decorative: z
+            .boolean()
+            .nullish()
+            .describe('Hide it from assistive technologies when a visible text next to it already says what is happening'),
+        modifiers,
+    }),
+    description:
+        'Ring that turns while something is loading. It takes the size and the color of the text around it.',
+}
+
+export const SeparatorDefinition = {
+    props: z.object({
+        label: z
+            .string()
+            .nullish()
+            .describe('Text on the line, such as "or" or a date'),
+        vertical: z
+            .boolean()
+            .nullish()
+            .describe('Stand the line up between two items of a row'),
+        modifiers,
+    }),
+    description:
+        'Hairline between two groups of content, with an optional label on it.',
+}
+
+export const EmptyDefinition = {
+    props: z.object({
+        title: z.string().nullish().describe('What is missing: "No messages yet"'),
+        description: z.string().nullish(),
+        icon: z.string().nullish().describe('Icon name, such as "search" or "email"'),
+        titleTag: z
+            .enum(['p', 'h2', 'h3', 'h4'])
+            .nullish()
+            .describe('A heading when it stands for a whole page or section (default: p)'),
+        modifiers,
+    }),
+    slots: ['default'],
+    description:
+        'What a list, a table or a page shows in place of its content: an icon, a title, a description, and its children (Buttons) as the way out. modifiers: compact inside a list, a table or a card; bordered for an area waiting to be filled.',
+}
+
+export const KbdDefinition = {
+    props: z.object({
+        keys: z
+            .union([z.string(), z.array(z.string())])
+            .describe('The key, or the keys of a combination: ["Ctrl", "K"]'),
+        separator: z
+            .string()
+            .nullish()
+            .describe('What joins the keys of a combination (default: +), empty for none'),
+        modifiers,
+    }),
+    description:
+        'A key of the keyboard, or a combination of keys, to name a shortcut inside a text.',
+}
+
 // ---------------------------------------------------------------------------
 // Action components
 // ---------------------------------------------------------------------------
@@ -480,6 +543,10 @@ export const volverComponentDefinitions = {
     Progress: ProgressDefinition,
     Icon: IconDefinition,
     Tooltip: TooltipDefinition,
+    Spinner: SpinnerDefinition,
+    Separator: SeparatorDefinition,
+    Empty: EmptyDefinition,
+    Kbd: KbdDefinition,
     // Actions
     Button: ButtonDefinition,
     ButtonGroup: ButtonGroupDefinition,

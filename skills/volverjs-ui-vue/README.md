@@ -12,7 +12,7 @@ npx skills add volverjs/ui-vue
 
 The library has specific prop names (`floating`, `showClearAction`, an `iconPosition` that takes `before`/`after` on a field and `left`/`right` on a button, a required `name` on every field) and Vue does not warn when a prop is misspelled, so a guessed name fails silently. The skill fixes that in two ways:
 
-- **Verified reference in `SKILL.md`**: the 35 components, the shared props with their exact names, the BEM modifiers that `@volverjs/style` actually declares, the bundled icon set, the group/options/dropdown/tab/alert patterns, plugin and resolver setup, composables, json-render. Every snippet is checked against the library source.
+- **Verified reference in `SKILL.md`**: the 41 components, the shared props with their exact names, the BEM modifiers that `@volverjs/style` actually declares, the bundled icon set, the group/options/dropdown/tab/alert patterns, plugin and resolver setup, composables, json-render. Every snippet is checked against the library source.
 - **Scripts that read the installed package** instead of relying on memory:
   - `scripts/inspect-component.sh VvCombobox` prints props with JSDoc, events, slots with their scope and the stories that show real usage.
   - `scripts/list-modifiers.sh vv-button` prints the modifiers defined by the installed `@volverjs/style`.

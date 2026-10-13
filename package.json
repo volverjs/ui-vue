@@ -93,6 +93,21 @@
       "import": "./dist/components/VvTab/VvTab.es.js",
       "default": "./dist/components/VvTab/VvTab.umd.js"
     },
+    "./vv-spinner": {
+      "types": "./dist/components/VvSpinner/VvSpinner.vue.d.ts",
+      "import": "./dist/components/VvSpinner/VvSpinner.es.js",
+      "default": "./dist/components/VvSpinner/VvSpinner.umd.js"
+    },
+    "./vv-skeleton": {
+      "types": "./dist/components/VvSkeleton/VvSkeleton.vue.d.ts",
+      "import": "./dist/components/VvSkeleton/VvSkeleton.es.js",
+      "default": "./dist/components/VvSkeleton/VvSkeleton.umd.js"
+    },
+    "./vv-separator": {
+      "types": "./dist/components/VvSeparator/VvSeparator.vue.d.ts",
+      "import": "./dist/components/VvSeparator/VvSeparator.es.js",
+      "default": "./dist/components/VvSeparator/VvSeparator.umd.js"
+    },
     "./vv-select": {
       "types": "./dist/components/VvSelect/VvSelect.vue.d.ts",
       "import": "./dist/components/VvSelect/VvSelect.es.js",
@@ -128,6 +143,16 @@
       "import": "./dist/components/VvNav/VvNav.es.js",
       "default": "./dist/components/VvNav/VvNav.umd.js"
     },
+    "./vv-marker": {
+      "types": "./dist/components/VvMarker/VvMarker.vue.d.ts",
+      "import": "./dist/components/VvMarker/VvMarker.es.js",
+      "default": "./dist/components/VvMarker/VvMarker.umd.js"
+    },
+    "./vv-kbd": {
+      "types": "./dist/components/VvKbd/VvKbd.vue.d.ts",
+      "import": "./dist/components/VvKbd/VvKbd.es.js",
+      "default": "./dist/components/VvKbd/VvKbd.umd.js"
+    },
     "./vv-input-text": {
       "types": "./dist/components/VvInputText/VvInputText.vue.d.ts",
       "import": "./dist/components/VvInputText/VvInputText.es.js",
@@ -147,6 +172,11 @@
       "types": "./dist/components/VvIcon/VvIcon.vue.d.ts",
       "import": "./dist/components/VvIcon/VvIcon.es.js",
       "default": "./dist/components/VvIcon/VvIcon.umd.js"
+    },
+    "./vv-empty": {
+      "types": "./dist/components/VvEmpty/VvEmpty.vue.d.ts",
+      "import": "./dist/components/VvEmpty/VvEmpty.es.js",
+      "default": "./dist/components/VvEmpty/VvEmpty.umd.js"
     },
     "./vv-dropdown-option": {
       "types": "./dist/components/VvDropdown/VvDropdownOption.vue.d.ts",
@@ -299,6 +329,15 @@
       "vv-tab": [
         "dist/components/VvTab/VvTab.vue.d.ts"
       ],
+      "vv-spinner": [
+        "dist/components/VvSpinner/VvSpinner.vue.d.ts"
+      ],
+      "vv-skeleton": [
+        "dist/components/VvSkeleton/VvSkeleton.vue.d.ts"
+      ],
+      "vv-separator": [
+        "dist/components/VvSeparator/VvSeparator.vue.d.ts"
+      ],
       "vv-select": [
         "dist/components/VvSelect/VvSelect.vue.d.ts"
       ],
@@ -320,6 +359,12 @@
       "vv-nav": [
         "dist/components/VvNav/VvNav.vue.d.ts"
       ],
+      "vv-marker": [
+        "dist/components/VvMarker/VvMarker.vue.d.ts"
+      ],
+      "vv-kbd": [
+        "dist/components/VvKbd/VvKbd.vue.d.ts"
+      ],
       "vv-input-text": [
         "dist/components/VvInputText/VvInputText.vue.d.ts"
       ],
@@ -331,6 +376,9 @@
       ],
       "vv-icon": [
         "dist/components/VvIcon/VvIcon.vue.d.ts"
+      ],
+      "vv-empty": [
+        "dist/components/VvEmpty/VvEmpty.vue.d.ts"
       ],
       "vv-dropdown-option": [
         "dist/components/VvDropdown/VvDropdownOption.vue.d.ts"
@@ -423,7 +471,7 @@
   "peerDependencies": {
     "@json-render/core": ">=0.19.0",
     "@json-render/vue": ">=0.19.0",
-    "@volverjs/style": ">=0.1.28",
+    "@volverjs/style": ">=0.1.30",
     "@vueuse/core": ">=14",
     "vue": ">=3",
     "zod": ">=4"

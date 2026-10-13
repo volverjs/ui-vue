@@ -1,7 +1,7 @@
 ---
 name: volverjs-ui-vue
 description: |
-  Build Vue 3 interfaces with @volverjs/ui-vue, the component library of the Volver design system (paired with @volverjs/style for CSS). Covers the 35 Vv components with their real prop, slot and event names, shared props, BEM modifiers, group components, options mapping, icons, plugin setup, auto-import resolver, composables and the json-render catalog for AI-generated UI.
+  Build Vue 3 interfaces with @volverjs/ui-vue, the component library of the Volver design system (paired with @volverjs/style for CSS). Covers the 41 Vv components with their real prop, slot and event names, shared props, BEM modifiers, group components, options mapping, icons, plugin setup, auto-import resolver, composables and the json-render catalog for AI-generated UI.
   Use this skill whenever a project depends on @volverjs/ui-vue or renders Vv-prefixed components (VvButton, VvInputText, VvCombobox, VvDialog, VvDropdown, VvAlert, VvTab, VvNav, VvCard, VvInputRange...), even when the user only says "form", "modal", "select", "dropdown menu", "tabs", "notifications" or "the design system" without naming the library. Also use it when contributing to the ui-vue library itself, when configuring VolverPlugin or VolverResolver, when writing useAlert/useDropdownContextmenu code, and when generating UI from JSON with the Volver catalog.
 ---
 
@@ -40,7 +40,7 @@ sh scripts/list-modifiers.sh vv-button                 # valid modifiers, from @
 Run the inspect script for every component you are about to use for the first time in a session. It
 is cheaper than debugging a silent prop mismatch.
 
-## 2. Component catalog (35 components)
+## 2. Component catalog (41 components)
 
 **Form controls**: `VvInputText` (types text, password, number, email, tel, url, color, search, date,
 time, datetime-local, month, week; iMask masking, suggestions, step actions, password toggle, clear
@@ -57,7 +57,13 @@ select, optgroups, `multiple`), `VvCombobox` (dropdown select: `searchable`, `mu
 **Display**: `VvCard` (`title`, slots header/default/content/footer), `VvBadge` (`value`), `VvAvatar`
 (`imgSrc`), `VvAvatarGroup` (`items`, `toShow`, `totalItems`), `VvProgress` (`value`, `max`,
 required `label`), `VvIcon` (`name`, `prefix`, `provider`), `VvAlert`, `VvAlertGroup`, `VvTooltip`
-(CSS-only, `value` + `position`).
+(CSS-only, `value` + `position`), `VvKbd` (`keys`, a string or an array, `separator`), `VvSeparator`
+(`label`, `vertical`), `VvMarker` (`label`, `icon`, a note inside a conversation).
+
+**Feedback**: `VvSpinner` (`label`, announced as a status; `decorative` next to a visible text),
+`VvSkeleton` (`loading`, `items`, `itemClass`; it wraps the content it stands for, shown once
+`loading` is false), `VvEmpty` (`title`, `description`, `icon`, `titleTag`; the default slot is
+its actions).
 
 **Navigation**: `VvNav` (`items: NavItem[]`), `VvNavItem`, `VvNavSeparator`, `VvBreadcrumb`
 (`routes: NavItem[]`), `VvTab` (`items: NavItemTab[]`, `panel::<tab>` slots, `lazy`).
@@ -107,6 +113,8 @@ Declared by `@volverjs/style` 0.1.31 (regenerate with `scripts/list-modifiers.sh
 | vv-avatar | `rounded` `square` `bordered` `ring` `md` `lg` `transparent` `surface` `gray` `danger` `success` `warning` `info` `accent` |
 | vv-avatar-group | `tight` `relaxed` |
 | vv-card | `glass` |
+| vv-empty | `compact` `bordered` |
+| vv-marker | `bordered` |
 | vv-dialog | `small` `fullscreen` `drawer` `drawer-start` `drawer-top` `drawer-bottom` |
 | vv-dropdown | `rounded` `block` `full-bleed` `dialog` `mobile` |
 | vv-accordion | `bordered` `square` `marker-right` |
@@ -119,6 +127,7 @@ Declared by `@volverjs/style` 0.1.31 (regenerate with `scripts/list-modifiers.sh
 | vv-nav | `sidebar` `aside` `tabs` `full` |
 | vv-tooltip | `visible` `top` `bottom` `left` |
 | vv-breadcrumb | `multiline` |
+| vv-separator | `vertical`, set by the `vertical` prop |
 
 Default button (no modifier) is the brand color. There is no `large`/`small` on buttons: sizing comes
 from utility classes of `@volverjs/style` (see the `volverjs-style` skill when available).
@@ -380,7 +389,7 @@ Directives: `v-tooltip="'text'"` and `v-tooltip:top="'text'"` (argument is the `
 
 ## 9. Generative UI (json-render)
 
-`@volverjs/ui-vue/json-render` exports `catalog` (27 Zod-validated component definitions),
+`@volverjs/ui-vue/json-render` exports `catalog` (31 Zod-validated component definitions),
 `registry` (mapping to the real components), plus `volverComponentDefinitions` and
 `volverComponents` to build a subset. Peer dependencies: `@json-render/core`, `@json-render/vue`,
 `zod`. Form components support `$bindState` for two-way binding.
@@ -390,7 +399,9 @@ object next to `children`. The catalog declares `summary` on `Accordion`, `heade
 `Card`, and `footer` on `Dialog` and `Alert`. The registry passes on only those, and only when they
 list an element that exists. A `Button` that shows an icon and no label needs `ariaLabel`, since
 that is its only accessible name, and so does every form field without a `label`, and a `Dialog`
-without a `title`. A `Dialog` with no `$bindState` opens as soon as the spec renders.
+without a `title`. A `Dialog` with no `$bindState` opens as soon as the spec renders. The children
+of an `Empty` are its actions, drawn under the description; `Spinner`, `Separator` and `Kbd` take
+none.
 
 ```ts
 import { catalog, registry } from '@volverjs/ui-vue/json-render'

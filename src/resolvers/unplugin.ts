@@ -70,6 +70,9 @@ export function getStyleNames(kebabName: string) {
     if (kebabName === 'vv-alert-group') {
         return ['vv-alert', 'vv-alert-group']
     }
+    if (kebabName === 'vv-kbd') {
+        return ['vv-kbd', 'vv-kbd-group']
+    }
     if (kebabName === 'v-tooltip') {
         return ['vv-tooltip']
     }

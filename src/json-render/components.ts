@@ -16,15 +16,19 @@ import VvCheckbox from '../components/VvCheckbox/VvCheckbox.vue'
 import VvCheckboxGroup from '../components/VvCheckboxGroup/VvCheckboxGroup.vue'
 import VvCombobox from '../components/VvCombobox/VvCombobox.vue'
 import VvDialog from '../components/VvDialog/VvDialog.vue'
+import VvEmpty from '../components/VvEmpty/VvEmpty.vue'
 import VvIcon from '../components/VvIcon/VvIcon.vue'
 import VvInputFile from '../components/VvInputFile/VvInputFile.vue'
 import VvInputRange from '../components/VvInputRange/VvInputRange.vue'
 import VvInputText from '../components/VvInputText/VvInputText.vue'
+import VvKbd from '../components/VvKbd/VvKbd.vue'
 import VvNav from '../components/VvNav/VvNav.vue'
 import VvProgress from '../components/VvProgress/VvProgress.vue'
 import VvRadio from '../components/VvRadio/VvRadio.vue'
 import VvRadioGroup from '../components/VvRadioGroup/VvRadioGroup.vue'
 import VvSelect from '../components/VvSelect/VvSelect.vue'
+import VvSeparator from '../components/VvSeparator/VvSeparator.vue'
+import VvSpinner from '../components/VvSpinner/VvSpinner.vue'
 import VvTab from '../components/VvTab/VvTab.vue'
 import VvTextarea from '../components/VvTextarea/VvTextarea.vue'
 import VvTooltip from '../components/VvTooltip/VvTooltip.vue'
@@ -199,6 +203,22 @@ export function TooltipComponent({ props, children }: BaseComponentProps) {
     return render(VvTooltip, props, ['value', 'position', 'modifiers'], undefined, children)
 }
 
+export function SpinnerComponent({ props }: BaseComponentProps) {
+    return render(VvSpinner, props, ['label', 'decorative', 'modifiers'])
+}
+
+export function SeparatorComponent({ props }: BaseComponentProps) {
+    return render(VvSeparator, props, ['label', 'vertical', 'modifiers'])
+}
+
+export function EmptyComponent({ props, children }: BaseComponentProps) {
+    return render(VvEmpty, props, ['title', 'description', 'icon', 'titleTag', 'modifiers'], undefined, children)
+}
+
+export function KbdComponent({ props }: BaseComponentProps) {
+    return render(VvKbd, props, ['keys', 'separator', 'modifiers'])
+}
+
 // ---------------------------------------------------------------------------
 // Action components
 // ---------------------------------------------------------------------------
@@ -366,6 +386,10 @@ export const volverComponents = {
     Progress: ProgressComponent,
     Icon: IconComponent,
     Tooltip: TooltipComponent,
+    Spinner: SpinnerComponent,
+    Separator: SeparatorComponent,
+    Empty: EmptyComponent,
+    Kbd: KbdComponent,
     // Actions
     Button: ButtonComponent,
     ButtonGroup: ButtonGroupComponent,

@@ -10,6 +10,7 @@ import { registry } from '@/json-render'
 import {
     buttonIconPositionTest,
     dialogWithoutTitleTest,
+    feedbackBlocksTest,
     fieldsWithoutLabelTest,
     groupItemModifiersTest,
     iconOnlyButtonTest,
@@ -311,4 +312,55 @@ const groupItemModifiersSpec: Spec = {
 export const GroupItemModifiers: Story = {
     render: renderSpec(groupItemModifiersSpec),
     play: context => groupItemModifiersTest(context, groupItemModifiersSpec),
+}
+
+// the blocks of @volverjs/style 0.1.30 the catalog offers
+const feedbackBlocksSpec: Spec = {
+    root: 'card',
+    elements: {
+        card: {
+            type: 'Card',
+            props: { title: 'Inbox' },
+            children: ['empty', 'separator', 'shortcut', 'spinner'],
+        },
+        empty: {
+            type: 'Empty',
+            props: {
+                title: 'No messages yet',
+                description: 'When someone writes to you, it shows up here.',
+                icon: 'email',
+                modifiers: 'compact',
+            },
+            children: ['compose'],
+        },
+        compose: {
+            type: 'Button',
+            props: { label: 'New message' },
+            children: [],
+        },
+        separator: {
+            type: 'Separator',
+            props: { label: 'or' },
+            children: [],
+        },
+        shortcut: {
+            type: 'Kbd',
+            props: { keys: ['Ctrl', 'K'] },
+            children: [],
+        },
+        spinner: {
+            type: 'Spinner',
+            props: { label: 'Loading the messages' },
+            children: [],
+        },
+    },
+}
+
+/**
+ * Empty, Separator, Kbd and Spinner: the children of an Empty are its way
+ * out, drawn under the description.
+ */
+export const FeedbackBlocks: Story = {
+    render: renderSpec(feedbackBlocksSpec),
+    play: context => feedbackBlocksTest(context, feedbackBlocksSpec),
 }
