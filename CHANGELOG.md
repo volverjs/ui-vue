@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.26]
+## [0.0.25]
 
 ### Added
 
@@ -11,14 +11,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Development dependencies updated within their majors, the patch and minor releases `ncu` offered: Storybook to 10.6.1, `vite` to 8.3.2, `vue-tsc` to 3.3.12, `eslint` to 10.12.0, `sass-embedded` to 1.105.1, `@types/node` to 26.6.4 and `baseline-browser-mapping` to 2.11.27. The peer dependency floors do not move. `unimport` 7, a major, is held back, and so is `pnpm` 12.9.1, the package manager CI runs, which was a day old.
 - `@volverjs/style` to 0.1.31 for development. 0.1.30 adds the blocks of [`docs/specs/new-style-blocks.md`](docs/specs/new-style-blocks.md), which plans their components here, and the `segment`, `card`, `segmented`, `cards` and `drawer-*` modifiers above. 0.1.31 animates the content of `VvAccordion`, which has no animation of its own to collide with, and fades in a `VvDialog` from `@starting-style` on `[open]`: the `enter-from` class of the Vue transition sets the same opacity on the same element, so the dialog still fades in once. The peer dependency floor does not move: on an older style the new modifiers draw nothing and break nothing.
 - `list-modifiers.sh` of the `volverjs-ui-vue` skill finds a modifier held in a variable, as `segment: $choice-segment`, and the modifiers of a map declared as another one, as `$vv-radio-group: $vv-checkbox-group`. It missed `segment` and `card` on `vv-radio` and `vv-checkbox`, and listed none for `vv-radio-group`. The modifier table of the skill is regenerated against 0.1.31.
-
-## [0.0.25]
-
-### Changed
-
-- Development dependencies updated within their majors, the patch and minor releases `ncu` offered: Storybook to 10.6.1, `vite` to 8.3.2, `vue-tsc` to 3.3.12, `eslint` to 10.12.0, `sass-embedded` to 1.105.1, `@volverjs/style` to 0.1.29, whose modifiers are the same as in 0.1.28, `@types/node` to 26.6.4 and `baseline-browser-mapping` to 2.11.27. The peer dependency floors do not move. `unimport` 7, a major, is held back, and so is `pnpm` 12.9.1, the package manager CI runs, which was a day old.
 
 ### Fixed
 

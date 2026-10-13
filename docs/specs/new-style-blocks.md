@@ -137,7 +137,7 @@ Led by the move of the 8bot chat, widget included.
 - A component only where it adds behaviour, ARIA, structure or a catalog entry: `vv-prose`, `vv-text`, `vv-attachment-group` stay classes, and `vv-kbd-group` is drawn by `VvKbd`.
 - `VvTable` is a small data table, not a bare wrapper.
 - `itemModifiers` on the groups rather than deriving `segment` from `segmented`.
-- One release per wave, starting after 0.0.25 has shipped as it is.
+- Phase 0 and wave 1 ship in 0.0.25, then one release per wave.
 
 ### Open decisions
 
@@ -157,9 +157,9 @@ Each item is one pull request from `develop`. Before it is done:
 
 | Phase | Items | Release | Exit criterion |
 | --- | --- | --- | --- |
-| 0 | the bump, `itemModifiers`, the stories of the new modifiers, the checks of 0.1.31 | 0.0.26 | `PkEditorRadioButtons` and `PkEditorCheckboxButtons` can pass `options` |
-| 1 | `VvSpinner`, `VvSeparator`, `VvEmpty`, `VvSkeleton`, `VvKbd`, `VvMarker` | 0.0.26 | 8bot deletes `PkLoader` and `PkTableEmpty` |
-| 2 | `VvItem` and `VvItemGroup`, `VvPagination`, `VvTable`, `VvField` | 0.0.27 | 8bot deletes `PkPagination`, `PkTableSortable` and its pick lists |
-| 3 | `VvPopover`, `VvSidebar`, `VvInputOtp` | 0.0.28 | the 8bot sidebar renders from `VvSidebar` |
+| 0 | the bump, `itemModifiers`, the stories of the new modifiers, the checks of 0.1.31 | 0.0.25 | `PkEditorRadioButtons` and `PkEditorCheckboxButtons` can pass `options` |
+| 1 | `VvSpinner`, `VvSeparator`, `VvEmpty`, `VvSkeleton`, `VvKbd`, `VvMarker` | 0.0.25 | 8bot deletes `PkLoader` and `PkTableEmpty` |
+| 2 | `VvItem` and `VvItemGroup`, `VvPagination`, `VvTable`, `VvField` | 0.0.26 | 8bot deletes `PkPagination`, `PkTableSortable` and its pick lists |
+| 3 | `VvPopover`, `VvSidebar`, `VvInputOtp` | 0.0.27 | the 8bot sidebar renders from `VvSidebar` |
 | 4 | the conversation family | on request from 8bot | the 8bot chat, widget included, renders from these components |
 | 5 | `VvCommand`, `VvCalendar` | on request | driven by demand |
