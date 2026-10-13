@@ -11,6 +11,7 @@ import {
     buttonIconPositionTest,
     dialogWithoutTitleTest,
     fieldsWithoutLabelTest,
+    groupItemModifiersTest,
     iconOnlyButtonTest,
     namedSlotsTest,
 } from './JsonRender.test'
@@ -261,4 +262,53 @@ export const DialogWithoutTitle: Story = {
         },
     }),
     play: dialogWithoutTitleTest,
+}
+
+// a segmented control and a row of choice cards, drawn from `options`
+const groupItemModifiersSpec: Spec = {
+    root: 'card',
+    elements: {
+        card: {
+            type: 'Card',
+            props: { title: 'Preferences' },
+            children: ['view', 'channels'],
+        },
+        view: {
+            type: 'RadioGroup',
+            props: {
+                name: 'view',
+                label: 'View',
+                modifiers: 'segmented',
+                itemModifiers: 'segment',
+                options: [
+                    { label: 'Day', value: 'day' },
+                    { label: 'Week', value: 'week' },
+                ],
+            },
+            children: [],
+        },
+        channels: {
+            type: 'CheckboxGroup',
+            props: {
+                name: 'channels',
+                label: 'Channels',
+                modifiers: 'cards',
+                itemModifiers: 'card',
+                options: [
+                    { label: 'Email', value: 'email' },
+                    { label: 'SMS', value: 'sms' },
+                ],
+            },
+            children: [],
+        },
+    },
+}
+
+/**
+ * A segmented radio group and checkbox cards: the catalog takes
+ * `itemModifiers` on the groups, and the registry hands it to the options.
+ */
+export const GroupItemModifiers: Story = {
+    render: renderSpec(groupItemModifiersSpec),
+    play: context => groupItemModifiersTest(context, groupItemModifiersSpec),
 }

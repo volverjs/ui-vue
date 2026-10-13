@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { getOptionValue } from '@/test/options'
 import { sleep } from '@/test/sleep'
@@ -73,6 +73,53 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     if (args.hintLabel) {
         await expect(hint.innerHTML).toEqual(args.hintLabel)
     }
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function segmentedTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const options = [...element.getElementsByClassName('vv-checkbox')]
+    const inputs = within(element).getAllByRole('checkbox') as HTMLInputElement[]
+
+    // the track on the group, the tile on every option drawn from `options`
+    await expect(element).toHaveClass('vv-checkbox-group--segmented')
+    await expect(options).toHaveLength(3)
+    for (const option of options) {
+        await expect(option).toHaveClass('vv-checkbox--segment')
+    }
+
+    // the input is not painted, but it is still the control: the space bar
+    // turns an option on, and more than one can be on
+    inputs[1].focus()
+    await userEvent.keyboard(' ')
+    await expect(inputs[1].checked).toBe(true)
+    await expect(inputs[0].checked).toBe(true)
+    await waitFor(() => expect(value.textContent).toBe('bold,italic'))
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function cardsTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const options = [...element.getElementsByClassName('vv-checkbox')] as HTMLElement[]
+
+    // the row on the group, the tile on every option
+    await expect(element).toHaveClass('vv-checkbox-group--cards')
+    await expect(options).toHaveLength(3)
+    for (const option of options) {
+        await expect(option).toHaveClass('vv-checkbox--card')
+    }
+
+    // the whole tile is the label of its checkbox: a click on the
+    // description turns it on
+    await userEvent.click(within(options[1]).getByText(/^A text message/))
+    await expect(within(options[1]).getByRole<HTMLInputElement>('checkbox').checked).toBe(true)
+    await waitFor(() => expect(value.textContent).toBe('email,sms'))
 
     // check accessibility
     await expect(element).toHaveNoViolations()

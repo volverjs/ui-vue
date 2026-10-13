@@ -27,6 +27,7 @@ const {
     modelValue,
     indeterminate,
     isInGroup,
+    modifiers,
 } = useGroupProps(props, emit)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -104,7 +105,6 @@ const localModelValue = computed({
 })
 
 // styles
-const { modifiers } = toRefs(props)
 const bemCssClasses = useModifiers(
     'vv-checkbox',
     modifiers,

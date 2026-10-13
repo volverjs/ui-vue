@@ -168,7 +168,8 @@ Slots: `default` (replaces the whole inner content), `before`, `label`, `after`,
 ### Groups: the parent owns the state
 
 Children read `modelValue`, `disabled`, `readonly`, `valid`/`invalid` (inputs) or `toggle`,
-`multiple`, `modifiers` (buttons) from the group through provide/inject. Set those on the group, not
+`multiple` (buttons) from the group through provide/inject, and the modifiers the group's
+`itemModifiers` gives them. Set those on the group, not
 on the children. Groups need a `name`.
 
 ```vue
@@ -185,6 +186,20 @@ on the children. Groups need a `name`.
   <VvRadio name="plan" value="free" label="Free" />
   <VvRadio name="plan" value="pro" label="Pro" />
 </VvRadioGroup>
+
+<!-- a segmented control: the group draws the track, `itemModifiers` the options -->
+<VvRadioGroup v-model="view" name="view" modifiers="segmented" item-modifiers="segment"
+  :options="['Day', 'Week', 'Month']" />
+
+<!-- choice cards, a title over a description in the slot of each option -->
+<VvCheckboxGroup v-model="channels" name="channels" modifiers="cards" item-modifiers="card">
+  <VvCheckbox name="channels" value="email">
+    <strong class="block font-semibold">Email</strong> A summary every morning.
+  </VvCheckbox>
+  <VvCheckbox name="channels" value="sms">
+    <strong class="block font-semibold">SMS</strong> The urgent ones only.
+  </VvCheckbox>
+</VvCheckboxGroup>
 
 <VvAccordionGroup v-model="openSection">          <!-- one open at a time unless `collapse` -->
   <VvAccordion name="a" title="Shipping">...</VvAccordion>

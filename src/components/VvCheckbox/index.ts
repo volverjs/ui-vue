@@ -47,6 +47,11 @@ export function useGroupProps(
     const disabled = computed(() =>
         Boolean(props.disabled || group?.disabled.value),
     )
+    // merge local and group modifiers
+    const modifiers = useGroupModifiers(
+        () => props.modifiers,
+        () => group?.modifiers.value,
+    )
 
     return {
         // local props
@@ -61,5 +66,6 @@ export function useGroupProps(
         invalid,
         readonly,
         disabled,
+        modifiers,
     }
 }

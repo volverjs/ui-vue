@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { getOptionValue } from '@/test/options'
 import { sleep } from '@/test/sleep'
@@ -73,6 +73,52 @@ export async function defaultTest({ canvasElement, args }: PlayAttributes) {
     if (args.hintLabel) {
         await expect(hint.innerHTML).toEqual(args.hintLabel)
     }
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function segmentedTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const options = [...element.getElementsByClassName('vv-radio')]
+    const inputs = within(element).getAllByRole('radio') as HTMLInputElement[]
+
+    // the track on the group, the tile on every option drawn from `options`
+    await expect(element).toHaveClass('vv-radio-group--segmented')
+    await expect(options).toHaveLength(3)
+    for (const option of options) {
+        await expect(option).toHaveClass('vv-radio--segment')
+    }
+
+    // the input is not painted, but it is still the control: the arrow keys
+    // move the choice
+    inputs[0].focus()
+    await userEvent.keyboard('{ArrowRight}')
+    await expect(inputs[1].checked).toBe(true)
+    await waitFor(() => expect(value.textContent).toBe('week'))
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function cardsTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const options = [...element.getElementsByClassName('vv-radio')] as HTMLElement[]
+
+    // the row on the group, the tile on every option
+    await expect(element).toHaveClass('vv-radio-group--cards')
+    await expect(options).toHaveLength(3)
+    for (const option of options) {
+        await expect(option).toHaveClass('vv-radio--card')
+    }
+
+    // the whole tile is the label of its radio: a click on the description
+    // chooses it
+    await userEvent.click(within(options[1]).getByText(/^Unlimited agents/))
+    await expect(within(options[1]).getByRole<HTMLInputElement>('radio').checked).toBe(true)
+    await waitFor(() => expect(value.textContent).toBe('team'))
 
     // check accessibility
     await expect(element).toHaveNoViolations()

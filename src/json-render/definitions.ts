@@ -26,6 +26,12 @@ import { z } from 'zod'
 
 const modifiers = z.union([z.string(), z.array(z.string())]).nullish()
 
+/** The modifiers a group gives to each of its options. */
+const itemModifiers = z
+    .union([z.string(), z.array(z.string())])
+    .nullish()
+    .describe('Modifiers given to every option: segment with modifiers=segmented, card with modifiers=cards')
+
 /** Where a field draws its icon: VvInputText and the other inputs take `before`/`after`. */
 const iconPosition = z
     .enum(['before', 'after'])
@@ -395,10 +401,11 @@ export const CheckboxGroupDefinition = {
         ...formFieldProps,
         options: z.array(labelValueOption),
         vertical: z.boolean().nullish(),
+        itemModifiers,
     }),
     slots: ['default'],
     description:
-        'Group of checkbox inputs sharing a model. Pass options as {label, value} array. Use $bindState for two-way binding.',
+        'Group of checkbox inputs sharing a model. Pass options as {label, value} array. modifiers=segmented with itemModifiers=segment draws a segmented control where several options can be on, modifiers=cards with itemModifiers=card draws each option as a bordered tile. Use $bindState for two-way binding.',
 }
 
 export const RadioDefinition = {
@@ -419,10 +426,11 @@ export const RadioGroupDefinition = {
         ...formFieldProps,
         options: z.array(labelValueOption),
         vertical: z.boolean().nullish(),
+        itemModifiers,
     }),
     slots: ['default'],
     description:
-        'Group of radio buttons sharing a model. Pass options as {label, value} array. Use $bindState for two-way binding.',
+        'Group of radio buttons sharing a model. Pass options as {label, value} array. modifiers=segmented with itemModifiers=segment draws a segmented control for a few short named states, modifiers=cards with itemModifiers=card draws each option as a bordered tile. Use $bindState for two-way binding.',
 }
 
 export const ComboboxDefinition = {

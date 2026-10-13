@@ -17,7 +17,7 @@ const propsDefaults = useDefaults<typeof VvRadioProps>(
 )
 
 // data
-const { id, disabled, readonly, modelValue, valid, invalid }
+const { id, disabled, readonly, modelValue, valid, invalid, modifiers }
     = useGroupProps(props, emit)
 const hasId = useUniqueId(id)
 const hasHintId = computed(() => `${hasId.value}-hint`)
@@ -62,7 +62,6 @@ const localModelValue = computed({
 })
 
 // styles
-const { modifiers } = toRefs(props)
 const bemCssClasses = useModifiers(
     'vv-radio',
     modifiers,

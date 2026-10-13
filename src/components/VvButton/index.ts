@@ -82,25 +82,10 @@ export function useGroupProps(
     const unselectable = getGroupOrLocalRef('unselectable', props)
     const multiple = computed(() => group?.multiple.value ?? false)
     // merge local and group modifiers
-    const modifiers = computed(() => {
-        let localModifiers = props.modifiers
-        let groupModifiers = group?.modifiers.value
-
-        const toReturn = new Set<string>()
-        if (localModifiers) {
-            if (!Array.isArray(localModifiers)) {
-                localModifiers = localModifiers.split(' ')
-            }
-            localModifiers.forEach(modifier => toReturn.add(modifier))
-        }
-        if (groupModifiers) {
-            if (!Array.isArray(groupModifiers)) {
-                groupModifiers = groupModifiers.split(' ')
-            }
-            groupModifiers.forEach(modifier => toReturn.add(modifier))
-        }
-        return [...toReturn]
-    })
+    const modifiers = useGroupModifiers(
+        () => props.modifiers,
+        () => group?.modifiers.value,
+    )
     const disabled = computed(() =>
         Boolean(props.disabled || group?.disabled.value),
     )

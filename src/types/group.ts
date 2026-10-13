@@ -10,6 +10,7 @@ export type InputGroupState = {
     disabled: Ref<boolean>
     valid: Ref<boolean>
     invalid: Ref<boolean>
+    modifiers: Ref<string | string[] | undefined>
 }
 
 /**

@@ -609,6 +609,15 @@ export const CheckboxRadioGroupProps = {
         type: Boolean,
         default: false,
     },
+    /**
+     * String or String[] of css classes (modifiers) that will be provided to each option,
+     * the ones drawn from `options` included: `segment` with the `segmented` modifier
+     * of the group, `card` with `cards`
+     */
+    itemModifiers: {
+        type: [String, Array] as PropType<string | string[]>,
+        default: '',
+    },
 }
 
 export const ActionProps = {

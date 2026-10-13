@@ -297,7 +297,7 @@ export function CheckboxGroupComponent({ props, children, bindings }: BaseCompon
     return useRenderBound<unknown[]>(
         VvCheckboxGroup,
         props,
-        ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers'],
+        ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers', 'itemModifiers'],
         bindings,
         ariaLabelAttr(props),
         children,
@@ -317,7 +317,7 @@ export function RadioGroupComponent({ props, children, bindings }: BaseComponent
     return useRenderBound<string | number | boolean>(
         VvRadioGroup,
         props,
-        ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers'],
+        ['name', 'label', 'options', 'vertical', 'required', 'disabled', 'modifiers', 'itemModifiers'],
         bindings,
         ariaLabelAttr(props),
         children,

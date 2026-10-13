@@ -213,6 +213,7 @@ declare global {
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
   const useGamepad: typeof import('@vueuse/core').useGamepad
   const useGeolocation: typeof import('@vueuse/core').useGeolocation
+  const useGroupModifiers: typeof import('./src/composables/useModifiers').useGroupModifiers
   const useGroupStateInject: typeof import('./src/composables/group/useGroupStateInject').useGroupStateInject
   const useGroupStateProvide: typeof import('./src/composables/group/useGroupStateProvide').useGroupStateProvide
   const useId: typeof import('vue').useId

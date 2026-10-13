@@ -119,3 +119,28 @@ export async function dialogWithoutTitleTest({ canvasElement }: PlayAttributes) 
     // accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function groupItemModifiersTest(
+    { canvasElement }: PlayAttributes,
+    spec: Spec,
+) {
+    const element = await within(canvasElement).findByTestId('element')
+
+    // the catalog takes the modifiers a group gives to its options
+    expect(catalog.validate(spec).success).toBe(true)
+
+    // and the registry hands them on, to the options drawn from `options` too
+    const radios = [...element.getElementsByClassName('vv-radio')]
+    const checkboxes = [...element.getElementsByClassName('vv-checkbox')]
+    expect(radios).toHaveLength(2)
+    expect(checkboxes).toHaveLength(2)
+    for (const radio of radios) {
+        await expect(radio).toHaveClass('vv-radio--segment')
+    }
+    for (const checkbox of checkboxes) {
+        await expect(checkbox).toHaveClass('vv-checkbox--card')
+    }
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
