@@ -14,7 +14,15 @@ export const argTypes: ArgTypes = {
     title: { control: 'text' },
     transition: {
         control: 'radio',
-        options: ['fade-block', 'fade-inline', 'scale'],
+        options: [
+            'fade-block',
+            'fade-inline',
+            'scale',
+            'slide-inline-end',
+            'slide-inline-start',
+            'slide-block-start',
+            'slide-block-end',
+        ],
     },
     modifiers: {
         ...ModifiersArgTypes.modifiers,
@@ -22,6 +30,10 @@ export const argTypes: ArgTypes = {
             'standard',
             'small',
             'fullscreen',
+            'drawer',
+            'drawer-start',
+            'drawer-top',
+            'drawer-bottom',
         ],
     },
     size: {

@@ -46,10 +46,17 @@ for f in "$@"; do
     [ -f "$f" ] || continue
     found=1
     name="$(basename "$f" .scss | sed 's/^_//')"
+    # a map declared as another one, `$vv-radio-group: $vv-checkbox-group`,
+    # has the modifiers of that one
+    alias="$(sed -n 's/^\$vv-[a-z0-9-]*: \$\(vv-[a-z0-9-]*\) !default;$/\1/p' "$f")"
+    if [ -n "$alias" ] && [ -f "$SETTINGS/_$alias.scss" ]; then
+        f="$SETTINGS/_$alias.scss"
+    fi
+    # a modifier is a map, or a variable holding one: `segment: $choice-segment`
     keys="$(awk '
         /^\tmodifier: \(/ { f = 1; next }
         f && /^\t\)/ { f = 0 }
-        f && /^\t\t[a-z0-9-]+: \(/ { gsub(/[\t:(]/, "", $1); printf "%s ", $1 }
+        f && /^\t\t[a-z0-9-]+: [($]/ { gsub(/[\t:(]/, "", $1); printf "%s ", $1 }
     ' "$f")"
     echo "$name: ${keys:-(none)}"
 done

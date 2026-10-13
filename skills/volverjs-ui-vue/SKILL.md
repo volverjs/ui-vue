@@ -95,7 +95,7 @@ but only the modifiers declared by `@volverjs/style` do anything. Components als
 their own (`--disabled`, `--icon-only`, `--reverse`, `--floating`, `--valid`, `--invalid`,
 `--readonly`), so do not pass those by hand.
 
-Declared by `@volverjs/style` 0.1.26 (regenerate with `scripts/list-modifiers.sh` when the version changes):
+Declared by `@volverjs/style` 0.1.31 (regenerate with `scripts/list-modifiers.sh` when the version changes):
 
 | Component | Modifiers |
 |-----------|-----------|
@@ -107,11 +107,12 @@ Declared by `@volverjs/style` 0.1.26 (regenerate with `scripts/list-modifiers.sh
 | vv-avatar | `rounded` `square` `bordered` `ring` `md` `lg` `transparent` `surface` `gray` `danger` `success` `warning` `info` `accent` |
 | vv-avatar-group | `tight` `relaxed` |
 | vv-card | `glass` |
-| vv-dialog | `small` `fullscreen` |
+| vv-dialog | `small` `fullscreen` `drawer` `drawer-start` `drawer-top` `drawer-bottom` |
 | vv-dropdown | `rounded` `block` `full-bleed` `dialog` `mobile` |
 | vv-accordion | `bordered` `square` `marker-right` |
 | vv-accordion-group | `condensed` |
-| vv-checkbox-group | `horizontal` |
+| vv-checkbox, vv-radio | `segment` `card` (`switch` on the checkbox is set by its `switch` prop) |
+| vv-checkbox-group, vv-radio-group | `segmented` `cards` (`horizontal` is set by the component unless `vertical`) |
 | vv-input-file | `drop-area` `square` `circle` `hidden` `with-progress` |
 | vv-input-range | `valid` `invalid` `readonly`, all three set by the component |
 | vv-textarea | `resizable` |
@@ -296,8 +297,10 @@ closes a `keepOpen` dialog anyway; the model follows any close, the browser's in
 `open`, `close` and the transition hooks, and a dialog mounted with its model already `true` opens
 too. The `title` names the dialog. The `header` slot replaces title and close
 button together, and with them the name: give the dialog an `aria-labelledby` or an `aria-label`
-then. `VvCard` puts the default slot straight into the article; `content` and
-`footer` add the wrapped sections.
+then. A drawer is `modifiers="drawer"` (inline end), `drawer-start`, `drawer-top` or
+`drawer-bottom`, paired with the `transition` from its side: `slide-inline-end`,
+`slide-inline-start`, `slide-block-start`, `slide-block-end`. `VvCard` puts the default slot
+straight into the article; `content` and `footer` add the wrapped sections.
 
 ## 7. Setup
 

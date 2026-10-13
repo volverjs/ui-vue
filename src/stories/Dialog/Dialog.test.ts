@@ -43,6 +43,13 @@ export async function defaultTest(
         await expect(element).toHaveClass(`vv-dialog--${args.size}`)
     }
 
+    // modifiers
+    if (args.modifiers) {
+        for (const modifier of args.modifiers.split(' ')) {
+            await expect(element).toHaveClass(`vv-dialog--${modifier}`)
+        }
+    }
+
     // default slot
     if (args.default) {
         const defaultSlot = element.getElementsByClassName(
