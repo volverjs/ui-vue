@@ -1,6 +1,6 @@
 # Vue components for the new blocks of @volverjs/style
 
-> **Status**: Draft (not implemented)
+> **Status**: Partial (phase 0 implemented: the bump to 0.1.31, `itemModifiers` on the groups, the stories of the new modifiers)
 > **Date**: 2026-10-13
 > **Scope**: The counterparts in this library of the blocks `@volverjs/style` added in 0.1.30 and 0.1.31, plus `vv-skeleton` and `vv-table`, which were already there, and the changes the two releases ask of the components that exist: the behaviour, the ARIA and the props that each block leaves to a script.
 > **Related specs**: [`floating-elements.md`](./floating-elements.md) (the top layer, which `VvPopover` builds on), [`published-api-follow-ups.md`](./published-api-follow-ups.md) (the roles of `VvNav`, which `VvSidebar` holds)
