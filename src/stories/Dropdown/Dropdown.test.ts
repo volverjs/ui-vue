@@ -96,6 +96,30 @@ export async function topLayerExpandedOnMountTest({
     await expectAboveTheBar(canvasElement, getDropdown(wrapper))
 }
 
+export async function flipNearViewportBottomTest({
+    canvasElement,
+}: PlayAttributes) {
+    const wrapper = await within(canvasElement).findByTestId('wrapper')
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    const dropdown = getDropdown(wrapper) as HTMLElement
+
+    // let floating-ui place the collapsed dropdown first: measured 0px tall,
+    // "size" used to cap the next opening to the room left below the trigger
+    await sleep(200)
+    await expect(trigger).toBeClicked()
+    await sleep(200)
+
+    // the dropdown moves above the trigger and is not squashed
+    const dropdownRect = dropdown.getBoundingClientRect()
+    await expect(dropdownRect.bottom).toBeLessThanOrEqual(
+        trigger.getBoundingClientRect().top,
+    )
+    await expect(dropdown.scrollHeight).toBeLessThanOrEqual(
+        dropdown.clientHeight + 1,
+    )
+    await expect(dropdown).toHaveNoViolations()
+}
+
 export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const target = await canvas.findByTestId('target')

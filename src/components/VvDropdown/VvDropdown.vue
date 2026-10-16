@@ -146,6 +146,10 @@ const middleware = computed<Middleware[]>(() => {
             availableWidth: number
             availableHeight: number
         }) => {
+            // a collapsed dropdown measures 0, its size would cap the next opening
+            if (!expanded.value) {
+                return
+            }
             maxWidth.value = `${availableWidth}px`
             maxHeight.value = `${availableHeight}px`
         }
@@ -253,6 +257,14 @@ const expanded = computed({
         }
         modelValue.value = newValue
     },
+})
+// start every opening from the natural size, otherwise "flip" measures the
+// height capped by "size" and never moves the dropdown to the other side
+watch(expanded, (newValue) => {
+    if (newValue) {
+        maxWidth.value = 'auto'
+        maxHeight.value = 'auto'
+    }
 })
 // promote the dropdown after the DOM is updated and before the browser paints,
 // so it is never shown in place first. A post effect also covers a dropdown

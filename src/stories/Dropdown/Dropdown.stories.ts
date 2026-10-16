@@ -7,6 +7,7 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
     defaultTest,
+    flipNearViewportBottomTest,
     idClearedTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
@@ -182,6 +183,44 @@ export const TopLayerExpandedOnMount: Story = {
     args: topLayerArgs,
     render: topLayerRender(true),
     play: topLayerExpandedOnMountTest,
+}
+
+/**
+ * The trigger sits near the bottom of the viewport, as on the last row of a
+ * long table: with no room below, the dropdown opens above it at its full
+ * height.
+ */
+export const FlipNearViewportBottom: Story = {
+    args: {
+        ...defaultArgs,
+        strategy: 'fixed',
+        offset: 5,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div data-testId="wrapper" style="position: fixed; inset-inline: 16px; bottom: 48px">
+				<vv-dropdown v-bind="args">
+					<vv-button data-testId="trigger" label="Toggle dropdown" />
+					<template #items>
+						<vv-dropdown-action>
+							<vv-icon name="add" /> Create
+						</vv-dropdown-action>
+						<vv-dropdown-action>
+							<vv-icon name="edit" /> Update
+						</vv-dropdown-action>
+						<vv-dropdown-action>
+							<vv-icon name="trash" /> Delete
+						</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+		`,
+    }),
+    play: flipNearViewportBottomTest,
 }
 
 /**
