@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvVirtualScroll from '@/components/VvVirtualScroll/VvVirtualScroll.vue'
 import { argTypes, defaultArgs } from './VirtualScroll.settings'
-import { defaultTest } from './VirtualScroll.test'
+import { defaultTest, flexContainerTest } from './VirtualScroll.test'
 
 const meta: Meta<typeof VvVirtualScroll> = {
     title: 'Components/VirtualScroll',
@@ -46,8 +46,6 @@ export const Horizontal: Story = {
         horizontal: true,
         estimateSize: 144,
         itemProps: { class: 'w-144 shrink-0 p-16 border-r border-surface-3 flex flex-col gap-sm h-full' },
-        startSpacerProps: { class: 'shrink-0' },
-        endSpacerProps: { class: 'shrink-0' },
     },
     render: args => ({
         components: { VvVirtualScroll },
@@ -68,5 +66,33 @@ export const Horizontal: Story = {
             </vv-virtual-scroll>
 		`,
     }),
-    play: defaultTest,
+    play: async (context) => {
+        await defaultTest(context)
+        await flexContainerTest(context)
+    },
+}
+
+export const FlexColumn: Story = {
+    args: {
+        ...defaultArgs,
+        estimateSize: 51,
+        itemProps: { class: 'shrink-0 p-16 border-b border-surface-3' },
+    },
+    render: args => ({
+        components: { VvVirtualScroll },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<vv-virtual-scroll v-bind="args" class="h-256 overflow-auto border border-surface-3 flex flex-col" data-testId="virtual-scroll">
+                <template #default="{ item }">
+                    {{ item }}
+                </template>
+            </vv-virtual-scroll>
+		`,
+    }),
+    play: async (context) => {
+        await defaultTest(context)
+        await flexContainerTest(context)
+    },
 }
