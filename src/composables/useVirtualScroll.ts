@@ -17,12 +17,14 @@ function pxToNumber(value: string | number | undefined): number | undefined {
     return Number.parseInt(value.replace('px', ''), 10)
 }
 
+// An empty spacer has no minimum size, so a flex container along the scroll
+// axis would shrink it to 0 as soon as the rows overflow: it must not shrink.
 function getHorizontalStyle(size: number) {
-    return { width: `${size}px` }
+    return { width: `${size}px`, flexShrink: 0 }
 }
 
 function getVerticalStyle(size: number) {
-    return { height: `${size}px` }
+    return { height: `${size}px`, flexShrink: 0 }
 }
 
 export function useVirtualScroll(settings: {
