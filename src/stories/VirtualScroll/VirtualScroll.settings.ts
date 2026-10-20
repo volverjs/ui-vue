@@ -5,3 +5,11 @@ export const defaultArgs = {
 }
 
 export const argTypes: ArgTypes = {}
+
+// Rows of three heights, none of them the estimate the stories start from
+export function createSizedItems() {
+    return Array.from({ length: 1000 }, (_, i) => ({
+        label: `Item ${i + 1}`,
+        height: [40, 80, 120][i % 3],
+    }))
+}

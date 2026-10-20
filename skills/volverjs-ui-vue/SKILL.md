@@ -355,7 +355,7 @@ apply only to globally registered components. The instance is available as `$vv`
 | `useDropdownContextmenu(dropdownRef, targetEl?)` | `Ref<VvDropdown>`, optional element | open a dropdown at the pointer on right click |
 | `useDropdownVirtualElement(dropdownRef)` | `Ref<VvDropdown>` | anchor a dropdown to arbitrary coordinates |
 | `useBlurhash()` | returns `{ encode, decode, loadImage }` | blurred image placeholders |
-| `useVirtualScroll({ scrollEl, count, estimateSize, getItemKey?, overscan?, horizontal? })` | | custom virtual lists; `VvVirtualScroll` covers the common case |
+| `useVirtualScroll({ scrollEl, count, estimateSize, getItemKey?, overscan?, horizontal? })` | each option takes a value or a ref | custom virtual lists; `VvVirtualScroll` covers the common case. When the items change order, give the `getItemKey` ref a new function (a `computed` over the items): the measured sizes follow their keys, while `virtualizer.measure()` drops them |
 
 Directives: `v-tooltip="'text'"` and `v-tooltip:top="'text'"` (argument is the `Side`),
 `v-contextmenu`. Import from `@volverjs/ui-vue/directives`.

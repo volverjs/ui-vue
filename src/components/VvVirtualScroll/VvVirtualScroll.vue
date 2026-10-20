@@ -40,6 +40,16 @@ const itemRole = computed(() =>
         : 'listitem',
 )
 
+// A new function on every change of the items, a reorder in place included,
+// makes the virtualizer rebuild its layout without dropping the sizes it has
+const getItemKey = shallowRef(props.getItemKey)
+watch(
+    [() => props.getItemKey, () => [...props.items]],
+    ([value]) => {
+        getItemKey.value = (index: number) => value(index)
+    },
+)
+
 const {
     virtualizer,
     virtualItems,
@@ -49,17 +59,16 @@ const {
     scrollEl,
     count: computed(() => props.items.length),
     estimateSize: computed(() => props.estimateSize),
-    getItemKey: props.getItemKey,
+    getItemKey,
     overscan: computed(() => props.overscan),
     horizontal: computed(() => props.horizontal),
 })
 
+// sizes estimated otherwise, or measured along the other axis, no longer hold
 watch(
     [
-        () => props.items.length,
         () => props.estimateSize,
         () => props.horizontal,
-        () => props.overscan,
     ],
     () => {
         nextTick(() => virtualizer.value?.measure())
