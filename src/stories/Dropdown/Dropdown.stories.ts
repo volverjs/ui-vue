@@ -9,6 +9,8 @@ import {
     defaultTest,
     flipNearViewportBottomTest,
     idClearedTest,
+    noResizeObserverLoopTest,
+    reopenAfterResizeTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
 } from './Dropdown.test'
@@ -186,6 +188,35 @@ export const TopLayerExpandedOnMount: Story = {
 }
 
 /**
+ * A trigger held at a fixed place of the viewport, with a list of `count`
+ * actions
+ */
+function renderFixedTrigger(position: string, count = 3) {
+    return (args: Story['args']) => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const actions = Array.from({ length: count }, (_, i) => `Action ${i + 1}`)
+            return { args, actions }
+        },
+        template: /* html */ `
+			<div data-testId="wrapper" style="position: fixed; inset-inline: 16px; ${position}">
+				<vv-dropdown v-bind="args">
+					<vv-button data-testId="trigger" label="Toggle dropdown" />
+					<template #items>
+						<vv-dropdown-action v-for="action in actions" :key="action">
+							{{ action }}
+						</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+		`,
+    })
+}
+
+// a fixed story would sit over the docs page, unless its block contains it
+const containedInDocs = { docs: { story: { height: '320px' } } }
+
+/**
  * The trigger sits near the bottom of the viewport, as on the last row of a
  * long table: with no room below, the dropdown opens above it at its full
  * height.
@@ -196,31 +227,69 @@ export const FlipNearViewportBottom: Story = {
         strategy: 'fixed',
         offset: 5,
     },
+    parameters: containedInDocs,
+    render: renderFixedTrigger('bottom: 48px'),
+    play: flipNearViewportBottomTest,
+}
+
+/**
+ * The same with the default `absolute` strategy.
+ */
+export const FlipNearViewportBottomAbsolute: Story = {
+    args: {
+        ...defaultArgs,
+        offset: 5,
+    },
+    parameters: containedInDocs,
+    render: renderFixedTrigger('bottom: 48px'),
+    play: flipNearViewportBottomTest,
+}
+
+/**
+ * A list with no room on either side opens capped. The container then grows,
+ * and the dropdown opens again at the height of its items, above the trigger.
+ */
+export const ReopenAfterResize: Story = {
+    args: {
+        ...defaultArgs,
+    },
     render: args => ({
-        components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
+        components: { VvDropdown, VvDropdownAction, VvButton },
         setup() {
-            return { args }
+            const actions = Array.from({ length: 6 }, (_, i) => `Action ${i + 1}`)
+            return { args, actions }
         },
         template: /* html */ `
-			<div data-testId="wrapper" style="position: fixed; inset-inline: 16px; bottom: 48px">
-				<vv-dropdown v-bind="args">
-					<vv-button data-testId="trigger" label="Toggle dropdown" />
-					<template #items>
-						<vv-dropdown-action>
-							<vv-icon name="add" /> Create
-						</vv-dropdown-action>
-						<vv-dropdown-action>
-							<vv-icon name="edit" /> Update
-						</vv-dropdown-action>
-						<vv-dropdown-action>
-							<vv-icon name="trash" /> Delete
-						</vv-dropdown-action>
-					</template>
-				</vv-dropdown>
+			<div data-testId="container" style="position: relative; overflow: auto; height: 300px">
+				<div data-testId="anchor" style="position: absolute; inset-inline: 16px; top: 130px">
+					<vv-dropdown v-bind="args">
+						<vv-button data-testId="trigger" label="Toggle dropdown" />
+						<template #items>
+							<vv-dropdown-action v-for="action in actions" :key="action">
+								{{ action }}
+							</vv-dropdown-action>
+						</template>
+					</vv-dropdown>
+				</div>
 			</div>
 		`,
     }),
-    play: flipNearViewportBottomTest,
+    play: reopenAfterResizeTest,
+}
+
+/**
+ * A list taller than the room on either side opens capped, with no
+ * ResizeObserver loop error.
+ */
+export const NoResizeObserverLoop: Story = {
+    args: {
+        ...defaultArgs,
+        strategy: 'fixed',
+        offset: 5,
+    },
+    parameters: containedInDocs,
+    render: renderFixedTrigger('top: 45vh', 40),
+    play: noResizeObserverLoopTest,
 }
 
 /**

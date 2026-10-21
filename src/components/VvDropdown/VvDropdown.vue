@@ -45,8 +45,6 @@ const emit = defineEmits([
 const { id } = toRefs(props)
 const hasId = useUniqueId(id)
 const attrs = useAttrs() as Record<string, unknown>
-const maxWidth = ref('auto')
-const maxHeight = ref('auto')
 
 // template elements
 const localReferenceEl = ref()
@@ -106,8 +104,37 @@ function resolveMiddleware<T>(
     return typeof value === 'boolean' ? whenEnabled() : whenConfigured(value)
 }
 
+// a collapsed or hidden dropdown measures 0: its size says nothing of the room
+// its items need
+function isEmpty(rect: { width: number, height: number }) {
+    return !rect.width && !rect.height
+}
+
+// "size" caps the dropdown to the room left, and a capped dropdown always fits
+// where it is: once per pass, clear a cap the content fills, so that "flip"
+// measures the height of the items, after a reopening or a change of content
+const uncap: Middleware = {
+    name: 'uncap',
+    fn({ elements, rects, middlewareData }) {
+        const { style } = elements.floating as HTMLElement
+        const filled
+            = rects.floating.height >= Number.parseFloat(style.maxHeight) - 1
+                || rects.floating.width >= Number.parseFloat(style.maxWidth) - 1
+        if (middlewareData.uncap || !filled || isEmpty(rects.floating)) {
+            return {}
+        }
+        style.maxHeight = ''
+        style.maxWidth = ''
+        return { data: { uncapped: true }, reset: { rects: true } }
+    },
+}
+
 const middleware = computed<Middleware[]>(() => {
     const toReturn: Middleware[] = []
+
+    if (props.size) {
+        toReturn.push(uncap)
+    }
 
     if (props.autoPlacement) {
         toReturn.push(
@@ -139,19 +166,25 @@ const middleware = computed<Middleware[]>(() => {
     }
 
     if (props.size) {
+        // on the element and not through the template, so that "size" measures
+        // the capped dropdown right away and places it on its real height
         const apply = ({
             availableWidth,
             availableHeight,
+            elements,
+            rects,
         }: MiddlewareState & {
             availableWidth: number
             availableHeight: number
         }) => {
-            // a collapsed dropdown measures 0, its size would cap the next opening
-            if (!expanded.value) {
+            if (isEmpty(rects.floating) || hasCustomPosition.value) {
                 return
             }
-            maxWidth.value = `${availableWidth}px`
-            maxHeight.value = `${availableHeight}px`
+            const { style } = elements.floating as HTMLElement
+            style.maxWidth = props.triggerWidth && referenceEl.value
+                ? ''
+                : `${Math.max(0, availableWidth)}px`
+            style.maxHeight = `${Math.max(0, availableHeight)}px`
         }
         toReturn.push(
             resolveMiddleware(
@@ -181,15 +214,10 @@ const middleware = computed<Middleware[]>(() => {
 
     return toReturn
 })
-const { x, y, middlewareData, placement, strategy } = useFloating(
+const { x, y, middlewareData, placement, strategy, update } = useFloating(
     referenceEl,
     floatingEl,
     {
-        whileElementsMounted: (...args) => {
-            return autoUpdate(...args, {
-                animationFrame: hasStrategy.value === Strategy.fixed,
-            })
-        },
         placement: computed(() => props.placement),
         strategy: hasStrategy,
         middleware,
@@ -207,8 +235,6 @@ const dropdownPlacement = computed(() => {
         position: strategy.value,
         top: `${y.value ?? 0}px`,
         left: `${x.value ?? 0}px`,
-        maxWidth: width ? undefined : maxWidth.value,
-        maxHeight: maxHeight.value,
         width,
     }
 })
@@ -258,14 +284,24 @@ const expanded = computed({
         modelValue.value = newValue
     },
 })
-// start every opening from the natural size, otherwise "flip" measures the
-// height capped by "size" and never moves the dropdown to the other side
-watch(expanded, (newValue) => {
-    if (newValue) {
-        maxWidth.value = 'auto'
-        maxHeight.value = 'auto'
-    }
-})
+// keep only an open dropdown in place. A collapsed one is not displayed and
+// measures 0, and "size" would cap the next opening to the room left below the
+// trigger. Started after the DOM is updated, the first pass measures the
+// dropdown on display and caps it before the ResizeObserver reports its size
+watch(
+    [expanded, referenceEl, floatingEl, hasStrategy],
+    ([isExpanded, reference, floating, hasStrategy], _, onCleanup) => {
+        if (!isExpanded || !reference || !floating) {
+            return
+        }
+        onCleanup(
+            autoUpdate(reference, floating, update, {
+                animationFrame: hasStrategy === Strategy.fixed,
+            }),
+        )
+    },
+    { flush: 'post', immediate: true },
+)
 // promote the dropdown after the DOM is updated and before the browser paints,
 // so it is never shown in place first. A post effect also covers a dropdown
 // expanded on mount, and one whose "topLayer" is turned on while it is open. It
