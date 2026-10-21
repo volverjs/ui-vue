@@ -102,3 +102,60 @@ export async function openOnMountTest({ canvasElement, args }: PlayAttributes) {
     // check accessibility
     await expect(element).toHaveNoViolations()
 }
+
+export async function closedByBrowserTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element') as HTMLDialogElement
+    const button = await within(canvasElement).findByTestId('button')
+    const model = within(canvasElement).getByTestId('model')
+    const events = within(canvasElement).getByTestId('events')
+
+    await userEvent.click(button)
+    await waitFor(() => expect(element).toHaveProperty('open', true))
+
+    // `keepOpen` holds the first `Esc` back
+    const cancel = new Event('cancel', { cancelable: true })
+    element.dispatchEvent(cancel)
+    await expect(cancel.defaultPrevented).toBe(true)
+    await expect(element).toHaveProperty('open', true)
+
+    // the second `Esc` in a row comes without a user activation since the
+    // first: the browser sends a `cancel` it does not let the page prevent,
+    // and closes the dialog. A test cannot press it: the keys of `userEvent`
+    // are synthetic and send no `cancel`, and the commands of the test runner
+    // count as user activation. It does what the browser does instead.
+    element.dispatchEvent(new Event('cancel', { cancelable: false }))
+    element.close()
+
+    // the model follows, and `close` is emitted as for any other close
+    await waitFor(() => expect(model).toHaveTextContent('false'))
+    await waitFor(() => expect(events).toHaveTextContent(/^close$/))
+
+    // so the dialog opens again
+    await userEvent.click(button)
+    await waitFor(() => expect(element).toHaveProperty('open', true))
+    await expect(element.matches(':modal')).toBe(true)
+    await expect(model).toHaveTextContent('true')
+
+    // check accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function reopenOnCloseTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element') as HTMLDialogElement
+    const model = within(canvasElement).getByTestId('model')
+    const events = within(canvasElement).getByTestId('events')
+    await waitFor(() => expect(element).toHaveProperty('open', true))
+
+    // the close button closes the dialog, and the listener of `close` opens it
+    // again
+    await userEvent.click(within(element).getByRole('button', { name: 'Close' }))
+    await waitFor(() => expect(events).toHaveTextContent(/^open close open$/))
+
+    // the native `close` of the first close comes after the reopen, and leaves
+    // the dialog open
+    await sleep(500)
+    await expect(events).toHaveTextContent(/^open close open$/)
+    await expect(element).toHaveProperty('open', true)
+    await expect(element.matches(':modal')).toBe(true)
+    await expect(model).toHaveTextContent('true')
+}

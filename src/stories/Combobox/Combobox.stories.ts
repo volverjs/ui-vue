@@ -7,6 +7,7 @@ import {
     ariaDescribedbyTest,
     ariaLabelTest,
     defaultTest,
+    focusMovedWhileOpeningTest,
     keyboardTest,
 } from './Combobox.test'
 
@@ -118,6 +119,15 @@ export const Searchable: Story = {
         searchable: true,
         searchPlaceholder: 'Search...',
     },
+}
+
+/**
+ * An option focused while the list fades in keeps the focus once it has: the
+ * search field already took it on opening.
+ */
+export const FocusMovedWhileOpening: Story = {
+    ...Searchable,
+    play: focusMovedWhileOpeningTest,
 }
 
 export const KeepSearch: Story = {

@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { userEvent, within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
@@ -150,6 +150,27 @@ export async function keyboardTest({ canvasElement }: PlayAttributes) {
     await userEvent.keyboard(' ')
     await sleep()
     await expect(combobox).toHaveAttribute('aria-expanded', 'true')
+}
+
+export async function focusMovedWhileOpeningTest({
+    canvasElement,
+}: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const combobox = element.querySelector('[role="combobox"]') as HTMLElement
+
+    // the user moves to an option while the list fades in
+    await userEvent.click(combobox)
+    const option = await waitFor(() => {
+        const found = element.querySelector('[role="option"]')
+        expect(found).not.toBeNull()
+        return found as HTMLElement
+    })
+    option.focus()
+    await expect(option).toHaveFocus()
+
+    // the end of the transition does not take the focus back to the search
+    await sleep(500)
+    await expect(option).toHaveFocus()
 }
 
 export async function ariaLabelTest({ canvasElement }: PlayAttributes) {

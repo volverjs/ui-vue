@@ -10,7 +10,7 @@ npx skills add volverjs/ui-vue
 
 ## What the skill does
 
-The library has specific prop names (`floating`, `showClearAction`, `iconPosition="before"`, a required `name` on every field) and Vue does not warn when a prop is misspelled, so a guessed name fails silently. The skill fixes that in two ways:
+The library has specific prop names (`floating`, `showClearAction`, an `iconPosition` that takes `before`/`after` on a field and `left`/`right` on a button, a required `name` on every field) and Vue does not warn when a prop is misspelled, so a guessed name fails silently. The skill fixes that in two ways:
 
 - **Verified reference in `SKILL.md`**: the 35 components, the shared props with their exact names, the BEM modifiers that `@volverjs/style` actually declares, the bundled icon set, the group/options/dropdown/tab/alert patterns, plugin and resolver setup, composables, json-render. Every snippet is checked against the library source.
 - **Scripts that read the installed package** instead of relying on memory:

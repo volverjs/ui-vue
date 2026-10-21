@@ -75,7 +75,7 @@ export const VvInputFileProps = {
     capture: {
         type: String as PropType<'user' | 'environment'>,
         default: undefined,
-        validation: (value?: string) => {
+        validator: (value?: string) => {
             if (value === undefined) {
                 return true
             }

@@ -2,6 +2,7 @@ import type { PlayAttributes } from '@/test/types'
 import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
+import { invalidPropWarnings } from '@/test/warnings'
 
 export async function selectFromKeyboardTest({ canvasElement }: PlayAttributes) {
     const element = canvasElement.getElementsByClassName(
@@ -59,4 +60,8 @@ export async function ariaLabelTest({ canvasElement }: PlayAttributes) {
 
     // accessibility
     await expect(element).toHaveNoViolations()
+}
+
+export async function invalidCaptureTest() {
+    await expect(invalidPropWarnings('capture')).not.toHaveLength(0)
 }

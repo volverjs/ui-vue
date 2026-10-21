@@ -1,5 +1,7 @@
+import type { Spec } from '@json-render/vue'
 import type { PlayAttributes } from '@/test/types'
 import { within } from 'storybook/test'
+import { catalog, volverComponentDefinitions } from '@/json-render'
 import { expect } from '@/test/expect'
 
 export async function iconOnlyButtonTest({ canvasElement }: PlayAttributes) {
@@ -10,6 +12,29 @@ export async function iconOnlyButtonTest({ canvasElement }: PlayAttributes) {
     // and the spec gives it the accessible name it has no label for
     expect(button).toHaveClass('vv-button--icon-only')
     expect(button.getAttribute('aria-label')).toBe('Add an item')
+
+    // accessibility
+    await expect(element).toHaveNoViolations()
+}
+
+export async function buttonIconPositionTest(
+    { canvasElement }: PlayAttributes,
+    spec: Spec,
+) {
+    const element = await within(canvasElement).findByTestId('element')
+    const [next, upload] = element.getElementsByClassName('vv-button')
+    const { Button, InputText } = volverComponentDefinitions
+
+    // the catalog takes the sides VvButton draws, and keeps `before` and
+    // `after` for the fields, where a side would hide the icon
+    expect(catalog.validate(spec).success).toBe(true)
+    expect(Button.props.safeParse({ iconPosition: 'after' }).success).toBe(false)
+    expect(InputText.props.safeParse({ name: 'q', iconPosition: 'after' }).success).toBe(true)
+    expect(InputText.props.safeParse({ name: 'q', iconPosition: 'right' }).success).toBe(false)
+
+    // and the registry hands them on to the button
+    expect(next).toHaveClass('vv-button--reverse')
+    expect(upload).toHaveClass('vv-button--column')
 
     // accessibility
     await expect(element).toHaveNoViolations()

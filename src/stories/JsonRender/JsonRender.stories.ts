@@ -8,6 +8,7 @@ import {
 } from '@json-render/vue'
 import { registry } from '@/json-render'
 import {
+    buttonIconPositionTest,
     dialogWithoutTitleTest,
     fieldsWithoutLabelTest,
     iconOnlyButtonTest,
@@ -136,6 +137,37 @@ export const IconOnlyButton: Story = {
         },
     }),
     play: iconOnlyButtonTest,
+}
+
+// a button for each axis, with the sides VvButton draws its icon on
+const buttonIconPositionSpec: Spec = {
+    root: 'card',
+    elements: {
+        card: {
+            type: 'Card',
+            props: { title: 'Attachments' },
+            children: ['next', 'upload'],
+        },
+        next: {
+            type: 'Button',
+            props: { label: 'Next', icon: 'arrow-right', iconPosition: 'right' },
+            children: [],
+        },
+        upload: {
+            type: 'Button',
+            props: { label: 'Upload', icon: 'upload', iconPosition: 'top' },
+            children: [],
+        },
+    },
+}
+
+/**
+ * Buttons with the icon on the right and on top: the catalog takes the sides
+ * VvButton draws, not the `before` and `after` of a field.
+ */
+export const ButtonIconPosition: Story = {
+    render: renderSpec(buttonIconPositionSpec),
+    play: context => buttonIconPositionTest(context, buttonIconPositionSpec),
 }
 
 // every form field of the catalog, none of them with a label

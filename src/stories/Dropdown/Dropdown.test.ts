@@ -96,6 +96,172 @@ export async function topLayerExpandedOnMountTest({
     await expectAboveTheBar(canvasElement, getDropdown(wrapper))
 }
 
+function getList(dropdown: Element) {
+    return dropdown.getElementsByClassName('vv-dropdown__list')[0] as HTMLElement
+}
+
+/**
+ * The list scrolls inside the dropdown, so a dropdown capped below the height
+ * of its items shows on the list: the dropdown itself never overflows
+ */
+async function expectNotSquashed(dropdown: Element) {
+    const list = getList(dropdown)
+    await expect(list.scrollHeight).toBeLessThanOrEqual(list.clientHeight + 1)
+}
+
+async function expectAbove(dropdown: Element, trigger: Element) {
+    await expect(dropdown.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        trigger.getBoundingClientRect().top + 0.5,
+    )
+}
+
+async function expectBelow(dropdown: Element, trigger: Element) {
+    await expect(dropdown.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+        trigger.getBoundingClientRect().bottom - 0.5,
+    )
+}
+
+export async function flipNearViewportBottomTest({
+    canvasElement,
+}: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const dropdown = getDropdown(await canvas.findByTestId('wrapper'))
+
+    // let floating-ui place the collapsed dropdown first: measured 0px tall,
+    // "size" used to cap the next opening to the room left below the trigger
+    await sleep(200)
+    await userEvent.click(trigger)
+
+    // the dropdown moves above the trigger and is not squashed
+    await waitFor(() => expectAbove(dropdown, trigger))
+    await expectNotSquashed(dropdown)
+    await expect(dropdown).toHaveNoViolations()
+}
+
+export async function reopenAfterResizeTest({
+    canvasElement,
+}: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const container = await canvas.findByTestId('container')
+    const anchor = await canvas.findByTestId('anchor')
+    const trigger = await canvas.findByTestId('trigger')
+    const dropdown = getDropdown(container) as HTMLElement
+    const list = getList(dropdown)
+
+    // no room for the list on either side: it opens below, capped
+    await userEvent.click(trigger)
+    await waitFor(() =>
+        expect(list.scrollHeight).toBeGreaterThan(list.clientHeight + 1),
+    )
+    const capped = dropdown.offsetHeight
+    const natural = capped - list.clientHeight + list.scrollHeight
+    await userEvent.click(trigger)
+    await waitFor(() => expect(dropdown).not.toBeVisible())
+
+    // the container grows: room above for the whole list, and room below for
+    // more than the old cap but not for the list
+    container.style.height = '600px'
+    const below = (capped + natural) / 2 + 10
+    anchor.style.top = `${600 - trigger.offsetHeight - below}px`
+
+    // the old cap is not measured as the height of the list
+    await userEvent.click(trigger)
+    await waitFor(() => expectAbove(dropdown, trigger))
+    await expectNotSquashed(dropdown)
+}
+
+export async function noResizeObserverLoopTest({
+    canvasElement,
+}: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const dropdown = getDropdown(await canvas.findByTestId('wrapper'))
+    const list = getList(dropdown)
+
+    // a list taller than the room on either side, opened three times: its cap
+    // is set before the ResizeObserver reports the new size, not in reply
+    const errors: string[] = []
+    const onError = (event: ErrorEvent) => errors.push(event.message)
+    globalThis.addEventListener('error', onError)
+    try {
+        for (let i = 0; i < 3; i++) {
+            await userEvent.click(trigger)
+            await waitFor(() =>
+                expect(list.scrollHeight).toBeGreaterThan(list.clientHeight + 1),
+            )
+            await sleep(100)
+            await userEvent.click(trigger)
+            await waitFor(() => expect(dropdown).not.toBeVisible())
+        }
+    } finally {
+        globalThis.removeEventListener('error', onError)
+    }
+    await expect(errors).toEqual([])
+}
+
+export async function contentChangesWhileOpenTest({
+    canvasElement,
+}: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const dropdown = getDropdown(await canvas.findByTestId('wrapper'))
+    const list = getList(dropdown)
+    const show = (count: number) =>
+        userEvent.click(canvas.getByRole('button', { name: `${count} actions` }))
+
+    // one action fits below the trigger
+    await userEvent.click(trigger)
+    await waitFor(() => expectBelow(dropdown, trigger))
+
+    // ten do not: the dropdown grows to its cap and moves above
+    await show(10)
+    await waitFor(() => expectAbove(dropdown, trigger))
+    await expectNotSquashed(dropdown)
+
+    // forty fit on neither side: capped below, as the placement asks
+    await show(40)
+    await waitFor(async () => {
+        await expectBelow(dropdown, trigger)
+        await expect(list.scrollHeight).toBeGreaterThan(list.clientHeight + 1)
+    })
+    // let the ResizeObserver report the move, which places the dropdown again
+    await sleep(200)
+
+    // six fit above, while the capped dropdown keeps its size: nothing but the
+    // items tells that it has to move
+    await show(6)
+    await waitFor(() => expectAbove(dropdown, trigger))
+    await expectNotSquashed(dropdown)
+}
+
+/**
+ * Opens the dropdown where its items fit, to measure them, then moves the
+ * trigger so that the room below it is `extra` pixels more than their height:
+ * not enough once the padding of `size` and the offset are counted
+ */
+export function roomBelowTest(extra: number) {
+    return async ({ canvasElement }: PlayAttributes) => {
+        const canvas = within(canvasElement)
+        const wrapper = await canvas.findByTestId('wrapper')
+        const trigger = await canvas.findByTestId('trigger')
+        const dropdown = getDropdown(wrapper) as HTMLElement
+
+        await userEvent.click(trigger)
+        await waitFor(() => expectBelow(dropdown, trigger))
+        await expectNotSquashed(dropdown)
+        const height = dropdown.offsetHeight
+        await userEvent.click(trigger)
+        await waitFor(() => expect(dropdown).not.toBeVisible())
+
+        wrapper.style.top = 'auto'
+        wrapper.style.bottom = `${height + extra}px`
+        await userEvent.click(trigger)
+        await waitFor(() => expectAbove(dropdown, trigger))
+        await expectNotSquashed(dropdown)
+    }
+}
+
 export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const target = await canvas.findByTestId('target')
@@ -139,4 +305,31 @@ export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes)
     await waitFor(() => expect(listeners).toBe(0))
     target.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 20, clientY: 20 }))
     await waitFor(() => expect(list()).toBeVisible())
+}
+
+export async function expandEventsTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const events = await canvas.findByTestId('events')
+
+    await userEvent.click(trigger)
+    await waitFor(() =>
+        expect(events).toHaveTextContent(/^beforeExpand afterExpand$/),
+    )
+    await userEvent.click(trigger)
+    await waitFor(() =>
+        expect(events).toHaveTextContent(
+            /^beforeExpand afterExpand beforeCollapse afterCollapse$/,
+        ),
+    )
+}
+
+export async function sizeApplyTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const room = await canvas.findByTestId('room')
+
+    // the "apply" passed in "size" runs along with the one of the dropdown
+    await userEvent.click(trigger)
+    await waitFor(() => expect(room).toHaveTextContent(/^\d+$/))
 }

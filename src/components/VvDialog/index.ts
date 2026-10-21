@@ -40,7 +40,7 @@ export const VvDialogProps = {
      */
     size: String,
     /**
-     * Keep open dialog on click outside
+     * Keep the dialog open on click outside and on `Esc`
      */
     keepOpen: { type: Boolean, default: false },
     /**
