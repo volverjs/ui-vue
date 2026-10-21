@@ -12,6 +12,7 @@ import {
     idClearedTest,
     noResizeObserverLoopTest,
     reopenAfterResizeTest,
+    roomBelowTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
 } from './Dropdown.test'
@@ -333,6 +334,37 @@ export const ContentChangesWhileOpen: Story = {
 		`,
     }),
     play: contentChangesWhileOpenTest,
+}
+
+/**
+ * Below the trigger there is room for the items, but not for the padding that
+ * `size` keeps from the edge: the dropdown opens above, not capped a few pixels
+ * short of its items.
+ */
+export const FlipWithinSizePadding: Story = {
+    args: {
+        ...defaultArgs,
+        strategy: 'fixed',
+    },
+    parameters: containedInDocs,
+    render: renderFixedTrigger('top: 100px'),
+    play: roomBelowTest(5),
+}
+
+/**
+ * Below the trigger there is room for the items, but not for the offset that
+ * separates them from it: the dropdown opens above, not past the edge of the
+ * viewport.
+ */
+export const FlipWithOffset: Story = {
+    args: {
+        ...defaultArgs,
+        strategy: 'fixed',
+        offset: 20,
+    },
+    parameters: containedInDocs,
+    render: renderFixedTrigger('top: 100px'),
+    play: roomBelowTest(15),
 }
 
 /**

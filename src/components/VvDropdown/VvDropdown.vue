@@ -136,6 +136,19 @@ const middleware = computed<Middleware[]>(() => {
         toReturn.push(uncap)
     }
 
+    // first, so that the others measure the dropdown where the offset puts it
+    if (props.offset) {
+        toReturn.push(
+            ['string', 'number'].includes(typeof props.offset)
+                ? offset(Number(props.offset))
+                : offset(props.offset as OffsetOptions),
+        )
+    }
+
+    // "flip" keeps from the edge the room "size" keeps, so that it does not
+    // stay on a side where the items would be capped a few pixels short
+    const padding = typeof props.size === 'object' ? props.size.padding : undefined
+
     if (props.autoPlacement) {
         toReturn.push(
             resolveMiddleware(
@@ -149,8 +162,8 @@ const middleware = computed<Middleware[]>(() => {
         toReturn.push(
             resolveMiddleware(
                 props.flip,
-                () => flip({ fallbackStrategy: 'initialPlacement' }),
-                options => flip(options as FlipOptions),
+                () => flip({ fallbackStrategy: 'initialPlacement', padding }),
+                options => flip({ padding, ...(options as FlipOptions) }),
             ),
         )
     }
@@ -193,14 +206,6 @@ const middleware = computed<Middleware[]>(() => {
                 options =>
                     size({ ...(options as SizeOptions), apply }),
             ),
-        )
-    }
-
-    if (props.offset) {
-        toReturn.push(
-            ['string', 'number'].includes(typeof props.offset)
-                ? offset(Number(props.offset))
-                : offset(props.offset as OffsetOptions),
         )
     }
 
@@ -290,13 +295,13 @@ const expanded = computed({
 // dropdown on display and caps it before the ResizeObserver reports its size
 watch(
     [expanded, referenceEl, floatingEl, hasStrategy],
-    ([isExpanded, reference, floating, hasStrategy], _, onCleanup) => {
+    ([isExpanded, reference, floating, positioning], _, onCleanup) => {
         if (!isExpanded || !reference || !floating) {
             return
         }
         onCleanup(
             autoUpdate(reference, floating, update, {
-                animationFrame: hasStrategy === Strategy.fixed,
+                animationFrame: positioning === Strategy.fixed,
             }),
         )
     },

@@ -397,7 +397,8 @@ export const DropdownProps = {
         default: false,
     },
     /**
-     * Flip dropdown position if there is no space in the default position
+     * Flip dropdown position if there is no space in the default position.
+     * Keeps from the edge the padding of `size`, unless the options set one
      * @see https://floating-ui.com/docs/flip
      */
     flip: {

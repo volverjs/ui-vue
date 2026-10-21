@@ -88,7 +88,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 | Options | `options`, `labelKey`, `valueKey`, `disabledKey` | see section 6 |
 | Links | `to`, `href`, `target`, `rel` | on VvAction, VvButton, nav items, breadcrumb routes |
 | BEM | `modifiers` | string (space separated) or string array |
-| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox. On VvCombobox `keepOpen` is its own prop: it keeps the list open after a single selection, and a click outside still closes it |
+| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox. On VvCombobox `keepOpen` is its own prop: it keeps the list open after a single selection, and a click outside still closes it. `flip` keeps from the edge the `padding` of `size` (10px by default) unless its own options set one, and both count the `offset` |
 
 ## 4. Modifiers: the class is free, the style is not
 

@@ -235,6 +235,33 @@ export async function contentChangesWhileOpenTest({
     await expectNotSquashed(dropdown)
 }
 
+/**
+ * Opens the dropdown where its items fit, to measure them, then moves the
+ * trigger so that the room below it is `extra` pixels more than their height:
+ * not enough once the padding of `size` and the offset are counted
+ */
+export function roomBelowTest(extra: number) {
+    return async ({ canvasElement }: PlayAttributes) => {
+        const canvas = within(canvasElement)
+        const wrapper = await canvas.findByTestId('wrapper')
+        const trigger = await canvas.findByTestId('trigger')
+        const dropdown = getDropdown(wrapper) as HTMLElement
+
+        await userEvent.click(trigger)
+        await waitFor(() => expectBelow(dropdown, trigger))
+        await expectNotSquashed(dropdown)
+        const height = dropdown.offsetHeight
+        await userEvent.click(trigger)
+        await waitFor(() => expect(dropdown).not.toBeVisible())
+
+        wrapper.style.top = 'auto'
+        wrapper.style.bottom = `${height + extra}px`
+        await userEvent.click(trigger)
+        await waitFor(() => expectAbove(dropdown, trigger))
+        await expectNotSquashed(dropdown)
+    }
+}
+
 export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const target = await canvas.findByTestId('target')
