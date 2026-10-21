@@ -7,7 +7,9 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
     defaultTest,
+    expandEventsTest,
     idClearedTest,
+    sizeApplyTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
 } from './Dropdown.test'
@@ -207,4 +209,74 @@ export const IdCleared: Story = {
 		`,
     }),
     play: idClearedTest,
+}
+
+/**
+ * `beforeExpand` and `afterExpand` around an opening, `beforeCollapse` and
+ * `afterCollapse` around a closing.
+ */
+export const ExpandEvents: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const events = ref<string[]>([])
+            return { args, events }
+        },
+        template: /* html */ `
+			<div style="min-height: 120px">
+				<vv-dropdown
+					v-bind="args"
+					@before-expand="events.push('beforeExpand')"
+					@after-expand="events.push('afterExpand')"
+					@before-collapse="events.push('beforeCollapse')"
+					@after-collapse="events.push('afterCollapse')"
+				>
+					<vv-button data-testId="trigger" label="Toggle dropdown" />
+					<template #items>
+						<vv-dropdown-action>Create</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+			<output data-testId="events">{{ events.join(' ') }}</output>
+		`,
+    }),
+    play: expandEventsTest,
+}
+
+/**
+ * An `apply` passed in `size` runs, here to show the room left below the
+ * trigger.
+ */
+export const SizeApply: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const room = ref('')
+            const size = {
+                padding: 10,
+                apply: ({ availableHeight }: { availableHeight: number }) => {
+                    room.value = `${Math.round(availableHeight)}`
+                },
+            }
+            return { args, room, size }
+        },
+        template: /* html */ `
+			<div style="min-height: 120px">
+				<vv-dropdown v-bind="args" :size="size">
+					<vv-button data-testId="trigger" label="Toggle dropdown" />
+					<template #items>
+						<vv-dropdown-action>Create</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+			<output data-testId="room">{{ room }}</output>
+		`,
+    }),
+    play: sizeApplyTest,
 }

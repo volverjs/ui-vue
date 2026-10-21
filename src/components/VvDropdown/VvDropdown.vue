@@ -153,8 +153,15 @@ const middleware = computed<Middleware[]>(() => {
             resolveMiddleware(
                 props.size,
                 () => size({ apply }),
+                // an "apply" in the options runs too, after the cap
                 options =>
-                    size({ ...(options as SizeOptions), apply }),
+                    size({
+                        ...(options as SizeOptions),
+                        apply: (state) => {
+                            apply(state)
+                            return (options as SizeOptions)?.apply?.(state)
+                        },
+                    }),
             ),
         )
     }
@@ -473,28 +480,32 @@ onKeyStroke([' ', 'Enter'], (e) => {
     }
 })
 
+// the enter transition is the opening and the leave transition the closing:
+// an opening during a closing cancels the leave and runs the enter hooks
 const dropdownTransitionHandlers = {
     'before-enter': () => {
-        emit(expanded.value ? 'beforeExpand' : 'beforeCollapse')
+        emit('beforeExpand')
         emit('beforeEnter')
     },
     'after-leave': () => {
         if (!expanded.value) {
             hideFromTopLayer()
         }
-        emit(expanded.value ? 'afterExpand' : 'afterCollapse')
+        emit('afterCollapse')
         emit('afterLeave')
     },
     'enter': () => {
         emit('enter')
     },
     'after-enter': () => {
+        emit('afterExpand')
         emit('afterEnter')
     },
     'enter-cancelled': () => {
         emit('enterCancelled')
     },
     'before-leave': () => {
+        emit('beforeCollapse')
         emit('beforeLeave')
     },
     'leave': () => {

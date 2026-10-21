@@ -118,8 +118,12 @@ function collapse() {
     expanded.value = false
 }
 function onAfterExpand() {
-    if (propsDefaults.value.searchable) {
-        if (inputSearchEl.value) {
+    // the dropdown focused the search on opening already: take the focus back
+    // only if it left the dropdown, not from an option the user moved to while
+    // the list faded in
+    if (propsDefaults.value.searchable && inputSearchEl.value) {
+        const dropdown = inputSearchEl.value.closest('.vv-dropdown')
+        if (!dropdown?.contains(document.activeElement)) {
             inputSearchEl.value.focus({
                 preventScroll: true,
             })

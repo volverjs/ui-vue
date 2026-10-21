@@ -140,3 +140,30 @@ export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes)
     target.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 20, clientY: 20 }))
     await waitFor(() => expect(list()).toBeVisible())
 }
+
+export async function expandEventsTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const events = await canvas.findByTestId('events')
+
+    await userEvent.click(trigger)
+    await waitFor(() =>
+        expect(events).toHaveTextContent(/^beforeExpand afterExpand$/),
+    )
+    await userEvent.click(trigger)
+    await waitFor(() =>
+        expect(events).toHaveTextContent(
+            /^beforeExpand afterExpand beforeCollapse afterCollapse$/,
+        ),
+    )
+}
+
+export async function sizeApplyTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const room = await canvas.findByTestId('room')
+
+    // the "apply" passed in "size" runs along with the one of the dropdown
+    await userEvent.click(trigger)
+    await waitFor(() => expect(room).toHaveTextContent(/^\d+$/))
+}
