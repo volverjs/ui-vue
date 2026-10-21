@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
+    contentChangesWhileOpenTest,
     defaultTest,
     flipNearViewportBottomTest,
     idClearedTest,
@@ -290,6 +291,48 @@ export const NoResizeObserverLoop: Story = {
     parameters: containedInDocs,
     render: renderFixedTrigger('top: 45vh', 40),
     play: noResizeObserverLoopTest,
+}
+
+/**
+ * The items change while the dropdown is open, as in a list filtered by a
+ * search: the dropdown moves to the side that has room for them.
+ */
+export const ContentChangesWhileOpen: Story = {
+    args: {
+        ...defaultArgs,
+        strategy: 'fixed',
+        offset: 5,
+        keepOpen: true,
+        // as wide as the trigger, so that only the height follows the items
+        triggerWidth: true,
+    },
+    parameters: containedInDocs,
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const count = ref(1)
+            const actions = computed(() =>
+                Array.from({ length: count.value }, (_, i) => `Action ${i + 1}`),
+            )
+            return { args, count, actions }
+        },
+        template: /* html */ `
+			<div class="flex gap-sm">
+				<button v-for="value in [6, 10, 40]" :key="value" class="vv-button" @click="count = value">{{ value }} actions</button>
+			</div>
+			<div data-testId="wrapper" style="position: fixed; inset-inline: 16px; bottom: 150px">
+				<vv-dropdown v-bind="args">
+					<vv-button data-testId="trigger" label="Toggle dropdown" />
+					<template #items>
+						<vv-dropdown-action v-for="action in actions" :key="action">
+							{{ action }}
+						</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+		`,
+    }),
+    play: contentChangesWhileOpenTest,
 }
 
 /**

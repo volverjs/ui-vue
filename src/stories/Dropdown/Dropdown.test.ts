@@ -115,6 +115,12 @@ async function expectAbove(dropdown: Element, trigger: Element) {
     )
 }
 
+async function expectBelow(dropdown: Element, trigger: Element) {
+    await expect(dropdown.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+        trigger.getBoundingClientRect().bottom - 0.5,
+    )
+}
+
 export async function flipNearViewportBottomTest({
     canvasElement,
 }: PlayAttributes) {
@@ -192,6 +198,41 @@ export async function noResizeObserverLoopTest({
         globalThis.removeEventListener('error', onError)
     }
     await expect(errors).toEqual([])
+}
+
+export async function contentChangesWhileOpenTest({
+    canvasElement,
+}: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const dropdown = getDropdown(await canvas.findByTestId('wrapper'))
+    const list = getList(dropdown)
+    const show = (count: number) =>
+        userEvent.click(canvas.getByRole('button', { name: `${count} actions` }))
+
+    // one action fits below the trigger
+    await userEvent.click(trigger)
+    await waitFor(() => expectBelow(dropdown, trigger))
+
+    // ten do not: the dropdown grows to its cap and moves above
+    await show(10)
+    await waitFor(() => expectAbove(dropdown, trigger))
+    await expectNotSquashed(dropdown)
+
+    // forty fit on neither side: capped below, as the placement asks
+    await show(40)
+    await waitFor(async () => {
+        await expectBelow(dropdown, trigger)
+        await expect(list.scrollHeight).toBeGreaterThan(list.clientHeight + 1)
+    })
+    // let the ResizeObserver report the move, which places the dropdown again
+    await sleep(200)
+
+    // six fit above, while the capped dropdown keeps its size: nothing but the
+    // items tells that it has to move
+    await show(6)
+    await waitFor(() => expectAbove(dropdown, trigger))
+    await expectNotSquashed(dropdown)
 }
 
 export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes) {

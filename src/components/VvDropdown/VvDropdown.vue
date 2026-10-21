@@ -302,6 +302,17 @@ watch(
     },
     { flush: 'post', immediate: true },
 )
+// the items change the room the dropdown needs, which a capped dropdown does
+// not show by its own size, so the ResizeObserver does not see it
+useMutationObserver(
+    listEl,
+    () => {
+        if (expanded.value) {
+            update()
+        }
+    },
+    { childList: true, subtree: true, characterData: true },
+)
 // promote the dropdown after the DOM is updated and before the browser paints,
 // so it is never shown in place first. A post effect also covers a dropdown
 // expanded on mount, and one whose "topLayer" is turned on while it is open. It
