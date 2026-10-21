@@ -65,7 +65,9 @@ required `label`), `VvIcon` (`name`, `prefix`, `provider`), `VvAlert`, `VvAlertG
 **Overlays and containers**: `VvDialog` (native `<dialog>`, top layer), `VvDropdown` (Floating UI,
 `topLayer` opt-in) with `VvDropdownAction`, `VvDropdownItem`, `VvDropdownOption`,
 `VvDropdownOptgroup`, `VvAccordion` (`<details>`), `VvAccordionGroup`, `VvVirtualScroll`
-(@tanstack/vue-virtual).
+(@tanstack/vue-virtual; without `getItemKey` an object item is its own key, so a reorder moves
+its row and its size, a primitive is keyed by its index; pass `getItemKey` when the items carry
+an id and get replaced by copies).
 
 ## 3. Shared props: the names that actually exist
 

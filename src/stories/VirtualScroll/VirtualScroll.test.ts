@@ -133,3 +133,22 @@ export async function changeOptionsTest(
     await waitFor(() => expect(getSpacers()).toHaveLength(2))
     await expectSpacersToKeepTheirSize(getSpacers(), true)
 }
+
+/**
+ * The state of a row, here the text typed in its input, follows its item when
+ * the items change order.
+ */
+export async function rowStateTest(
+    { canvasElement }: PlayAttributes = {} as PlayAttributes,
+) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('virtual-scroll')
+
+    await userEvent.type(await canvas.findByRole('textbox', { name: 'Note on Item 3' }), 'Moved')
+    await userEvent.click(canvas.getByRole('button', { name: 'Move to top' }))
+    await waitFor(() => expect(element.querySelector('li')).toHaveTextContent('Item 3'))
+    await expect(canvas.getByRole('textbox', { name: 'Note on Item 3' })).toHaveValue('Moved')
+    await expect(canvas.getByRole('textbox', { name: 'Note on Item 1' })).toHaveValue('')
+
+    await expect(element).toHaveNoViolations()
+}

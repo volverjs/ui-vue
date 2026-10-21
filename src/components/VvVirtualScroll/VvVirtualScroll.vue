@@ -20,7 +20,6 @@ const props = withDefaults(defineProps<{
 }>(), {
     wrapperTag: 'ul',
     itemTag: 'li',
-    getItemKey: (index: number) => index,
     overscan: 10,
     horizontal: false,
     focusable: true,
@@ -40,13 +39,32 @@ const itemRole = computed(() =>
         : 'listitem',
 )
 
+// Without getItemKey an object is its own key, as long as it stays in the
+// list, so its row and its size follow it; a primitive keeps its index, since
+// equal values cannot be told apart
+const objectKeys = new WeakMap<object, string>()
+let objectsKeyed = 0
+function getDefaultItemKey(index: number) {
+    const item = toRaw(props.items[index])
+    if (item === null || typeof item !== 'object') {
+        return index
+    }
+    let key = objectKeys.get(item)
+    if (key === undefined) {
+        key = `item-${++objectsKeyed}`
+        objectKeys.set(item, key)
+    }
+    return key
+}
+
 // A new function on every change of the items, a reorder in place included,
 // makes the virtualizer rebuild its layout without dropping the sizes it has
-const getItemKey = shallowRef(props.getItemKey)
+const getItemKey = shallowRef(props.getItemKey ?? getDefaultItemKey)
 watch(
     [() => props.getItemKey, () => [...props.items]],
     ([value]) => {
-        getItemKey.value = (index: number) => value(index)
+        const itemKey = value ?? getDefaultItemKey
+        getItemKey.value = (index: number) => itemKey(index)
     },
 )
 
