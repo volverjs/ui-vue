@@ -27,20 +27,27 @@ function getVerticalStyle(size: number) {
     return { height: `${size}px`, flexShrink: 0 }
 }
 
+type GetItemKey = (index: number) => number | string | bigint
+
 export function useVirtualScroll(settings: {
     scrollEl: HTMLElement | null | Ref<HTMLElement | null>
     count: number | Ref<number>
     estimateSize: string | number | ((index: number) => number) | Ref<string | number | ((index: number) => number)>
-    getItemKey?: (index: number) => number | string | bigint
+    getItemKey?: GetItemKey | Ref<GetItemKey>
     overscan?: string | number | Ref<string | number>
     horizontal?: boolean | Ref<boolean>
 }) {
+    // The getters let the virtualizer follow the refs. A new getItemKey
+    // rebuilds its layout from the sizes it keeps by key: after a reorder
+    // the measured sizes follow their items.
     const virtualizer = useVirtualizer({
         get count() {
             return unref(settings.count)
         },
         getScrollElement: () => unref(settings.scrollEl),
-        getItemKey: settings.getItemKey,
+        get getItemKey() {
+            return unref(settings.getItemKey)
+        },
         estimateSize: (index: number) => {
             const estimateSize = unref(settings.estimateSize)
             if (typeof estimateSize === 'function') {
@@ -48,8 +55,12 @@ export function useVirtualScroll(settings: {
             }
             return pxToNumber(estimateSize)
         },
-        overscan: pxToNumber(unref(settings.overscan)),
-        horizontal: unref(settings.horizontal),
+        get overscan() {
+            return pxToNumber(unref(settings.overscan))
+        },
+        get horizontal() {
+            return unref(settings.horizontal)
+        },
     })
 
     const virtualItems = computed(() => virtualizer.value.getVirtualItems())

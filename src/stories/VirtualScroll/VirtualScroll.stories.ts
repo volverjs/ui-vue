@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { ref } from 'vue'
 import VvVirtualScroll from '@/components/VvVirtualScroll/VvVirtualScroll.vue'
-import { argTypes, defaultArgs } from './VirtualScroll.settings'
-import { defaultTest, flexContainerTest } from './VirtualScroll.test'
+import { argTypes, createSizedItems, defaultArgs } from './VirtualScroll.settings'
+import { changeOptionsTest, defaultTest, flexContainerTest, reorderTest, rowStateTest } from './VirtualScroll.test'
 
 const meta: Meta<typeof VvVirtualScroll> = {
     title: 'Components/VirtualScroll',
@@ -95,4 +96,88 @@ export const FlexColumn: Story = {
         await defaultTest(context)
         await flexContainerTest(context)
     },
+}
+
+export const Reorder: Story = {
+    render: () => ({
+        components: { VvVirtualScroll },
+        setup() {
+            const items = ref(createSizedItems())
+            const estimateSize = (index: number) => items.value[index].height
+            // in place, with the same count
+            const moveToTop = () => items.value.unshift(...items.value.splice(2, 1))
+            return { items, estimateSize, moveToTop }
+        },
+        template: /* html */ `
+			<button class="vv-button mb-md" @click="moveToTop">Move to top</button>
+			<vv-virtual-scroll :items="items" :estimate-size="estimateSize" class="h-256 overflow-auto border border-surface-3" data-testId="virtual-scroll">
+                <template #default="{ item, start, end }">
+                    <div class="px-16 border-b border-surface-3 flex items-center" :style="{ height: item.height + 'px' }" :data-size="end - start">
+                        {{ item.label }}
+                    </div>
+                </template>
+            </vv-virtual-scroll>
+		`,
+    }),
+    play: reorderTest,
+}
+
+export const ChangeOptions: Story = {
+    render: () => ({
+        components: { VvVirtualScroll },
+        setup() {
+            const overscan = ref(10)
+            const horizontal = ref(false)
+            return { items: defaultArgs.items, overscan, horizontal }
+        },
+        template: /* html */ `
+			<div class="flex gap-md mb-md">
+                <button class="vv-button" @click="overscan = 0">No overscan</button>
+                <button class="vv-button" @click="horizontal = !horizontal">Horizontal</button>
+            </div>
+			<vv-virtual-scroll
+                :items="items"
+                :overscan="overscan"
+                :horizontal="horizontal"
+                :estimate-size="horizontal ? 144 : 51"
+                :item-props="{ class: horizontal ? 'w-144 shrink-0 p-16 border-r border-surface-3' : 'p-16 border-b border-surface-3' }"
+                class="h-256 overflow-auto border border-surface-3"
+                :class="{ flex: horizontal }"
+                data-testId="virtual-scroll"
+            >
+                <template #default="{ item }">
+                    {{ item }}
+                </template>
+            </vv-virtual-scroll>
+		`,
+    }),
+    play: changeOptionsTest,
+}
+
+export const RowState: Story = {
+    render: () => ({
+        components: { VvVirtualScroll },
+        setup() {
+            // objects and no getItemKey: each row is keyed by its item
+            const items = ref(defaultArgs.items.map(label => ({ label })))
+            const moveToTop = () => items.value.unshift(...items.value.splice(2, 1))
+            return { items, moveToTop }
+        },
+        template: /* html */ `
+			<button class="vv-button mb-md" @click="moveToTop">Move to top</button>
+			<vv-virtual-scroll
+                :items="items"
+                :estimate-size="51"
+                :item-props="{ class: 'p-16 border-b border-surface-3 flex gap-sm items-center' }"
+                class="h-256 overflow-auto border border-surface-3"
+                data-testId="virtual-scroll"
+            >
+                <template #default="{ item }">
+                    <span class="w-80">{{ item.label }}</span>
+                    <input class="border border-surface-3 px-16" :aria-label="'Note on ' + item.label">
+                </template>
+            </vv-virtual-scroll>
+		`,
+    }),
+    play: rowStateTest,
 }

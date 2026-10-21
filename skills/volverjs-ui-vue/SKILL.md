@@ -65,7 +65,9 @@ required `label`), `VvIcon` (`name`, `prefix`, `provider`), `VvAlert`, `VvAlertG
 **Overlays and containers**: `VvDialog` (native `<dialog>`, top layer), `VvDropdown` (Floating UI,
 `topLayer` opt-in) with `VvDropdownAction`, `VvDropdownItem`, `VvDropdownOption`,
 `VvDropdownOptgroup`, `VvAccordion` (`<details>`), `VvAccordionGroup`, `VvVirtualScroll`
-(@tanstack/vue-virtual).
+(@tanstack/vue-virtual; without `getItemKey` an object item is its own key, so a reorder moves
+its row and its size, a primitive is keyed by its index; pass `getItemKey` when the items carry
+an id and get replaced by copies).
 
 ## 3. Shared props: the names that actually exist
 
@@ -355,7 +357,7 @@ apply only to globally registered components. The instance is available as `$vv`
 | `useDropdownContextmenu(dropdownRef, targetEl?)` | `Ref<VvDropdown>`, optional element | open a dropdown at the pointer on right click |
 | `useDropdownVirtualElement(dropdownRef)` | `Ref<VvDropdown>` | anchor a dropdown to arbitrary coordinates |
 | `useBlurhash()` | returns `{ encode, decode, loadImage }` | blurred image placeholders |
-| `useVirtualScroll({ scrollEl, count, estimateSize, getItemKey?, overscan?, horizontal? })` | | custom virtual lists; `VvVirtualScroll` covers the common case |
+| `useVirtualScroll({ scrollEl, count, estimateSize, getItemKey?, overscan?, horizontal? })` | each option takes a value or a ref | custom virtual lists; `VvVirtualScroll` covers the common case. When the items change order, give the `getItemKey` ref a new function (a `computed` over the items): the measured sizes follow their keys, while `virtualizer.measure()` drops them |
 
 Directives: `v-tooltip="'text'"` and `v-tooltip:top="'text'"` (argument is the `Side`),
 `v-contextmenu`. Import from `@volverjs/ui-vue/directives`.
