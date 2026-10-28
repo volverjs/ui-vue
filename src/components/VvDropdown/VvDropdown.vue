@@ -129,14 +129,49 @@ const uncap: Middleware = {
     },
 }
 
+// the width "triggerWidth" gives the dropdown, or 0 when it gives none: a
+// custom position leaves the width to the stylesheet, and a virtual reference,
+// such as the pointer of a context menu, has none to give
+function getTriggerWidth(rects: MiddlewareState['rects']) {
+    return props.triggerWidth && !hasCustomPosition.value
+        ? rects.reference.width
+        : 0
+}
+
+// "triggerWidth" gives the dropdown the width the trigger has in each pass. A
+// trigger that changes width changes nothing reactive, nor the coordinates of
+// a dropdown aligned to its start, so the width is read from the rects. It is
+// written once per pass and the dropdown measured again, so that the
+// middleware after it measure the dropdown at that width
+const triggerWidth: Middleware = {
+    name: 'triggerWidth',
+    fn({ elements, rects, middlewareData }) {
+        const { style } = elements.floating as HTMLElement
+        const width = getTriggerWidth(rects)
+        // the browser keeps six significant digits of the width it is given
+        const written = Number.parseFloat(style.width) || 0
+        if (middlewareData.triggerWidth || Math.abs(width - written) < 0.01) {
+            return {}
+        }
+        style.width = width ? `${width}px` : ''
+        return { reset: { rects: true } }
+    },
+}
+
 const middleware = computed<Middleware[]>(() => {
     const toReturn: Middleware[] = []
+
+    // first, so that the others measure the dropdown at its width
+    if (props.triggerWidth) {
+        toReturn.push(triggerWidth)
+    }
 
     if (props.size) {
         toReturn.push(uncap)
     }
 
-    // first, so that the others measure the dropdown where the offset puts it
+    // before the middleware that place the dropdown, so that they measure it
+    // where the offset puts it
     if (props.offset) {
         toReturn.push(
             ['string', 'number'].includes(typeof props.offset)
@@ -194,7 +229,8 @@ const middleware = computed<Middleware[]>(() => {
                 return
             }
             const { style } = elements.floating as HTMLElement
-            style.maxWidth = props.triggerWidth && referenceEl.value
+            // as wide as the trigger, past the room left if need be
+            style.maxWidth = getTriggerWidth(rects)
                 ? ''
                 : `${Math.max(0, availableWidth)}px`
             style.maxHeight = `${Math.max(0, availableHeight)}px`
@@ -239,17 +275,21 @@ const dropdownPlacement = computed(() => {
     if (hasCustomPosition.value) {
         return undefined
     }
-    const width
-        = props.triggerWidth && referenceEl.value
-            ? `${referenceEl.value?.offsetWidth}px`
-            : undefined
     return {
         position: strategy.value,
         top: `${y.value ?? 0}px`,
         left: `${x.value ?? 0}px`,
-        width,
     }
 })
+// the middleware is gone once "triggerWidth" is off, and so has to be its width
+watch(
+    () => props.triggerWidth,
+    (value) => {
+        if (!value && floatingEl.value) {
+            floatingEl.value.style.width = ''
+        }
+    },
+)
 
 // placement
 const side = computed(

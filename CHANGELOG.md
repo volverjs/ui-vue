@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.26]
+
+### Fixed
+
+- `VvDropdown` with `triggerWidth` takes the width the trigger has when it opens, and follows it while open. The width came from a `computed` that read `offsetWidth`, which Vue does not track, so it was read again only when the coordinates or the strategy changed. A field in a sidebar, 63px wide with the sidebar closed, opened the dropdown again at 63px once the sidebar was open and the field 235px wide, since the dropdown opened at the same place; a trigger resized while the dropdown was open, aligned to its start, left it at the old width too. The width is now written by a middleware that runs first in every placement, from the size Floating UI measures for the trigger, and the dropdown is measured again after it, so `flip`, `shift` and `size` measure the dropdown at that width: before, `flip` measured the old one, and near the edge of the viewport could align the dropdown to the end of the trigger until the next placement. It works with `size` off too. The width is the one Floating UI measures, which keeps the fraction of a pixel and the scale of a `transform` on the trigger, where `offsetWidth` rounded it and left the transform out. A reference with no width, such as the pointer of `useDropdownContextmenu`, still leaves the dropdown to its content, and so does a hidden trigger, which gave it `width: 0px`. `size` now caps that width to the room left, as it does without `triggerWidth`: the cap was dropped for any reference, so wide items ran past the edge of the viewport. A dropdown with `--dropdown-custom-position`, as with the `dialog` modifier, still gets no width. An `apply` in `size` that wrote `rects.reference.width` on the dropdown to work around the bug is no longer needed. A `TriggerWidthAfterResize` story opens the dropdown with the sidebar closed, opens the sidebar and the dropdown again at the same place and finds it as wide as the trigger, then resizes the trigger while the dropdown is open and finds the dropdown following it; without the fix it stays at 63px. A `TriggerWidthAfterResizeWithoutSize` story does the same with `size` off.
+
 ## [0.0.25] - 2026-10-21
 
 ### Changed
