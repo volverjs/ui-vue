@@ -1,7 +1,17 @@
+/**
+ * Whether a computed `overflow` value lets the element scroll on that axis.
+ */
 function scrolls(overflow: string) {
     return overflow === 'auto' || overflow === 'scroll'
 }
 
+/**
+ * The nearest ancestor of `element` that scrolls on both axes, or
+ * `document.documentElement` when none does. It passes over a container that
+ * scrolls on one axis only, such as `overflow: hidden auto`: see section 9 of
+ * `docs/specs/floating-elements.md`.
+ * @param element - The element to start from, excluded from the search.
+ */
 export function findScrollContainer(element: HTMLElement | null) {
     if (!element) {
         return undefined
