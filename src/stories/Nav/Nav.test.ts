@@ -64,10 +64,15 @@ export async function wheelTest({ canvasElement }: PlayAttributes) {
     await expect(dispatchWheel(item, { deltaY: 40, ctrlKey: true })).toBe(false)
     await expect(menu.scrollLeft).toBe(0)
 
-    // and so is an event it no longer lets cancel, which already scrolls
-    // something else
+    // and so is an event that cannot be cancelled, which keeps its default
+    // scroll, and one another listener has cancelled already
     await expect(dispatchWheel(item, { deltaY: 40, cancelable: false })).toBe(false)
     await expect(menu.scrollLeft).toBe(0)
+    const cancel = (event: Event) => event.preventDefault()
+    item.addEventListener('wheel', cancel)
+    await expect(dispatchWheel(item, { deltaY: 40 })).toBe(true)
+    await expect(menu.scrollLeft).toBe(0)
+    item.removeEventListener('wheel', cancel)
 
     // a wheel that counts lines or pages rather than pixels scrolls by lines
     // of 40px or by the width of the tabs
@@ -82,24 +87,41 @@ export async function wheelTest({ canvasElement }: PlayAttributes) {
     await expect(menu.scrollLeft).toBe(Math.min(menu.clientWidth, room))
     menu.scrollTo({ left: 0, behavior: 'instant' })
 
+    // a list that scrolls vertically as well keeps the wheel for itself
+    menu.style.overflow = 'auto'
+    menu.style.height = '1em'
+    await expect(menu.scrollHeight).toBeGreaterThan(menu.clientHeight)
+    await expect(dispatchWheel(item, { deltaY: 40 })).toBe(false)
+    await expect(menu.scrollLeft).toBe(0)
+    menu.style.removeProperty('overflow')
+    menu.style.removeProperty('height')
+
     // a list inside the tabs that can still scroll vertically keeps the
-    // wheel, and hands it to the tabs at its end
+    // wheel, also over what it holds, and hands it to the tabs at its end
     const nested = menuOf('tabs-nested')
     const notes = canvas.getByTestId('notes')
+    const note = notes.firstElementChild as HTMLElement
     await expect(notes.scrollHeight).toBeGreaterThan(notes.clientHeight)
-    await expect(dispatchWheel(notes, { deltaY: 40 })).toBe(false)
+    await expect(dispatchWheel(note, { deltaY: 40 })).toBe(false)
     await expect(nested.scrollLeft).toBe(0)
     notes.scrollTo({ top: notes.scrollHeight, behavior: 'instant' })
-    await expect(dispatchWheel(notes, { deltaY: 40 })).toBe(true)
+    await expect(dispatchWheel(note, { deltaY: 40 })).toBe(true)
     await expect(nested.scrollLeft).toBe(40)
 
-    // right to left, the tabs past the edge are on the left
+    // right to left, the tabs past the edge are on the left, and the page
+    // keeps the wheel at either end
     const rtl = menuOf('tabs-rtl')
+    const rtlRoom = rtl.scrollWidth - rtl.clientWidth
     await expect(dispatchWheel(rtl, { deltaY: 40 })).toBe(true)
     await expect(rtl.scrollLeft).toBe(-40)
+    rtl.scrollTo({ left: 0, behavior: 'instant' })
+    await expect(dispatchWheel(rtl, { deltaY: -40 })).toBe(false)
+    rtl.scrollTo({ left: -rtlRoom, behavior: 'instant' })
+    await expect(dispatchWheel(rtl, { deltaY: 40 })).toBe(false)
+    await expect(rtl.scrollLeft).toBe(-rtlRoom)
 
     // a nav that does not scroll sideways keeps the wheel for the page
     await expect(dispatchWheel(menuOf('sidebar'), { deltaY: 40 })).toBe(false)
 
-    await expect(canvas.getByTestId('tabs')).toHaveNoViolations()
+    await expect(canvasElement).toHaveNoViolations()
 }

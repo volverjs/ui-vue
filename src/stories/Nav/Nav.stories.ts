@@ -75,12 +75,12 @@ export const Wheel: Story = {
         },
         template: /* html */ `
 			<div class="m-md flex flex-col gap-md" style="width: 200px">
-				<vv-nav :items="args.items" modifiers="tabs" data-testId="tabs" />
+				<vv-nav :items="args.items" modifiers="tabs" aria-label="Tabs" data-testId="tabs" />
 				<div dir="rtl">
-					<vv-nav :items="args.items" modifiers="tabs" data-testId="tabs-rtl" />
+					<vv-nav :items="args.items" modifiers="tabs" aria-label="Right to left" data-testId="tabs-rtl" />
 				</div>
-				<vv-nav :items="args.items.slice(0, 2)" modifiers="sidebar" data-testId="sidebar" />
-				<vv-nav modifiers="tabs" data-testId="tabs-nested">
+				<vv-nav :items="args.items.slice(0, 2)" modifiers="sidebar" aria-label="Sidebar" data-testId="sidebar" />
+				<vv-nav modifiers="tabs" aria-label="With notes" data-testId="tabs-nested">
 					<li role="presentation">
 						<div role="group" aria-label="Notes" tabindex="0" class="text-14" style="width: 120px; height: 2lh; overflow-y: auto" data-testId="notes">
 							<p v-for="index in 6" :key="index">Note {{ index }}</p>

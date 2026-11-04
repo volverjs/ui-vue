@@ -1,3 +1,7 @@
+function scrolls(overflow: string) {
+    return overflow === 'auto' || overflow === 'scroll'
+}
+
 export function findScrollContainer(element: HTMLElement | null) {
     if (!element) {
         return undefined
@@ -11,17 +15,13 @@ export function findScrollContainer(element: HTMLElement | null) {
     let parent = element.parentElement
     while (parent) {
         const { overflow } = globalThis.getComputedStyle(parent)
-        if (overflow.split(' ').every(item => item === 'auto' || item === 'scroll')) {
+        if (overflow.split(' ').every(scrolls)) {
             return parent
         }
         parent = parent.parentElement
     }
 
     return document.documentElement
-}
-
-function scrolls(overflow: string) {
-    return overflow === 'auto' || overflow === 'scroll'
 }
 
 /**
@@ -57,16 +57,19 @@ function scrollsBlockAhead(element: Element, delta: number) {
  * trackpad), when it is a pinch to zoom, when the element fits or scrolls on
  * the block axis too, and at the end the wheel heads to, so the page scrolls
  * on past the list. It keeps it as well over an element inside the list that
- * can still scroll vertically, and when the event can no longer be cancelled.
+ * can still scroll vertically, and when the event can no longer be cancelled
+ * or another listener has cancelled it already.
  * @param event - The `wheel` event, whose `currentTarget` is the list.
  */
 export function scrollInlineOnWheel(event: WheelEvent) {
     const element = event.currentTarget as HTMLElement | null
     if (
         !element
-        // an event the browser no longer lets cancel is already scrolling
-        // something else: scrolling the list too would move both
+        // An event that cannot be cancelled keeps its default scroll, and one
+        // already cancelled was handled by another listener, such as a list
+        // nested in this one: scrolling this list too would move both
         || !event.cancelable
+        || event.defaultPrevented
         || event.ctrlKey
         || Math.abs(event.deltaY) <= Math.abs(event.deltaX)
     ) {
@@ -87,7 +90,7 @@ export function scrollInlineOnWheel(event: WheelEvent) {
     if (!hasRoomAhead(Math.abs(element.scrollLeft), room, event.deltaY)) {
         return
     }
-    // an element inside the list that can still scroll vertically, such as
+    // An element inside the list that can still scroll vertically, such as
     // the items of a dropdown, keeps the wheel
     for (const target of event.composedPath()) {
         if (target === element) {
@@ -98,7 +101,7 @@ export function scrollInlineOnWheel(event: WheelEvent) {
         }
     }
     event.preventDefault()
-    // a wheel that counts lines or pages rather than pixels scrolls by lines
+    // A wheel that counts lines or pages rather than pixels scrolls by lines
     // of 40px or by the width of the list
     let delta = event.deltaY
     if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
