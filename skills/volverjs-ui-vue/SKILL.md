@@ -88,7 +88,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 | Options | `options`, `labelKey`, `valueKey`, `disabledKey` | see section 6 |
 | Links | `to`, `href`, `target`, `rel` | on VvAction, VvButton, nav items, breadcrumb routes |
 | BEM | `modifiers` | string (space separated) or string array |
-| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox. On VvCombobox `keepOpen` is its own prop: it keeps the list open after a single selection, and a click outside still closes it. `flip` keeps from the edge the `padding` of `size` (10px by default) unless its own options set one, and both count the `offset` |
+| Floating UI | `placement`, `strategy`, `offset`, `shift`, `flip`, `autoPlacement`, `arrow`, `size`, `keepOpen`, `autofocusFirst`, `triggerWidth`, `topLayer`, `transitionName` | VvDropdown and VvCombobox. On VvCombobox `keepOpen` is its own prop: it keeps the list open after a single selection, and a click outside still closes it. `flip` keeps from the edge the `padding` of `size` (10px by default) unless its own options set one, and both count the `offset`. `triggerWidth` reads the trigger at every placement, so the dropdown follows a trigger resized while it was closed or while it is open: no `apply` in `size` is needed to copy `rects.reference.width` |
 
 ## 4. Modifiers: the class is free, the style is not
 
@@ -253,6 +253,11 @@ For a right-click menu use `useDropdownContextmenu` or the `v-contextmenu` direc
 
 `NavItem` fields: `label`, `to`, `href`, `target`, `rel`, `title`, `ariaLabel`, `disabled`,
 `current`, `class`, `on` (event handlers), `data` (passed to the `item` slot).
+
+The menu of `VvNav` with `tabs`, and so the tabs of `VvTab`, and the list of `VvBreadcrumb` hide
+their scrollbar and scroll sideways on a vertical turn of the mouse wheel when they overflow. The
+page scrolls on once the list reaches the end the wheel heads to, and an element inside the list
+that scrolls vertically keeps the wheel until its own end.
 
 ### Alerts: a reactive list rendered by VvAlertGroup
 

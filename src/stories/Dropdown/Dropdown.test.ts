@@ -262,6 +262,44 @@ export function roomBelowTest(extra: number) {
     }
 }
 
+export async function triggerWidthAfterResizeTest({
+    canvasElement,
+}: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const sidebar = await canvas.findByTestId('sidebar')
+    const trigger = await canvas.findByTestId('trigger')
+    const dropdown = getDropdown(sidebar) as HTMLElement
+    // as wide as the trigger and below its start, both at once: the width is
+    // written within a pass, before the coordinates
+    const expectPlaced = (width: number) =>
+        waitFor(async () => {
+            const triggerRect = trigger.getBoundingClientRect()
+            const dropdownRect = dropdown.getBoundingClientRect()
+            await expect(triggerRect.width).toBeCloseTo(width, 0)
+            await expect(dropdownRect.width).toBeCloseTo(width, 0)
+            await expect(dropdownRect.left).toBeCloseTo(triggerRect.left, 0)
+            await expect(dropdownRect.top).toBeCloseTo(triggerRect.bottom, 0)
+        })
+
+    // opened with the sidebar closed, as wide as the trigger
+    await userEvent.click(trigger)
+    await expectPlaced(63)
+
+    // the sidebar opens, and the click closes the dropdown
+    await userEvent.click(canvas.getByTestId('sidebar-toggle'))
+    await waitFor(() => expect(dropdown).not.toBeVisible())
+
+    // opened again at the same place, since the trigger starts where it did:
+    // nothing but the trigger tells that the width has changed
+    await userEvent.click(trigger)
+    await expectPlaced(235)
+
+    // the trigger changes width while the dropdown is open
+    sidebar.style.width = '160px'
+    await expectPlaced(160)
+    await expect(dropdown).toHaveNoViolations()
+}
+
 export async function contextmenuRerenderTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const target = await canvas.findByTestId('target')

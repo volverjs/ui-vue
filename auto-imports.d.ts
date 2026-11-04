@@ -109,6 +109,7 @@ declare global {
   const resolveComponent: typeof import('vue').resolveComponent
   const resolveFieldData: typeof import('./src/utils/ObjectUtilities').resolveFieldData
   const resolveRef: typeof import('@vueuse/core').resolveRef
+  const scrollInlineOnWheel: typeof import('./src/utils/DomUtilities').scrollInlineOnWheel
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VvBreadcrumbProps } from '.'
 import { useModifiers } from '../../composables/useModifiers'
+import { scrollInlineOnWheel } from '../../utils/DomUtilities'
 import VvAction from '../VvAction/VvAction.vue'
 
 const props = defineProps(VvBreadcrumbProps)
@@ -20,7 +21,7 @@ export default {
 
 <template>
     <nav :class="bemCssClasses" aria-label="breadcrumbs">
-        <ol class="vv-breadcrumb__list">
+        <ol class="vv-breadcrumb__list" @wheel="scrollInlineOnWheel">
             <li
                 v-for="({ label, ...route }, index) in routes"
                 :key="`${label}-${index}`"

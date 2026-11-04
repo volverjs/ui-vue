@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VvNavEvents, VvNavProps } from '@/components/VvNav'
+import { scrollInlineOnWheel } from '@/utils/DomUtilities'
 import VvNavItem from './VvNavItem.vue'
 
 const props = defineProps(VvNavProps)
@@ -39,7 +40,12 @@ export default {
 
 <template>
     <nav :class="bemCssClasses">
-        <ul class="vv-nav__menu" role="menu" @click.stop="onClick">
+        <ul
+            class="vv-nav__menu"
+            role="menu"
+            @click.stop="onClick"
+            @wheel="scrollInlineOnWheel"
+        >
             <slot>
                 <VvNavItem
                     v-for="({ on = {}, data, ...item }, index) in items"

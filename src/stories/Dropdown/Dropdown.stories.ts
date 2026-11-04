@@ -17,6 +17,7 @@ import {
     sizeApplyTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
+    triggerWidthAfterResizeTest,
 } from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
@@ -115,6 +116,56 @@ export const TriggerWidth: Story = {
     args: {
         ...defaultArgs,
         triggerWidth: true,
+    },
+}
+
+/**
+ * The trigger fills a sidebar that a button closes and opens again: the
+ * dropdown opens as wide as the trigger is now, and follows it when it changes
+ * width while open.
+ */
+export const TriggerWidthAfterResize: Story = {
+    args: {
+        ...defaultArgs,
+        // the same place at every width, so that the coordinates do not change
+        placement: 'bottom-start',
+        triggerWidth: true,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const sidebarOpen = ref(false)
+            return { args, sidebarOpen }
+        },
+        // away from the edge, where "flip" would move the dropdown to keep the
+        // padding of "size"
+        template: /* html */ `
+			<div class="p-lg">
+				<vv-button data-testId="sidebar-toggle" label="Toggle sidebar" modifiers="secondary" @click="sidebarOpen = !sidebarOpen" />
+				<div data-testId="sidebar" class="mt-md" :style="{ width: sidebarOpen ? '235px' : '63px', minHeight: '160px' }">
+					<vv-dropdown v-bind="args">
+						<vv-button data-testId="trigger" label="Menu" modifiers="block" />
+						<template #items>
+							<vv-dropdown-action>Create</vv-dropdown-action>
+							<vv-dropdown-action>Update</vv-dropdown-action>
+							<vv-dropdown-action>Delete</vv-dropdown-action>
+						</template>
+					</vv-dropdown>
+				</div>
+			</div>
+		`,
+    }),
+    play: triggerWidthAfterResizeTest,
+}
+
+/**
+ * The same without `size`, which the width does not depend on.
+ */
+export const TriggerWidthAfterResizeWithoutSize: Story = {
+    ...TriggerWidthAfterResize,
+    args: {
+        ...TriggerWidthAfterResize.args,
+        size: false,
     },
 }
 
