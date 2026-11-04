@@ -111,14 +111,26 @@ export async function wheelTest({ canvasElement }: PlayAttributes) {
     // right to left, the tabs past the edge are on the left, and the page
     // keeps the wheel at either end
     const rtl = menuOf('tabs-rtl')
-    const rtlRoom = rtl.scrollWidth - rtl.clientWidth
     await expect(dispatchWheel(rtl, { deltaY: 40 })).toBe(true)
     await expect(rtl.scrollLeft).toBe(-40)
     rtl.scrollTo({ left: 0, behavior: 'instant' })
     await expect(dispatchWheel(rtl, { deltaY: -40 })).toBe(false)
-    rtl.scrollTo({ left: -rtlRoom, behavior: 'instant' })
-    await expect(dispatchWheel(rtl, { deltaY: 40 })).toBe(false)
-    await expect(rtl.scrollLeft).toBe(-rtlRoom)
+
+    // Chromium can stop a right-to-left list a pixel short of its room, at
+    // widths that depend on the fonts: across a range of widths, a turn
+    // toward the end is left to the page once the list is there
+    const rtlBox = canvas.getByTestId('rtl')
+    const held: number[] = []
+    for (let width = 150; width < 200; width += 0.37) {
+        rtlBox.style.width = `${width}px`
+        rtl.scrollTo({ left: -rtl.scrollWidth, behavior: 'instant' })
+        const end = rtl.scrollLeft
+        if (dispatchWheel(rtl, { deltaY: 40 }) || rtl.scrollLeft !== end) {
+            held.push(width)
+        }
+    }
+    rtlBox.style.removeProperty('width')
+    await expect(held).toEqual([])
 
     // a nav that does not scroll sideways keeps the wheel for the page
     await expect(dispatchWheel(menuOf('sidebar'), { deltaY: 40 })).toBe(false)

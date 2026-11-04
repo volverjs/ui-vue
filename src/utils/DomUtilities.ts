@@ -96,10 +96,6 @@ export function scrollInlineOnWheel(event: WheelEvent) {
     ) {
         return
     }
-    // In a right-to-left list `scrollLeft` runs from 0 to the negative room
-    if (!hasRoomAhead(Math.abs(element.scrollLeft), room, event.deltaY)) {
-        return
-    }
     // An element inside the list that can still scroll vertically, such as
     // the items of a dropdown, keeps the wheel
     for (const target of event.composedPath()) {
@@ -110,7 +106,6 @@ export function scrollInlineOnWheel(event: WheelEvent) {
             return
         }
     }
-    event.preventDefault()
     // A wheel that counts lines or pages rather than pixels scrolls by lines
     // of 40px or by the width of the list
     let delta = event.deltaY
@@ -119,11 +114,19 @@ export function scrollInlineOnWheel(event: WheelEvent) {
     } else if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
         delta *= element.clientWidth
     }
+    // The list scrolls first, and the event is cancelled only if it moved:
+    // at the end the wheel heads to it does not, and the page scrolls on.
+    // The end is not worked out from the room, since Chromium can stop a
+    // right-to-left list a pixel short of it, where the page was held back.
     // `instant`: the lists scroll smoothly, and a smooth scroll that each
     // step of the wheel restarts from where the last one had got to loses
     // part of the distance
+    const before = element.scrollLeft
     element.scrollBy({
         left: direction === 'rtl' ? -delta : delta,
         behavior: 'instant',
     })
+    if (element.scrollLeft !== before) {
+        event.preventDefault()
+    }
 }

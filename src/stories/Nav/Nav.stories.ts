@@ -76,7 +76,7 @@ export const Wheel: Story = {
         template: /* html */ `
 			<div class="m-md flex flex-col gap-md" style="width: 200px">
 				<vv-nav :items="args.items" modifiers="tabs" aria-label="Tabs" data-testId="tabs" />
-				<div dir="rtl">
+				<div dir="rtl" data-testId="rtl">
 					<vv-nav :items="args.items" modifiers="tabs" aria-label="Right to left" data-testId="tabs-rtl" />
 				</div>
 				<vv-nav :items="args.items.slice(0, 2)" modifiers="sidebar" aria-label="Sidebar" data-testId="sidebar" />
