@@ -99,6 +99,7 @@
     "removeFromList": true,
     "resolveComponent": true,
     "resolveFieldData": true,
+    "scrollInlineOnWheel": true,
     "shallowReactive": true,
     "shallowReadonly": true,
     "shallowRef": true,
