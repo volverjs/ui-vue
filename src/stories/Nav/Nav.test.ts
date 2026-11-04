@@ -108,25 +108,26 @@ export async function wheelTest({ canvasElement }: PlayAttributes) {
     await expect(dispatchWheel(note, { deltaY: 40 })).toBe(true)
     await expect(nested.scrollLeft).toBe(40)
 
-    // right to left, the tabs past the edge are on the left, and the page
-    // keeps the wheel at either end
+    // right to left, the tabs past the edge are on the left
     const rtl = menuOf('tabs-rtl')
+    const start = rtl.scrollLeft
     await expect(dispatchWheel(rtl, { deltaY: 40 })).toBe(true)
-    await expect(rtl.scrollLeft).toBe(-40)
-    rtl.scrollTo({ left: 0, behavior: 'instant' })
-    await expect(dispatchWheel(rtl, { deltaY: -40 })).toBe(false)
+    await expect(rtl.scrollLeft).toBe(start - 40)
 
-    // Chromium can stop a right-to-left list a pixel short of its room, at
-    // widths that depend on the fonts: across a range of widths, a turn
-    // toward the end is left to the page once the list is there
+    // and the page keeps the wheel at either end. At widths that depend on
+    // the fonts, Chromium shifts the range of a right-to-left list by a
+    // pixel, from a pixel short of the negative room to 1 rather than to 0:
+    // each end is reached by scrolling past it, across a range of widths
     const rtlBox = canvas.getByTestId('rtl')
-    const held: number[] = []
+    const held: string[] = []
     for (let width = 150; width < 200; width += 0.37) {
         rtlBox.style.width = `${width}px`
-        rtl.scrollTo({ left: -rtl.scrollWidth, behavior: 'instant' })
-        const end = rtl.scrollLeft
-        if (dispatchWheel(rtl, { deltaY: 40 }) || rtl.scrollLeft !== end) {
-            held.push(width)
+        for (const [left, deltaY] of [[rtl.scrollWidth, -40], [-rtl.scrollWidth, 40]]) {
+            rtl.scrollTo({ left, behavior: 'instant' })
+            const end = rtl.scrollLeft
+            if (dispatchWheel(rtl, { deltaY }) || rtl.scrollLeft !== end) {
+                held.push(`${width.toFixed(2)}px, ${deltaY < 0 ? 'start' : 'end'}`)
+            }
         }
     }
     rtlBox.style.removeProperty('width')

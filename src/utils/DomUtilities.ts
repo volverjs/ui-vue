@@ -116,8 +116,8 @@ export function scrollInlineOnWheel(event: WheelEvent) {
     }
     // The list scrolls first, and the event is cancelled only if it moved:
     // at the end the wheel heads to it does not, and the page scrolls on.
-    // The end is not worked out from the room, since Chromium can stop a
-    // right-to-left list a pixel short of it, where the page was held back.
+    // The ends are not worked out from the room, since Chromium can shift the
+    // range of a right-to-left list by a pixel, where the page was held back.
     // `instant`: the lists scroll smoothly, and a smooth scroll that each
     // step of the wheel restarts from where the last one had got to loses
     // part of the distance
