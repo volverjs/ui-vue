@@ -254,6 +254,11 @@ For a right-click menu use `useDropdownContextmenu` or the `v-contextmenu` direc
 `NavItem` fields: `label`, `to`, `href`, `target`, `rel`, `title`, `ariaLabel`, `disabled`,
 `current`, `class`, `on` (event handlers), `data` (passed to the `item` slot).
 
+The menu of `VvNav` with `tabs`, and so the tabs of `VvTab`, and the list of `VvBreadcrumb` hide
+their scrollbar and scroll sideways on a vertical turn of the mouse wheel when they overflow. The
+page scrolls on once the list reaches the end the wheel heads to, and an element inside the list
+that scrolls vertically keeps the wheel until its own end.
+
 ### Alerts: a reactive list rendered by VvAlertGroup
 
 ```vue

@@ -1,5 +1,7 @@
 import type { PlayAttributes } from '@/test/types'
+import { within } from 'storybook/test'
 import { expect } from '@/test/expect'
+import { dispatchWheel } from '@/test/wheel'
 
 function linkClick(event: Event) {
     event.preventDefault()
@@ -49,4 +51,23 @@ export async function defaultTest(
         }
     })
     await expect(breadcrumb).toHaveNoViolations()
+}
+
+export async function wheelTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const list = element.querySelector('.vv-breadcrumb__list') as HTMLElement
+    const link = within(list).getAllByRole('link')[0]
+    const room = list.scrollWidth - list.clientWidth
+    await expect(room).toBeGreaterThan(40)
+
+    // a vertical turn of the wheel scrolls the routes sideways, at once,
+    // and the page keeps it at either end
+    await expect(dispatchWheel(link, { deltaY: 40 })).toBe(true)
+    await expect(list.scrollLeft).toBe(40)
+    list.scrollTo({ left: room, behavior: 'instant' })
+    await expect(dispatchWheel(link, { deltaY: 40 })).toBe(false)
+    list.scrollTo({ left: 0, behavior: 'instant' })
+    await expect(dispatchWheel(link, { deltaY: -40 })).toBe(false)
+
+    await expect(element).toHaveNoViolations()
 }

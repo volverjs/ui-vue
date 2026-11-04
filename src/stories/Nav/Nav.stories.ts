@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvNav from '@/components/VvNav/VvNav.vue'
+import VvNavItem from '@/components/VvNav/VvNavItem.vue'
 import { argTypes, defaultArgs } from './Nav.settings'
-import { defaultTest, keyboardTest } from './Nav.test'
+import { defaultTest, keyboardTest, wheelTest } from './Nav.test'
 
 const meta: Meta<typeof VvNav> = {
     title: 'Components/Nav',
@@ -51,4 +52,43 @@ export const Keyboard: Story = {
 			</div>`,
     }),
     play: keyboardTest,
+}
+
+/**
+ * Tabs wider than their box, scrolled with a mouse wheel. The menu of the
+ * `tabs` modifier scrolls only sideways and hides its scrollbar, and a wheel
+ * turns on the vertical axis: a vertical turn over the menu scrolls it
+ * sideways, until the end it heads to. A list inside the menu that scrolls
+ * vertically keeps the wheel until its own end.
+ */
+export const Wheel: Story = {
+    args: {
+        ...defaultArgs,
+        items: Array.from({ length: 8 }, (_, index) => ({
+            label: `Item ${index + 1}`,
+        })),
+    },
+    render: args => ({
+        components: { VvNav, VvNavItem },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div class="m-md flex flex-col gap-md" style="width: 200px">
+				<vv-nav :items="args.items" modifiers="tabs" data-testId="tabs" />
+				<div dir="rtl">
+					<vv-nav :items="args.items" modifiers="tabs" data-testId="tabs-rtl" />
+				</div>
+				<vv-nav :items="args.items.slice(0, 2)" modifiers="sidebar" data-testId="sidebar" />
+				<vv-nav modifiers="tabs" data-testId="tabs-nested">
+					<li role="presentation">
+						<div role="group" aria-label="Notes" tabindex="0" class="text-14" style="width: 120px; height: 2lh; overflow-y: auto" data-testId="notes">
+							<p v-for="index in 6" :key="index">Note {{ index }}</p>
+						</div>
+					</li>
+					<vv-nav-item v-for="item in args.items" :key="item.label">{{ item.label }}</vv-nav-item>
+				</vv-nav>
+			</div>`,
+    }),
+    play: wheelTest,
 }
