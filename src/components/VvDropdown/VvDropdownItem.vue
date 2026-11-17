@@ -3,9 +3,9 @@ import { VvDropdownItemProps } from '.'
 
 const props = defineProps(VvDropdownItemProps)
 
-const { role, expanded } = useInjectedDropdownItem()
+const { role, expanded, onAction } = useInjectedDropdownItem()
 const element = ref(null)
-useDropdownProvideAction({ expanded })
+useDropdownProvideAction({ expanded, onAction })
 const hovered = useElementHover(element)
 const { focused } = useFocus(element)
 const { focused: focusedWithin } = useFocusWithin(element)

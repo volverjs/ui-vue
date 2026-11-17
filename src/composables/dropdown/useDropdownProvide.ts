@@ -86,11 +86,14 @@ export function useDropdownProvideItem({
  */
 export function useDropdownProvideAction({
     expanded,
+    onAction,
 }: {
     expanded?: Ref<boolean>
+    onAction?: () => void
 }) {
     provide(INJECTION_KEY_DROPDOWN_ACTION, {
         role: ref(ActionRoles.menuitem),
         expanded,
+        onAction,
     })
 }

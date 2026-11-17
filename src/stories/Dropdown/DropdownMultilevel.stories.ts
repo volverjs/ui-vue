@@ -3,9 +3,15 @@ import { ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
+import VvDropdownItem from '@/components/VvDropdown/VvDropdownItem.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
-import { defaultTest, nestedKeyboardTest } from './Dropdown.test'
+import {
+    defaultTest,
+    nestedClickTest,
+    nestedInItemTest,
+    nestedKeyboardTest,
+} from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
     title: 'Components/Dropdown/Multilevel',
@@ -67,4 +73,56 @@ export const Default: Story = {
 export const NestedKeyboard: Story = {
     ...Default,
     play: nestedKeyboardTest,
+}
+
+/**
+ * A click on More opens the nested dropdown and leaves the outer one open, a
+ * click on Create closes both and gives the focus back to the trigger.
+ */
+export const NestedClick: Story = {
+    ...Default,
+    play: nestedClickTest,
+}
+
+/**
+ * A dropdown with `keepOpen` inside an item of the menu, with a button in its
+ * `after` slot: a click on that button leaves both open.
+ */
+export const NestedInItem: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: {
+            VvDropdown,
+            VvDropdownAction,
+            VvDropdownItem,
+            VvButton,
+        },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+            <vv-dropdown v-bind="args">
+                <vv-button class="absolute top-1/2 left-1/2 -translate-1/2" data-testId="trigger">
+                    Toggle dropdown
+                </vv-button>
+                <template #items>
+                    <vv-dropdown-action>Update</vv-dropdown-action>
+                    <vv-dropdown-item>
+                        <vv-dropdown placement="right-start" offset="5" keep-open>
+                            <vv-button data-testId="nested-trigger" label="Filters" />
+                            <template #items>
+                                <vv-dropdown-action>Recent first</vv-dropdown-action>
+                            </template>
+                            <template #after>
+                                <vv-button data-testId="done" label="Done" />
+                            </template>
+                        </vv-dropdown>
+                    </vv-dropdown-item>
+                </template>
+            </vv-dropdown>
+        `,
+    }),
+    play: nestedInItemTest,
 }

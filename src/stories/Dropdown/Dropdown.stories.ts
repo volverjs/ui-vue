@@ -9,6 +9,7 @@ import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VolverPlugin from '@/Volver'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
+    actionClickTest,
     contentChangesWhileOpenTest,
     defaultTest,
     enterOnItemInShadowRootTest,
@@ -660,6 +661,51 @@ export const EnterOnItemInShadowRoot: Story = {
             options: ref(0),
         }))(),
     play: enterOnItemInShadowRootTest,
+}
+
+const actionClickTemplate = /* html */ `
+	<div style="min-height: 160px">
+		<vv-dropdown v-bind="args">
+			<vv-button data-testId="trigger" label="Toggle dropdown" />
+			<template #items>
+				<vv-dropdown-action @click="actions++">Action</vv-dropdown-action>
+				<vv-dropdown-action>Other action</vv-dropdown-action>
+			</template>
+		</vv-dropdown>
+		<output data-testId="count">{{ actions }}</output>
+	</div>
+`
+
+/**
+ * A click on an action closes the dropdown and gives the focus back to the
+ * trigger, without a `hide` in the handler: the dropdown stayed open over
+ * what the action had opened.
+ */
+export const ActionClick: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            return { args, actions: ref(0) }
+        },
+        template: actionClickTemplate,
+    }),
+    play: actionClickTest(false),
+}
+
+/**
+ * With `keepOpen` a click on an action leaves the dropdown open, as a click
+ * outside it does.
+ */
+export const ActionClickKeepOpen: Story = {
+    ...ActionClick,
+    args: {
+        ...defaultArgs,
+        keepOpen: true,
+    },
+    play: actionClickTest(true),
 }
 
 /**
