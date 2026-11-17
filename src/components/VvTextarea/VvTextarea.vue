@@ -92,8 +92,11 @@ watch(isFocused, (newValue) => {
     if (newValue && propsDefaults.value.selectOnFocus && textareaEl.value) {
         textareaEl.value.select()
     }
+    // the dropdown gives the focus back on Esc: the suggestions stay closed
     if (newValue && suggestions.value?.size) {
-        suggestionsDropdownEl.value?.show()
+        if (!suggestionsDropdownEl.value?.restoringFocus) {
+            suggestionsDropdownEl.value?.show()
+        }
         return
     }
     if (suggestions.value && !isEmpty(committed)) {

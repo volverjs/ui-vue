@@ -331,7 +331,11 @@ function handleInputFocus() {
     if (propsDefaults.value.selectOnFocus && inputEl.value) {
         inputEl.value.select()
     }
-    if (allSuggestions.value.size) {
+    // the dropdown gives the focus back on Esc: the suggestions stay closed
+    if (
+        allSuggestions.value.size
+        && !suggestionsDropdownEl.value?.restoringFocus
+    ) {
         suggestionsDropdownEl.value?.show()
     }
 }

@@ -5,7 +5,7 @@ import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
-import { defaultTest } from './Dropdown.test'
+import { defaultTest, nestedKeyboardTest } from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
     title: 'Components/Dropdown/Multilevel',
@@ -58,4 +58,13 @@ export const Default: Story = {
         `,
     }),
     play: defaultTest,
+}
+
+/**
+ * Enter on More opens the nested dropdown, the arrows there move one item,
+ * and Escape closes it alone, then the outer one.
+ */
+export const NestedKeyboard: Story = {
+    ...Default,
+    play: nestedKeyboardTest,
 }

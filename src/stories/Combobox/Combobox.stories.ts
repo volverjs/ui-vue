@@ -6,6 +6,7 @@ import { argTypes, defaultArgs } from './Combobox.settings'
 import {
     ariaDescribedbyTest,
     ariaLabelTest,
+    autoOpenEscapeTest,
     defaultTest,
     focusMovedWhileOpeningTest,
     keyboardTest,
@@ -235,6 +236,15 @@ export const AutoOpen: Story = {
         ...defaultArgs,
         autoOpen: true,
     },
+}
+
+/**
+ * Escape from an option closes the list, and the combobox the focus goes back
+ * to does not open it again.
+ */
+export const AutoOpenEscape: Story = {
+    ...AutoOpen,
+    play: autoOpenEscapeTest,
 }
 
 export const KeepOpen: Story = {
