@@ -61,8 +61,8 @@ export const Default: Story = {
 }
 
 /**
- * Enter on More opens the nested dropdown, and Escape from there closes both
- * and gives the focus back to the outer trigger.
+ * Enter on More opens the nested dropdown, the arrows there move one item,
+ * and Escape closes it alone, then the outer one.
  */
 export const NestedKeyboard: Story = {
     ...Default,

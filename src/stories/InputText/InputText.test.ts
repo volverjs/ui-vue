@@ -1,6 +1,6 @@
 import type { InputType } from '@/components/VvInputText'
 import type { PlayAttributes } from '@/test/types'
-import { userEvent, within } from 'storybook/test'
+import { userEvent, waitFor, within } from 'storybook/test'
 import { INPUT_TYPES } from '@/components/VvInputText'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
@@ -319,4 +319,24 @@ export async function invalidIconPositionTest({ canvasElement }: PlayAttributes)
     expect(invalidPropWarnings('iconPosition')).not.toHaveLength(0)
     // and neither `before` nor `after` places the icon
     expect(element.getElementsByClassName('vv-input-text__icon')).toHaveLength(0)
+}
+
+/**
+ * Escape from a suggestion closes the suggestions and gives the focus back to
+ * the field, where they stay closed: the focus given back showed them again,
+ * and it took a second Escape.
+ */
+export async function suggestionsEscapeTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.querySelector('input') as HTMLInputElement
+    const option = () =>
+        canvasElement.querySelector<HTMLElement>('.vv-dropdown-option')
+
+    input.focus()
+    await waitFor(() => expect(option()).toBeVisible())
+    option()?.focus()
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(input).toHaveFocus())
+    await sleep(500)
+    await expect(option()).not.toBeVisible()
 }

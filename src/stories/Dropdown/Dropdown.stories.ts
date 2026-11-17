@@ -25,6 +25,7 @@ import {
     topLayerExpandedOnMountTest,
     topLayerTest,
     triggerWidthAfterResizeTest,
+    wrapperReferenceTest,
 } from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
@@ -522,9 +523,10 @@ export const SizeApply: Story = {
     play: sizeApplyTest,
 }
 
+// `aria-hidden="false"` hides nothing: Escape still gives the trigger the focus
 const keyboardTemplate = /* html */ `
 	<vv-dropdown v-bind="args">
-		<vv-button data-testId="trigger" label="Toggle dropdown" />
+		<vv-button data-testId="trigger" label="Toggle dropdown" aria-hidden="false" />
 		<template #items>
 			<vv-dropdown-action>Create</vv-dropdown-action>
 			<vv-dropdown-action>Update</vv-dropdown-action>
@@ -624,7 +626,7 @@ const enterTemplate = /* html */ `
 `
 
 /**
- * Enter runs the focused item once: the action, a button the browser
+ * Enter and Space run the focused item once: the action, a button the browser
  * activates by itself, and the option, which the dropdown clicks.
  */
 export const EnterOnItem: Story = {
@@ -644,7 +646,7 @@ export const EnterOnItem: Story = {
 }
 
 /**
- * The same Enter in a shadow root, where the target of the key is the host
+ * The same keys in a shadow root, where the target of the key is the host
  * and the dropdown clicked it instead of the option.
  */
 export const EnterOnItemInShadowRoot: Story = {
@@ -658,4 +660,37 @@ export const EnterOnItemInShadowRoot: Story = {
             options: ref(0),
         }))(),
     play: enterOnItemInShadowRootTest,
+}
+
+/**
+ * A reference that wraps its trigger with a hidden input before it, as a
+ * form field does: Escape gives the focus to the trigger, not to the input.
+ */
+export const WrapperReference: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const wrapper = ref<HTMLElement>()
+            const expanded = ref(false)
+            return { args, wrapper, expanded }
+        },
+        template: /* html */ `
+			<div style="min-height: 160px">
+				<div ref="wrapper" class="inline-flex">
+					<input type="hidden" name="choice" value="">
+					<vv-button data-testId="trigger" label="Toggle dropdown" @click="expanded = !expanded" />
+				</div>
+				<vv-dropdown v-model="expanded" v-bind="args" :reference="wrapper">
+					<template #items>
+						<vv-dropdown-action>Create</vv-dropdown-action>
+						<vv-dropdown-action>Update</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+		`,
+    }),
+    play: wrapperReferenceTest,
 }

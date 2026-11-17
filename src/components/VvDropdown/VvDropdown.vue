@@ -439,10 +439,13 @@ function activeElementOf(element: Element | undefined) {
     const root = element?.getRootNode() as Document | ShadowRoot | undefined
     return root?.activeElement ?? null
 }
+// a hidden input takes no focus, and `aria-hidden="false"` hides nothing
 const KEYBOARD_FOCUSABLE
-    = 'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+    = 'a[href], button, input:not([type="hidden"]), textarea, select, details, [tabindex]:not([tabindex="-1"])'
 function isKeyboardFocusable(el: Element) {
-    return !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden')
+    return (
+        !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true'
+    )
 }
 function getKeyboardFocusableElements(element: Element | null) {
     if (!element) {
@@ -453,21 +456,75 @@ function getKeyboardFocusableElements(element: Element | null) {
     ) as HTMLElement[]
 }
 /**
- * Back to the element the dropdown is placed against, or to the first one
- * inside it that takes the focus: the reference of `VvCombobox` is the
- * wrapper of its `role="combobox"`. A virtual reference, the pointer of a
- * context menu, is only a position and is left alone.
+ * True while `Esc` gives the focus back, until the watchers of that focus
+ * have run: a field that opens its dropdown on focus (`VvCombobox` with
+ * `autoOpen`, the suggestions of `VvInputText` and `VvTextarea`) reads it to
+ * stay closed, where the dropdown opened again at once.
  */
-function focusReference() {
+const restoringFocus = ref(false)
+/** The element that had the focus before the dropdown opened, outside it. */
+let focusBeforeOpen: HTMLElement | undefined
+/**
+ * The element the focus goes back to on `Esc`: the reference, or the element
+ * inside it that controls the dropdown (the `role="combobox"` of the wrapper
+ * of `VvCombobox`), or the first one there that takes the focus outside the
+ * dropdown. A virtual reference, the pointer of a context menu, is only a
+ * position: there the focus goes back where it was before the dropdown opened.
+ */
+function referenceFocusTarget() {
     const reference = referenceEl.value?.$el ?? referenceEl.value
-    if (!(reference instanceof HTMLElement)) {
+    if (reference instanceof HTMLElement) {
+        if (
+            reference.matches(KEYBOARD_FOCUSABLE)
+            && isKeyboardFocusable(reference)
+        ) {
+            return reference
+        }
+        const controller = reference.querySelector<HTMLElement>(
+            `[aria-controls="${CSS.escape(String(hasId.value))}"]`,
+        )
+        const target
+            = controller && isKeyboardFocusable(controller)
+                ? controller
+                : getKeyboardFocusableElements(reference).find(
+                        el => !floatingEl.value?.contains(el),
+                    )
+        if (target) {
+            return target
+        }
+    }
+    return focusBeforeOpen?.isConnected ? focusBeforeOpen : undefined
+}
+function focusReference() {
+    const target = referenceFocusTarget()
+    if (!target) {
         return
     }
-    const target
-        = reference.matches(KEYBOARD_FOCUSABLE) && isKeyboardFocusable(reference)
-            ? reference
-            : getKeyboardFocusableElements(reference)[0]
-    target?.focus({ preventScroll: true })
+    restoringFocus.value = true
+    target.focus({ preventScroll: true })
+    setTimeout(() => {
+        restoringFocus.value = false
+    })
+}
+/**
+ * The innermost dropdown the key was pressed in. Nested dropdowns all hear
+ * the same key on `window`: the outer one moved the focus or clicked the item
+ * as well, so an option of a nested dropdown ran twice and the arrows skipped
+ * an item. A closed shadow root hides the path, and there the focus inside
+ * the dropdown's own root tells.
+ */
+function dropdownOfKey(e: KeyboardEvent) {
+    const inPath = e
+        .composedPath()
+        .find(
+            node =>
+                node instanceof Element && node.classList.contains('vv-dropdown'),
+        )
+    return (
+        inPath
+        ?? activeElementOf(floatingEl.value)?.closest('.vv-dropdown')
+        ?? undefined
+    )
 }
 function focusFirst() {
     nextTick(() => {
@@ -545,6 +602,13 @@ function focusPrev() {
 }
 
 watch(expanded, (newValue) => {
+    if (newValue) {
+        const active = activeElementOf(floatingEl.value) ?? document.activeElement
+        focusBeforeOpen
+            = active instanceof HTMLElement && !floatingEl.value?.contains(active)
+                ? active
+                : undefined
+    }
     if (newValue && props.autofocusFirst) {
         focusFirst()
     }
@@ -572,6 +636,8 @@ defineExpose({
     focusPrev,
     /** The dropdown has custom position */
     customPosition: hasCustomPosition,
+    /** True while `Esc` gives the focus back: a field that opens the dropdown on focus stays closed */
+    restoringFocus,
 })
 
 // hover
@@ -587,61 +653,72 @@ const { itemRole } = useDropdownProvideItem({
 
 // keyboard
 onKeyStroke('Escape', (e) => {
-    if (expanded.value) {
-        e.preventDefault()
-        // the focus inside the dropdown would be left on the body
-        const hadFocus = focused.value
-        hide()
-        if (hadFocus) {
-            focusReference()
-        }
+    if (!expanded.value) {
+        return
+    }
+    const owner = dropdownOfKey(e)
+    // a dropdown nested in this one closes alone, as a submenu does, and
+    // gives the focus back to the item that opened it
+    if (
+        owner
+        && owner !== floatingEl.value
+        && floatingEl.value?.contains(owner)
+    ) {
+        return
+    }
+    e.preventDefault()
+    hide()
+    // the focus inside the dropdown would be left on the body
+    if (owner === floatingEl.value) {
+        focusReference()
     }
 })
 onKeyStroke('ArrowDown', (e) => {
-    if (expanded.value && focused.value) {
+    if (expanded.value && dropdownOfKey(e) === floatingEl.value) {
         e.preventDefault()
         focusNext()
     }
 })
 onKeyStroke('ArrowUp', (e) => {
-    if (expanded.value && focused.value) {
+    if (expanded.value && dropdownOfKey(e) === floatingEl.value) {
         e.preventDefault()
         focusPrev()
     }
 })
 /**
- * Whether the browser activates `el` by itself on `key`: a button on Enter
- * and Space, a link on Enter, a checkbox on Space. A click of the dropdown's
- * own on top of it ran the item twice, and a nested dropdown opened and
- * closed at once.
+ * Whether the browser handles `key` on `el` by itself: it activates a button
+ * on Enter and Space, a link on Enter and a checkbox on Space, and a field
+ * or an editable element keeps its keys. A click of the dropdown's own on
+ * top of it ran the item twice, and a nested dropdown opened and closed at
+ * once.
  */
-function activatesOnKey(el: Element, key: string) {
+function handlesKey(el: Element, key: string) {
+    if (el instanceof HTMLElement && el.isContentEditable) {
+        return true
+    }
     switch (el.tagName) {
         case 'BUTTON':
         case 'SUMMARY':
+        case 'INPUT':
+        case 'TEXTAREA':
+        case 'SELECT':
             return true
         case 'A':
+        case 'AREA':
             return key === 'Enter' && el.hasAttribute('href')
-        case 'INPUT': {
-            const { type } = el as HTMLInputElement
-            return ['button', 'submit', 'reset', 'image'].includes(type)
-                || (key === ' ' && ['checkbox', 'radio'].includes(type))
-        }
         default:
             return false
     }
 }
 onKeyStroke([' ', 'Enter'], (e) => {
-    // the focused item: inside a shadow root the target is the host
-    const htmlEl = e.composedPath()[0] as HTMLElement | undefined
-
-    if (
-        expanded.value
-        && focused.value
-        && htmlEl
-        && !activatesOnKey(htmlEl, e.key)
-    ) {
-        htmlEl.click()
+    if (!expanded.value || dropdownOfKey(e) !== floatingEl.value) {
+        return
+    }
+    // the focused item, read in the dropdown's own root: inside a shadow
+    // root the target of the key is the host
+    const item = activeElementOf(floatingEl.value)
+    if (item instanceof HTMLElement && !handlesKey(item, e.key)) {
+        item.click()
     }
 })
 

@@ -211,3 +211,25 @@ export async function ariaDescribedbyTest({ canvasElement }: PlayAttributes) {
     await expect(element).not.toHaveAttribute('aria-describedby')
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * With `autoOpen`, Escape from an option closes the list and gives the focus
+ * back to the combobox, where the list stays closed: the focus given back
+ * opened it again at once.
+ */
+export async function autoOpenEscapeTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const combobox = element.querySelector('[role="combobox"]') as HTMLElement
+
+    combobox.focus()
+    const option = await waitFor(() => {
+        const found = element.querySelector<HTMLElement>('[role="option"]')
+        expect(found).toBeVisible()
+        return found as HTMLElement
+    })
+    option.focus()
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(combobox).toHaveFocus())
+    await sleep(500)
+    await expect(combobox).toHaveAttribute('aria-expanded', 'false')
+}
