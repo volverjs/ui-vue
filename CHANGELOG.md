@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.28]
+## [0.0.28] - 2026-11-17
 
 ### Fixed
 
