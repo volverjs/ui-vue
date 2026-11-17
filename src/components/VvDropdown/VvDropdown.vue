@@ -19,7 +19,7 @@ import {
     useFloating,
 } from '@floating-ui/vue'
 import { VvDropdownProps } from '.'
-import { Side, Strategy } from '../../constants'
+import { DropdownRole, Side, Strategy } from '../../constants'
 
 // props, emit and attrs
 const props = defineProps(VvDropdownProps)
@@ -643,12 +643,40 @@ defineExpose({
 // hover
 const hovered = useElementHover(floatingEl)
 
+// the dropdown this one is nested in, read before this one provides its own
+const { onAction: onParentAction } = useInjectedDropdownItem()
+/**
+ * An item of a menu has run: the menu closes, as a menu does, where it stayed
+ * open over the view the item had opened unless each click called `hide`.
+ * The focus, if it was on the item, goes back to the trigger as on `Esc`; one
+ * the item moved elsewhere stays there. A nested menu closes the one it is
+ * nested in too. A listbox leaves closing to the field that owns it, and
+ * `keepOpen` keeps the dropdown open on an item as on a click outside.
+ */
+function onAction() {
+    if (
+        !expanded.value
+        || props.keepOpen
+        || role.value === DropdownRole.listbox
+    ) {
+        return
+    }
+    const active = activeElementOf(floatingEl.value)
+    const focusInside = !!active && !!floatingEl.value?.contains(active)
+    hide()
+    if (focusInside) {
+        focusReference()
+    }
+    onParentAction?.()
+}
+
 // provide top dropdown item
 const { itemRole } = useDropdownProvideItem({
     role,
     expanded,
     focused,
     hovered,
+    onAction,
 })
 
 // keyboard

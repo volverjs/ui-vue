@@ -40,7 +40,7 @@ const pressed = computed(() => {
 })
 
 // dropdown parent
-const { role } = useInjectedDropdownAction()
+const { role, onAction: onDropdownAction } = useInjectedDropdownAction()
 
 /**
  * @description The tag defined by props.
@@ -109,6 +109,12 @@ function onClick(e: Event) {
     if (props.disabled) {
         e.preventDefault()
         return
+    }
+    // an item of a menu closes it, unless it opens a dropdown of its own;
+    // before the click handlers, so that one that opens a dialog or moves
+    // the focus has the last word
+    if (!dropdownTriggerReference) {
+        onDropdownAction?.()
     }
     if (instance?.vnode.props?.onClick) {
         emit('click', e)

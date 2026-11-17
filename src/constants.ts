@@ -120,6 +120,8 @@ export type DropdownItemState = {
     expanded?: Ref<boolean>
     focused?: Ref<boolean>
     hovered?: Ref<boolean>
+    /** Closes the menu once one of its items has run */
+    onAction?: () => void
 }
 export const INJECTION_KEY_DROPDOWN_ITEM = Symbol.for(
     'dropdownItem',
@@ -128,6 +130,8 @@ export const INJECTION_KEY_DROPDOWN_ITEM = Symbol.for(
 export type DropdownActionState = {
     role?: Ref<`${ActionRoles}`>
     expanded?: Ref<boolean>
+    /** Closes the menu once the action has run */
+    onAction?: () => void
 }
 export const INJECTION_KEY_DROPDOWN_ACTION = Symbol.for(
     'dropdownAction',

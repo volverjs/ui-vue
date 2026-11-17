@@ -5,7 +5,11 @@ import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
-import { defaultTest, nestedKeyboardTest } from './Dropdown.test'
+import {
+    defaultTest,
+    nestedClickTest,
+    nestedKeyboardTest,
+} from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
     title: 'Components/Dropdown/Multilevel',
@@ -67,4 +71,13 @@ export const Default: Story = {
 export const NestedKeyboard: Story = {
     ...Default,
     play: nestedKeyboardTest,
+}
+
+/**
+ * A click on More opens the nested dropdown and leaves the outer one open, a
+ * click on Create closes both and gives the focus back to the trigger.
+ */
+export const NestedClick: Story = {
+    ...Default,
+    play: nestedClickTest,
 }

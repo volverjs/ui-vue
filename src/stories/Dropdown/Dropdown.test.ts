@@ -481,11 +481,15 @@ export async function nestedKeyboardTest({ canvasElement }: PlayAttributes) {
 
 /**
  * Enter and Space run the focused item once: an action, a button the browser
- * activates by itself, and an option, which the dropdown clicks. `root`
- * holds the dropdown and the counts, as in `keyboardNavigation`.
+ * activates by itself, and an option, which the dropdown clicks. The action
+ * closes the dropdown and gives the focus back to the trigger; the option
+ * leaves it open. `root` holds the dropdown and the counts, as in
+ * `keyboardNavigation`.
  */
 async function enterOnItem(root: Document | ShadowRoot, scope: ParentNode) {
-    const trigger = scope.querySelector<HTMLElement>('[data-testid="trigger"]')
+    const trigger = scope.querySelector<HTMLElement>(
+        '[data-testid="trigger"]',
+    ) as HTMLElement
     const count = () =>
         scope.querySelector('[data-testid="count"]')?.textContent?.trim()
     const action = scope.querySelector<HTMLElement>('.vv-dropdown-action')
@@ -493,17 +497,25 @@ async function enterOnItem(root: Document | ShadowRoot, scope: ParentNode) {
     await expect(count()).toBe('0 0')
 
     // each count after a pause, so that a second run after a render shows
-    await userEvent.click(trigger as HTMLElement)
+    await userEvent.click(trigger)
     await waitFor(() => expect(root.activeElement).toBe(action))
     await userEvent.keyboard('{Enter}')
     await sleep(100)
     await expect(count()).toBe('1 0')
+    await waitFor(() => expect(action).not.toBeVisible())
+    await waitFor(() => expect(root.activeElement).toBe(trigger))
+
+    await userEvent.click(trigger)
+    await waitFor(() => expect(root.activeElement).toBe(action))
     await userEvent.keyboard(' ')
     await sleep(100)
     await expect(count()).toBe('2 0')
+    await waitFor(() => expect(action).not.toBeVisible())
+    await waitFor(() => expect(root.activeElement).toBe(trigger))
 
-    // the dropdown stays open, since the action does not close it; the
-    // option is focused directly, so that the arrows have no part in it
+    // the option is focused directly, so that the arrows have no part in it
+    await userEvent.click(trigger)
+    await waitFor(() => expect(root.activeElement).toBe(action))
     option?.focus()
     await waitFor(() => expect(root.activeElement).toBe(option))
     await userEvent.keyboard('{Enter}')
@@ -512,6 +524,7 @@ async function enterOnItem(root: Document | ShadowRoot, scope: ParentNode) {
     await userEvent.keyboard(' ')
     await sleep(100)
     await expect(count()).toBe('2 2')
+    await expect(option).toBeVisible()
 }
 
 export async function enterOnItemTest({ canvasElement }: PlayAttributes) {
@@ -528,4 +541,55 @@ export async function enterOnItemInShadowRootTest({
     )
     const root = host.shadowRoot as ShadowRoot
     await enterOnItem(root, root)
+}
+
+/**
+ * A click on an action runs it once, closes the dropdown and gives the focus
+ * back to the trigger; with `keepOpen` the dropdown stays open.
+ */
+export function actionClickTest(keepOpen: boolean) {
+    return async ({ canvasElement }: PlayAttributes) => {
+        const canvas = within(canvasElement)
+        const trigger = await canvas.findByTestId('trigger')
+        const count = () => canvas.getByTestId('count').textContent?.trim()
+        const action = () =>
+            canvasElement.querySelector<HTMLElement>('.vv-dropdown-action')
+        await userEvent.click(trigger)
+        await waitFor(() => expect(action()).toBeVisible())
+        await userEvent.click(action() as HTMLElement)
+        await sleep(100)
+        await expect(count()).toBe('1')
+        if (keepOpen) {
+            await expect(action()).toBeVisible()
+            return
+        }
+        await waitFor(() => expect(action()).not.toBeVisible())
+        await waitFor(() => expect(document.activeElement).toBe(trigger))
+    }
+}
+
+/**
+ * A click on the item that opens a nested dropdown opens it and leaves the
+ * outer one open; a click on an item of the nested one closes both and gives
+ * the focus back to the trigger.
+ */
+export async function nestedClickTest({ canvasElement }: PlayAttributes) {
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    const action = (label: string) =>
+        [
+            ...canvasElement.querySelectorAll<HTMLElement>(
+                '.vv-dropdown-action',
+            ),
+        ].find(element => element.textContent?.trim() === label) as HTMLElement
+
+    await userEvent.click(trigger)
+    await waitFor(() => expect(action('More')).toBeVisible())
+    await userEvent.click(action('More'))
+    await waitFor(() => expect(action('Create')).toBeVisible())
+    await expect(action('Update')).toBeVisible()
+
+    await userEvent.click(action('Create'))
+    await waitFor(() => expect(action('Create')).not.toBeVisible())
+    await waitFor(() => expect(action('Update')).not.toBeVisible())
+    await waitFor(() => expect(document.activeElement).toBe(trigger))
 }
