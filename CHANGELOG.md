@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.28]
+
+### Fixed
+
+- An item of a `VvDropdown` menu closes the menu once it has run. A `VvDropdownAction`, or a `VvButton` placed inside a `VvDropdownItem`, ran its click and left the menu open, unless the handler called the `hide` of the `items` slot: a menu item that opened a view stayed drawn over that view until a click outside, and every consumer had to remember the `hide`. The item now tells its dropdown, which closes and, when the focus was on the item, gives it back to the trigger as on `Esc`, so that a keyboard user does not land on the body. The dropdown closes before the click handlers run, so a handler that opens a dialog or moves the focus elsewhere has the last word. An item of a nested menu closes the menu it is nested in too, and the item that opens a nested menu only opens it. A dropdown placed inside an item of another menu keeps the role that item gives to the actions in it, but only its own items close a menu: a button in its trigger or in its `before` or `after` slot, such as the close button of `VvCombobox`, would otherwise have closed the outer menu. A listbox is left alone, since the field that owns it decides when it closes, and so is a dropdown with `keepOpen`, which now keeps it open on an item as on a click outside: that is the way to keep a menu open after its items, for one whose items act in place. A `hide` already in a handler does no harm. An `ActionClick` story clicks an action and finds the menu closed and the focus on the trigger; without the fix the menu stays open. `ActionClickKeepOpen` finds it open with `keepOpen`. A `NestedClick` story on the multilevel dropdown opens the nested menu with a click, which leaves the outer one open, and finds both closed after a click on an item of the nested one; without the fix both stay open. A `NestedInItem` story places a dropdown with `keepOpen` inside an item of a menu and finds the menu still open after a click on a button in the `after` slot of the inner dropdown; without the boundary the menu closes. The new stories check the menu with axe. The `EnterOnItem` stories find the menu closed and the focus on the trigger after `Enter` and after `Space` on an action, and an option still leaving it open.
+
 ## [0.0.27] - 2026-11-17
 
 ### Changed
