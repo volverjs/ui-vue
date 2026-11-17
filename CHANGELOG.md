@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.27]
+
+### Fixed
+
+- `VvDropdown` moves the focus with the arrows inside a shadow root, and gives it back on `Esc`. The arrows found the focused item through `document.activeElement`, which inside a shadow root is the host, so in a custom element they read it as no item and moved the focus to the first one every time: the items past the first could not be reached with the keyboard. They now read the `activeElement` of the root that holds the dropdown. `Esc` closed the dropdown and left the focus on the item it hid, so the focus fell on the body, in a custom element and outside one alike. When the focus was inside the dropdown it now goes back to the element the dropdown is placed against, or to the first element inside it that takes the focus: in `VvCombobox` that is the `role="combobox"` of its wrapper. The pointer of `useDropdownContextmenu` is only a position and is left alone. In nested dropdowns, which all close on the same `Esc`, the focus ends on the trigger of the outer one. A `KeyboardNavigation` story opens the dropdown, moves through its items with the arrows and closes it with `Esc`, and finds the focus back on the trigger; without the fix it finds it on the body. An `InShadowRoot` story does the same inside a shadow root; without the fix the arrow leaves the focus on the first item. A `NestedEscape` story on the multilevel dropdown closes both from the inner one and finds the focus on the outer trigger, and the `Keyboard` story of `VvCombobox` finds it back on the combobox, where `Space` opens the list again.
+
 ## [0.0.26] - 2026-11-04
 
 ### Changed

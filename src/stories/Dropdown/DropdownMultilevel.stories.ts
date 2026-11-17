@@ -5,7 +5,7 @@ import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import { argTypes, defaultArgs } from './Dropdown.settings'
-import { defaultTest } from './Dropdown.test'
+import { defaultTest, nestedEscapeTest } from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
     title: 'Components/Dropdown/Multilevel',
@@ -58,4 +58,13 @@ export const Default: Story = {
         `,
     }),
     play: defaultTest,
+}
+
+/**
+ * Escape in the nested dropdown closes both and gives the focus back to the
+ * outer trigger.
+ */
+export const NestedEscape: Story = {
+    ...Default,
+    play: nestedEscapeTest,
 }

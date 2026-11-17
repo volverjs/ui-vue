@@ -142,11 +142,12 @@ export async function keyboardTest({ canvasElement }: PlayAttributes) {
     await sleep()
     await expect(combobox).toHaveAttribute('aria-expanded', 'true')
 
-    // Escape closes it, and Space opens it again
+    // Escape closes it and gives the focus back to the combobox, where
+    // Space opens it again
     await userEvent.keyboard('{Escape}')
     await sleep()
     await expect(combobox).toHaveAttribute('aria-expanded', 'false')
-    combobox.focus()
+    await expect(combobox).toHaveFocus()
     await userEvent.keyboard(' ')
     await sleep()
     await expect(combobox).toHaveAttribute('aria-expanded', 'true')

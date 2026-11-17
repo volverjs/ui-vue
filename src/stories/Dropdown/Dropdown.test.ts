@@ -371,3 +371,82 @@ export async function sizeApplyTest({ canvasElement }: PlayAttributes) {
     await userEvent.click(trigger)
     await waitFor(() => expect(room).toHaveTextContent(/^\d+$/))
 }
+
+/**
+ * Opened from the trigger, the first item takes the focus, the arrows move it
+ * through the items and Escape closes the dropdown and gives it back to the
+ * trigger. `root` holds the dropdown: the document, or the shadow root of a
+ * custom element, where the focused item is the root's `activeElement` and
+ * the document's is the host.
+ */
+async function keyboardNavigation(
+    root: Document | ShadowRoot,
+    scope: ParentNode,
+    trigger: HTMLElement,
+) {
+    const items = () => [
+        ...scope.querySelectorAll<HTMLElement>('.vv-dropdown-action'),
+    ]
+    await userEvent.click(trigger)
+    await waitFor(() => expect(root.activeElement).toBe(items()[0]))
+    // axe checks the dropdown in the document; in a shadow root the story
+    // checks the focus only
+    if (root instanceof Document) {
+        await expect(scope.querySelector('.vv-dropdown')).toHaveNoViolations()
+    }
+
+    await userEvent.keyboard('{ArrowDown}')
+    await waitFor(() => expect(root.activeElement).toBe(items()[1]))
+    await userEvent.keyboard('{ArrowDown}')
+    await waitFor(() => expect(root.activeElement).toBe(items()[2]))
+    await userEvent.keyboard('{ArrowUp}')
+    await waitFor(() => expect(root.activeElement).toBe(items()[1]))
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(items()[0]).not.toBeVisible())
+    await waitFor(() => expect(root.activeElement).toBe(trigger))
+}
+
+export async function keyboardNavigationTest({
+    canvasElement,
+}: PlayAttributes) {
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    await keyboardNavigation(document, canvasElement, trigger)
+}
+
+export async function shadowRootTest({ canvasElement }: PlayAttributes) {
+    const host = await within(canvasElement).findByTestId('host')
+    const trigger = await waitFor(() => {
+        const element = host.shadowRoot?.querySelector<HTMLElement>(
+            '[data-testid="trigger"]',
+        )
+        expect(element).toBeTruthy()
+        return element as HTMLElement
+    })
+    const root = host.shadowRoot as ShadowRoot
+    await keyboardNavigation(root, root, trigger)
+}
+
+/**
+ * Escape in a nested dropdown closes the whole menu, and the focus goes back
+ * to the trigger of the outer one, whichever dropdown handles the key first.
+ */
+export async function nestedEscapeTest({ canvasElement }: PlayAttributes) {
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    const action = (label: string) =>
+        [
+            ...canvasElement.querySelectorAll<HTMLElement>(
+                '.vv-dropdown-action',
+            ),
+        ].find(element => element.textContent?.trim() === label)
+
+    await userEvent.click(trigger)
+    await waitFor(() => expect(document.activeElement).toBe(action('Update')))
+    await userEvent.click(action('More') as HTMLElement)
+    await waitFor(() => expect(document.activeElement).toBe(action('Create')))
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(action('Update')).not.toBeVisible())
+    await waitFor(() => expect(action('Create')).not.toBeVisible())
+    await waitFor(() => expect(document.activeElement).toBe(trigger))
+}

@@ -430,18 +430,44 @@ const bemCssClasses = useModifiers(
 
 // focus
 const { focused } = useFocusWithin(floatingEl)
+/**
+ * The element with the focus in the tree that holds the dropdown. Inside a
+ * shadow root `document.activeElement` is the host: the arrows read it as
+ * no item and moved the focus to the first one every time.
+ */
+function activeElementOf(element: Element | undefined) {
+    const root = element?.getRootNode() as Document | ShadowRoot | undefined
+    return root?.activeElement ?? null
+}
+const KEYBOARD_FOCUSABLE
+    = 'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+function isKeyboardFocusable(el: Element) {
+    return !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden')
+}
 function getKeyboardFocusableElements(element: Element | null) {
     if (!element) {
         return []
     }
-    return [
-        ...element.querySelectorAll(
-            'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
-        ),
-    ].filter(
-        el =>
-            !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'),
+    return [...element.querySelectorAll(KEYBOARD_FOCUSABLE)].filter(
+        isKeyboardFocusable,
     ) as HTMLElement[]
+}
+/**
+ * Back to the element the dropdown is placed against, or to the first one
+ * inside it that takes the focus: the reference of `VvCombobox` is the
+ * wrapper of its `role="combobox"`. A virtual reference, the pointer of a
+ * context menu, is only a position and is left alone.
+ */
+function focusReference() {
+    const reference = referenceEl.value?.$el ?? referenceEl.value
+    if (!(reference instanceof HTMLElement)) {
+        return
+    }
+    const target
+        = reference.matches(KEYBOARD_FOCUSABLE) && isKeyboardFocusable(reference)
+            ? reference
+            : getKeyboardFocusableElements(reference)[0]
+    target?.focus({ preventScroll: true })
 }
 function focusFirst() {
     nextTick(() => {
@@ -473,11 +499,12 @@ function focusNext() {
             const focusableElements = getKeyboardFocusableElements(
                 floatingEl.value,
             )
-            if (focusableElements.length === 0 || !document.activeElement) {
+            const activeElement = activeElementOf(floatingEl.value)
+            if (focusableElements.length === 0 || !activeElement) {
                 return
             }
             const activeElementIndex = focusableElements.indexOf(
-                document.activeElement as HTMLElement,
+                activeElement as HTMLElement,
             )
             if (activeElementIndex < focusableElements.length - 1) {
                 focusableElements[activeElementIndex + 1].focus({
@@ -497,11 +524,12 @@ function focusPrev() {
             const focusableElements = getKeyboardFocusableElements(
                 floatingEl.value,
             )
-            if (focusableElements.length === 0 || !document.activeElement) {
+            const activeElement = activeElementOf(floatingEl.value)
+            if (focusableElements.length === 0 || !activeElement) {
                 return
             }
             const activeElementIndex = focusableElements.indexOf(
-                document.activeElement as HTMLElement,
+                activeElement as HTMLElement,
             )
             if (activeElementIndex > 0) {
                 focusableElements[activeElementIndex - 1].focus({
@@ -561,7 +589,12 @@ const { itemRole } = useDropdownProvideItem({
 onKeyStroke('Escape', (e) => {
     if (expanded.value) {
         e.preventDefault()
+        // the focus inside the dropdown would be left on the body
+        const hadFocus = focused.value
         hide()
+        if (hadFocus) {
+            focusReference()
+        }
     }
 })
 onKeyStroke('ArrowDown', (e) => {

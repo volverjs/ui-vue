@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { computed, ref } from 'vue'
+import type { App } from 'vue'
+import { computed, createApp, onBeforeUnmount, onMounted, ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VolverPlugin from '@/Volver'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
     contentChangesWhileOpenTest,
@@ -11,9 +13,11 @@ import {
     expandEventsTest,
     flipNearViewportBottomTest,
     idClearedTest,
+    keyboardNavigationTest,
     noResizeObserverLoopTest,
     reopenAfterResizeTest,
     roomBelowTest,
+    shadowRootTest,
     sizeApplyTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
@@ -513,4 +517,80 @@ export const SizeApply: Story = {
 		`,
     }),
     play: sizeApplyTest,
+}
+
+const keyboardTemplate = /* html */ `
+	<vv-dropdown v-bind="args">
+		<vv-button data-testId="trigger" label="Toggle dropdown" />
+		<template #items>
+			<vv-dropdown-action>Create</vv-dropdown-action>
+			<vv-dropdown-action>Update</vv-dropdown-action>
+			<vv-dropdown-action>Delete</vv-dropdown-action>
+		</template>
+	</vv-dropdown>
+`
+
+/**
+ * The arrows move the focus through the items, Escape closes the dropdown and
+ * gives the focus back to the trigger.
+ */
+export const KeyboardNavigation: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div style="min-height: 160px">${keyboardTemplate}</div>
+		`,
+    }),
+    play: keyboardNavigationTest,
+}
+
+/**
+ * The same keyboard with the dropdown in a shadow root, as inside a custom
+ * element: there `document.activeElement` is the host, not the item.
+ */
+export const InShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        setup() {
+            const host = ref<HTMLElement>()
+            let app: App | undefined
+            onMounted(() => {
+                if (!host.value) {
+                    return
+                }
+                const root = host.value.attachShadow({ mode: 'open' })
+                // the page's styles, so the dropdown looks the same
+                for (const sheet of document.querySelectorAll(
+                    'style, link[rel="stylesheet"]',
+                )) {
+                    root.append(sheet.cloneNode(true))
+                }
+                const container = document.createElement('div')
+                root.append(container)
+                app = createApp({
+                    components: { VvDropdown, VvDropdownAction, VvButton },
+                    setup() {
+                        return { args }
+                    },
+                    template: keyboardTemplate,
+                })
+                app.use(VolverPlugin)
+                app.mount(container)
+            })
+            onBeforeUnmount(() => app?.unmount())
+            return { host }
+        },
+        template: /* html */ `
+			<div ref="host" data-testId="host" style="min-height: 160px" />
+		`,
+    }),
+    play: shadowRootTest,
 }
