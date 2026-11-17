@@ -609,11 +609,39 @@ onKeyStroke('ArrowUp', (e) => {
         focusPrev()
     }
 })
+/**
+ * Whether the browser activates `el` by itself on `key`: a button on Enter
+ * and Space, a link on Enter, a checkbox on Space. A click of the dropdown's
+ * own on top of it ran the item twice, and a nested dropdown opened and
+ * closed at once.
+ */
+function activatesOnKey(el: Element, key: string) {
+    switch (el.tagName) {
+        case 'BUTTON':
+        case 'SUMMARY':
+            return true
+        case 'A':
+            return key === 'Enter' && el.hasAttribute('href')
+        case 'INPUT': {
+            const { type } = el as HTMLInputElement
+            return ['button', 'submit', 'reset', 'image'].includes(type)
+                || (key === ' ' && ['checkbox', 'radio'].includes(type))
+        }
+        default:
+            return false
+    }
+}
 onKeyStroke([' ', 'Enter'], (e) => {
-    const htmlEl = e.target as HTMLElement
+    // the focused item: inside a shadow root the target is the host
+    const htmlEl = e.composedPath()[0] as HTMLElement | undefined
 
-    if (expanded.value && focused.value && htmlEl) {
-        htmlEl?.click()
+    if (
+        expanded.value
+        && focused.value
+        && htmlEl
+        && !activatesOnKey(htmlEl, e.key)
+    ) {
+        htmlEl.click()
     }
 })
 

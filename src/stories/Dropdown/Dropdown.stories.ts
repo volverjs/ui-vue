@@ -4,12 +4,15 @@ import { computed, createApp, onBeforeUnmount, onMounted, ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
+import VvDropdownOption from '@/components/VvDropdown/VvDropdownOption.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
 import VolverPlugin from '@/Volver'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
     contentChangesWhileOpenTest,
     defaultTest,
+    enterOnItemInShadowRootTest,
+    enterOnItemTest,
     expandEventsTest,
     flipNearViewportBottomTest,
     idClearedTest,
@@ -551,14 +554,14 @@ export const KeyboardNavigation: Story = {
 }
 
 /**
- * The same keyboard with the dropdown in a shadow root, as inside a custom
- * element: there `document.activeElement` is the host, not the item.
+ * Mounts `template` in an app of its own inside a shadow root, as a custom
+ * element does, with the state `setup` returns.
  */
-export const InShadowRoot: Story = {
-    args: {
-        ...defaultArgs,
-    },
-    render: args => ({
+function renderInShadowRoot(
+    template: string,
+    setup: () => Record<string, unknown>,
+) {
+    return () => ({
         setup() {
             const host = ref<HTMLElement>()
             let app: App | undefined
@@ -576,11 +579,14 @@ export const InShadowRoot: Story = {
                 const container = document.createElement('div')
                 root.append(container)
                 app = createApp({
-                    components: { VvDropdown, VvDropdownAction, VvButton },
-                    setup() {
-                        return { args }
+                    components: {
+                        VvDropdown,
+                        VvDropdownAction,
+                        VvDropdownOption,
+                        VvButton,
                     },
-                    template: keyboardTemplate,
+                    setup,
+                    template,
                 })
                 app.use(VolverPlugin)
                 app.mount(container)
@@ -591,6 +597,65 @@ export const InShadowRoot: Story = {
         template: /* html */ `
 			<div ref="host" data-testId="host" style="min-height: 160px" />
 		`,
-    }),
+    })
+}
+
+/**
+ * The same keyboard with the dropdown in a shadow root, as inside a custom
+ * element: there `document.activeElement` is the host, not the item.
+ */
+export const InShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => renderInShadowRoot(keyboardTemplate, () => ({ args }))(),
     play: shadowRootTest,
+}
+
+const enterTemplate = /* html */ `
+	<vv-dropdown v-bind="args">
+		<vv-button data-testId="trigger" label="Toggle dropdown" />
+		<template #items>
+			<vv-dropdown-action @click="actions++">Action</vv-dropdown-action>
+			<vv-dropdown-option @click="options++">Option</vv-dropdown-option>
+		</template>
+	</vv-dropdown>
+	<output data-testId="count">{{ actions }} {{ options }}</output>
+`
+
+/**
+ * Enter runs the focused item once: the action, a button the browser
+ * activates by itself, and the option, which the dropdown clicks.
+ */
+export const EnterOnItem: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvDropdownOption, VvButton },
+        setup() {
+            return { args, actions: ref(0), options: ref(0) }
+        },
+        template: /* html */ `
+			<div style="min-height: 160px">${enterTemplate}</div>
+		`,
+    }),
+    play: enterOnItemTest,
+}
+
+/**
+ * The same Enter in a shadow root, where the target of the key is the host
+ * and the dropdown clicked it instead of the option.
+ */
+export const EnterOnItemInShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(enterTemplate, () => ({
+            args,
+            actions: ref(0),
+            options: ref(0),
+        }))(),
+    play: enterOnItemInShadowRootTest,
 }

@@ -428,10 +428,11 @@ export async function shadowRootTest({ canvasElement }: PlayAttributes) {
 }
 
 /**
- * Escape in a nested dropdown closes the whole menu, and the focus goes back
- * to the trigger of the outer one, whichever dropdown handles the key first.
+ * Enter on the item that opens a nested dropdown opens it, and Escape from
+ * there closes the whole menu and gives the focus back to the trigger of the
+ * outer one, whichever dropdown handles the key first.
  */
-export async function nestedEscapeTest({ canvasElement }: PlayAttributes) {
+export async function nestedKeyboardTest({ canvasElement }: PlayAttributes) {
     const trigger = await within(canvasElement).findByTestId('trigger')
     const action = (label: string) =>
         [
@@ -442,11 +443,55 @@ export async function nestedEscapeTest({ canvasElement }: PlayAttributes) {
 
     await userEvent.click(trigger)
     await waitFor(() => expect(document.activeElement).toBe(action('Update')))
-    await userEvent.click(action('More') as HTMLElement)
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}')
+    await waitFor(() => expect(document.activeElement).toBe(action('More')))
+    await userEvent.keyboard('{Enter}')
     await waitFor(() => expect(document.activeElement).toBe(action('Create')))
 
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(action('Update')).not.toBeVisible())
     await waitFor(() => expect(action('Create')).not.toBeVisible())
     await waitFor(() => expect(document.activeElement).toBe(trigger))
+}
+
+/**
+ * Enter runs the focused item once: an action, a button the browser
+ * activates by itself, and an option, which the dropdown clicks. `root`
+ * holds the dropdown and the counts, as in `keyboardNavigation`.
+ */
+async function enterOnItem(root: Document | ShadowRoot, scope: ParentNode) {
+    const trigger = scope.querySelector<HTMLElement>('[data-testid="trigger"]')
+    const count = () =>
+        scope.querySelector('[data-testid="count"]')?.textContent?.trim()
+    const action = scope.querySelector<HTMLElement>('.vv-dropdown-action')
+    const option = scope.querySelector<HTMLElement>('.vv-dropdown-option')
+    await expect(count()).toBe('0 0')
+
+    await userEvent.click(trigger as HTMLElement)
+    await waitFor(() => expect(root.activeElement).toBe(action))
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(count()).toBe('1 0'))
+
+    // the dropdown stays open, since the action does not close it; the
+    // option is focused directly, so that the arrows have no part in it
+    option?.focus()
+    await waitFor(() => expect(root.activeElement).toBe(option))
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(count()).toBe('1 1'))
+}
+
+export async function enterOnItemTest({ canvasElement }: PlayAttributes) {
+    await within(canvasElement).findByTestId('trigger')
+    await enterOnItem(document, canvasElement)
+}
+
+export async function enterOnItemInShadowRootTest({
+    canvasElement,
+}: PlayAttributes) {
+    const host = await within(canvasElement).findByTestId('host')
+    await waitFor(() =>
+        expect(host.shadowRoot?.querySelector('[data-testid="trigger"]')).toBeTruthy(),
+    )
+    const root = host.shadowRoot as ShadowRoot
+    await enterOnItem(root, root)
 }
