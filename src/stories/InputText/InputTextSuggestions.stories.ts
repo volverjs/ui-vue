@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
+import { suggestionsEscapeTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Suggestions',
@@ -79,6 +80,15 @@ export const ExternalSuggestions: Story = {
             </div>
         `,
     }),
+}
+
+/**
+ * Escape from a suggestion closes the suggestions, and the field the focus
+ * goes back to does not show them again.
+ */
+export const SuggestionsEscape: Story = {
+    ...ExternalSuggestions,
+    play: suggestionsEscapeTest,
 }
 
 export const BothSuggestions: Story = {

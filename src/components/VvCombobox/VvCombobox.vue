@@ -65,6 +65,10 @@ watch(focused, (newValue) => {
         return
     }
     if (newValue && !expanded.value) {
+        // the dropdown gives the focus back on Esc: the list stays closed
+        if (dropdownEl.value?.restoringFocus) {
+            return
+        }
         clearTimeout(collapseTimer)
         expand()
         return
@@ -123,7 +127,10 @@ function onAfterExpand() {
     // the list faded in
     if (propsDefaults.value.searchable && inputSearchEl.value) {
         const dropdown = inputSearchEl.value.closest('.vv-dropdown')
-        if (!dropdown?.contains(document.activeElement)) {
+        // the focus in the dropdown's own root: inside a shadow root
+        // `document.activeElement` is the host
+        const root = inputSearchEl.value.getRootNode() as Document | ShadowRoot
+        if (!dropdown?.contains(root.activeElement)) {
             inputSearchEl.value.focus({
                 preventScroll: true,
             })

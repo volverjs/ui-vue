@@ -371,3 +371,161 @@ export async function sizeApplyTest({ canvasElement }: PlayAttributes) {
     await userEvent.click(trigger)
     await waitFor(() => expect(room).toHaveTextContent(/^\d+$/))
 }
+
+/**
+ * Opened from the trigger, the first item takes the focus, the arrows move it
+ * through the items and Escape closes the dropdown and gives it back to the
+ * trigger. `root` holds the dropdown: the document, or the shadow root of a
+ * custom element, where the focused item is the root's `activeElement` and
+ * the document's is the host.
+ */
+async function keyboardNavigation(
+    root: Document | ShadowRoot,
+    scope: ParentNode,
+    trigger: HTMLElement,
+    axeTarget: () => Element | null,
+) {
+    const items = () => [
+        ...scope.querySelectorAll<HTMLElement>('.vv-dropdown-action'),
+    ]
+    await userEvent.click(trigger)
+    await waitFor(() => expect(root.activeElement).toBe(items()[0]))
+    await expect(axeTarget()).toHaveNoViolations()
+
+    await userEvent.keyboard('{ArrowDown}')
+    await waitFor(() => expect(root.activeElement).toBe(items()[1]))
+    await userEvent.keyboard('{ArrowDown}')
+    await waitFor(() => expect(root.activeElement).toBe(items()[2]))
+    await userEvent.keyboard('{ArrowUp}')
+    await waitFor(() => expect(root.activeElement).toBe(items()[1]))
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(items()[0]).not.toBeVisible())
+    await waitFor(() => expect(root.activeElement).toBe(trigger))
+}
+
+export async function keyboardNavigationTest({
+    canvasElement,
+}: PlayAttributes) {
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    await keyboardNavigation(document, canvasElement, trigger, () =>
+        canvasElement.querySelector('.vv-dropdown'))
+}
+
+export async function shadowRootTest({ canvasElement }: PlayAttributes) {
+    const host = await within(canvasElement).findByTestId('host')
+    const trigger = await waitFor(() => {
+        const element = host.shadowRoot?.querySelector<HTMLElement>(
+            '[data-testid="trigger"]',
+        )
+        expect(element).toBeTruthy()
+        return element as HTMLElement
+    })
+    const root = host.shadowRoot as ShadowRoot
+    // axe runs on the host: on an element inside the shadow root it reports
+    // the content as outside any landmark
+    await keyboardNavigation(root, root, trigger, () => host)
+}
+
+/**
+ * A reference that wraps its trigger with a hidden input before it, as a
+ * form field does: Escape gives the focus to the trigger, not to the input.
+ */
+export async function wrapperReferenceTest({ canvasElement }: PlayAttributes) {
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    const items = () => [
+        ...canvasElement.querySelectorAll<HTMLElement>('.vv-dropdown-action'),
+    ]
+    await userEvent.click(trigger)
+    await waitFor(() => expect(document.activeElement).toBe(items()[0]))
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(items()[0]).not.toBeVisible())
+    await waitFor(() => expect(document.activeElement).toBe(trigger))
+}
+
+/**
+ * Enter on the item that opens a nested dropdown opens it, the arrows there
+ * move one item, Escape closes the nested dropdown alone and gives the focus
+ * back to its item, and a second Escape closes the outer one and gives the
+ * focus back to its trigger, whichever dropdown hears the key first.
+ */
+export async function nestedKeyboardTest({ canvasElement }: PlayAttributes) {
+    const trigger = await within(canvasElement).findByTestId('trigger')
+    const action = (label: string) =>
+        [
+            ...canvasElement.querySelectorAll<HTMLElement>(
+                '.vv-dropdown-action',
+            ),
+        ].find(element => element.textContent?.trim() === label)
+
+    await userEvent.click(trigger)
+    await waitFor(() => expect(document.activeElement).toBe(action('Update')))
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}')
+    await waitFor(() => expect(document.activeElement).toBe(action('More')))
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(document.activeElement).toBe(action('Create')))
+    await expect(canvasElement.querySelector('.vv-dropdown')).toHaveNoViolations()
+    await userEvent.keyboard('{ArrowDown}')
+    await sleep(100)
+    await expect(document.activeElement).toBe(action('Publish'))
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(action('Create')).not.toBeVisible())
+    await waitFor(() => expect(document.activeElement).toBe(action('More')))
+    await expect(action('Update')).toBeVisible()
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(action('Update')).not.toBeVisible())
+    await waitFor(() => expect(document.activeElement).toBe(trigger))
+}
+
+/**
+ * Enter and Space run the focused item once: an action, a button the browser
+ * activates by itself, and an option, which the dropdown clicks. `root`
+ * holds the dropdown and the counts, as in `keyboardNavigation`.
+ */
+async function enterOnItem(root: Document | ShadowRoot, scope: ParentNode) {
+    const trigger = scope.querySelector<HTMLElement>('[data-testid="trigger"]')
+    const count = () =>
+        scope.querySelector('[data-testid="count"]')?.textContent?.trim()
+    const action = scope.querySelector<HTMLElement>('.vv-dropdown-action')
+    const option = scope.querySelector<HTMLElement>('.vv-dropdown-option')
+    await expect(count()).toBe('0 0')
+
+    // each count after a pause, so that a second run after a render shows
+    await userEvent.click(trigger as HTMLElement)
+    await waitFor(() => expect(root.activeElement).toBe(action))
+    await userEvent.keyboard('{Enter}')
+    await sleep(100)
+    await expect(count()).toBe('1 0')
+    await userEvent.keyboard(' ')
+    await sleep(100)
+    await expect(count()).toBe('2 0')
+
+    // the dropdown stays open, since the action does not close it; the
+    // option is focused directly, so that the arrows have no part in it
+    option?.focus()
+    await waitFor(() => expect(root.activeElement).toBe(option))
+    await userEvent.keyboard('{Enter}')
+    await sleep(100)
+    await expect(count()).toBe('2 1')
+    await userEvent.keyboard(' ')
+    await sleep(100)
+    await expect(count()).toBe('2 2')
+}
+
+export async function enterOnItemTest({ canvasElement }: PlayAttributes) {
+    await within(canvasElement).findByTestId('trigger')
+    await enterOnItem(document, canvasElement)
+}
+
+export async function enterOnItemInShadowRootTest({
+    canvasElement,
+}: PlayAttributes) {
+    const host = await within(canvasElement).findByTestId('host')
+    await waitFor(() =>
+        expect(host.shadowRoot?.querySelector('[data-testid="trigger"]')).toBeTruthy(),
+    )
+    const root = host.shadowRoot as ShadowRoot
+    await enterOnItem(root, root)
+}

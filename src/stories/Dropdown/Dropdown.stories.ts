@@ -1,23 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { computed, ref } from 'vue'
+import type { App } from 'vue'
+import { computed, createApp, onBeforeUnmount, onMounted, ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvDropdown from '@/components/VvDropdown/VvDropdown.vue'
 import VvDropdownAction from '@/components/VvDropdown/VvDropdownAction.vue'
+import VvDropdownOption from '@/components/VvDropdown/VvDropdownOption.vue'
 import VvIcon from '@/components/VvIcon/VvIcon.vue'
+import VolverPlugin from '@/Volver'
 import { argTypes, defaultArgs } from './Dropdown.settings'
 import {
     contentChangesWhileOpenTest,
     defaultTest,
+    enterOnItemInShadowRootTest,
+    enterOnItemTest,
     expandEventsTest,
     flipNearViewportBottomTest,
     idClearedTest,
+    keyboardNavigationTest,
     noResizeObserverLoopTest,
     reopenAfterResizeTest,
     roomBelowTest,
+    shadowRootTest,
     sizeApplyTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
     triggerWidthAfterResizeTest,
+    wrapperReferenceTest,
 } from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
@@ -513,4 +521,176 @@ export const SizeApply: Story = {
 		`,
     }),
     play: sizeApplyTest,
+}
+
+// `aria-hidden="false"` hides nothing: Escape still gives the trigger the focus
+const keyboardTemplate = /* html */ `
+	<vv-dropdown v-bind="args">
+		<vv-button data-testId="trigger" label="Toggle dropdown" aria-hidden="false" />
+		<template #items>
+			<vv-dropdown-action>Create</vv-dropdown-action>
+			<vv-dropdown-action>Update</vv-dropdown-action>
+			<vv-dropdown-action>Delete</vv-dropdown-action>
+		</template>
+	</vv-dropdown>
+`
+
+/**
+ * The arrows move the focus through the items, Escape closes the dropdown and
+ * gives the focus back to the trigger.
+ */
+export const KeyboardNavigation: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            return { args }
+        },
+        template: /* html */ `
+			<div style="min-height: 160px">${keyboardTemplate}</div>
+		`,
+    }),
+    play: keyboardNavigationTest,
+}
+
+/**
+ * Mounts `template` in an app of its own inside a shadow root, as a custom
+ * element does, with the state `setup` returns.
+ */
+function renderInShadowRoot(
+    template: string,
+    setup: () => Record<string, unknown>,
+) {
+    return () => ({
+        setup() {
+            const host = ref<HTMLElement>()
+            let app: App | undefined
+            onMounted(() => {
+                if (!host.value) {
+                    return
+                }
+                const root = host.value.attachShadow({ mode: 'open' })
+                // the page's styles, so the dropdown looks the same
+                for (const sheet of document.querySelectorAll(
+                    'style, link[rel="stylesheet"]',
+                )) {
+                    root.append(sheet.cloneNode(true))
+                }
+                const container = document.createElement('div')
+                root.append(container)
+                app = createApp({
+                    components: {
+                        VvDropdown,
+                        VvDropdownAction,
+                        VvDropdownOption,
+                        VvButton,
+                    },
+                    setup,
+                    template,
+                })
+                app.use(VolverPlugin)
+                app.mount(container)
+            })
+            onBeforeUnmount(() => app?.unmount())
+            return { host }
+        },
+        template: /* html */ `
+			<div ref="host" data-testId="host" style="min-height: 160px" />
+		`,
+    })
+}
+
+/**
+ * The same keyboard with the dropdown in a shadow root, as inside a custom
+ * element: there `document.activeElement` is the host, not the item.
+ */
+export const InShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => renderInShadowRoot(keyboardTemplate, () => ({ args }))(),
+    play: shadowRootTest,
+}
+
+const enterTemplate = /* html */ `
+	<vv-dropdown v-bind="args">
+		<vv-button data-testId="trigger" label="Toggle dropdown" />
+		<template #items>
+			<vv-dropdown-action @click="actions++">Action</vv-dropdown-action>
+			<vv-dropdown-option @click="options++">Option</vv-dropdown-option>
+		</template>
+	</vv-dropdown>
+	<output data-testId="count">{{ actions }} {{ options }}</output>
+`
+
+/**
+ * Enter and Space run the focused item once: the action, a button the browser
+ * activates by itself, and the option, which the dropdown clicks.
+ */
+export const EnterOnItem: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvDropdownOption, VvButton },
+        setup() {
+            return { args, actions: ref(0), options: ref(0) }
+        },
+        template: /* html */ `
+			<div style="min-height: 160px">${enterTemplate}</div>
+		`,
+    }),
+    play: enterOnItemTest,
+}
+
+/**
+ * The same keys in a shadow root, where the target of the key is the host
+ * and the dropdown clicked it instead of the option.
+ */
+export const EnterOnItemInShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(enterTemplate, () => ({
+            args,
+            actions: ref(0),
+            options: ref(0),
+        }))(),
+    play: enterOnItemInShadowRootTest,
+}
+
+/**
+ * A reference that wraps its trigger with a hidden input before it, as a
+ * form field does: Escape gives the focus to the trigger, not to the input.
+ */
+export const WrapperReference: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            const wrapper = ref<HTMLElement>()
+            const expanded = ref(false)
+            return { args, wrapper, expanded }
+        },
+        template: /* html */ `
+			<div style="min-height: 160px">
+				<div ref="wrapper" class="inline-flex">
+					<input type="hidden" name="choice" value="">
+					<vv-button data-testId="trigger" label="Toggle dropdown" @click="expanded = !expanded" />
+				</div>
+				<vv-dropdown v-model="expanded" v-bind="args" :reference="wrapper">
+					<template #items>
+						<vv-dropdown-action>Create</vv-dropdown-action>
+						<vv-dropdown-action>Update</vv-dropdown-action>
+					</template>
+				</vv-dropdown>
+			</div>
+		`,
+    }),
+    play: wrapperReferenceTest,
 }

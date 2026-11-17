@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VvActionEvents, VvActionProps } from '.'
-import { ActionTag } from '../../constants'
+import { ActionRoles, ActionTag } from '../../constants'
 
 // props and emit
 const props = defineProps(VvActionProps)
@@ -66,7 +66,13 @@ const hasTag = computed(() => {
 const hasProps = computed(() => {
     const toReturn = {
         ...dropdownAria?.value,
-        ariaPressed: pressed.value ? true : undefined,
+        // A dropdown it opens says it is open through `aria-expanded`, which
+        // `dropdownAria` carries, and a `menuitem` takes no `aria-pressed`:
+        // the nested trigger of a menu was invalid while its menu was open
+        ariaPressed:
+            props.pressed && role?.value !== ActionRoles.menuitem
+                ? true
+                : undefined,
         ariaLabel: props.ariaLabel,
         role: role?.value,
     }
