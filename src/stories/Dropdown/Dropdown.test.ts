@@ -556,6 +556,9 @@ export function actionClickTest(keepOpen: boolean) {
             canvasElement.querySelector<HTMLElement>('.vv-dropdown-action')
         await userEvent.click(trigger)
         await waitFor(() => expect(action()).toBeVisible())
+        await expect(
+            canvasElement.querySelector('.vv-dropdown'),
+        ).toHaveNoViolations()
         await userEvent.click(action() as HTMLElement)
         await sleep(100)
         await expect(count()).toBe('1')
@@ -587,9 +590,38 @@ export async function nestedClickTest({ canvasElement }: PlayAttributes) {
     await userEvent.click(action('More'))
     await waitFor(() => expect(action('Create')).toBeVisible())
     await expect(action('Update')).toBeVisible()
+    await expect(canvasElement.querySelector('.vv-dropdown')).toHaveNoViolations()
 
     await userEvent.click(action('Create'))
     await waitFor(() => expect(action('Create')).not.toBeVisible())
     await waitFor(() => expect(action('Update')).not.toBeVisible())
     await waitFor(() => expect(document.activeElement).toBe(trigger))
+}
+
+/**
+ * A dropdown placed inside an item of a menu: a click on a button in its
+ * `after` slot leaves the menu open, since only an item of a dropdown closes
+ * it.
+ */
+export async function nestedInItemTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const trigger = await canvas.findByTestId('trigger')
+    const update = () =>
+        [
+            ...canvasElement.querySelectorAll<HTMLElement>(
+                '.vv-dropdown-action',
+            ),
+        ].find(element => element.textContent?.trim() === 'Update') as HTMLElement
+
+    await userEvent.click(trigger)
+    await waitFor(() => expect(update()).toBeVisible())
+    await expect(canvasElement.querySelector('.vv-dropdown')).toHaveNoViolations()
+    await userEvent.click(canvas.getByTestId('nested-trigger'))
+    const done = canvas.getByTestId('done')
+    await waitFor(() => expect(done).toBeVisible())
+
+    await userEvent.click(done)
+    await sleep(100)
+    await expect(done).toBeVisible()
+    await expect(update()).toBeVisible()
 }

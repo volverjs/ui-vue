@@ -645,6 +645,14 @@ const hovered = useElementHover(floatingEl)
 
 // the dropdown this one is nested in, read before this one provides its own
 const { onAction: onParentAction } = useInjectedDropdownItem()
+// placed inside an item of another menu, this dropdown keeps the role that
+// item gives to the actions in it, but only its own items close a menu: a
+// button in its trigger, `before` or `after` closed the outer one
+const { expanded: itemExpanded, onAction: onItemAction }
+    = useInjectedDropdownAction()
+if (onItemAction) {
+    useDropdownProvideAction({ expanded: itemExpanded })
+}
 /**
  * An item of a menu has run: the menu closes, as a menu does, where it stayed
  * open over the view the item had opened unless each click called `hide`.
