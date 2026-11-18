@@ -21,6 +21,7 @@ import {
     noResizeObserverLoopTest,
     reopenAfterResizeTest,
     roomBelowTest,
+    shadowRoots,
     shadowRootTest,
     shiftTabOutTest,
     sizeApplyTest,
@@ -563,12 +564,14 @@ export const KeyboardNavigation: Story = {
 /**
  * Mounts `template` in an app of its own inside a shadow root, as a custom
  * element does, with the state `setup` returns. `light` is the content of the
- * host, which a `<slot>` in the shadow root draws.
+ * host, which a `<slot>` in the shadow root draws. The root, closed with
+ * `mode`, goes in `shadowRoots`.
  */
 function renderInShadowRoot(
     template: string,
     setup: () => Record<string, unknown>,
     light = '',
+    mode: ShadowRootMode = 'open',
 ) {
     return () => ({
         setup() {
@@ -578,7 +581,8 @@ function renderInShadowRoot(
                 if (!host.value) {
                     return
                 }
-                const root = host.value.attachShadow({ mode: 'open' })
+                const root = host.value.attachShadow({ mode })
+                shadowRoots.set(host.value, root)
                 // the page's styles, so the dropdown looks the same
                 for (const sheet of document.querySelectorAll(
                     'style, link[rel="stylesheet"]',
@@ -849,6 +853,28 @@ export const TabOutInShadowRoot: Story = {
                 changes: ref<boolean[]>([]),
             }),
             '<button type="button" slot="extra" role="menuitem" data-testId="slotted">Slotted</button>',
+        )(),
+    play: tabOutInShadowRootTest,
+}
+
+/**
+ * The same in a closed shadow root, where the button of the page assigned to
+ * the `<slot>` has no `assignedSlot`.
+ */
+export const TabOutInClosedShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            '<button type="button" slot="extra" role="menuitem" data-testId="slotted">Slotted</button>',
+            'closed',
         )(),
     play: tabOutInShadowRootTest,
 }

@@ -1,5 +1,22 @@
 import { userEvent } from 'storybook/test'
 
+/** Whether the stories run in Vitest, where the browser takes real keys */
+export const hasBrowserKeys = '__vitest_browser__' in globalThis
+
+/**
+ * Presses `keys`, in the syntax of user-event, on the focused element: in
+ * Vitest the keys of the browser, through Playwright, and in Storybook the
+ * keys of user-event, which reach no element in a closed shadow root.
+ */
+export async function press(keys: string) {
+    if (hasBrowserKeys) {
+        const { userEvent: browser } = await import('vitest/browser')
+        await browser.keyboard(keys)
+        return
+    }
+    await userEvent.keyboard(keys)
+}
+
 /**
  * Presses `Tab`, or `Shift+Tab` with `shift`, on the focused element.
  *
@@ -13,9 +30,8 @@ import { userEvent } from 'storybook/test'
  * takes the focus after the key.
  */
 export async function tab(shift = false, to?: HTMLElement) {
-    if ('__vitest_browser__' in globalThis) {
-        const { userEvent: browser } = await import('vitest/browser')
-        await browser.keyboard(shift ? '{Shift>}{Tab}{/Shift}' : '{Tab}')
+    if (hasBrowserKeys) {
+        await press(shift ? '{Shift>}{Tab}{/Shift}' : '{Tab}')
         return
     }
     if (!to) {

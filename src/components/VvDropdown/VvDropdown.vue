@@ -785,20 +785,22 @@ useEventListener(
 /**
  * Whether `node` is drawn inside the dropdown. `contains` follows the tree a
  * node belongs to, and misses an element of the page assigned to a `<slot>`
- * inside a dropdown in a shadow root.
+ * inside a dropdown in a shadow root: the slots of the dropdown name their
+ * elements, where the `assignedSlot` of an element is null in a closed root.
  */
 function isDrawnInside(node: Node) {
-    let current: Node | null = node
-    while (current) {
-        if (current === floatingEl.value) {
-            return true
-        }
-        current
-            = current instanceof ShadowRoot
-                ? current.host
-                : ((current as Element).assignedSlot ?? current.parentNode)
+    const floating = floatingEl.value as HTMLElement | undefined
+    if (!floating) {
+        return false
     }
-    return false
+    return (
+        floating.contains(node)
+        || [...floating.querySelectorAll('slot')].some(slot =>
+            slot
+                .assignedElements({ flatten: true })
+                .some(element => element.contains(node)),
+        )
+    )
 }
 /**
  * `Tab` or `Shift+Tab` past the items takes the focus out of the dropdown,

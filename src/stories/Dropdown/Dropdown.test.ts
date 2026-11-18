@@ -1,7 +1,7 @@
 import type { PlayAttributes } from '@/test/types'
 import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
-import { tab } from '@/test/keyboard'
+import { hasBrowserKeys, press, tab } from '@/test/keyboard'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest({ canvasElement }: PlayAttributes) {
@@ -646,7 +646,9 @@ function tabOutElements(scope: ParentNode) {
 
 /**
  * Opens the dropdown with `Enter` on its trigger, which gives the first item
- * the focus. `root` holds the dropdown, as in `keyboardNavigation`.
+ * the focus. `root` holds the dropdown, as in `keyboardNavigation`. In
+ * Storybook the keys of user-event do not reach a trigger in a closed shadow
+ * root: there it is clicked.
  */
 async function openWithEnter(
     root: Document | ShadowRoot,
@@ -654,7 +656,11 @@ async function openWithEnter(
     first: () => HTMLElement | undefined,
 ) {
     trigger.focus()
-    await userEvent.keyboard('{Enter}')
+    if (!hasBrowserKeys && root instanceof ShadowRoot && root.mode === 'closed') {
+        trigger.click()
+    } else {
+        await press('{Enter}')
+    }
     await waitFor(() => expect(root.activeElement).toBe(first()))
 }
 
@@ -737,6 +743,12 @@ export async function triggerClickWhileOpenTest({
 }
 
 /**
+ * The shadow root of each host of a story, a closed one too, which
+ * `host.shadowRoot` does not give.
+ */
+export const shadowRoots = new WeakMap<Element, ShadowRoot>()
+
+/**
  * `Tab` past the last item and `Shift+Tab` from the first one close a
  * dropdown in a shadow root, where `relatedTarget` is read in the dropdown's
  * own tree. A button of the page assigned to a `<slot>` after the items is
@@ -747,15 +759,20 @@ export async function tabOutInShadowRootTest({
 }: PlayAttributes) {
     const host = await within(canvasElement).findByTestId('host')
     await waitFor(() =>
-        expect(host.shadowRoot?.querySelector('[data-testid="trigger"]')).toBeTruthy(),
+        expect(
+            shadowRoots.get(host)?.querySelector('[data-testid="trigger"]'),
+        ).toBeTruthy(),
     )
-    const root = host.shadowRoot as ShadowRoot
+    const root = shadowRoots.get(host) as ShadowRoot
     const { trigger, next, changes, items } = tabOutElements(root)
     const slotted = within(host).getByTestId('slotted')
 
     await openWithEnter(root, trigger, () => items()[0])
-    // axe runs on the host, as in `shadowRootTest`
-    await expect(host).toHaveNoViolations()
+    // axe runs on the host, as in `shadowRootTest`. It does not enter a
+    // closed root, and finds there the slotted item out of its menu
+    if (root.mode === 'open') {
+        await expect(host).toHaveNoViolations()
+    }
     await tab(false, items()[1])
     await tab(false, items()[2])
     await tab(false, slotted)
