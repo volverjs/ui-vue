@@ -22,9 +22,13 @@ import {
     reopenAfterResizeTest,
     roomBelowTest,
     shadowRootTest,
+    shiftTabOutTest,
     sizeApplyTest,
+    tabOutInShadowRootTest,
+    tabOutTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
+    triggerClickWhileOpenTest,
     triggerWidthAfterResizeTest,
     wrapperReferenceTest,
 } from './Dropdown.test'
@@ -739,4 +743,100 @@ export const WrapperReference: Story = {
 		`,
     }),
     play: wrapperReferenceTest,
+}
+
+// a button after the dropdown, where `Tab` past the items takes the focus,
+// and the values the dropdown gives its model
+const tabOutTemplate = /* html */ `
+	<div style="min-height: 160px">
+		<vv-dropdown v-model="expanded" v-bind="args" @update:model-value="changes.push($event)">
+			<vv-button data-testId="trigger" label="Toggle dropdown" />
+			<template #items>
+				<vv-dropdown-action>Create</vv-dropdown-action>
+				<vv-dropdown-action>Update</vv-dropdown-action>
+				<vv-dropdown-action>Delete</vv-dropdown-action>
+			</template>
+		</vv-dropdown>
+		<vv-button data-testId="next" label="Next" />
+		<output data-testId="changes">{{ changes.join(' ') }}</output>
+	</div>
+`
+
+/**
+ * `Tab` past the last item closes the dropdown and leaves the focus on the
+ * button after it: the dropdown stayed open over that button.
+ */
+export const TabOut: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            return { args, expanded: ref(false), changes: ref<boolean[]>([]) }
+        },
+        template: tabOutTemplate,
+    }),
+    play: tabOutTest(false),
+}
+
+/**
+ * The same in the top layer, where the dropdown is still in the document
+ * after its trigger.
+ */
+export const TabOutTopLayer: Story = {
+    ...TabOut,
+    args: {
+        ...defaultArgs,
+        topLayer: true,
+    },
+}
+
+/**
+ * With `keepOpen` the dropdown stays open when `Tab` takes the focus out of
+ * it, as on a click outside.
+ */
+export const TabOutKeepOpen: Story = {
+    ...TabOut,
+    args: {
+        ...defaultArgs,
+        keepOpen: true,
+    },
+    play: tabOutTest(true),
+}
+
+/**
+ * `Shift+Tab` from the first item closes the dropdown and leaves the focus on
+ * the trigger.
+ */
+export const ShiftTabOut: Story = {
+    ...TabOut,
+    play: shiftTabOutTest,
+}
+
+/**
+ * A click on the trigger with the focus in the dropdown closes it once: the
+ * press moves the focus to the trigger before the click that toggles the
+ * dropdown.
+ */
+export const TriggerClickWhileOpen: Story = {
+    ...TabOut,
+    play: triggerClickWhileOpenTest,
+}
+
+/**
+ * `Tab` and `Shift+Tab` out of a dropdown in a shadow root, as inside a
+ * custom element.
+ */
+export const TabOutInShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(tabOutTemplate, () => ({
+            args,
+            expanded: ref(false),
+            changes: ref<boolean[]>([]),
+        }))(),
+    play: tabOutInShadowRootTest,
 }

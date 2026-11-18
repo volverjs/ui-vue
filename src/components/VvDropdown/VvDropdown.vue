@@ -757,6 +757,51 @@ onKeyStroke([' ', 'Enter'], (e) => {
         item.click()
     }
 })
+/**
+ * True from a `Tab` until the browser has moved the focus, which it does once
+ * the key has gone through the page, in the same task.
+ */
+let tabbing = false
+useEventListener(
+    'keydown',
+    (e: KeyboardEvent) => {
+        if (e.key !== 'Tab' || !expanded.value) {
+            return
+        }
+        tabbing = true
+        setTimeout(() => {
+            tabbing = false
+        })
+    },
+    // on capture, so that a listener that stops the key and moves the focus
+    // by itself still counts
+    { capture: true, passive: true },
+)
+/**
+ * `Tab` or `Shift+Tab` past the items takes the focus out of the dropdown,
+ * which closes, as a menu does: it stayed open over the element the focus had
+ * reached, until a click outside or `Esc`. The focus stays where the browser
+ * took it, on the trigger too. Only `Tab` counts: a press on the trigger
+ * moves the focus to it before the click that toggles the dropdown, which
+ * would open it again. A dropdown nested in this one is inside it. Read on
+ * the dropdown, `relatedTarget` is retargeted to its tree: an element in a
+ * shadow root inside the dropdown is the host, inside it too. A focus that
+ * leaves the window, for another tab or the address bar, has none and comes
+ * back to the item. `keepOpen` keeps the dropdown open as on a click outside.
+ */
+useEventListener(floatingEl, 'focusout', (e: FocusEvent) => {
+    const to = e.relatedTarget
+    if (
+        !tabbing
+        || !expanded.value
+        || props.keepOpen
+        || !(to instanceof Node)
+        || floatingEl.value?.contains(to)
+    ) {
+        return
+    }
+    hide()
+})
 
 // the enter transition is the opening and the leave transition the closing:
 // an opening during a closing cancels the leave and runs the enter hooks

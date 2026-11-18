@@ -340,3 +340,36 @@ export async function suggestionsEscapeTest({ canvasElement }: PlayAttributes) {
     await sleep(500)
     await expect(option()).not.toBeVisible()
 }
+
+/**
+ * `Tab` from the field moves the focus through the suggestions, and past the
+ * last one to the button after the field, which closes the suggestions: they
+ * stayed open over that button. `Shift+Tab` from the first one back to the
+ * field leaves them open, since the field shows them on focus.
+ */
+export async function suggestionsTabOutTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const next = canvas.getByTestId('next')
+    const input = element.querySelector('input') as HTMLInputElement
+    const options = () => [
+        ...canvasElement.querySelectorAll<HTMLElement>('.vv-dropdown-option'),
+    ]
+
+    input.focus()
+    await waitFor(() => expect(options()[0]).toBeVisible())
+    await userEvent.tab()
+    await expect(document.activeElement).toBe(options()[0])
+    await userEvent.tab({ shift: true })
+    await expect(input).toHaveFocus()
+    await sleep(100)
+    await expect(options()[0]).toBeVisible()
+
+    for (const option of options()) {
+        await userEvent.tab()
+        await expect(document.activeElement).toBe(option)
+    }
+    await userEvent.tab()
+    await expect(next).toHaveFocus()
+    await waitFor(() => expect(options()[0]).not.toBeVisible())
+}

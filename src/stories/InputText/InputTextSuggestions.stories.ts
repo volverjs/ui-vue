@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { ref } from 'vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
-import { suggestionsEscapeTest } from './InputText.test'
+import { suggestionsEscapeTest, suggestionsTabOutTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Suggestions',
@@ -89,6 +91,28 @@ export const ExternalSuggestions: Story = {
 export const SuggestionsEscape: Story = {
     ...ExternalSuggestions,
     play: suggestionsEscapeTest,
+}
+
+/**
+ * `Tab` past the last suggestion closes the suggestions and leaves the focus
+ * on the button after the field: they stayed open over it. `Shift+Tab` from
+ * the first one back to the field leaves them open, as the field shows them.
+ */
+export const SuggestionsTabOut: Story = {
+    ...ExternalSuggestions,
+    render: args => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            return { args, inputValue: ref() }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-bind="args" v-model="inputValue" data-testId="element" />
+                <vv-button data-testId="next" label="Next" />
+            </div>
+        `,
+    }),
+    play: suggestionsTabOutTest,
 }
 
 export const BothSuggestions: Story = {

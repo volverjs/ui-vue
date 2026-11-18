@@ -233,3 +233,40 @@ export async function autoOpenEscapeTest({ canvasElement }: PlayAttributes) {
     await sleep(500)
     await expect(combobox).toHaveAttribute('aria-expanded', 'false')
 }
+
+/**
+ * Typing in the search and `Tab` between the search and the options leave
+ * the list open. `Shift+Tab` from the search back to the combobox takes the
+ * focus out of the list, which closes, as on `Esc`, and `Space` opens it
+ * again.
+ */
+export async function shiftTabOutTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const combobox = element.querySelector('[role="combobox"]') as HTMLElement
+    const search = () =>
+        element.querySelector<HTMLInputElement>('input[type="search"]')
+    const option = () => element.querySelector<HTMLElement>('[role="option"]')
+
+    combobox.focus()
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(search()).toHaveFocus())
+    await userEvent.keyboard('Option 1')
+    await sleep()
+    await userEvent.tab()
+    await expect(option()).toHaveFocus()
+    await expect(element).toHaveNoViolations()
+    await userEvent.tab({ shift: true })
+    await expect(search()).toHaveFocus()
+    await sleep(100)
+    await expect(combobox).toHaveAttribute('aria-expanded', 'true')
+
+    await userEvent.tab({ shift: true })
+    await expect(combobox).toHaveFocus()
+    await waitFor(() =>
+        expect(combobox).toHaveAttribute('aria-expanded', 'false'),
+    )
+    await userEvent.keyboard(' ')
+    await waitFor(() =>
+        expect(combobox).toHaveAttribute('aria-expanded', 'true'),
+    )
+}

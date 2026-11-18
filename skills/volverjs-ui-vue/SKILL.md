@@ -238,9 +238,13 @@ listboxes use `VvDropdownOption` with `role="listbox"`.
 The keyboard works inside a shadow root too. The arrows move through the items, `Enter` and `Space`
 run the focused one once, and `Esc` closes the dropdown and gives the focus back to its trigger, or
 to the element focused before it opened when the reference is only a position. In nested dropdowns
-`Esc` closes the inner one alone. A field of your own that opens its dropdown on focus should stay
-closed while the exposed `restoringFocus` is true, as `VvCombobox` with `autoOpen` and the
-suggestions of `VvInputText` do, or `Esc` opens it again at once.
+`Esc` closes the inner one alone. `Tab` past the last item, or `Shift+Tab` from the first one, takes
+the focus out of the dropdown, which closes and leaves the focus where the browser took it, the
+trigger included; from an inner dropdown to an item of the outer one it closes the inner one alone.
+The list of `VvCombobox` and the suggestions of `VvInputText` and `VvTextarea` close the same way.
+`keepOpen` keeps the dropdown open there too, as on a click outside. A field of your own that opens
+its dropdown on focus should stay closed while the exposed `restoringFocus` is true, as `VvCombobox`
+with `autoOpen` and the suggestions of `VvInputText` do, or `Esc` opens it again at once.
 
 Use `top-layer` when the trigger sits inside a panel with its own stacking context (sticky header,
 transformed card), otherwise the menu is painted underneath (`docs/specs/floating-elements.md`).

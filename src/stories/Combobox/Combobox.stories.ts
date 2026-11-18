@@ -10,6 +10,7 @@ import {
     defaultTest,
     focusMovedWhileOpeningTest,
     keyboardTest,
+    shiftTabOutTest,
 } from './Combobox.test'
 
 const meta: Meta<typeof VvCombobox> = {
@@ -245,6 +246,20 @@ export const AutoOpen: Story = {
 export const AutoOpenEscape: Story = {
     ...AutoOpen,
     play: autoOpenEscapeTest,
+}
+
+/**
+ * Typing in the search and `Tab` between the search and the options leave
+ * the list open; `Shift+Tab` from the search back to the combobox closes it,
+ * as `Esc` does, and `Space` opens it again.
+ */
+export const ShiftTabOut: Story = {
+    ...Default,
+    args: {
+        ...defaultArgs,
+        searchable: true,
+    },
+    play: shiftTabOutTest,
 }
 
 export const KeepOpen: Story = {
