@@ -2,6 +2,7 @@ import type { PlayAttributes } from '@/test/types'
 import { userEvent, waitFor, within } from 'storybook/test'
 import { defaultTest as selectDefaultTest } from '@/stories/Select/Select.test'
 import { expect } from '@/test/expect'
+import { tab } from '@/test/keyboard'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest({ canvasElement, args }: PlayAttributes) {
@@ -237,36 +238,45 @@ export async function autoOpenEscapeTest({ canvasElement }: PlayAttributes) {
 /**
  * Typing in the search and `Tab` between the search and the options leave
  * the list open. `Shift+Tab` from the search back to the combobox takes the
- * focus out of the list, which closes, as on `Esc`, and `Space` opens it
- * again.
+ * focus out of the list, which closes, as on `Esc`, and stays closed with
+ * `autoOpen` too, where the focus opened it again and took the focus back to
+ * the search. A second `Shift+Tab` reaches the button before the combobox.
  */
-export async function shiftTabOutTest({ canvasElement }: PlayAttributes) {
-    const element = await within(canvasElement).findByTestId('element')
+export async function shiftTabOutTest({ canvasElement, args }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const previous = canvas.getByTestId('previous')
     const combobox = element.querySelector('[role="combobox"]') as HTMLElement
     const search = () =>
         element.querySelector<HTMLInputElement>('input[type="search"]')
     const option = () => element.querySelector<HTMLElement>('[role="option"]')
 
     combobox.focus()
-    await userEvent.keyboard('{Enter}')
+    if (!args.autoOpen) {
+        await userEvent.keyboard('{Enter}')
+    }
     await waitFor(() => expect(search()).toHaveFocus())
     await userEvent.keyboard('Option 1')
     await sleep()
-    await userEvent.tab()
+    await tab()
     await expect(option()).toHaveFocus()
     await expect(element).toHaveNoViolations()
-    await userEvent.tab({ shift: true })
+    await tab(true)
     await expect(search()).toHaveFocus()
     await sleep(100)
     await expect(combobox).toHaveAttribute('aria-expanded', 'true')
 
-    await userEvent.tab({ shift: true })
+    await tab(true)
     await expect(combobox).toHaveFocus()
     await waitFor(() =>
         expect(combobox).toHaveAttribute('aria-expanded', 'false'),
     )
-    await userEvent.keyboard(' ')
-    await waitFor(() =>
-        expect(combobox).toHaveAttribute('aria-expanded', 'true'),
-    )
+    await sleep(500)
+    await expect(combobox).toHaveFocus()
+    await expect(combobox).toHaveAttribute('aria-expanded', 'false')
+
+    await tab(true)
+    await expect(previous).toHaveFocus()
+    await sleep(100)
+    await expect(combobox).toHaveAttribute('aria-expanded', 'false')
 }

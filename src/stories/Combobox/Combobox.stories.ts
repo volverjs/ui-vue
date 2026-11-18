@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
+import VvButton from '@/components/VvButton/VvButton.vue'
 import VvCombobox from '@/components/VvCombobox/VvCombobox.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './Combobox.settings'
@@ -251,15 +252,37 @@ export const AutoOpenEscape: Story = {
 /**
  * Typing in the search and `Tab` between the search and the options leave
  * the list open; `Shift+Tab` from the search back to the combobox closes it,
- * as `Esc` does, and `Space` opens it again.
+ * as `Esc` does, and a second one reaches the button before the combobox.
  */
 export const ShiftTabOut: Story = {
-    ...Default,
     args: {
         ...defaultArgs,
         searchable: true,
     },
+    render: args => ({
+        components: { VvCombobox, VvButton },
+        setup() {
+            return { args, inputValue: ref() }
+        },
+        template: /* html */ `
+			<vv-button data-testId="previous" label="Previous" />
+			<vv-combobox v-bind="args" v-model="inputValue" data-testId="element" />
+		`,
+    }),
     play: shiftTabOutTest,
+}
+
+/**
+ * The same with `autoOpen`, where the focus on the combobox opened the list
+ * again and took the focus back into it: `Shift+Tab` could not get past it.
+ */
+export const AutoOpenShiftTabOut: Story = {
+    ...ShiftTabOut,
+    args: {
+        ...defaultArgs,
+        searchable: true,
+        autoOpen: true,
+    },
 }
 
 export const KeepOpen: Story = {

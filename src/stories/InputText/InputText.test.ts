@@ -3,6 +3,7 @@ import type { PlayAttributes } from '@/test/types'
 import { userEvent, waitFor, within } from 'storybook/test'
 import { INPUT_TYPES } from '@/components/VvInputText'
 import { expect } from '@/test/expect'
+import { tab } from '@/test/keyboard'
 import { sleep } from '@/test/sleep'
 import { invalidPropWarnings } from '@/test/warnings'
 
@@ -345,7 +346,7 @@ export async function suggestionsEscapeTest({ canvasElement }: PlayAttributes) {
  * `Tab` from the field moves the focus through the suggestions, and past the
  * last one to the button after the field, which closes the suggestions: they
  * stayed open over that button. `Shift+Tab` from the first one back to the
- * field leaves them open, since the field shows them on focus.
+ * field closes them too, and the field keeps them closed, as on `Esc`.
  */
 export async function suggestionsTabOutTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
@@ -358,18 +359,26 @@ export async function suggestionsTabOutTest({ canvasElement }: PlayAttributes) {
 
     input.focus()
     await waitFor(() => expect(options()[0]).toBeVisible())
-    await userEvent.tab()
+    await tab()
     await expect(document.activeElement).toBe(options()[0])
-    await userEvent.tab({ shift: true })
+    await tab(true)
     await expect(input).toHaveFocus()
-    await sleep(100)
-    await expect(options()[0]).toBeVisible()
+    await waitFor(() => expect(options()[0]).not.toBeVisible())
+    await sleep(500)
+    await expect(options()[0]).not.toBeVisible()
+    await expect(input).toHaveFocus()
 
+    // a focus in the same tick as the blur shows nothing to the field
+    input.blur()
+    await sleep(100)
+    input.focus()
+    await waitFor(() => expect(options()[0]).toBeVisible())
     for (const option of options()) {
-        await userEvent.tab()
+        await tab()
         await expect(document.activeElement).toBe(option)
     }
-    await userEvent.tab()
+    await tab()
     await expect(next).toHaveFocus()
     await waitFor(() => expect(options()[0]).not.toBeVisible())
+    await expect(next).toHaveFocus()
 }

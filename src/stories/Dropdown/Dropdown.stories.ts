@@ -562,11 +562,13 @@ export const KeyboardNavigation: Story = {
 
 /**
  * Mounts `template` in an app of its own inside a shadow root, as a custom
- * element does, with the state `setup` returns.
+ * element does, with the state `setup` returns. `light` is the content of the
+ * host, which a `<slot>` in the shadow root draws.
  */
 function renderInShadowRoot(
     template: string,
     setup: () => Record<string, unknown>,
+    light = '',
 ) {
     return () => ({
         setup() {
@@ -602,7 +604,7 @@ function renderInShadowRoot(
             return { host }
         },
         template: /* html */ `
-			<div ref="host" data-testId="host" style="min-height: 160px" />
+			<div ref="host" data-testId="host" style="min-height: 160px">${light}</div>
 		`,
     })
 }
@@ -746,21 +748,24 @@ export const WrapperReference: Story = {
 }
 
 // a button after the dropdown, where `Tab` past the items takes the focus,
-// and the values the dropdown gives its model
-const tabOutTemplate = /* html */ `
-	<div style="min-height: 160px">
-		<vv-dropdown v-model="expanded" v-bind="args" @update:model-value="changes.push($event)">
-			<vv-button data-testId="trigger" label="Toggle dropdown" />
-			<template #items>
-				<vv-dropdown-action>Create</vv-dropdown-action>
-				<vv-dropdown-action>Update</vv-dropdown-action>
-				<vv-dropdown-action>Delete</vv-dropdown-action>
-			</template>
-		</vv-dropdown>
-		<vv-button data-testId="next" label="Next" />
-		<output data-testId="changes">{{ changes.join(' ') }}</output>
-	</div>
-`
+// and the values the dropdown gives its model; `after` goes after the items
+function tabOutTemplate(after = '') {
+    return /* html */ `
+		<div style="min-height: 160px">
+			<vv-dropdown v-model="expanded" v-bind="args" @update:model-value="changes.push($event)">
+				<vv-button data-testId="trigger" label="Toggle dropdown" />
+				<template #items>
+					<vv-dropdown-action>Create</vv-dropdown-action>
+					<vv-dropdown-action>Update</vv-dropdown-action>
+					<vv-dropdown-action>Delete</vv-dropdown-action>
+					${after}
+				</template>
+			</vv-dropdown>
+			<vv-button data-testId="next" label="Next" />
+			<output data-testId="changes">{{ changes.join(' ') }}</output>
+		</div>
+	`
+}
 
 /**
  * `Tab` past the last item closes the dropdown and leaves the focus on the
@@ -775,9 +780,9 @@ export const TabOut: Story = {
         setup() {
             return { args, expanded: ref(false), changes: ref<boolean[]>([]) }
         },
-        template: tabOutTemplate,
+        template: tabOutTemplate(),
     }),
-    play: tabOutTest(false),
+    play: tabOutTest(),
 }
 
 /**
@@ -790,6 +795,7 @@ export const TabOutTopLayer: Story = {
         ...defaultArgs,
         topLayer: true,
     },
+    play: tabOutTest({ topLayer: true }),
 }
 
 /**
@@ -802,7 +808,7 @@ export const TabOutKeepOpen: Story = {
         ...defaultArgs,
         keepOpen: true,
     },
-    play: tabOutTest(true),
+    play: tabOutTest({ keepOpen: true }),
 }
 
 /**
@@ -826,17 +832,23 @@ export const TriggerClickWhileOpen: Story = {
 
 /**
  * `Tab` and `Shift+Tab` out of a dropdown in a shadow root, as inside a
- * custom element.
+ * custom element, with a button of the page assigned to a `<slot>` after the
+ * items.
  */
 export const TabOutInShadowRoot: Story = {
     args: {
         ...defaultArgs,
     },
     render: args =>
-        renderInShadowRoot(tabOutTemplate, () => ({
-            args,
-            expanded: ref(false),
-            changes: ref<boolean[]>([]),
-        }))(),
+        renderInShadowRoot(
+            // `component` renders the element: a `<slot>` is Vue's own
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            '<button type="button" slot="extra" role="menuitem" data-testId="slotted">Slotted</button>',
+        )(),
     play: tabOutInShadowRootTest,
 }

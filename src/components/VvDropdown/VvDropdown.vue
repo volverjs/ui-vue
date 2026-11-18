@@ -456,12 +456,20 @@ function getKeyboardFocusableElements(element: Element | null) {
     ) as HTMLElement[]
 }
 /**
- * True while `Esc` gives the focus back, until the watchers of that focus
- * have run: a field that opens its dropdown on focus (`VvCombobox` with
+ * True while the keyboard closes the dropdown and moves the focus, `Esc` back
+ * to the trigger or `Tab` out of the dropdown, until the watchers of that
+ * focus have run: a field that opens its dropdown on focus (`VvCombobox` with
  * `autoOpen`, the suggestions of `VvInputText` and `VvTextarea`) reads it to
- * stay closed, where the dropdown opened again at once.
+ * stay closed, where the dropdown opened again at once and, with
+ * `autofocusFirst`, took the focus back into it.
  */
 const restoringFocus = ref(false)
+function holdRestoringFocus() {
+    restoringFocus.value = true
+    setTimeout(() => {
+        restoringFocus.value = false
+    })
+}
 /** The element that had the focus before the dropdown opened, outside it. */
 let focusBeforeOpen: HTMLElement | undefined
 /**
@@ -500,11 +508,8 @@ function focusReference() {
     if (!target) {
         return
     }
-    restoringFocus.value = true
+    holdRestoringFocus()
     target.focus({ preventScroll: true })
-    setTimeout(() => {
-        restoringFocus.value = false
-    })
 }
 /**
  * The innermost dropdown the key was pressed in. Nested dropdowns all hear
@@ -778,30 +783,58 @@ useEventListener(
     { capture: true, passive: true },
 )
 /**
+ * Whether `node` is drawn inside the dropdown. `contains` follows the tree a
+ * node belongs to, and misses an element of the page assigned to a `<slot>`
+ * inside a dropdown in a shadow root.
+ */
+function isDrawnInside(node: Node) {
+    let current: Node | null = node
+    while (current) {
+        if (current === floatingEl.value) {
+            return true
+        }
+        current
+            = current instanceof ShadowRoot
+                ? current.host
+                : ((current as Element).assignedSlot ?? current.parentNode)
+    }
+    return false
+}
+/**
  * `Tab` or `Shift+Tab` past the items takes the focus out of the dropdown,
  * which closes, as a menu does: it stayed open over the element the focus had
  * reached, until a click outside or `Esc`. The focus stays where the browser
- * took it, on the trigger too. Only `Tab` counts: a press on the trigger
- * moves the focus to it before the click that toggles the dropdown, which
- * would open it again. A dropdown nested in this one is inside it. Read on
- * the dropdown, `relatedTarget` is retargeted to its tree: an element in a
- * shadow root inside the dropdown is the host, inside it too. A focus that
- * leaves the window, for another tab or the address bar, has none and comes
- * back to the item. `keepOpen` keeps the dropdown open as on a click outside.
+ * took it, on the trigger too, and a field that opens the dropdown on focus
+ * keeps it closed, as on `Esc`: `VvCombobox` with `autoOpen` opened it again
+ * and took the focus back into it, so `Shift+Tab` could not get past it. Only
+ * `Tab` counts: a press on the trigger moves the focus to it before the click
+ * that toggles the dropdown, which would open it again. A dropdown nested in
+ * this one is inside it. Read on the dropdown, `relatedTarget` is retargeted
+ * to its tree: an element in a shadow root inside the dropdown is the host,
+ * inside it too. A focus that leaves the window, for another tab or the
+ * address bar, has none and comes back to the item. `keepOpen` keeps the
+ * dropdown open as on a click outside. On capture, so that an item that stops
+ * the event does not keep the dropdown open.
  */
-useEventListener(floatingEl, 'focusout', (e: FocusEvent) => {
-    const to = e.relatedTarget
-    if (
-        !tabbing
-        || !expanded.value
-        || props.keepOpen
-        || !(to instanceof Node)
-        || floatingEl.value?.contains(to)
-    ) {
-        return
-    }
-    hide()
-})
+useEventListener(
+    floatingEl,
+    'focusout',
+    (e: FocusEvent) => {
+        const to = e.relatedTarget
+        if (
+            !tabbing
+            || !expanded.value
+            || props.keepOpen
+            || !(to instanceof Node)
+            || isDrawnInside(to)
+        ) {
+            return
+        }
+        holdRestoringFocus()
+        hide()
+    },
+    { capture: true, passive: true },
+)
 
 // the enter transition is the opening and the leave transition the closing:
 // an opening during a closing cancels the leave and runs the enter hooks

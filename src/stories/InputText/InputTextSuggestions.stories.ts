@@ -96,7 +96,7 @@ export const SuggestionsEscape: Story = {
 /**
  * `Tab` past the last suggestion closes the suggestions and leaves the focus
  * on the button after the field: they stayed open over it. `Shift+Tab` from
- * the first one back to the field leaves them open, as the field shows them.
+ * the first one back to the field closes them, as `Esc` does.
  */
 export const SuggestionsTabOut: Story = {
     ...ExternalSuggestions,

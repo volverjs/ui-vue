@@ -1,6 +1,7 @@
 import type { PlayAttributes } from '@/test/types'
 import { userEvent, waitFor, within } from 'storybook/test'
 import { expect } from '@/test/expect'
+import { tab } from '@/test/keyboard'
 import { sleep } from '@/test/sleep'
 
 export async function defaultTest({ canvasElement }: PlayAttributes) {
@@ -660,24 +661,25 @@ async function openWithEnter(
 /**
  * `Tab` moves the focus through the items with the dropdown open, and past
  * the last one to the button after the dropdown, which closes unless
- * `keepOpen`. The focus stays on that button.
+ * `keepOpen`. The focus stays on that button. With `topLayer` the dropdown is
+ * open in the top layer.
  */
-export function tabOutTest(keepOpen: boolean) {
+export function tabOutTest({ keepOpen = false, topLayer = false } = {}) {
     return async ({ canvasElement }: PlayAttributes) => {
         await within(canvasElement).findByTestId('trigger')
         const { trigger, next, changes, items } = tabOutElements(canvasElement)
+        const dropdown = canvasElement.querySelector('.vv-dropdown')
 
         await openWithEnter(document, trigger, () => items()[0])
-        await expect(
-            canvasElement.querySelector('.vv-dropdown'),
-        ).toHaveNoViolations()
-        await userEvent.tab()
-        await userEvent.tab()
+        await expect(dropdown).toHaveNoViolations()
+        await expect(dropdown?.matches(':popover-open')).toBe(topLayer)
+        await tab()
+        await tab()
         await expect(document.activeElement).toBe(items()[2])
         await sleep(100)
         await expect(items()[0]).toBeVisible()
 
-        await userEvent.tab()
+        await tab()
         await expect(document.activeElement).toBe(next)
         if (keepOpen) {
             await sleep(100)
@@ -704,11 +706,12 @@ export async function shiftTabOutTest({ canvasElement }: PlayAttributes) {
     await expect(
         canvasElement.querySelector('.vv-dropdown'),
     ).toHaveNoViolations()
-    await userEvent.tab({ shift: true })
+    await tab(true)
     await expect(document.activeElement).toBe(trigger)
     await waitFor(() => expect(items()[0]).not.toBeVisible())
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')
     await expect(changes()).toBe('true false')
+    await expect(document.activeElement).toBe(trigger)
 }
 
 /**
@@ -734,34 +737,10 @@ export async function triggerClickWhileOpenTest({
 }
 
 /**
- * `Tab` from the focused element of `root` to `to`, as the browser moves the
- * focus: user-event looks for the next element in the document alone, and
- * from inside a shadow root finds none.
- */
-async function tabTo(
-    root: Document | ShadowRoot,
-    to: HTMLElement,
-    shiftKey = false,
-) {
-    const from = root.activeElement as HTMLElement
-    const init = {
-        key: 'Tab',
-        code: 'Tab',
-        shiftKey,
-        bubbles: true,
-        cancelable: true,
-        composed: true,
-    }
-    from.dispatchEvent(new KeyboardEvent('keydown', init))
-    to.focus()
-    from.dispatchEvent(new KeyboardEvent('keyup', init))
-    await sleep(0)
-}
-
-/**
  * `Tab` past the last item and `Shift+Tab` from the first one close a
  * dropdown in a shadow root, where `relatedTarget` is read in the dropdown's
- * own tree.
+ * own tree. A button of the page assigned to a `<slot>` after the items is
+ * drawn inside the dropdown, which stays open while it has the focus.
  */
 export async function tabOutInShadowRootTest({
     canvasElement,
@@ -772,21 +751,26 @@ export async function tabOutInShadowRootTest({
     )
     const root = host.shadowRoot as ShadowRoot
     const { trigger, next, changes, items } = tabOutElements(root)
+    const slotted = within(host).getByTestId('slotted')
 
     await openWithEnter(root, trigger, () => items()[0])
     // axe runs on the host, as in `shadowRootTest`
     await expect(host).toHaveNoViolations()
-    await tabTo(root, items()[1])
-    await tabTo(root, items()[2])
+    await tab(false, items()[1])
+    await tab(false, items()[2])
+    await tab(false, slotted)
+    await expect(document.activeElement).toBe(slotted)
     await sleep(100)
     await expect(items()[0]).toBeVisible()
-    await tabTo(root, next)
+    await tab(false, next)
+    await expect(root.activeElement).toBe(next)
     await waitFor(() => expect(items()[0]).not.toBeVisible())
     await expect(root.activeElement).toBe(next)
     await expect(changes()).toBe('true false')
 
     await openWithEnter(root, trigger, () => items()[0])
-    await tabTo(root, trigger, true)
+    await tab(true, trigger)
+    await expect(root.activeElement).toBe(trigger)
     await waitFor(() => expect(items()[0]).not.toBeVisible())
     await expect(root.activeElement).toBe(trigger)
     await expect(changes()).toBe('true false true false')
@@ -811,28 +795,29 @@ export async function nestedTabOutTest({ canvasElement }: PlayAttributes) {
         ].find(element => element.textContent?.trim() === label) as HTMLElement
 
     await openWithEnter(document, trigger, () => action('Update'))
-    await userEvent.tab()
-    await userEvent.tab()
+    await tab()
+    await tab()
     await expect(document.activeElement).toBe(action('More'))
     await userEvent.keyboard('{Enter}')
     await waitFor(() => expect(document.activeElement).toBe(action('Create')))
-    await userEvent.tab()
+    await tab()
     await expect(document.activeElement).toBe(action('Publish'))
     await sleep(100)
     await expect(action('Create')).toBeVisible()
     await expect(action('Update')).toBeVisible()
     await expect(canvasElement.querySelector('.vv-dropdown')).toHaveNoViolations()
 
-    await userEvent.tab({ shift: true })
-    await userEvent.tab({ shift: true })
+    await tab(true)
+    await tab(true)
     await expect(document.activeElement).toBe(action('More'))
     await waitFor(() => expect(action('Create')).not.toBeVisible())
     await expect(action('Update')).toBeVisible()
+    await expect(document.activeElement).toBe(action('More'))
 
     await userEvent.keyboard('{Enter}')
     await waitFor(() => expect(document.activeElement).toBe(action('Create')))
-    await userEvent.tab()
-    await userEvent.tab()
+    await tab()
+    await tab()
     await expect(document.activeElement).toBe(next)
     await waitFor(() => expect(action('Publish')).not.toBeVisible())
     await waitFor(() => expect(action('Update')).not.toBeVisible())
