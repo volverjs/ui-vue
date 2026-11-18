@@ -922,3 +922,28 @@ export const TabOutThroughForwardedSlot: Story = {
         )(),
     play: tabOutInShadowRootTest,
 }
+
+/**
+ * The same in closed shadow roots, where the forwarded button has no
+ * `assignedSlot` to walk up.
+ */
+export const TabOutThroughForwardedSlotInClosedRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            {
+                light: slottedButton(''),
+                forward: 'extra',
+                mode: 'closed',
+            },
+        )(),
+    play: tabOutInShadowRootTest,
+}

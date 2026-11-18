@@ -783,23 +783,29 @@ useEventListener(
     { capture: true, passive: true },
 )
 /**
+ * The elements the slots inside `container` draw, and those that the slots
+ * inside these draw in turn, as a wrapper does that forwards its own content.
+ */
+function slottedInto(container: Element): Element[] {
+    return [...container.querySelectorAll('slot')].flatMap((slot) => {
+        const assigned = slot.assignedElements({ flatten: true })
+        return [...assigned, ...assigned.flatMap(slottedInto)]
+    })
+}
+/**
  * Whether `node` is drawn inside the dropdown. `contains` follows the tree a
  * node belongs to, and misses an element of the page assigned to a `<slot>`
  * inside a dropdown in a shadow root: the walk goes up the slots an element
  * is assigned to, through a wrapper that forwards it with a slot of its own
  * too. In a closed root the `assignedSlot` of an element is null, and there
- * the slots of the dropdown name the elements assigned to them.
+ * the slots of the dropdown name the elements they draw.
  */
 function isDrawnInside(node: Node) {
     const floating = floatingEl.value as HTMLElement | undefined
     if (!floating) {
         return false
     }
-    const assigned = new Set(
-        [...floating.querySelectorAll('slot')].flatMap(slot =>
-            slot.assignedElements({ flatten: true }),
-        ),
-    )
+    const assigned = new Set(slottedInto(floating))
     let current: Node | null = node
     while (current) {
         if (current === floating || assigned.has(current as Element)) {

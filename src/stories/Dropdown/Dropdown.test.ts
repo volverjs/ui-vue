@@ -778,8 +778,14 @@ export async function tabOutInShadowRootTest({
     if (root.mode === 'open') {
         await expect(host).toHaveNoViolations()
     } else {
-        const slot = root.querySelector<HTMLSlotElement>('[role="menu"] slot')
-        await expect(slot?.assignedElements()).toContain(slotted)
+        // the elements a slot draws, through a wrapper that forwards its own
+        const drawn = (container: Element): Element[] =>
+            [...container.querySelectorAll('slot')].flatMap((slot) => {
+                const assigned = slot.assignedElements({ flatten: true })
+                return [...assigned, ...assigned.flatMap(drawn)]
+            })
+        const menu = root.querySelector('[role="menu"]') as Element
+        await expect(drawn(menu)).toContain(slotted)
     }
     await tab(false, items()[1])
     await tab(false, items()[2])
