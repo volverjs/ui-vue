@@ -697,6 +697,9 @@ export function tabOutTest({ keepOpen = false, topLayer = false } = {}) {
         await expect(trigger).toHaveAttribute('aria-expanded', 'false')
         await expect(changes()).toBe('true false')
         await expect(document.activeElement).toBe(next)
+        await waitFor(() =>
+            expect(dropdown?.matches(':popover-open')).toBe(false),
+        )
     }
 }
 
@@ -768,10 +771,15 @@ export async function tabOutInShadowRootTest({
     const slotted = within(host).getByTestId('slotted')
 
     await openWithEnter(root, trigger, () => items()[0])
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true')
     // axe runs on the host, as in `shadowRootTest`. It does not enter a
-    // closed root, and finds there the slotted item out of its menu
+    // closed root, and finds there the slotted item out of its menu: there
+    // the slot of the menu has to draw the button of the page instead
     if (root.mode === 'open') {
         await expect(host).toHaveNoViolations()
+    } else {
+        const slot = root.querySelector<HTMLSlotElement>('[role="menu"] slot')
+        await expect(slot?.assignedElements()).toContain(slotted)
     }
     await tab(false, items()[1])
     await tab(false, items()[2])

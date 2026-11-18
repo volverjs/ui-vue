@@ -564,14 +564,20 @@ export const KeyboardNavigation: Story = {
 /**
  * Mounts `template` in an app of its own inside a shadow root, as a custom
  * element does, with the state `setup` returns. `light` is the content of the
- * host, which a `<slot>` in the shadow root draws. The root, closed with
- * `mode`, goes in `shadowRoots`.
+ * host, which a `<slot>` in the shadow root draws. With `forward` the app is
+ * in the shadow root of a wrapper inside that root, which forwards the
+ * content of the host to its slot `forward` through a `<slot>` of its own, as
+ * nested custom elements do. The root of the app, closed with `mode`, goes in
+ * `shadowRoots`.
  */
 function renderInShadowRoot(
     template: string,
     setup: () => Record<string, unknown>,
-    light = '',
-    mode: ShadowRootMode = 'open',
+    {
+        light = '',
+        mode = 'open',
+        forward = '',
+    }: { light?: string, mode?: ShadowRootMode, forward?: string } = {},
 ) {
     return () => ({
         setup() {
@@ -581,7 +587,13 @@ function renderInShadowRoot(
                 if (!host.value) {
                     return
                 }
-                const root = host.value.attachShadow({ mode })
+                let root = host.value.attachShadow({ mode })
+                if (forward) {
+                    const wrapper = document.createElement('div')
+                    wrapper.innerHTML = `<div slot="${forward}"><slot></slot></div>`
+                    root.append(wrapper)
+                    root = wrapper.attachShadow({ mode })
+                }
                 shadowRoots.set(host.value, root)
                 // the page's styles, so the dropdown looks the same
                 for (const sheet of document.querySelectorAll(
@@ -834,6 +846,15 @@ export const TriggerClickWhileOpen: Story = {
     play: triggerClickWhileOpenTest,
 }
 
+// a button of the page for the `<slot>` among the items, assigned to the slot
+// named `slot`, or to the unnamed one of a wrapper that forwards it
+function slottedButton(slot = 'extra') {
+    const assigned = slot ? ` slot="${slot}"` : ''
+    return /* html */ `
+		<button type="button"${assigned} role="menuitem" data-testId="slotted">Slotted</button>
+	`
+}
+
 /**
  * `Tab` and `Shift+Tab` out of a dropdown in a shadow root, as inside a
  * custom element, with a button of the page assigned to a `<slot>` after the
@@ -852,7 +873,7 @@ export const TabOutInShadowRoot: Story = {
                 expanded: ref(false),
                 changes: ref<boolean[]>([]),
             }),
-            '<button type="button" slot="extra" role="menuitem" data-testId="slotted">Slotted</button>',
+            { light: slottedButton() },
         )(),
     play: tabOutInShadowRootTest,
 }
@@ -873,8 +894,31 @@ export const TabOutInClosedShadowRoot: Story = {
                 expanded: ref(false),
                 changes: ref<boolean[]>([]),
             }),
-            '<button type="button" slot="extra" role="menuitem" data-testId="slotted">Slotted</button>',
-            'closed',
+            { light: slottedButton(), mode: 'closed' },
+        )(),
+    play: tabOutInShadowRootTest,
+}
+
+/**
+ * The same with the button of the page forwarded to the `<slot>` through a
+ * wrapper with a slot of its own, as in nested custom elements.
+ */
+export const TabOutThroughForwardedSlot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            {
+                light: slottedButton(''),
+                forward: 'extra',
+            },
         )(),
     play: tabOutInShadowRootTest,
 }
