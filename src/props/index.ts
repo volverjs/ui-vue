@@ -430,7 +430,8 @@ export const DropdownProps = {
         default: false,
     },
     /**
-     * Keep open dropdown on click outside
+     * Keep the dropdown open on a click outside, after one of its items has
+     * run, and when `Tab` takes the focus out of it
      */
     keepOpen: {
         type: Boolean,

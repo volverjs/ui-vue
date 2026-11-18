@@ -11,6 +11,7 @@ import {
     nestedClickTest,
     nestedInItemTest,
     nestedKeyboardTest,
+    nestedTabOutTest,
 } from './Dropdown.test'
 
 const meta: Meta<typeof VvDropdown> = {
@@ -24,6 +25,35 @@ export default meta
 
 type Story = StoryObj<typeof VvDropdown>
 
+const multilevelTemplate = /* html */ `
+    <vv-dropdown v-model="expanded" v-bind="args" data-testId="wrapper">
+        <vv-button ref="toggle" class="absolute top-1/2 left-1/2 -translate-1/2" modifiers="full-bleed" data-testId="trigger">
+            Toggle dropdown
+        </vv-button>
+        <template #items>
+            <vv-dropdown-action>
+                <vv-icon name="edit" /> Update
+            </vv-dropdown-action>
+            <vv-dropdown-action>
+                <vv-icon name="trash" /> Delete
+            </vv-dropdown-action>
+            <vv-dropdown placement="right-start" offset="5" arrow>
+                <vv-dropdown-action>
+                    <vv-icon name="more-vertical" /> More
+                </vv-dropdown-action>
+                <template #items>
+                    <vv-dropdown-action>
+                        <vv-icon name="add" /> Create
+                    </vv-dropdown-action>
+                    <vv-dropdown-action>
+                        <vv-icon name="eye-on" /> Publish
+                    </vv-dropdown-action>
+                </template>
+            </vv-dropdown>
+        </template>
+    </vv-dropdown>
+`
+
 export const Default: Story = {
     args: {
         ...defaultArgs,
@@ -34,34 +64,7 @@ export const Default: Story = {
             const expanded = ref(false)
             return { expanded, args }
         },
-        template: /* html */ `
-            <vv-dropdown v-model="expanded" v-bind="args" data-testId="wrapper">
-                <vv-button ref="toggle" class="absolute top-1/2 left-1/2 -translate-1/2" modifiers="full-bleed" data-testId="trigger">
-                    Toggle dropdown
-                </vv-button>
-                <template #items>
-                    <vv-dropdown-action>
-                        <vv-icon name="edit" /> Update
-                    </vv-dropdown-action>
-                    <vv-dropdown-action>
-                        <vv-icon name="trash" /> Delete
-                    </vv-dropdown-action>
-                    <vv-dropdown placement="right-start" offset="5" arrow>
-                        <vv-dropdown-action>
-                            <vv-icon name="more-vertical" /> More
-                        </vv-dropdown-action>
-                        <template #items>
-                            <vv-dropdown-action>
-                                <vv-icon name="add" /> Create
-                            </vv-dropdown-action>
-                            <vv-dropdown-action>
-                                <vv-icon name="eye-on" /> Publish
-                            </vv-dropdown-action>
-                        </template>
-                    </vv-dropdown>
-                </template>
-            </vv-dropdown>
-        `,
+        template: multilevelTemplate,
     }),
     play: defaultTest,
 }
@@ -82,6 +85,30 @@ export const NestedKeyboard: Story = {
 export const NestedClick: Story = {
     ...Default,
     play: nestedClickTest,
+}
+
+/**
+ * `Tab` through the items of the nested dropdown leaves both open, and
+ * `Shift+Tab` back to More closes the nested one alone. `Tab` past Publish,
+ * the last item of both, closes both and leaves the focus on the button
+ * after them.
+ */
+export const NestedTabOut: Story = {
+    ...Default,
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvIcon, VvButton },
+        setup() {
+            const expanded = ref(false)
+            return { expanded, args }
+        },
+        template: /* html */ `
+            <div>
+                ${multilevelTemplate}
+                <vv-button data-testId="next" label="Next" />
+            </div>
+        `,
+    }),
+    play: nestedTabOutTest,
 }
 
 /**
