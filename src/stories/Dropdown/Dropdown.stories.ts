@@ -21,10 +21,15 @@ import {
     noResizeObserverLoopTest,
     reopenAfterResizeTest,
     roomBelowTest,
+    shadowRoots,
     shadowRootTest,
+    shiftTabOutTest,
     sizeApplyTest,
+    tabOutInShadowRootTest,
+    tabOutTest,
     topLayerExpandedOnMountTest,
     topLayerTest,
+    triggerClickWhileOpenTest,
     triggerWidthAfterResizeTest,
     wrapperReferenceTest,
 } from './Dropdown.test'
@@ -558,11 +563,21 @@ export const KeyboardNavigation: Story = {
 
 /**
  * Mounts `template` in an app of its own inside a shadow root, as a custom
- * element does, with the state `setup` returns.
+ * element does, with the state `setup` returns. `light` is the content of the
+ * host, which a `<slot>` in the shadow root draws. With `forward` the app is
+ * in the shadow root of a wrapper inside that root, which forwards the
+ * content of the host to its slot `forward` through a `<slot>` of its own, as
+ * nested custom elements do. The root of the app, closed with `mode`, goes in
+ * `shadowRoots`.
  */
 function renderInShadowRoot(
     template: string,
     setup: () => Record<string, unknown>,
+    {
+        light = '',
+        mode = 'open',
+        forward = '',
+    }: { light?: string, mode?: ShadowRootMode, forward?: string } = {},
 ) {
     return () => ({
         setup() {
@@ -572,7 +587,14 @@ function renderInShadowRoot(
                 if (!host.value) {
                     return
                 }
-                const root = host.value.attachShadow({ mode: 'open' })
+                let root = host.value.attachShadow({ mode })
+                if (forward) {
+                    const wrapper = document.createElement('div')
+                    wrapper.innerHTML = `<div slot="${forward}"><slot></slot></div>`
+                    root.append(wrapper)
+                    root = wrapper.attachShadow({ mode })
+                }
+                shadowRoots.set(host.value, root)
                 // the page's styles, so the dropdown looks the same
                 for (const sheet of document.querySelectorAll(
                     'style, link[rel="stylesheet"]',
@@ -598,7 +620,7 @@ function renderInShadowRoot(
             return { host }
         },
         template: /* html */ `
-			<div ref="host" data-testId="host" style="min-height: 160px" />
+			<div ref="host" data-testId="host" style="min-height: 160px">${light}</div>
 		`,
     })
 }
@@ -739,4 +761,189 @@ export const WrapperReference: Story = {
 		`,
     }),
     play: wrapperReferenceTest,
+}
+
+// a button after the dropdown, where `Tab` past the items takes the focus,
+// and the values the dropdown gives its model; `after` goes after the items
+function tabOutTemplate(after = '') {
+    return /* html */ `
+		<div style="min-height: 160px">
+			<vv-dropdown v-model="expanded" v-bind="args" @update:model-value="changes.push($event)">
+				<vv-button data-testId="trigger" label="Toggle dropdown" />
+				<template #items>
+					<vv-dropdown-action>Create</vv-dropdown-action>
+					<vv-dropdown-action>Update</vv-dropdown-action>
+					<vv-dropdown-action>Delete</vv-dropdown-action>
+					${after}
+				</template>
+			</vv-dropdown>
+			<vv-button data-testId="next" label="Next" />
+			<output data-testId="changes">{{ changes.join(' ') }}</output>
+		</div>
+	`
+}
+
+/**
+ * `Tab` past the last item closes the dropdown and leaves the focus on the
+ * button after it: the dropdown stayed open over that button.
+ */
+export const TabOut: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args => ({
+        components: { VvDropdown, VvDropdownAction, VvButton },
+        setup() {
+            return { args, expanded: ref(false), changes: ref<boolean[]>([]) }
+        },
+        template: tabOutTemplate(),
+    }),
+    play: tabOutTest(),
+}
+
+/**
+ * The same in the top layer, where the dropdown is still in the document
+ * after its trigger.
+ */
+export const TabOutTopLayer: Story = {
+    ...TabOut,
+    args: {
+        ...defaultArgs,
+        topLayer: true,
+    },
+    play: tabOutTest({ topLayer: true }),
+}
+
+/**
+ * With `keepOpen` the dropdown stays open when `Tab` takes the focus out of
+ * it, as on a click outside.
+ */
+export const TabOutKeepOpen: Story = {
+    ...TabOut,
+    args: {
+        ...defaultArgs,
+        keepOpen: true,
+    },
+    play: tabOutTest({ keepOpen: true }),
+}
+
+/**
+ * `Shift+Tab` from the first item closes the dropdown and leaves the focus on
+ * the trigger.
+ */
+export const ShiftTabOut: Story = {
+    ...TabOut,
+    play: shiftTabOutTest,
+}
+
+/**
+ * A click on the trigger with the focus in the dropdown closes it once: the
+ * press moves the focus to the trigger before the click that toggles the
+ * dropdown.
+ */
+export const TriggerClickWhileOpen: Story = {
+    ...TabOut,
+    play: triggerClickWhileOpenTest,
+}
+
+// a button of the page for the `<slot>` among the items, assigned to the slot
+// named `slot`, or to the unnamed one of a wrapper that forwards it
+function slottedButton(slot = 'extra') {
+    const assigned = slot ? ` slot="${slot}"` : ''
+    return /* html */ `
+		<button type="button"${assigned} role="menuitem" data-testId="slotted">Slotted</button>
+	`
+}
+
+/**
+ * `Tab` and `Shift+Tab` out of a dropdown in a shadow root, as inside a
+ * custom element, with a button of the page assigned to a `<slot>` after the
+ * items.
+ */
+export const TabOutInShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            // `component` renders the element: a `<slot>` is Vue's own
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            { light: slottedButton() },
+        )(),
+    play: tabOutInShadowRootTest,
+}
+
+/**
+ * The same in a closed shadow root, where the button of the page assigned to
+ * the `<slot>` has no `assignedSlot`.
+ */
+export const TabOutInClosedShadowRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            { light: slottedButton(), mode: 'closed' },
+        )(),
+    play: tabOutInShadowRootTest,
+}
+
+/**
+ * The same with the button of the page forwarded to the `<slot>` through a
+ * wrapper with a slot of its own, as in nested custom elements.
+ */
+export const TabOutThroughForwardedSlot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            {
+                light: slottedButton(''),
+                forward: 'extra',
+            },
+        )(),
+    play: tabOutInShadowRootTest,
+}
+
+/**
+ * The same in closed shadow roots, where the forwarded button has no
+ * `assignedSlot` to walk up.
+ */
+export const TabOutThroughForwardedSlotInClosedRoot: Story = {
+    args: {
+        ...defaultArgs,
+    },
+    render: args =>
+        renderInShadowRoot(
+            tabOutTemplate('<component is="slot" name="extra" />'),
+            () => ({
+                args,
+                expanded: ref(false),
+                changes: ref<boolean[]>([]),
+            }),
+            {
+                light: slottedButton(''),
+                forward: 'extra',
+                mode: 'closed',
+            },
+        )(),
+    play: tabOutInShadowRootTest,
 }
