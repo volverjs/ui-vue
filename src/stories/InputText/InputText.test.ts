@@ -461,3 +461,27 @@ export async function forcedSuggestionsTest({ canvasElement }: PlayAttributes) {
 
     await expect(canvasElement).toHaveNoViolations()
 }
+
+/**
+ * Editing a `datetime-local` field sets the instant the field shows: the
+ * milliseconds of the previous value stayed, so `11:00` became
+ * `…T10:00:00.917Z`. Showing the value alone does not rewrite it.
+ */
+export async function dateTimeEditTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await sleep(100)
+    await expect(value.innerHTML).toEqual('2026-11-25T09:29:29.917Z')
+
+    input.focus()
+    input.value = '2026-11-25T11:00'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(
+        new Date('2026-11-25T11:00').toISOString(),
+    )
+
+    await expect(element).toHaveNoViolations()
+}

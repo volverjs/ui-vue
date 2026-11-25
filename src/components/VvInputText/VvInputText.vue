@@ -164,6 +164,15 @@ function handleNumberAccept() {
 
 function mergeDateIntoModelValue(date: Date) {
     const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
+    // The field shows the model at its own precision (no seconds without `hasSeconds`):
+    // showing it is no change, and merging it back would drop what the field cannot show.
+    if (
+        dateInputType.value
+        && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value)
+        === getInputValueFromDate(date, dateInputType.value, hasSeconds.value)
+    ) {
+        return
+    }
     if (type.value === INPUT_TYPES.DATETIME_LOCAL
         || type.value === INPUT_TYPES.DATE
         || type.value === INPUT_TYPES.MONTH) {
@@ -178,7 +187,8 @@ function mergeDateIntoModelValue(date: Date) {
         || type.value === INPUT_TYPES.TIME) {
         toReturn.setHours(date.getHours())
         toReturn.setMinutes(date.getMinutes())
-        toReturn.setSeconds(date.getSeconds())
+        // the milliseconds too: the field has none, and the previous ones stayed
+        toReturn.setSeconds(date.getSeconds(), date.getMilliseconds())
     }
     if (modelValueDate.value instanceof Date) {
         if (localModelValue.value?.getTime() === toReturn.getTime()) {

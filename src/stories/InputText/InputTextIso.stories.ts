@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './InputText.settings'
-import { isoTest } from './InputText.test'
+import { dateTimeEditTest, isoTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Iso',
@@ -66,4 +66,30 @@ export const TypeDateTime: Story = {
         ...defaultArgs,
         type: 'datetime-local',
     },
+}
+
+/**
+ * A value with seconds and milliseconds, edited from the field: the new value
+ * is the instant the field shows.
+ */
+export const TypeDateTimeEdit: Story = {
+    args: {
+        ...defaultArgs,
+        type: 'datetime-local',
+        step: 60,
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({
+            inputValue: '2026-11-25T09:29:29.917Z',
+        }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ inputValue }}</span></div>
+		`,
+    }),
+    play: dateTimeEditTest,
 }
