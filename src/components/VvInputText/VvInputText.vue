@@ -347,7 +347,8 @@ function handleInputBlur() {
     // re-renders, so the committed value comes from `flush()` itself.
     const committed = flushModelValue() ?? localModelValue.value
 
-    if (!storageSuggestions.value || isEmpty(committed)) {
+    // without a storage key there is no history, as in `VvTextarea`
+    if (!storageKey.value || !storageSuggestions.value || isEmpty(committed)) {
         return
     }
 
@@ -477,7 +478,7 @@ const allSuggestions = computed(() => {
     const merged = new Map<SuggestionValue, { isFromStorage: boolean }>()
 
     // Add storage suggestions
-    if (storageSuggestions.value) {
+    if (storageKey.value && storageSuggestions.value) {
         for (const suggestion of storageSuggestions.value) {
             merged.set(suggestion, { isFromStorage: true })
         }

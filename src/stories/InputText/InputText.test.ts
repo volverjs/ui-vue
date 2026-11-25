@@ -382,3 +382,35 @@ export async function suggestionsTabOutTest({ canvasElement }: PlayAttributes) {
     await waitFor(() => expect(options()[0]).not.toBeVisible())
     await expect(next).toHaveFocus()
 }
+
+/** The suggestion options of a field, rendered inside it. */
+function suggestionOptions(element: HTMLElement) {
+    return [...element.querySelectorAll<HTMLElement>('.vv-dropdown-option')]
+}
+
+/**
+ * A field without a storage key keeps no history: leaving it stored the value
+ * in memory, and the next focus offered it back as a suggestion. So did an
+ * empty `storageKey`, the only way to keep one field out of
+ * `forceInputSuggestions`, which otherwise keys the history by `name`.
+ */
+export async function noStorageKeyTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    // an empty field lists every suggestion: one equal to the value is hidden
+    await userEvent.clear(input)
+    outside.focus()
+    await sleep(100)
+    input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(element)).toHaveLength(0)
+
+    await expect(element).toHaveNoViolations()
+}

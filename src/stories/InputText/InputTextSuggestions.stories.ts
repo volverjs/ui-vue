@@ -4,7 +4,11 @@ import VvButton from '@/components/VvButton/VvButton.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
-import { suggestionsEscapeTest, suggestionsTabOutTest } from './InputText.test'
+import {
+    noStorageKeyTest,
+    suggestionsEscapeTest,
+    suggestionsTabOutTest,
+} from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Suggestions',
@@ -149,4 +153,39 @@ export const BothSuggestions: Story = {
             </div>
         `,
     }),
+}
+
+/**
+ * Without a storage key a field keeps no history of what was typed in it, as
+ * with an empty `storageKey`.
+ */
+export const NoStorageKey: Story = {
+    ...Default,
+    args: {
+        ...Default.args,
+        type: 'text',
+        label: 'Input without storage key',
+    },
+    render: args => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            return { args, inputValue: ref() }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-bind="args" v-model="inputValue" data-testId="element" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: noStorageKeyTest,
+}
+
+export const EmptyStorageKey: Story = {
+    ...NoStorageKey,
+    args: {
+        ...NoStorageKey.args,
+        label: 'Input with an empty storage key',
+        storageKey: '',
+    },
 }
