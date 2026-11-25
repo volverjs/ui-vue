@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - `VvInputText` keeps no history of what was typed in a field without a storage key. Leaving any field stored its value in a list in memory, and the next focus offered it back as a suggestion, without `storageKey` and without `forceInputSuggestions`: only the browser storage needed a key. An empty `storageKey`, the only way to keep one field out of `forceInputSuggestions`, did the same. The history now needs a key, as in `VvTextarea`; the `suggestions` prop is unaffected. A `NoStorageKey` story types in a field, empties it and finds no suggestion on the next focus, and `EmptyStorageKey` does the same with `storageKey: ''`; without the fix both find the value typed before.
+- `experimentalFeatures.forceInputSuggestions` keeps the history of the text fields only: `text`, `search`, `url`, `tel` and `email`. Every field with a `name` kept one, so a `password` was stored in clear in the browser storage, and a `date`, `time` or `datetime-local` field listed its raw value (`2026-11-25T10:30`, or an ISO string in UTC) over its date picker. A field of another type still keeps a history when it is given a `storageKey`. A `ForcedSuggestions` story fills a text, a password and a date field with the feature on, and finds the text alone in the storage and no suggestion on the date; without the fix the password is stored.
 
 ## [0.0.29] - 2026-11-18
 

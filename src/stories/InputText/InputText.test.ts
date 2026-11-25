@@ -414,3 +414,50 @@ export async function noStorageKeyTest({ canvasElement }: PlayAttributes) {
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * `forceInputSuggestions` keeps a history of the text fields only: a password
+ * was stored in clear in the browser storage, and a date came back as its raw
+ * value (`2026-11-25T10:30`) in a list over the date picker.
+ */
+export async function forcedSuggestionsTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const outside = await canvas.findByTestId('outside')
+    const field = async (name: string) => {
+        const element = await canvas.findByTestId(name)
+        return {
+            element,
+            input: element.querySelector('input') as HTMLInputElement,
+        }
+    }
+    for (const key of ['forced-text', 'forced-password', 'forced-date']) {
+        localStorage.removeItem(key)
+    }
+
+    const text = await field('forced-text')
+    await expect(text.input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-text')).toEqual('["Lorem"]')
+
+    const password = await field('forced-password')
+    await expect(password.input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-password')).toBeNull()
+
+    const date = await field('forced-date')
+    await expect(date.input).toBeClicked()
+    await userEvent.keyboard(new Date().toISOString().split('T')[0])
+    await expect(date.input.value).not.toEqual('')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-date')).toBeNull()
+    date.input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(date.element)).toHaveLength(0)
+
+    await expect(canvasElement).toHaveNoViolations()
+}

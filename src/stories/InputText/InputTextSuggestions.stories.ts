@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import { INJECTION_KEY_VOLVER } from '@/constants'
+import { Volver } from '@/Volver'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
 import {
+    forcedSuggestionsTest,
     noStorageKeyTest,
     suggestionsEscapeTest,
     suggestionsTabOutTest,
@@ -188,4 +191,33 @@ export const EmptyStorageKey: Story = {
         label: 'Input with an empty storage key',
         storageKey: '',
     },
+}
+
+/**
+ * With `experimentalFeatures.forceInputSuggestions` every text field keeps a
+ * history under its `name`; a password or a date field does not.
+ */
+export const ForcedSuggestions: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            return { text: ref(), password: ref(), date: ref() }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="text" type="text" name="forced-text" label="Text" data-testId="forced-text" />
+                <vv-input-text v-model="password" type="password" name="forced-password" label="Password" data-testId="forced-password" />
+                <vv-input-text v-model="date" type="date" name="forced-date" label="Date" data-testId="forced-date" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedSuggestionsTest,
 }

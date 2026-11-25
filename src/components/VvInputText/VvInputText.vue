@@ -468,7 +468,21 @@ const isInvalid = computed(() => {
 })
 
 // suggestions
-const storageKey = computed(() => props.storageKey ?? (volver?.experimentalFeatures.forceInputSuggestions ? props.name : undefined))
+// `forceInputSuggestions` keeps a history of the text fields only: a password
+// would be stored in clear, and a date or a number listed as its raw value
+const FORCED_SUGGESTIONS_TYPES: InputType[] = [
+    INPUT_TYPES.TEXT,
+    INPUT_TYPES.SEARCH,
+    INPUT_TYPES.URL,
+    INPUT_TYPES.TEL,
+    INPUT_TYPES.EMAIL,
+]
+const storageKey = computed(() => props.storageKey ?? (
+    volver?.experimentalFeatures.forceInputSuggestions
+    && FORCED_SUGGESTIONS_TYPES.includes(type.value)
+        ? props.name
+        : undefined
+))
 const storageSuggestions = usePersistence<Set<SuggestionValue>>(
     storageKey,
     storageType,
