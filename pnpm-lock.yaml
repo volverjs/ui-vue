@@ -382,8 +382,8 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       unimport:
-        specifier: ^6.5.0
-        version: 6.5.0(esbuild@0.28.1)(oxc-parser@0.127.0)(rolldown@1.2.19)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0))
+        specifier: ^7.0.3
+        version: 7.0.3(acorn@8.18.0)(esbuild@0.28.1)(oxc-parser@0.127.0)(rolldown@1.2.19)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0))
       unplugin-auto-import:
         specifier: ^21.1.0
         version: 21.1.0(@vueuse/core@15.1.0(vue@3.5.46(typescript@6.0.3)))(esbuild@0.28.1)(oxc-parser@0.127.0)(rolldown@1.2.19)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0))
@@ -5566,6 +5566,21 @@ packages:
       oxc-parser: '*'
       rolldown: ^1.0.0
     peerDependenciesMeta:
+      oxc-parser:
+        optional: true
+      rolldown:
+        optional: true
+
+  unimport@7.0.3:
+    resolution: {integrity: sha512-sIqAz1PihrUqVg+/aoky+olFmQGmYVuNuybJZIuAQeULHPaakflkqKzR+dI/nDsd+awKIFzbLrd0Z6rhTJ+big==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      acorn: ^8.0.0
+      oxc-parser: '*'
+      rolldown: ^1.0.0
+    peerDependenciesMeta:
+      acorn:
+        optional: true
       oxc-parser:
         optional: true
       rolldown:
@@ -11852,6 +11867,35 @@ snapshots:
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.19)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0))
       unplugin-utils: 0.3.2
     optionalDependencies:
+      oxc-parser: 0.127.0
+      rolldown: 1.2.19
+    transitivePeerDependencies:
+      - '@farmfe/core'
+      - '@rspack/core'
+      - bun-types-no-globals
+      - esbuild
+      - rollup
+      - unloader
+      - vite
+      - webpack
+
+  unimport@7.0.3(acorn@8.18.0)(esbuild@0.28.1)(oxc-parser@0.127.0)(rolldown@1.2.19)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0)):
+    dependencies:
+      escape-string-regexp: 5.0.0
+      estree-walker: 3.0.3
+      local-pkg: 1.2.1
+      magic-string: 1.4.3
+      mlly: 1.8.2
+      pathe: 2.0.3
+      picomatch: 4.0.5
+      pkg-types: 2.4.0
+      scule: 1.3.0
+      strip-literal: 4.0.0
+      tinyglobby: 0.2.17
+      unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.19)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0))
+      unplugin-utils: 0.3.2
+    optionalDependencies:
+      acorn: 8.18.0
       oxc-parser: 0.127.0
       rolldown: 1.2.19
     transitivePeerDependencies:
