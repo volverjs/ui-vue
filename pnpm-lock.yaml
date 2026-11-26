@@ -313,8 +313,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(playwright@1.65.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.1)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.4)(yaml@2.9.0))(vitest@5.1.1)
       '@volverjs/style':
-        specifier: 0.1.29
-        version: 0.1.29
+        specifier: 0.1.34
+        version: 0.1.34
       '@vue/compiler-sfc':
         specifier: ^3.5.46
         version: 3.5.46
@@ -2808,8 +2808,8 @@ packages:
       typescript:
         optional: true
 
-  '@volverjs/style@0.1.29':
-    resolution: {integrity: sha512-+FlVXQ6i14XW3JFAYvLKdPQ/hG4V/3vFc5uyqKNgHAc1JxylxCb4ofBhf4X9xBdIz9OBHl0gq6J1hugfdCLmZg==}
+  '@volverjs/style@0.1.34':
+    resolution: {integrity: sha512-O30uSd98YwYSzFM6aI/VDHUmwAJolJg206PBXsJuf81YvwmfVCAOaann9EPrrmzUIUrL6+xonb/RiOAheEeJWw==}
     engines: {node: '>= 20.x'}
 
   '@vue/compiler-core@3.5.44':
@@ -8594,7 +8594,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@volverjs/style@0.1.29': {}
+  '@volverjs/style@0.1.34': {}
 
   '@vue/compiler-core@3.5.44':
     dependencies:
