@@ -664,7 +664,9 @@ export const StorageProps = {
             Object.values(StorageType).includes(value),
     },
     /**
-     * Storage key
+     * Storage key. A key changed while the component is mounted starts from
+     * the value of the previous one when it has none stored, and leaves the
+     * item of the previous key in the storage.
      */
     storageKey: String,
 }

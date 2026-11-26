@@ -9,6 +9,7 @@ import { Default } from './InputText.stories'
 import {
     forcedSuggestionsTest,
     noStorageKeyTest,
+    storageKeyChangeTest,
     suggestionsEscapeTest,
     suggestionsTabOutTest,
 } from './InputText.test'
@@ -222,4 +223,37 @@ export const ForcedSuggestions: Story = {
         `,
     }),
     play: forcedSuggestionsTest,
+}
+
+/**
+ * The storage key changes while the field is mounted: the new key starts from
+ * the history of the previous one, and the previous item stays as it was.
+ */
+export const StorageKeyChange: Story = {
+    ...Default,
+    args: {
+        ...Default.args,
+        type: 'text',
+        label: 'Input with a storage key that changes',
+    },
+    render: args => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            const storageKey = ref('storage-key-first')
+            function toggle() {
+                storageKey.value = storageKey.value === 'storage-key-first'
+                    ? 'storage-key-second'
+                    : 'storage-key-first'
+            }
+            return { args, inputValue: ref(), storageKey, toggle }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-bind="args" v-model="inputValue" :storage-key="storageKey" data-testId="element" />
+                <vv-button data-testId="toggle" :label="storageKey" @click="toggle" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: storageKeyChangeTest,
 }

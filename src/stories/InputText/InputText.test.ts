@@ -655,3 +655,41 @@ export async function millisecondsTest({ canvasElement, args }: PlayAttributes) 
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * A storage key changed while the field is mounted leaves the item of the
+ * previous key as it was: it was removed, though another field with the same
+ * key could be using it, and then written again with every value added under
+ * the new key, by the storage of the previous key that kept running.
+ */
+export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    for (const key of ['storage-key-first', 'storage-key-second']) {
+        localStorage.removeItem(key)
+    }
+
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('storage-key-first')).toEqual('["Lorem"]')
+
+    await userEvent.click(toggle)
+    await sleep(100)
+    // the new key starts from the history of the previous one
+    await expect(localStorage.getItem('storage-key-second')).toEqual('["Lorem"]')
+    await expect(localStorage.getItem('storage-key-first')).toEqual('["Lorem"]')
+
+    await userEvent.clear(input)
+    await userEvent.keyboard('Ipsum')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('storage-key-second')).toEqual('["Lorem","Ipsum"]')
+    await expect(localStorage.getItem('storage-key-first')).toEqual('["Lorem"]')
+
+    await expect(element).toHaveNoViolations()
+}
