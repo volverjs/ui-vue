@@ -1,7 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './InputText.settings'
-import { dateTimeEditTest, isoTest } from './InputText.test'
+import {
+    dateTimeClearTest,
+    dateTimeEditTest,
+    dateTimeRevertTest,
+    isoTest,
+    JANUARY_END,
+    monthEndTest,
+} from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Iso',
@@ -92,4 +99,82 @@ export const TypeDateTimeEdit: Story = {
 		`,
     }),
     play: dateTimeEditTest,
+}
+
+/**
+ * With a `debounce`, a value typed and then typed back to the one the field
+ * showed leaves the model as it was.
+ */
+export const TypeDateTimeRevert: Story = {
+    ...TypeDateTimeEdit,
+    args: {
+        ...TypeDateTimeEdit.args,
+        debounce: 300,
+    },
+    play: dateTimeRevertTest,
+}
+
+/**
+ * Emptied and then given back the value it showed, the field sets the model
+ * to that value.
+ */
+export const TypeDateTimeClear: Story = {
+    ...TypeDateTimeEdit,
+    play: dateTimeClearTest,
+}
+
+/**
+ * The same with a `Date` model, which the field empties to `undefined`.
+ */
+export const TypeDateTimeClearDate: Story = {
+    ...TypeDateTimeClear,
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({
+            inputValue: new Date('2026-11-25T09:29:29.917Z') as Date | undefined,
+        }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ inputValue instanceof Date ? inputValue.toISOString() : inputValue }}</span></div>
+		`,
+    }),
+}
+
+/**
+ * The 31st of January moved to the 28th of February, in a date field.
+ */
+export const TypeDateMonthEnd: Story = {
+    args: {
+        ...defaultArgs,
+        type: 'date',
+    },
+    render: args => ({
+        components: { VvInputText },
+        setup() {
+            return { args }
+        },
+        data: () => ({
+            inputValue: JANUARY_END.toISOString(),
+        }),
+        template: /* html */ `
+			<vv-input-text v-bind="args" v-model="inputValue" data-testId="element" />
+			<div>Value: <span data-testId="value">{{ inputValue }}</span></div>
+		`,
+    }),
+    play: monthEndTest,
+}
+
+/**
+ * The 31st of January moved to February in a month field: the last day of
+ * February.
+ */
+export const TypeMonthMonthEnd: Story = {
+    ...TypeDateMonthEnd,
+    args: {
+        ...defaultArgs,
+        type: 'month',
+    },
 }

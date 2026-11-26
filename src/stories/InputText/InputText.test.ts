@@ -507,3 +507,86 @@ export async function dateTimeEditTest({ canvasElement }: PlayAttributes) {
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * Behind a `debounce`, a value typed and then typed back to the one the field
+ * showed leaves the model as it was: the value typed in between, still waiting
+ * for its timer, was emitted while the field showed the model again.
+ */
+export async function dateTimeRevertTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await sleep(100)
+    const shown = input.value
+    input.focus()
+    input.value = '2026-11-25T11:00'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(50)
+    input.value = shown
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    // past the debounce
+    await sleep(500)
+    await expect(value.innerHTML).toEqual('2026-11-25T09:29:29.917Z')
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A field emptied and then given back the value it showed sets the model to
+ * that value: the emptied field still held the date of the model, which
+ * matched the value typed, so the model stayed empty.
+ */
+export async function dateTimeClearTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await sleep(100)
+    const shown = input.value
+    input.focus()
+    input.value = ''
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual('')
+    input.value = shown
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(new Date(shown).toISOString())
+
+    await expect(element).toHaveNoViolations()
+}
+
+// local times, so the day is the same in every time zone
+export const JANUARY_END = new Date(2026, 0, 31, 12)
+
+/**
+ * A date moved from the 31st of January to February lands in February: the
+ * year, the month and the day were set one at a time, and the 31st of
+ * February overflowed into March before the day was set, so the 28th of
+ * February gave the 28th of March. A month field keeps the day of the model,
+ * within the month picked.
+ */
+export async function monthEndTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+    const edits: Partial<Record<InputType, string>> = {
+        [INPUT_TYPES.DATE]: '2026-02-28',
+        [INPUT_TYPES.MONTH]: '2026-02',
+    }
+
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(JANUARY_END.toISOString())
+
+    input.focus()
+    input.value = edits[args.type as InputType] as string
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(
+        new Date(2026, 1, 28, 12).toISOString(),
+    )
+
+    await expect(element).toHaveNoViolations()
+}

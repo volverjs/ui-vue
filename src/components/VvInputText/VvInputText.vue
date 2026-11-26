@@ -70,7 +70,11 @@ const inputTextPlaceholder = computed(() =>
 )
 
 // debounce
-const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
+const {
+    model: localModelValue,
+    flush: flushModelValue,
+    cancel: cancelModelValue,
+} = useDebouncedInput(
     modelValue,
     emit,
     debounce,
@@ -166,28 +170,39 @@ function mergeDateIntoModelValue(date: Date) {
     const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
     // The field shows the model at its own precision (no seconds without `hasSeconds`):
     // showing it is no change, and merging it back would drop what the field cannot show.
+    // A value typed before it and still waiting for the `debounce` is dropped, or its
+    // timer would emit a value the field no longer shows. An empty model is no match:
+    // a cleared field keeps the date it held only to know whether the model is a
+    // `Date` or an ISO string.
     if (
-        dateInputType.value
+        !isEmpty(modelValue?.value)
+        && dateInputType.value
         && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value)
         === getInputValueFromDate(date, dateInputType.value, hasSeconds.value)
     ) {
+        cancelModelValue()
         return
     }
     if (type.value === INPUT_TYPES.DATETIME_LOCAL
-        || type.value === INPUT_TYPES.DATE
-        || type.value === INPUT_TYPES.MONTH) {
-        toReturn.setFullYear(date.getFullYear())
-        toReturn.setMonth(date.getMonth())
-    }
-    if (type.value === INPUT_TYPES.DATETIME_LOCAL
         || type.value === INPUT_TYPES.DATE) {
-        toReturn.setDate(date.getDate())
+        // in one call: set one at a time, the 31st of January moved to February
+        // overflowed into March before the day was set
+        toReturn.setFullYear(date.getFullYear(), date.getMonth(), date.getDate())
+    }
+    if (type.value === INPUT_TYPES.MONTH) {
+        // the day of the model, within the month picked
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+        toReturn.setFullYear(
+            date.getFullYear(),
+            date.getMonth(),
+            Math.min(toReturn.getDate(), lastDay),
+        )
     }
     if (type.value === INPUT_TYPES.DATETIME_LOCAL
         || type.value === INPUT_TYPES.TIME) {
         toReturn.setHours(date.getHours())
         toReturn.setMinutes(date.getMinutes())
-        // the milliseconds too: the field has none, and the previous ones stayed
+        // the milliseconds too, or those of the previous value stayed
         toReturn.setSeconds(date.getSeconds(), date.getMilliseconds())
     }
     if (modelValueDate.value instanceof Date) {
@@ -231,8 +246,10 @@ function handleDateAccept() {
 }
 
 function updateMaskValue(newValue: SuggestionValue | undefined | null) {
-    // Handle empty values
-    if (newValue === undefined || newValue === null) {
+    // Handle empty values. They keep the date references: a date field cleared
+    // emits '' for an ISO model and undefined for a Date, and the value typed
+    // next has to reach the model in the same form.
+    if (newValue === undefined || newValue === null || newValue === '') {
         typed.value = ''
         unmasked.value = ''
         return
