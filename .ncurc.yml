@@ -5,18 +5,12 @@
 # which `ncu` never suggests.
 #
 # Careful, `--reject` on the command line replaces this list rather than adding
-# to it, so repeat it:
-# `ncu -u --reject typescript,vitest,@vitest/browser,@vitest/browser-playwright`.
+# to it, so repeat it: `ncu -u --reject typescript`.
+#
+# A rejected package gets no suggestion at all, its patches and minors included,
+# so check those by hand in each round:
+# `ncu -u --target minor --reject '' --filter typescript`.
 reject:
   # TypeScript 7 is the native (Go) compiler and dropped the classic compiler
   # API required by vue-tsc, ts-node and typescript-eslint.
   - typescript
-
-  # Vitest 5 is not supported by `@storybook/addon-vitest`, which peers on
-  # `vitest ^3 || ^4` up to and including the 11.0.0 alpha. Installing it makes
-  # the storybook project fail to import `.storybook/vitest.setup.ts`, so the
-  # whole suite collects 93 files and runs no test. Revisit once Storybook
-  # widens the range. No `overrides` entry: nothing pulls vitest transitively.
-  - vitest
-  - '@vitest/browser'
-  - '@vitest/browser-playwright'

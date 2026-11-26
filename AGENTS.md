@@ -5,7 +5,8 @@ classes; the CSS comes from `@volverjs/style`.
 
 ## Setup
 
-- Node `>=20.19`, and the pnpm version pinned in `packageManager`.
+- Node `^22.12` or `>=24`, which `vitest` 5 needs, and the pnpm version pinned
+  in `packageManager`. The published package still declares `>=20.19`.
 - `pnpm install --frozen-lockfile`, then `npx playwright install chromium` once:
   the tests run in a real browser.
 
