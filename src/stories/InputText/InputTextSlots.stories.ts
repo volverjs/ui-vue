@@ -3,6 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
+import { beforeOverflowTest } from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Slots',
@@ -84,6 +85,7 @@ export const BeforeOverflow: Story = {
 			<div>Width of <code>__inner</code>: <span data-testId="inner-width">{{ innerWidth }}</span>px</div>
 		`,
     }),
+    play: beforeOverflowTest,
 }
 
 export const After: Story = {

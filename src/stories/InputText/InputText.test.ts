@@ -590,3 +590,32 @@ export async function monthEndTest({ canvasElement, args }: PlayAttributes) {
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * Chips in the `#before` slot that fill the row leave the input room to be
+ * clicked and typed in: `__inner` grew from no width, `flex: 1`, while
+ * `__input-before` started from the width of all its chips and took the
+ * whole row, so the third chip squeezed the input to 0px. The fix is in
+ * `@volverjs/style`.
+ */
+export async function beforeOverflowTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const input = element.querySelector('input') as HTMLInputElement
+    const inner = element.querySelector('.vv-input-text__inner') as HTMLElement
+    const badges = () => element.querySelectorAll('.vv-badge')
+
+    input.focus()
+    await userEvent.keyboard('third.address@example.com{Enter}')
+    await waitFor(() => expect(badges()).toHaveLength(3))
+    await sleep(100)
+
+    // room for an address, not just for the caret
+    await expect(inner.getBoundingClientRect().width).toBeGreaterThanOrEqual(96)
+    // and a click at the middle of the input reaches the input
+    const box = input.getBoundingClientRect()
+    await expect(
+        document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2),
+    ).toBe(input)
+
+    await expect(element).toHaveNoViolations()
+}
