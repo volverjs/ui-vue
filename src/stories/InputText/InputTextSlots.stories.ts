@@ -26,10 +26,11 @@ export const Before: Story = {
 
 /**
  * Chips in the `#before` slot, like a field that collects e-mail addresses
- * (Enter adds the typed one). `__inner` has `flex: 1`, a basis of 0, while
- * `__input-before` starts from the width of all its chips: once they fill the
- * row the chips wrap, but `__input-before` keeps the whole row, `__inner`
- * gets 0px and the input, clipped by the wrapper, can no longer be clicked.
+ * (Enter adds the typed one). Up to `@volverjs/style` 0.1.33 `__inner` had
+ * `flex: 1`, a basis of 0, while `__input-before` started from the width of
+ * all its chips and kept the whole row once they filled it: `__inner` got 0px
+ * and the input, clipped by the wrapper, could no longer be clicked. Since
+ * 0.1.34 the row wraps and the input keeps at least `min(10rem, 50%)` of it.
  */
 export const BeforeOverflow: Story = {
     args: {
