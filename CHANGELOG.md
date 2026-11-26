@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.31]
+
+### Changed
+
+- The patch and minor releases `ncu` offers, taking only those published at least two days before: Storybook to 10.6.8, `vue` and `@vue/compiler-sfc` to 3.5.46, `@vueuse/core` to 15.1.0, `@json-render/core` and `@json-render/vue` to 0.23.2, `@babel/core` to 8.1.3, `terser` to 5.51.4 and `baseline-browser-mapping` to 2.11.39 among the development dependencies, and `@tanstack/vue-virtual` to 3.13.54 among the runtime ones, which moves `@tanstack/virtual-core` from 3.19.11 to 3.19.13. `vitest`, `@vitest/browser` and `@vitest/browser-playwright` move to 4.1.12 too: `.ncurc.yml` rejects them to hold back 5, which hides their patches as well, so they were taken on their own with `--target minor`. `@json-render` 0.23 lists no breaking change, and `@vueuse/core` 15.1.0 adds nothing to `auto-imports.d.ts`. The peer dependency floors do not move. `pnpm` moves to 12.23.0, its `latest` release, and `packageManager` with it. The install ran with `minimumReleaseAge` at two days, given on the command line. Held back: Storybook 10.6.9, `vite` 8.4.0, `@types/node` 26.6.7 to 26.6.11 and `pnpm` 12.24.0, published in the last two days, `@antfu/eslint-config` 10, `glob` 14, `unimport` 7 and `chokidar` 6, which are majors, `typescript` 7 and `vitest` 5, which `.ncurc.yml` rejects, and `@volverjs/style`, which moves on its own branch.
+
 ## [0.0.30] - 2026-11-26
 
 ### Fixed
