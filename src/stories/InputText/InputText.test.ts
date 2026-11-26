@@ -749,28 +749,43 @@ export async function forcedShownPasswordTest({ canvasElement }: PlayAttributes)
  * A field mounted as `text`, the password shown from the start, keeps a
  * history like any text field until it becomes a password, and then removes
  * what it stored: once a changed key left the item of the previous one in
- * place, the password typed while shown stayed in clear in the storage.
+ * place, the password typed while shown stayed in clear in the storage. It
+ * types two values, so that one write has to remove both: written change by
+ * change only the first was removed. It renames the field before it hides the
+ * password, so that both the item of the previous name and the one of the
+ * current name, which starts from it, are cleaned.
  */
 export async function forcedMountedShownPasswordTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
     const element = await canvas.findByTestId('element')
     const toggle = await canvas.findByTestId('toggle')
+    const rename = await canvas.findByTestId('rename')
     const outside = await canvas.findByTestId('outside')
     const input = element.querySelector('input') as HTMLInputElement
-    const stored = () => localStorage.getItem('forced-mounted-shown') ?? ''
+    const stored = (key: string) => localStorage.getItem(key) ?? ''
 
     await expect(input).toHaveProperty('type', 'text')
-    await expect(input).toBeClicked()
-    await userEvent.keyboard('secret')
-    outside.focus()
-    await sleep(100)
+    for (const typed of ['secret', 'hunter2']) {
+        await userEvent.clear(input)
+        await userEvent.keyboard(typed)
+        outside.focus()
+        await sleep(100)
+    }
     // a text field like any other, until now
-    await expect(stored()).toContain('secret')
+    await expect(stored('forced-mounted-shown')).toContain('secret')
+    await expect(stored('forced-mounted-shown')).toContain('hunter2')
+
+    await userEvent.click(rename)
+    await sleep(100)
+    await expect(stored('forced-mounted-shown-renamed')).toContain('hunter2')
 
     await userEvent.click(toggle)
     await waitFor(() => expect(input).toHaveProperty('type', 'password'))
     await sleep(100)
-    await expect(stored()).not.toContain('secret')
+    for (const key of ['forced-mounted-shown', 'forced-mounted-shown-renamed']) {
+        await expect(stored(key)).not.toContain('secret')
+        await expect(stored(key)).not.toContain('hunter2')
+    }
 
     await expect(element).toHaveNoViolations()
 }

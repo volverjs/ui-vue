@@ -2,7 +2,9 @@
 import type { MaskedNumberOptions } from 'imask'
 import type { InputHTMLAttributes, Ref } from 'vue'
 import type { InputType } from '../VvInputText'
+import { StorageSerializers } from '@vueuse/core'
 import { useIMask } from 'vue-imask'
+import { StorageType } from '../../constants'
 import {
     getDateFromInputValue,
     getInputValueFromDate,
@@ -531,18 +533,59 @@ const storageSuggestions = usePersistence<Set<SuggestionValue>>(
     storageType,
     new Set(),
 )
-// The values this field stored under the key `forceInputSuggestions` gives it.
-// A field mounted as `text`, the password shown, and then turned into a
-// password removes them, as the password may have been typed while shown.
+// The values this field stored under the keys `forceInputSuggestions` gave it,
+// and every one of those keys. A field mounted as `text`, the password shown,
+// removes the values from all of them when it turns into a password, as the
+// password may have been typed while shown: a change of `name` leaves the
+// item of the previous key, and the next key starts from its values.
 const forcedValues = new Set<SuggestionValue>()
+const forcedKeys = new Map<string, { key: string, storageType: `${StorageType}` }>()
+watch(
+    [storageKey, storageType],
+    ([key, type]) => {
+        if (key && isForcedStorageKey.value) {
+            forcedKeys.set(`${type}\n${key}`, { key, storageType: type })
+        }
+    },
+    { immediate: true },
+)
+// One write for each key, as `useStorage` makes it, with the event that
+// tells the fields bound to that key: written change by change, the storage
+// of the key kept the first change of the tick only, and holds still after
+// its own write until the next tick.
+function removeFromStoredSet(key: string, type: `${StorageType}`, values: Set<SuggestionValue>) {
+    const storage = type === StorageType.session ? sessionStorage : localStorage
+    const oldValue = storage.getItem(key)
+    if (oldValue === null) {
+        return
+    }
+    const stored: Set<SuggestionValue> = StorageSerializers.set.read(oldValue)
+    for (const value of values) {
+        stored.delete(value)
+    }
+    const newValue = StorageSerializers.set.write(stored)
+    if (newValue === oldValue) {
+        return
+    }
+    storage.setItem(key, newValue)
+    window.dispatchEvent(new StorageEvent('storage', { key, oldValue, newValue, storageArea: storage }))
+}
 watch(isPassword, (newValue) => {
     if (!newValue) {
         return
     }
-    for (const value of forcedValues) {
-        storageSuggestions.value?.delete(value)
+    if (forcedValues.size) {
+        for (const { key, storageType: type } of forcedKeys.values()) {
+            removeFromStoredSet(key, type, forcedValues)
+        }
+        if (storageSuggestions.value) {
+            storageSuggestions.value = new Set(
+                [...storageSuggestions.value].filter(value => !forcedValues.has(value)),
+            )
+        }
     }
     forcedValues.clear()
+    forcedKeys.clear()
     hasBeenPassword.value = true
 })
 const allSuggestions = computed(() => {

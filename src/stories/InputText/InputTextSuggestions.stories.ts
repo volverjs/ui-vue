@@ -302,7 +302,7 @@ export const ForcedSuggestionsShownPassword: Story = {
 /**
  * The same, with the password shown when the field mounts: it keeps a history
  * as a text field until it becomes a password, and then removes what it
- * stored.
+ * stored, under its current name and under a name it had before.
  */
 export const ForcedSuggestionsMountedShownPassword: Story = {
     ...Default,
@@ -315,15 +315,19 @@ export const ForcedSuggestionsMountedShownPassword: Story = {
                     experimentalFeatures: { forceInputSuggestions: true },
                 }),
             )
-            // emptied before the field mounts and reads it
-            localStorage.removeItem('forced-mounted-shown')
+            // emptied before the field mounts and reads them
+            for (const key of ['forced-mounted-shown', 'forced-mounted-shown-renamed']) {
+                localStorage.removeItem(key)
+            }
             const shown = ref(true)
-            return { password: ref(), shown }
+            const name = ref('forced-mounted-shown')
+            return { password: ref(), shown, name }
         },
         template: /* html */ `
             <div style="min-height: 240px">
-                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-mounted-shown" label="Password" data-testId="element" />
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" :name="name" label="Password" data-testId="element" />
                 <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="rename" label="Rename" @click="name = 'forced-mounted-shown-renamed'" />
                 <vv-button data-testId="outside" label="Outside" />
             </div>
         `,

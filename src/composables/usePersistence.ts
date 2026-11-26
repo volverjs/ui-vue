@@ -30,6 +30,9 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
     // kept watching the value it shared with the next one, and wrote it back
     // under the previous key at every change. It writes at once (`sync`), so
     // a change made in the same tick as a new key is not lost with the scope.
+    // After a write it holds still until the next tick, as it hears its own
+    // storage event: change the value once a tick, replacing it when several
+    // things change, or only the first change is written.
     let storageScope: EffectScope | undefined
     function bindStorage(key: string | undefined, storage: Storage) {
         storageScope?.stop()
