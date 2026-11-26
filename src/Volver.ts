@@ -70,7 +70,12 @@ export type DefaultOptions = Record<string, Record<string, unknown>>
 
 export type VolverExperimentalFeatures = {
     /**
-     * Force suggestions in `VvInputText` and `VvTextarea` component
+     * Keep a history of the values typed in a field, offered back as
+     * suggestions, under its `name` when it has no `storageKey`: every
+     * `VvTextarea`, and the `VvInputText` of type `text`, `search`, `url`,
+     * `tel` and `email`. A field of another type, such as `password`, `number`
+     * or a date, keeps one only with an explicit `storageKey`, and an empty
+     * `storageKey` keeps a field out of it.
      */
     forceInputSuggestions?: boolean
 }
