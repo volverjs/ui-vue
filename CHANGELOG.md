@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.32]
+
+### Fixed
+
+- A `time` or `datetime-local` field of `VvInputText` with a `step` below one second, such as `0.5` or `0.001`, shows the milliseconds of its model and reads those typed. With a `Date` or an ISO model, a value with a fraction of a second, as the browser writes it for such a step (`12:30:00.500`), threw an error that nothing caught, so the model was not updated, and the field showed the model to the second at most. A fraction of one to three digits is now read in local time like the rest of the value, and the field writes the milliseconds of the model, and of `min` and `max`, unless they are 0. `TypeTimeMilliseconds` and `TypeDateTimeMilliseconds` render a model with milliseconds, find them in the field, then type a time with a fraction and find it in the model; without the fix the field shows the seconds only and the model does not change.
+
 ## [0.0.31] - 2026-11-26
 
 ### Changed

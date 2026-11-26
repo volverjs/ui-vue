@@ -89,6 +89,11 @@ const hasSeconds = computed(() => {
     }
     return stepValue % 60 !== 0
 })
+// a step below one second, or with a fraction, makes the field show milliseconds
+const hasMilliseconds = computed(() => {
+    const stepValue = Number(step.value)
+    return !Number.isNaN(stepValue) && !Number.isInteger(stepValue)
+})
 
 // mask
 const NEGATIVE_ZERO_REGEX = /^-0?[.,]?[0*]?$/
@@ -177,8 +182,8 @@ function mergeDateIntoModelValue(date: Date) {
     if (
         !isEmpty(modelValue?.value)
         && dateInputType.value
-        && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value)
-        === getInputValueFromDate(date, dateInputType.value, hasSeconds.value)
+        && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value, hasMilliseconds.value)
+        === getInputValueFromDate(date, dateInputType.value, hasSeconds.value, hasMilliseconds.value)
     ) {
         cancelModelValue()
         return
@@ -242,7 +247,7 @@ function handleDateAccept() {
         mergeDateIntoModelValue(date)
         return
     }
-    localModelValue.value = getInputValueFromDate(date, dateType, hasSeconds.value)
+    localModelValue.value = getInputValueFromDate(date, dateType, hasSeconds.value, hasMilliseconds.value)
 }
 
 function updateMaskValue(newValue: SuggestionValue | undefined | null) {
@@ -285,7 +290,7 @@ function updateMaskValue(newValue: SuggestionValue | undefined | null) {
             // Format for display (skip week type as it's not supported by getInputValueFromDate)
             if (dateInputType.value) {
                 const newDate = new Date(newValue)
-                typed.value = getInputValueFromDate(newDate, dateInputType.value, hasSeconds.value)
+                typed.value = getInputValueFromDate(newDate, dateInputType.value, hasSeconds.value, hasMilliseconds.value)
                 unmasked.value = typed.value
             }
             return
@@ -629,7 +634,7 @@ function getLimitAttribute(limit: string | number | Date | null | undefined) {
     }
     if ((limit instanceof Date || (typeof limit === 'string' && isDateIsoString(limit)))
         && dateInputType.value) {
-        return getInputValueFromDate(limit, dateInputType.value, hasSeconds.value) || undefined
+        return getInputValueFromDate(limit, dateInputType.value, hasSeconds.value, hasMilliseconds.value) || undefined
     }
     return String(limit)
 }

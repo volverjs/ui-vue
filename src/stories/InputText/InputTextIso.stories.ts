@@ -7,6 +7,7 @@ import {
     dateTimeRevertTest,
     isoTest,
     JANUARY_END,
+    millisecondsTest,
     monthEndTest,
 } from './InputText.test'
 
@@ -176,5 +177,28 @@ export const TypeMonthMonthEnd: Story = {
     args: {
         ...defaultArgs,
         type: 'month',
+    },
+}
+
+/**
+ * A `step` below one second: the field shows the milliseconds of the model,
+ * and a value typed with a fraction of a second reaches the model.
+ */
+export const TypeTimeMilliseconds: Story = {
+    ...TypeDateTimeEdit,
+    args: {
+        ...defaultArgs,
+        type: 'time',
+        step: 0.001,
+    },
+    play: millisecondsTest,
+}
+
+export const TypeDateTimeMilliseconds: Story = {
+    ...TypeTimeMilliseconds,
+    args: {
+        ...defaultArgs,
+        type: 'datetime-local',
+        step: 0.001,
     },
 }
