@@ -11,6 +11,7 @@ import {
     notRemountTest,
     renameTest,
     sortedModelTest,
+    storageKeyChangeTest,
     swapNamesTest,
 } from './AccordionGroup.test'
 
@@ -285,6 +286,35 @@ export const Rename: Story = {
 		<div>
 			update:modelValue: <span data-testId="emitted">{{ JSON.stringify(emitted) }}</span>
 		</div>
+	`,
+    }),
+}
+
+/**
+ * The storage key changes while the group is mounted, with no model: the
+ * open accordion is kept under the new key as JSON, as at the first mount.
+ */
+export const StorageKeyChange: Story = {
+    args: defaultArgs,
+    play: storageKeyChangeTest,
+    render: args => ({
+        components: { VvAccordionGroup, VvButton },
+        setup() {
+            // emptied before the group mounts and reads them
+            for (const key of ['accordion-key-first', 'accordion-key-second']) {
+                localStorage.removeItem(key)
+            }
+            const storageKey = ref('accordion-key-first')
+            function toggle() {
+                storageKey.value = storageKey.value === 'accordion-key-first'
+                    ? 'accordion-key-second'
+                    : 'accordion-key-first'
+            }
+            return { args, storageKey, toggle }
+        },
+        template: /* html */ `
+		<vv-accordion-group data-testId="element" :items="args.items" :storage-key="storageKey" />
+		<vv-button data-testId="toggle" class="mt-24" :label="storageKey" modifiers="secondary" @click="toggle" />
 	`,
     }),
 }

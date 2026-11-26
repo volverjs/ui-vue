@@ -240,6 +240,10 @@ export const StorageKeyChange: Story = {
     render: args => ({
         components: { VvInputText, VvButton },
         setup() {
+            // emptied before the field mounts and reads them
+            for (const key of ['storage-key-first', 'storage-key-second']) {
+                localStorage.removeItem(key)
+            }
             const storageKey = ref('storage-key-first')
             function toggle() {
                 storageKey.value = storageKey.value === 'storage-key-first'

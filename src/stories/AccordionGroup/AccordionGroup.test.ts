@@ -1,5 +1,5 @@
 import type { PlayAttributes } from '@/test/types'
-import { within } from 'storybook/test'
+import { userEvent, within } from 'storybook/test'
 import { expect } from '@/test/expect'
 import { sleep } from '@/test/sleep'
 
@@ -235,4 +235,26 @@ export async function renameTest({ canvasElement }: PlayAttributes) {
 
     // accessibility
     await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A storage key changed while the group is mounted writes its model as JSON,
+ * as at the first mount: the value of the previous key picked a serializer of
+ * its own type, so the name of the open accordion, a string without
+ * `collapse`, was written bare, and the next mount could not read it back.
+ * The story empties both keys before it mounts the group.
+ */
+export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+
+    await expect(element.querySelector('[id="a-2"] summary')).toBeClicked()
+    await sleep(100)
+    await expect(localStorage.getItem('accordion-key-first')).toEqual('"a-2"')
+
+    await userEvent.click(toggle)
+    await sleep(100)
+    await expect(localStorage.getItem('accordion-key-second')).toEqual('"a-2"')
+    await expect(localStorage.getItem('accordion-key-first')).toEqual('"a-2"')
 }

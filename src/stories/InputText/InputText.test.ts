@@ -660,7 +660,8 @@ export async function millisecondsTest({ canvasElement, args }: PlayAttributes) 
  * A storage key changed while the field is mounted leaves the item of the
  * previous key as it was: it was removed, though another field with the same
  * key could be using it, and then written again with every value added under
- * the new key, by the storage of the previous key that kept running.
+ * the new key, by the storage of the previous key that kept running. The
+ * story empties both keys before it mounts the field.
  */
 export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
@@ -668,9 +669,6 @@ export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
     const toggle = await canvas.findByTestId('toggle')
     const outside = await canvas.findByTestId('outside')
     const input = element.querySelector('input') as HTMLInputElement
-    for (const key of ['storage-key-first', 'storage-key-second']) {
-        localStorage.removeItem(key)
-    }
 
     await expect(input).toBeClicked()
     await userEvent.keyboard('Lorem')
