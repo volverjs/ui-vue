@@ -70,7 +70,11 @@ const inputTextPlaceholder = computed(() =>
 )
 
 // debounce
-const { model: localModelValue, flush: flushModelValue } = useDebouncedInput(
+const {
+    model: localModelValue,
+    flush: flushModelValue,
+    cancel: cancelModelValue,
+} = useDebouncedInput(
     modelValue,
     emit,
     debounce,
@@ -164,21 +168,42 @@ function handleNumberAccept() {
 
 function mergeDateIntoModelValue(date: Date) {
     const toReturn = new Date(modelValueDate.value || modelValueDateIsoString.value as string)
-    if (type.value === INPUT_TYPES.DATETIME_LOCAL
-        || type.value === INPUT_TYPES.DATE
-        || type.value === INPUT_TYPES.MONTH) {
-        toReturn.setFullYear(date.getFullYear())
-        toReturn.setMonth(date.getMonth())
+    // The field shows the model at its own precision (no seconds without `hasSeconds`):
+    // showing it is no change, and merging it back would drop what the field cannot show.
+    // A value typed before it and still waiting for the `debounce` is dropped, or its
+    // timer would emit a value the field no longer shows. An empty model is no match:
+    // a cleared field keeps the date it held only to know whether the model is a
+    // `Date` or an ISO string.
+    if (
+        !isEmpty(modelValue?.value)
+        && dateInputType.value
+        && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value)
+        === getInputValueFromDate(date, dateInputType.value, hasSeconds.value)
+    ) {
+        cancelModelValue()
+        return
     }
     if (type.value === INPUT_TYPES.DATETIME_LOCAL
         || type.value === INPUT_TYPES.DATE) {
-        toReturn.setDate(date.getDate())
+        // in one call: set one at a time, the 31st of January moved to February
+        // overflowed into March before the day was set
+        toReturn.setFullYear(date.getFullYear(), date.getMonth(), date.getDate())
+    }
+    if (type.value === INPUT_TYPES.MONTH) {
+        // the day of the model, within the month picked
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+        toReturn.setFullYear(
+            date.getFullYear(),
+            date.getMonth(),
+            Math.min(toReturn.getDate(), lastDay),
+        )
     }
     if (type.value === INPUT_TYPES.DATETIME_LOCAL
         || type.value === INPUT_TYPES.TIME) {
         toReturn.setHours(date.getHours())
         toReturn.setMinutes(date.getMinutes())
-        toReturn.setSeconds(date.getSeconds())
+        // the milliseconds too, or those of the previous value stayed
+        toReturn.setSeconds(date.getSeconds(), date.getMilliseconds())
     }
     if (modelValueDate.value instanceof Date) {
         if (localModelValue.value?.getTime() === toReturn.getTime()) {
@@ -221,8 +246,10 @@ function handleDateAccept() {
 }
 
 function updateMaskValue(newValue: SuggestionValue | undefined | null) {
-    // Handle empty values
-    if (newValue === undefined || newValue === null) {
+    // Handle empty values. They keep the date references: a date field cleared
+    // emits '' for an ISO model and undefined for a Date, and the value typed
+    // next has to reach the model in the same form.
+    if (newValue === undefined || newValue === null || newValue === '') {
         typed.value = ''
         unmasked.value = ''
         return
@@ -347,7 +374,8 @@ function handleInputBlur() {
     // re-renders, so the committed value comes from `flush()` itself.
     const committed = flushModelValue() ?? localModelValue.value
 
-    if (!storageSuggestions.value || isEmpty(committed)) {
+    // without a storage key there is no history, as in `VvTextarea`
+    if (!storageKey.value || !storageSuggestions.value || isEmpty(committed)) {
         return
     }
 
@@ -466,8 +494,24 @@ const isInvalid = computed(() => {
     return undefined
 })
 
+// the input types that take free text, `password` aside
+const TEXT_INPUT_TYPES: InputType[] = [
+    INPUT_TYPES.TEXT,
+    INPUT_TYPES.SEARCH,
+    INPUT_TYPES.URL,
+    INPUT_TYPES.TEL,
+    INPUT_TYPES.EMAIL,
+]
+
 // suggestions
-const storageKey = computed(() => props.storageKey ?? (volver?.experimentalFeatures.forceInputSuggestions ? props.name : undefined))
+// `forceInputSuggestions` keeps a history of the text fields only: a password
+// would be stored in clear, and a date or a number listed as its raw value
+const storageKey = computed(() => props.storageKey ?? (
+    volver?.experimentalFeatures.forceInputSuggestions
+    && TEXT_INPUT_TYPES.includes(type.value)
+        ? props.name
+        : undefined
+))
 const storageSuggestions = usePersistence<Set<SuggestionValue>>(
     storageKey,
     storageType,
@@ -477,7 +521,7 @@ const allSuggestions = computed(() => {
     const merged = new Map<SuggestionValue, { isFromStorage: boolean }>()
 
     // Add storage suggestions
-    if (storageSuggestions.value) {
+    if (storageKey.value && storageSuggestions.value) {
         for (const suggestion of storageSuggestions.value) {
             merged.set(suggestion, { isFromStorage: true })
         }
@@ -547,17 +591,9 @@ const bemCssClasses = useModifiers(
 )
 
 // attrs
-const isTextLike = computed(() => {
-    const textLikeTypes: InputType[] = [
-        INPUT_TYPES.TEXT,
-        INPUT_TYPES.SEARCH,
-        INPUT_TYPES.URL,
-        INPUT_TYPES.TEL,
-        INPUT_TYPES.EMAIL,
-        INPUT_TYPES.PASSWORD,
-    ]
-    return textLikeTypes.includes(type.value)
-})
+const isTextLike = computed(() =>
+    isPassword.value || TEXT_INPUT_TYPES.includes(type.value),
+)
 const isDateTimeLike = computed(() => {
     const dateTimeTypes: InputType[] = [
         INPUT_TYPES.DATE,
@@ -573,17 +609,6 @@ const dateInputType = computed(() =>
         ? type.value as DateInputType
         : undefined,
 )
-const isTextWithConstraints = computed(() => {
-    const textConstraintTypes: InputType[] = [
-        INPUT_TYPES.TEXT,
-        INPUT_TYPES.SEARCH,
-        INPUT_TYPES.URL,
-        INPUT_TYPES.TEL,
-        INPUT_TYPES.EMAIL,
-        INPUT_TYPES.PASSWORD,
-    ]
-    return textConstraintTypes.includes(type.value)
-})
 
 // Without a `max` the browser takes a year of more than four digits in every
 // input that has one, up to 275760 in Chrome. The last instant of 9999 keeps
@@ -666,7 +691,7 @@ const hasAttrs = computed(() => {
     }
 
     // Text-like types with constraints
-    if (isTextWithConstraints.value) {
+    if (isTextLike.value) {
         toReturn.minlength = props.minlength
         toReturn.maxlength = props.maxlength
         toReturn.pattern = props.pattern

@@ -382,3 +382,211 @@ export async function suggestionsTabOutTest({ canvasElement }: PlayAttributes) {
     await waitFor(() => expect(options()[0]).not.toBeVisible())
     await expect(next).toHaveFocus()
 }
+
+/** The suggestion options of a field, rendered inside it. */
+function suggestionOptions(element: HTMLElement) {
+    return [...element.querySelectorAll<HTMLElement>('.vv-dropdown-option')]
+}
+
+/**
+ * A field without a storage key keeps no history: leaving it stored the value
+ * in memory, and the next focus offered it back as a suggestion. So did an
+ * empty `storageKey`, the only way to keep one field out of
+ * `forceInputSuggestions`, which otherwise keys the history by `name`.
+ */
+export async function noStorageKeyTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    // an empty field lists every suggestion: one equal to the value is hidden
+    await userEvent.clear(input)
+    outside.focus()
+    await sleep(100)
+    input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(element)).toHaveLength(0)
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * `forceInputSuggestions` keeps a history of the text fields only: a password
+ * was stored in clear in the browser storage, and a date came back as its raw
+ * value (`2026-11-25T10:30`) in a list over the date picker. An empty
+ * `storageKey` keeps a text field out of it.
+ */
+export async function forcedSuggestionsTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const outside = await canvas.findByTestId('outside')
+    const field = async (name: string) => {
+        const element = await canvas.findByTestId(name)
+        return {
+            element,
+            input: element.querySelector('input') as HTMLInputElement,
+        }
+    }
+    for (const key of ['forced-text', 'forced-password', 'forced-date', 'forced-opt-out']) {
+        localStorage.removeItem(key)
+    }
+
+    const text = await field('forced-text')
+    await expect(text.input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-text')).toEqual('["Lorem"]')
+
+    const password = await field('forced-password')
+    await expect(password.input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-password')).toBeNull()
+
+    const date = await field('forced-date')
+    await expect(date.input).toBeClicked()
+    await userEvent.keyboard(new Date().toISOString().split('T')[0])
+    await expect(date.input.value).not.toEqual('')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-date')).toBeNull()
+    // emptied, as a suggestion equal to the value is hidden
+    date.input.focus()
+    date.input.value = ''
+    date.input.dispatchEvent(new Event('input', { bubbles: true }))
+    await expect(date.input.value).toEqual('')
+    outside.focus()
+    await sleep(100)
+    date.input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(date.element)).toHaveLength(0)
+
+    const optOut = await field('forced-opt-out')
+    await expect(optOut.input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-opt-out')).toBeNull()
+    // an empty field lists every suggestion: one equal to the value is hidden
+    await userEvent.clear(optOut.input)
+    outside.focus()
+    await sleep(100)
+    optOut.input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(optOut.element)).toHaveLength(0)
+
+    await expect(canvasElement).toHaveNoViolations()
+}
+
+/**
+ * Editing a `datetime-local` field sets the instant the field shows: the
+ * milliseconds of the previous value stayed, so `11:00` became
+ * `…T10:00:00.917Z`. Showing the value alone does not rewrite it.
+ */
+export async function dateTimeEditTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await sleep(100)
+    await expect(value.innerHTML).toEqual('2026-11-25T09:29:29.917Z')
+
+    input.focus()
+    input.value = '2026-11-25T11:00'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(
+        new Date('2026-11-25T11:00').toISOString(),
+    )
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * Behind a `debounce`, a value typed and then typed back to the one the field
+ * showed leaves the model as it was: the value typed in between, still waiting
+ * for its timer, was emitted while the field showed the model again.
+ */
+export async function dateTimeRevertTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await sleep(100)
+    const shown = input.value
+    input.focus()
+    input.value = '2026-11-25T11:00'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(50)
+    input.value = shown
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    // past the debounce
+    await sleep(500)
+    await expect(value.innerHTML).toEqual('2026-11-25T09:29:29.917Z')
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A field emptied and then given back the value it showed sets the model to
+ * that value: the emptied field still held the date of the model, which
+ * matched the value typed, so the model stayed empty.
+ */
+export async function dateTimeClearTest({ canvasElement }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await sleep(100)
+    const shown = input.value
+    input.focus()
+    input.value = ''
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual('')
+    input.value = shown
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(new Date(shown).toISOString())
+
+    await expect(element).toHaveNoViolations()
+}
+
+// local times, so the day is the same in every time zone
+export const JANUARY_END = new Date(2026, 0, 31, 12)
+
+/**
+ * A date moved from the 31st of January to February lands in February: the
+ * year, the month and the day were set one at a time, and the 31st of
+ * February overflowed into March before the day was set, so the 28th of
+ * February gave the 28th of March. A month field keeps the day of the model,
+ * within the month picked.
+ */
+export async function monthEndTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+    const edits: Partial<Record<InputType, string>> = {
+        [INPUT_TYPES.DATE]: '2026-02-28',
+        [INPUT_TYPES.MONTH]: '2026-02',
+    }
+
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(JANUARY_END.toISOString())
+
+    input.focus()
+    input.value = edits[args.type as InputType] as string
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(
+        new Date(2026, 1, 28, 12).toISOString(),
+    )
+
+    await expect(element).toHaveNoViolations()
+}

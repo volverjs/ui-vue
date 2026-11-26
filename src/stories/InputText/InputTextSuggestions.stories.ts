@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import VvButton from '@/components/VvButton/VvButton.vue'
 import VvInputText from '@/components/VvInputText/VvInputText.vue'
+import { INJECTION_KEY_VOLVER } from '@/constants'
+import { Volver } from '@/Volver'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
-import { suggestionsEscapeTest, suggestionsTabOutTest } from './InputText.test'
+import {
+    forcedSuggestionsTest,
+    noStorageKeyTest,
+    suggestionsEscapeTest,
+    suggestionsTabOutTest,
+} from './InputText.test'
 
 const meta: Meta<typeof VvInputText> = {
     title: 'Components/InputText/Suggestions',
@@ -149,4 +156,70 @@ export const BothSuggestions: Story = {
             </div>
         `,
     }),
+}
+
+/**
+ * Without a storage key a field keeps no history of what was typed in it, as
+ * with an empty `storageKey`.
+ */
+export const NoStorageKey: Story = {
+    ...Default,
+    args: {
+        ...Default.args,
+        type: 'text',
+        label: 'Input without storage key',
+    },
+    render: args => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            return { args, inputValue: ref() }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-bind="args" v-model="inputValue" data-testId="element" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: noStorageKeyTest,
+}
+
+export const EmptyStorageKey: Story = {
+    ...NoStorageKey,
+    args: {
+        ...NoStorageKey.args,
+        label: 'Input with an empty storage key',
+        storageKey: '',
+    },
+}
+
+/**
+ * With `experimentalFeatures.forceInputSuggestions` every text field keeps a
+ * history under its `name`; a password or a date field does not, nor a text
+ * field with an empty `storageKey`.
+ */
+export const ForcedSuggestions: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            return { text: ref(), password: ref(), date: ref(), optOut: ref() }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="text" type="text" name="forced-text" label="Text" data-testId="forced-text" />
+                <vv-input-text v-model="password" type="password" name="forced-password" label="Password" data-testId="forced-password" />
+                <vv-input-text v-model="date" type="date" name="forced-date" label="Date" data-testId="forced-date" />
+                <vv-input-text v-model="optOut" type="text" name="forced-opt-out" storage-key="" label="Text without history" data-testId="forced-opt-out" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedSuggestionsTest,
 }
