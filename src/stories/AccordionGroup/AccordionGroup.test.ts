@@ -257,4 +257,6 @@ export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
     await sleep(100)
     await expect(localStorage.getItem('accordion-key-second')).toEqual('"a-2"')
     await expect(localStorage.getItem('accordion-key-first')).toEqual('"a-2"')
+
+    await expect(element).toHaveNoViolations()
 }
