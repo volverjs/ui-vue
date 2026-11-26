@@ -20,6 +20,15 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src'),
         },
     },
+    optimizeDeps: {
+        // Reached only through `useOptions`, an auto-imported composable, so
+        // the dependency scan, which reads the sources before the auto-import
+        // transform, does not see it. Found in the middle of a run on a cold
+        // cache, it made Vite optimize again and reload the page, and the
+        // iframe of the browser tester did not come back from the reload:
+        // every later file timed out.
+        include: ['dot-prop'],
+    },
     test: {
         onConsoleLog(log) {
             if (log.includes('decodeEntities'))
