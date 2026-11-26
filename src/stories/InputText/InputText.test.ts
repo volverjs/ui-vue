@@ -622,25 +622,25 @@ export async function beforeOverflowTest({ canvasElement }: PlayAttributes) {
 
 /**
  * A `step` below one second shows the milliseconds of the model and reads
- * those typed: the field showed seconds at most, and a value with a fraction
- * of a second threw, so the model was not updated.
+ * those typed, with a fraction of one to three digits: the field showed
+ * seconds at most, and a value with a fraction of a second threw, so the
+ * model was not updated.
  */
 export async function millisecondsTest({ canvasElement, args }: PlayAttributes) {
     const element = await within(canvasElement).findByTestId('element')
     const value = await within(canvasElement).findByTestId('value')
     const input = element.querySelector('input') as HTMLInputElement
     const model = new Date('2026-11-25T09:29:29.917Z')
-    const edits: Partial<Record<InputType, [string, Date]>> = {
+    const edits: Partial<Record<InputType, [string, Date][]>> = {
         [INPUT_TYPES.TIME]: [
-            '11:15:20.250',
-            new Date(new Date(model).setHours(11, 15, 20, 250)),
+            ['11:15:20.250', new Date(new Date(model).setHours(11, 15, 20, 250))],
+            ['11:15:21.5', new Date(new Date(model).setHours(11, 15, 21, 500))],
         ],
         [INPUT_TYPES.DATETIME_LOCAL]: [
-            '2026-11-25T11:15:20.250',
-            new Date(2026, 10, 25, 11, 15, 20, 250),
+            ['2026-11-25T11:15:20.250', new Date(2026, 10, 25, 11, 15, 20, 250)],
+            ['2026-11-25T11:15:21.5', new Date(2026, 10, 25, 11, 15, 21, 500)],
         ],
     }
-    const [typed, expected] = edits[args.type as InputType] as [string, Date]
 
     await sleep(100)
     await expect(value.innerHTML).toEqual(model.toISOString())
@@ -648,10 +648,12 @@ export async function millisecondsTest({ canvasElement, args }: PlayAttributes) 
     await expect(input.value).toMatch(/:29\.917$/)
 
     input.focus()
-    input.value = typed
-    input.dispatchEvent(new Event('input', { bubbles: true }))
-    await sleep(100)
-    await expect(value.innerHTML).toEqual(expected.toISOString())
+    for (const [typed, expected] of edits[args.type as InputType] ?? []) {
+        input.value = typed
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+        await sleep(100)
+        await expect(value.innerHTML).toEqual(expected.toISOString())
+    }
 
     await expect(element).toHaveNoViolations()
 }
