@@ -694,16 +694,24 @@ export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
 
 /**
  * With `forceInputSuggestions`, a password shown by an application that moves
- * the `type` prop to `text` is not stored: the field got a key while it was
- * `text`, and a blur in that state stored the password in clear.
+ * the `type` prop to `text` is not stored, shown once or again: the field got
+ * a key while it was `text`, and a blur in that state stored the password in
+ * clear. A text field next to it keeps its history, so the feature is on.
  */
 export async function forcedShownPasswordTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
+    const control = (await canvas.findByTestId('control')).querySelector('input') as HTMLInputElement
     const element = await canvas.findByTestId('element')
     const toggle = await canvas.findByTestId('toggle')
     const outside = await canvas.findByTestId('outside')
     const input = element.querySelector('input') as HTMLInputElement
-    localStorage.removeItem('forced-shown-password')
+    const stored = () => localStorage.getItem('forced-shown-password') ?? ''
+
+    await expect(control).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-shown-control')).toEqual('["Lorem"]')
 
     await userEvent.click(toggle)
     await waitFor(() => expect(input).toHaveProperty('type', 'text'))
@@ -711,7 +719,18 @@ export async function forcedShownPasswordTest({ canvasElement }: PlayAttributes)
     await userEvent.keyboard('secret')
     outside.focus()
     await sleep(100)
-    await expect(localStorage.getItem('forced-shown-password')).toBeNull()
+    await expect(stored()).not.toContain('secret')
+
+    // hidden and shown again
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'password'))
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'text'))
+    await userEvent.clear(input)
+    await userEvent.keyboard('another')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).not.toContain('another')
 
     // emptied, as a suggestion equal to the value is hidden
     await userEvent.clear(input)
@@ -720,6 +739,36 @@ export async function forcedShownPasswordTest({ canvasElement }: PlayAttributes)
     input.focus()
     await sleep(500)
     await expect(suggestionOptions(element)).toHaveLength(0)
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A field mounted as `text`, the password shown from the start, keeps a
+ * history like any text field until it becomes a password, and then removes
+ * what it stored: once a changed key left the item of the previous one in
+ * place, the password typed while shown stayed in clear in the storage.
+ */
+export async function forcedMountedShownPasswordTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    const stored = () => localStorage.getItem('forced-mounted-shown') ?? ''
+
+    await expect(input).toHaveProperty('type', 'text')
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    // a text field like any other, until now
+    await expect(stored()).toContain('secret')
+
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'password'))
+    await sleep(100)
+    await expect(stored()).not.toContain('secret')
 
     await expect(element).toHaveNoViolations()
 }

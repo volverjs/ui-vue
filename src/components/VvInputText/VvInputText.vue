@@ -398,6 +398,9 @@ function handleInputBlur() {
         )
     }
     storageSuggestions.value.add(committed)
+    if (isForcedStorageKey.value) {
+        forcedValues.add(committed)
+    }
 }
 
 watch(isFocused, handleFocusChange)
@@ -515,11 +518,6 @@ const TEXT_INPUT_TYPES: InputType[] = [
 // application that shows the password by moving `type` to `text` would store
 // it at the blur.
 const hasBeenPassword = ref(isPassword.value)
-watch(isPassword, (newValue) => {
-    if (newValue) {
-        hasBeenPassword.value = true
-    }
-})
 const storageKey = computed(() => props.storageKey ?? (
     volver?.experimentalFeatures.forceInputSuggestions
     && !hasBeenPassword.value
@@ -527,11 +525,26 @@ const storageKey = computed(() => props.storageKey ?? (
         ? props.name
         : undefined
 ))
+const isForcedStorageKey = computed(() => props.storageKey == null && !!storageKey.value)
 const storageSuggestions = usePersistence<Set<SuggestionValue>>(
     storageKey,
     storageType,
     new Set(),
 )
+// The values this field stored under the key `forceInputSuggestions` gives it.
+// A field mounted as `text`, the password shown, and then turned into a
+// password removes them, as the password may have been typed while shown.
+const forcedValues = new Set<SuggestionValue>()
+watch(isPassword, (newValue) => {
+    if (!newValue) {
+        return
+    }
+    for (const value of forcedValues) {
+        storageSuggestions.value?.delete(value)
+    }
+    forcedValues.clear()
+    hasBeenPassword.value = true
+})
 const allSuggestions = computed(() => {
     const merged = new Map<SuggestionValue, { isFromStorage: boolean }>()
 

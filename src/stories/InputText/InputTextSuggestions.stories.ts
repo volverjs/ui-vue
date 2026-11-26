@@ -7,6 +7,7 @@ import { Volver } from '@/Volver'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
 import {
+    forcedMountedShownPasswordTest,
     forcedShownPasswordTest,
     forcedSuggestionsTest,
     noStorageKeyTest,
@@ -265,7 +266,8 @@ export const StorageKeyChange: Story = {
 
 /**
  * With `experimentalFeatures.forceInputSuggestions`, an application that shows
- * the password by moving `type` to `text`: the field keeps no history.
+ * the password by moving `type` to `text`: the field keeps no history, while
+ * the text field next to it does.
  */
 export const ForcedSuggestionsShownPassword: Story = {
     ...Default,
@@ -278,11 +280,16 @@ export const ForcedSuggestionsShownPassword: Story = {
                     experimentalFeatures: { forceInputSuggestions: true },
                 }),
             )
+            // emptied before the fields mount and read them
+            for (const key of ['forced-shown-control', 'forced-shown-password']) {
+                localStorage.removeItem(key)
+            }
             const shown = ref(false)
-            return { password: ref(), shown }
+            return { text: ref(), password: ref(), shown }
         },
         template: /* html */ `
             <div style="min-height: 240px">
+                <vv-input-text v-model="text" type="text" name="forced-shown-control" label="Text" data-testId="control" />
                 <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-shown-password" label="Password" data-testId="element" />
                 <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
                 <vv-button data-testId="outside" label="Outside" />
@@ -290,4 +297,36 @@ export const ForcedSuggestionsShownPassword: Story = {
         `,
     }),
     play: forcedShownPasswordTest,
+}
+
+/**
+ * The same, with the password shown when the field mounts: it keeps a history
+ * as a text field until it becomes a password, and then removes what it
+ * stored.
+ */
+export const ForcedSuggestionsMountedShownPassword: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            // emptied before the field mounts and reads it
+            localStorage.removeItem('forced-mounted-shown')
+            const shown = ref(true)
+            return { password: ref(), shown }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-mounted-shown" label="Password" data-testId="element" />
+                <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedMountedShownPasswordTest,
 }
