@@ -477,19 +477,21 @@ const isInvalid = computed(() => {
     return undefined
 })
 
-// suggestions
-// `forceInputSuggestions` keeps a history of the text fields only: a password
-// would be stored in clear, and a date or a number listed as its raw value
-const FORCED_SUGGESTIONS_TYPES: InputType[] = [
+// the input types that take free text, `password` aside
+const TEXT_INPUT_TYPES: InputType[] = [
     INPUT_TYPES.TEXT,
     INPUT_TYPES.SEARCH,
     INPUT_TYPES.URL,
     INPUT_TYPES.TEL,
     INPUT_TYPES.EMAIL,
 ]
+
+// suggestions
+// `forceInputSuggestions` keeps a history of the text fields only: a password
+// would be stored in clear, and a date or a number listed as its raw value
 const storageKey = computed(() => props.storageKey ?? (
     volver?.experimentalFeatures.forceInputSuggestions
-    && FORCED_SUGGESTIONS_TYPES.includes(type.value)
+    && TEXT_INPUT_TYPES.includes(type.value)
         ? props.name
         : undefined
 ))
@@ -572,17 +574,9 @@ const bemCssClasses = useModifiers(
 )
 
 // attrs
-const isTextLike = computed(() => {
-    const textLikeTypes: InputType[] = [
-        INPUT_TYPES.TEXT,
-        INPUT_TYPES.SEARCH,
-        INPUT_TYPES.URL,
-        INPUT_TYPES.TEL,
-        INPUT_TYPES.EMAIL,
-        INPUT_TYPES.PASSWORD,
-    ]
-    return textLikeTypes.includes(type.value)
-})
+const isTextLike = computed(() =>
+    isPassword.value || TEXT_INPUT_TYPES.includes(type.value),
+)
 const isDateTimeLike = computed(() => {
     const dateTimeTypes: InputType[] = [
         INPUT_TYPES.DATE,
@@ -598,17 +592,6 @@ const dateInputType = computed(() =>
         ? type.value as DateInputType
         : undefined,
 )
-const isTextWithConstraints = computed(() => {
-    const textConstraintTypes: InputType[] = [
-        INPUT_TYPES.TEXT,
-        INPUT_TYPES.SEARCH,
-        INPUT_TYPES.URL,
-        INPUT_TYPES.TEL,
-        INPUT_TYPES.EMAIL,
-        INPUT_TYPES.PASSWORD,
-    ]
-    return textConstraintTypes.includes(type.value)
-})
 
 // Without a `max` the browser takes a year of more than four digits in every
 // input that has one, up to 275760 in Chrome. The last instant of 9999 keeps
@@ -691,7 +674,7 @@ const hasAttrs = computed(() => {
     }
 
     // Text-like types with constraints
-    if (isTextWithConstraints.value) {
+    if (isTextLike.value) {
         toReturn.minlength = props.minlength
         toReturn.maxlength = props.maxlength
         toReturn.pattern = props.pattern
