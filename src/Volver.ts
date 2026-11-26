@@ -75,7 +75,9 @@ export type VolverExperimentalFeatures = {
      * `VvTextarea`, and the `VvInputText` of type `text`, `search`, `url`,
      * `tel` and `email`. A field of another type, such as `password`, `number`
      * or a date, keeps one only with an explicit `storageKey`, and an empty
-     * `storageKey` keeps a field out of it.
+     * `storageKey` keeps a field out of it. A `VvInputText` that has been a
+     * `password` stays out of it while mounted, even when the application
+     * moves its `type` to `text` to show the password.
      */
     forceInputSuggestions?: boolean
 }

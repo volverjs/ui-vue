@@ -7,6 +7,7 @@ import { Volver } from '@/Volver'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
 import {
+    forcedShownPasswordTest,
     forcedSuggestionsTest,
     noStorageKeyTest,
     storageKeyChangeTest,
@@ -256,4 +257,33 @@ export const StorageKeyChange: Story = {
         `,
     }),
     play: storageKeyChangeTest,
+}
+
+/**
+ * With `experimentalFeatures.forceInputSuggestions`, an application that shows
+ * the password by moving `type` to `text`: the field keeps no history.
+ */
+export const ForcedSuggestionsShownPassword: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            const shown = ref(false)
+            return { password: ref(), shown }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-shown-password" label="Password" data-testId="element" />
+                <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedShownPasswordTest,
 }

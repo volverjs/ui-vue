@@ -510,9 +510,19 @@ const TEXT_INPUT_TYPES: InputType[] = [
 
 // suggestions
 // `forceInputSuggestions` keeps a history of the text fields only: a password
-// would be stored in clear, and a date or a number listed as its raw value
+// would be stored in clear, and a date or a number listed as its raw value.
+// A field that has been a password stays out of it while mounted: an
+// application that shows the password by moving `type` to `text` would store
+// it at the blur.
+const hasBeenPassword = ref(isPassword.value)
+watch(isPassword, (newValue) => {
+    if (newValue) {
+        hasBeenPassword.value = true
+    }
+})
 const storageKey = computed(() => props.storageKey ?? (
     volver?.experimentalFeatures.forceInputSuggestions
+    && !hasBeenPassword.value
     && TEXT_INPUT_TYPES.includes(type.value)
         ? props.name
         : undefined

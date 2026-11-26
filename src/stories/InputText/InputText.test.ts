@@ -693,3 +693,35 @@ export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * With `forceInputSuggestions`, a password shown by an application that moves
+ * the `type` prop to `text` is not stored: the field got a key while it was
+ * `text`, and a blur in that state stored the password in clear.
+ */
+export async function forcedShownPasswordTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    localStorage.removeItem('forced-shown-password')
+
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'text'))
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-shown-password')).toBeNull()
+
+    // emptied, as a suggestion equal to the value is hidden
+    await userEvent.clear(input)
+    outside.focus()
+    await sleep(100)
+    input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(element)).toHaveLength(0)
+
+    await expect(element).toHaveNoViolations()
+}

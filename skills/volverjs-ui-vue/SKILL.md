@@ -357,7 +357,7 @@ app.use(VolverPlugin, {
   },
   directives: { tooltip: vTooltip, contextmenu: vContextmenu },
   fetchWithCredentials: false, fetchOptions: undefined,   // for fetchIcon()
-  experimentalFeatures: { forceInputSuggestions: false },  // true: a history under `name` for VvTextarea and the text, search, url, tel, email VvInputText
+  experimentalFeatures: { forceInputSuggestions: false },  // true: a history under `name` for VvTextarea and the text, search, url, tel, email VvInputText (never one that has been a password)
 })
 ```
 
