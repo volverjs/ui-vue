@@ -28,7 +28,7 @@
 
 **Proposal.** Run each `useStorage` in an effect scope of its own and stop it on a key change, start the new one with a copy of the set, and add a story that changes the key and checks both items of the storage.
 
-**Resolution.** Fixed in 0.0.32. Each key runs in a scope stopped on a change of key or `storageType` and on unmount; the copy proved unnecessary once the previous storage stops. A key change no longer removes the item of the previous key; a new key with nothing stored still starts from the previous value, and a change of `storageType` still moves the key. `StorageKeyChange` covers both halves: it fails with the removal, and without the removal it fails on the write-back.
+**Resolution.** Fixed in 0.0.32. Each key runs in a scope stopped on a change of key or `storageType` and on unmount, and writes at once; the copy proved unnecessary once the previous storage stops. A key change no longer removes the item of the previous key. The review of the fix also found that the storage of a new key took its serializer from the value of the previous one, so a string model of `VvAccordionGroup` was written bare: every key now starts from a fresh copy of the default of the component. A new key with nothing stored still starts from the previous value, and a change of `storageType` alone still moves the key. `StorageKeyChange` of `VvInputText` covers both halves, and `StorageKeyChange` of `VvAccordionGroup` the serializer.
 
 ## 3. A password shown by changing `type`
 
@@ -40,4 +40,4 @@
 
 **Proposal.** Document the toggle of the field as the way to show a password, or keep a field that was mounted as a `password` out of the forced history for as long as it is mounted.
 
-**Resolution.** Fixed in 0.0.32 with the second option, extended to a field that becomes a `password` after it is mounted. `ForcedSuggestionsShownPassword` covers it.
+**Resolution.** Fixed in 0.0.32 with the second option, extended to a field that becomes a `password` after it is mounted. A field mounted as `text` keeps a history until then, and removes the values it stored when it becomes a `password`: without that, the fix of item 2, which leaves the item of a previous key in place, kept the password typed while shown. Two fields swapped with `v-if` or a `key` stay two fields, which the JSDoc of `forceInputSuggestions` now says. `ForcedSuggestionsShownPassword` and `ForcedSuggestionsMountedShownPassword` cover it.
