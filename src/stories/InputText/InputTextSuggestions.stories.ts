@@ -195,7 +195,8 @@ export const EmptyStorageKey: Story = {
 
 /**
  * With `experimentalFeatures.forceInputSuggestions` every text field keeps a
- * history under its `name`; a password or a date field does not.
+ * history under its `name`; a password or a date field does not, nor a text
+ * field with an empty `storageKey`.
  */
 export const ForcedSuggestions: Story = {
     ...Default,
@@ -208,13 +209,14 @@ export const ForcedSuggestions: Story = {
                     experimentalFeatures: { forceInputSuggestions: true },
                 }),
             )
-            return { text: ref(), password: ref(), date: ref() }
+            return { text: ref(), password: ref(), date: ref(), optOut: ref() }
         },
         template: /* html */ `
             <div style="min-height: 240px">
                 <vv-input-text v-model="text" type="text" name="forced-text" label="Text" data-testId="forced-text" />
                 <vv-input-text v-model="password" type="password" name="forced-password" label="Password" data-testId="forced-password" />
                 <vv-input-text v-model="date" type="date" name="forced-date" label="Date" data-testId="forced-date" />
+                <vv-input-text v-model="optOut" type="text" name="forced-opt-out" storage-key="" label="Text without history" data-testId="forced-opt-out" />
                 <vv-button data-testId="outside" label="Outside" />
             </div>
         `,

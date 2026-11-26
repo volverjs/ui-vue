@@ -418,7 +418,8 @@ export async function noStorageKeyTest({ canvasElement }: PlayAttributes) {
 /**
  * `forceInputSuggestions` keeps a history of the text fields only: a password
  * was stored in clear in the browser storage, and a date came back as its raw
- * value (`2026-11-25T10:30`) in a list over the date picker.
+ * value (`2026-11-25T10:30`) in a list over the date picker. An empty
+ * `storageKey` keeps a text field out of it.
  */
 export async function forcedSuggestionsTest({ canvasElement }: PlayAttributes) {
     const canvas = within(canvasElement)
@@ -430,7 +431,7 @@ export async function forcedSuggestionsTest({ canvasElement }: PlayAttributes) {
             input: element.querySelector('input') as HTMLInputElement,
         }
     }
-    for (const key of ['forced-text', 'forced-password', 'forced-date']) {
+    for (const key of ['forced-text', 'forced-password', 'forced-date', 'forced-opt-out']) {
         localStorage.removeItem(key)
     }
 
@@ -455,9 +456,30 @@ export async function forcedSuggestionsTest({ canvasElement }: PlayAttributes) {
     outside.focus()
     await sleep(100)
     await expect(localStorage.getItem('forced-date')).toBeNull()
+    // emptied, as a suggestion equal to the value is hidden
+    date.input.focus()
+    date.input.value = ''
+    date.input.dispatchEvent(new Event('input', { bubbles: true }))
+    await expect(date.input.value).toEqual('')
+    outside.focus()
+    await sleep(100)
     date.input.focus()
     await sleep(500)
     await expect(suggestionOptions(date.element)).toHaveLength(0)
+
+    const optOut = await field('forced-opt-out')
+    await expect(optOut.input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-opt-out')).toBeNull()
+    // an empty field lists every suggestion: one equal to the value is hidden
+    await userEvent.clear(optOut.input)
+    outside.focus()
+    await sleep(100)
+    optOut.input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(optOut.element)).toHaveLength(0)
 
     await expect(canvasElement).toHaveNoViolations()
 }
