@@ -494,7 +494,7 @@
     "baseline-browser-mapping": "^2.11.39",
     "change-case": "^5.4.4",
     "eslint": "^10.15.0",
-    "glob": "^13.0.7",
+    "glob": "^14.0.6",
     "jest-axe": "^11.0.0",
     "playwright": "^1.65.1",
     "prettier": "^3.10.1",
