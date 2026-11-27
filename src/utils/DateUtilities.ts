@@ -32,13 +32,15 @@ export function isDateIsoString(dateString: unknown) {
  * @param date - Date object or string
  * @param typeOfInput - Type of HTML input element
  * @param withSeconds - Include seconds in time value
+ * @param withMilliseconds - Include the milliseconds too, unless they are 0, for a `step` below one second
  * @returns String value for input element
  * @example
  * getInputValueFromDate(new Date(), 'date') // '2021-12-31'
  * getInputValueFromDate(new Date(), 'time') // '23:59'
  * getInputValueFromDate(new Date(), 'datetime-local') // '2021-12-31T23:59'
+ * getInputValueFromDate(new Date(), 'time', true, true) // '23:59:59.250'
  */
-export function getInputValueFromDate(date: Date | string, typeOfInput: 'date' | 'time' | 'month' | 'datetime-local' = 'date', withSeconds?: boolean) {
+export function getInputValueFromDate(date: Date | string, typeOfInput: 'date' | 'time' | 'month' | 'datetime-local' = 'date', withSeconds?: boolean, withMilliseconds?: boolean) {
     if (typeof date === 'string') {
         if (!isDateIsoString(date)) {
             return ''
@@ -56,9 +58,14 @@ export function getInputValueFromDate(date: Date | string, typeOfInput: 'date' |
     if (typeOfInput === 'date') {
         return toReturn
     }
-    const time = withSeconds
-        ? `${padTwoDigits(currentDate.getHours())}:${padTwoDigits(currentDate.getMinutes())}:${padTwoDigits(currentDate.getSeconds())}`
-        : `${padTwoDigits(currentDate.getHours())}:${padTwoDigits(currentDate.getMinutes())}`
+    let time = `${padTwoDigits(currentDate.getHours())}:${padTwoDigits(currentDate.getMinutes())}`
+    if (withSeconds || withMilliseconds) {
+        time += `:${padTwoDigits(currentDate.getSeconds())}`
+    }
+    // no fraction for whole seconds, as the browser writes them
+    if (withMilliseconds && currentDate.getMilliseconds()) {
+        time += `.${currentDate.getMilliseconds().toString().padStart(3, '0')}`
+    }
     if (typeOfInput === 'time') {
         return time
     }
@@ -74,11 +81,25 @@ export function getInputValueFromDate(date: Date | string, typeOfInput: 'date' |
  * @example
  * getDateFromInputValue('2021-12-31', 'date') // Date('2021-12-31T00:00:00')
  * getDateFromInputValue('23:59', 'time') // Date('2021-12-31T23:59:00')
+ * getDateFromInputValue('23:59:59.25', 'time') // Date('2021-12-31T23:59:59.250')
  */
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
 const MONTH_REGEX = /^\d{4}-\d{2}$/
-const TIME_REGEX = /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/
-const DATETIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/
+// A `step` below one second adds a fraction of up to three digits.
+const TIME_REGEX = /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d{1,3})?)?$/
+const DATETIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?$/
+
+/**
+ * A time as the field writes it, `HH:mm`, `HH:mm:ss` or `HH:mm:ss.s` with up
+ * to three digits of fraction, in the full `HH:mm:ss.sss` form a `Date`
+ * reads in local time.
+ */
+function getFullTime(time: string) {
+    const [clock = '', fraction = ''] = time.split('.')
+    const withSeconds = clock.length === 5 ? `${clock}:00` : clock
+    return `${withSeconds}.${fraction.padEnd(3, '0')}`
+}
+
 export function getDateFromInputValue(value: string, typeOfInput: 'date' | 'time' | 'month' | 'datetime-local' = 'date') {
     if (!value?.trim()) {
         return null
@@ -103,18 +124,13 @@ export function getDateFromInputValue(value: string, typeOfInput: 'date' | 'time
     }
     if (typeOfInput === 'time') {
         if (!TIME_REGEX.test(value)) {
-            throw new Error('Invalid time format. Expected: HH:mm or HH:mm:ss')
+            throw new Error('Invalid time format. Expected: HH:mm, HH:mm:ss or HH:mm:ss.sss')
         }
-        if (value.length === 8) {
-            return new Date(`${currentYear}-${padTwoDigits(currentMonth + 1)}-${padTwoDigits(currentDate)}T${value}`)
-        }
-        return new Date(`${currentYear}-${padTwoDigits(currentMonth + 1)}-${padTwoDigits(currentDate)}T${value}:00`)
+        return new Date(`${currentYear}-${padTwoDigits(currentMonth + 1)}-${padTwoDigits(currentDate)}T${getFullTime(value)}`)
     }
     if (!DATETIME_REGEX.test(value)) {
-        throw new Error('Invalid datetime format. Expected: YYYY-MM-DDThh:mm or YYYY-MM-DDThh:mm:ss')
+        throw new Error('Invalid datetime format. Expected: YYYY-MM-DDThh:mm, YYYY-MM-DDThh:mm:ss or YYYY-MM-DDThh:mm:ss.sss')
     }
-    if (value.length === 16) {
-        return new Date(`${value}:00`)
-    }
-    return new Date(`${value}`)
+    const [day, time] = value.split('T')
+    return new Date(`${day}T${getFullTime(time as string)}`)
 }

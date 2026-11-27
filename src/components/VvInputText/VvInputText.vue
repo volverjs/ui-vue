@@ -2,7 +2,9 @@
 import type { MaskedNumberOptions } from 'imask'
 import type { InputHTMLAttributes, Ref } from 'vue'
 import type { InputType } from '../VvInputText'
+import { StorageSerializers } from '@vueuse/core'
 import { useIMask } from 'vue-imask'
+import { StorageType } from '../../constants'
 import {
     getDateFromInputValue,
     getInputValueFromDate,
@@ -88,6 +90,11 @@ const hasSeconds = computed(() => {
         return false
     }
     return stepValue % 60 !== 0
+})
+// a step below one second, or with a fraction, makes the field show milliseconds
+const hasMilliseconds = computed(() => {
+    const stepValue = Number(step.value)
+    return !Number.isNaN(stepValue) && !Number.isInteger(stepValue)
 })
 
 // mask
@@ -177,8 +184,8 @@ function mergeDateIntoModelValue(date: Date) {
     if (
         !isEmpty(modelValue?.value)
         && dateInputType.value
-        && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value)
-        === getInputValueFromDate(date, dateInputType.value, hasSeconds.value)
+        && getInputValueFromDate(toReturn, dateInputType.value, hasSeconds.value, hasMilliseconds.value)
+        === getInputValueFromDate(date, dateInputType.value, hasSeconds.value, hasMilliseconds.value)
     ) {
         cancelModelValue()
         return
@@ -242,7 +249,7 @@ function handleDateAccept() {
         mergeDateIntoModelValue(date)
         return
     }
-    localModelValue.value = getInputValueFromDate(date, dateType, hasSeconds.value)
+    localModelValue.value = getInputValueFromDate(date, dateType, hasSeconds.value, hasMilliseconds.value)
 }
 
 function updateMaskValue(newValue: SuggestionValue | undefined | null) {
@@ -285,7 +292,7 @@ function updateMaskValue(newValue: SuggestionValue | undefined | null) {
             // Format for display (skip week type as it's not supported by getInputValueFromDate)
             if (dateInputType.value) {
                 const newDate = new Date(newValue)
-                typed.value = getInputValueFromDate(newDate, dateInputType.value, hasSeconds.value)
+                typed.value = getInputValueFromDate(newDate, dateInputType.value, hasSeconds.value, hasMilliseconds.value)
                 unmasked.value = typed.value
             }
             return
@@ -393,6 +400,9 @@ function handleInputBlur() {
         )
     }
     storageSuggestions.value.add(committed)
+    if (isForcedStorageKey.value) {
+        forcedValues.add(committed)
+    }
 }
 
 watch(isFocused, handleFocusChange)
@@ -505,18 +515,79 @@ const TEXT_INPUT_TYPES: InputType[] = [
 
 // suggestions
 // `forceInputSuggestions` keeps a history of the text fields only: a password
-// would be stored in clear, and a date or a number listed as its raw value
+// would be stored in clear, and a date or a number listed as its raw value.
+// A field that has been a password stays out of it while mounted: an
+// application that shows the password by moving `type` to `text` would store
+// it at the blur.
+const hasBeenPassword = ref(isPassword.value)
 const storageKey = computed(() => props.storageKey ?? (
     volver?.experimentalFeatures.forceInputSuggestions
+    && !hasBeenPassword.value
     && TEXT_INPUT_TYPES.includes(type.value)
         ? props.name
         : undefined
 ))
+const isForcedStorageKey = computed(() => props.storageKey == null && !!storageKey.value)
 const storageSuggestions = usePersistence<Set<SuggestionValue>>(
     storageKey,
     storageType,
     new Set(),
 )
+// The values this field stored under the keys `forceInputSuggestions` gave it,
+// and every one of those keys. A field mounted as `text`, the password shown,
+// removes the values from all of them when it turns into a password, as the
+// password may have been typed while shown: a change of `name` leaves the
+// item of the previous key, and the next key starts from its values.
+const forcedValues = new Set<SuggestionValue>()
+const forcedKeys = new Map<string, { key: string, storageType: `${StorageType}` }>()
+watch(
+    [storageKey, storageType],
+    ([key, type]) => {
+        if (key && isForcedStorageKey.value) {
+            forcedKeys.set(`${type}\n${key}`, { key, storageType: type })
+        }
+    },
+    { immediate: true },
+)
+// One write for each key, as `useStorage` makes it, with the event that
+// tells the fields bound to that key: written change by change, the storage
+// of the key kept the first change of the tick only, and holds still after
+// its own write until the next tick.
+function removeFromStoredSet(key: string, type: `${StorageType}`, values: Set<SuggestionValue>) {
+    const storage = type === StorageType.session ? sessionStorage : localStorage
+    const oldValue = storage.getItem(key)
+    if (oldValue === null) {
+        return
+    }
+    const stored: Set<SuggestionValue> = StorageSerializers.set.read(oldValue)
+    for (const value of values) {
+        stored.delete(value)
+    }
+    const newValue = StorageSerializers.set.write(stored)
+    if (newValue === oldValue) {
+        return
+    }
+    storage.setItem(key, newValue)
+    window.dispatchEvent(new StorageEvent('storage', { key, oldValue, newValue, storageArea: storage }))
+}
+watch(isPassword, (newValue) => {
+    if (!newValue) {
+        return
+    }
+    if (forcedValues.size) {
+        for (const { key, storageType: type } of forcedKeys.values()) {
+            removeFromStoredSet(key, type, forcedValues)
+        }
+        if (storageSuggestions.value) {
+            storageSuggestions.value = new Set(
+                [...storageSuggestions.value].filter(value => !forcedValues.has(value)),
+            )
+        }
+    }
+    forcedValues.clear()
+    forcedKeys.clear()
+    hasBeenPassword.value = true
+})
 const allSuggestions = computed(() => {
     const merged = new Map<SuggestionValue, { isFromStorage: boolean }>()
 
@@ -629,7 +700,7 @@ function getLimitAttribute(limit: string | number | Date | null | undefined) {
     }
     if ((limit instanceof Date || (typeof limit === 'string' && isDateIsoString(limit)))
         && dateInputType.value) {
-        return getInputValueFromDate(limit, dateInputType.value, hasSeconds.value) || undefined
+        return getInputValueFromDate(limit, dateInputType.value, hasSeconds.value, hasMilliseconds.value) || undefined
     }
     return String(limit)
 }
