@@ -619,3 +619,212 @@ export async function beforeOverflowTest({ canvasElement }: PlayAttributes) {
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * A `step` below one second shows the milliseconds of the model and reads
+ * those typed, with a fraction of one to three digits: the field showed
+ * seconds at most, and a value with a fraction of a second threw, so the
+ * model was not updated.
+ */
+export async function millisecondsTest({ canvasElement, args }: PlayAttributes) {
+    const element = await within(canvasElement).findByTestId('element')
+    const value = await within(canvasElement).findByTestId('value')
+    const input = element.querySelector('input') as HTMLInputElement
+    const model = new Date('2026-11-25T09:29:29.917Z')
+    const edits: Partial<Record<InputType, [string, Date][]>> = {
+        [INPUT_TYPES.TIME]: [
+            ['11:15:20.250', new Date(new Date(model).setHours(11, 15, 20, 250))],
+            ['11:15:21.5', new Date(new Date(model).setHours(11, 15, 21, 500))],
+        ],
+        [INPUT_TYPES.DATETIME_LOCAL]: [
+            ['2026-11-25T11:15:20.250', new Date(2026, 10, 25, 11, 15, 20, 250)],
+            ['2026-11-25T11:15:21.5', new Date(2026, 10, 25, 11, 15, 21, 500)],
+        ],
+    }
+
+    await sleep(100)
+    await expect(value.innerHTML).toEqual(model.toISOString())
+    // seconds and milliseconds read the same in every time zone
+    await expect(input.value).toMatch(/:29\.917$/)
+
+    input.focus()
+    for (const [typed, expected] of edits[args.type as InputType] ?? []) {
+        input.value = typed
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+        await sleep(100)
+        await expect(value.innerHTML).toEqual(expected.toISOString())
+    }
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A storage key changed while the field is mounted leaves the item of the
+ * previous key as it was: it was removed, though another field with the same
+ * key could be using it, and then written again with every value added under
+ * the new key, by the storage of the previous key that kept running. The
+ * story empties both keys before it mounts the field.
+ */
+export async function storageKeyChangeTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('storage-key-first')).toEqual('["Lorem"]')
+
+    await userEvent.click(toggle)
+    await sleep(100)
+    // the new key starts from the history of the previous one
+    await expect(localStorage.getItem('storage-key-second')).toEqual('["Lorem"]')
+    await expect(localStorage.getItem('storage-key-first')).toEqual('["Lorem"]')
+
+    await userEvent.clear(input)
+    await userEvent.keyboard('Ipsum')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('storage-key-second')).toEqual('["Lorem","Ipsum"]')
+    await expect(localStorage.getItem('storage-key-first')).toEqual('["Lorem"]')
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * With `forceInputSuggestions`, a password shown by an application that moves
+ * the `type` prop to `text` is not stored, shown once or again: the field got
+ * a key while it was `text`, and a blur in that state stored the password in
+ * clear. A text field next to it keeps its history, so the feature is on.
+ */
+export async function forcedShownPasswordTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const control = (await canvas.findByTestId('control')).querySelector('input') as HTMLInputElement
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    const stored = () => localStorage.getItem('forced-shown-password') ?? ''
+
+    await expect(control).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(localStorage.getItem('forced-shown-control')).toEqual('["Lorem"]')
+
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'text'))
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).not.toContain('secret')
+
+    // hidden and shown again
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'password'))
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'text'))
+    await userEvent.clear(input)
+    await userEvent.keyboard('another')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).not.toContain('another')
+
+    // emptied, as a suggestion equal to the value is hidden
+    await userEvent.clear(input)
+    outside.focus()
+    await sleep(100)
+    input.focus()
+    await sleep(500)
+    await expect(suggestionOptions(element)).toHaveLength(0)
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A field mounted as `text`, the password shown from the start, keeps a
+ * history like any text field until it becomes a password, and then removes
+ * what it stored: once a changed key left the item of the previous one in
+ * place, the password typed while shown stayed in clear in the storage. It
+ * types two values, so that one write has to remove both: written change by
+ * change only the first was removed. It renames the field before it hides the
+ * password, so that both the item of the previous name and the one of the
+ * current name, which starts from it, are cleaned.
+ */
+export async function forcedMountedShownPasswordTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const rename = await canvas.findByTestId('rename')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    const stored = (key: string) => localStorage.getItem(key) ?? ''
+
+    await expect(input).toHaveProperty('type', 'text')
+    for (const typed of ['secret', 'hunter2']) {
+        await userEvent.clear(input)
+        await userEvent.keyboard(typed)
+        outside.focus()
+        await sleep(100)
+    }
+    // a text field like any other, until now
+    await expect(stored('forced-mounted-shown')).toContain('secret')
+    await expect(stored('forced-mounted-shown')).toContain('hunter2')
+
+    await userEvent.click(rename)
+    await sleep(100)
+    await expect(stored('forced-mounted-shown-renamed')).toContain('hunter2')
+
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'password'))
+    await sleep(100)
+    for (const key of ['forced-mounted-shown', 'forced-mounted-shown-renamed']) {
+        await expect(stored(key)).not.toContain('secret')
+        await expect(stored(key)).not.toContain('hunter2')
+    }
+
+    await expect(element).toHaveNoViolations()
+}
+
+/**
+ * A second field on the same key, added after the password was stored, reads
+ * it from the storage. When the first field becomes a password and removes it,
+ * the second one has to follow: with a copy of the history taken when it was
+ * added, its next value wrote the password back.
+ */
+export async function forcedSharedShownPasswordTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const add = await canvas.findByTestId('add')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    const stored = () => localStorage.getItem('forced-shared-shown') ?? ''
+
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).toContain('secret')
+
+    await userEvent.click(add)
+    const second = (await canvas.findByTestId('second')).querySelector('input') as HTMLInputElement
+
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'password'))
+    await sleep(100)
+    await expect(stored()).not.toContain('secret')
+
+    await expect(second).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).toContain('Lorem')
+    await expect(stored()).not.toContain('secret')
+
+    await expect(element).toHaveNoViolations()
+}

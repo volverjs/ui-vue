@@ -7,8 +7,12 @@ import { Volver } from '@/Volver'
 import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
 import {
+    forcedMountedShownPasswordTest,
+    forcedSharedShownPasswordTest,
+    forcedShownPasswordTest,
     forcedSuggestionsTest,
     noStorageKeyTest,
+    storageKeyChangeTest,
     suggestionsEscapeTest,
     suggestionsTabOutTest,
 } from './InputText.test'
@@ -222,4 +226,147 @@ export const ForcedSuggestions: Story = {
         `,
     }),
     play: forcedSuggestionsTest,
+}
+
+/**
+ * The storage key changes while the field is mounted: the new key starts from
+ * the history of the previous one, and the previous item stays as it was.
+ */
+export const StorageKeyChange: Story = {
+    ...Default,
+    args: {
+        ...Default.args,
+        type: 'text',
+        label: 'Input with a storage key that changes',
+    },
+    render: args => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            // emptied before the field mounts and reads them
+            for (const key of ['storage-key-first', 'storage-key-second']) {
+                localStorage.removeItem(key)
+            }
+            const storageKey = ref('storage-key-first')
+            function toggle() {
+                storageKey.value = storageKey.value === 'storage-key-first'
+                    ? 'storage-key-second'
+                    : 'storage-key-first'
+            }
+            return { args, inputValue: ref(), storageKey, toggle }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-bind="args" v-model="inputValue" :storage-key="storageKey" data-testId="element" />
+                <vv-button data-testId="toggle" :label="storageKey" @click="toggle" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: storageKeyChangeTest,
+}
+
+/**
+ * With `experimentalFeatures.forceInputSuggestions`, an application that shows
+ * the password by moving `type` to `text`: the field keeps no history, while
+ * the text field next to it does.
+ */
+export const ForcedSuggestionsShownPassword: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            // emptied before the fields mount and read them
+            for (const key of ['forced-shown-control', 'forced-shown-password']) {
+                localStorage.removeItem(key)
+            }
+            const shown = ref(false)
+            return { text: ref(), password: ref(), shown }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="text" type="text" name="forced-shown-control" label="Text" data-testId="control" />
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-shown-password" label="Password" data-testId="element" />
+                <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedShownPasswordTest,
+}
+
+/**
+ * The same, with the password shown when the field mounts: it keeps a history
+ * as a text field until it becomes a password, and then removes what it
+ * stored, under its current name and under a name it had before.
+ */
+export const ForcedSuggestionsMountedShownPassword: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            // emptied before the field mounts and reads them
+            for (const key of ['forced-mounted-shown', 'forced-mounted-shown-renamed']) {
+                localStorage.removeItem(key)
+            }
+            const shown = ref(true)
+            const name = ref('forced-mounted-shown')
+            return { password: ref(), shown, name }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" :name="name" label="Password" data-testId="element" />
+                <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="rename" label="Rename" @click="name = 'forced-mounted-shown-renamed'" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedMountedShownPasswordTest,
+}
+
+/**
+ * The same, with a second text field on the same key, added after the password
+ * was stored: when the first one becomes a password, the second one follows
+ * the cleaned history, and its next value does not write the password back.
+ */
+export const ForcedSuggestionsSharedShownPassword: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            // emptied before the fields mount and read it
+            localStorage.removeItem('forced-shared-shown')
+            const shown = ref(true)
+            const hasSecond = ref(false)
+            return { password: ref(), second: ref(), shown, hasSecond }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-shared-shown" label="Password" data-testId="element" />
+                <vv-input-text v-if="hasSecond" v-model="second" type="text" name="forced-shared-shown" label="Same name" data-testId="second" />
+                <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="add" label="Add a field" @click="hasSecond = true" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedSharedShownPasswordTest,
 }
