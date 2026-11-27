@@ -484,7 +484,7 @@
     "@vitejs/plugin-vue": "^6.0.11",
     "@vitest/browser": "^5.1.1",
     "@vitest/browser-playwright": "^5.1.1",
-    "@volverjs/style": "0.1.34",
+    "@volverjs/style": "0.1.35",
     "@vue/compiler-sfc": "^3.5.46",
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/test-utils": "^2.6.0",
