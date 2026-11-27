@@ -111,3 +111,19 @@ export async function ariaDescribedbyTest({ canvasElement }: PlayAttributes) {
     await expect(element).not.toHaveAttribute('aria-describedby')
     await expect(element).toHaveNoViolations()
 }
+
+export async function beforeSelectTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const country = await canvas.findByTestId('country')
+    const select = element.querySelector('.vv-select__inner > select') as HTMLSelectElement
+
+    // the select in the slot is disabled, the field is not: it is not dimmed
+    await expect(select.disabled).toBe(false)
+    await expect(getComputedStyle(element).opacity).toBe('1')
+    // and the select in the slot does not take the height of the field's own
+    await expect(country.getBoundingClientRect().height).toBeLessThan(
+        select.getBoundingClientRect().height,
+    )
+    await expect(element).toHaveNoViolations()
+}
