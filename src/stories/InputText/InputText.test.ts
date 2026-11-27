@@ -789,3 +789,42 @@ export async function forcedMountedShownPasswordTest({ canvasElement }: PlayAttr
 
     await expect(element).toHaveNoViolations()
 }
+
+/**
+ * A second field on the same key, added after the password was stored, reads
+ * it from the storage. When the first field becomes a password and removes it,
+ * the second one has to follow: with a copy of the history taken when it was
+ * added, its next value wrote the password back.
+ */
+export async function forcedSharedShownPasswordTest({ canvasElement }: PlayAttributes) {
+    const canvas = within(canvasElement)
+    const element = await canvas.findByTestId('element')
+    const toggle = await canvas.findByTestId('toggle')
+    const add = await canvas.findByTestId('add')
+    const outside = await canvas.findByTestId('outside')
+    const input = element.querySelector('input') as HTMLInputElement
+    const stored = () => localStorage.getItem('forced-shared-shown') ?? ''
+
+    await expect(input).toBeClicked()
+    await userEvent.keyboard('secret')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).toContain('secret')
+
+    await userEvent.click(add)
+    const second = (await canvas.findByTestId('second')).querySelector('input') as HTMLInputElement
+
+    await userEvent.click(toggle)
+    await waitFor(() => expect(input).toHaveProperty('type', 'password'))
+    await sleep(100)
+    await expect(stored()).not.toContain('secret')
+
+    await expect(second).toBeClicked()
+    await userEvent.keyboard('Lorem')
+    outside.focus()
+    await sleep(100)
+    await expect(stored()).toContain('Lorem')
+    await expect(stored()).not.toContain('secret')
+
+    await expect(element).toHaveNoViolations()
+}

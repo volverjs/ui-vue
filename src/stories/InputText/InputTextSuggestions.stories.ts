@@ -8,6 +8,7 @@ import { argTypes, defaultArgs } from './InputText.settings'
 import { Default } from './InputText.stories'
 import {
     forcedMountedShownPasswordTest,
+    forcedSharedShownPasswordTest,
     forcedShownPasswordTest,
     forcedSuggestionsTest,
     noStorageKeyTest,
@@ -333,4 +334,39 @@ export const ForcedSuggestionsMountedShownPassword: Story = {
         `,
     }),
     play: forcedMountedShownPasswordTest,
+}
+
+/**
+ * The same, with a second text field on the same key, added after the password
+ * was stored: when the first one becomes a password, the second one follows
+ * the cleaned history, and its next value does not write the password back.
+ */
+export const ForcedSuggestionsSharedShownPassword: Story = {
+    ...Default,
+    render: () => ({
+        components: { VvInputText, VvButton },
+        setup() {
+            provide(
+                INJECTION_KEY_VOLVER,
+                new Volver({
+                    experimentalFeatures: { forceInputSuggestions: true },
+                }),
+            )
+            // emptied before the fields mount and read it
+            localStorage.removeItem('forced-shared-shown')
+            const shown = ref(true)
+            const hasSecond = ref(false)
+            return { password: ref(), second: ref(), shown, hasSecond }
+        },
+        template: /* html */ `
+            <div style="min-height: 240px">
+                <vv-input-text v-model="password" :type="shown ? 'text' : 'password'" name="forced-shared-shown" label="Password" data-testId="element" />
+                <vv-input-text v-if="hasSecond" v-model="second" type="text" name="forced-shared-shown" label="Same name" data-testId="second" />
+                <vv-button data-testId="toggle" :label="shown ? 'Hide' : 'Show'" @click="shown = !shown" />
+                <vv-button data-testId="add" label="Add a field" @click="hasSecond = true" />
+                <vv-button data-testId="outside" label="Outside" />
+            </div>
+        `,
+    }),
+    play: forcedSharedShownPasswordTest,
 }

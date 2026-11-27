@@ -33,6 +33,10 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
     // After a write it holds still until the next tick, as it hears its own
     // storage event: change the value once a tick, replacing it when several
     // things change, or only the first change is written.
+    // A write under the same key from elsewhere, another component or another
+    // tab, replaces the value of the storage, and the local value follows it:
+    // with the copy taken at the bind, the next change here wrote back what
+    // that write had removed, such as a password taken out of a history.
     let storageScope: EffectScope | undefined
     function bindStorage(key: string | undefined, storage: Storage) {
         storageScope?.stop()
@@ -44,9 +48,13 @@ export function usePersistence<T>(storageKey: Ref<string | undefined> | undefine
         // a key with nothing stored starts from the current value
         const carried = storage.getItem(key) === null ? localValue.value : undefined
         storageScope = effectScope(true)
-        storageValue = storageScope.run(() =>
-            useStorage(key, getDefault, storage, { flush: 'sync' }),
-        ) as Ref<T | undefined>
+        storageValue = storageScope.run(() => {
+            const value = useStorage(key, getDefault, storage, { flush: 'sync' })
+            watch(value, (newValue) => {
+                localValue.value = newValue
+            }, { flush: 'sync' })
+            return value
+        }) as Ref<T | undefined>
         if (carried !== undefined) {
             storageValue.value = carried
         }

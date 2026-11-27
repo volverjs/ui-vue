@@ -85,7 +85,7 @@ Most components spread these objects from `src/props/index.ts`. Learn the exact 
 | Clear action | `showClearAction`, `iconClear`, `labelClear` | not `clearable` |
 | Count | `count` = `true`, `'limit'` or `'countdown'` | with `maxlength` |
 | Debounce | `debounce` (ms) | input, textarea, range |
-| Persistence | `storageKey`, `storageType` (`'local'` or `'session'`) | VvInputText and VvTextarea keep the history of their suggestions under the key, VvAccordionGroup its open items; no key, no history. A key changed while mounted keeps the value already stored under it, or else starts from the value of the previous key, and leaves the item of the previous key in the storage. A change of `storageType` alone moves the key to the other storage |
+| Persistence | `storageKey`, `storageType` (`'local'` or `'session'`) | VvInputText and VvTextarea keep the history of their suggestions under the key, VvAccordionGroup its open items; no key, no history. A key changed while mounted keeps the value already stored under it, or else starts from the value of the previous key, and leaves the item of the previous key in the storage. A change of `storageType` alone moves the key to the other storage. Components on the same key, in the page or in other tabs, follow each other's writes |
 | Options | `options`, `labelKey`, `valueKey`, `disabledKey` | see section 6 |
 | Links | `to`, `href`, `target`, `rel` | on VvAction, VvButton, nav items, breadcrumb routes |
 | BEM | `modifiers` | string (space separated) or string array |
